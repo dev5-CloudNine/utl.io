@@ -1,0 +1,23 @@
+{
+  "public" : {
+    "uploadcare":{
+      "publickey":""
+    },
+    "stripe":{
+        "pubKey":""
+    },
+    "astronomer": {
+      "appId": ""
+    }
+  },
+  "kadira": {
+     "appId": "",
+     "appSecret": ""
+  },
+  "PrerenderIO": {
+    "token": ""
+  },
+  "stripe":{
+      "secretKey":""
+  }
+}

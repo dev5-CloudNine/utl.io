@@ -1,0 +1,347 @@
+Jobs = new Mongo.Collection("jobs");
+
+Jobs.attachSchema(
+  new SimpleSchema({
+    title: {
+      type: String,
+      label: "Job Title",
+      max: 128
+    },
+    skillsrequired: {
+      type: String,
+      label: "Required Skills",
+      max: 128,
+    },
+    location: {
+      type: String,
+      label: "Location",
+      max: 128,
+      optional: true
+    },
+    contact: {
+      type: String,
+      label: "Contact Info",
+      max: 128
+    },
+    jobtype: {
+      type: String,
+      label: "Select your Industry"
+    },
+    ratebasis: {
+      type: String,
+      label: "Pay Rate Basis",
+    },
+    fixedamount: {
+      type: Number,
+      min: 1,
+      label: "Amount",
+      optional: true
+    },
+    hourlyrate: {
+      type: Number,
+      min: 1,
+      label: "Hourly Rate (USD)",
+      optional: true
+    },
+    maxhours: {
+      type: Number,
+      min: 1,
+      label: "Maximum Hours",
+      optional: true
+    },
+    rateperdevice: {
+      type: Number,
+      min: 1,
+      label: "Rate per Device (USD)",
+      optional: true
+    },
+    maxdevices: {
+      type: Number,
+      min: 1,
+      label: "Maximum Devices",
+      optional: true
+    },
+    payforfirsthours: {
+      type: Number,
+      min: 1,
+      label: "Pay (USD)",
+      optional: true
+    },
+    firsthours: {
+      type: Number,
+      min: 1,
+      label: "total for the first",
+      optional: true
+    },
+    payfornexthours: {
+      type: Number,
+      min: 1,
+      label: "hour(s) and then USD",
+      optional: true
+    },
+    nexthours: {
+      type: Number,
+      min: 1,
+      label: "per hour for up to",
+      optional: true
+    },
+    totalfromclient: {
+      type: Number,
+      min: 1,
+      label: "Total Amount",
+      optional: true
+    },
+    servicelocation: {
+    optional: true,
+    label: "Service Location",
+    type: String,
+    autoform: {
+      type: "select-radio-inline",
+      defaultValue: "Remote Job",
+      options: function() {
+          return [{
+              label: "Field Job",
+              value: "Field Job"
+          }, {
+              label: "Remote Job",
+              value: "Remote Job",
+
+          }];
+        }
+      }
+    },
+    serviceschedule: {
+    optional: true,
+    label: "Service Schedule",
+    type: String,
+    autoform: {
+        type: "select-radio-inline",
+        defaultValue: "exactdate",
+        options: function() {
+            return [{
+                label: "Exactly on",
+                value: "exactdate"
+            }, {
+                label: "Between Dates",
+                value: "betweendates",
+
+            }];
+          }
+        }
+    },
+    // fileId: {
+    //   type: String,
+    //   label: "Upload File(s)",
+    //   autoform: {
+    //     afFieldInput: {
+    //       type: "cfs-files"
+    //     }
+    //   }
+    // },
+    contactperson: {
+      type: String,
+      label: "Contact Name",
+      max: 128,
+      optional: true
+    },
+    contactemail: {
+      type: String,
+      label: "Contact Email",
+      max: 128,
+      optional: true
+    },
+    contactphone: {
+      type: String,
+      label: "Phone",
+      max: 128,
+      optional: true
+    },
+    exactdate: {
+      type: Date,
+      optional: true,
+      label: "Exactly on date",
+      autoform: {
+        type: "bootstrap-datepicker"
+      }
+    },
+    betweendates: {
+      type: [Date],
+      label: "Between dates",
+      optional: true,
+      autoform: {
+        type: "bootstrap-daterangepicker",
+        dateRangePickerValue: moment().add(1, 'days').format("MM/DD/YYYY") + " - " + moment().add(3, 'days').format("MM/DD/YYYY"),
+        dateRangePickerOptions: {
+          minDate: moment().add(-150, 'days'),
+          maxDate:moment().add(6, 'months'),
+          // startDate: moment().add(1, 'days'),
+          // endDate: moment().add(3, 'days'),
+          timePicker: false,
+          format: 'MM/DD/YYYY',
+          timePickerIncrement: 30,
+          timePicker12Hour: false,
+          timePickerSeconds: false
+        }
+      }
+    },
+    shipment: {
+      type: Array,
+      optional: true
+    },
+    'shipment.$': {
+      type: Object,
+    },
+    'shipment.$.itembeingshipped': {
+      type: String,
+      label: "Shipped Item",
+      max: 128
+    },
+    'shipment.$.shipmentcarrier': {
+      type: String,
+      label: "Shipped via"
+    },
+    'shipment.$.shipmentcarriername': {
+      type: String,
+      label: "Name",
+      max: 128,
+      optional: true
+    },
+    'shipment.$.shipmenttracking': {
+      type: String,
+      label: "Tracking Number",
+      max: 128,
+      optional: true
+    },
+    userId: {
+      type: String,
+      label: "User Id",
+      autoValue: function() {
+        if (this.isInsert) {
+          return Meteor.userId();
+        } else if (this.isUpsert) {
+          return {
+            $setOnInsert: Meteor.userId()
+          };
+        } else {
+          this.unset();
+        }
+      },
+      denyUpdate: true
+    },
+    userName: {
+      type: String,
+      label: "User Name",
+      autoValue: function() {
+        if (this.isInsert) {
+          return getUserName(Meteor.user());
+        } else if (this.isUpsert) {
+          return {
+            $setOnInsert: getUserName(Meteor.user())
+          };
+        } else {
+          this.unset();
+        }
+      }
+    },
+    description: {
+      type: String,
+      label: "Job Description",
+      max: 20000,
+      autoform: {
+        afFieldInput: SUMMERNOTE_OPTIONS
+      }
+    },
+    status: {
+      type: String,
+      allowedValues: STATUSES,
+      autoValue: function() {
+        if (this.isInsert) {
+          return 'pending';
+        } else if (this.isUpsert) {
+          return {
+            $setOnInsert: 'pending'
+          };
+        }
+      },
+    },
+    featuredThrough: {
+      type: Date,
+      optional: true
+    },
+    featuredChargeHistory: {
+      type: [String],
+      optional: true
+    },
+    // Automatically set HTML content based on markdown content
+    // whenever the markdown content is set.
+    htmlDescription: {
+      type: String,
+      optional: true,
+      autoValue: function(doc) {
+        var htmlContent = this.field("description");
+        if (Meteor.isServer && htmlContent.isSet) {
+          return cleanHtml(htmlContent.value);
+        }
+      }
+    },
+    // Force value to be current date (on server) upon insert
+    // and prevent updates thereafter.
+    createdAt: {
+      type: Date,
+      autoValue: function() {
+        if (this.isInsert) {
+          return new Date();
+        } else if (this.isUpsert) {
+          return {
+            $setOnInsert: new Date()
+          };
+        } else {
+          this.unset();
+        }
+      },
+      denyUpdate: true
+    },
+    // Force value to be current date (on server) upon update
+    // and don't allow it to be set upon insert.
+    updatedAt: {
+      type: Date,
+      autoValue: function() {
+        if (this.isUpdate) {
+          return new Date();
+        }
+      },
+      denyInsert: true,
+      optional: true
+    }
+  })
+);
+
+Jobs.helpers({
+  path: function() {
+    return 'jobs/' + this._id + '/' + this.slug();
+  },
+  slug: function() {
+    return getSlug(this.title);
+  },
+  featured: function() {
+    return this.featuredThrough && moment().isBefore(this.featuredThrough);
+  }
+});
+
+Jobs.allow({
+  insert: function(userId, doc) {
+    return userId && doc && userId === doc.userId;
+  },
+  update: function(userId, doc, fieldNames, modifier) {
+    return Roles.userIsInRole(userId, ['admin']) || 
+    (!_.contains(fieldNames, 'htmlDescription') 
+      && !_.contains(fieldNames, 'status') 
+        && !_.contains(fieldNames, 'featuredThrough') 
+          && !_.contains(fieldNames, 'featuredChargeHistory') 
+          && userId && doc && userId === doc.userId);
+  },
+  remove: function(userId, doc) {
+    return false;
+  },
+  fetch: ['userId']
+});

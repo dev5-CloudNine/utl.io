@@ -1,0 +1,11 @@
+<template name="profiles">
+	<div class="row">
+		{{#each profiles}}
+	        {{>profileSmall}}
+	    {{/each}}
+	    
+	</div>
+	<div class="text-center">
+		{{> infiniteScroll }}
+	</div>
+</template>

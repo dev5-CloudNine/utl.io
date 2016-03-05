@@ -1,0 +1,23 @@
+<template name="jobsRecent">
+    <section id="jobsRecent">
+        <div class="row">
+            <div class="col-sm-4">
+                <h2>Recent Jobs</h2>
+            </div>
+            <div class="col-sm-4 text-center">
+                Last post about {{timeFromLastJob}}
+            </div>
+        </div>
+        {{#each featuredJobs}}
+            {{>jobSmall}}
+        {{/each}}
+        {{#each jobs}}
+            {{>jobSmall}}
+        {{/each}}
+        <div class="panel panel-default">
+            <div class="panel-body text-center">
+                <h4><a href="{{pathFor 'jobs'}}">View All {{getPublishedCount 'jobs'}} Jobs&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></a></h4>
+            </div>
+        </div>
+    </section>
+</template>

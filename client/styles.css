@@ -1,0 +1,13 @@
+.jumbotron, footer {
+	color: #27272b !important;
+	background-color: #f2f2f2 !important;
+}
+.switch-calculator {
+	margin-top: 10px;
+}
+.shipment-list {
+	line-height: 50px;
+}
+h3, h4 {
+	font-weight: normal !important;
+}
