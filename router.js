@@ -110,9 +110,20 @@ Router.map(function() {
         }
     });
 
+
+
     this.route('jobNew', {
         path: '/job',
-        title: "UTL - Post a Job"
+        title: "UTL - Post a Job",
+        onBeforeAction: function () {
+            if (Meteor.user() &&
+                Meteor.user().roles &&
+                (Meteor.user().roles.indexOf("employer")) != -1) {
+                this.next();
+            } else {
+                this.render('notFound');
+            }
+        }
     });
 
     this.route('jobEdit', {
@@ -219,7 +230,45 @@ Router.map(function() {
             _id: this.params._id
         });
     });
+
+
+    this.route('sign.up', {
+        path: '/SignUp'
+    });
+
 });
+
+
+
+
+// Router.route('/job', {
+//     name: 'jobNew',
+//     action: function() {
+//         if (Meteor.user() &&
+//             Meteor.user().roles &&
+//             (Meteor.user().roles.indexOf("employer")) != -1) {
+//             this.render('job');
+//         } 
+//     }
+// });
+
+
+
+
+
+Router.route('/posts/:_id', function () {
+  this.render('Post');
+}, {
+  name: 'post.show'
+});
+
+// Router.route('/signup', {
+//     name: 'sign.up', 
+//     action: function(){
+//         this.render("SignUp");
+//     }
+// });
+
 
 Router.plugin('ensureSignedIn', {
     only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew']

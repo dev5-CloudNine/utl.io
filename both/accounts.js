@@ -2,9 +2,9 @@ AccountsTemplates.configure({
     // Behaviour
     confirmPassword: true,
     enablePasswordChange: true,
-    forbidClientAccountCreation: false,
+    forbidClientAccountCreation: true,
     overrideLoginErrors: true,
-    sendVerificationEmail: false,
+    sendVerificationEmail: true,
 
     // Appearance
     showForgotPasswordLink: true,
@@ -29,12 +29,23 @@ AccountsTemplates.configureRoute("resetPwd");
 AccountsTemplates.configureRoute("signIn", {
     name: 'signIn',
     path: '/sign-in',
+    layoutTemplate: 'layout',
+    loadingTemplate: 'loading',
+    yieldTemplates: {
+        header: {
+            to: 'header'
+        },
+        footer: {
+            to: 'footer'
+        }
+    },
     redirect: '/',
 });
-AccountsTemplates.configureRoute("signUp", {
-    name: 'signUp',
-    path: '/sign-up',
-    redirect: '/',
-});
-AccountsTemplates.configureRoute("verifyEmail");
+// AccountsTemplates.configureRoute("signUp", {
+//     name: 'signUp',
+//     path: '/sign-up',
+//     redirect: '/',
+// });
+
+
 

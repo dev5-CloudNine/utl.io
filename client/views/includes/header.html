@@ -19,7 +19,9 @@
                         <li class="{{isActiveRoute regex='^jobs$'}}"><a href="{{pathFor 'jobs'}}">Jobs</a></li>
                         <li class="{{isActiveRoute regex='profiles'}}"><a href="{{pathFor 'profiles'}}">Technicians</a></li>
                         {{#if currentUser}}
-                            <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
+                            {{#if isInRole 'employer'}}
+                                <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
+                            {{/if}}
                             {{#unless currentUser.isDeveloper}}
                                 <li class="{{isActiveRoute regex='^profile$'}}">
                                     <a href="{{pathFor 'profileNew'}}">Create Developer Profile</a>
@@ -32,7 +34,7 @@
                         	{{>headerUserMenu}}
                         {{else}}
                             <li class="{{isActiveRoute regex='signIn'}}"><a href="{{pathFor 'signIn'}}">Log In</a></li>
-                            <li class="{{isActiveRoute regex='signUp'}}"><a href="{{pathFor 'signUp'}}">Sign Up</a></li>
+                            <li class="{{isActiveRoute regex='sign.up'}}"><a href="{{pathFor 'sign.up'}}">Sign Up</a></li>
                         {{/if}}
                     </ul>
                 </div>

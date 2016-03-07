@@ -1,0 +1,107 @@
+<template name="SignUp">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="column">
+                <form class="form-horizontal" id="signup-form">
+                    <fieldset>
+                        <!-- Form Name -->
+                        <legend>Sign Up</legend>
+<!--                         <div class="form-group">
+                            <label class="col-md-3 control-label" for="firstName">Name</label>
+                            <div class="col-md-4">
+                                <input id="firstName" name="firstName" placeholder="first name" class="form-control input-md" type="text" maxlength="30">
+                            </div>
+                            <div class="col-md-4">
+                                <input id="lastName" name="lastName" placeholder="last name" class="form-control input-md" type="text" maxlength="30">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="phone">Phone</label>
+                            <div class="col-md-4">
+                                <input id="phone" name="phone" placeholder="phone number with country code" class="form-control input-md" type="text">
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="email">Email</label>
+                            <div class="col-md-4">
+                                <input id="email" name="email" placeholder="email address" class="form-control input-md">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="password">Password</label>
+                            <div class="col-md-4">
+                                <input id="password" name="password" placeholder="password" class="form-control input-md" type="password">
+                            </div>
+                            <div class="col-md-4">
+                                <input id="confirmPassword" name="confirmPassword" placeholder="confirm password" class="form-control input-md" type="password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Account Type</label>
+                           <div class="col-md-4">
+                                <div class="radio">
+                                  <label><input class="type" name="type" type="radio" value="work">I want to Work</label>
+                                </div>
+                                <div class="radio">
+                                  <label><input class="type" name="type" type="radio" value="hire">I want to Hire</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="ac-type" name="ac-type" class="form-control">
+                                    <option value="individual">Individual </option>
+                                    <option value="company">Company</option>
+                                </select>
+                            </div>
+                        </div>      
+<!--                         <div class="form-group">
+                            <label class="col-md-3 control-label" for="country">Country</label>
+                            <div class="col-md-4">
+                                <select id="country" name="country" class="form-control">
+                                    <option value="">Select country</option>
+                                    {{#each countries}}
+                                    <option value="{{name}}">{{name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div> -->
+
+<!-- 
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="areaOfInterest">Skills</label>
+                            <div class="col-md-4 select-interests">
+                                <select data-placeholder="" class="form-control chosen-select" id="areaOfInterest" name="areaOfInterest"  multiple >
+                                    <option value="">Select some field</option>
+                                    <option value="Analytics">Analytics</option>
+                                    <option value="DevOps">DevOps</option>
+                                    <option value="Analytics">Analytics</option>
+                                    <option value="Internet of Things">Internet of Things</option>
+                                    <option value="DevOps">DevOps</option>
+                                    <option value="Cloud">Cloud</option>
+                                    <option value="IT and Cloud Managed Solutions">IT and Cloud Managed Solutions</option>
+                                    <option value="Business Consulting Services">Business Consulting Services</option>
+                                    <option value="Industry Solutions">Industry Solutions</option>
+                                    <option value="Mid-Market Solutions">Mid-Market Solutions</option>
+                                    <option value="Commerce Solutions">Commerce Solutions</option>
+                                    <option value="Social Business">Social Business</option>
+                                    <option value="Mobility Solutions">Mobility Solutions</option>
+                                    <option value="Systems">Systems</option>
+                                    <option value="Security Solutions">Security Solutions</option>
+                                    <option value="C-Suite/Line of Business Solutions">C-Suite/Line of Business Solutions</option>
+                                    <option value="Business Technology Services">Business Technology Services</option>
+                              
+                                </select>
+                            </div>
+                        </div> -->
+                        <!-- Button (Double) -->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="button1id"></label>
+                            <div class="col-md-8">
+                                <input type="submit" class='signup-submit btn btn-primary' value="Submit" />
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
