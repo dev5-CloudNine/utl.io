@@ -1,8 +1,60 @@
 <template name="jobs">
-	{{#each jobs}}
-		{{>jobSmall}}
-	{{/each}}
-	<div class="text-center">
-		{{> infiniteScroll }}
-	</div>
+	<div class="row">
+        <div class="col-md-3 hidden-xs hidden-sm">
+            <div class="panel panel-primary">
+                <div class="panel-heading text-left">
+                    <h3 class="panel-title">Filters</h3>
+                </div>
+                <div class="panel-body text-left">
+                    <select class="form-control select-filter">
+                        <option value="any-time" class="active">Posted Any Time</option>
+                        <option value="any-time">1 Day Ago</option>
+                        <option value="any-time">5 Day Ago</option>
+                        <option value="any-time">10 Day Ago</option>
+                        <option value="any-time">14 Day Ago</option>
+                    </select>
+                    <select class="form-control select-filter">
+                        <option value="any-time" class="active">Within 1 Mile</option>
+                        <option value="any-time">Within 5 Miles</option>
+                        <option value="any-time">Within 10 Miles</option>
+                        <option value="any-time">Within 25 Miles</option>
+                        <option value="any-time">Located Anywhere</option>
+                    </select>
+                    <select class="form-control select-filter">
+                        <option value="any-time" class="active">Any Salary</option>
+                        <option value="any-time">At least 9$/hour</option>
+                        <option value="any-time">At least 10$/hour</option>
+                        <option value="any-time">At least 11$/hour</option>
+                        <option value="any-time">At least 12$/hour</option>
+                        <option value="any-time">At least 15$/hour</option>
+                        <option value="any-time">At least 20$/hour</option>
+                    </select>
+                </div>
+                <div class="panel-heading text-left">
+                    <h3 class="panel-title"><i class="fa fa-align-left"></i>&nbsp;Sort By</h3>
+                </div>
+                <div class="panel-body text-left">
+                    <select class="form-control select-filter">
+                        <option value="any-time" class="active">Most relevant</option>
+                        <option value="any-time">Most recent</option>
+                        <option value="any-time">Best paying</option>
+                        <option value="any-time">Closest to me</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+        	{{#if currentUser}}
+				<div class="well">
+					{{>EasySearch.Input index=jobIndex}}
+				</div>
+				{{#EasySearch.Each index=jobIndex}}
+					{{>jobSmall}}
+				{{/EasySearch.Each}}
+			{{/if}}
+			<div class="text-center">
+				{{> infiniteScroll }}
+			</div>
+        </div>
+    </div>
 </template>

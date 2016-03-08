@@ -205,6 +205,10 @@ Router.map(function() {
         }
     });
 
+    this.route('aboutUs', {
+        path: '/about'
+    })
+
     this.route('howItWorks', {
         path: '/howitworks'
     });

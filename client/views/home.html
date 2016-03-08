@@ -1,5 +1,5 @@
 <template name="home">
-	<div class="jumbotron container-fluid">
+	<div class="jumbotron container-fluid home-image">
 		<div class="container text-center">
 			<div class="row">
 				<h1>Connect. Collaborate. Coachieve</h1>
@@ -10,7 +10,7 @@
 					<br>
 					A simple and precise platform to manage work, workforce and payments.
 					<br>
-					Browse the <a href="{{pathFor 'jobs'}}">{{getPublishedCount 'jobs'}} active job postings</a> or <a href="{{pathFor 'profileNew'}}">create your profile</a> to join the <a href="{{pathFor 'profiles'}}">{{getPublishedCount 'developers'}} registered professionals</a>.
+					<!-- Browse the <a href="{{pathFor 'jobs'}}">{{getPublishedCount 'jobs'}} active job postings</a> or <a href="{{pathFor 'profileNew'}}">create your profile</a> to join the <a href="{{pathFor 'profiles'}}">{{getPublishedCount 'developers'}} registered professionals</a>. -->
 				</p>
 			</div>
 			
@@ -20,17 +20,19 @@
 			</div>
 		</div>
 	</div>
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-12">
-				{{>jobsRecent}}
+	{{#if currentUser}}
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					{{>jobsRecent}}
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-sm-12">
+					{{>profilesRecent}}
+				</div>
 			</div>
 		</div>
-		<hr>
-		<div class="row">
-			<div class="col-sm-12">
-				{{>profilesRecent}}
-			</div>
-		</div>
-	</div>
+	{{/if}}
 </template>

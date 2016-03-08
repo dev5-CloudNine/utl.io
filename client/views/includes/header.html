@@ -16,17 +16,20 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="{{isActiveRoute regex='^jobs$'}}"><a href="{{pathFor 'jobs'}}">Jobs</a></li>
-                        <li class="{{isActiveRoute regex='profiles'}}"><a href="{{pathFor 'profiles'}}">Technicians</a></li>
                         {{#if currentUser}}
                             {{#if isInRole 'employer'}}
                                 <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
                             {{/if}}
-                            {{#unless currentUser.isDeveloper}}
-                                <li class="{{isActiveRoute regex='^profile$'}}">
-                                    <a href="{{pathFor 'profileNew'}}">Create Developer Profile</a>
-                                </li>
-                            {{/unless}}
+                            {{#if isInRole 'individual-employee'}}
+                                {{#unless currentUser.isDeveloper}}
+                                    <li class="{{isActiveRoute regex='^profile$'}}">
+                                        <a href="{{pathFor 'profileNew'}}">Create Developer Profile</a>
+                                    </li>
+                                {{/unless}}
+                            {{/if}}
+                        {{else}}
+                            <li><a href="{{pathFor 'jobNew'}}">Post A Job</a></li>
+                            <li><a href="{{pathFor 'profileNew'}}">Create a Profile</a></li>
                         {{/if}}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -63,9 +66,11 @@
                     {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> Developer Profile</a>{{/with}}
                 </li>
             {{else}}
-                <li>
-                    <a href="{{pathFor 'profileNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Developer Profile</a>
-                </li>
+                {{#if isInRole 'individual-employee'}}
+                    <li>
+                        <a href="{{pathFor 'profileNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Developer Profile</a>
+                    </li>
+                {{/if}}
             {{/if}}
             <li>
                 <a href="#" id="userProfile"><i class="fa fa-user fa-fw"></i> User Profile</a>

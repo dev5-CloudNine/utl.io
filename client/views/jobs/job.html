@@ -48,21 +48,20 @@
 						<div class="col-sm-9">
 							<h4>Skills Required</h4>
 							{{skillsrequired}}
+							<hr>
 							<h4>Description</h4>
-							{{#if htmlDescription}}
-								{{{htmlDescription}}}
-							{{/if}}
+							{{{htmlDescription}}}
 							<hr>
 							<h4>Service Schedule</h4>
 							{{#if exactdate}}
-								{{formatDate exactdate}}
+								By: {{formatDate exactdate}}
 							{{/if}}
 							{{#if betweendates}}
-								{{betweendates}}								
+								Between: {{betweendates}}								
 							{{/if}}
-							<hr>
-							<h4>Budget</h4>
 							{{#if ratebasis}}
+								<hr>
+								<h4>Budget</h4>
 								Payment type: {{ratebasis}}<br>
 								{{#if hourlyrate}}
 									{{hourlyrate}} USD per hour for {{maxhours}} hours.
@@ -80,14 +79,30 @@
 										{{/if}}
 								{{/if}}
 							{{/if}}
-							<hr>
 							{{#if contactperson}}
+								<hr>
 								<h4>Service Location</h4>
 								Address: {{location}}<br>
 								Contact Details: <br>
 								{{contactperson}}<br>
 								{{contactemail}}<br>
 								{{contactphone}}
+							{{/if}}
+							<hr>
+							{{#if shipment}}
+								<h4>Shipments to site</h4>
+								<ul>
+									{{#each shipment}}
+										<li>{{itembeingshipped}} via 
+											{{#if shipmentcarriername}}
+												{{shipmentcarriername}}
+											{{else}}
+												{{shipmentcarrier}}
+											{{/if}} 
+											with tracking ID {{shipmenttracking}}
+										</li>
+									{{/each}}
+								</ul>
 							{{/if}}
 						</div>
 					</div>

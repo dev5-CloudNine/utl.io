@@ -9,6 +9,7 @@ accounts-ui
 accounts-password
 #accounts-google
 #pauli:accounts-linkedin
+accounts-google
 #jazeee:spiderable-longer-timeout
 iron:router
 natestrauser:font-awesome
@@ -77,3 +78,5 @@ chipcastle:countries
 mrt:chosen-package
 chrismbeckett:toastr
 themeteorchef:jquery-validation
+pauli:accounts-linkedin
+easy:search

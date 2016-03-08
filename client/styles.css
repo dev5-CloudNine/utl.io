@@ -11,3 +11,14 @@
 h3, h4 {
 	font-weight: normal !important;
 }
+.home-image {
+	height: auto;
+	background-image: 'images/home-bg.jpg';
+}
+#home-wrapper {
+	margin-top: -20px;
+	margin-bottom: -28px;
+}
+#utl_fees {
+	margin-bottom: 24px;
+}

@@ -1,6 +1,6 @@
 <template name="layout">
 	{{>yield region='header'}}
-	<div id="content-wrapper" class="container">
+	<div id="content-wrapper main-wrapper" class="container">
 		{{>yield}}
 	</div>
 	{{>yield region='footer'}}
@@ -8,7 +8,7 @@
 
 <template name="layoutNoContainer">
 	{{>yield region='header'}}
-	<div id="content-wrapper">
+	<div id="home-wrapper">
 		{{>yield}}
 	</div>
 	{{>yield region='footer'}}

@@ -60,7 +60,7 @@
         </div>
     </div>
     {{> afQuickField name='description' rows=8 placeholder="Tell prospective developers about this position. What is the project? What will you expect them to know beforehand? Things like that."}}
-    {{> afQuickField name='servicelocation'}}
+    {{> afQuickField name='servicelocation' noselect=true}}
     {{#if afFieldValueIs name="servicelocation" value="Field Job"}}
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -78,15 +78,15 @@
         </div>
     {{/if}}
     <hr>
-    {{> afQuickField name='serviceschedule'}}
+    {{> afQuickField name='serviceschedule' noselect=true}}
     <div class="row">
         {{#if afFieldValueIs name="serviceschedule" value="exactdate"}}
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 {{> afQuickField name="exactdate"}}
             </div>
         {{/if}}
         {{#if afFieldValueIs name="serviceschedule" value="betweendates"}}
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 {{> afQuickField name="betweendates"}}
             </div>
         {{/if}}
@@ -94,71 +94,87 @@
     <hr>
     <div class="row">        
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{> afFormGroup name="ratebasis" options=rateBasisOptions}}
+            {{> afQuickField name="ratebasis"}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
             {{#if afFieldValueIs name="ratebasis" value="Fixed Pay"}}
-                {{> afQuickField name="fixedamount" placeholder="Enter amount"}}
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    {{> afQuickField name="fixedamount" placeholder="Enter amount"}}
+                    <label class="label-control">UTL Fees</label>
+                    <span><input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%"></span>
+                    {{>afQuickField name="paidby" noselect=true}}
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    {{>afQuickField name="totalfromclient" readonly="true"}}
+                    <label class="label-control">Your Cost</label>
+                    <span><input type="text" id="your_cost" class="form-control" readonly="readonly"></span>
+                    <br>
+                    <label class="label-control">Freelancer Nets</label>
+                    <span><input type="text" id="freelancer_nets" class="form-control" readonly="readonly"></span><br>
+                </div>
             {{/if}}
+            
             {{#if afFieldValueIs name="ratebasis" value="Per Hour"}}
-                {{> afQuickField name="hourlyrate" placeholder="Enter amount per hour"}}
-                {{>afQuickField name="maxhours" placeholder="Maximum hours"}}
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    {{> afQuickField name="hourlyrate" placeholder="Enter amount per hour"}}
+                    {{>afQuickField name="maxhours" placeholder="Maximum hours"}}
+                    <label class="label-control">UTL Fees</label>
+                    <span><input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%"></span>
+                    {{>afQuickField name="paidby" noselect=true}}
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    {{>afQuickField name="totalfromclient" readonly="true"}}
+                    <label class="label-control">Your Cost</label>
+                    <span><input type="text" id="your_cost" class="form-control" readonly="readonly"></span>
+                    <br>
+                    <label class="label-control">Freelancer Nets</label>
+                    <span><input type="text" id="freelancer_nets" class="form-control" readonly="readonly"></span><br>
+                </div>
             {{/if}}
             {{#if afFieldValueIs name="ratebasis" value="Per Device"}}
-                {{> afQuickField name="rateperdevice" placeholder="Enter amount per device"}}
-                {{> afQuickField name="maxdevices" placeholder="Maximum devices"}}
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    {{> afQuickField name="rateperdevice" placeholder="Enter amount per device"}}
+                    {{> afQuickField name="maxdevices" placeholder="Maximum devices"}}
+                    <label class="label-control">UTL Fees</label>
+                    <span><input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%"></span>
+                    {{>afQuickField name="paidby" noselect=true}}
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    {{>afQuickField name="totalfromclient" readonly="true"}}
+                    <label class="label-control">Your Cost</label>
+                    <span><input type="text" id="your_cost" class="form-control" readonly="readonly"></span>
+                    <br>
+                    <label class="label-control">Freelancer Nets</label>
+                    <span><input type="text" id="freelancer_nets" class="form-control" readonly="readonly"></span><br>
+                </div>
             {{/if}}
             {{#if afFieldValueIs name="ratebasis" value="Blended"}}
-                {{>afQuickField name="payforfirsthours"}}
-                {{>afQuickField name="firsthours"}}
-                {{>afQuickField name="payfornexthours"}}
-                {{>afQuickField name="nexthours"}}
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    {{>afQuickField name="payforfirsthours"}}
+                    {{>afQuickField name="firsthours"}}
+                    {{>afQuickField name="payfornexthours"}}
+                    {{>afQuickField name="nexthours"}}
+                    <label class="label-control">UTL Fees</label>
+                    <span><input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%"></span>
+                    {{>afQuickField name="paidby" noselect=true}}
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    {{>afQuickField name="totalfromclient" readonly="true"}}
+                    <label class="label-control">Your Cost</label>
+                    <span><input type="text" id="your_cost" class="form-control" readonly="readonly"></span>
+                    <br>
+                    <label class="label-control">Freelancer Nets</label>
+                    <span><input type="text" id="freelancer_nets" class="form-control" readonly="readonly"></span><br>
+                </div>
             {{/if}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{>afQuickField name="totalfromclient" readonly="true"}}
-            <label class="label-control">Your Cost</label>
-            <span><input type="text" id="your_cost" class="form-control" readonly="readonly"></span>
-            <br>
-            <label class="label-control">UTL Fees</label>
-            <span><input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%"></span>
-            <br>
-            <label class="label-control">Freelancer Nets</label>
-            <span><input type="text" id="freelancer_nets" class="form-control" readonly="readonly"></span><br>
-            <button class="btn btn-primary">Switch Calculator</button>
-        </div>
     </div>
     <hr>
-    <label class="label-control">Shipment to Site</label><br>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <ul class="list-unstyled shipment-list">
-                {{#each names}}
-                    <li><a class="btn btn-primary remove-shipment">X</a>&nbsp;Item: {{this.itembeingshipped}} | Carrier: {{this.shipmentcarrier}} | Tracking No: {{this.shipmenttracking}}</li>
-                {{/each}}
-            </ul>
+            {{>afArrayField name="shipment"}}
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-            {{>afQuickField name="itembeingshipped" placeholder="Item being shipped"}}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-            {{>afFormGroup name="shipmentcarrier" options=shipmentOptions}}
-        </div>
-        {{#if afFieldValueIs name="shipmentcarrier" value="other"}}
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                {{>afQuickField name="shipmentcarriername" placeholder="Shipment Name"}}
-            </div>
-        {{/if}}
-        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-            {{>afQuickField name="shipmenttracking" placeholder="Shipping Tracking Number"}}
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <button class="btn btn-primary add-shipment">Add shipment</button>
-        </div>
-    </div>
-    <hr>
     {{> afQuickField name='contact' placeholder="email/twitter/whatever for you to be contacted at (your user account email address is not displayed)"}}
     <!-- {{> afQuickField name="fileId" optional=true}} -->
 </template>

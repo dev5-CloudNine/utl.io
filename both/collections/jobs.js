@@ -1,5 +1,9 @@
 Jobs = new Mongo.Collection("jobs");
-
+JobsIndex = new EasySearch.Index({
+  collection: Jobs,
+  fields: ['title', 'skillsrequired', 'location', 'jobtype'],
+  engine: new EasySearch.Minimongo()
+});
 Jobs.attachSchema(
   new SimpleSchema({
     title: {
@@ -30,11 +34,34 @@ Jobs.attachSchema(
     ratebasis: {
       type: String,
       label: "Pay Rate Basis",
+      autoform: {
+        type: 'select',
+        options: function() {
+          return [
+            {
+              label: "Fixed Pay",
+              value: "Fixed Pay",
+            },
+            {
+              label: "Per Hour",
+              value: "Per Hour"
+            },
+            {
+              label: "Per Device",
+              value: "Per Device"
+            },
+            {
+              label: "Blended",
+              value: "Blended"
+            }
+          ]
+        }
+      }
     },
     fixedamount: {
       type: Number,
       min: 1,
-      label: "Amount",
+      label: "Fixed Budget",
       optional: true
     },
     hourlyrate: {
@@ -91,22 +118,43 @@ Jobs.attachSchema(
       label: "Total Amount",
       optional: true
     },
+    paidby: {
+      type: String,
+      label: "",
+      optional: true,
+      autoform: {
+        type: 'select-radio-inline',
+        options: function() {
+          return [
+            {
+              label: "You",
+              value: "You"
+            },
+            {
+              label: "Freelancer",
+              value: "Freelancer"
+            }
+          ]
+        }
+      }
+    },
     servicelocation: {
     optional: true,
     label: "Service Location",
     type: String,
     autoform: {
       type: "select-radio-inline",
-      defaultValue: "Remote Job",
       options: function() {
-          return [{
-              label: "Field Job",
-              value: "Field Job"
-          }, {
+          return [
+            {
               label: "Remote Job",
               value: "Remote Job",
-
-          }];
+            },
+            {
+              label: "Field Job",
+              value: "Field Job"
+            }
+          ];
         }
       }
     },
@@ -116,7 +164,6 @@ Jobs.attachSchema(
     type: String,
     autoform: {
         type: "select-radio-inline",
-        defaultValue: "exactdate",
         options: function() {
             return [{
                 label: "Exactly on",
@@ -186,19 +233,41 @@ Jobs.attachSchema(
     },
     shipment: {
       type: Array,
-      optional: true
+      optional: true,
     },
     'shipment.$': {
       type: Object,
+      optional: true
     },
     'shipment.$.itembeingshipped': {
       type: String,
       label: "Shipped Item",
-      max: 128
+      max: 128,
+      optional: true
     },
     'shipment.$.shipmentcarrier': {
       type: String,
-      label: "Shipped via"
+      label: "Shipped via",
+      optional: true,
+      autoform: {
+        type: 'select',
+        options: function() {
+          return [
+            {
+              label: "UPX",
+              value: "UPX",
+            },
+            {
+              label: "Fedex",
+              value: "Fedex"
+            },
+            {
+              label: "Other",
+              value: "Other"
+            }
+          ]
+        }
+      }
     },
     'shipment.$.shipmentcarriername': {
       type: String,

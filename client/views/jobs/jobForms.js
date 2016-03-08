@@ -60,21 +60,18 @@ Template.jobFields.events({
 		var freenet = totalamount - (totalamount * 5/100);
 		template.find('input[id="freelancer_nets"]').value = freenet;
 	},
-	'click .add-shipment': function(event, template) {
-		event.preventDefault();
-		var item = {};
-		item.itembeingshipped = template.find('input[name="itembeingshipped"]').value;
-		item.shipmentcarrier = template.find('select[name="shipmentcarrier"]').value;
-		if(item.shipmentcarrier == "other") {
-			item.shipmentcarrier = template.find('input[name="shipmentcarriername"]').value;
-		}
-		item.shipmenttracking = template.find('input[name="shipmenttracking"]').value;
-		arr.push(item);
-		console.log(item);
+	'change input[value="You"]': function(event, template) {
+		var totalamount = parseInt(template.find('input[name="totalfromclient"]').value);
+		var clientCost = totalamount + totalamount * 5/100;
+		console.log(clientCost);
+		template.find('input[id="your_cost"]').value = clientCost;
+		template.find('input[id="freelancer_nets"]').value = totalamount;
 	},
-	'click .remove-shipment': function(event, template) {
-		event.preventDefault();
-		return arr.remove(this);
+	'change input[value="Freelancer"]': function(event, template) {
+		var totalamount = parseInt(template.find('input[name="totalfromclient"]').value);
+		var freenet = totalamount - totalamount * 5/100;
+		template.find('input[id="your_cost"]').value = totalamount;
+		template.find('input[id="freelancer_nets"]').value = freenet;
 	}
 });
 
@@ -104,43 +101,6 @@ Template.jobFields.helpers({
 				]
 			}
 		];
-	},
-	rateBasisOptions: function() {
-		return [
-			{
-				label: "Fixed Pay",
-				value: "Fixed Pay",
-			},
-			{
-				label: "Per Hour",
-				value: "Per Hour"
-			},
-			{
-				label: "Per Device",
-				value: "Per Device"
-			},
-			{
-				label: "Blended",
-				value: "Blended"
-			}
-		]
-	},
-
-	shipmentOptions: function() {
-		return [
-			{
-				label: "UPX",
-				value: "upx"
-			},
-			{
-				label: "Fedex",
-				value: "fedex",
-			},
-			{
-				label: "Other",
-				value: "other"
-			}
-		]
 	},
 	names: function() {
 		return arr.list();

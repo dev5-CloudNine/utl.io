@@ -15,5 +15,8 @@ Template.jobs.helpers({
                 createdAt: -1
             }
         });
+    },
+    jobIndex: function() {
+        return JobsIndex;
     }
 })
