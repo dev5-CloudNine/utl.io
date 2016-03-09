@@ -5,16 +5,12 @@ Template.SignUp.events({
   user['email'] = $('#email').val();
   user['password'] = $('#password').val();
   var role=[];
-  if($('input[name=type]:checked', '#signup-form').val()=='hire')
-    role.push('employer');
-  else {
-    if($('#ac-type').val()== 'company')
-      role.push('company-employee');
-    else
-      role.push('individual-employee');
-  }
-
+  var roleVal = $('input[name=type]:checked', '#signup-form').val();
   user.profile = {};  
+  if(roleVal) {
+    role.push(roleVal);
+    user.profile["role"] = role;
+  }
   // user.profile["firstName"] = $('#firstName').val();
   // user.profile["lastName"] = $('#lastName').val();
   // user.profile["phone"] = $('#phone').val();
@@ -26,7 +22,6 @@ Template.SignUp.events({
   // user.profile["zip"] = $('#zip').val();
   // user.profile["country"] = $('#country').val();
   // user.profile["areaOfInterest"] = $('#areaOfInterest').val(); 
-  user.profile["role"] = role;
   Meteor.call('onUserSignup', user, function (error, result) {
    if (error) {
     toastr.error(error.message,'Error');
@@ -59,12 +54,6 @@ Template.SignUp.events({
     Router.go('home');
    }
   });
- },
- 'change .type' : function(event) {
-    if($(event.currentTarget).val()=='work')
-      $('#ac-type').show();
-    else
-      $('#ac-type').hide();
  }
 });
 
@@ -75,7 +64,6 @@ Template.SignUp.rendered = function () {
   return this.optional(element) || phone_number.length > 9 &&
   phone_number.match(/^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i);
  }, "Please specify a valid phone number");
- $('#ac-type').hide();
  $('#signup-form').validate({
   rules : {
    firstName : {
