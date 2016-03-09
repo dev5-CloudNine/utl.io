@@ -121,6 +121,7 @@ Jobs.attachSchema(
     paidby: {
       type: String,
       label: "",
+      defaultValue: "Freelancer",
       optional: true,
       autoform: {
         type: 'select-radio-inline',
@@ -279,6 +280,75 @@ Jobs.attachSchema(
       type: String,
       label: "Tracking Number",
       max: 128,
+      optional: true
+    },
+    tasks: {
+      type: Array,
+      optional: true
+    },
+    'tasks.$': {
+      type: Object,
+      optional: true
+    },
+    'tasks.$.taskname': {
+      type: String,
+      label: "Freelancer must",
+      optional: true,
+      autoform: {
+        type: 'select',
+        options: function() {
+          return [
+            {
+              label: "Check In",
+              value: "Check in"
+            },
+            {
+              label: "Check Out",
+              value: "Check Out"
+            },
+            {
+              label: "Confirm assigment",
+              value: "Confirm assigment"
+            },
+            {
+              label: "Enter shipment tracking",
+              value: "Enter shipment tracking"
+            },
+            {
+              label: "Collect a signature",
+              value: "Collect a signature"
+            },
+            {
+              label: "Send an email",
+              value: "Send an email"
+            },
+            {
+              label: "Call phone number",
+              value: "Call phone number"
+            },
+            {
+              label: "Upload/take a picture",
+              value: "Upload/take a picture"
+            },
+            {
+              label: "Upload a file",
+              value: "Upload a file"
+            },
+            {
+              label: "Enter close out notes",
+              value: "Enter close out notes"
+            },
+            {
+              label: "Unique task",
+              value: "Unique task"
+            }
+          ]
+        }
+      }
+    },
+    'tasks.$.taskdescription': {
+      type: String,
+      max: 256,
       optional: true
     },
     userId: {

@@ -60,6 +60,13 @@
         </div>
     </div>
     {{> afQuickField name='description' rows=8 placeholder="Tell prospective developers about this position. What is the project? What will you expect them to know beforehand? Things like that."}}
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{>afArrayField name="tasks"}}
+        </div>
+    </div>
+    <hr>
     {{> afQuickField name='servicelocation' noselect=true}}
     {{#if afFieldValueIs name="servicelocation" value="Field Job"}}
         <div class="row">
@@ -102,7 +109,7 @@
                     {{> afQuickField name="fixedamount" placeholder="Enter amount"}}
                     <label class="label-control">UTL Fees</label>
                     <span><input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%"></span>
-                    {{>afQuickField name="paidby" noselect=true}}
+                    {{>afQuickField name="paidby"}}
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     {{>afQuickField name="totalfromclient" readonly="true"}}
@@ -120,7 +127,7 @@
                     {{>afQuickField name="maxhours" placeholder="Maximum hours"}}
                     <label class="label-control">UTL Fees</label>
                     <span><input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%"></span>
-                    {{>afQuickField name="paidby" noselect=true}}
+                    {{>afQuickField name="paidby"}}
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     {{>afQuickField name="totalfromclient" readonly="true"}}
@@ -137,7 +144,7 @@
                     {{> afQuickField name="maxdevices" placeholder="Maximum devices"}}
                     <label class="label-control">UTL Fees</label>
                     <span><input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%"></span>
-                    {{>afQuickField name="paidby" noselect=true}}
+                    {{>afQuickField name="paidby"}}
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     {{>afQuickField name="totalfromclient" readonly="true"}}
@@ -156,7 +163,7 @@
                     {{>afQuickField name="nexthours"}}
                     <label class="label-control">UTL Fees</label>
                     <span><input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%"></span>
-                    {{>afQuickField name="paidby" noselect=true}}
+                    {{>afQuickField name="paidby"}}
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     {{>afQuickField name="totalfromclient" readonly="true"}}

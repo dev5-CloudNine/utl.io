@@ -28,7 +28,7 @@
 								{{#if interestedIn}}
 									<hr>
 									<b>Interested In</b>
-									{{#each interestedIn}}
+									{{#each industryTypes}}
 										<br>
 										{{this}}
 									{{/each}}
@@ -38,24 +38,11 @@
 									<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Web Site</a>
 								{{/if}}
 								{{#if contact}}
-									<br>
 									<i class="fa fa-envelope"></i>&nbsp;{{contact}}
 								{{/if}}
 								{{#if resumeUrl}}
 									<br>
 									<i class="fa fa-file-text"></i>&nbsp;&nbsp;<a href="{{resumeUrl}}" target="_blank">View Resume</a>
-								{{/if}}
-								{{#if githubUrl}}
-									<br>
-									<i class="fa fa-github"></i>&nbsp;&nbsp;<a href="{{githubUrl}}" target="_blank">Github</a>
-								{{/if}}
-								{{#if linkedinUrl}}
-									<br>
-									<i class="fa fa-linkedin"></i>&nbsp;&nbsp;<a href="{{linkedinUrl}}" target="_blank">LinkedIn</a>
-								{{/if}}
-								{{#if stackoverflowUrl}}
-									<br>
-									<i class="fa fa-stack-overflow"></i>&nbsp;&nbsp;<a href="{{stackoverflowUrl}}" target="_blank">Stackoverflow</a>
 								{{/if}}
 							</small>
 							<hr>
@@ -80,7 +67,41 @@
 								<div class="col-sm-12">
 									{{#if htmlDescription}}
 										<hr>
+										<h4>About Me</h4>
 										{{{htmlDescription}}}
+									{{/if}}
+									{{#if freelancerSkills}}
+										<hr>
+										<h4>Skills</h4>
+										{{freelancerSkills}}
+									{{/if}}
+									{{#if educationDetails}}
+										<hr>
+										<h4>Education Details</h4>
+										<ul>
+											{{#each educationDetails}}
+												<li>{{qualification}} from {{university}}, graduated in the year {{yearOfPassing}}</li>
+											{{/each}}
+										</ul>
+									{{/if}}
+									{{#if certifications}}
+										<hr>
+										<h4>Certifications</h4>
+										<br>
+										{{#each certifications}}
+											<h5>{{certificationName}}</h5>
+											<p>Authority:{{certificationAuthority}}</p>
+											<p>Start &amp; End Date: {{formatDate certificationStartDate}} - {{formatDate certificationEndDate}}</p>
+										{{/each}}
+									{{/if}}
+									{{#if languages}}
+										<hr>
+										<h4>Languages Known</h4>
+										<ul>
+											{{#each languages}}
+												<li>{{level}} in {{language}}</li>
+											{{/each}}
+										</ul>
 									{{/if}}
 								</div>
 							</div>

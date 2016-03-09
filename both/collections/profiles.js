@@ -46,10 +46,34 @@ Profiles.attachSchema(
       label: "Individual or Company",
       allowedValues: ["Individual", "Company"]
     },
+    freelancerSkills: {
+      type: String,
+      label: "Skills",
+      optional: true,
+      max: 256
+    },
     title: {
       type: String,
       label: "Title",
       max: 128
+    },
+    eintinNumber: {
+      type: String,
+      label: "EIN/TIN Number",
+      max: 128,
+      optional: true
+    },
+    socialSecurityNumber: {
+      type: String,
+      label: "Social Security Number",
+      max: 128,
+      optional: true
+    },
+    insuranceNumber: {
+      type: String,
+      label: "Insurance Number",
+      max: 128,
+      optional: true
     },
     location: {
       type: String,
@@ -81,17 +105,169 @@ Profiles.attachSchema(
       label: "Currently Available For Hire",
       defaultValue: false
     },
-    interestedIn: {
+    industryTypes: {
       type: [String],
       label: "Interested In",
-      allowedValues: INDUSTRY_TYPES,
+      // allowedValues: INDUSTRY_TYPES,
+      optional: true,
+      autoform: {
+        type: "select-multiple",
+        options: function() {
+          return [
+            {
+              label: "IT/Networking",
+              value: "IT/Networking"
+            },
+            {
+              label: "Wiring Installment",
+              value: "Wiring Installment"
+            }
+          ]
+        }
+      }
+    },
+    contactNumber: {
+      type: String,
+      label: "Telephone Number",
+      max: 128,
+    },
+    contactEmail: {
+      type: String,
+      label: "Email",
+      max: 128
+    },
+    avgRatesPerHour: {
+      type: Number,
+      label: "Average Rates Per Hour (USD)",
       optional: true
     },
-    contact: {
+    preferredWorkLocation: {
       type: String,
-      label: "Contact Info",
-      max: 1024,
+      label: "Preferred Work Location",
       optional: true
+    },
+    educationDetails: {
+      type: Array,
+      optional: true
+    },
+    'educationDetails.$': {
+      type: Object,
+      optional: true
+    },
+    'educationDetails.$.qualification': {
+      type: String,
+      label: "Qualification",
+      optional: true,
+      max: 128
+    },
+    'educationDetails.$.university': {
+      type: String,
+      label: "College or University",
+      optional: true,
+      max: 128
+    },
+    'educationDetails.$.yearOfPassing': {
+      type: String,
+      label: "Year of Passing",
+      optional: true,
+      max: 128
+    },
+    certifications: {
+      type: Array,
+      optional: true
+    },
+    'certifications.$': {
+      type: Object,
+      optional: true
+    },
+    'certifications.$.certificationName': {
+      type: String,
+      label: "Certification Name",
+      optional: true,
+      max: 128
+    },
+    'certifications.$.certificationAuthority': {
+      type: String,
+      label: "Certification Authority",
+      optional: true,
+      max: 128
+    },
+    'certifications.$.certificationStartDate': {
+      type: Date,
+      label: "Start Date",
+      optional: true,
+      autoform: {
+        type: "bootstrap-datepicker"
+      }
+    },
+    'certifications.$.certificationEndDate': {
+      type: Date,
+      label: "End Date",
+      optional: true,
+      autoform: {
+        type: "bootstrap-datepicker"
+      }
+    },
+    languages: {
+      type: Array,
+      optional: true
+    },
+    'languages.$': {
+      type: Object,
+      optional: true
+    },
+    'languages.$.language': {
+      type: String,
+      optional: true,
+      label: "Language",
+      max: 128
+    },
+    'languages.$.level': {
+      type: String,
+      optional: true,
+      label: "Level",
+      autoform: {
+        type: 'select',
+        options: function() {
+          return [
+            {
+              label: "Beginner",
+              value: "Beginner"
+            },
+            {
+              label: "Proficient",
+              value: "Proficient"
+            },
+            {
+              label: "Expert",
+              value: "Expert"
+            }
+          ]
+        }
+      }
+    },
+    'languages.$.abilities': {
+      type: [String],
+      optional: true,
+      autoform: {
+        type: "select-checkbox-inline",
+        options: function() {
+          return [
+            {
+              label: "Read",
+              value: "Read"
+            },
+            {
+              label: "Write",
+              value: "Write"
+            },
+            {
+              label: "Speak",
+              value: "Speak"
+            }
+          ]
+        }
+      }
     },
     url: {
       type: String,
@@ -103,27 +279,6 @@ Profiles.attachSchema(
     resumeUrl: {
       type: String,
       label: "Resume URL",
-      max: 1024,
-      optional: true,
-      regEx: SimpleSchema.RegEx.Url
-    },
-    githubUrl: {
-      type: String,
-      label: "GitHub URL",
-      max: 1024,
-      optional: true,
-      regEx: SimpleSchema.RegEx.Url
-    },
-    linkedinUrl: {
-      type: String,
-      label: "LinkedIn URL",
-      max: 1024,
-      optional: true,
-      regEx: SimpleSchema.RegEx.Url
-    },
-    stackoverflowUrl: {
-      type: String,
-      label: "Stackoverflow URL",
       max: 1024,
       optional: true,
       regEx: SimpleSchema.RegEx.Url

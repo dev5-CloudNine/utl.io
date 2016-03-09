@@ -54,7 +54,7 @@
 							<hr>
 							<h4>Service Schedule</h4>
 							{{#if exactdate}}
-								By: {{formatDate exactdate}}
+								On: {{formatDate exactdate}}
 							{{/if}}
 							{{#if betweendates}}
 								Between: {{betweendates}}								
@@ -88,8 +88,17 @@
 								{{contactemail}}<br>
 								{{contactphone}}
 							{{/if}}
-							<hr>
+							{{#if tasks}}
+								<hr>
+								<h4>Tasks Assigned</h4>
+								<ul>
+									{{#each tasks}}
+										<li>Freelancer must {{taskname}} and {{taskdescription}}</li>
+									{{/each}}
+								</ul>
+							{{/if}}
 							{{#if shipment}}
+								<hr>
 								<h4>Shipments to site</h4>
 								<ul>
 									{{#each shipment}}

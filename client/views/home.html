@@ -15,8 +15,13 @@
 			</div>
 			
 			<div id="callToAction" class="row">
-				<a class="col-sm-4 col-sm-offset-1 col-xs-12 text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
-				<a class="col-sm-4 col-sm-offset-2 col-xs-12 text-center btn btn-success btn-md" role="button" href="{{pathFor 'profileNew'}}">Create a Profile</a>
+				{{#if isInRole 'employer'}}
+					<a class="col-sm-4 col-sm-offset-4 col-xs-12 text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
+					{{else}}
+					{{#if isInRole 'company-employee, individual-employee'}}
+						<a class="col-sm-4 col-lg-offset-4 col-xs-12 text-center btn btn-success btn-md" role="button" href="{{pathFor 'profileNew'}}">Create a Profile</a>
+					{{/if}}
+				{{/if}}
 			</div>
 		</div>
 	</div>
