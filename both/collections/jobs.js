@@ -29,7 +29,11 @@ Jobs.attachSchema(
     },
     jobtype: {
       type: String,
-      label: "Select your Industry"
+      label: "Select your Industry",
+      autoform: {
+        type: "select",
+        options: INDUSTRY_TYPES
+      }
     },
     ratebasis: {
       type: String,

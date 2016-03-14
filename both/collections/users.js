@@ -41,6 +41,10 @@ UserSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false
   },
+  isBuyer: {
+    type: Boolean,
+    defaultValue: false
+  },
   createdAt: {
     type: Date
   },

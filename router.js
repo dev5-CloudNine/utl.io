@@ -143,10 +143,15 @@ Router.map(function() {
 
     this.route('profiles', {
         path: '/profiles',
-        title: "UTL - All Developers",
+        title: "UTL - All Service Providers",
         subscriptions: function() {
             return subs.subscribe('developerUsers');
         }
+    });
+
+    this.route('buyerProfiles', {
+        path: '/buyers',
+        title: "UTL - All Buyers",
     });
 
     this.route('profile', {
@@ -176,9 +181,36 @@ Router.map(function() {
         }
     });
 
+    this.route('buyer', {
+        path: '/buyers/:_id/:slug?',
+        title: function() {
+            if(this.data())
+                return "UTL - " + this.data().displayName() + " - " + this.data().title;
+        },
+        data: function() {
+            return Buyers.findOne({
+                _id: this.params._id
+            });
+        },
+        waitOn: function() {
+            return subs.subscribe('buyer', this.params._id);
+        },
+        onBeforeAction: function() {
+            var expectedSlug = this.data().slug();
+            if(this.params.slug !== expectedSlug) {
+                this.redirect("buyer", {
+                    _id: this.params._id,
+                    slug: expectedSlug
+                });
+            } else {
+                this.next();
+            }
+        }
+    });
+
     this.route('profileNew', {
         path: '/profile',
-        title: "UTL - Create Developer Profile",
+        title: "UTL - Create Provider Profile",
         onBeforeAction: function() {
             if (Meteor.user().isDeveloper) {
                 Router.go('profile', Profiles.findOne({
@@ -192,7 +224,7 @@ Router.map(function() {
 
     this.route('profileEdit', {
         path: '/profiles/:_id/:slug/edit',
-        title: "UTL - Edit My Developer Profile",
+        title: "UTL - Edit My Provider Profile",
         data: function() {
             return {
                 profile: Profiles.findOne({
@@ -236,7 +268,7 @@ Router.map(function() {
     });
 
 
-    this.route('sign.up', {
+    this.route('signUp', {
         path: '/SignUp'
     });
 

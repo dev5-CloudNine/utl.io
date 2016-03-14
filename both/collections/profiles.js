@@ -112,18 +112,7 @@ Profiles.attachSchema(
       optional: true,
       autoform: {
         type: "select-multiple",
-        options: function() {
-          return [
-            {
-              label: "IT/Networking",
-              value: "IT/Networking"
-            },
-            {
-              label: "Wiring Installment",
-              value: "Wiring Installment"
-            }
-          ]
-        }
+        options: INDUSTRY_TYPES
       }
     },
     contactNumber: {

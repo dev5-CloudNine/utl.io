@@ -46,6 +46,26 @@
 								{{/if}}
 							</small>
 							<hr>
+							<small>
+								{{#if eintinNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;EIN/TIN Number: {{eintinNumber}}
+								{{/if}}
+								<br>
+								{{#if socialSecurityNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;Social Security Number: {{socialSecurityNumber}}
+								{{/if}}
+								<br>
+								{{#if insuranceNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;Insurance Number: {{insuranceNumber}}
+								{{/if}}
+							</small>
+							<small>
+								<hr>
+								{{#if avgRatesPerHour}}
+									<i class="fa fa-envelope"></i>&nbsp;Average Rate per Hour: {{avgRatesPerHour}} USD
+								{{/if}}
+							</small>
+							<hr>
 							<i class="fa fa-calendar"></i> Created on {{formatDate createdAt}}
 						</div>
 						<div class="col-sm-9">

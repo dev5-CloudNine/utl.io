@@ -1,0 +1,11 @@
+<template name="buyerProfiles">
+	<div class="row">
+		{{#each buyers}}
+	        {{>buyerSmall}}
+	    {{/each}}
+	    
+	</div>
+	<div class="text-center">
+		{{> infiniteScroll }}
+	</div>
+</template>

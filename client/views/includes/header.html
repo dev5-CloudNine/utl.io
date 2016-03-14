@@ -17,10 +17,29 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         {{#if currentUser}}
-                            {{#if isInRole 'employer'}}
-                                <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
+                            {{#if isInRole 'admin'}}
+                                <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
+                                <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
+                                <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
+                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
+                                <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
+                                <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                             {{/if}}
-                            {{#if isInRole 'individual-employee'}}
+                            {{#if isInRole 'employer'}}
+                                <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
+                                <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
+                                <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
+                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
+                                <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
+                                <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
+                            {{/if}}
+                            {{#if isInRole 'company-employee, individual-employee'}}
+                                <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
+                                <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
+                                <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
+                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
+                                <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
+                                <li><a href="{{pathFor 'buyerProfiles'}}">View Buyers</a></li>
                                 {{#unless currentUser.isDeveloper}}
                                     <li class="{{isActiveRoute regex='^profile$'}}">
                                         <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
@@ -28,8 +47,10 @@
                                 {{/unless}}
                             {{/if}}
                         {{else}}
-                            <li><a href="{{pathFor 'profileNew'}}">Create a Profile</a></li>
-                            <li><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
+                            <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
+                            <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
+                            <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
+                            <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
                         {{/if}}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -37,7 +58,7 @@
                         	{{>headerUserMenu}}
                         {{else}}
                             <li class="{{isActiveRoute regex='signIn'}}"><a href="{{pathFor 'signIn'}}">Log In</a></li>
-                            <li class="{{isActiveRoute regex='sign.up'}}"><a href="{{pathFor 'sign.up'}}">Sign Up</a></li>
+                            <li class="{{isActiveRoute regex='sign.up'}}"><a href="{{pathFor 'signUp'}}">Sign Up</a></li>
                         {{/if}}
                     </ul>
                 </div>
@@ -55,12 +76,12 @@
         <ul class="dropdown-menu" role="menu">
             {{#if isInRole 'employer'}}
                 <li>
-                    <a href="{{pathFor 'myJobs'}}"><i class="fa fa-building fa-fw"></i> My Posted Jobs</a>
+                    <a href="{{pathFor 'myJobs'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a>
                     <li class="divider"></li>
                 </li>
                 {{else}}
                 {{#if isInRole 'company-employee, individual-employee'}}
-                    <li><a href="{{pathFor 'appliedJobs'}}"><i class="fa fa-building fa-fw"></i> My Applied Jobs</a></li>
+                    <li><a href="{{pathFor 'appliedJobs'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a></li>
                     <li class="divider"></li>
                 {{/if}}
             {{/if}}
