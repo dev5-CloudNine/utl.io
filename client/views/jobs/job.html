@@ -113,8 +113,21 @@
 									{{/each}}
 								</ul>
 							{{/if}}
+
 						</div>
+
+						
+
 					</div>
+					<div class="row">
+						<div class="col-xs-3">
+						</div>
+						<div class="col-xs-9">
+							<hr>
+							{{> commentsBox id=_id}} 	
+						</div>	
+
+					</div>	
 					<div class="row">
 						<div class="col-xs-12">
 							{{#if $eq userId $.Meteor.userId}}
