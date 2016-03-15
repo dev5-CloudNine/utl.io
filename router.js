@@ -111,14 +111,14 @@ Router.map(function() {
     });
 
 
-
     this.route('jobNew', {
         path: '/job',
         title: "UTL - Post a Job",
         onBeforeAction: function () {
             if (Meteor.user() &&
                 Meteor.user().roles &&
-                (Meteor.user().roles.indexOf("employer")) != -1) {
+                ((Meteor.user().roles.indexOf("employer")) != -1 || (Meteor.user().roles.indexOf("company-employee")) != -1 )
+                ) {
                 this.next();
             } else {
                 this.render('notFound');
