@@ -83,6 +83,11 @@ Router.map(function() {
         }
     });
 
+    this.route('appliedJobs', {
+        path: '/myAppliedJobs',
+        title: "UTL - My Applied Jobs",
+    });
+
     this.route('job', {
         path: '/jobs/:_id/:slug?',
         title: function() {
@@ -222,6 +227,20 @@ Router.map(function() {
         }
     });
 
+    this.route('buyerNew', {
+        path: '/buyerNew',
+        title: 'UTL - Create Buyer Profile',
+        onBeforeAction: function() {
+            if(Meteor.user().isBuyer) {
+                Router.go('buyer', Buyers.findOne({
+                    userId: Meteor.userId()
+                }));
+            } else {
+                this.next();
+            }
+        }
+    });
+
     this.route('profileEdit', {
         path: '/profiles/:_id/:slug/edit',
         title: "UTL - Edit My Provider Profile",
@@ -234,6 +253,21 @@ Router.map(function() {
         },
         waitOn: function() {
             return subs.subscribe('profile', this.params._id);
+        }
+    });
+
+    this.route('buyerEdit', {
+        path: 'buyers/:_id/:slug/edit',
+        title: "UTL - Edit My Buyer Profile",
+        data: function() {
+            return {
+                buyerProfile: Buyers.findOne({
+                    _id: this.params._id
+                })
+            };
+        },
+        waitOn: function() {
+            return subs.subscribe('buyer', this.params._id);
         }
     });
 

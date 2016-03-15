@@ -22,11 +22,6 @@ Jobs.attachSchema(
       max: 128,
       optional: true
     },
-    contact: {
-      type: String,
-      label: "Contact Info",
-      max: 128
-    },
     jobtype: {
       type: String,
       label: "Select your Industry",

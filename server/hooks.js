@@ -8,6 +8,16 @@ Profiles.after.insert(function(userId, doc) {
   });
 });
 
+Profiles.after.remove(function(userId, doc) {
+  Users.update({
+    _id: doc.userId
+  }, {
+    $set: {
+      isDeveloper: false
+    }
+  });
+});
+
 Buyers.after.insert(function(userId, doc) {
   Users.update({
     _id: doc.userId
@@ -24,16 +34,6 @@ Buyers.after.remove(function(userId, doc) {
   }, {
     $set: {
       isBuyer: false
-    }
-  });
-});
-
-Profiles.after.remove(function(userId, doc) {
-  Users.update({
-    _id: doc.userId
-  }, {
-    $set: {
-      isDeveloper: false
     }
   });
 });

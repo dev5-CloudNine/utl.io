@@ -18,26 +18,29 @@
                     <ul class="nav navbar-nav">
                         {{#if currentUser}}
                             {{#if isInRole 'admin'}}
-                                <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
+                                <!-- <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
                                 <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
                                 <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
-                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
+                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li> -->
                                 <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                             {{/if}}
                             {{#if isInRole 'company-employee,employer'}}
-                                <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
+                                <!-- <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
                                 <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
                                 <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
-                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
+                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li> -->
                                 <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
                                 <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
+                                {{#unless currentUser.isBuyer}}
+                                    <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
+                                {{/unless}}
                             {{/if}}
                             {{#if isInRole 'company-employee, individual-employee'}}
-                                <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
+                               <!--  <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
                                 <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
                                 <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
-                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
+                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li> -->
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                                 <li><a href="{{pathFor 'buyerProfiles'}}">View Buyers</a></li>
                                 {{#unless currentUser.isDeveloper}}
@@ -91,12 +94,23 @@
             {{/if}}
             {{#if currentUser.isDeveloper}}
                 <li>
-                    {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> Developer Profile</a>{{/with}}
+                    {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
                 </li>
             {{else}}
                 {{#if isInRole 'company-employee,individual-employee'}}
                     <li>
                         <a href="{{pathFor 'profileNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
+                    </li>
+                {{/if}}
+            {{/if}}
+            {{#if currentUser.isBuyer}}
+                <li>
+                    {{#with buyer}}<a href="{{pathFor 'buyer'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
+                </li>
+            {{else}}
+                {{#if isInRole 'employer'}}
+                    <li>
+                        <a href="{{pathFor 'buyerNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
                     </li>
                 {{/if}}
             {{/if}}

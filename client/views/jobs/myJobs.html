@@ -1,8 +1,20 @@
 <template name="myJobs">
-	<h3>My Posted Jobs</h3>
-	{{#each jobs}}
-		{{>jobSmall}}
-	{{else}}
-		You haven't posted any jobs.  <a href="{{pathFor 'jobNew'}}">Post a Job</a> if you have one to offer.
-	{{/each}}
+	<h3>Dashboard</h3>
+	<div class="row">
+		<div class="col-sm-3">
+			<ul class="nav nav-pills nav-stacked">
+				<li class="nav-item"><a href="{{pathFor 'buyer'}}">My Profile</a></li>
+				<li class="nav-item"><a href="">My Posted Jobs</a></li>
+				<li class="nav-item"><a href="">My Message Box</a></li>
+				<li class="nav-item"><a href="">My Piggy Bank</a></li>
+			</ul>
+		</div>
+		<div class="col-sm-9">
+			{{#each jobs}}
+				{{>jobSmall}}
+			{{else}}
+				You haven't posted any jobs.  <a href="{{pathFor 'jobNew'}}">Post a Job</a> if you have one to offer.
+			{{/each}}
+		</div>
+	</div>
 </template>

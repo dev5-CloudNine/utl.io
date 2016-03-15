@@ -7,6 +7,9 @@ Meteor.publish("userData", function() {
             }),
             Profiles.find({
                 userId: this.userId
+            }),
+            Buyers.find({
+                userId: this.userId
             })
         ];
     }
@@ -201,6 +204,32 @@ Meteor.publishComposite('profile', function(profileId) {
     }
 });
 
+Meteor.publishComposite('buyer', function(buyerId) {
+    return {
+        find: function() {
+            return Buyers.find({
+                _id: buyerId
+            })
+        },
+        children: [{
+            find: function(buyer) {
+                return Users.find({
+                    _id: buyer.buyerId
+                }, {
+                    fields: {
+                        "emailHash": true,
+                        "services.facebook.id": true,
+                        "services.twitter.profile_image_url": true,
+                        "services.facebook.id": true,
+                        "services.google.picture": true,
+                        "services.github.username": true
+                    }
+                });
+            }
+        }]
+    }
+})
+
 Meteor.publish("developerUsers", function() {
     check(arguments, [Match.Any]);
     return [
@@ -224,6 +253,17 @@ Meteor.publish('profiles', function(limit) {
     check(limit, Number);
 
     return Profiles.find(selector, {
+        limit: limit,
+        sort: {
+            randomSorter: 1
+        }
+    });
+});
+
+Meteor.publish('buyers', function(limit) {
+    var selector = {};
+    check(limit, Number);
+    return Buyers.find(selector, {
         limit: limit,
         sort: {
             randomSorter: 1

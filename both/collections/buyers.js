@@ -44,6 +44,12 @@ Buyers.attachSchema(new SimpleSchema({
 		label: "Title",
 		max: 128
     },
+    companyName: {
+    	type: String,
+    	label: "Company Name",
+    	max: 128,
+    	optional: true
+    },
     eintinNumber: {
 		type: String,
 		label: "EIN/TIN Number",
@@ -91,18 +97,7 @@ Buyers.attachSchema(new SimpleSchema({
 		optional: true,
 		autoform: {
 			type: "select-multiple",
-			options: function() {
-			return [
-				{
-					label: "IT/Networking",
-					value: "IT/Networking"
-				},
-				{
-					label: "Wiring Installment",
-					value: "Wiring Installment"
-				}
-			]
-			}
+			options: INDUSTRY_TYPES
 		}
     },
     contactNumber: {
@@ -115,4 +110,56 @@ Buyers.attachSchema(new SimpleSchema({
       label: "Email",
       max: 128
     },
-}))
+    createdAt: {
+      type: Date,
+      autoValue: function() {
+        if (this.isInsert) {
+          return new Date();
+        } else if (this.isUpsert) {
+          return {
+            $setOnInsert: new Date()
+          };
+        } else {
+          this.unset();
+        }
+      },
+      denyUpdate: true
+    },
+    // Force value to be current date (on server) upon update
+    // and don't allow it to be set upon insert.
+    updatedAt: {
+      type: Date,
+      autoValue: function() {
+        if (this.isUpdate) {
+          return new Date();
+        }
+      },
+      denyInsert: true,
+      optional: true
+    }
+}));
+
+Buyers.allow({
+  insert: function(userId, doc) {
+    return userId && doc && userId === doc.userId;
+  },
+  update: function(userId, doc, fieldNames, modifier) {
+    return Roles.userIsInRole(userId, ['admin']) || (!_.contains(fieldNames, 'randomSorter') && !_.contains(fieldNames, 'htmlDescription') && !_.contains(fieldNames, 'status') && userId && doc && userId === doc.userId);
+  },
+  remove: function(userId, doc) {
+    return Roles.userIsInRole(userId, ['admin']) || (userId && doc && userId === doc.userId);
+  },
+  fetch: ['userId']
+});
+
+Buyers.helpers({
+  displayName: function() {
+    return this.name || this.userName;
+  },
+  path: function() {
+    return 'profiles/' + this._id + '/' + this.slug();
+  },
+  slug: function() {
+    return getSlug(this.displayName() + ' ' + this.title);
+  }
+});
