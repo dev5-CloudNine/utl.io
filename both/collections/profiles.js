@@ -54,7 +54,7 @@ Profiles.attachSchema(
     },
     title: {
       type: String,
-      label: "Title",
+      label: "Designation",
       max: 128
     },
     eintinNumber: {
@@ -103,7 +103,7 @@ Profiles.attachSchema(
     availableForHire: {
       type: Boolean,
       label: "Currently Available For Hire",
-      defaultValue: false
+      defaultValue: true
     },
     industryTypes: {
       type: [String],

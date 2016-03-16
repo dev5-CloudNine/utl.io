@@ -24,20 +24,13 @@
 							<small>
 								{{#if location}}
 									<i class="fa fa-map-marker"></i>&nbsp;{{location}}
-								{{/if}}
-								{{#if interestedIn}}
-									<hr>
-									<b>Interested In</b>
-									{{#each industryTypes}}
-										<br>
-										{{this}}
-									{{/each}}
 									<hr>
 								{{/if}}
 								{{#if url}}
 									<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Web Site</a>
 								{{/if}}
 								{{#if contact}}
+									<br>
 									<i class="fa fa-envelope"></i>&nbsp;{{contact}}
 								{{/if}}
 								{{#if resumeUrl}}
@@ -94,6 +87,14 @@
 										<hr>
 										<h4>Skills</h4>
 										{{freelancerSkills}}
+									{{/if}}
+									{{#if industryTypes}}
+										<hr>
+										<h4>Interested In</h4>
+										{{#each industryTypes}}
+											{{this}}
+											<br>
+										{{/each}}
 									{{/if}}
 									{{#if educationDetails}}
 										<hr>

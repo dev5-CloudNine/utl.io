@@ -31,21 +31,18 @@
 					<hr>
 					<div class="row">
 						<div class="col-sm-3">
-							{{>jobLabels}}
-							{{#if hasLabel}}
-								<hr>
-							{{/if}}
-							{{#if contact}}
-								<i class="fa fa-envelope fa-fw"></i> {{contact}}
-								<hr>
-							{{/if}}
-							<i class="fa fa-calendar fa-fw"></i> Posted on {{formatDate createdAt}}
+							<i class="fa fa-calendar fa-fw"></i> Posted on {{formatDate createdAt}}<br>
+							<i class="fa fa-user fa-fw"></i> By {{userName}}
 							{{#if featured}}
 								<hr>
 								<i class="fa fa-trophy fa-fw"></i> Featured Until {{formatDate featuredThrough}}
 							{{/if}}
 						</div>
 						<div class="col-sm-9">
+							{{>jobLabels}}
+							{{#if hasLabel}}
+								<hr>
+							{{/if}}
 							<h4>Skills Required</h4>
 							{{skillsrequired}}
 							<hr>
@@ -65,19 +62,23 @@
 								Payment type: {{ratebasis}}<br>
 								{{#if hourlyrate}}
 									{{hourlyrate}} USD per hour for {{maxhours}} hours.
+									<br>Net: {{totalfromclient}} USD
 									{{else}}
 										{{#if payforfirsthours}}
 											{{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours.
+											<br>Net: {{totalfromclient}} USD
 											{{else}}
 												{{#if rateperdevice}}
 													{{rateperdevice}} USD for {{maxdevices}} devices.
+													<br>Net: {{totalfromclient}} USD
 													{{else}}
 														{{#if fixedamount}}
-															{{fixedamount}} USD.
+															Net: {{fixedamount}} USD.
 														{{/if}}
 												{{/if}}
 										{{/if}}
 								{{/if}}
+								<hr>
 							{{/if}}
 							{{#if contactperson}}
 								<hr>
@@ -113,21 +114,36 @@
 									{{/each}}
 								</ul>
 							{{/if}}
-
 						</div>
-
-						
-
 					</div>
 					<div class="row">
+						<div class="col-xs-3"></div>
+						<div class="col-xs-9">
+							<ul class="nav nav-pills nav-justified">
+								<li class="active"><a data-toggle="tab" href="#discussion">Post a Query</a></li>
+								<li><a data-toggle="tab" href="#apply">Apply</a></li>
+								<li><a data-toggle="tab" href="#counter-offer">Counter Offer</a></li>
+							</ul>
+							<div class="tab-content">
+								<div id="discussion" class="tab-pane fade in active">
+									{{> commentsBox id=_id}}
+								</div>
+								<div id="apply" class="tab-pane fade">
+									<h3>Apply for this job</h3>
+								</div>
+								<div id="counter-offer" class="tab-pane fade">
+									<h3>Counter offer</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="row" id="discussion">
 						<div class="col-xs-3">
 						</div>
 						<div class="col-xs-9">
-							<hr>
-							{{> commentsBox id=_id}} 	
-						</div>	
-
-					</div>	
+							 	
+						</div>
+					</div> -->
 					<div class="row">
 						<div class="col-xs-12">
 							{{#if $eq userId $.Meteor.userId}}
