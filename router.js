@@ -226,7 +226,7 @@ Router.map(function() {
     });
 
     this.route('buyer', {
-        path: '/buyers/:_id/:slug?',
+        path: '/buyers/:userId/:slug',
         title: function() {
             if(this.data())
                 return "UTL - " + this.data().displayName() + " - " + this.data().title;
