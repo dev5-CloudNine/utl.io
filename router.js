@@ -154,11 +154,6 @@ Router.map(function() {
         }
     });
 
-    this.route('buyerProfiles', {
-        path: '/buyers',
-        title: "UTL - All Buyers",
-    });
-
     this.route('profile', {
         path: '/profiles/:_id/:slug?',
         title: function() {
@@ -186,53 +181,12 @@ Router.map(function() {
         }
     });
 
-    this.route('buyer', {
-        path: '/buyers/:_id/:slug?',
-        title: function() {
-            if(this.data())
-                return "UTL - " + this.data().displayName() + " - " + this.data().title;
-        },
-        data: function() {
-            return Buyers.findOne({
-                _id: this.params._id
-            });
-        },
-        waitOn: function() {
-            return subs.subscribe('buyer', this.params._id);
-        },
-        onBeforeAction: function() {
-            var expectedSlug = this.data().slug();
-            if(this.params.slug !== expectedSlug) {
-                this.redirect("buyer", {
-                    _id: this.params._id,
-                    slug: expectedSlug
-                });
-            } else {
-                this.next();
-            }
-        }
-    });
-
     this.route('profileNew', {
         path: '/profile',
         title: "UTL - Create Provider Profile",
         onBeforeAction: function() {
             if (Meteor.user().isDeveloper) {
                 Router.go('profile', Profiles.findOne({
-                    userId: Meteor.userId()
-                }));
-            } else {
-                this.next();
-            }
-        }
-    });
-
-    this.route('buyerNew', {
-        path: '/buyerNew',
-        title: 'UTL - Create Buyer Profile',
-        onBeforeAction: function() {
-            if(Meteor.user().isBuyer) {
-                Router.go('buyer', Buyers.findOne({
                     userId: Meteor.userId()
                 }));
             } else {
@@ -253,6 +207,62 @@ Router.map(function() {
         },
         waitOn: function() {
             return subs.subscribe('profile', this.params._id);
+        }
+    });
+
+    this.route('providerDashboard', {
+        path: '/providerDashboard',
+        title: "UTL - Provider Dashboard"
+    });
+
+    this.route('buyerDashboard', {
+        path: '/buyerDashboard',
+        title: "UTL - Buyer Dashboard"
+    });
+
+    this.route('buyers', {
+        path: '/buyers',
+        title: "UTL - All Buyers",
+    });
+
+    this.route('buyer', {
+        path: '/buyers/:_id/:slug?',
+        title: function() {
+            if(this.data())
+                return "UTL - " + this.data().displayName() + " - " + this.data().title;
+        },
+        data: function() {
+            return Buyers.findOne({
+                _id: this.params._id
+            });
+        },
+        waitOn: function() {
+            return subs.subscribe('buyer', this.params._id);
+        },
+        onBeforeAction: function() {
+            var expectedSlug = this.data().slug();
+            if(this.params.slug !== expectedSlug) {
+                this.redirect("profile", {
+                    _id: this.params._id,
+                    slug: expectedSlug
+                });
+            } else {
+                this.next();
+            }
+        }
+    });
+
+    this.route('buyerNew', {
+        path: '/buyerNew',
+        title: 'UTL - Create Buyer Profile',
+        onBeforeAction: function() {
+            if(Meteor.user().isBuyer) {
+                Router.go('buyer', Buyers.findOne({
+                    userId: Meteor.userId()
+                }));
+            } else {
+                this.next();
+            }
         }
     });
 

@@ -23,15 +23,17 @@
                                 <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
                                 <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li> -->
                                 <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
+                                <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                             {{/if}}
-                            {{#if isInRole 'company-employee,employer'}}
+                            {{#if isInRole 'employer'}}
                                 <!-- <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
                                 <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
                                 <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
                                 <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li> -->
                                 <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
                                 <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
+                                <li><a href="{{pathFor 'buyer'}}">My Profile</a></li>
                                 {{#unless currentUser.isBuyer}}
                                     <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
                                 {{/unless}}
@@ -42,7 +44,7 @@
                                 <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
                                 <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li> -->
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
-                                <li><a href="{{pathFor 'buyerProfiles'}}">View Buyers</a></li>
+                                <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
                                 {{#unless currentUser.isDeveloper}}
                                     <li class="{{isActiveRoute regex='^profile$'}}">
                                         <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
@@ -79,12 +81,12 @@
         <ul class="dropdown-menu" role="menu">
             {{#if isInRole 'employer,company-employee'}}
                 <li>
-                    <a href="{{pathFor 'myJobs'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a>
+                    <a href="{{pathFor 'buyerDashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a>
                     <li class="divider"></li>
                 </li>
                 {{else}}
                 {{#if isInRole 'company-employee, individual-employee'}}
-                    <li><a href="{{pathFor 'appliedJobs'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a></li>
+                    <li><a href="{{pathFor 'providerDashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a></li>
                     <li class="divider"></li>
                 {{/if}}
             {{/if}}

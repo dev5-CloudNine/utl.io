@@ -1,4 +1,4 @@
-Template.buyerProfiles.onCreated(function() {
+Template.buyers.onCreated(function() {
     this.infiniteScroll({
         perPage: 40,
         subManager: subs,
@@ -7,7 +7,7 @@ Template.buyerProfiles.onCreated(function() {
     });
 });
 
-Template.buyerProfiles.helpers({
+Template.buyers.helpers({
     "buyers": function() {
         return Buyers.find({}, {
             sort: {

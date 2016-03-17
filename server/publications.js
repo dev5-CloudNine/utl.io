@@ -238,11 +238,19 @@ Meteor.publish("developerUsers", function() {
         }, {
             fields: {
                 "emailHash": true,
-                "services.facebook.id": true,
-                "services.twitter.profile_image_url": true,
-                "services.facebook.id": true,
-                "services.google.picture": true,
-                "services.github.username": true
+            }
+        })
+    ];
+});
+
+Meteor.publish("buyerUsers", function() {
+    check(arguments, [Match.Any]);
+    return [
+        Users.find({ //this may publish users for not active status profiles
+            isBuyer: true
+        }, {
+            fields: {
+                "emailHash": true,
             }
         })
     ];
