@@ -81,4 +81,27 @@ Meteor.startup(function() {
       };
     }
   });
+
+  Api.addRoute('buyers', {
+    get: function() {
+      return {
+        status: "Success",
+        data: Buyers.find({
+          status: "active"
+        }, {
+          sort: {
+            createdAt: -1
+          },
+          fields: {
+            userId: false,
+            userName: false
+          },
+          transform: function(doc) {
+            doc.siteUrl = Meteor.absoluteUrl("buyers/" + doc._id + "/" + getSlug((doc.name || doc.userName) + " " + doc.title));
+            return doc;
+          }
+        }).fetch()
+      };
+    }
+  });
 });

@@ -1,5 +1,7 @@
-Buyers = new Mongo.Collection("buyers");
-Buyers.attachSchema(new SimpleSchema({
+Buyers = new Mongo.Collection("clients");
+
+Buyers.attachSchema(
+  new SimpleSchema({
 	userId: {
 		type: String,
 		autoValue: function() {
@@ -7,7 +9,7 @@ Buyers.attachSchema(new SimpleSchema({
 			return Meteor.userId();
 		} else if (this.isUpsert) {
 			return {
-			$setOnInsert: Meteor.userId()
+			 $setOnInsert: Meteor.userId()
 			};
 		} else {
 			this.unset();
@@ -15,7 +17,7 @@ Buyers.attachSchema(new SimpleSchema({
 		},
 		denyUpdate: true
     },
-    userName: {
+  userName: {
 		type: String,
 		label: "User Name",
 		autoValue: function() {
@@ -29,12 +31,12 @@ Buyers.attachSchema(new SimpleSchema({
 			this.unset();
 			}
 		}
-    },
-    customImageUrl: {
+  },
+  customImageUrl: {
 		type: String,
 		optional: true
     },
-    name: {
+  name: {
 		type: String,
 		label: "Name",
 		max: 128
@@ -44,53 +46,53 @@ Buyers.attachSchema(new SimpleSchema({
 		label: "Title",
 		max: 128
     },
-    companyName: {
-    	type: String,
-    	label: "Company Name",
-    	max: 128,
-    	optional: true
+  companyName: {
+  	type: String,
+  	label: "Company Name",
+  	max: 128,
+  	optional: true
+  },
+  eintinNumber: {
+  	type: String,
+  	label: "EIN/TIN Number",
+  	max: 128,
+  	optional: true
+  },
+  socialSecurityNumber: {
+  	type: String,
+  	label: "Social Security Number",
+  	max: 128,
+  	optional: true
+  },
+  insuranceNumber: {
+  	type: String,
+  	label: "Insurance Number",
+  	max: 128,
+  	optional: true
     },
-    eintinNumber: {
-		type: String,
-		label: "EIN/TIN Number",
-		max: 128,
-		optional: true
-    },
-    socialSecurityNumber: {
-		type: String,
-		label: "Social Security Number",
-		max: 128,
-		optional: true
-    },
-    insuranceNumber: {
-		type: String,
-		label: "Insurance Number",
-		max: 128,
-		optional: true
-    },
-    location: {
-		type: String,
-		label: "Location",
-		max: 256
-    },
-    description: {
-		type: String,
-		label: "Description",
-		max: 10000,
-		autoform: {
-			afFieldInput: SUMMERNOTE_OPTIONS
-		}
-    },
-   	htmlDescription: {
-		type: String,
-		optional: true,
-		autoValue: function(doc) {
-		var htmlContent = this.field("description");
-		if (Meteor.isServer && htmlContent.isSet) {
-			return cleanHtml(htmlContent.value);
-			}
-		}
-    },
+  location: {
+  	type: String,
+  	label: "Location",
+  	max: 256
+  },
+  description: {
+  	type: String,
+  	label: "Description",
+  	max: 10000,
+  	autoform: {
+  		afFieldInput: SUMMERNOTE_OPTIONS
+  	}
+  },
+ 	htmlDescription: {
+  	type: String,
+  	optional: true,
+  	autoValue: function(doc) {
+  	var htmlContent = this.field("description");
+  	if (Meteor.isServer && htmlContent.isSet) {
+  		return cleanHtml(htmlContent.value);
+  		}
+  	}
+  },
 	industryTypes: {
 		type: [String],
 		label: "Interested In",
@@ -124,6 +126,11 @@ Buyers.attachSchema(new SimpleSchema({
         }
       },
       denyUpdate: true
+    },
+    status: {
+      type: String,
+      allowedValues: STATUSES,
+      defaultValue: "active"
     },
     // Force value to be current date (on server) upon update
     // and don't allow it to be set upon insert.

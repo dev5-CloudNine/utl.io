@@ -2,6 +2,12 @@
 	color: #27272b !important;
 	background-color: #f2f2f2 !important;
 }
+.jumbotron {
+	min-height: 480px;
+	background-image: url('images/background.jpg');
+	background-size: 100%;
+	background-repeat: no-repeat;
+}
 .switch-calculator {
 	margin-top: 10px;
 }

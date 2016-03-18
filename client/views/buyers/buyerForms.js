@@ -4,8 +4,9 @@ AutoForm.addHooks(['buyerNew', 'buyerEdit'], {
       if (error) {
         console.log("Insert Error:", error);
       } else {
-        analytics.track("Profile Created");
-        Router.go('profile', {
+        console.log(result);
+        analytics.track("Buyer Created");
+        Router.go('buyer', {
           _id: result
         });
       }
@@ -14,8 +15,8 @@ AutoForm.addHooks(['buyerNew', 'buyerEdit'], {
       if (error) {
         console.log("Update Error:", error);
       } else {
-        analytics.track("Profile Edited");
-        Router.go('profile', {
+        analytics.track("Buyer Edited");
+        Router.go('buyer', {
           _id: Router.current().params._id
         });
       }
@@ -26,8 +27,8 @@ AutoForm.addHooks(['buyerNew', 'buyerEdit'], {
 Template.buyerEdit.events({
   'click #cancel': function(event, template) {
     event.preventDefault();
-    Router.go("profile", {
-      _id: this.profile._id
+    Router.go("buyer", {
+      _id: this.buyer._id
     });
   }
 });
@@ -42,8 +43,8 @@ Template.buyerFields.rendered = function() {
       Meteor.clearInterval(interval);
       var widget = uploadcare.SingleWidget('#custom-image');
       
-      if(template.data && template.data.profile && template.data.profile.customImageUrl){
-        var customImage = template.data.profile.customImageUrl;
+      if(template.data && template.data.buyer && template.data.buyer.customImageUrl){
+        var customImage = template.data.buyer.customImageUrl;
         if(customImage){
           widget.value(customImage);
           customImagePreviewUrl.set(customImage);
