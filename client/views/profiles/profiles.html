@@ -1,6 +1,6 @@
 <template name="profiles">
 	{{#if currentUser}}
-		{{#if isInRole 'employer'}}
+		{{#if isInRole 'employer, admin'}}
 			<div class="row">
 				{{#each profiles}}
 			        {{>profileSmall}}

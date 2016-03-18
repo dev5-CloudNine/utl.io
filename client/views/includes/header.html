@@ -3,7 +3,6 @@
         {{>connectionBanner}}
         <nav class="navbar navbar-default" role="navigation">
             <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span>
@@ -13,36 +12,22 @@
                     </button>
                     <a class="navbar-brand" href="{{pathFor 'home'}}">UTL</a>
                 </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         {{#if currentUser}}
                             {{#if isInRole 'admin'}}
-                                <!-- <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
-                                <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
-                                <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
-                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li> -->
                                 <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
                                 <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                             {{/if}}
                             {{#if isInRole 'employer'}}
-                                <!-- <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
-                                <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
-                                <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
-                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li> -->
                                 <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
                                 <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
-                                <li><a href="{{pathFor 'buyer'}}">My Profile</a></li>
                                 {{#unless currentUser.isBuyer}}
                                     <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
                                 {{/unless}}
                             {{/if}}
                             {{#if isInRole 'company-employee, individual-employee'}}
-                               <!--  <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
-                                <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
-                                <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
-                                <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li> -->
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                                 <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
                                 {{#unless currentUser.isDeveloper}}
@@ -67,9 +52,7 @@
                         {{/if}}
                     </ul>
                 </div>
-                <!-- /.navbar-collapse -->
             </div>
-            <!-- /.container-fluid -->
         </nav>
     </section>
 </template>
@@ -94,23 +77,24 @@
                 <li><a href="/admin"><i class="fa fa-cogs fa-fw"></i> Admin</a></li>
                 <li class="divider"></li>
             {{/if}}
-            {{#if currentUser.isDeveloper}}
-                <li>
-                    {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
-                </li>
-            {{else}}
-                {{#if isInRole 'company-employee,individual-employee'}}
+            {{#if isInRole 'company-employee, individual-employee'}}
+                {{#if currentUser.isDeveloper}}
+                    <li>
+                        {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
+                    </li>
+                {{else}}
                     <li>
                         <a href="{{pathFor 'profileNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
                     </li>
                 {{/if}}
-            {{/if}}
-            {{#if currentUser.isBuyer}}
-                <li>
-                    {{#with buyer}}<a href="{{pathFor 'buyer'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
-                </li>
             {{else}}
-                {{#if isInRole 'employer'}}
+            {{/if}}
+            {{#if isInRole 'employer'}}
+                {{#if currentUser.isBuyer}}
+                    <li>
+                        {{#with buyer}}<a href="{{pathFor 'buyer'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
+                    </li>
+                {{else}}
                     <li>
                         <a href="{{pathFor 'buyerNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
                     </li>

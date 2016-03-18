@@ -4,5 +4,5 @@ Comments.ui.config({
 });
 
 Comments.ui.setContent({
-  title: 'Discussion'
+  title: 'Post a Query'
 });

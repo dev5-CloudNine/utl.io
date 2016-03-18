@@ -4,7 +4,6 @@ AutoForm.addHooks(['buyerNew', 'buyerEdit'], {
       if (error) {
         console.log("Insert Error:", error);
       } else {
-        console.log(result);
         analytics.track("Buyer Created");
         Router.go('buyer', {
           _id: result
@@ -28,7 +27,7 @@ Template.buyerEdit.events({
   'click #cancel': function(event, template) {
     event.preventDefault();
     Router.go("buyer", {
-      _id: this.buyer._id
+      _id: this.buyerProfile._id
     });
   }
 });

@@ -242,7 +242,7 @@ Router.map(function() {
         onBeforeAction: function() {
             var expectedSlug = this.data().slug();
             if(this.params.slug !== expectedSlug) {
-                this.redirect("profile", {
+                this.redirect("buyer", {
                     _id: this.params._id,
                     slug: expectedSlug
                 });
@@ -311,6 +311,13 @@ Router.map(function() {
         });
     });
 
+    this.route('clients', function() {
+        this.redirect("buyers");
+    });
+    this.route('client/:_id', function() {
+        _id: this.params._id
+    });
+
 
     this.route('signUp', {
         path: '/SignUp'
@@ -351,7 +358,7 @@ Router.route('/posts/:_id', function () {
 
 
 Router.plugin('ensureSignedIn', {
-    only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew']
+    only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew', 'buyerEdit', 'buyerNew']
 });
 
 
@@ -359,7 +366,7 @@ Router.onBeforeAction(function() {
     loadUploadcare();
     this.next();
 }, {
-    only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew']
+    only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew', 'buyerEdit', 'buyerNew']
 });
 
 Router.plugin('dataNotFound', {

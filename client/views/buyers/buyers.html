@@ -1,6 +1,6 @@
 <template name="buyers">
 	{{#if currentUser}}
-		{{#if isInRole 'company-employee, individual-employee'}}
+		{{#if isInRole 'company-employee, individual-employee, admin'}}
 			<div class="row">
 				{{#each buyers}}
 			        {{>buyerSmall}}
