@@ -67,7 +67,7 @@
 								Payment type: {{ratebasis}}<br>
 								{{#if hourlyrate}}
 									{{hourlyrate}} USD per hour for {{maxhours}} hours.
-									<br>Net: {{totalfromclient}} USD
+									<br>Net: {{freelancer_nets}} USD
 									{{else}}
 										{{#if payforfirsthours}}
 											{{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours.
@@ -134,7 +134,9 @@
 									{{> commentsBox id=_id}}
 								</div>
 								<div id="apply" class="tab-pane fade">
-									<h3>Apply for this job</h3>
+									<div class="btn-group btn-group-justified">
+										<button class="btn btn-success">Apply</button>
+									</div>
 								</div>
 								<div id="counter-offer" class="tab-pane fade">
 									<h3>Counter offer</h3>

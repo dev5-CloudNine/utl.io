@@ -21,6 +21,16 @@ AdminConfig = {
       ],
       color: 'green'
     },
+    Buyers: {
+      icon: 'bank',
+      tableColumns: [
+        {label: 'ID', name: '_id'},
+        {label: 'Title', name: 'title'},
+        {label: 'User Name', name: 'userName'},
+        {label: 'Status', name: 'status'},
+      ],
+      color: 'blue'
+    }
   },
   autoForm:{
     omitFields: ['createdAt','updatedAt']

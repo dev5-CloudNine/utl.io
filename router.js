@@ -154,11 +154,6 @@ Router.map(function() {
         }
     });
 
-    this.route('buyerProfiles', {
-        path: '/buyers',
-        title: "UTL - All Buyers",
-    });
-
     this.route('profile', {
         path: '/profiles/:_id/:slug?',
         title: function() {
@@ -184,6 +179,50 @@ Router.map(function() {
                 this.next();
             }
         }
+    });
+
+    this.route('profileNew', {
+        path: '/profile',
+        title: "UTL - Create Provider Profile",
+        onBeforeAction: function() {
+            if (Meteor.user().isDeveloper) {
+                Router.go('profile', Profiles.findOne({
+                    userId: Meteor.userId()
+                }));
+            } else {
+                this.next();
+            }
+        }
+    });
+
+    this.route('profileEdit', {
+        path: '/profiles/:_id/:slug/edit',
+        title: "UTL - Edit My Provider Profile",
+        data: function() {
+            return {
+                profile: Profiles.findOne({
+                    _id: this.params._id
+                })
+            };
+        },
+        waitOn: function() {
+            return subs.subscribe('profile', this.params._id);
+        }
+    });
+
+    this.route('providerDashboard', {
+        path: '/providerDashboard',
+        title: "UTL - Provider Dashboard"
+    });
+
+    this.route('buyerDashboard', {
+        path: '/buyerDashboard',
+        title: "UTL - Buyer Dashboard"
+    });
+
+    this.route('buyers', {
+        path: '/buyers',
+        title: "UTL - All Buyers",
     });
 
     this.route('buyer', {
@@ -213,20 +252,6 @@ Router.map(function() {
         }
     });
 
-    this.route('profileNew', {
-        path: '/profile',
-        title: "UTL - Create Provider Profile",
-        onBeforeAction: function() {
-            if (Meteor.user().isDeveloper) {
-                Router.go('profile', Profiles.findOne({
-                    userId: Meteor.userId()
-                }));
-            } else {
-                this.next();
-            }
-        }
-    });
-
     this.route('buyerNew', {
         path: '/buyerNew',
         title: 'UTL - Create Buyer Profile',
@@ -238,21 +263,6 @@ Router.map(function() {
             } else {
                 this.next();
             }
-        }
-    });
-
-    this.route('profileEdit', {
-        path: '/profiles/:_id/:slug/edit',
-        title: "UTL - Edit My Provider Profile",
-        data: function() {
-            return {
-                profile: Profiles.findOne({
-                    _id: this.params._id
-                })
-            };
-        },
-        waitOn: function() {
-            return subs.subscribe('profile', this.params._id);
         }
     });
 
@@ -301,6 +311,13 @@ Router.map(function() {
         });
     });
 
+    this.route('clients', function() {
+        this.redirect("buyers");
+    });
+    this.route('client/:_id', function() {
+        _id: this.params._id
+    });
+
 
     this.route('signUp', {
         path: '/SignUp'
@@ -341,7 +358,7 @@ Router.route('/posts/:_id', function () {
 
 
 Router.plugin('ensureSignedIn', {
-    only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew']
+    only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew', 'buyerEdit', 'buyerNew']
 });
 
 
@@ -349,7 +366,7 @@ Router.onBeforeAction(function() {
     loadUploadcare();
     this.next();
 }, {
-    only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew']
+    only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew', 'buyerEdit', 'buyerNew']
 });
 
 Router.plugin('dataNotFound', {

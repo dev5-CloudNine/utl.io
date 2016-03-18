@@ -48,9 +48,11 @@
 				<div class="well">
 					{{>EasySearch.Input index=jobIndex}}
 				</div>
-				{{#EasySearch.Each index=jobIndex}}
-					{{>jobSmall}}
-				{{/EasySearch.Each}}
+                {{#if isInRole 'admin, individual-employee, company-employee'}}
+    				{{#EasySearch.Each index=jobIndex}}
+    					{{>jobSmall}}
+    				{{/EasySearch.Each}}
+                {{/if}}
 			{{/if}}
 			<div class="text-center">
 				{{> infiniteScroll }}

@@ -117,22 +117,34 @@ Jobs.attachSchema(
       label: "Total Amount",
       optional: true
     },
+    your_cost: {
+      type:  Number,
+      label: "Your Cost",
+      min: 1,
+      optional: true
+    },
+    freelancer_nets: {
+      type: Number,
+      label: "Freelancer Nets",
+      min: 1,
+      optional: true
+    },
     paidby: {
       type: String,
-      label: "",
-      defaultValue: "Freelancer",
+      label: "Paid By",
+      defaultValue: "Provider",
       optional: true,
       autoform: {
         type: 'select-radio-inline',
         options: function() {
           return [
             {
-              label: "You",
-              value: "You"
+              label: "Provider",
+              value: "Provider"
             },
             {
-              label: "Freelancer",
-              value: "Freelancer"
+              label: "You",
+              value: "You"
             }
           ]
         }
@@ -217,10 +229,10 @@ Jobs.attachSchema(
       optional: true,
       autoform: {
         type: "bootstrap-daterangepicker",
-        dateRangePickerValue: moment().add(1, 'days').format("MM/DD/YYYY") + " - " + moment().add(3, 'days').format("MM/DD/YYYY"),
+        dateRangePickerValue: moment().add(0, 'days').format("MM/DD/YYYY") + " - " + moment().add(1, 'days').format("MM/DD/YYYY"),
         dateRangePickerOptions: {
-          minDate: moment().add(-150, 'days'),
-          maxDate:moment().add(6, 'months'),
+          // minDate: moment().add(-150, 'days'),
+          // maxDate:moment().add(6, 'months'),
           // startDate: moment().add(1, 'days'),
           // endDate: moment().add(3, 'days'),
           timePicker: false,
@@ -254,8 +266,12 @@ Jobs.attachSchema(
         options: function() {
           return [
             {
-              label: "UPX",
-              value: "UPX",
+              label: "UPS",
+              value: "UPS",
+            },
+            {
+              label: "DHL",
+              value: "DHL"
             },
             {
               label: "Fedex",
