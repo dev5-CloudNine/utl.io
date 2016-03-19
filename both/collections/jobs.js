@@ -75,7 +75,8 @@ Jobs.attachSchema(
       type: Number,
       min: 1,
       label: "Maximum Hours",
-      optional: true
+      optional: true,
+      decimal: true
     },
     rateperdevice: {
       type: Number,
@@ -408,7 +409,6 @@ Jobs.attachSchema(
     description: {
       type: String,
       label: "Job Description",
-      max: 20000,
       autoform: {
         afFieldInput: SUMMERNOTE_OPTIONS
       }

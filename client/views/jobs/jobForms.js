@@ -65,6 +65,45 @@ Template.jobFields.events({
 		var freenet = totalamount - (totalamount * 5/100);
 		template.find('input[name="freelancer_nets"]').value = freenet;
 	},
+	'change input[name="payforfirsthours"], keyup input[name="payforfirsthours"]': function(event, template) {
+		var payforfirsthours = template.find('input[name="payforfirsthours"]').value;
+		var firsthours = template.find('input[name="firsthours"]').value;
+		var payfornexthours = template.find('input[name="payfornexthours"]').value;
+		var nexthours = template.find('input[name="nexthours"]').value;
+		var totalforfirsthours = payforfirsthours * firsthours;
+		var totalfornexthours = payfornexthours * nexthours;
+		var totalamount = totalforfirsthours + totalfornexthours;
+		template.find('input[name="totalfromclient"]').value = totalamount;
+		template.find('input[name="your_cost"]').value = totalamount;
+		var freenet = totalamount - (totalamount * 5/100);
+		template.find('input[name="freelancer_nets"]').value = freenet;
+	},
+	'change input[name="firsthours"], keyup input[name="firsthours"]': function(event, template) {
+		var payforfirsthours = template.find('input[name="payforfirsthours"]').value;
+		var firsthours = template.find('input[name="firsthours"]').value;
+		var payfornexthours = template.find('input[name="payfornexthours"]').value;
+		var nexthours = template.find('input[name="nexthours"]').value;
+		var totalforfirsthours = payforfirsthours * firsthours;
+		var totalfornexthours = payfornexthours * nexthours;
+		var totalamount = totalforfirsthours + totalfornexthours;
+		template.find('input[name="totalfromclient"]').value = totalamount;
+		template.find('input[name="your_cost"]').value = totalamount;
+		var freenet = totalamount - (totalamount * 5/100);
+		template.find('input[name="freelancer_nets"]').value = freenet;
+	},
+	'change input[name="payfornexthours"], keyup input[name="payfornexthours"]': function(event, template) {
+		var payforfirsthours = template.find('input[name="payforfirsthours"]').value;
+		var firsthours = template.find('input[name="firsthours"]').value;
+		var payfornexthours = template.find('input[name="payfornexthours"]').value;
+		var nexthours = template.find('input[name="nexthours"]').value;
+		var totalforfirsthours = payforfirsthours * firsthours;
+		var totalfornexthours = payfornexthours * nexthours;
+		var totalamount = totalforfirsthours + totalfornexthours;
+		template.find('input[name="totalfromclient"]').value = totalamount;
+		template.find('input[name="your_cost"]').value = totalamount;
+		var freenet = totalamount - (totalamount * 5/100);
+		template.find('input[name="freelancer_nets"]').value = freenet;
+	},
 	'change input[name="nexthours"], keyup input[name="nexthours"]': function(event, template) {
 		var payforfirsthours = template.find('input[name="payforfirsthours"]').value;
 		var firsthours = template.find('input[name="firsthours"]').value;
