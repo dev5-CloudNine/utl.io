@@ -31,12 +31,17 @@
 					<hr>
 					<div class="row">
 						<div class="col-sm-3">
-							<i class="fa fa-calendar fa-fw"></i> Posted on {{formatDate createdAt}}<br>
-							<i class="fa fa-user fa-fw"></i> By {{userName}}
+							<i class="fa fa-calendar fa-fw"></i> Posted on {{formatDate createdAt}}<hr>
+							<i class="fa fa-user fa-fw"></i> By {{userName}}<hr>
 							{{#if featured}}
 								<hr>
-								<i class="fa fa-trophy fa-fw"></i> Featured Until {{formatDate featuredThrough}}
+								<i class="fa fa-trophy fa-fw"></i> Featured Until {{formatDate featuredThrough}}<hr>
 							{{/if}}
+							<div>
+								<a id="pvt-mail" class="btn btn-info">
+									<i class="fa fa-envelope"></i> Mail
+								</a>
+							</div>
 						</div>
 						<div class="col-sm-9">
 							{{>jobLabels}}
