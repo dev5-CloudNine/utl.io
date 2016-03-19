@@ -61,13 +61,15 @@ Jobs.attachSchema(
       type: Number,
       min: 1,
       label: "Fixed Budget",
-      optional: true
+      optional: true,
+      decimal: true
     },
     hourlyrate: {
       type: Number,
       min: 1,
       label: "Hourly Rate (USD)",
-      optional: true
+      optional: true,
+      decimal: true
     },
     maxhours: {
       type: Number,
@@ -79,7 +81,8 @@ Jobs.attachSchema(
       type: Number,
       min: 1,
       label: "Rate per Device (USD)",
-      optional: true
+      optional: true,
+      decimal: true
     },
     maxdevices: {
       type: Number,
@@ -91,7 +94,8 @@ Jobs.attachSchema(
       type: Number,
       min: 1,
       label: "Pay (USD)",
-      optional: true
+      optional: true,
+      decimal: true
     },
     firsthours: {
       type: Number,
@@ -103,7 +107,8 @@ Jobs.attachSchema(
       type: Number,
       min: 1,
       label: "hour(s) and then USD",
-      optional: true
+      optional: true,
+      decimal: true
     },
     nexthours: {
       type: Number,
@@ -115,19 +120,22 @@ Jobs.attachSchema(
       type: Number,
       min: 1,
       label: "Total Amount",
-      optional: true
+      optional: true,
+      decimal: true
     },
     your_cost: {
       type:  Number,
       label: "Your Cost",
       min: 1,
-      optional: true
+      optional: true,
+      decimal: true
     },
     freelancer_nets: {
       type: Number,
       label: "Freelancer Nets",
       min: 1,
-      optional: true
+      optional: true,
+      decimal: true
     },
     paidby: {
       type: String,
