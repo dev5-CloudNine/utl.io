@@ -5,5 +5,8 @@ Meteor.methods({
     "postUserSignup": function(userId) {
         Accounts.sendVerificationEmail(userId);
         return;
+    },
+    "postMessage" : function(obj) {
+    	Messages.insert(obj);
     }
 });

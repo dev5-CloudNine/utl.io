@@ -16,14 +16,11 @@ Meteor.publish("userData", function() {
     this.ready();
 });
 
-Meteor.publish('jobCount', function() {
-    Counts.publish(this, 'jobs', Jobs.find({
-        createdAt: {
-            $gte: daysUntilExpiration()
-        },
-        status: "active"
-    }));
+Meteor.publish("messages", function () {
+    return Messages.find();
 });
+
+
 
 Meteor.publish('developerCount', function() {
     Counts.publish(this, 'developers', Profiles.find({

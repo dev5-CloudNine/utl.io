@@ -215,15 +215,43 @@ Router.map(function() {
         title: "UTL - Provider Dashboard"
     });
 
+
     this.route('buyerDashboard', {
-        path: '/buyerDashboard',
-        title: "UTL - Buyer Dashboard"
+        path: '/buyerDashboard/:tab',
+        title: "UTL - Buyer Dashboard",
+        waitOn: function() {
+            return Meteor.subscribe("messages");
+        },
+        data: function() {
+            if(this.params.tab=='mails') {
+                return {
+                  layout: {mails: true},
+                  active: 'messaging'
+                };
+            } else if(this.params.tab=='compose') {
+                return {
+                  layout: {compose: true},
+                  active: 'messaging'
+                };
+            } else if(this.params.tab.substr(0, 3)=='msg') {
+                return {
+                  layout: {message: true},
+                  active: 'messaging'
+                };
+            } else if(this.params.tab=='dashboard') {
+                return {
+                  active: 'dashboard',
+                };
+            }
+        } 
     });
 
     this.route('buyers', {
         path: '/buyers',
-        title: "UTL - All Buyers",
+        title: "UTL - All Buyers"
     });
+
+
 
     this.route('buyer', {
         path: '/buyers/:_id/:slug?',

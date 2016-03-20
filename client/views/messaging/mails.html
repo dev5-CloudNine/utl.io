@@ -1,0 +1,77 @@
+<template name="mails">
+    <div class="row m-t-md">
+        <div class="col-md-12">
+            <div class="row mailbox-header">
+                <div class="col-md-2">
+                    <a href="{{pathFor 'buyerDashboard' tab='compose'}}" class="btn btn-success btn-block">Compose<span style="margin-left:10px;" class="glyphicon glyphicon-send"></span></a>
+                </div>
+                <div class="col-md-6">
+                    <h2 style="margin-top: 0px;font-weight: 100;margin-left: 10px;">Inbox</h2>
+                </div>
+                <div class="col-md-4">
+                    <form action="#" method="GET">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control input-search" placeholder="Search...">
+                            <span class="input-group-btn">
+                                                <button class="btn btn-success" type="button"><i class="fa fa-search"></i></button>
+                                            </span>
+                        </div>
+                        <!-- Input Group -->
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+        	{{>msgSideMenu}}
+        </div>
+        <div class="col-md-10">
+            <div class="mailbox-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="1" class="hidden-xs">
+                                <span><div class="checker"><span><input type="checkbox" class="check-mail-all"></span></div>
+            </span>
+            </th>
+            <th class="text-right" colspan="5">
+                <span class="text-muted m-r-sm">Showing 20 of 346 </span>
+                <div class="btn-group m-r-sm mail-hidden-options" style="display: none;">
+                    <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
+                    <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
+                </div>
+            </th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each msgList}}
+		    <tr class="read msg">
+		        <td class="hidden-xs">
+		            <span><div class="checker"><span><input type="checkbox" class="checkbox-mail"></span></div>
+		            </span>
+		        </td>
+		        <td class="hidden-xs">
+		            <i class="fa fa-star"></i>
+		        </td>
+		        <td class="hidden-xs">
+		            {{username}}
+		        </td>
+		        <td style="text-align: left;">
+		            {{subject}}
+		        </td>
+		        <td>
+		            <i class="fa fa-paperclip"></i>
+		        </td>
+		        <td>
+		            11 march
+		        </td>
+		    </tr>
+    {{/each}}
+    </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+</template>

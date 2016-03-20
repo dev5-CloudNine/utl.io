@@ -1,34 +1,195 @@
-.jumbotron, footer {
-	color: #27272b !important;
-	background-color: #f2f2f2 !important;
+.jumbotron,
+footer {
+    color: #27272b !important;
+    background-color: #f2f2f2 !important;
 }
+
 .jumbotron {
-	min-height: 480px;
-	background-image: url('images/background.jpg');
-	background-size: 100%;
-	background-repeat: no-repeat;
+    min-height: 480px;
+    background-image: url('images/background.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
+
 .switch-calculator {
-	margin-top: 10px;
+    margin-top: 10px;
 }
+
 .shipment-list {
-	line-height: 50px;
+    line-height: 50px;
 }
-h3, h4 {
-	font-weight: normal !important;
+
+h3,
+h4 {
+    font-weight: normal !important;
 }
+
 .home-image {
-	height: auto;
-	background-image: 'images/home-bg.jpg';
+    height: auto;
+    background-image: 'images/home-bg.jpg';
 }
+
 #home-wrapper {
-	margin-top: -20px;
-	margin-bottom: -28px;
+    margin-top: -20px;
+    margin-bottom: -28px;
 }
+
 #utl_fees {
-	margin-bottom: 24px;
+    margin-bottom: 24px;
 }
 
 .comments-box {
-	padding: 0px;
+    padding: 0px;
+}
+
+.mailbox-nav .active a,
+.mailbox-nav li a:hover {
+    color: #333;
+}
+
+.mailbox-nav li a i {
+    margin-right: 5px
+}
+
+.mailbox-content {
+    background: #fff;
+    padding: 15px;
+    overflow: hidden
+}
+
+.mailbox-header {
+    margin-bottom: 20px
+}
+
+.mailbox-header h2 {
+    margin: 3px 0
+}
+
+.mailbox-content table thead tr th {
+    border-bottom: 1px solid #ddd
+}
+
+.mailbox-content table tbody tr td {
+    cursor: pointer
+}
+
+.mailbox-content table tbody tr:hover {
+    background: #FAFAFA
+}
+
+.mailbox-content table tbody tr.read {
+    background: #F9F9F9;
+    color: #7F7F7F
+}
+
+.mailbox-content table tbody tr.checked {
+    background: #FFC
+}
+
+.mail-hidden-options {
+    display: none
+}
+
+.message-sender img,
+.message-sender p {
+    display: inline-block
+}
+
+.message-header {
+    overflow: hidden;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 5px 0 15px;
+    margin-bottom: 10px
+}
+
+.message-content,
+.message-sender {
+    padding: 0 0 5px
+}
+
+.message-header h3 {
+    float: left;
+    font-size: 18px;
+    margin: 0;
+    color: #666
+}
+
+.message-header p {
+    float: right;
+    margin: 0
+}
+
+.message-attachments,
+.message-content,
+.message-sender {
+    border-bottom: 1px solid #f1f1f1;
+    overflow: hidden;
+    margin-bottom: 10px
+}
+
+.message-sender img {
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 5px
+}
+
+.message-sender span {
+    color: #7F7F7F
+}
+
+.message-attachments {
+    padding: 0 0 15px
+}
+
+.message-attachment {
+    position: relative;
+    width: 200px;
+    float: left;
+    margin-right: 10px;
+    border: 1px solid #f1f1f1
+}
+
+.attachment-info p,
+.box-notifications ul li p {
+    margin: 0
+}
+
+.compose-options,
+.message-attachment img {
+    display: block;
+    width: 100%
+}
+
+.attachment-info {
+    background: #f9f9f9;
+    padding: 10px
+}
+
+.attachment-info span {
+    font-size: 11px;
+    color: #aaa
+}
+
+.compose-message {
+    overflow: hidden;
+    padding: 0 0 10px
+}
+
+.compose-options {
+    overflow: hidden
+}
+
+.box-notifications {
+    max-height: 312px;
+    overflow-y: scroll
+}
+
+.mailbox-nav li a {
+    display: block;
+    padding: 10px 7px;
+    color: #999;
+    border-bottom: 1px solid #E7EAEC;
+    overflow: hidden;
+    text-decoration: none;
+
 }
