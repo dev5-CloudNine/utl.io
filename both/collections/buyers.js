@@ -109,7 +109,7 @@ Buyers.attachSchema(
     },
     contactEmail: {
       type: String,
-      label: "Email",
+      label: "Secondary Email",
       max: 128
     },
     createdAt: {
