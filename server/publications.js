@@ -1,6 +1,6 @@
-Meteor.publish('images', function() {
-    return Images.find();
-})
+// Meteor.publish('images', function() {
+//     return Images.find();
+// })
 
 Meteor.publish("userData", function() {
     check(arguments, [Match.Any]);
@@ -182,7 +182,11 @@ Meteor.publish("job", function(jobId) {
 Meteor.publishComposite('profile', function(profileId) {
     return {
         find: function() {
-            return Profiles.find({_id: profileId});
+            return 
+            [
+                Profiles.find({_id: profileId}),
+                Images.find()
+            ]
         },
         children: [{
             find: function(profile) {

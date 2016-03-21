@@ -15,7 +15,6 @@ AutoForm.addHooks(['profileNew', 'profileEdit'], {
         console.log("Update Error:", error);
       } else {
         analytics.track("Profile Edited");
-        console.log(Router.current().params);
         Router.go('profile', {
           _id: Router.current().params._id
         });

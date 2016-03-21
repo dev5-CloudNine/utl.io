@@ -81,7 +81,8 @@ themeteorchef:jquery-validation
 pauli:accounts-linkedin
 easy:search
 arkham:comments-ui
-<<<<<<< HEAD
 froala:editor
 yogiben:autoform-file
 cfs:filesystem
+comerc:bs-typeahead
+comerc:autoform-typeahead

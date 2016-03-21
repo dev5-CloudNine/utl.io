@@ -133,7 +133,7 @@ Profiles.attachSchema(
     preferredWorkLocation: {
       type: String,
       label: "Preferred Work Location",
-      optional: true
+      optional: true,
     },
     educationDetails: {
       type: Array,
