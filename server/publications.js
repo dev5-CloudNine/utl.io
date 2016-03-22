@@ -14,6 +14,9 @@ Meteor.publish("userData", function() {
             }),
             Buyers.find({
                 userId: this.userId
+            }),
+            Corporates.find({
+                userId: this.userId
             })
         ];
     }
@@ -207,6 +210,27 @@ Meteor.publishComposite('profile', function(profileId) {
     }
 });
 
+Meteor.publishComposite('corporate', function(corporateId) {
+    return {
+        find: function() {
+            return Corporates.find({
+                _id: corporateId
+            })
+        },
+        children: [{
+            find: function(corporate) {
+                return Users.find({
+                    _id: corporate.corporateId
+                }, {
+                    fields: {
+                        "emailHash": true,
+                    }
+                });
+            }
+        }]
+    }
+})
+
 Meteor.publishComposite('buyer', function(buyerId) {
     return {
         find: function() {
@@ -259,6 +283,19 @@ Meteor.publish("buyerUsers", function() {
     ];
 });
 
+Meteor.publish("corporateUsers", function() {
+    check(argumenets, [Match.Any]);
+    return [
+        Users.find({
+            isCorporate: true
+        }, {
+            fields: {
+                "emailHash": true,
+            }
+        })
+    ]
+})
+
 Meteor.publish('profiles', function(limit) {
     var selector = {};
     check(limit, Number);
@@ -275,6 +312,17 @@ Meteor.publish('buyers', function(limit) {
     var selector = {};
     check(limit, Number);
     return Buyers.find(selector, {
+        limit: limit,
+        sort: {
+            randomSorter: 1
+        }
+    });
+});
+
+Meteor.publish('corporates', function(limit) {
+    var selector = {};
+    check(limit, Number);
+    return Corporates.find(selector, {
         limit: limit,
         sort: {
             randomSorter: 1

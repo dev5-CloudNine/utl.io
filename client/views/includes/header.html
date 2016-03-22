@@ -18,6 +18,7 @@
                             {{#if isInRole 'admin'}}
                                 <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
                                 <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
+                                <li><a href="{{pathFor 'corporates'}}">View Corporates</a></li>
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                             {{/if}}
                             {{#if isInRole 'employer'}}
@@ -27,14 +28,26 @@
                                     <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
                                 {{/unless}}
                             {{/if}}
-                            {{#if isInRole 'company-employee, individual-employee'}}
+                            {{#if isInRole 'individual-employee'}}
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                                 <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
+                                <li><a href="{{pathFor 'corporates'}}">View Corporates</a></li>
                                 {{#unless currentUser.isDeveloper}}
                                     <li class="{{isActiveRoute regex='^profile$'}}">
                                         <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
                                     </li>
                                 {{/unless}}
+                            {{/if}}
+                            {{#if isInRole 'company-employee'}}
+                                {{#unless currentUser.isCorporate}}
+                                    <li>
+                                        <a href="{{pathFor 'corporateNew'}}">Create Your Profile</a>
+                                    </li>
+                                {{/unless}}
+                                <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
+                                <li><a href="{{pathFor 'jobNew'}}">Post A Job</a></li>
+                                <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
+                                <li><a href="{{pathFor 'addTeam'}}">Add Your Team</a></li>
                             {{/if}}
                         {{else}}
                             <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
@@ -62,7 +75,7 @@
 			{{> avatar user=currentUser size="small"}}{{currentUserDisplayName}} <span class="caret"></span>
 		</a>
         <ul class="dropdown-menu" role="menu">
-            {{#if isInRole 'employer,company-employee'}}
+            {{#if isInRole 'employer'}}
                 <li>
                     <a href="{{pathFor 'buyerDashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a>
                     <li class="divider"></li>
@@ -77,7 +90,7 @@
                 <li><a href="/admin"><i class="fa fa-cogs fa-fw"></i> Admin</a></li>
                 <li class="divider"></li>
             {{/if}}
-            {{#if isInRole 'company-employee, individual-employee'}}
+            {{#if isInRole 'individual-employee'}}
                 {{#if currentUser.isDeveloper}}
                     <li>
                         {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
@@ -87,7 +100,17 @@
                         <a href="{{pathFor 'profileNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
                     </li>
                 {{/if}}
-            {{else}}
+            {{/if}}
+            {{#if isInRole 'company-employee'}}
+                {{#if currentUser.isCorporate}}
+                    <li>
+                        {{#with corporate}}<a href="{{pathFor 'corporate'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
+                    </li>
+                {{else}}
+                    <li>
+                        <a href="{{pathFor 'corporateNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
+                    </li>
+                {{/if}}
             {{/if}}
             {{#if isInRole 'employer'}}
                 {{#if currentUser.isBuyer}}

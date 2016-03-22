@@ -21,6 +21,11 @@ Template.headerUserMenu.helpers({
     return Buyers.findOne({
       userId: Meteor.userId()
     });
+  },
+  corporate: function() {
+    return Corporates.findOne({
+      userId: Meteor.userId()
+    });
   }
 });
 

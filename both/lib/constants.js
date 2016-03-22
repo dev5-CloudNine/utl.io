@@ -167,8 +167,6 @@ INDUSTRY_TYPES = function() {
   ]
 }
 
-SUB_INDUSTRY_TYPES = ['Network and System Administration', 'Server', 'Information Security', 'Cat 3-5-6', 'Fiber optics'];
-
 SUMMERNOTE_OPTIONS = {
   type: 'summernote',
   height: 300,

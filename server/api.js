@@ -104,4 +104,26 @@ Meteor.startup(function() {
       };
     }
   });
+  Api.addRoute('corporates', {
+    get: function() {
+      return {
+        status: "Success",
+        data: Corporates.find({
+          status: "active"
+        }, {
+          sort: {
+            createdAt: -1
+          },
+          fields: {
+            userId: false,
+            userName: false
+          },
+          transform: function(doc) {
+            doc.siteUrl = Meteor.absoluteUrl("corporates/" + doc._id + "/" + getSlug((doc.name || doc.userName) + " " + doc.title));
+            return doc;
+          }
+        }).fetch()
+      };
+    }
+  });
 });

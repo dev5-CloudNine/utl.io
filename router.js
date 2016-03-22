@@ -14,7 +14,6 @@ Router.configure({
     title: "UTL - Job board and professionals listing just for IT"
 });
 
-
 Router.map(function() {
     this.route('home', {
         path: '/',
@@ -115,7 +114,6 @@ Router.map(function() {
         }
     });
 
-
     this.route('jobNew', {
         path: '/job',
         title: "UTL - Post a Job",
@@ -215,7 +213,6 @@ Router.map(function() {
         title: "UTL - Provider Dashboard"
     });
 
-
     this.route('buyerDashboard', {
         path: '/buyerDashboard/:tab',
         title: "UTL - Buyer Dashboard",
@@ -250,8 +247,6 @@ Router.map(function() {
         path: '/buyers',
         title: "UTL - All Buyers"
     });
-
-
 
     this.route('buyer', {
         path: '/buyers/:_id/:slug?',
@@ -306,6 +301,67 @@ Router.map(function() {
         },
         waitOn: function() {
             return subs.subscribe('buyer', this.params._id);
+        }
+    });
+
+    this.route('corporates', {
+        path: '/corporates',
+        title: 'UTL - All Corporates'
+    });
+
+    this.route('corporate', {
+        path: '/corporates/:_id/:slug?',
+        title: function() {
+            if(this.data())
+                return "UTL - " + this.data().displayName() + " - " + this.data().title;
+        },
+        data: function() {
+            return Corporates.findOne({
+                _id: this.params._id
+            });
+        },
+        waitOn: function() {
+            return subs.subscribe('corporate', this.params._id);
+        },
+        onBeforeAction: function() {
+            var expectedSlug = this.data().slug();
+            if(this.params.slug !== expectedSlug) {
+                this.redirect("corporate", {
+                    _id: this.params._id,
+                    slug: expectedSlug
+                });
+            } else {
+                this.next();
+            }
+        }
+    });
+
+    this.route('corporateNew', {
+        path: '/corporateNew',
+        title: 'UTL - Create Corporate Profile',
+        onBeforeAction: function() {
+            if(Meteor.user().isCorporate) {
+                Router.go('corporate', Corporates.findOne({
+                    userId: Meteor.userId()
+                }));
+            } else {
+                this.next();
+            }
+        }
+    });
+
+    this.route('corporateEdit', {
+        path: 'corporates/:_id/:slug/edit',
+        title: "UTL - Edit My Corporate Profile",
+        data: function() {
+            return {
+                corporateProfile: Corporates.findOne({
+                    _id: this.params._id
+                })
+            };
+        },
+        waitOn: function() {
+            return subs.subscribe('corporate', this.params._id);
         }
     });
 
