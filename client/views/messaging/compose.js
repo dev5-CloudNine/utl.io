@@ -25,10 +25,13 @@
 	        message.sender = sender;
 	        message.content = content;
 	        message.date = new Date();
+	        message.read = false;
 
 	    	var param = Router.current().params.tab;
-	    	if(param == 'newrep')
+	    	if(param.substr(0,6) == 'newrep')
 	    		message.parent = param.substr(6);
+
+	    	console.log(message);
 
 	        Meteor.call("postMessage", message, function(err, res) {
 	            if (err) {

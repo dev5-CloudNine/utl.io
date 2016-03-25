@@ -32,9 +32,12 @@ Template.message.helpers({
 
     Messages.find({
       $or:[{'_id':msgID},{'parent':msgID}]
+    }, 
+    {
+      sort: { date: -1 }
     }).map(function(ele){
        ele.username = Meteor.users.findOne({'_id':ele.sender}).emails[0].address;
-       ele.date = moment(new Date(ele.date)).format('LL');
+       ele.date = moment(new Date(ele.date)).format('LLLL');
        msgList.push(ele);
     });
     return msgList;

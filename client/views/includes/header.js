@@ -10,7 +10,6 @@ Template.header.events({
     }
   }
 });
-
 Template.headerUserMenu.helpers({
   profile: function() {
     return Profiles.findOne({
@@ -24,7 +23,7 @@ Template.headerUserMenu.helpers({
   },
   msgCount: function() {
     return Messages.find({
-      $and:[{recipient: Meteor.userId()},{ "parent" : { "$exists" : false }}]
+      $and:[{recipient: Meteor.userId()},{ "read" :false }]
     }).fetch().length;   
   },
   corporate: function() {
@@ -56,5 +55,6 @@ Template.headerUserMenu.events({
 });
 
 Template.headerUserMenu.onRendered(function(){
-  this.$('.dropdown-toggle').dropdown()
+  this.$('.dropdown-toggle').dropdown();
+  Meteor.subscribe("messages");
 });

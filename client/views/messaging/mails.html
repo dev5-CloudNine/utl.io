@@ -6,7 +6,7 @@
                     <a href="{{pathFor 'dashboard' tab='new'}}" class="btn btn-success btn-block">Compose<span style="margin-left:10px;" class="glyphicon glyphicon-send"></span></a>
                 </div>
                 <div class="col-md-6">
-                    <h2 style="margin-top: 0px;font-weight: 100;margin-left: 10px;">Inbox</h2>
+                    <h2 style="margin-top: 0px;font-weight: 100;margin-left: 10px;">Messages</h2>
                 </div>
                 <div class="col-md-4">
                     <form action="#" method="GET">
@@ -34,7 +34,7 @@
 			            </span>
 			            </th>
 
-			            
+
             <th class="text-right" colspan="5">
                 <span class="text-muted m-r-sm">Showing 20 of 346 </span>
                 <div class="btn-group m-r-sm mail-hidden-options" style="display: none;">
@@ -49,7 +49,7 @@
             </thead>
             <tbody>
             {{#each msgList}}
-		    <tr class="read msg" data-id="{{_id}}">
+		    <tr class="{{#if $eq read false}}read{{else}}unread{{/if}} msg" data-id="{{_id}}">
 <!-- 		        <td class="hidden-xs">
 		            <span><div class="checker"><span><input type="checkbox" class="checkbox-mail"></span></div>
 		            </span>

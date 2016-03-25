@@ -12,5 +12,8 @@ Meteor.methods({
     ,"deleteMsg": function(id) {
         Messages.remove({parent:id});
         Messages.remove({_id:id});
+    },
+    "markRead": function(id){
+        Messages.update({'_id':id},{$set:{'read':true}});
     }
 });
