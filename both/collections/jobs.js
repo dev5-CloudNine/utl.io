@@ -1,3 +1,9 @@
+Files = new FS.Collection("files", {
+  stores: [new FS.Store.FileSystem("filesStore", {
+    path: "~/files/documents"
+  })]
+})
+
 Jobs = new Mongo.Collection("jobs");
 JobsIndex = new EasySearch.Index({
   collection: Jobs,
@@ -197,15 +203,17 @@ Jobs.attachSchema(
           }
         }
     },
-    // fileId: {
-    //   type: String,
-    //   label: "Upload File",
-    //   autoform: {
-    //     afFieldInput: {
-    //       type: 'cfs-file'
-    //     }
-    //   }
-    // },
+    fileId: {
+      type: [String],
+      label: "Upload File",
+      optional: true,
+      autoform: {
+        afFieldInput: {
+          type: 'cfs-files',
+          collection: "files"
+        }
+      }
+    },
     contactperson: {
       type: String,
       label: "Contact Name",

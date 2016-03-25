@@ -1,11 +1,10 @@
 <template name="profiles">
 	{{#if currentUser}}
-		{{#if isInRole 'employer, admin'}}
+		{{#if isInRole 'employer, admin, company-employee'}}
 			<div class="row">
 				{{#each profiles}}
 			        {{>profileSmall}}
-			    {{/each}}
-			    
+			    {{/each}}			    
 			</div>
 		{{/if}}
 	{{/if}}

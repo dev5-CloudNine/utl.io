@@ -70,8 +70,5 @@ Template.jobFields.events({
 		var freenet = totalamount - totalamount * 5/100;
 		template.find('input[name="your_cost"]').value = totalamount;
 		template.find('input[name="freelancer_nets"]').value = freenet;
-	},
-	'change select[name~="shipmentcarrier"]': function(event) {
-		console.log(event.target.value);
 	}
 });

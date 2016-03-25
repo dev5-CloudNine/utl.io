@@ -1,12 +1,11 @@
 .jumbotron,
 footer {
     color: #27272b !important;
-    background-color: #f2f2f2 !important;
+    background-color: #fff !important;
 }
 
 .jumbotron {
-    min-height: 480px;
-    background-image: url('images/background.jpg');
+    min-height: 620px;
     background-size: 100%;
     background-repeat: no-repeat;
 }
@@ -26,7 +25,7 @@ h4 {
 
 .home-image {
     height: auto;
-    background-image: 'images/home-bg.jpg';
+    background-image: url('images/home-image.png');
 }
 
 #home-wrapper {
