@@ -54,6 +54,8 @@ check@1.1.0
 chipcastle:countries@1.0.2
 chrismbeckett:toastr@2.1.2_1
 coffeescript@1.0.11
+comerc:autoform-typeahead@1.0.3
+comerc:bs-typeahead@1.0.2
 copleykj:stripe-sync@2.0.5
 dburles:collection-helpers@1.0.4
 ddp@1.2.2
@@ -75,6 +77,7 @@ email@1.0.8
 fastclick@1.0.7
 force-ssl@1.0.6
 fortawesome:fontawesome@4.5.0
+froala:editor@2.2.1
 gadicohen:robots-txt@0.0.10
 gadicohen:sitemaps@0.0.24
 geojson-utils@1.0.4

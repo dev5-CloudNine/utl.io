@@ -1,7 +1,7 @@
 {
   "public" : {
     "uploadcare":{
-      "publickey":""
+      "publickey":"28fc56b6f9e7ba8dfb77"
     },
     "stripe":{
         "pubKey":""

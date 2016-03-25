@@ -199,10 +199,10 @@ Jobs.attachSchema(
     },
     // fileId: {
     //   type: String,
-    //   label: "Upload File(s)",
+    //   label: "Upload File",
     //   autoform: {
     //     afFieldInput: {
-    //       type: "cfs-files"
+    //       type: 'cfs-file'
     //     }
     //   }
     // },

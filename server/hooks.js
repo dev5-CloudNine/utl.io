@@ -38,6 +38,26 @@ Buyers.after.remove(function(userId, doc) {
   });
 });
 
+Corporates.after.insert(function(userId, doc) {
+  Users.update({
+    _id: doc.userId
+  }, {
+    $set: {
+      isCorporate: true
+    }
+  });
+});
+
+Corporates.after.remove(function(userId, doc) {
+  Users.update({
+    _id: doc.userId
+  }, {
+    $set: {
+      isCorporate: false
+    }
+  });
+});
+
 Jobs.after.insert(function(userId, doc){
   var admin = Users.findOne({roles:"admin"});
   Email.send({

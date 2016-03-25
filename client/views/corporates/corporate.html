@@ -1,5 +1,5 @@
-<template name="profile">
-	<div id="profile" class="row">
+<template name="corporate">
+	<div id="corporateProfile" class="row">
 		<div class="col-sm-12">
 			<div class="panel panel-default">
   				<div class="panel-body">
@@ -12,11 +12,6 @@
 							{{else}}
 								{{> avatar userId=userId size="large"}}
 							{{/if}}
-							
-							{{#if availableForHire}}
-								<br>
-								<span class="label label-primary"><i class="fa fa-rocket"></i> Hire Me</span>
-							{{/if}}
 							{{#if $eq type 'Company'}}
 								<span class="label label-danger"><i class="fa fa-users"></i> Company</span>
 							{{/if}}
@@ -24,18 +19,21 @@
 							<small>
 								{{#if location}}
 									<i class="fa fa-map-marker"></i>&nbsp;{{location}}
+								{{/if}}
+								{{#if interestedIn}}
+									<hr>
+									<b>Interested In</b>
+									{{#each industryTypes}}
+										<br>
+										{{this}}
+									{{/each}}
 									<hr>
 								{{/if}}
 								{{#if url}}
 									<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Web Site</a>
 								{{/if}}
 								{{#if contact}}
-									<br>
 									<i class="fa fa-envelope"></i>&nbsp;{{contact}}
-								{{/if}}
-								{{#if resumeUrl}}
-									<br>
-									<i class="fa fa-file-text"></i>&nbsp;&nbsp;<a href="{{resumeUrl}}" target="_blank">View Resume</a>
 								{{/if}}
 							</small>
 							<hr>
@@ -50,12 +48,6 @@
 								<br>
 								{{#if insuranceNumber}}
 									<i class="fa fa-envelope"></i>&nbsp;Insurance Number: {{insuranceNumber}}
-								{{/if}}
-							</small>
-							<small>
-								<hr>
-								{{#if avgRatesPerHour}}
-									<i class="fa fa-envelope"></i>&nbsp;Average Rate per Hour: {{avgRatesPerHour}} USD
 								{{/if}}
 							</small>
 							<hr>
@@ -83,52 +75,6 @@
 										<h4>About Me</h4>
 										{{{htmlDescription}}}
 									{{/if}}
-									{{#if freelancerSkills}}
-										<hr>
-										<h4>Skills</h4>
-										{{freelancerSkills}}
-									{{/if}}
-									{{#if industryTypes}}
-										<hr>
-										<h4>Interested In</h4>
-										{{#each industryTypes}}
-											{{this}}
-											<br>
-										{{/each}}
-									{{/if}}
-									{{#if preferredWorkLocation}}
-										<hr>
-										<h4>Preferred Work Location</h4>
-										{{preferredWorkLocation}}
-									{{/if}}
-									{{#if educationDetails}}
-										<hr>
-										<h4>Education Details</h4>
-										<ul>
-											{{#each educationDetails}}
-												<li>{{qualification}} from {{university}}, graduated in the year {{yearOfPassing}}</li>
-											{{/each}}
-										</ul>
-									{{/if}}
-									{{#if certifications}}
-										<hr>
-										<h4>Certifications</h4>
-										<br>
-										{{#each certifications}}
-											<h5>{{certificationName}}</h5>
-											<p>Authority:{{certificationAuthority}}</p>
-											<p>Start &amp; End Date: {{formatDate certificationStartDate}} - {{formatDate certificationEndDate}}</p>
-										{{/each}}
-									{{/if}}
-									{{#if languages}}
-										<hr>
-										<h4>Languages Known</h4>
-										<ul>
-											{{#each languages}}
-												<li>{{level}} in {{language}}</li>
-											{{/each}}
-										</ul>
-									{{/if}}
 								</div>
 							</div>
 						</div>
@@ -138,10 +84,10 @@
 							{{#if $eq userId $.Meteor.userId}}
 								<div class="pull-right">
 									&nbsp;
-									<a href="{{pathFor 'profileEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+									<a href="{{pathFor 'corporateEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
 								</div>
 								<div class="pull-right">
-									{{#quickRemoveButton collection="Profiles" _id=_id class="btn btn-danger" beforeRemove=beforeRemove}}
+									{{#quickRemoveButton collection="Corporates" _id=_id class="btn btn-danger" beforeRemove=beforeRemove}}
 										<i class="fa fa-trash-o"></i> Delete
 									{{/quickRemoveButton}}
 								</div>

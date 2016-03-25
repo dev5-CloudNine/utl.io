@@ -45,6 +45,10 @@ UserSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false
   },
+  isCorporate: {
+    type: Boolean,
+    defaultValue: false
+  },
   createdAt: {
     type: Date
   },

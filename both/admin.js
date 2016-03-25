@@ -30,6 +30,15 @@ AdminConfig = {
         {label: 'Status', name: 'status'},
       ],
       color: 'blue'
+    },
+    Corporates: {
+      icon: 'users',
+      tableColumns: [
+        {label: 'ID', name: '_id'},
+        {label: 'Title', name: 'title'},
+        {label: 'User Name', name: 'userName'},
+        {label: 'Status', name: 'status'}
+      ]
     }
   },
   autoForm:{

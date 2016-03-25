@@ -49,13 +49,13 @@
 </template>
 <template name="jobFields">
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{> afQuickField name='title' placeholder="Title displayed for your listing"}}
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{> afQuickField name='title' placeholder="This is the first thing providers see. So keep it precise and descriptive."}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {{> afFormGroup name="jobtype"}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {{> afQuickField name='skillsrequired' placeholder="e.g. Cable Operator, DB Admin, Hardware.."}}            
         </div>
     </div>
@@ -188,5 +188,5 @@
             {{>afArrayField name="shipment"}}
         </div>
     </div>
-    <!-- {{> afQuickField name="fileId" optional=true}} -->
+    <!-- {{> afQuickField name="fileId" optional=true type="cfs-file" collection="jobs"}} -->
 </template>

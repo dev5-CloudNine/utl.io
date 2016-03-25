@@ -84,3 +84,5 @@ arkham:comments-ui
 froala:editor
 yogiben:autoform-file
 cfs:filesystem
+comerc:bs-typeahead
+comerc:autoform-typeahead

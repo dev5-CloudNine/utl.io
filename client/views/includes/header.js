@@ -25,7 +25,12 @@ Template.headerUserMenu.helpers({
   msgCount: function() {
     return Messages.find({
       $and:[{recipient: Meteor.userId()},{ "parent" : { "$exists" : false }}]
-    }).fetch().length;    
+    }).fetch().length;   
+  },
+  corporate: function() {
+    return Corporates.findOne({
+      userId: Meteor.userId()
+    });
   }
 });
 

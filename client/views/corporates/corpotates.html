@@ -1,0 +1,14 @@
+<template name="corporates">
+	{{#if currentUser}}
+		{{#if isInRole 'company-employee, individual-employee, admin, employer'}}
+			<div class="row">
+				{{#each corporates}}
+			        {{>corporateSmall}}
+			    {{/each}}	    
+			</div>
+		{{/if}}
+	{{/if}}
+	<div class="text-center">
+		{{> infiniteScroll }}
+	</div>
+</template>

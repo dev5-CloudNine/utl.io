@@ -19,8 +19,6 @@ AutoForm.addHooks(['jobNew', 'jobEdit'], {
 	}
 });
 
-var arr = new ReactiveArray();
-
 Template.jobFields.events({
 	'change input[name="fixedamount"], keyup input[name="fixedamount"]': function(event, template) {
 		var fixedamount = template.find('input[name="fixedamount"]').value;
@@ -72,11 +70,8 @@ Template.jobFields.events({
 		var freenet = totalamount - totalamount * 5/100;
 		template.find('input[name="your_cost"]').value = totalamount;
 		template.find('input[name="freelancer_nets"]').value = freenet;
-	}
-});
-
-Template.jobFields.helpers({
-	names: function() {
-		return arr.list();
+	},
+	'change select[name~="shipmentcarrier"]': function(event) {
+		console.log(event.target.value);
 	}
 });
