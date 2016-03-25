@@ -57,6 +57,27 @@
     </section>
 </template>
 <template name="headerUserMenu">
+
+
+    <li id="user-drop-down" class="dropdown">
+        <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+            <i style="font-size: 20px;padding: 3px;color: #6C6C6C;" class="fa fa-envelope fa-fw"></i>({{msgCount}})<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+                    <li><a href="{{pathFor 'dashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a></li>
+                    <li class="divider"></li>
+                <li><a href="/admin"><i class="fa fa-cogs fa-fw"></i> Admin</a></li>
+                <li class="divider"></li>
+                    <li>
+                        <a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>
+                    </li>
+                    <li>
+                        <a href="{{pathFor 'profileNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
+                    </li>
+            <li class="divider"></li>
+        </ul>
+    </li>
+
     <li id="user-drop-down" class="dropdown">
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
 			{{> avatar user=currentUser size="small"}}{{currentUserDisplayName}} <span class="caret"></span>
@@ -64,12 +85,12 @@
         <ul class="dropdown-menu" role="menu">
             {{#if isInRole 'employer,company-employee'}}
                 <li>
-                    <a href="{{pathFor 'buyerDashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a>
+                    <a href="{{pathFor 'dashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a>
                     <li class="divider"></li>
                 </li>
                 {{else}}
                 {{#if isInRole 'company-employee, individual-employee'}}
-                    <li><a href="{{pathFor 'providerDashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a></li>
+                    <li><a href="{{pathFor 'dashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a></li>
                     <li class="divider"></li>
                 {{/if}}
             {{/if}}
@@ -107,4 +128,10 @@
             <li><a href="#" id="signOut"><i class="fa fa-sign-out fa-fw"></i> Sign Out</a></li>
         </ul>
     </li>
+
+
+
+
+
+
 </template>

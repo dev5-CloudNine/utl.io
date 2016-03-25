@@ -216,19 +216,20 @@ Router.map(function() {
     });
 
 
-    this.route('buyerDashboard', {
-        path: '/buyerDashboard/:tab',
+    this.route('dashboard', {
+        path: '/dashboard/:tab',
         title: "UTL - Buyer Dashboard",
         waitOn: function() {
+            Meteor.subscribe("userList");
             return Meteor.subscribe("messages");
         },
         data: function() {
-            if(this.params.tab=='mails') {
+            if(this.params.tab.substr(0, 5)=='mails') {
                 return {
                   layout: {mails: true},
                   active: 'messaging'
                 };
-            } else if(this.params.tab=='compose') {
+            } else if(this.params.tab.substr(0, 3)=='new') {
                 return {
                   layout: {compose: true},
                   active: 'messaging'

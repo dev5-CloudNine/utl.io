@@ -1,60 +1,105 @@
 <template name="compose">
-	
-<div class="row m-t-md">
-                        <div class="col-md-12">
-                            <div class="row mailbox-header">
-                                <div class="col-md-2">
-                                    <a href="{{pathFor 'buyerDashboard' tab='mails'}}" class="btn btn-success btn-block">Back to Inbox</a>
-                                </div>
-                                <div class="col-md-6">
-                                    <h2>Compose</h2>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="compose-options">
-                                        <div class="pull-right">
-                                            <a href="inbox.html" class="btn btn-default"><i class="fa fa-file-text-o m-r-xs"></i>Draft</a>
-                                            <a href="inbox.html" class="btn btn-danger"><i class="fa fa-trash m-r-xs"></i>Discard</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                        	{{>msgSideMenu}}
-                        </div>
-                        <div class="col-md-10">
-                            <div class="mailbox-content">
-                                <div class="compose-body">
-                                    <form class="form-horizontal">
-                                        <div class="form-group">
-                                            <label for="to" class="col-sm-2 pull-left control-label">To</label>
-                                            <div class="col-sm-10">
-                                                <select class="form-control" id="to">
-                                                	<option value="">Select recipient</option>
-                                                	<option value="abc">abc</option>
-                                                	<option value="xyz">xyz</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="subject" class="col-sm-2 control-label">Subject</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="subject">
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="compose-message">
-                                    <textarea  rows="10" style="width: 100%" id="edit" name="content"></textarea>
-                                </div>
-                                <div class="compose-options">
-                                    <div class="pull-right">
-                                        <button class="btn btn-success" id="sendMail"><i class="fa fa-send m-r-xs"></i>Send</button>
-                                    </div>
-                                </div>
-                            </div>
+    <div class="row m-t-md">
+        <div class="col-md-12">
+            <div class="row mailbox-header">
+                <div class="col-md-2">
+                    <a href="{{pathFor 'dashboard' tab='mails'}}" class="btn btn-success btn-block">Back to Inbox</a>
+                </div>
+                <div class="col-md-6">
+                    <h2>Compose</h2>
+                </div>
+                <div class="col-md-4">
+                    <div class="compose-options">
+                        <div class="pull-right">
+                            <!-- 
+                                            <a href="inbox.html" class="btn btn-default"><i class="fa fa-file-text-o m-r-xs"></i>Draft</a> -->
+                            <a href="{{pathFor 'dashboard' tab='mails'}}" class="btn btn-danger"><i class="fa fa-trash m-r-xs"></i>Discard</a>
+                            <button class="btn btn-success" id="sendMail"><i class="fa fa-send m-r-xs"></i>Send</button>
                         </div>
                     </div>
-
-
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            {{>msgSideMenu}}
+        </div>
+        <div class="col-md-10">
+            <div class="mailbox-content">
+                <div class="compose-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="to" class="col-sm-2 pull-left control-label">To</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="to">
+                                    {{#if $eq type 'newrep'}}
+                                    <option value="{{parentID.id}}"> {{parentID.username}}</option>
+                                    {{else}}
+                                    <option value="">Select recipient</option>
+                                    {{#each userList}}
+                                    <option value="{{_id}}">{{email}}</option>
+                                    {{/each}} {{/if}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" class="col-sm-2 control-label">Subject</label>
+                            <div class="col-sm-10">
+                                {{#if $eq type 'newfwd'}}
+                                	<input type="text" class="form-control" id="subject" value="Fwd: {{parentSub}}"> 
+                                {{/if}}
+                                {{#if $eq type 'newrep'}}
+                                	<input type="text" disabled class="form-control" id="subject" value="{{parentSub}}"> 
+                                {{/if}}
+                                {{#if $eq type 'new'}}
+                                	<input type="text" class="form-control" id="subject" value=""> 
+                                {{/if}}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="compose-message">
+                    <textarea rows="10" style="width: 100%" id="edit" name="content">
+                    {{#if $eq type 'newfwd'}}
+                    	{{{parentMsg}}}
+                    {{/if}}
+                    </textarea>
+                </div>
+                {{#if thread}} 
+                	<br>
+                	<hr>
+	                {{#each message}}
+		                <div class="row">
+		                    <div class="col-md-12">
+		                        <div class="mailbox-content">
+		                            <div class="message-header" style="background-color: aliceblue;padding: 10px;">
+		                                <p style="float: left;">from: {{username}}</p>
+		                                <p class="message-date">{{date}}</p>
+		                            </div>
+		                            <div class="message-content">
+		                                {{{content}}}
+		                            </div>
+		                            {{#if attachment}}
+		                            <div class="message-attachments">
+		                                <p><i class="fa fa-paperclip m-r-xs"></i>2 Attachments - <a href="#">View all</a> | <a href="#">Download all</a></p>
+		                                <div class="message-attachment">
+		                                    <a href="#">
+		                                        <div class="attachment-content">
+		                                            <img src="assets/images/attachment1.jpg" alt="">
+		                                        </div>
+		                                        <div class="attachment-info">
+		                                            <p>Attachment1.jpg</p>
+		                                            <span>444 KB</span>
+		                                        </div>
+		                                    </a>
+		                                </div>
+		                            </div>
+		                            {{/if}}
+		                        </div>
+		                    </div>
+		                </div>
+	                {{/each}} 
+                {{/if}}
+            </div>
+        </div>
+    </div>
 </template>

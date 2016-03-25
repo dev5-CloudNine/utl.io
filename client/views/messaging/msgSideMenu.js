@@ -1,7 +1,7 @@
 Template.msgSideMenu.helpers({
-  msgCount: function() {
+  inboxCount: function() {
     return Messages.find({
-      sender: Meteor.userId()
+    	$and:[{recipient: Meteor.userId()},{ "parent" : { "$exists" : false }}]
     }).fetch().length;
   }
 });

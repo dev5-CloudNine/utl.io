@@ -4,39 +4,45 @@
                         <div class="col-md-12">
                             <div class="row mailbox-header">
                                 <div class="col-md-2">
-                                    <a href="{{pathFor 'buyerDashboard' tab='compose' }}"  class="btn btn-success btn-block">Compose</a>
+                                    <a href="{{pathFor 'dashboard' tab='new' }}"  class="btn btn-success btn-block">Compose</a>
                                 </div>
                                 <div class="col-md-6">
                                     <h2>View Message</h2>
                                 </div>
                                 <div class="col-md-4">
-                                    <form action="#" method="GET">
-                                        <div class="input-group">
-                                            <input type="text" name="search" class="form-control input-search" placeholder="Search...">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-success" type="button"><i class="fa fa-search"></i></button>
-                                            </span>
-                                        </div><!-- Input Group -->
-                                    </form>
-                               </div>
+                                    <div data-id="{{parentID}}" class="message-options pull-right">
+                                       <a href="compose.html" class="btn btn-default reply"><i class="fa fa-reply m-r-xs"></i>Reply</a> 
+                                       <a href="#" class="btn btn-default forward"><i class="fa fa-arrow-right m-r-xs"></i>Forward</a> 
+                                       <a href="#" class="btn btn-danger delete-msg"><i class="fa fa-trash m-r-xs"></i>Delete</a> 
+                                    </div>
+                                    </div>
                             </div>
                         </div>
                         <div class="col-md-2">
                             {{>msgSideMenu}}
                         </div>
                         <div class="col-md-10">
+                            {{#each message}}
                             <div class="mailbox-content">
-                                <div class="message-header">
-                                    <h3><span>Subject:</span> Nullam quis risus eget urna mollis ornare vel eu leo</h3>
-                                    <p class="message-date">21/03/15</p>
-                                </div>
-                                <div class="message-sender">
-                                    <img src="assets/images/avatar2.png" alt="">
-                                    <p>Sandra Smith <span>&lt;example@mail.com&gt;</span></p>
-                                </div>
+                                {{#if $eq parentID _id}}
+                                        <div class="message-header" style="background-color: aliceblue;padding: 10px;">
+                                            <h3>{{subject}}</h3>
+                                            <p class="message-date">{{date}}</p>
+                                        </div>
+                                        <div class="message-sender">
+                                            <p>from: {{username}}</p>
+                                        </div>
+                                {{else}}
+
+                                        <div class="message-header" style="background-color: aliceblue;padding: 10px;">
+                                            <p style="float: left;">from: {{username}}</p>
+                                            <p class="message-date">{{date}}</p>
+                                        </div>
+                                {{/if}}
                                 <div class="message-content">
-                                    <p>Hi David !<br><br>Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula. Cum sociis natoque <a href="#">penatibus</a> et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla.<br><br>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis <b>natoque penatibus</b> et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</p>
+                                    {{{content}}}
                                 </div>
+                                {{#if attachment}}
                                 <div class="message-attachments">
                                     <p><i class="fa fa-paperclip m-r-xs"></i>2 Attachments - <a href="#">View all</a> | <a href="#">Download all</a></p>
                                     <div class="message-attachment">
@@ -62,12 +68,10 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="message-options pull-right">
-                                   <a href="compose.html" class="btn btn-default"><i class="fa fa-reply m-r-xs"></i>Reply</a> 
-                                   <a href="#" class="btn btn-default"><i class="fa fa-arrow-right m-r-xs"></i>Forward</a> 
-                                   <a href="#" class="btn btn-default"><i class="fa fa-trash m-r-xs"></i>Delete</a> 
-                                </div>
+                                {{/if}}
                             </div>
+                            {{/each}}
+
                         </div>
                     </div>
 

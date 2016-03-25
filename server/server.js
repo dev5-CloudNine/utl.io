@@ -9,4 +9,8 @@ Meteor.methods({
     "postMessage" : function(obj) {
     	Messages.insert(obj);
     }
+    ,"deleteMsg": function(id) {
+        Messages.remove({parent:id});
+        Messages.remove({_id:id});
+    }
 });
