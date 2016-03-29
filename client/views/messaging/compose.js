@@ -1,7 +1,7 @@
 	Template.compose.onRendered(function() {
-	    $(function() {
-	        $('#edit').froalaEditor();
-	    });
+		$(document).ready(function() {
+		  $('#summernote').summernote();
+		});
 	});
 
 
@@ -17,7 +17,7 @@
 	        	toastr.error('Please enter subject');
 	        	return;
 	        } 
-	        var content = $('#edit').val();
+	        var content = $('#summernote').summernote('code');
 	        var sender = Meteor.userId();
 	        var message = {};
 	        message.recipient = recipient;
@@ -28,11 +28,21 @@
 	        message.read = false;
 
 	    	var param = Router.current().params.tab;
-	    	if(param.substr(0,6) == 'newrep')
-	    		message.parent = param.substr(6);
 
-	    	console.log(message);
-
+	    	var chain = [];
+	    	if(param.substr(0,6) == 'newrep') {
+	    		chain.push(param.substr(6));
+	    		var temp = [];
+	    		temp = Messages.findOne({'_id':param.substr(6)}).chain;
+	    		console.log(chain);
+	    		console.log("....");
+	    		console.log(temp);
+	    		console.log("....");
+	    		chain = chain.concat(temp);
+	    		console.log(chain);
+	    		message.chain = chain;
+	    	}
+	    	message.chain = chain;
 	        Meteor.call("postMessage", message, function(err, res) {
 	            if (err) {
 	                toastr.error('Failed to send Message');
@@ -97,15 +107,20 @@
 
 	    },
 	    parentMsg: function() {
-	    	var id = Router.current().params.tab.substr(6);
+	    	var param = Router.current().params.tab;
+	    	var id = param.substr(6);
 
 
 	    	var row = $('<div/>', {
 			    'class':'row'
 			});
 
+			var ids = [];
+			ids.push(id);
+			ids = ids.concat(Messages.findOne({'_id':param.substr(6)}).chain);
+			console.log(ids);
 		    Messages.find({
-		    	$or:[{'_id':id},{'parent':id}]
+		    	_id:{$in:ids}
 		    }).map(function(ele){
 		       username = Meteor.users.findOne({'_id':ele.sender}).emails[0].address;
 		       date = moment(new Date(ele.date)).format('LL');
@@ -134,7 +149,7 @@
 					}).appendTo(messageHeader);
 
 		    });
-		    console.log(row[0].innerHTML);
+		    //console.log(row[0].innerHTML);
 		    return row[0].innerHTML;
 
 

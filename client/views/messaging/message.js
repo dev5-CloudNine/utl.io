@@ -30,9 +30,12 @@ Template.message.helpers({
     //return Messages.find({'_id':msgID});
     var msgList = [];
 
-    Messages.find({
-      $or:[{'_id':msgID},{'parent':msgID}]
-    }, 
+
+    var ids = [];
+    ids.push(msgID);
+    ids = ids.concat(Messages.findOne({'_id':msgID}).chain);
+
+    Messages.find({'_id':{$in:ids}}, 
     {
       sort: { date: -1 }
     }).map(function(ele){

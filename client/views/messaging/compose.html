@@ -58,11 +58,15 @@
                     </form>
                 </div>
                 <div class="compose-message">
+                    <div id="summernote">
+                        {{#if $eq type 'newfwd'}}
+                            {{{parentMsg}}}
+                        {{/if}}
+                    </div>
+<!-- 
                     <textarea rows="10" style="width: 100%" id="edit" name="content">
-                    {{#if $eq type 'newfwd'}}
-                    	{{{parentMsg}}}
-                    {{/if}}
-                    </textarea>
+
+                    </textarea> -->
                 </div>
                 {{#if thread}} 
                 	<br>
