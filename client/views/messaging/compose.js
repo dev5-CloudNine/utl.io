@@ -1,7 +1,5 @@
 	Template.compose.onRendered(function() {
-		$(document).ready(function() {
-		  $('#summernote').summernote();
-		});
+		$('#summernote').summernote();
 	});
 
 
@@ -18,6 +16,7 @@
 	        	return;
 	        } 
 	        var content = $('#summernote').summernote('code');
+	        $('#summernote').summernote('destroy');
 	        var sender = Meteor.userId();
 	        var message = {};
 	        message.recipient = recipient;
@@ -34,14 +33,10 @@
 	    		chain.push(param.substr(6));
 	    		var temp = [];
 	    		temp = Messages.findOne({'_id':param.substr(6)}).chain;
-	    		console.log(chain);
-	    		console.log("....");
-	    		console.log(temp);
-	    		console.log("....");
 	    		chain = chain.concat(temp);
-	    		console.log(chain);
 	    		message.chain = chain;
 	    	}
+
 	    	message.chain = chain;
 	        Meteor.call("postMessage", message, function(err, res) {
 	            if (err) {
@@ -118,7 +113,6 @@
 			var ids = [];
 			ids.push(id);
 			ids = ids.concat(Messages.findOne({'_id':param.substr(6)}).chain);
-			console.log(ids);
 		    Messages.find({
 		    	_id:{$in:ids}
 		    }).map(function(ele){

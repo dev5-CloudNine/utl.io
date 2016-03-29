@@ -30,6 +30,7 @@ Template.message.helpers({
     //return Messages.find({'_id':msgID});
     var msgList = [];
 
+    Meteor.call("markRead",msgID);
 
     var ids = [];
     ids.push(msgID);

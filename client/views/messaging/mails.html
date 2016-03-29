@@ -26,6 +26,9 @@
         </div>
         <div class="col-md-10">
             <div class="mailbox-content">
+                {{#if $eq type 'sent'}}
+                    <div class="pull-right"><i class="fa fa-stop" style="color: #EEEAFF;font-size: 25px;"></i> Unread Message</div>
+                {{/if}}
                 <table class="table">
                     <thead>
 <!--                         <tr>

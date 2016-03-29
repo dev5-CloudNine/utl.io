@@ -26,6 +26,17 @@ Template.headerUserMenu.helpers({
       $and:[{recipient: Meteor.userId()},{ "read" :false }]
     }).fetch().length;   
   },
+  msgs: function() {
+    var count = Messages.find({
+      $and:[{recipient: Meteor.userId()},{ "read" :false }]
+    }).fetch().length;
+    return count>0?true:false;
+  },
+  msgList: function() {
+    return Messages.find({
+      $and:[{recipient: Meteor.userId()},{ "read" :false }]
+    }, {limit: 5,sort: { date: -1 }});   
+  },
   corporate: function() {
     return Corporates.findOne({
       userId: Meteor.userId()
