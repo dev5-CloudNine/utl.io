@@ -1,0 +1,38 @@
+<template name="addTeam">
+	<div class="form-group">
+		<div class="row">
+			<div class="col-sm-4">
+				<label>Company Name</label>
+				<input type="text" class="form-control" value="{{#if companyName}}{{companyName}}{{/if}}" disabled="disabled">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<label>Email</label>
+				<input type="text" class="form-control">
+			</div>
+		</div>
+		<div class="row">                                
+			<div class="col-md-2">
+			    <div class="radio">
+			      <label><input class="type" name="corpRole" type="radio" value="corp-manager">Manager</label>
+			    </div>
+			</div>
+			<div class="col-md-2">
+			    <div class="radio">
+			      <label><input class="type" name="corpRole" type="radio" value="corp-accountant">Accountant</label>
+			    </div>
+			</div>
+			<div class="col-md-2">
+			    <div class="radio">
+			      <label><input class="type" name="corpRole" type="radio" value="corp-provider">In House Provider</label>
+			    </div>
+			</div>
+        </div>
+        <div class="row">
+        	<div class="col-sm-4">
+        		<button class="btn btn-primary">Invite</button>
+        	</div>
+        </div>
+	</div>
+</template>	

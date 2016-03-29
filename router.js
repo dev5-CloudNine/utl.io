@@ -63,25 +63,6 @@ Router.map(function() {
         title: "UTL - All Jobs"
     });
 
-    this.route('myJobs', {
-        path: '/myjobs',
-        title: "UTL - My Jobs",
-        data: function() {
-            return {
-                jobs: Jobs.find({
-                    userId: Meteor.userId()
-                }, {
-                    sort: {
-                        createdAt: -1
-                    }
-                })
-            };
-        },
-        waitOn: function() {
-            return subs.subscribe('my_jobs');
-        }
-    });
-
     this.route('appliedJobs', {
         path: '/myAppliedJobs',
         title: "UTL - My Applied Jobs",
@@ -367,6 +348,11 @@ Router.map(function() {
         }
     });
 
+    this.route('addTeam', {
+        path: '/addTeam',
+        title: "UTL - Invite Your Team Members"
+    });
+
     this.route('aboutUs', {
         path: '/about'
     })
@@ -384,8 +370,11 @@ Router.map(function() {
         path: '/corporate-acconts'
     });
     this.route('privacyPolicy', {
-        path: 'privacy-policy'
-    })
+        path: '/privacy-policy'
+    });
+    this.route('payments', {
+        path: '/payments'
+    });
 
     //legacy url redirects
     this.route('experts', function() {

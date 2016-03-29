@@ -2,11 +2,11 @@
 	<div class="jumbotron container-fluid home-image">
 		<div class="container text-center">
 			<div class="row">
-				<h1>Connect. Collaborate. Coachieve</h1>
+				<h1>Connect &amp; Collaborate.</h1>
 			</div>
 			<div class="row">
 				<p>
-					We are here to pair businesses and savvy professionals together to get the job done.
+					Pairing business and savvy professionals across USA, together to get the job done.
 					<br>
 					A simple and precise platform to manage work, workforce and payments.
 					<br>
@@ -17,20 +17,20 @@
 			<div id="callToAction" class="row">
 				{{#if currentUser}}
 					{{#if isInRole 'employer'}}
-						<a class="col-sm-4 col-sm-offset-4 col-xs-12 text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
+						<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
 					{{else}}
 						{{#if isInRole 'individual-employee'}}
-							<a class="col-sm-4 col-lg-offset-1 col-xs-12 text-center btn btn-success btn-md" role="button" href="{{pathFor 'jobs'}}">Find Jobs</a>
-							<a class="col-sm-4 col-lg-offset-2 col-xs-12 text-center btn btn-success btn-md" role="button" href="{{pathFor 'buyers'}}">View Buyers</a>
+							<a class="text-center btn btn-success btn-md" role="button" href="{{pathFor 'jobs'}}">Find Jobs</a>
+							<a class="text-center btn btn-success btn-md" role="button" href="{{pathFor 'buyers'}}">View Buyers</a>
 						{{else}}
 							{{#if isInRole 'company-employee'}}
-								<a class="col-sm-4 col-sm-offset-4 col-xs-12 text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
+								<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
 							{{/if}}
 						{{/if}}
 					{{/if}}
 				{{else}}
-					<a href="{{pathFor 'jobNew'}}" class="col-sm-4 col-sm-offset-1 col-xs-12 text-center btn btn-primary btn-md">Post A Job</a>
-					<a class="col-sm-4 col-lg-offset-2 col-xs-12 text-center btn btn-primary btn-md" role="button" href="{{pathFor 'profileNew'}}">Create a Profile</a>
+					<a href="{{pathFor 'jobNew'}}" class="text-center btn btn-primary btn-md">Post A Job</a>
+					<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'profileNew'}}">Create a Profile</a>
 				{{/if}}
 			</div>
 		</div>
