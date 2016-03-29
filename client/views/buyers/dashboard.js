@@ -7,5 +7,11 @@ Template.dashboard.helpers({
 				createdAt: -1
 			}
 		});
+	},
+	buyerProfile: function() {
+		return Buyers.find({
+			userId: Meteor.userId()
+		});
+		console.log(buyerProfile);
 	}
 });

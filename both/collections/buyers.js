@@ -73,7 +73,11 @@ Buyers.attachSchema(
   location: {
   	type: String,
   	label: "Location",
-  	max: 256
+  	max: 256,
+    autoform: {
+      type: "typeahead",
+      options: CITY_OPTIONS
+    }
   },
   description: {
   	type: String,
