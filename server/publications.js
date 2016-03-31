@@ -66,6 +66,11 @@ Meteor.publish("homeJobs", function() {
                 status: true,
                 featuredThrough: true,
                 servicelocation: true,
+                ratebasis: true,
+                htmlDescription: true,
+                freelancer_nets: true,
+                servicelocation: true,
+                location: true
             }
         })
     ];
@@ -155,10 +160,13 @@ Meteor.publish("jobs", function(limit) {
             location: true,
             createdAt: true,
             updatedAt: true,
-            remote: true,
+            servicelocation: true,
             jobtype: true,
             status: true,
-            featuredThrough: true
+            ratebasis: true,
+            featuredThrough: true,
+            htmlDescription: true,
+            freelancer_nets: true
         },
         sort: {
             featuredThrough:-1,

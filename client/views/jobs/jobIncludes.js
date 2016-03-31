@@ -62,3 +62,7 @@ Template.jobFeatured.events({
     });
   }
 });
+
+// Template.jobShortDesc.helpers({
+//   shortDesc: 
+// })

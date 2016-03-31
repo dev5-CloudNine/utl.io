@@ -3,22 +3,36 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-8">
-                    <h4><a href="{{pathFor 'job'}}">{{title}}</a></h4>
+                    {{>jobLabels}}
                 </div>
                 <div class="col-sm-4 text-right">
-                    {{>jobLabels}}
+                    <span><a href class="fa fa-heart-o fa-2x" style="text-decoration:none"></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span><a href class="fa fa-thumbs-o-down fa-2x" style="text-decoration:none"></a></span>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-3">
-                     
-                    <i class="fa fa-calendar"></i> {{formatDate createdAt}}
-                    {{!-- {{#if featured}} - Featured Until {{formatDate featuredThrough}}{{/if}}
-                     --}}
-                    
+                <div class="col-sm-12">
+                    <h4><a href="{{pathFor 'job'}}">{{title}}</a></h4>
                 </div>
-                <div class="col-sm-9 text-right">
-                    <p><i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}} {{#if location}}-{{/if}} {{location}}</p>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    {{#if $eq servicelocation 'Field Job'}}
+                        <p>{{location}}</p>
+                    {{else}}
+                        <p>Remote Job</p>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    {{{shortDesc}}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ratebasis}}{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;
+                    <i class="fa fa-calendar"></i>&nbsp;Posted on: {{formatDate createdAt}}
                 </div>
             </div>
         </div>

@@ -48,7 +48,6 @@ yogiben:admin
 ongoworks:speakingurl
 staringatlights:infinite-scroll
 useraccounts:iron-routing
-standard-minifiers
 meteor-base
 mobile-experience
 mongo
@@ -85,3 +84,5 @@ yogiben:autoform-file
 cfs:filesystem
 comerc:bs-typeahead
 comerc:autoform-typeahead
+standard-minifier-css
+standard-minifier-js
