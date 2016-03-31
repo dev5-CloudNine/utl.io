@@ -8,7 +8,8 @@
     },
     "astronomer": {
       "appId": ""
-    }
+    },
+    "ROOT_URL": "http://localhost"
   },
   "kadira": {
      "appId": "",
