@@ -81,8 +81,10 @@ pauli:accounts-linkedin
 easy:search
 arkham:comments-ui
 yogiben:autoform-file
-cfs:filesystem
 comerc:bs-typeahead
 comerc:autoform-typeahead
 standard-minifier-css
 standard-minifier-js
+cfs:gridfs
+cfs:standard-packages
+cfs:ui

@@ -176,6 +176,26 @@ Meteor.publish("jobs", function(limit) {
     });
 });
 
+Meteor.publish("favorite_jobs", function() {
+    check(arguments, [Match.Any]);
+    return Jobs.find({status: "active"}, {
+        fields: {
+            title: true,
+            company: true,
+            location: true,
+            createdAt: true,
+            updatedAt: true,
+            servicelocation: true,
+            jobtype: true,
+            status: true,
+            ratebasis: true,
+            featuredThrough: true,
+            htmlDescription: true,
+            freelancer_nets: true
+        }
+    })
+})
+
 Meteor.publish("my_jobs", function() {
     check(arguments, [Match.Any]);
     if (this.userId) {
@@ -299,7 +319,7 @@ Meteor.publish("buyerUsers", function() {
 });
 
 Meteor.publish("corporateUsers", function() {
-    check(argumenets, [Match.Any]);
+    check(arguments, [Match.Any]);
     return [
         Users.find({
             isCorporate: true
