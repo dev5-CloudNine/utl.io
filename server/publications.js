@@ -66,6 +66,11 @@ Meteor.publish("homeJobs", function() {
                 status: true,
                 featuredThrough: true,
                 servicelocation: true,
+                ratebasis: true,
+                htmlDescription: true,
+                freelancer_nets: true,
+                servicelocation: true,
+                location: true
             }
         })
     ];
@@ -155,10 +160,13 @@ Meteor.publish("jobs", function(limit) {
             location: true,
             createdAt: true,
             updatedAt: true,
-            remote: true,
+            servicelocation: true,
             jobtype: true,
             status: true,
-            featuredThrough: true
+            ratebasis: true,
+            featuredThrough: true,
+            htmlDescription: true,
+            freelancer_nets: true
         },
         sort: {
             featuredThrough:-1,
@@ -167,6 +175,26 @@ Meteor.publish("jobs", function(limit) {
         limit: limit
     });
 });
+
+Meteor.publish("favorite_jobs", function() {
+    check(arguments, [Match.Any]);
+    return Jobs.find({status: "active"}, {
+        fields: {
+            title: true,
+            company: true,
+            location: true,
+            createdAt: true,
+            updatedAt: true,
+            servicelocation: true,
+            jobtype: true,
+            status: true,
+            ratebasis: true,
+            featuredThrough: true,
+            htmlDescription: true,
+            freelancer_nets: true
+        }
+    })
+})
 
 Meteor.publish("my_jobs", function() {
     check(arguments, [Match.Any]);
@@ -291,7 +319,7 @@ Meteor.publish("buyerUsers", function() {
 });
 
 Meteor.publish("corporateUsers", function() {
-    check(argumenets, [Match.Any]);
+    check(arguments, [Match.Any]);
     return [
         Users.find({
             isCorporate: true

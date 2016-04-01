@@ -26,6 +26,9 @@ Meteor.methods({
         });
 
     },
+    addToFavorites: function(jobId) {
+        Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteJobs: jobId}});
+    },
     adminSetJobStatus: function(jobId, status) {
         check(jobId, String);
         check(status, String);

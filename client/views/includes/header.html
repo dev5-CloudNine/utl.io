@@ -76,13 +76,9 @@
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
             <i style="font-size: 20px;padding: 3px;color: #6C6C6C;" class="fa fa-envelope fa-fw"></i>({{msgCount}})<span class="caret"></span>
         </a>
-        {{#if msgs}}
         <ul class="dropdown-menu" role="menu">
-            {{#each msgList}}
-            <li style="padding: 5px;"><a href="/dashboard/msg{{_id}}"><i class="fa fa-envelope-o"></i>  {{subject}}</a></li>
-            {{/each}}
+            <li><a href="{{pathFor 'dashboard' tab='mails-inbox'}}"><i class="fa fa-folder-open"></i>Goto Inbox</a></li>
         </ul>
-        {{/if}}
     </li>
 
     <li id="user-drop-down" class="dropdown">

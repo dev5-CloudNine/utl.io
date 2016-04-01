@@ -38,6 +38,7 @@ Meteor.startup(function () {
 
 
 Accounts.onCreateUser(function(options, user) {
+    user.favoriteJobs = [];
     if (options.profile)
         user.profile = options.profile;
     user.roles = options.profile.role;

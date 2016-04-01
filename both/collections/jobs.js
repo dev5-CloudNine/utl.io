@@ -1,9 +1,3 @@
-Files = new FS.Collection("files", {
-  stores: [new FS.Store.FileSystem("filesStore", {
-    path: "~/files/documents"
-  })]
-})
-
 Jobs = new Mongo.Collection("jobs");
 JobsIndex = new EasySearch.Index({
   collection: Jobs,
@@ -204,13 +198,14 @@ Jobs.attachSchema(
         }
     },
     fileId: {
-      type: [String],
+      type: String,
       label: "Upload File",
       optional: true,
       autoform: {
         afFieldInput: {
           type: 'cfs-files',
-          collection: "files"
+          collection: "UploadedDocuments",
+          label: "Uploaded Documents"
         }
       }
     },

@@ -13,5 +13,19 @@ Template.dashboard.helpers({
 			userId: Meteor.userId()
 		});
 		console.log(buyerProfile);
+	},
+	favJobs: function() {
+		var favJobsIds = [];
+		var favJobsArray = [];
+		var userDetails = Meteor.user();
+		userDetails.favoriteJobs.forEach(function (favjobs) {
+			favJobsIds.push(favjobs);
+		});
+		favJobsIds.forEach(function(id) {
+			favJobsArray.push(Jobs.findOne({
+				_id: id
+			}));
+		});
+		return favJobsArray;
 	}
 });
