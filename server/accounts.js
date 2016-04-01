@@ -41,6 +41,7 @@ Accounts.onCreateUser(function(options, user) {
     if (options.profile)
         user.profile = options.profile;
     user.roles = options.profile.role;
+    user.companyName = options.profile.companyName;
     var email = getUserEmail(user);
     if (email) {
         user.emailHash = CryptoJS.MD5(email.trim().toLowerCase()).toString();

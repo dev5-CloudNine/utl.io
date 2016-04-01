@@ -21,14 +21,14 @@
                                 <li><a href="{{pathFor 'corporates'}}">View Corporates</a></li>
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                             {{/if}}
-                            {{#if isInRole 'employer'}}
+                            {{#if isInRole 'buyer'}}
                                 <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
                                 <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
                                 {{#unless currentUser.isBuyer}}
                                     <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
                                 {{/unless}}
                             {{/if}}
-                            {{#if isInRole 'individual-employee'}}
+                            {{#if isInRole 'provider'}}
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                                 <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
                                 <li><a href="{{pathFor 'corporates'}}">View Corporates</a></li>
@@ -38,7 +38,7 @@
                                     </li>
                                 {{/unless}}
                             {{/if}}
-                            {{#if isInRole 'company-employee'}}
+                            {{#if isInRole 'corporate-admin'}}
                                 {{#unless currentUser.isCorporate}}
                                     <li>
                                         <a href="{{pathFor 'corporateNew'}}">Create Your Profile</a>
@@ -90,13 +90,13 @@
 			{{> avatar user=currentUser size="small"}}{{currentUserDisplayName}} <span class="caret"></span>
 		</a>
         <ul class="dropdown-menu" role="menu">
-            {{#if isInRole 'employer'}}
+            {{#if isInRole 'buyer'}}
                 <li>
                     <a href="{{pathFor 'dashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a>
                     <li class="divider"></li>
                 </li>
                 {{else}}
-                {{#if isInRole 'company-employee, individual-employee'}}
+                {{#if isInRole 'corporate-admin, provider'}}
                     <li><a href="{{pathFor 'dashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a></li>
                     <li class="divider"></li>
                 {{/if}}
@@ -105,7 +105,7 @@
                 <li><a href="/admin"><i class="fa fa-cogs fa-fw"></i> Admin</a></li>
                 <li class="divider"></li>
             {{/if}}
-            {{#if isInRole 'individual-employee'}}
+            {{#if isInRole 'provider'}}
                 {{#if currentUser.isDeveloper}}
                     <li>
                         {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
@@ -116,7 +116,7 @@
                     </li>
                 {{/if}}
             {{/if}}
-            {{#if isInRole 'company-employee'}}
+            {{#if isInRole 'corporate-admin'}}
                 {{#if currentUser.isCorporate}}
                     <li>
                         {{#with corporate}}<a href="{{pathFor 'corporate'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
@@ -127,7 +127,7 @@
                     </li>
                 {{/if}}
             {{/if}}
-            {{#if isInRole 'employer'}}
+            {{#if isInRole 'buyer'}}
                 {{#if currentUser.isBuyer}}
                     <li>
                         {{#with buyer}}<a href="{{pathFor 'buyer'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}

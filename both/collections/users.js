@@ -52,6 +52,10 @@ UserSchema = new SimpleSchema({
   createdAt: {
     type: Date
   },
+  companyName: {
+    type: String,
+    optional: true
+  },
   profile: {
     type: UserProfileSchema,
     optional: true

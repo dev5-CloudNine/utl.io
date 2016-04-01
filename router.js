@@ -101,7 +101,7 @@ Router.map(function() {
         onBeforeAction: function () {
             if (Meteor.user() &&
                 Meteor.user().roles &&
-                ((Meteor.user().roles.indexOf("employer")) != -1 || (Meteor.user().roles.indexOf("company-employee")) != -1 )
+                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 )
                 ) {
                 this.next();
             } else {

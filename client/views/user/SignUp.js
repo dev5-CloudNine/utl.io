@@ -1,4 +1,11 @@
 Template.SignUp.events({
+  'change input.type' : function(event) {
+    var val = $(event.currentTarget).val();
+    if(val=='corporate-admin')
+      $('.company-name').show();
+    else
+      $('.company-name').hide();
+  },
  'submit #signup-form' : function (event) {
   event.preventDefault();
   var user = {};
@@ -7,6 +14,8 @@ Template.SignUp.events({
   var role=[];
   var roleVal = $('input[name=type]:checked', '#signup-form').val();
   user.profile = {};  
+  if(roleVal=='corporate-admin')
+    user.profile['companyName'] = $('.txt-company-name').val();
   if(roleVal) {
     role.push(roleVal);
     user.profile["role"] = role;
@@ -38,7 +47,7 @@ Template.SignUp.events({
     //  }
     // });
    } else {
-    toastr.success('success','success');
+    toastr.success('success');
     // bootbox.dialog({
     //  message : 'You are now part of the interactive digital experience for all IBM conferences and an exclusive member of the social community. Enjoy live and on-demand broadcasts, theCUBE interviews, CrowdChats, and access to premium content and presentations. Engage and interact in real time with influencers and peers in a social space designed for collaboration and networking. Discover all that IBMGO has to offer before, during and after the event.<br/>Please check your email for your account verification and welcome message. Once you receive that, you\'ll be able to log into your account.',
     //  title : "Welcome to IBMGO!",
@@ -58,6 +67,7 @@ Template.SignUp.events({
 });
 
 Template.SignUp.rendered = function () {
+  $('.company-name').hide();
  $(".chosen-select").chosen();
  jQuery.validator.addMethod("genericPhoneNumber", function (phone_number, element) {
   phone_number = phone_number.replace(/\s+/g, "");

@@ -46,8 +46,10 @@ Template.headerUserMenu.helpers({
 
 Template.headerUserMenu.events({
   'click #signOut': function(event, template) {
-    Meteor.logout();
-    Router.go("/");
+    //Meteor.logout();
+    Meteor.logout(function(err) {
+      Router.go("/");
+    });
   },
   'click .navbar-nav a': function(event, template) {
     var targetButton = document.getElementsByClassName('navbar-toggle')[0];
