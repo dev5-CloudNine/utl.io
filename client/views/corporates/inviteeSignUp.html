@@ -1,0 +1,39 @@
+<template name="inviteeSignUp">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="column">
+                <form class="form-horizontal" id="signup-form" data-type="{{type}}" data-companyName="{{companyName}}">
+                    <fieldset>
+                        <!-- Form Name -->
+                        <legend>Sign Up</legend>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="email">Email</label>
+                            <div class="col-md-4">
+                                <input id="email" name="email" value="{{email}}" readonly placeholder="email address" class="form-control input-md">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="password">Password</label>
+                            <div class="col-md-4">
+                                <input id="password" name="password" placeholder="password" class="form-control input-md" type="password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword" class="col-md-3 control-label">Confirm Password</label>
+                            <div class="col-md-4">
+                                <input id="confirmPassword" name="confirmPassword" placeholder="confirm password" class="form-control input-md" type="password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="button1id"></label>
+                            <div class="col-md-8">
+                                <input type="submit" class='signup-submit btn btn-primary' value="Submit" />
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</template>

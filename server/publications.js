@@ -27,6 +27,10 @@ Meteor.publish("messages", function () {
     return Messages.find();
 });
 
+Meteor.publish("tempInvitation", function () {
+    return TempInvitation.find();
+});
+
 Meteor.publish("citiesList", function() {
     return Cities.find();
 })

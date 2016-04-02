@@ -20,45 +20,12 @@ Template.SignUp.events({
     role.push(roleVal);
     user.profile["role"] = role;
   }
-  // user.profile["firstName"] = $('#firstName').val();
-  // user.profile["lastName"] = $('#lastName').val();
-  // user.profile["phone"] = $('#phone').val();
-  // user.profile["company"] = $('#company').val();
-  // user.profile["jobTitle"] = $('#jobTitle').val();
-  // user.profile["address"] = $('#address').val();
-  // user.profile["city"] = $('#city').val();
-  // user.profile["state"] = $('#state').val();
-  // user.profile["zip"] = $('#zip').val();
-  // user.profile["country"] = $('#country').val();
-  // user.profile["areaOfInterest"] = $('#areaOfInterest').val(); 
   Meteor.call('onUserSignup', user, function (error, result) {
    if (error) {
     toastr.error(error.message,'Error');
     console.log(error);
-    // bootbox.dialog({
-    //  message : error.reason,
-    //  title : "Error",
-    //  buttons : {
-    //   danger : {
-    //    label : "Close",
-    //    className : "btn-danger",
-    //    callback : function () {}
-    //   }
-    //  }
-    // });
    } else {
-    toastr.success('success');
-    // bootbox.dialog({
-    //  message : 'You are now part of the interactive digital experience for all IBM conferences and an exclusive member of the social community. Enjoy live and on-demand broadcasts, theCUBE interviews, CrowdChats, and access to premium content and presentations. Engage and interact in real time with influencers and peers in a social space designed for collaboration and networking. Discover all that IBMGO has to offer before, during and after the event.<br/>Please check your email for your account verification and welcome message. Once you receive that, you\'ll be able to log into your account.',
-    //  title : "Welcome to IBMGO!",
-    //  buttons : {
-    //   danger : {
-    //    label : "OK",
-    //    className : "btn-success",
-    //    callback : function () {}
-    //   }
-    //  }
-    // });    
+    toastr.success('success'); 
     Meteor.call('postUserSignup', result, function (error, result2) {});
     Router.go('home');
    }

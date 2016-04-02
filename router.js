@@ -350,7 +350,11 @@ Router.map(function() {
 
     this.route('addTeam', {
         path: '/addTeam',
-        title: "UTL - Invite Your Team Members"
+        title: "UTL - Invite Your Team Members",
+        waitOn: function() {
+            Meteor.subscribe("userList");
+            return Meteor.subscribe("tempInvitation");
+        }
     });
 
     this.route('aboutUs', {
@@ -397,6 +401,22 @@ Router.map(function() {
     this.route('signUp', {
         path: '/SignUp'
     });
+
+
+    this.route('inviteeSignUp', {
+        path: '/inviteeSignUp/:id',
+        title: "SignUp",
+        waitOn: function() {
+            Meteor.logout();
+            return Meteor.subscribe("tempInvitation");
+        },
+        data: function() {
+            return TempInvitation.findOne({'_id':this.params.id});
+        }
+    });
+
+
+
 
 });
 

@@ -1,8 +1,47 @@
 Template.addTeam.helpers({
 	companyName: function () {
-		var corpInfo = Corporates.findOne({
-			userId: Meteor.userId()
-		});
-		return corpInfo.companyName;
+		var corpInfo = Meteor.users.findOne().companyName;
+		return corpInfo;
 	}
 });
+
+
+Template.addTeam.events({
+	'click button.invite': function (event) {
+
+		var email = $('input.email').val();
+		var type = $('input[name=corpRole]:checked').val();
+
+		if(!email) {
+			toastr.error('Please enter email id');
+			return;
+		}
+		if(!type) {
+			toastr.error('Please select account type');
+			return;
+		}
+
+		var exists = Meteor.users.findOne({'emails.address':email});
+		if(exists) {
+			toastr.error('Email ID exists');
+			//return;
+		}
+
+
+		var invitation = {};
+		invitation.email = email;
+		invitation.companyName = Meteor.users.findOne({_id:Meteor.userId()}).companyName;
+		invitation.type = type;
+
+		Meteor.call("createInvite",invitation,function(err,res){
+			if(err){
+				toastr.error("Failed to invite")
+			} else {
+				toastr.success("User has been invited")
+			}
+		});
+
+
+	}
+});
+

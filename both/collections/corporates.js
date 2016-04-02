@@ -180,3 +180,5 @@ Corporates.helpers({
     return getSlug(this.displayName() + ' ' + this.title);
   }
 });
+
+TempInvitation = new Mongo.Collection('tempInvitation');
