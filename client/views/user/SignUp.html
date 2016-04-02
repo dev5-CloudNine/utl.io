@@ -4,23 +4,7 @@
             <div class="column">
                 <form class="form-horizontal" id="signup-form">
                     <fieldset>
-                        <!-- Form Name -->
                         <legend>Sign Up</legend>
-                        <!--                         <div class="form-group">
-                            <label class="col-md-3 control-label" for="firstName">Name</label>
-                            <div class="col-md-4">
-                                <input id="firstName" name="firstName" placeholder="first name" class="form-control input-md" type="text" maxlength="30">
-                            </div>
-                            <div class="col-md-4">
-                                <input id="lastName" name="lastName" placeholder="last name" class="form-control input-md" type="text" maxlength="30">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="phone">Phone</label>
-                            <div class="col-md-4">
-                                <input id="phone" name="phone" placeholder="phone number with country code" class="form-control input-md" type="text">
-                            </div>
-                        </div> -->
                         <div class="form-group">
                             <label class="col-md-3 control-label" for="email">Email</label>
                             <div class="col-md-4">
@@ -46,66 +30,30 @@
                                     <div class="col-md-12" style="">
                                         <div class="radio">
                                             <label>
-                                                <input class="type" name="type" type="radio" value="buyer">I am a buyer. I want to post jobs and hire service providers</label>
+                                                <input class="type" name="type" type="radio" value="buyer">I am a buyer. I want to post jobs and hire service providers. <a href="{{pathFor 'buyerBenefits'}}">Read more.</a>
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="radio">
                                             <label>
-                                                <input class="type" name="type" type="radio" value="provider">I am a service provider. I want to find jobs and connect with buyers</label>
+                                                <input class="type" name="type" type="radio" value="provider">I am a service provider. I want to find jobs and connect with buyers. <a href="{{pathFor 'providerBenefits'}}">Read more.</a>
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="radio">
                                             <label>
-                                                <input class="type" name="type" type="radio" value="corporate-admin">I want a corporate account</label>
+                                                <input class="type" name="type" type="radio" value="corporate-admin">I want a corporate account. <a href="{{pathFor 'corporateAccounts'}}">Read more.</a>
+                                            </label>
                                             <label class="company-name">
-                                                   <input type="text" placeholder="Enter company name" class="form-control input-md txt-company-name">
-                                                </label>
+                                                <input type="text" placeholder="Enter company name" class="form-control input-md txt-company-name">
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!--                         <div class="form-group">
-                            <label class="col-md-3 control-label" for="country">Country</label>
-                            <div class="col-md-4">
-                                <select id="country" name="country" class="form-control">
-                                    <option value="">Select country</option>
-                                    {{#each countries}}
-                                    <option value="{{name}}">{{name}}</option>
-                                    {{/each}}
-                                </select>
-                            </div>
-                        </div> -->
-                        <!-- 
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="areaOfInterest">Skills</label>
-                            <div class="col-md-4 select-interests">
-                                <select data-placeholder="" class="form-control chosen-select" id="areaOfInterest" name="areaOfInterest"  multiple >
-                                    <option value="">Select some field</option>
-                                    <option value="Analytics">Analytics</option>
-                                    <option value="DevOps">DevOps</option>
-                                    <option value="Analytics">Analytics</option>
-                                    <option value="Internet of Things">Internet of Things</option>
-                                    <option value="DevOps">DevOps</option>
-                                    <option value="Cloud">Cloud</option>
-                                    <option value="IT and Cloud Managed Solutions">IT and Cloud Managed Solutions</option>
-                                    <option value="Business Consulting Services">Business Consulting Services</option>
-                                    <option value="Industry Solutions">Industry Solutions</option>
-                                    <option value="Mid-Market Solutions">Mid-Market Solutions</option>
-                                    <option value="Commerce Solutions">Commerce Solutions</option>
-                                    <option value="Social Business">Social Business</option>
-                                    <option value="Mobility Solutions">Mobility Solutions</option>
-                                    <option value="Systems">Systems</option>
-                                    <option value="Security Solutions">Security Solutions</option>
-                                    <option value="C-Suite/Line of Business Solutions">C-Suite/Line of Business Solutions</option>
-                                    <option value="Business Technology Services">Business Technology Services</option>
-                              
-                                </select>
-                            </div>
-                        </div> -->
-                        <!-- Button (Double) -->
                         <div class="form-group">
                             <label class="col-md-3 control-label" for="button1id"></label>
                             <div class="col-md-8">

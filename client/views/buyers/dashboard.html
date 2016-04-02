@@ -45,7 +45,12 @@
                     <h4>Dashboard (Coming soon! WIP!)</h4>
                 </div>
                 <div class="tab-pane fade {{#if $eq active 'favoriteusers'}} in active {{/if}}" id="favusers">
-                    <h4>Favorite Users (Coming soon! WIP!)</h4>
+                    <br>
+                    {{#each favUsers}}
+                        {{>profileSmall}}
+                    {{else}}
+                        You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
+                    {{/each}}
                 </div>
                 <div class="tab-pane fade {{#if $eq active 'myjobs'}} in active {{/if}}" id="jobs">
                     <br>

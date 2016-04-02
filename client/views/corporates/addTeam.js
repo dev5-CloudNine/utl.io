@@ -1,10 +1,9 @@
 Template.addTeam.helpers({
 	companyName: function () {
-		var corpInfo = Meteor.users.findOne().companyName;
-		return corpInfo;
+		var corpInfo = Meteor.user();
+		return corpInfo.companyName;
 	}
 });
-
 
 Template.addTeam.events({
 	'click button.invite': function (event) {
@@ -24,9 +23,7 @@ Template.addTeam.events({
 		var exists = Meteor.users.findOne({'emails.address':email});
 		if(exists) {
 			toastr.error('Email ID exists');
-			//return;
 		}
-
 
 		var invitation = {};
 		invitation.email = email;
@@ -40,8 +37,6 @@ Template.addTeam.events({
 				toastr.success("User has been invited")
 			}
 		});
-
-
 	}
 });
 

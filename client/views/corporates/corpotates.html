@@ -1,6 +1,6 @@
 <template name="corporates">
 	{{#if currentUser}}
-		{{#if isInRole 'company-employee, individual-employee, admin, employer'}}
+		{{#if isInRole 'corporate-admin, provider, admin'}}
 			<div class="row">
 				{{#each corporates}}
 			        {{>corporateSmall}}

@@ -69,5 +69,9 @@ Template.corporateFields.helpers({
   "customImagePreviewUrl": function(event, template) {
     if(customImagePreviewUrl.get())
       return customImagePreviewUrl.get();
+  },
+  companyName: function() {
+    var corpInfo = Meteor.user();
+    return corpInfo.companyName;
   }
 });

@@ -7,6 +7,7 @@ accounts-ui-unstyled@1.1.10
 alanning:roles@1.2.15
 aldeed:autoform@5.8.1
 aldeed:autoform-bs-datepicker@1.1.1
+aldeed:autoform-bs-datetimepicker@1.0.6
 aldeed:collection2@2.9.1
 aldeed:collection2-core@1.1.1
 aldeed:delete-button@2.0.0
@@ -191,6 +192,7 @@ templating-tools@1.0.2
 themeteorchef:jquery-validation@1.14.0
 tmeasday:publish-counts@0.7.3
 tracker@1.0.11
+tsega:bootstrap3-datetimepicker@4.17.37_1
 twbs:bootstrap@3.3.6
 ui@1.0.9
 underscore@1.0.6

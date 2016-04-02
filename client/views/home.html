@@ -16,14 +16,14 @@
 			
 			<div id="callToAction" class="row">
 				{{#if currentUser}}
-					{{#if isInRole 'employer'}}
+					{{#if isInRole 'buyer'}}
 						<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
 					{{else}}
-						{{#if isInRole 'individual-employee'}}
+						{{#if isInRole 'provider'}}
 							<a class="text-center btn btn-success btn-md" role="button" href="{{pathFor 'jobs'}}">Find Jobs</a>
 							<a class="text-center btn btn-success btn-md" role="button" href="{{pathFor 'buyers'}}">View Buyers</a>
 						{{else}}
-							{{#if isInRole 'company-employee'}}
+							{{#if isInRole 'corporate-admin'}}
 								<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
 							{{/if}}
 						{{/if}}
@@ -37,17 +37,21 @@
 	</div>
 	{{#if currentUser}}
 		<div class="container">
-			<div class="row">
-				<div class="col-sm-12">
-					{{>jobsRecent}}
+			{{#if isInRole 'corporate-admin, provider'}}
+				<div class="row">
+					<div class="col-sm-12">
+						{{>jobsRecent}}
+					</div>
 				</div>
-			</div>
-			<hr>
-			<div class="row">
-				<div class="col-sm-12">
-					{{>profilesRecent}}
+			{{/if}}
+			{{#if isInRole 'corporate-admin, buyer'}}
+				<hr>
+				<div class="row">
+					<div class="col-sm-12">
+						{{>profilesRecent}}
+					</div>
 				</div>
-			</div>
+			{{/if}}
 		</div>
 	{{/if}}
 </template>

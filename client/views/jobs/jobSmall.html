@@ -6,7 +6,7 @@
                     {{>jobLabels}}
                 </div>
                 <div class="col-sm-4 text-right">
-                    <span><a href class="fa fa-heart-o fa-2x addToFavorites" style="text-decoration:none"></a></span>
+                    <span><a href class="fa fa-heart fa-2x addToFavorites" style="text-decoration:none"></a></span>
                 </div>
             </div>
             <div class="row">
@@ -17,9 +17,9 @@
             <div class="row">
                 <div class="col-sm-9">
                     {{#if $eq servicelocation 'Field Job'}}
-                        <p>{{location}}</p>
+                        <p><i class="fa fa-map-marker"></i>&nbsp;{{location}}</p>
                     {{else}}
-                        <p>Remote Job</p>
+                        <p><i class="fa fa-map-marker"></i>&nbsp;Remote Job</p>
                     {{/if}}
                 </div>
             </div>

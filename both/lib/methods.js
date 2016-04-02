@@ -13,9 +13,7 @@ Meteor.methods({
             throw new Meteor.Error("You can only deactivate your own job.");
 
 		if (job.status !== "active")
-            throw new Meteor.Error("You can only deactivate an active job.");
-
-      
+            throw new Meteor.Error("You can only deactivate an active job.");      
         
         Jobs.update({
             _id: jobId
@@ -28,6 +26,9 @@ Meteor.methods({
     },
     addToFavorites: function(jobId) {
         Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteJobs: jobId}});
+    },
+    addUserToFav: function(uId) {
+        Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteUsers: uId}});
     },
     adminSetJobStatus: function(jobId, status) {
         check(jobId, String);
@@ -66,7 +67,6 @@ Meteor.methods({
 
         if(job.userId !== this.userId)
         	throw new Meteor.Error("You can only pay for you own job post.");
-
 
         if(Meteor.isServer){
         	var result = Stripe.charges.create({
