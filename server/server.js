@@ -25,5 +25,8 @@ Meteor.methods({
           text: "Please click on the following link to join " + obj.companyName + ". "
                 + Meteor.absoluteUrl("inviteeSignUp/"+id)
         });
+    },
+    "deleteInvite": function(id) {
+        TempInvitation.remove({_id:id});
     }
 });

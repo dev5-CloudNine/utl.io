@@ -10,12 +10,6 @@ SyncedCron.add({
             randomSorter:Math.floor(Math.random()*1000000)
         }});
     });
-
-    TempInvitation.find({}).forEach(function (invite) {
-      var exists = Meteor.users.findOne({'emails.address':invite.email});
-      if(exists)
-        TempInvitation.remove({_id:invite._id});
-    });
   }
 });
 

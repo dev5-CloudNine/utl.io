@@ -5,12 +5,15 @@ Template.inviteeSignUp.events({
   var user = {};
   user['email'] = $('#email').val();
   user['password'] = $('#password').val();
-  user.profile = {};  
-  user.profile['companyName'] = $('#signup-form').data('companyName');
-  var role=[];
-  role.push($('#signup-form').data('type'));
-  user.profile["role"] = role;
 
+  var invite = TempInvitation.findOne({_id:Router.current().params.id});
+
+  user.profile = {};  
+  user.profile['companyName'] = invite.companyName;
+  var role=[];
+  role.push(invite.type);
+  user.profile["role"] = role;
+  Meteor.call("deleteInvite",invite._id);
 
   Meteor.call('onUserSignup', user, function (error, result) {
    if (error) {
