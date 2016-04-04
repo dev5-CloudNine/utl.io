@@ -24,8 +24,16 @@
 							<small>
 								{{#if location}}
 									<i class="fa fa-map-marker"></i>&nbsp;{{location}}
-									<hr>
 								{{/if}}
+								{{#if contactNumber}}
+									<br>
+									<i class="fa fa-mobile">&nbsp;{{contactNumber}}</i>
+								{{/if}}
+								{{#if contactEmail}}
+									<br>
+									<i class="fa fa-envelope">&nbsp;{{contactEmail}}</i>
+								{{/if}}
+								<hr>
 								{{#if url}}
 									<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Web Site</a>
 								{{/if}}
@@ -36,29 +44,29 @@
 								{{#if resumeUrl}}
 									<br>
 									<i class="fa fa-file-text"></i>&nbsp;&nbsp;<a href="{{resumeUrl}}" target="_blank">View Resume</a>
+									<hr>
 								{{/if}}
 							</small>
-							<hr>
 							<small>
 								{{#if eintinNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;EIN/TIN Number: {{eintinNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;EIN/TIN: {{eintinNumber}}
 								{{/if}}
 								<br>
 								{{#if socialSecurityNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;Social Security Number: {{socialSecurityNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;SSN: {{socialSecurityNumber}}
 								{{/if}}
 								<br>
 								{{#if insuranceNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;Insurance Number: {{insuranceNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;INS: {{insuranceNumber}}
+									<hr>
 								{{/if}}
 							</small>
 							<small>
-								<hr>
 								{{#if avgRatesPerHour}}
 									<i class="fa fa-envelope"></i>&nbsp;Average Rate per Hour: {{avgRatesPerHour}} USD
+									<hr>
 								{{/if}}
 							</small>
-							<hr>
 							<i class="fa fa-calendar"></i> Created on {{formatDate createdAt}}
 						</div>
 						<div class="col-sm-9">
@@ -113,7 +121,6 @@
 									{{#if certifications}}
 										<hr>
 										<h4>Certifications</h4>
-										<br>
 										{{#each certifications}}
 											<h5>{{certificationName}}</h5>
 											<p>Authority:{{certificationAuthority}}</p>

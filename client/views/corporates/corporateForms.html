@@ -41,7 +41,7 @@
 
 <template name="corporateFields">
 	<div class="form-group"  id="profileAvatarPreview">
-		<label class="control-label">{{#if customImagePreviewUrl}}Corporate{{else}}Automatic{{/if}} Avatar</label>
+		<label class="control-label">{{#if customImagePreviewUrl}}Corporate{{else}}Automatic Corporate{{/if}} Avatar</label>
 		<div class="row">
 			<div class="col-md-4">
 				{{#if customImagePreviewUrl}}
@@ -80,7 +80,7 @@
 			{{>afQuickField name='title' placeholder="What do you professionally do?"}}
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='companyName' placeholder="Your company name"}}
+			{{>afQuickField name='companyName' value=companyName readOnly=true}}
 		</div>
 	</div>	
 	<div class="row">

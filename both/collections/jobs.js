@@ -230,9 +230,9 @@ Jobs.attachSchema(
     exactdate: {
       type: Date,
       optional: true,
-      label: "Exactly on date",
+      label: "Exactly on date and time",
       autoform: {
-        type: "bootstrap-datepicker"
+        type: "bootstrap-datetimepicker"
       }
     },
     betweendates: {

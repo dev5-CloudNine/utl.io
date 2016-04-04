@@ -72,6 +72,13 @@ UserSchema = new SimpleSchema({
   'favoriteJobs.$': {
     type: String
   },
+  favoriteUsers: {
+    type: Array,
+    optional: true
+  },
+  'favoriteUsers.$': {
+    type: String
+  },
   roles: {
     type: Array,
     optional: true
