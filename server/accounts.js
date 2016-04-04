@@ -16,7 +16,7 @@ Meteor.startup(function () {
  };
  Accounts.emailTemplates.verifyEmail.text = function (user, url) {
     var urls = url.split("/#/");
-    url = Meteor.settings.public.ROOT_URL + ":3000"+"/#/"+urls[1];
+    url = Meteor.settings.public.ROOT_URL + "/#/"+urls[1];
   return 'Click on the following link to verify your email address: ' + url;
  };
  Accounts.emailTemplates.resetPassword.subject = function (user) {

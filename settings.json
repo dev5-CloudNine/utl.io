@@ -9,7 +9,7 @@
     "astronomer": {
       "appId": ""
     },
-    "ROOT_URL": "http://localhost"
+    "ROOT_URL": "http://127.0.0.1:3000"
   },
   "kadira": {
      "appId": "",
