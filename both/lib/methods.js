@@ -30,6 +30,9 @@ Meteor.methods({
     addUserToFav: function(uId) {
         Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteUsers: uId}});
     },
+    applyForThisJob: function(jobId) {
+        Jobs.update(jobId, {$addToSet: {appliedBy: Meteor.userId()}});
+    },
     adminSetJobStatus: function(jobId, status) {
         check(jobId, String);
         check(status, String);

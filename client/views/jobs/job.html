@@ -134,8 +134,14 @@
 									{{> commentsBox id=_id}}
 								</div>
 								<div id="apply" class="tab-pane fade">
-									<div class="btn-group btn-group-justified">
-										<button class="btn btn-success">Apply</button>
+									<div class="btn-group">
+										<br>
+										<p>Applied by {{appliedByCount}} user(s).</p>
+										{{#if isInRole 'provider'}}
+											<button class="btn btn-primary applyJob">Apply</button>
+										{{else}}
+											<h6>You must be a provider to apply for this job.</h6>
+										{{/if}}
 									</div>
 								</div>
 								<div id="counter-offer" class="tab-pane fade">
@@ -144,13 +150,6 @@
 							</div>
 						</div>
 					</div>
-					<!-- <div class="row" id="discussion">
-						<div class="col-xs-3">
-						</div>
-						<div class="col-xs-9">
-							 	
-						</div>
-					</div> -->
 					<div class="row">
 						<div class="col-xs-12">
 							{{#if $eq userId $.Meteor.userId}}

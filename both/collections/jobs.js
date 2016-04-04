@@ -203,11 +203,19 @@ Jobs.attachSchema(
       optional: true,
       autoform: {
         afFieldInput: {
-          type: 'cfs-files',
+          type: 'file',
           collection: "UploadedDocuments",
           label: "Uploaded Documents"
         }
       }
+    },
+    appliedBy: {
+      type: Array,
+      optional: true
+    },
+    'appliedBy.$': {
+      type: String,
+      optional: true
     },
     contactperson: {
       type: String,
@@ -232,7 +240,7 @@ Jobs.attachSchema(
       optional: true,
       label: "Exactly on date and time",
       autoform: {
-        type: "bootstrap-datetimepicker"
+        type: "bootstrap-datepicker"
       }
     },
     betweendates: {

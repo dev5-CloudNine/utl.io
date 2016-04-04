@@ -46,6 +46,10 @@ Meteor.publish('developerCount', function() {
     }));
 });
 
+Meteor.publish('jobCount', function() {
+    Counts.publish(this, 'jobs', Jobs.find({}));
+})
+
 Meteor.publish("homeJobs", function() {
     check(arguments, [Match.Any]);
     return [
