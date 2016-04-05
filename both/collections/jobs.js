@@ -197,18 +197,18 @@ Jobs.attachSchema(
           }
         }
     },
-    fileId: {
-      type: String,
-      label: "Upload File",
-      optional: true,
-      autoform: {
-        afFieldInput: {
-          type: 'file',
-          collection: "UploadedDocuments",
-          label: "Uploaded Documents"
-        }
-      }
-    },
+    // fileId: {
+    //   type: String,
+    //   label: "Upload File",
+    //   optional: true,
+    //   autoform: {
+    //     afFieldInput: {
+    //       type: 'file',
+    //       collection: "UploadedDocuments",
+    //       label: "Uploaded Documents"
+    //     }
+    //   }
+    // },
     appliedBy: {
       type: Array,
       optional: true
