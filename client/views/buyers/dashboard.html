@@ -55,8 +55,17 @@
                 <div class="tab-pane fade {{#if $eq active 'myjobs'}} in active {{/if}}" id="jobs">
                     <br>
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#postedJobs" data-toggle="tab">Posted Jobs
-                        </a></li>
+                        <li class="active">
+                            <a href="#postedJobs" data-toggle="tab">
+                                {{#if currentUser.isBuyer}}
+                                    Posted
+                                {{else}}
+                                    {{#if currentUser.isDeveloper}}
+                                        Applied
+                                    {{/if}}
+                                {{/if}} Jobs
+                            </a>
+                        </li>
                         <li><a href="#favoriteJobs" data-toggle="tab">Favorite Jobs</a></li>
                         <li><a href="#" data-toggle="tab">Ongoing Jobs</a></li>
                         <li><a href="#" data-toggle="tab">Completed Jobs</a></li>
@@ -64,11 +73,21 @@
                     <div class="tab-content">
                         <div class="tab-pane fade" id="postedJobs">
                             <br>
-                            {{#each jobs}}
-                                {{>jobSmall}}
+                            {{#if currentUser.isDeveloper}}
+                                {{#each appliedJobs}}
+                                    {{>jobSmall}}
+                                {{else}}
+                                    You haven't applied for any jobs yet. <a href="{{pathFor 'jobs'}}">Find jobs</a> to apply.
+                                {{/each}}
                             {{else}}
-                                You haven't posted any jobs.  <a href="{{pathFor 'jobNew'}}">Post a Job</a> if you have one to offer.
-                            {{/each}}
+                                {{#if currentUser.isBuyer}}
+                                    {{#each jobs}}
+                                        {{>jobSmall}}
+                                    {{else}}
+                                        You haven't posted any jobs.  <a href="{{pathFor 'jobNew'}}">Post a Job</a> if you have one to offer.
+                                    {{/each}}
+                                {{/if}}
+                            {{/if}}
                         </div>
                         <div class="tab-pane fade" id="favoriteJobs">
                             <br>

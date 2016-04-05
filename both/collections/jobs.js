@@ -197,17 +197,25 @@ Jobs.attachSchema(
           }
         }
     },
-    fileId: {
+    // fileId: {
+    //   type: String,
+    //   label: "Upload File",
+    //   optional: true,
+    //   autoform: {
+    //     afFieldInput: {
+    //       type: 'file',
+    //       collection: "UploadedDocuments",
+    //       label: "Uploaded Documents"
+    //     }
+    //   }
+    // },
+    appliedBy: {
+      type: Array,
+      optional: true
+    },
+    'appliedBy.$': {
       type: String,
-      label: "Upload File",
-      optional: true,
-      autoform: {
-        afFieldInput: {
-          type: 'cfs-files',
-          collection: "UploadedDocuments",
-          label: "Uploaded Documents"
-        }
-      }
+      optional: true
     },
     contactperson: {
       type: String,
@@ -232,7 +240,7 @@ Jobs.attachSchema(
       optional: true,
       label: "Exactly on date and time",
       autoform: {
-        type: "bootstrap-datetimepicker"
+        type: "bootstrap-datepicker"
       }
     },
     betweendates: {

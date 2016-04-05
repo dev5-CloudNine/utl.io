@@ -10,7 +10,6 @@
 					    {{>jobSuggestedTweet}}
 					{{/if}}
 					{{>jobStatusAlert}}
-					{{>jobFeatured}}
 					<div class="row">
 						<div class="col-sm-12">
 							<h2>
@@ -126,31 +125,101 @@
 						<div class="col-xs-9">
 							<ul class="nav nav-pills nav-justified">
 								<li class="active"><a data-toggle="tab" href="#discussion">Post a Query</a></li>
-								<li><a data-toggle="tab" href="#apply">Apply</a></li>
-								<li><a data-toggle="tab" href="#counter-offer">Counter Offer</a></li>
+								<li>
+									<a data-toggle="tab" href="#apply">
+										{{#if currentUser.isDeveloper}}
+											Apply
+										{{else}}
+											{{#if jobPostedBuyer}}
+												View Applicants ({{appliedByCount}})
+											{{else}}
+												Applications
+											{{/if}}
+										{{/if}}
+									</a>
+								</li>
+								<li>
+									<a data-toggle="tab" href="#counter-offer">
+										{{#if currentUser.isDeveloper}}
+											Counter Offer
+										{{else}}
+											{{#if jobPostedBuyer}}
+												View Counter Offers ({{counterOfferCount}})
+											{{else}}
+												Couter Offers
+											{{/if}}
+										{{/if}}
+									</a>
+								</li>
 							</ul>
 							<div class="tab-content">
 								<div id="discussion" class="tab-pane fade in active">
 									{{> commentsBox id=_id}}
 								</div>
 								<div id="apply" class="tab-pane fade">
-									<div class="btn-group btn-group-justified">
-										<button class="btn btn-success">Apply</button>
+									<div class="panel">
+										<br>
+										{{#if isInRole 'provider'}}
+											<p>{{appliedByCount}} user(s) have applied for this job so far.</p>
+											{{#if currentUser.isDeveloper}}
+												<button class="btn btn-primary applyJob">Apply</button>
+											{{else}}
+												<h6>You must create your profile before you can apply for this job. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your profile.</h6>
+											{{/if}}
+										{{else}}
+											{{#if jobPostedBuyer}}
+												<div class="list-group" width=100%>
+													{{#each appliedProviders}}
+														<a class="list-group-item" href="{{pathFor 'profile'}}" style="text-decoration: none">
+															<span class="pull-left thumb-sm">
+																<img class="thumb-sm" src="{{this.customImageUrl}}" alt="{{this.name}}">
+															</span>
+															<span>
+																<h5>{{this.name}}</h5>
+																<h6>{{this.title}}</h6>
+															</span>
+															<span>
+																<button class="btn btn-success btn-sm">Accept</button>
+																<button class="btn btn-danger btn-sm">Reject</button>
+															</span>
+														</a>
+													{{else}}
+														<h6>No providers have applied for this job yet.</h6>
+													{{/each}}
+												</div>
+											{{else}}
+												<p>{{appliedByCount}} user(s) have applied for this job so far.</p>
+											{{/if}}
+										{{/if}}
 									</div>
 								</div>
 								<div id="counter-offer" class="tab-pane fade">
-									<h3>Counter offer</h3>
+									<br>
+									{{#if isInRole 'provider'}}
+										Payment type: {{ratebasis}}<br>
+										{{#if hourlyrate}}
+											{{hourlyrate}} USD per hour for {{maxhours}} hours.
+											<br>Net: {{freelancer_nets}} USD
+											{{else}}
+												{{#if payforfirsthours}}
+													{{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours.
+													<br>Net: {{totalfromclient}} USD
+													{{else}}
+														{{#if rateperdevice}}
+															{{rateperdevice}} USD for {{maxdevices}} devices.
+															<br>Net: {{totalfromclient}} USD
+															{{else}}
+																{{#if fixedamount}}
+																	Net: {{fixedamount}} USD.
+																{{/if}}
+														{{/if}}
+												{{/if}}
+										{{/if}}
+									{{/if}}
 								</div>
 							</div>
 						</div>
 					</div>
-					<!-- <div class="row" id="discussion">
-						<div class="col-xs-3">
-						</div>
-						<div class="col-xs-9">
-							 	
-						</div>
-					</div> -->
 					<div class="row">
 						<div class="col-xs-12">
 							{{#if $eq userId $.Meteor.userId}}
