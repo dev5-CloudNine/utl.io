@@ -66,7 +66,6 @@ force-ssl
 http
 ostrio:iron-router-title
 astronomerio:core
-copleykj:stripe-sync
 
 rajit:bootstrap3-datepicker
 aldeed:autoform-bs-datepicker
