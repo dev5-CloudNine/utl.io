@@ -276,6 +276,13 @@ Profiles.attachSchema(
       optional: true,
       regEx: SimpleSchema.RegEx.Url
     },
+    appliedJobs: {
+      type: Array,
+      optional: true
+    },
+    'appliedJobs.$': {
+      type: String
+    },
     randomSorter: {
       type: Number,
       defaultValue: Math.floor(Math.random() * 10000)

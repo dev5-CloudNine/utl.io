@@ -28,6 +28,19 @@ Template.dashboard.helpers({
 		});
 		return favJobsArray;
 	},
+	appliedJobs: function() {
+		var appliedJobIds = [];
+		var appliedJobsArray = [];
+		Profiles.findOne({userId: Meteor.userId()}).appliedJobs.forEach(function(jobId) {
+			appliedJobIds.push(jobId);
+		});
+		appliedJobIds.forEach(function(jobId) {
+			appliedJobsArray.push(Jobs.findOne({
+				_id: jobId
+			}));
+		});
+		return appliedJobsArray;
+	},
 	favUsers: function() {
 		var favUserIds = [];
 		var favUserArray = [];

@@ -21,11 +21,33 @@ Template.job.helpers({
     return this.jobType || this.featured;
   },
   'appliedByCount': function() {
-  	var count=0;
+  	var count = 0;
   	Jobs.findOne(this._id).appliedBy.forEach(function(uId) {
   		count++;
   	});
   	return count;
+  },
+  'counterOfferCount': function() {
+    var count = 0;
+    return count;
+  },
+  'appliedProviders': function() {
+    var providersApplied = [];
+    var providerIds = [];
+    Jobs.findOne(this._id).appliedBy.forEach(function(providerId) {
+      providerIds.push(providerId);
+    });
+    providerIds.forEach(function(pId) {
+      providersApplied.push(Profiles.findOne({userId: pId}));
+    });
+    return providersApplied;
+  },
+  'jobPostedBuyer': function() {
+    var jobDetails = Jobs.findOne(this._id);
+    if(jobDetails.userId == Meteor.userId())
+      return true;
+    else
+      return false;
   }
 });
 

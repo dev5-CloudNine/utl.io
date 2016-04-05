@@ -231,6 +231,36 @@ Meteor.publish("favorite_users", function() {
             customImageUrl: true
         }
     })
+});
+
+Meteor.publish("applied_profiles", function() {
+    check(arguments, [Match.Any]);
+    return Profiles.find({status: "active"}, {
+        fields: {
+            userId: true,
+            name: true,
+            type: true,
+            freelancerSkills: true,
+            title: true,
+            einTinNumber: true,
+            socialSecurityNumber: true,
+            insuranceNumber: true,
+            location: true,
+            htmlDescription: true,
+            availableForHire: true,
+            industryTypes: true,
+            contactNumber: true,
+            contactEmail: true,
+            avgRatesPerHour: true,
+            preferredWorkLocation: true,
+            educationDetails: true,
+            certifications: true,
+            languages: true,
+            url: true,
+            resumeUrl: true,
+            customImageUrl: true
+        }
+    })
 })
 
 Meteor.publish("my_jobs", function() {

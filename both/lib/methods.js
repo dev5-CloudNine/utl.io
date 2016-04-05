@@ -32,6 +32,7 @@ Meteor.methods({
     },
     applyForThisJob: function(jobId) {
         Jobs.update(jobId, {$addToSet: {appliedBy: Meteor.userId()}});
+        Profiles.update({userId: Meteor.userId()}, {$addToSet: {appliedJobs: jobId}});
     },
     adminSetJobStatus: function(jobId, status) {
         check(jobId, String);
