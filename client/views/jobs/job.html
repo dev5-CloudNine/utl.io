@@ -82,7 +82,6 @@
 												{{/if}}
 										{{/if}}
 								{{/if}}
-								<hr>
 							{{/if}}
 							{{#if contactperson}}
 								<hr>
@@ -120,6 +119,7 @@
 							{{/if}}
 						</div>
 					</div>
+					<hr>
 					<div class="row">
 						<div class="col-xs-3"></div>
 						<div class="col-xs-9">
@@ -196,6 +196,8 @@
 								<div id="counter-offer" class="tab-pane fade">
 									<br>
 									{{#if isInRole 'provider'}}
+										<p>{{counterOfferCount}} user(s) have countered this offer so far.</p>
+										<h4>Payment Details:</h4>
 										Payment type: {{ratebasis}}<br>
 										{{#if hourlyrate}}
 											{{hourlyrate}} USD per hour for {{maxhours}} hours.
@@ -214,6 +216,230 @@
 																{{/if}}
 														{{/if}}
 												{{/if}}
+										{{/if}}
+										<h4>Would you like to counter this?</h4>
+										<div class="panel panel-default">
+											<div class="panel-body">
+												<form id="counter_offer_form">
+													<div class="row">
+														<div class="col-sm-6">
+															<label>Payment Type</label>
+															<select class="form-control" name="counter_type" id="counter_type" required>
+																<option selected="selected">Select one</option>
+																<option value="fixed_pay">Fixed Pay</option>
+																<option value="per_hour">Per hour</option>
+																<option value="per_device">Per device</option>
+																<option value="blended">Blended</option>
+															</select>
+														</div>
+													</div>
+													<hr>
+													<div id="fixed-pay-counter" hidden>
+														<div class="row">
+															<div class="col-sm-4">
+																<label for="fixed_amount">Fixed Amount</label>
+																<input type="number" class="form-control" id="fixed_amount" step="any" min="1">
+															</div>
+															<div class="col-sm-4">
+																<label for="total_amount">Total Amount</label>
+																<input type="number" class="form-control" id="total_amount" readonly="true" step="any" min="1">
+															</div>
+															<div class="col-sm-4">
+																<label for="utl_fees">UTL Fees</label>
+																<input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-4">
+																<label>Paid By</label><br>
+																<label class="radio-inline">
+																	<input type="radio" name="paidby" value="provider"> Provider
+																</label>
+																<label class="radio-inline">
+																	<input type="radio" name="paidby" value="buyer"> Buyer
+																</label>
+															</div>
+															<div class="col-sm-4">
+																<label for="buyer_cost">Buyer's Cost</label>
+																<input type="number" class="form-control" id="buyer_cost" step="any" min="1" readonly="true">
+															</div>
+															<div class="col-sm-4">
+																<label for="freelancer_nets">Freelancer Nets</label>
+																<input type="number" id="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+															</div>
+														</div>
+													</div>
+													<div id="hourly-counter" hidden>
+														<div class="row">
+															<div class="col-sm-4">
+																<label for="hourly_rate">Hourly Rate (USD)</label>
+																<input type="number" class="form-control" id="hourly_rate" step="any" min="1">
+															</div>
+															<div class="col-sm-4">
+																<label for="max_hours">Maximum Hours</label>
+																<input type="number" class="form-control" id="max_hours" step="any" min="1">
+															</div>
+															<div class="col-sm-4">
+																<label for="total_amount">Total Amount</label>
+																<input type="number" class="form-control" id="total_amount" readonly="true" step="any" min="1">
+															</div>
+														</div>
+														<br>
+														<div class="row">
+															<div class="col-sm-4">
+																<label for="utl_fees">UTL Fees</label>
+																<input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+															</div>
+														</div>
+														<br>
+														<div class="row">
+															<div class="col-sm-4">
+																<label>Paid By</label><br>
+																<label class="radio-inline">
+																	<input type="radio" name="paidby" value="provider"> Provider
+																</label>
+																<label class="radio-inline">
+																	<input type="radio" name="paidby" value="buyer"> Buyer
+																</label>
+															</div>
+															<div class="col-sm-4">
+																<label for="buyer_cost">Buyer's Cost</label>
+																<input type="number" class="form-control" id="buyer_cost" step="any" min="1" readonly="true">
+															</div>
+															<div class="col-sm-4">
+																<label for="freelancer_nets">Freelancer Nets</label>
+																<input type="number" id="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+															</div>
+														</div>
+													</div>
+													<div id="per-device-counter" hidden>
+														<div class="row">
+															<div class="col-sm-4">
+																<label for="device_rate">Device Rate (USD)</label>
+																<input type="number" class="form-control" id="device_rate" step="any" min="1">
+															</div>
+															<div class="col-sm-4">
+																<label for="max_devices">Maximum devices</label>
+																<input type="number" class="form-control" id="max_devices" step="any" min="1">
+															</div>
+															<div class="col-sm-4">
+																<label for="total_amount">Total Amount</label>
+																<input type="number" class="form-control" id="total_amount" readonly="true" step="any" min="1">
+															</div>
+														</div>
+														<br>
+														<div class="row">
+															<div class="col-sm-4">
+																<label for="utl_fees">UTL Fees</label>
+																<input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+															</div>
+														</div>
+														<br>
+														<div class="row">
+															<div class="col-sm-4">
+																<label>Paid By</label><br>
+																<label class="radio-inline">
+																	<input type="radio" name="paidby" value="provider"> Provider
+																</label>
+																<label class="radio-inline">
+																	<input type="radio" name="paidby" value="buyer"> Buyer
+																</label>
+															</div>
+															<div class="col-sm-4">
+																<label for="buyer_cost">Buyer's Cost</label>
+																<input type="number" class="form-control" id="buyer_cost" step="any" min="1" readonly="true">
+															</div>
+															<div class="col-sm-4">
+																<label for="freelancer_nets">Freelancer Nets</label>
+																<input type="number" id="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+															</div>
+														</div>
+													</div>
+													<div id="blended-counter" hidden>
+														<div class="row">
+															<div class="col-sm-3">
+																<label for="first_hours">Pay USD</label>
+																<input type="number" class="form-control" id="first_hours" step="any" min="1">
+															</div>
+															<div class="col-sm-3">
+																<label for="first_max_hours">total for the first</label>
+																<input type="number" class="form-control" id="first_max_hours" step="any" min="1">
+															</div>
+															<div class="col-sm-3">
+																<label for="next_hours">hour(s) and then USD</label>
+																<input type="number" class="form-control" id="next_hours" step="any" min="1">
+															</div>
+															<div class="col-sm-3">
+																<label for="next_max_hours">per hour for upto</label>
+																<input type="number" class="form-control" id="next_max_hours" step="any" min="1">
+															</div>
+														</div>
+														<br>
+														<div class="row">
+															<div class="col-sm-4">
+																<label for="total_amount">Total Amount</label>
+																<input type="number" class="form-control" id="total_amount" readonly="true" step="any" min="1">
+															</div>
+															<div class="col-sm-4">
+																<label for="utl_fees">UTL Fees</label>
+																<input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+															</div>
+														</div>
+														<br>
+														<div class="row">
+															<div class="col-sm-4">
+																<label>Paid By</label><br>
+																<label class="radio-inline">
+																	<input type="radio" name="paidby" value="provider"> Provider
+																</label>
+																<label class="radio-inline">
+																	<input type="radio" name="paidby" value="buyer"> Buyer
+																</label>
+															</div>
+															<div class="col-sm-4">
+																<label for="buyer_cost">Buyer's Cost</label>
+																<input type="number" class="form-control" id="buyer_cost" step="any" min="1" readonly="true">
+															</div>
+															<div class="col-sm-4">
+																<label for="freelancer_nets">Freelancer Nets</label>
+																<input type="number" id="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+															</div>
+														</div>
+													</div>
+													<br>
+													<div class="row">
+														<div class="col-sm-12">
+															<div class="button-group">
+																<button class="btn btn-primary counterOffer">Counter Offer</button>
+															</div>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									{{else}}
+										{{#if jobPostedBuyer}}
+											<div class="list-group">
+												{{#each couterOfferedProviders}}
+													<a class="list-group-item" href="{{pathFor 'profile'}}" style="text-decoration: none">
+														<span class="pull-left thumb-sm">
+															<img class="thumb-sm" src="{{this.customImageUrl}}" alt="{{this.name}}">
+														</span>
+														<span>
+															<h5>{{this.name}}</h5>
+															<h6>{{this.title}}</h6>
+														</span>
+														<span>
+															<button class="btn btn-success btn-sm">Accept</button>
+															<button class="btn btn-danger btn-sm">Reject</button>
+														</span>
+													</a>
+												{{else}}
+													<h6>No providers have counter offered for this job yet.</h6>
+												{{/each}}
+											</div>
+										{{else}}
+											<p>{{counterOfferCount}} user(s) have countered this offer so far.</p>
 										{{/if}}
 									{{/if}}
 								</div>
