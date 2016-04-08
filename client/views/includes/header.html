@@ -54,6 +54,7 @@
                             <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
                             <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
                             <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
+                            <li><a href="{{pathFor 'payments'}}">Pricing</a></li>
                         {{/if}}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -70,8 +71,6 @@
     </section>
 </template>
 <template name="headerUserMenu">
-
-
     <li id="user-drop-down" class="dropdown">
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
             <i style="font-size: 20px;padding: 3px;color: #6C6C6C;" class="fa fa-envelope fa-fw"></i>({{msgCount}})<span class="caret"></span>
@@ -80,7 +79,6 @@
             <li><a href="{{pathFor 'dashboard' tab='mails-inbox'}}"><i class="fa fa-folder-open"></i>Goto Inbox</a></li>
         </ul>
     </li>
-
     <li id="user-drop-down" class="dropdown">
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
 			{{> avatar user=currentUser size="small"}}{{currentUserDisplayName}} <span class="caret"></span>
@@ -141,10 +139,4 @@
             <li><a href="#" id="signOut"><i class="fa fa-sign-out fa-fw"></i> Sign Out</a></li>
         </ul>
     </li>
-
-
-
-
-
-
 </template>

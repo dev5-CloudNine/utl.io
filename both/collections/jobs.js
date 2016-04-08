@@ -217,6 +217,13 @@ Jobs.attachSchema(
       type: String,
       optional: true
     },
+    counterOffers: {
+      type: Array,
+      optional: true
+    },
+    'counterOffers.$': {
+      type: Object
+    },
     contactperson: {
       type: String,
       label: "Contact Name",

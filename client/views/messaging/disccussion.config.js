@@ -4,5 +4,7 @@ Comments.ui.config({
 });
 
 Comments.ui.setContent({
-  title: 'Post a Query'
+	'title': 'Queries',
+	'placeholder-textarea': 'Post a message',
+	'add-button': 'Submit'
 });
