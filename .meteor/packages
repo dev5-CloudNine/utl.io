@@ -27,7 +27,6 @@ useraccounts:bootstrap
 meteorhacks:subs-manager
 dburles:collection-helpers
 alanning:roles
-nemo64:bootstrap
 zimme:iron-router-active
 percolate:migrations
 jparker:crypto-md5
