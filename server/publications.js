@@ -174,7 +174,9 @@ Meteor.publish("jobs", function(limit) {
             ratebasis: true,
             featuredThrough: true,
             htmlDescription: true,
-            freelancer_nets: true
+            freelancer_nets: true,
+            appliedBy: true,
+            counterOffers: true
         },
         sort: {
             featuredThrough:-1,
