@@ -224,6 +224,70 @@ Jobs.attachSchema(
     'counterOffers.$': {
       type: Object
     },
+    'counterOffers.$.userId': {
+      type: String,
+      optional: true,
+    },
+    'counterOffers.$.fixed_amount': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.hourly_rate': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.max_hours': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.device_rate': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.max_devices': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.first_hours': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.first_max_hours': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.next_hours': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.next_max_hours': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.total_amount': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.buyer_cost': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'counterOffers.$.freelancer_nets': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
     contactperson: {
       type: String,
       label: "Contact Name",

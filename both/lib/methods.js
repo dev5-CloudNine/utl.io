@@ -34,6 +34,10 @@ Meteor.methods({
         Jobs.update(jobId, {$addToSet: {appliedBy: Meteor.userId()}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {appliedJobs: jobId}});
     },
+    counterOfferThisJob: function(jobId, counterOffer) {
+        console.log(counterOffer);
+        Jobs.update(jobId, {$addToSet: {counterOffers: counterOffer}});
+    },
     adminSetJobStatus: function(jobId, status) {
         check(jobId, String);
         check(status, String);

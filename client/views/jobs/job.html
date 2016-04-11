@@ -241,8 +241,8 @@
 																<input type="number" class="form-control" id="fixed_amount" step="any" min="1">
 															</div>
 															<div class="col-sm-4">
-																<label for="total_amount">Total Amount</label>
-																<input type="number" class="form-control" id="total_amount" readonly="true" step="any" min="1">
+																<label for="fixed_total">Total Amount</label>
+																<input type="number" class="form-control" id="fixed_total" name="total_amount" readonly="true" step="any" min="1">
 															</div>
 															<div class="col-sm-4">
 																<label for="utl_fees">UTL Fees</label>
@@ -260,12 +260,12 @@
 																</label>
 															</div>
 															<div class="col-sm-4">
-																<label for="buyer_cost">Buyer's Cost</label>
-																<input type="number" class="form-control" id="buyer_cost" step="any" min="1" readonly="true">
+																<label for="buyer_fixed_cost">Buyer's Cost</label>
+																<input type="number" class="form-control" id="buyer_fixed_cost" name="buyer_cost" step="any" min="1" readonly="true">
 															</div>
 															<div class="col-sm-4">
-																<label for="freelancer_nets">Freelancer Nets</label>
-																<input type="number" id="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+																<label for="freelancer_fixed_nets">Freelancer Nets</label>
+																<input type="number" id="freelancer_fixed_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
 															</div>
 														</div>
 													</div>
@@ -280,8 +280,8 @@
 																<input type="number" class="form-control" id="max_hours" step="any" min="1">
 															</div>
 															<div class="col-sm-4">
-																<label for="total_amount">Total Amount</label>
-																<input type="number" class="form-control" id="total_amount" readonly="true" step="any" min="1">
+																<label for="hourly_total">Total Amount</label>
+																<input type="number" class="form-control" name="total_amount" id="hourly_total" readonly="true" step="any" min="1">
 															</div>
 														</div>
 														<br>
@@ -304,11 +304,11 @@
 															</div>
 															<div class="col-sm-4">
 																<label for="buyer_cost">Buyer's Cost</label>
-																<input type="number" class="form-control" id="buyer_cost" step="any" min="1" readonly="true">
+																<input type="number" class="form-control" name="buyer_cost" id="buyer_hourly_cost" step="any" min="1" readonly="true">
 															</div>
 															<div class="col-sm-4">
-																<label for="freelancer_nets">Freelancer Nets</label>
-																<input type="number" id="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+																<label for="freelancer_hourly_nets">Freelancer Nets</label>
+																<input type="number" id="freelancer_hourly_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
 															</div>
 														</div>
 													</div>
@@ -323,8 +323,8 @@
 																<input type="number" class="form-control" id="max_devices" step="any" min="1">
 															</div>
 															<div class="col-sm-4">
-																<label for="total_amount">Total Amount</label>
-																<input type="number" class="form-control" id="total_amount" readonly="true" step="any" min="1">
+																<label for="device_total">Total Amount</label>
+																<input type="number" class="form-control" name="total_amount" id="device_total" readonly="true" step="any" min="1">
 															</div>
 														</div>
 														<br>
@@ -346,12 +346,12 @@
 																</label>
 															</div>
 															<div class="col-sm-4">
-																<label for="buyer_cost">Buyer's Cost</label>
-																<input type="number" class="form-control" id="buyer_cost" step="any" min="1" readonly="true">
+																<label for="buyer_device_cost">Buyer's Cost</label>
+																<input type="number" class="form-control" name="buyer_cost" id="buyer_device_cost" step="any" min="1" readonly="true">
 															</div>
 															<div class="col-sm-4">
-																<label for="freelancer_nets">Freelancer Nets</label>
-																<input type="number" id="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+																<label for="freelancer_device_nets">Freelancer Nets</label>
+																<input type="number" id="freelancer_device_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
 															</div>
 														</div>
 													</div>
@@ -377,8 +377,8 @@
 														<br>
 														<div class="row">
 															<div class="col-sm-4">
-																<label for="total_amount">Total Amount</label>
-																<input type="number" class="form-control" id="total_amount" readonly="true" step="any" min="1">
+																<label for="blended_total">Total Amount</label>
+																<input type="number" class="form-control" name="total_amount" id="blended_total" readonly="true" step="any" min="1">
 															</div>
 															<div class="col-sm-4">
 																<label for="utl_fees">UTL Fees</label>
@@ -397,12 +397,12 @@
 																</label>
 															</div>
 															<div class="col-sm-4">
-																<label for="buyer_cost">Buyer's Cost</label>
-																<input type="number" class="form-control" id="buyer_cost" step="any" min="1" readonly="true">
+																<label for="buyer_blended_cost">Buyer's Cost</label>
+																<input type="number" class="form-control" name="buyer_cost" id="buyer_blended_cost" step="any" min="1" readonly="true">
 															</div>
 															<div class="col-sm-4">
-																<label for="freelancer_nets">Freelancer Nets</label>
-																<input type="number" id="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+																<label for="freelancer_blended_nets">Freelancer Nets</label>
+																<input type="number" id="freelancer_blended_nets" class="form-control" name="freelancer_nets" step="any" min="1" readonly="true">
 															</div>
 														</div>
 													</div>
@@ -420,14 +420,35 @@
 									{{else}}
 										{{#if jobPostedBuyer}}
 											<div class="list-group">
-												{{#each couterOfferedProviders}}
+												{{#each counterOfferedProviders}}
 													<a class="list-group-item" href="{{pathFor 'profile'}}" style="text-decoration: none">
-														<span class="pull-left thumb-sm">
+														<!-- <span class="pull-left thumb-sm">
 															<img class="thumb-sm" src="{{this.customImageUrl}}" alt="{{this.name}}">
 														</span>
 														<span>
 															<h5>{{this.name}}</h5>
 															<h6>{{this.title}}</h6>
+														</span> -->
+														<span>
+															<h4>{{this.userId}}</h4>
+															{{#if this.fixed_amount}}
+																<h5>Fixed Amount: {{this.fixed_amount}}</h5>
+															{{/if}}
+															{{#if this.hourly_rate}}
+																<h5>Hourly Rate: {{this.hourly_rate}}</h5>
+															{{/if}}
+															{{#if this.max_hours}}
+																<h5>Maximum Hours: {{this.max_hours}}</h5>
+															{{/if}}
+															{{#if this.device_rate}}
+																<h5>Rate per Device: {{this.device_rate}}</h5>
+															{{/if}}
+															{{#if this.max_devices}}
+																<h5>Maximum Devices: {{this.max_devices}}</h5>
+															{{/if}}
+															{{#if this.first_hours}}
+																<h5>{{this.first_hours}} USD for the first {{this.first_max_hours}} hours and then {{this.next_hours}} USD for the next {{this.next_max_hours}} hours.</h5>
+															{{/if}}
 														</span>
 														<span>
 															<button class="btn btn-success btn-sm">Accept</button>
