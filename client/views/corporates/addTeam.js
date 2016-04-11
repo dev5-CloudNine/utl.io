@@ -32,9 +32,9 @@ Template.addTeam.events({
 
 		Meteor.call("createInvite",invitation,function(err,res){
 			if(err){
-				toastr.error("Failed to invite")
+				toastr.error("Failed to send and invite to this email.")
 			} else {
-				toastr.success("User has been invited")
+				toastr.success("An invitation has been sent to the provided email ID.")
 			}
 		});
 	}

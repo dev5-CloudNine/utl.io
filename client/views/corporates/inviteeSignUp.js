@@ -20,7 +20,7 @@ Template.inviteeSignUp.events({
     toastr.error(error.message,'Error');
     console.log(error);
    } else {
-    toastr.success('success'); 
+    toastr.success('A verification link has been sent to your email. Please check your email.'); 
     Meteor.call('postUserSignup', result, function (error, result2) {});
     Router.go('home');
    }
