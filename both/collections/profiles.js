@@ -41,16 +41,20 @@ Profiles.attachSchema(
       label: "Name",
       max: 128
     },
-    type: {
-      type: String,
-      label: "Individual or Company",
-      allowedValues: ["Individual", "Company"]
-    },
+    // type: {
+    //   type: String,
+    //   label: "Individual or Company",
+    //   allowedValues: ["Individual", "Company"]
+    // },
     freelancerSkills: {
-      type: String,
+      type: [String],
       label: "Skills",
       optional: true,
-      max: 256
+      autoform: {
+        type: "selectize",
+        options: SKILL_SET,
+        multiple: true
+      }
     },
     title: {
       type: String,
@@ -112,32 +116,36 @@ Profiles.attachSchema(
     industryTypes: {
       type: [String],
       label: "Interested In",
-      // allowedValues: INDUSTRY_TYPES,
       optional: true,
       autoform: {
-        type: "select-multiple",
-        options: INDUSTRY_TYPES
+        type: "selectize",
+        options: INDUSTRY_TYPES,
+        multiple: true
       }
     },
     contactNumber: {
       type: String,
-      label: "Telephone Number",
+      label: "Mobile Number",
       max: 128,
     },
-    contactEmail: {
+    mobileCarrier: {
       type: String,
-      label: "Email",
-      max: 128
+      label: "Mobile Provider",
+      max: 128,
+      autoform: {
+        type: "select",
+        options: MOBILE_CARRIERS
+      }
     },
     avgRatesPerHour: {
       type: Number,
       label: "Average Rates Per Hour (USD)",
       optional: true
     },
-    preferredWorkLocation: {
+    alternateEmail: {
       type: String,
-      label: "Preferred Work Location",
-      optional: true,
+      label: "Alternate Email",
+      optional: true
     },
     educationDetails: {
       type: Array,

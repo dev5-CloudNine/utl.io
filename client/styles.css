@@ -11,6 +11,9 @@ footer {
     background-repeat: no-repeat;
 }
 
+.panel {
+    background: #fffff2 !important;
+}
 .switch-calculator {
     margin-top: 10px;
 }

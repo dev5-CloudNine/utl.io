@@ -195,4 +195,41 @@ CITY_OPTIONS = function() {
     cities.push(cityObj);
   });
   return cities;
+},
+
+MOBILE_CARRIERS = function() {
+  return [
+    {label: "Alltel", value: 8},
+    {label: "ATT", value: 1},
+    {label: "Boost Mobile", value: 11},
+    {label: "Cellcom", value: 33},
+    {label: "Cellular South", value: 14},
+    {label: "Cincinnati Bell Wireless", value: 16},
+    {label: "Cingular", value: 2},
+    {label: "Cricket", value: 13},
+    {label: "Inland Cellular", value: 18},
+    {label: "IWireless", value: 30},
+    {label: "MetroPCS", value: 12},
+    {label: "Nextel", value: 3},
+    {label: "Ntelos", value: 15},
+    {label: "Project Fi", value: 35},
+    {label: "Quest", value: 10},
+    {label: "Republic Wireless", value: 34},
+    {label: "Simple Mobile", value: 31},
+    {label: "Southern LINC", value: 17},
+    {label: "Spring", value: 4},
+    {label: "Straight Talk", value: 32},
+    {label: "T-Mobile", value: 5},
+    {label: "US Cellular", value: 7},
+    {label: "Verizon", value: 6},
+    {label: "Virgin Mobile", value: 9},
+  ]
+},
+
+SKILL_SET = function() {
+  return [
+    {label: "eBook Design", value: "eBook Design"},
+    {label: "FL Studio", value: "FL Studio"},
+    {label: "Final Cut Pro X", value: "Final Cut Pro X"},
+  ]
 }

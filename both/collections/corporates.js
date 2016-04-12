@@ -114,13 +114,17 @@ Corporates.attachSchema(
     },
     contactNumber: {
       type: String,
-      label: "Telephone Number",
+      label: "Mobile Number",
       max: 128,
     },
-    contactEmail: {
+    mobileCarrier: {
       type: String,
-      label: "Corporate Email",
-      max: 128
+      label: "Mobile Provider",
+      max: 128,
+      autoform: {
+        type: "select",
+        options: MOBILE_CARRIERS
+      }
     },
     createdAt: {
       type: Date,

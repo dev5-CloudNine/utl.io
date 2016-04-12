@@ -177,6 +177,9 @@ Template.job.events({
 });
 
 Template.job.helpers({
+  'buyer': function() {
+    return Buyers.findOne({userId: this.userId});
+  },
   'hasLabel': function() {
     return this.jobType || this.featured;
   },

@@ -92,6 +92,9 @@ Router.map(function() {
             } else {
                 this.next();
             }
+        },
+        subscriptions: function() {
+            return subs.subscribe("userData");
         }
     });
 
