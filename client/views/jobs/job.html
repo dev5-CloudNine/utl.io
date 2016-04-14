@@ -159,7 +159,7 @@
 								<div id="apply" class="tab-pane fade">
 									<div class="panel">
 										<br>
-										{{#if isInRole 'provider'}}
+										{{#if isInRole 'provider, corporate-provider'}}
 											<p>{{appliedByCount}} user(s) have applied for this job so far.</p>
 											{{#if currentUser.isDeveloper}}
 												<button class="btn btn-primary applyJob">Apply</button>
@@ -195,7 +195,7 @@
 								</div>
 								<div id="counter-offer" class="tab-pane fade">
 									<br>
-									{{#if isInRole 'provider'}}
+									{{#if isInRole 'provider, corporate-provider'}}
 										<p>{{counterOfferCount}} user(s) have countered this offer so far.</p>
 										<h4>Payment Details:</h4>
 										Payment type: {{ratebasis}}<br>

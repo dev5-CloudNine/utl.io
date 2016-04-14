@@ -239,6 +239,27 @@ Meteor.publish("favorite_users", function() {
     })
 });
 
+Meteor.publish("favorite_buyers", function() {
+    check(arguments, [Match.Any]);
+    return Buyers.find({status: 'active'}, {
+        fields: {
+            customImageUrl: true,
+            name: true,
+            title: true,
+            companyName: true,
+            eintinNumber: true,
+            socialSecurityNumber: true,
+            alternateEmail: true,
+            location: true,
+            description: true,
+            htmlDescription: true,
+            industryTypes: true,
+            contactNumber: true,
+            mobileCarrier: true
+        }
+    })
+})
+
 Meteor.publish("applied_profiles", function() {
     check(arguments, [Match.Any]);
     return Profiles.find({status: "active"}, {

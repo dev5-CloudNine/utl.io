@@ -36,7 +36,9 @@
                                     {{/if}} Jobs
                                 </a>
                             </li>
-                            <li><a href="#favoriteJobs" data-toggle="tab">Favorite Jobs</a></li>
+                            {{#if isInRole 'corporate-provider, provider'}}
+                                <li><a href="#favoriteJobs" data-toggle="tab">Favorite Jobs</a></li>
+                            {{/if}}
                             <li><a href="#ongoingJobs" data-toggle="tab">Ongoing Jobs</a></li>
                             <li><a href="#completedJobs" data-toggle="tab">Completed Jobs</a></li>
                         </ul>
@@ -69,11 +71,21 @@
                 </div>
                 <div class="tab-pane fade {{#if $eq active 'favusers'}} in active {{/if}}" id="favusers">
                     <br>
-                    {{#each favUsers}}
-                        {{>profileSmall}}
+                    {{#if isInRole 'buyer corporate-manager'}}
+                        {{#each favUsers}}
+                            {{>profileSmall}}
+                        {{else}}
+                            You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
+                        {{/each}}
                     {{else}}
-                        You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
-                    {{/each}}
+                        {{#if isInRole 'provider, corporate-provider'}}
+                            {{#each favBuyers}}
+                                {{>buyerSmall}}
+                            {{else}}
+                                You haven't added any favorite buyers. <a href="{{pathFor 'buyers'}}">View buyers</a> if you want to add some.
+                            {{/each}}
+                        {{/if}}
+                    {{/if}}
                 </div>
                 <br>
                 <div class="tab-pane fade {{#if $eq active 'postedJobs'}} in active {{/if}}" id="postedJobs">
