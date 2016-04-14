@@ -305,7 +305,7 @@ h4 {
     line-height: 50px;
 }
 
-.media .comment .media .comment .content .actions .reply-action{
+.media .comment .media .comment .media .comment .media .comment .content .actions .reply-action{
     visibility: hidden;
     width: 0px;
     padding: 0px;
