@@ -7,3 +7,4 @@ Meteor.subscribe("citiesList");
 Meteor.subscribe("favorite_jobs");
 Meteor.subscribe("favorite_users");
 Meteor.subscribe("applied_profiles");
+Meteor.subscribe("cities");

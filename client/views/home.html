@@ -10,16 +10,14 @@
 					<br>
 					A simple and precise platform to manage work, workforce and payments.
 					<br>
-					<!-- Browse the <a href="{{pathFor 'jobs'}}">{{getPublishedCount 'jobs'}} active job postings</a> or <a href="{{pathFor 'profileNew'}}">create your profile</a> to join the <a href="{{pathFor 'profiles'}}">{{getPublishedCount 'developers'}} registered professionals</a>. -->
 				</p>
-			</div>
-			
+			</div>			
 			<div id="callToAction" class="row">
 				{{#if currentUser}}
 					{{#if isInRole 'buyer'}}
 						<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
 					{{else}}
-						{{#if isInRole 'provider'}}
+						{{#if isInRole 'provider, corporate-provider'}}
 							<a class="text-center btn btn-success btn-md" role="button" href="{{pathFor 'jobs'}}">Find Jobs</a>
 							<a class="text-center btn btn-success btn-md" role="button" href="{{pathFor 'buyers'}}">View Buyers</a>
 						{{else}}
@@ -37,7 +35,7 @@
 	</div>
 	{{#if currentUser}}
 		<div class="container">
-			{{#if isInRole 'corporate-admin, provider'}}
+			{{#if isInRole 'corporate-admin, provider, corporate-provider'}}
 				<div class="row">
 					<div class="col-sm-12">
 						{{>jobsRecent}}

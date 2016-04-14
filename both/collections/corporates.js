@@ -65,18 +65,6 @@ Corporates.attachSchema(
   	max: 128,
   	optional: true
   },
-  socialSecurityNumber: {
-  	type: String,
-  	label: "Social Security Number",
-  	max: 128,
-  	optional: true
-  },
-  insuranceNumber: {
-  	type: String,
-  	label: "Insurance Number",
-  	max: 128,
-  	optional: true
-    },
   location: {
   	type: String,
     label: "Location",
@@ -105,11 +93,12 @@ Corporates.attachSchema(
   },
 	industryTypes: {
 		type: [String],
-		label: "Interested In",
+		label: "Interested Industries",
 		optional: true,
 		autoform: {
-			type: "select-multiple",
-			options: INDUSTRY_TYPES
+			type: "selectize",
+			options: INDUSTRY_TYPES,
+      multiple: true
 		}
     },
     contactNumber: {
@@ -125,6 +114,11 @@ Corporates.attachSchema(
         type: "select",
         options: MOBILE_CARRIERS
       }
+    },
+    pager: {
+      type: String, 
+      label: "Pager Address",
+      optional: true
     },
     createdAt: {
       type: Date,

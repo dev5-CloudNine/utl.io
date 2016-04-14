@@ -43,7 +43,7 @@ Buyers.attachSchema(
     },
 	title: {
 		type: String,
-		label: "Title",
+		label: "Designation",
 		max: 128
     },
   companyName: {
@@ -64,12 +64,12 @@ Buyers.attachSchema(
   	max: 128,
   	optional: true
   },
-  insuranceNumber: {
-  	type: String,
-  	label: "Insurance Number",
-  	max: 128,
-  	optional: true
-    },
+  alternateEmail: {
+    type: String,
+    label: "Alternate Email",
+    max: 256,
+    optional: true
+  },
   location: {
   	type: String,
   	label: "Location",
@@ -102,56 +102,57 @@ Buyers.attachSchema(
 		label: "Interested In",
 		optional: true,
 		autoform: {
-			type: "select-multiple",
-			options: INDUSTRY_TYPES
+			type: "selectize",
+			options: INDUSTRY_TYPES,
+      multiple: true
 		}
-    },
-    contactNumber: {
-      type: String,
-      label: "Mobile Number",
-      max: 128,
-    },
-    mobileCarrier: {
-      type: String,
-      label: "Mobile Provider",
-      max: 128,
-      autoform: {
-        type: "select",
-        options: MOBILE_CARRIERS
+  },
+  contactNumber: {
+    type: String,
+    label: "Mobile Number",
+    max: 128,
+  },
+  mobileCarrier: {
+    type: String,
+    label: "Mobile Provider",
+    max: 128,
+    autoform: {
+      type: "select",
+      options: MOBILE_CARRIERS
+    }
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date();
+      } else if (this.isUpsert) {
+        return {
+          $setOnInsert: new Date()
+        };
+      } else {
+        this.unset();
       }
     },
-    createdAt: {
-      type: Date,
-      autoValue: function() {
-        if (this.isInsert) {
-          return new Date();
-        } else if (this.isUpsert) {
-          return {
-            $setOnInsert: new Date()
-          };
-        } else {
-          this.unset();
-        }
-      },
-      denyUpdate: true
+    denyUpdate: true
+  },
+  status: {
+    type: String,
+    allowedValues: STATUSES,
+    defaultValue: "active"
+  },
+  // Force value to be current date (on server) upon update
+  // and don't allow it to be set upon insert.
+  updatedAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isUpdate) {
+        return new Date();
+      }
     },
-    status: {
-      type: String,
-      allowedValues: STATUSES,
-      defaultValue: "active"
-    },
-    // Force value to be current date (on server) upon update
-    // and don't allow it to be set upon insert.
-    updatedAt: {
-      type: Date,
-      autoValue: function() {
-        if (this.isUpdate) {
-          return new Date();
-        }
-      },
-      denyInsert: true,
-      optional: true
-    }
+    denyInsert: true,
+    optional: true
+  }
 }));
 
 Buyers.allow({

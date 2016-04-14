@@ -80,7 +80,7 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<h4>
-										{{title}}
+										{{title}} - {{companyName}}
 									</h4>
 								</div>
 							</div>
@@ -98,11 +98,8 @@
 									{{/if}}
 									{{#if industryTypes}}
 										<hr>
-										<h4>Interested In</h4>
-										{{#each industryTypes}}
-											{{this}}
-											<br>
-										{{/each}}
+										<h4>Interested Industries</h4>
+										{{industryTypes}}
 									{{/if}}
 									{{#if preferredWorkLocation}}
 										<hr>

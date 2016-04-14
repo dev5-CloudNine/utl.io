@@ -127,7 +127,8 @@ Template.job.events({
         "fixed_amount": fixed_amount,
         "total_amount": total_amount,
         "buyer_cost": buyer_cost,
-        "freelancer_nets": freelancer_nets
+        "freelancer_nets": freelancer_nets,
+        "countered_at": new Date()
       }
     }
     else if(counterType == "per_hour") {
@@ -138,7 +139,8 @@ Template.job.events({
         "max_hours": max_hours,
         "total_amount": total_amount,
         "buyer_cost": buyer_cost,
-        "freelancer_nets": freelancer_nets
+        "freelancer_nets": freelancer_nets,
+        "countered_at": new Date()
       }
     }
     else if(counterType == "per_device") {
@@ -149,7 +151,8 @@ Template.job.events({
         "max_devices": max_devices,
         "total_amount": total_amount,
         "buyer_cost": buyer_cost,
-        "freelancer_nets": freelancer_nets
+        "freelancer_nets": freelancer_nets,
+        "countered_at": new Date()
       }
     }
     else if(counterType == "blended") {
@@ -162,7 +165,8 @@ Template.job.events({
         "next_max_hours": next_max_hours,
         "total_amount": total_amount,
         "buyer_cost": buyer_cost,
-        "freelancer_nets": freelancer_nets
+        "freelancer_nets": freelancer_nets,
+        "countered_at": new Date()
       }
     }
     Meteor.call('counterOfferThisJob', jobId, counterOffer, function (error) {

@@ -11,32 +11,55 @@
                             </span>
                         </a>
                     </li>
-                    <li>
+                    <li class="{{#if $eq active 'favusers'}}active{{/if}}">
                         <a href="#favusers" data-toggle="tab" title="profile">
                             <span class="round-tabs two">
-                                <i class="glyphicon glyphicon-user"></i>&nbsp; My Favorite Users
+                                <i class="glyphicon glyphicon-user"></i>&nbsp; Fav Users
                             </span>
                         </a>
                     </li>
-                    <li class="{{#if $eq active 'myjobs'}}active{{/if}}">
-                        <a href="#jobs" data-toggle="tab" title="bootsnipp goodies">
+                    <li class="{{#if $eq active 'myjobs'}}active{{/if}} dropdown" role="presentation">
+                        <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
                             <span class="round-tabs three">
-                                <i class="glyphicon glyphicon-gift"></i>&nbsp; My Jobs
+                                <i class="glyphicon glyphicon-gift"></i>&nbsp; Jobs <span class="caret"></span>
                             </span>
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#postedJobs" data-toggle="tab">
+                                    {{#if isInRole 'buyer, corporate-admin'}}
+                                        Posted
+                                    {{else}}
+                                        {{#if isInRole 'provider, corporate-provider'}}
+                                            Applied
+                                        {{/if}}
+                                    {{/if}} Jobs
+                                </a>
+                            </li>
+                            <li><a href="#favoriteJobs" data-toggle="tab">Favorite Jobs</a></li>
+                            <li><a href="#ongoingJobs" data-toggle="tab">Ongoing Jobs</a></li>
+                            <li><a href="#completedJobs" data-toggle="tab">Completed Jobs</a></li>
+                        </ul>
                     </li>
                     <li  class="{{#if $eq active 'messaging'}}active{{/if}}">
                         <a href="#mails" data-toggle="tab" title="blah blah">
                             <span class="round-tabs four">
-                              <i class="glyphicon glyphicon-comment"></i>&nbsp; My Message Box
+                              <i class="glyphicon glyphicon-comment"></i>&nbsp; Message Box
                          </span>
                         </a>
                     </li>
-                    <li>
-                        <a href="#bank" data-toggle="tab" title="completed">
-                            <span class="round-tabs five">
-                              <i class="glyphicon glyphicon-ok"></i>&nbsp; My Piggy Bank
-                         </span> </a>
+                    <li class="{{#if $eq active 'piggyBank'}}active{{/if}} dropdown" role="presentation">
+                        <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
+                            <span class="round-tabs three">
+                                <i class="glyphicon glyphicon-gift"></i>&nbsp; Piggy Bank <span class="caret"></span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#deposits" data-toggle="tab">Deposits</a></li>
+                            <li><a href="#withdrawls" data-toggle="tab">Withdrawls</a></li>
+                            <li><a href="#transfers" data-toggle="tab">Transfers</a></li>
+                            <li><a href="#allTransactions" data-toggle="tab">All Transactions</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -44,7 +67,7 @@
                 <div class="tab-pane fade {{#if $eq active 'dashboard'}} in active {{/if}}" id="dashboard">
                     <h4>Dashboard (Coming soon! WIP!)</h4>
                 </div>
-                <div class="tab-pane fade {{#if $eq active 'favoriteusers'}} in active {{/if}}" id="favusers">
+                <div class="tab-pane fade {{#if $eq active 'favusers'}} in active {{/if}}" id="favusers">
                     <br>
                     {{#each favUsers}}
                         {{>profileSmall}}
@@ -52,52 +75,40 @@
                         You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
                     {{/each}}
                 </div>
-                <div class="tab-pane fade {{#if $eq active 'myjobs'}} in active {{/if}}" id="jobs">
+                <br>
+                <div class="tab-pane fade {{#if $eq active 'postedJobs'}} in active {{/if}}" id="postedJobs">
                     <br>
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#postedJobs" data-toggle="tab">
-                                {{#if currentUser.isBuyer}}
-                                    Posted
-                                {{else}}
-                                    {{#if currentUser.isDeveloper}}
-                                        Applied
-                                    {{/if}}
-                                {{/if}} Jobs
-                            </a>
-                        </li>
-                        <li><a href="#favoriteJobs" data-toggle="tab">Favorite Jobs</a></li>
-                        <li><a href="#" data-toggle="tab">Ongoing Jobs</a></li>
-                        <li><a href="#" data-toggle="tab">Completed Jobs</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade" id="postedJobs">
-                            <br>
-                            {{#if currentUser.isDeveloper}}
-                                {{#each appliedJobs}}
-                                    {{>jobSmall}}
-                                {{else}}
-                                    You haven't applied for any jobs yet. <a href="{{pathFor 'jobs'}}">Find jobs</a> to apply.
-                                {{/each}}
-                            {{else}}
-                                {{#if currentUser.isBuyer}}
-                                    {{#each jobs}}
-                                        {{>jobSmall}}
-                                    {{else}}
-                                        You haven't posted any jobs.  <a href="{{pathFor 'jobNew'}}">Post a Job</a> if you have one to offer.
-                                    {{/each}}
-                                {{/if}}
-                            {{/if}}
-                        </div>
-                        <div class="tab-pane fade" id="favoriteJobs">
-                            <br>
-                            {{#each favJobs}}
+                    {{#if currentUser.isDeveloper}}
+                        {{#each appliedJobs}}
+                            {{>jobSmall}}
+                        {{else}}
+                            You haven't applied for any jobs yet. <a href="{{pathFor 'jobs'}}">Find jobs</a> to apply.
+                        {{/each}}
+                    {{else}}
+                        {{#if currentUser.isBuyer}}
+                            {{#each jobs}}
                                 {{>jobSmall}}
                             {{else}}
-                                You haven't added any favorites. <a href="{{pathFor 'jobs'}}">View jobs</a> if you want to add some.
+                                You haven't posted any jobs.  <a href="{{pathFor 'jobNew'}}">Post a Job</a> if you have one to offer.
                             {{/each}}
-                        </div>
-                    </div>
+                        {{/if}}
+                    {{/if}}
+                </div>
+                <div class="tab-pane fade {{#if $eq active 'favoritejobs'}} in active {{/if}}" id="favoriteJobs">
+                    <br>
+                    {{#each favJobs}}
+                        {{>jobSmall}}
+                    {{else}}
+                        You haven't added any favorites. <a href="{{pathFor 'jobs'}}">View jobs</a> if you want to add some.
+                    {{/each}}
+                </div>
+                <div class="tab-pane fade {{#if $eq active 'ongoingJobs'}} in active {{/if}}" id="ongoingJobs">
+                    <br>
+                    <h4>Ongoing Jobs (Coming Soon)</h4>
+                </div>
+                <div class="tab-pane fade {{#if $eq active 'completedJobs'}} in active {{/if}}" id="completedJobs">
+                    <br>
+                    <h4>Completed Jobs (Coming Soon)</h4>
                 </div>
                 <div class="tab-pane fade {{#if $eq active 'messaging'}} in active {{/if}}" id="mails">
                     <br> 
@@ -115,8 +126,17 @@
                       {{> mails}}
                     {{/if}}
                 </div>
-                <div class="tab-pane fade" id="bank">
-                    <h4>Piggy Bank (Coming soon! WIP!)</h4>
+                <div class="tab-pane fade" id="deposits">
+                    <h4>Deposits (Coming soon! WIP!)</h4>
+                </div>
+                <div class="tab-pane fade" id="withdrawls">
+                    <h4>Withdrawls (Coming soon! WIP!)</h4>
+                </div>
+                <div class="tab-pane fade" id="transfers">
+                    <h4>Transfers (Coming soon! WIP!)</h4>
+                </div>
+                <div class="tab-pane fade" id="allTransactions">
+                    <h4>All Transactions (Coming soon! WIP!)</h4>
                 </div>
                 <div class="clearfix"></div>
             </div>

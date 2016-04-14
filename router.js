@@ -21,9 +21,6 @@ Router.map(function() {
         data: function() {
             return {
                 jobs: Jobs.find({
-                    featuredThrough: {
-                        $exists: false
-                    },
                     status: "active"
                 }, {
                     sort: {
@@ -359,6 +356,32 @@ Router.map(function() {
             return Meteor.subscribe("tempInvitation");
         }
     });
+
+    this.route('corpTeam', {
+        path: '/corporates/:_id/:slug/team',
+        title: function() {
+            return "UTL - " + this.data().displayName() + " - " + this.data().title;
+        },
+        data: function() {
+            return Corporates.findOne({
+                _id: this.params._id
+            });
+        },
+        waitOn: function() {
+            return subs.subscribe('corporate', this.params._id);
+        },
+        onBeforeAction: function() {
+            var expectedSlug = this.data().slug();
+            if(this.params.slug !== expectedSlug) {
+                this.redirect("corporate", {
+                    _id: this.params._id,
+                    slug: expectedSlug
+                });
+            } else {
+                this.next();
+            }
+        }
+    })
 
     this.route('aboutUs', {
         path: '/about'

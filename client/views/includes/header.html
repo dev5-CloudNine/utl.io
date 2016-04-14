@@ -18,7 +18,6 @@
                             {{#if isInRole 'admin'}}
                                 <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
                                 <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
-                                <li><a href="{{pathFor 'corporates'}}">View Corporates</a></li>
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                             {{/if}}
                             {{#if isInRole 'buyer'}}
@@ -28,10 +27,9 @@
                                     <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
                                 {{/unless}}
                             {{/if}}
-                            {{#if isInRole 'provider'}}
+                            {{#if isInRole 'provider, corporate-provider'}}
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                                 <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
-                                <li><a href="{{pathFor 'corporates'}}">View Corporates</a></li>
                                 {{#unless currentUser.isDeveloper}}
                                     <li class="{{isActiveRoute regex='^profile$'}}">
                                         <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
@@ -44,9 +42,7 @@
                                         <a href="{{pathFor 'corporateNew'}}">Create Your Profile</a>
                                     </li>
                                 {{/unless}}
-                                <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
-                                <li><a href="{{pathFor 'jobNew'}}">Post A Job</a></li>
-                                <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
+                                {{#with corpProfile}}<li><a href="{{pathFor 'corpTeam'}}">View Team</a></li>{{/with}}
                                 <li><a href="{{pathFor 'addTeam'}}">Add Your Team</a></li>
                             {{/if}}
                         {{else}}
@@ -90,7 +86,7 @@
                     <li class="divider"></li>
                 </li>
                 {{else}}
-                {{#if isInRole 'corporate-admin, provider'}}
+                {{#if isInRole 'corporate-admin, provider, corporate-provider'}}
                     <li><a href="{{pathFor 'dashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a></li>
                     <li class="divider"></li>
                 {{/if}}
@@ -99,7 +95,7 @@
                 <li><a href="/admin"><i class="fa fa-cogs fa-fw"></i> Admin</a></li>
                 <li class="divider"></li>
             {{/if}}
-            {{#if isInRole 'provider'}}
+            {{#if isInRole 'provider, corporate-provider'}}
                 {{#if currentUser.isDeveloper}}
                     <li>
                         {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}

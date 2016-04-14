@@ -38,14 +38,14 @@ Profiles.attachSchema(
     },
     name: {
       type: String,
-      label: "Name",
+      label: "Name *",
       max: 128
     },
-    // type: {
-    //   type: String,
-    //   label: "Individual or Company",
-    //   allowedValues: ["Individual", "Company"]
-    // },
+    companyName: {
+      type: String,
+      label: "Company Name",
+      optional: true
+    },
     freelancerSkills: {
       type: [String],
       label: "Skills",
@@ -58,7 +58,7 @@ Profiles.attachSchema(
     },
     title: {
       type: String,
-      label: "Designation",
+      label: "Designation *",
       max: 128
     },
     eintinNumber: {
@@ -73,15 +73,9 @@ Profiles.attachSchema(
       max: 128,
       optional: true
     },
-    insuranceNumber: {
-      type: String,
-      label: "Insurance Number",
-      max: 128,
-      optional: true
-    },
     location: {
       type: String,
-      label: "Location",
+      label: "Location *",
       max: 256,
       autoform: {
         type: "typeahead",
@@ -90,14 +84,12 @@ Profiles.attachSchema(
     },
     description: {
       type: String,
-      label: "Description",
+      label: "Description *",
       max: 10000,
       autoform: {
         afFieldInput: SUMMERNOTE_OPTIONS
       }
     },
-    // Automatically set HTML content based on markdown content
-    // whenever the markdown content is set.
     htmlDescription: {
       type: String,
       optional: true,
@@ -108,15 +100,9 @@ Profiles.attachSchema(
         }
       }
     },
-    availableForHire: {
-      type: Boolean,
-      label: "Currently Available For Hire",
-      defaultValue: true
-    },
     industryTypes: {
       type: [String],
-      label: "Interested In",
-      optional: true,
+      label: "Interested Industries *",
       autoform: {
         type: "selectize",
         options: INDUSTRY_TYPES,
@@ -125,12 +111,12 @@ Profiles.attachSchema(
     },
     contactNumber: {
       type: String,
-      label: "Mobile Number",
+      label: "Mobile Number *",
       max: 128,
     },
     mobileCarrier: {
       type: String,
-      label: "Mobile Provider",
+      label: "Mobile Provider *",
       max: 128,
       autoform: {
         type: "select",
@@ -139,8 +125,7 @@ Profiles.attachSchema(
     },
     avgRatesPerHour: {
       type: Number,
-      label: "Average Rates Per Hour (USD)",
-      optional: true
+      label: "Average Rates Per Hour (USD) *",
     },
     alternateEmail: {
       type: String,

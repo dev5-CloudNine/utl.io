@@ -432,7 +432,7 @@
 														<span>
 															<h4>{{this.userId}}</h4>
 															{{#if this.countered_at}}
-																<i class="pull-right fa fa-calander fa-fw"></i>{{this.countered_at}}
+																<h5 class="pull-right"><i class="fa fa-calendar"></i>&nbsp;{{formatDate this.countered_at}}</h5>
 															{{/if}}
 															{{#if this.fixed_amount}}
 																<h5>Fixed Amount: {{this.fixed_amount}}</h5>

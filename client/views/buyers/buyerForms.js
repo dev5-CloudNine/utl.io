@@ -29,6 +29,9 @@ Template.buyerEdit.events({
     Router.go("buyer", {
       _id: this.buyerProfile._id
     });
+  },
+  'change $(select[name="mobileCarrier"]': function(event, template) {
+    console.log(event.target.value);
   }
 });
 

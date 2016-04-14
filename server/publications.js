@@ -27,6 +27,10 @@ Meteor.publish("messages", function () {
     return Messages.find();
 });
 
+Meteor.publish("cities", function() {
+    return Cities.find();
+});
+
 Meteor.publish("tempInvitation", function () {
     return TempInvitation.find();
 });
@@ -260,7 +264,8 @@ Meteor.publish("applied_profiles", function() {
             languages: true,
             url: true,
             resumeUrl: true,
-            customImageUrl: true
+            customImageUrl: true,
+            mobileCarrier: true
         }
     })
 })
@@ -289,11 +294,7 @@ Meteor.publish("job", function(jobId) {
 Meteor.publishComposite('profile', function(profileId) {
     return {
         find: function() {
-            return 
-            [
-                Profiles.find({_id: profileId}),
-                Images.find()
-            ]
+            return Profiles.find({_id: profileId});
         },
         children: [{
             find: function(profile) {
@@ -338,9 +339,7 @@ Meteor.publishComposite('corporate', function(corporateId) {
 Meteor.publishComposite('buyer', function(buyerId) {
     return {
         find: function() {
-            return Buyers.find({
-                _id: buyerId
-            })
+            return Buyers.find({_id: buyerId})
         },
         children: [{
             find: function(buyer) {
