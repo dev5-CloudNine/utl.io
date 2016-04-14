@@ -288,6 +288,10 @@ Jobs.attachSchema(
       decimal: true,
       optional: true
     },
+    'counterOffers.$.countered_at': {
+      type: Date,
+      optional: true,
+    },
     contactperson: {
       type: String,
       label: "Contact Name",
@@ -311,7 +315,7 @@ Jobs.attachSchema(
       optional: true,
       label: "Exactly on date and time",
       autoform: {
-        type: "bootstrap-datepicker"
+        type: "bootstrap-datetimepicker"
       }
     },
     betweendates: {
@@ -508,16 +512,6 @@ Jobs.attachSchema(
         }
       },
     },
-    featuredThrough: {
-      type: Date,
-      optional: true
-    },
-    featuredChargeHistory: {
-      type: [String],
-      optional: true
-    },
-    // Automatically set HTML content based on markdown content
-    // whenever the markdown content is set.
     htmlDescription: {
       type: String,
       optional: true,

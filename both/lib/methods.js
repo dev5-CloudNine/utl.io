@@ -30,6 +30,9 @@ Meteor.methods({
     addUserToFav: function(uId) {
         Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteUsers: uId}});
     },
+    addBuyerToFav: function(uId) {
+        Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteBuyers: uId}});
+    },
     applyForThisJob: function(jobId) {
         Jobs.update(jobId, {$addToSet: {appliedBy: Meteor.userId()}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {appliedJobs: jobId}});

@@ -73,5 +73,11 @@ Template.corporateFields.helpers({
   companyName: function() {
     var corpInfo = Meteor.user();
     return corpInfo.companyName;
+  },
+  corpAdminEmail: function() {
+    return Meteor.user().emails[0].address;
+  },
+  pagerAddress: function() {
+    return "some address";
   }
 });

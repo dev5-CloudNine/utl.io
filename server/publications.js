@@ -27,6 +27,10 @@ Meteor.publish("messages", function () {
     return Messages.find();
 });
 
+Meteor.publish("cities", function() {
+    return Cities.find();
+});
+
 Meteor.publish("tempInvitation", function () {
     return TempInvitation.find();
 });
@@ -235,6 +239,27 @@ Meteor.publish("favorite_users", function() {
     })
 });
 
+Meteor.publish("favorite_buyers", function() {
+    check(arguments, [Match.Any]);
+    return Buyers.find({status: 'active'}, {
+        fields: {
+            customImageUrl: true,
+            name: true,
+            title: true,
+            companyName: true,
+            eintinNumber: true,
+            socialSecurityNumber: true,
+            alternateEmail: true,
+            location: true,
+            description: true,
+            htmlDescription: true,
+            industryTypes: true,
+            contactNumber: true,
+            mobileCarrier: true
+        }
+    })
+})
+
 Meteor.publish("applied_profiles", function() {
     check(arguments, [Match.Any]);
     return Profiles.find({status: "active"}, {
@@ -260,7 +285,8 @@ Meteor.publish("applied_profiles", function() {
             languages: true,
             url: true,
             resumeUrl: true,
-            customImageUrl: true
+            customImageUrl: true,
+            mobileCarrier: true
         }
     })
 })
@@ -289,11 +315,7 @@ Meteor.publish("job", function(jobId) {
 Meteor.publishComposite('profile', function(profileId) {
     return {
         find: function() {
-            return 
-            [
-                Profiles.find({_id: profileId}),
-                Images.find()
-            ]
+            return Profiles.find({_id: profileId});
         },
         children: [{
             find: function(profile) {
@@ -338,9 +360,7 @@ Meteor.publishComposite('corporate', function(corporateId) {
 Meteor.publishComposite('buyer', function(buyerId) {
     return {
         find: function() {
-            return Buyers.find({
-                _id: buyerId
-            })
+            return Buyers.find({_id: buyerId})
         },
         children: [{
             find: function(buyer) {

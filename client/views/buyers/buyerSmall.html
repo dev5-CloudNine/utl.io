@@ -14,13 +14,16 @@
                 <h4 class="name"><a href="{{pathFor 'buyer'}}">
 					{{#if name}}{{name}}{{else}}{{userName}}{{/if}}
 				</a></h4>
-                <div class="labels">
-                    {{#if $eq type 'Company'}}
-                        <span class="label label-danger"><i class="fa fa-users"></i> Company</span>
+                <div class="title">
+                    <small>{{title}} - {{companyName}}</small>
+                </div>
+                <div class="location" style="margin-top: -35px;">
+                    {{#if location}}
+                        <small><i class="fa fa-map-marker"></i>&nbsp;{{location}}</small>
                     {{/if}}
                 </div>
-                <div class="title">
-                    <small>{{title}}</small>
+                <div class="text-center">
+                    <span><a href class="fa fa-heart fa-2x addToFavorites" style="text-decoration:none"></a></span>
                 </div>
             </div>
         </div>

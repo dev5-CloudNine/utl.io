@@ -22,25 +22,27 @@
 								{{/if}}
 								{{#if contactNumber}}
 									<br>
-									<i class="fa fa-mobile">&nbsp;{{contactNumber}}</i>
+									<i class="fa fa-mobile"></i>&nbsp;{{contactNumber}}
 								{{/if}}
-								{{#if contactEmail}}
+								{{#if displayName}}
 									<br>
-									<i class="fa fa-envelope">&nbsp;{{contactEmail}}</i>
+									<i class="fa fa-envelope"></i>&nbsp;{{displayName}}
+								{{else}}
+									<i class="fa fa-user"></i>&nbsp;{{contactEmail}}
 								{{/if}}
 								<hr>
 							</small>
 							<small>
 								{{#if eintinNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;EIN/TIN Number: {{eintinNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;EIN/TIN: {{eintinNumber}}
 								{{/if}}
 								<br>
 								{{#if socialSecurityNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;Social Security Number: {{socialSecurityNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;SSN: {{socialSecurityNumber}}
 								{{/if}}
 								<br>
-								{{#if insuranceNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;Insurance Number: {{insuranceNumber}}
+								{{#if alternateEmail}}
+									<i class="fa fa-envelope"></i>&nbsp;{{alternateEmail}}
 								{{/if}}
 							</small>
 							<hr>
@@ -57,7 +59,7 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<h4>
-										{{title}}
+										{{title}} -  {{companyName}}
 									</h4>
 								</div>
 							</div>
@@ -70,11 +72,8 @@
 									{{/if}}
 									{{#if industryTypes}}
 										<hr>
-										<b>Interested In</b>
-										{{#each industryTypes}}
-											<br>
-											{{this}}
-										{{/each}}
+										<h4>Interested Industries</h4>
+										{{industryTypes}}
 										<hr>
 									{{/if}}
 								</div>

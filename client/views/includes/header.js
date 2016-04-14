@@ -10,6 +10,15 @@ Template.header.events({
     }
   }
 });
+
+Template.header.helpers({
+  corpProfile: function() {
+    return Corporates.findOne({
+      userId: Meteor.userId()
+    })
+  }
+});
+
 Template.headerUserMenu.helpers({
   profile: function() {
     return Profiles.findOne({

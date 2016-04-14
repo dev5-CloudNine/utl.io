@@ -16,14 +16,11 @@
 				</a></h4>
                 <div class="labels">
                     {{#if availableForHire}}
-                        <span class="label label-primary"><i class="fa fa-rocket"></i> Hire Me</span>
-                    {{/if}}
-                    {{#if $eq type 'Company'}}
-                        <span class="label label-danger"><i class="fa fa-users"></i> Company</span>
+                        <span class="label label-primary"><i class="fa fa-rocket"></i> Assign Job</span>
                     {{/if}}
                 </div>
                 <div class="title">
-                    <small>{{title}}</small>
+                    <small>{{title}} - {{companyName}}</small>
                 </div>
                 <div class="location">
                     {{#if location}}

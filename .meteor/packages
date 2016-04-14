@@ -86,3 +86,7 @@ standard-minifier-js
 cfs:gridfs
 cfs:standard-packages
 cfs:ui
+chhib:selectize-bootstrap-3
+comerc:autoform-selectize
+tsega:bootstrap3-datetimepicker@=3.1.3_3
+aldeed:autoform-bs-datetimepicker

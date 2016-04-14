@@ -38,23 +38,27 @@ Profiles.attachSchema(
     },
     name: {
       type: String,
-      label: "Name",
+      label: "Name *",
       max: 128
     },
-    type: {
+    companyName: {
       type: String,
-      label: "Individual or Company",
-      allowedValues: ["Individual", "Company"]
+      label: "Company Name",
+      optional: true
     },
     freelancerSkills: {
-      type: String,
+      type: [String],
       label: "Skills",
       optional: true,
-      max: 256
+      autoform: {
+        type: "selectize",
+        options: SKILL_SET,
+        multiple: true
+      }
     },
     title: {
       type: String,
-      label: "Designation",
+      label: "Designation *",
       max: 128
     },
     eintinNumber: {
@@ -69,15 +73,9 @@ Profiles.attachSchema(
       max: 128,
       optional: true
     },
-    insuranceNumber: {
-      type: String,
-      label: "Insurance Number",
-      max: 128,
-      optional: true
-    },
     location: {
       type: String,
-      label: "Location",
+      label: "Location *",
       max: 256,
       autoform: {
         type: "typeahead",
@@ -86,14 +84,12 @@ Profiles.attachSchema(
     },
     description: {
       type: String,
-      label: "Description",
+      label: "Description *",
       max: 10000,
       autoform: {
         afFieldInput: SUMMERNOTE_OPTIONS
       }
     },
-    // Automatically set HTML content based on markdown content
-    // whenever the markdown content is set.
     htmlDescription: {
       type: String,
       optional: true,
@@ -104,40 +100,37 @@ Profiles.attachSchema(
         }
       }
     },
-    availableForHire: {
-      type: Boolean,
-      label: "Currently Available For Hire",
-      defaultValue: true
-    },
     industryTypes: {
       type: [String],
-      label: "Interested In",
-      // allowedValues: INDUSTRY_TYPES,
-      optional: true,
+      label: "Interested Industries *",
       autoform: {
-        type: "select-multiple",
-        options: INDUSTRY_TYPES
+        type: "selectize",
+        options: INDUSTRY_TYPES,
+        multiple: true
       }
     },
     contactNumber: {
       type: String,
-      label: "Telephone Number",
+      label: "Mobile Number *",
       max: 128,
     },
-    contactEmail: {
+    mobileCarrier: {
       type: String,
-      label: "Email",
-      max: 128
+      label: "Mobile Provider *",
+      max: 128,
+      autoform: {
+        type: "select",
+        options: MOBILE_CARRIERS
+      }
     },
     avgRatesPerHour: {
       type: Number,
-      label: "Average Rates Per Hour (USD)",
-      optional: true
+      label: "Average Rates Per Hour (USD) *",
     },
-    preferredWorkLocation: {
+    alternateEmail: {
       type: String,
-      label: "Preferred Work Location",
-      optional: true,
+      label: "Alternate Email",
+      optional: true
     },
     educationDetails: {
       type: Array,

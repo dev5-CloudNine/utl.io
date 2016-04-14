@@ -73,6 +73,32 @@
 		</div>
 	</div>
 	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			{{>afQuickField name='companyName' value=companyName readOnly=true}}
+		</div>
+		<div class="col-xs12 col-sm12 col-md-6 col-lg-6">
+			{{>afQuickField name="companyUrl" placeholder="Your website address"}}
+		</div>
+	</div>	
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			{{>afQuickField name="eintinNumber" placeholder="99-9999999"}}
+		</div>		
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			{{>afQuickField name='location' placeholder="Where is your company located"}}
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			{{>afQuickField name='industryTypes' noselect="true"}}
+		</div>
+	</div>
+	<hr>
+	{{>afQuickField name='description' rows=8  placeholder="Tell us about your professional self, how long you've been programming, things like that"}}
+	<hr>
+	<h5>Corporate Administrator Profile</h5>
+	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 			{{>afQuickField name='name' placeholder="Your Name"}}
 		</div>
@@ -80,41 +106,19 @@
 			{{>afQuickField name='title' placeholder="What do you professionally do?"}}
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='companyName' value=companyName readOnly=true}}
+			{{>afQuickField name="corpAdminEmail" readOnly=true value=corpAdminEmail}}
 		</div>
-	</div>	
-	<div class="row">
-		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-			{{>afQuickField name="eintinNumber" placeholder="Employment/Tax Identification Number"}}
-		</div>
-		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-			{{>afQuickField name="socialSecurityNumber" placeholder="Social Security Number"}}
-		</div>
-		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-			{{>afQuickField name="insuranceNumber" placeholder="Insurance Number"}}
-		</div>
-		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-			{{>afQuickField name="companyUrl" placeholder="Your website address"}}
-		</div>		
 	</div>
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='location' placeholder="Where are you located"}}
+			{{>afQuickField name="contactNumber" placeholder="+1 541-754-3010"}}
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='contactNumber' placeholder="Mobile Number"}}
+			{{>afQuickField name="mobileCarrier"}}
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='contactEmail' placeholder="Secondary email"}}
+			{{>afQuickField name="pager" readonly=true value=pagerAddress}}
 		</div>
 	</div>
-	<hr>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='industryTypes' noselect="true"}}
-		</div>
-	</div>
-	<hr>
-	{{>afQuickField name='description' rows=8  placeholder="Tell us about your professional self, how long you've been programming, things like that"}}
 	<hr>
 </template>

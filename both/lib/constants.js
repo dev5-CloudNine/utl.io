@@ -87,7 +87,7 @@ INDUSTRY_TYPES = function() {
         {label: "Health Care", value: "Health Care"},
         {label: "Airport Security", value: "Airport Security"},
         {label: "Government", value: "Government"},
-        {label: "Green", value: "Green"},
+        {label: "Green", value: "Gre_iden"},
         {label: "Gaming", value: "Gaming"},
       ]
     },
@@ -195,4 +195,41 @@ CITY_OPTIONS = function() {
     cities.push(cityObj);
   });
   return cities;
+};
+
+MOBILE_CARRIERS = function() {
+  return [
+    {label: "Alltel", value: "Alltel"},
+    {label: "ATT", value: "ATT"},
+    {label: "Boost Mobile", value: "Boost Mobile"},
+    {label: "Cellcom", value: "Cellcom"},
+    {label: "Cellular South", value: "Cellular South"},
+    {label: "Cincinnati Bell Wireless", value: "Cincinnati Bell Wireless"},
+    {label: "Cingular", value: "Cingular"},
+    {label: "Cricket", value: "Cricket"},
+    {label: "Inland Cellular", value: "Inland Cellular"},
+    {label: "IWireless", value: "IWireless"},
+    {label: "MetroPCS", value: "MetroPCS"},
+    {label: "Nextel", value: "Nextel"},
+    {label: "Ntelos", value: "Ntelos"},
+    {label: "Project Fi", value: "Project Fi"},
+    {label: "Quest", value: "Quest"},
+    {label: "Republic Wireless", value: "Republic Wireless"},
+    {label: "Simple Mobile", value: "Simple Mobile"},
+    {label: "Southern LINC", value: "Southern LINC"},
+    {label: "Spring", value: "Spring"},
+    {label: "Straight Talk", value: "Straight Talk"},
+    {label: "T-Mobile", value: "T-Mobile"},
+    {label: "US Cellular", value: "US Cellular"},
+    {label: "Verizon", value: "Verizon"},
+    {label: "Virgin Mobile", value: "Virgin Mobile"},
+  ]
+},
+
+SKILL_SET = function() {
+  return [
+    {label: "eBook Design", value: "eBook Design"},
+    {label: "FL Studio", value: "FL Studio"},
+    {label: "Final Cut Pro X", value: "Final Cut Pro X"},
+  ]
 }
