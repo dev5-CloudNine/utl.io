@@ -6,3 +6,10 @@ Tracker.autorun(function() {
     $(window).scrollTop(0);
   });
 });
+
+
+Meteor.startup(function(){
+    Cities._ensureIndex({
+        "city": "text"
+    });
+});

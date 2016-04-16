@@ -1,161 +1,144 @@
 <template name="profileNew">
-	<div class="row">
-		<div class="col-sm-10 col-sm-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4>Introduce Yourself</h4>
-				</div>
-				<div class="panel-body">
-					{{#autoForm collection="Profiles" id="profileNew" type="insert"}}
-					    {{>profileFields}}
-					    <div class="text-center">
-					    	<button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Save</button>
-					    </div>
-					{{/autoForm}}
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Introduce Yourself</h4>
+                </div>
+                <div class="panel-body">
+                    {{#autoForm collection="Profiles" id="profileNew" type="insert"}} {{>profileFields}}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Save</button>
+                    </div>
+                    {{/autoForm}}
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
-
 <template name="profileEdit">
     <div class="row">
-		<div class="col-sm-10 col-sm-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4>Edit Provider Profile</h4>
-				</div>
-				<div class="panel-body">
-					{{#autoForm collection="Profiles" id="profileEdit" type="update" doc=profile}}
-					    {{>profileFields}}
-					    <div class="text-center">
-					    	<button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Update</button>
-					    	<button id="cancel" class="btn btn-default"> Cancel</button>
-					    </div>
-					{{/autoForm}}
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="col-sm-10 col-sm-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Edit Provider Profile</h4>
+                </div>
+                <div class="panel-body">
+                    {{#autoForm collection="Profiles" id="profileEdit" type="update" doc=profile}} {{>profileFields}}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Update</button>
+                        <button id="cancel" class="btn btn-default"> Cancel</button>
+                    </div>
+                    {{/autoForm}}
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
-
 <template name="profileFields">
-	<div class="form-group"  id="profileAvatarPreview">
-		<label class="control-label">{{#if customImagePreviewUrl}}Custom{{else}}Automatic{{/if}} Avatar</label>
-		<div class="row">
-			<div class="col-md-4">
-				{{#if customImagePreviewUrl}}
-					<div class="avatar avatar-large">
-						<img class="img-responsive" src="{{resizeImageUrl customImagePreviewUrl 200 200}}"/>
-					</div>
-				{{else}}
-					{{> avatar user=currentUser size="large"}}
-				{{/if}}
-			</div>
-			<div class="col-md-4">
-				<input
-					id="custom-image"
-					name="customImageUrl"
-					data-schema-key="customImageUrl"
-					hidden="true"
-					role="uploadcare-uploader"
-					data-tabs="file camera url facebook gdrive dropbox instagram flickr skydrive"
-					data-image-shrink="800x800"
-					data-images-only="true"
-					data-preview-step="true"
-					data-clearable="true"
-					data-multiple="false"
-					data-system-dialog="false"
-					data-crop="800:800"
-					data-cdn-base="https://ucarecdn.com/"
-				/>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='name' placeholder="Your Full Name"}}
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='title' placeholder="Let us know about your professional role"}}
-		</div>
-		{{#if isInRole 'corporate-provider'}}
-			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-				{{>afQuickField name='companyName' value=companyInvited readOnly=true}}
-			</div>
-		{{else}}
-			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-				{{>afQuickField name='companyName' placeholder="Company name"}}
-			</div>
-		{{/if}}
-	</div>	
-	<div class="row">
-		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-			{{>afQuickField name="eintinNumber" placeholder="99-9999999"}}
-		</div>
-		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-			{{>afQuickField name="socialSecurityNumber" placeholder="999-99-9999"}}
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='location' placeholder="Where are you located"}}
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='contactNumber' placeholder="Mobile Number"}}
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='mobileCarrier'}}
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name="alternateEmail" placeholder="john@doe.com"}}
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='url' placeholder="URL your personal website/blog"}}
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			{{>afQuickField name='resumeUrl' placeholder="URL of resume/cv hosted externally (dropbox, gdrive, etc)"}}
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-			<label>Upload Resume</label>
-			<input type="file" class="form-control">
-		</div>
-	</div>
-	<hr>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			{{>afQuickField name='industryTypes'}}
-		</div>				
-	</div>
-	<hr>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			{{>afQuickField name="freelancerSkills" type="selectize" multiple=true placeholder="Cable Operator, DB Administrator, Hardware Technician, ..."}}
-		</div>
-	</div>
-	{{>afQuickField name='description' rows=8  placeholder="Tell us about your professional self, how long you've been programming, things like that"}}
-	<hr>
-	<div class="row">
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-			{{>afQuickField name="avgRatesPerHour" placeholder="Mention your hourly rates like 20 USD"}}
-		</div>
-	</div>
-	<hr>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			{{>afArrayField name="educationDetails"}}
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			{{>afArrayField name="certifications"}}
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			{{>afArrayField name="languages"}}
-		</div>
-	</div>
+    <div class="form-group" id="profileAvatarPreview">
+        <label class="control-label">{{#if customImagePreviewUrl}}Custom{{else}}Automatic{{/if}} Avatar</label>
+        <div class="row">
+            <div class="col-md-4">
+                {{#if customImagePreviewUrl}}
+                <div class="avatar avatar-large">
+                    <img class="img-responsive" src="{{resizeImageUrl customImagePreviewUrl 200 200}}" />
+                </div>
+                {{else}} {{> avatar user=currentUser size="large"}} {{/if}}
+            </div>
+            <div class="col-md-4">
+                <input id="custom-image" name="customImageUrl" data-schema-key="customImageUrl" hidden="true" role="uploadcare-uploader" data-tabs="file camera url facebook gdrive dropbox instagram flickr skydrive" data-image-shrink="800x800" data-images-only="true" data-preview-step="true" data-clearable="true" data-multiple="false" data-system-dialog="false" data-crop="800:800" data-cdn-base="https://ucarecdn.com/" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name='name' placeholder="Your Full Name"}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name='title' placeholder="Let us know about your professional role"}}
+        </div>
+        {{#if isInRole 'corporate-provider'}}
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name='companyName' value=companyInvited readOnly=true}}
+        </div>
+        {{else}}
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name='companyName' placeholder="Company name"}}
+        </div>
+        {{/if}}
+    </div>
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name="eintinNumber" placeholder="99-9999999"}}
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name="socialSecurityNumber" placeholder="999-99-9999"}}
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+            <div class="form-group">
+                <label for="loc" class="control-label">Location</label>
+                <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="Location" autocomplete="off" spellcheck="off" data-source="location" maxlength="128" />
+                <span class="help-block"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name='contactNumber' placeholder="Mobile Number"}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name='mobileCarrier'}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name="alternateEmail" placeholder="john@doe.com"}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name='url' placeholder="URL your personal website/blog"}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name='resumeUrl' placeholder="URL of resume/cv hosted externally (dropbox, gdrive, etc)"}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <label>Upload Resume</label>
+            <input type="file" class="form-control">
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{>afQuickField name='industryTypes'}}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{>afQuickField name="freelancerSkills" type="selectize" multiple=true placeholder="Cable Operator, DB Administrator, Hardware Technician, ..."}}
+        </div>
+    </div>
+    {{>afQuickField name='description' rows=8 placeholder="Tell us about your professional self, how long you've been programming, things like that"}}
+    <hr>
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            {{>afQuickField name="avgRatesPerHour" placeholder="Mention your hourly rates like 20 USD"}}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{>afArrayField name="educationDetails"}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{>afArrayField name="certifications"}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{>afArrayField name="languages"}}
+        </div>
+    </div>
 </template>

@@ -19,8 +19,7 @@ Jobs.attachSchema(
     location: {
       type: String,
       label: "Location",
-      max: 128,
-      optional: true
+      max: 128
     },
     jobtype: {
       type: String,

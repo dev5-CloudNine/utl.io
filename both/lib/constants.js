@@ -185,18 +185,6 @@ STATUSES = ["pending","active","flagged","inactive","filled"];
 
 RATE_BASIS = ['Fixed Pay', 'Per Hour', 'Per Device', 'Blended'];
 
-CITY_OPTIONS = function() {
-  var cities = [];
-  Cities.find().forEach(function(city) {
-    var cityObj = {
-      label: city.city + ", " + city.state + ", " + city.zip,
-      value: city.city + ", " + city.state + ", " + city.zip
-    }
-    cities.push(cityObj);
-  });
-  return cities;
-};
-
 MOBILE_CARRIERS = function() {
   return [
     {label: "Alltel", value: "Alltel"},

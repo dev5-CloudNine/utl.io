@@ -79,8 +79,6 @@ pauli:accounts-linkedin
 easy:search
 arkham:comments-ui
 yogiben:autoform-file
-comerc:bs-typeahead
-comerc:autoform-typeahead
 standard-minifier-css
 standard-minifier-js
 cfs:gridfs
@@ -90,3 +88,4 @@ chhib:selectize-bootstrap-3
 comerc:autoform-selectize
 tsega:bootstrap3-datetimepicker@=3.1.3_3
 aldeed:autoform-bs-datetimepicker
+sergeyt:typeahead

@@ -76,11 +76,7 @@ Profiles.attachSchema(
     location: {
       type: String,
       label: "Location *",
-      max: 256,
-      autoform: {
-        type: "typeahead",
-        options: CITY_OPTIONS
-      }
+      max: 256
     },
     description: {
       type: String,
