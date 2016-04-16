@@ -8,8 +8,8 @@ Tracker.autorun(function() {
 });
 
 
-Meteor.startup(function(){
-    Cities._ensureIndex({
-        "city": "text"
-    });
+if (Meteor.isServer) {
+Cities._ensureIndex({
+"city": "text"
 });
+}

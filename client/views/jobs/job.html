@@ -243,26 +243,26 @@
 																<label for="fixed_amount">Fixed Amount</label>
 																<input type="number" class="form-control" id="fixed_amount" step="any" min="1">
 															</div>
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label for="fixed_total">Total Amount</label>
 																<input type="number" class="form-control" id="fixed_total" name="total_amount" readonly="true" step="any" min="1">
 															</div>
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label for="utl_fees">UTL Fees</label>
 																<input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
 															</div>
 														</div>
 														<div class="row">
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label>Paid By</label><br>
 																<label class="radio-inline">
-																	<input type="radio" name="paidby" value="provider"> Provider
+																	<input type="radio" name="paidby" value="provider" checked="checked"> Provider
 																</label>
 																<label class="radio-inline">
 																	<input type="radio" name="paidby" value="buyer"> Buyer
 																</label>
 															</div>
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label for="buyer_fixed_cost">Buyer's Cost</label>
 																<input type="number" class="form-control" id="buyer_fixed_cost" name="buyer_cost" step="any" min="1" readonly="true">
 															</div>
@@ -282,30 +282,30 @@
 																<label for="max_hours">Maximum Hours</label>
 																<input type="number" class="form-control" id="max_hours" step="any" min="1">
 															</div>
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label for="hourly_total">Total Amount</label>
 																<input type="number" class="form-control" name="total_amount" id="hourly_total" readonly="true" step="any" min="1">
 															</div>
 														</div>
 														<br>
 														<div class="row">
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label for="utl_fees">UTL Fees</label>
 																<input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
 															</div>
 														</div>
 														<br>
 														<div class="row">
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label>Paid By</label><br>
 																<label class="radio-inline">
-																	<input type="radio" name="paidby" value="provider"> Provider
+																	<input type="radio" name="paidby" value="provider" checked="checked"> Provider
 																</label>
 																<label class="radio-inline">
 																	<input type="radio" name="paidby" value="buyer"> Buyer
 																</label>
 															</div>
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label for="buyer_cost">Buyer's Cost</label>
 																<input type="number" class="form-control" name="buyer_cost" id="buyer_hourly_cost" step="any" min="1" readonly="true">
 															</div>
@@ -325,13 +325,13 @@
 																<label for="max_devices">Maximum devices</label>
 																<input type="number" class="form-control" id="max_devices" step="any" min="1">
 															</div>
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label for="device_total">Total Amount</label>
 																<input type="number" class="form-control" name="total_amount" id="device_total" readonly="true" step="any" min="1">
 															</div>
 														</div>
 														<br>
-														<div class="row">
+														<div class="row" hidden="true">
 															<div class="col-sm-4">
 																<label for="utl_fees">UTL Fees</label>
 																<input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
@@ -339,16 +339,16 @@
 														</div>
 														<br>
 														<div class="row">
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label>Paid By</label><br>
 																<label class="radio-inline">
-																	<input type="radio" name="paidby" value="provider"> Provider
+																	<input type="radio" name="paidby" value="provider" checked="checked"> Provider
 																</label>
 																<label class="radio-inline">
 																	<input type="radio" name="paidby" value="buyer"> Buyer
 																</label>
 															</div>
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label for="buyer_device_cost">Buyer's Cost</label>
 																<input type="number" class="form-control" name="buyer_cost" id="buyer_device_cost" step="any" min="1" readonly="true">
 															</div>
@@ -378,7 +378,7 @@
 															</div>
 														</div>
 														<br>
-														<div class="row">
+														<div class="row" hidden="true">
 															<div class="col-sm-4">
 																<label for="blended_total">Total Amount</label>
 																<input type="number" class="form-control" name="total_amount" id="blended_total" readonly="true" step="any" min="1">
@@ -390,7 +390,7 @@
 														</div>
 														<br>
 														<div class="row">
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label>Paid By</label><br>
 																<label class="radio-inline">
 																	<input type="radio" name="paidby" value="provider"> Provider
@@ -399,7 +399,7 @@
 																	<input type="radio" name="paidby" value="buyer"> Buyer
 																</label>
 															</div>
-															<div class="col-sm-4">
+															<div class="col-sm-4" hidden="true">
 																<label for="buyer_blended_cost">Buyer's Cost</label>
 																<input type="number" class="form-control" name="buyer_cost" id="buyer_blended_cost" step="any" min="1" readonly="true">
 															</div>

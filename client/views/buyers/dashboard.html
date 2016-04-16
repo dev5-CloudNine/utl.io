@@ -71,7 +71,7 @@
                 </div>
                 <div class="tab-pane fade {{#if $eq active 'favusers'}} in active {{/if}}" id="favusers">
                     <br>
-                    {{#if isInRole 'buyer corporate-manager'}}
+                    {{#if isInRole 'buyer, corporate-manager'}}
                         {{#each favUsers}}
                             {{>profileSmall}}
                         {{else}}

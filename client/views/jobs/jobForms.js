@@ -20,9 +20,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit'], {
 });
 
 Template.jobFields.rendered = function() {
-	Meteor.setTimeout(function(){
-		Meteor.typeahead.inject('.typeahead');
-	},1000);
+	Meteor.typeahead.inject('.typeahead');
 }
 
 var locLoaded=false;
