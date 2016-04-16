@@ -505,6 +505,13 @@ Jobs.attachSchema(
         afFieldInput: SUMMERNOTE_OPTIONS
       }
     },
+    confidentialDescription: {
+      type: String,
+      label: "Confidential Information",
+      autoform: {
+        afFieldInput: SUMMERNOTE_OPTIONS
+      }
+    },
     status: {
       type: String,
       allowedValues: STATUSES,
@@ -538,6 +545,16 @@ Jobs.attachSchema(
         var htmlContent = this.field("description");
         if (Meteor.isServer && htmlContent.isSet) {
           return cleanHtml(htmlContent.value);
+        }
+      }
+    },
+    htmlConfdentialDesc: {
+      type: String,
+      optional: true,
+      autoValue: function(doc) {
+        var htmlContent = this.field("confidentialDescription");
+        if(Meteor.isServer && htmlContent.isSet) {
+          return cleanHTML(htmlContent.value);
         }
       }
     },

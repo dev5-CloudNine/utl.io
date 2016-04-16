@@ -13,7 +13,8 @@
                     {{#autoForm id="jobNew" collection="Jobs" type="insert" }}
                         {{>jobFields}}
                         <div>
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> Continue to preview your post</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> Publish</button>
+                            <button class="btn btn-primary"><i class="fa fa-bookmark-o"></i> Save as Draft</button>
                         </div>
                     {{/autoForm}}
                 </div>
@@ -73,6 +74,9 @@
     {{#if afFieldValueIs name="servicelocation" value="Field Job"}}
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h4>Confidential (Only assigned providers can see this information)</h4>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="form-group">
                     <label for="loc" class="control-label">Location</label>
                     <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="Location" autocomplete="off" spellcheck="off" data-source="location" maxlength="128" />
@@ -87,6 +91,9 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 {{>afQuickField name="contactphone"}}
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{> afQuickField name='confidentialDescription' rows=4 placeholder="All the information you write here will only be display to the assigned provider."}}
             </div>
         </div>
     {{/if}}
