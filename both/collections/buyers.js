@@ -38,12 +38,12 @@ Buyers.attachSchema(
     },
   name: {
 		type: String,
-		label: "Name",
+		label: "Name *",
 		max: 128
     },
 	title: {
 		type: String,
-		label: "Designation",
+		label: "Designation *",
 		max: 128
     },
   companyName: {
@@ -64,12 +64,6 @@ Buyers.attachSchema(
   	max: 128,
   	optional: true
   },
-  alternateEmail: {
-    type: String,
-    label: "Alternate Email",
-    max: 256,
-    optional: true
-  },
   location: {
   	type: String,
   	label: "Location",
@@ -77,7 +71,7 @@ Buyers.attachSchema(
   },
   description: {
   	type: String,
-  	label: "Description",
+  	label: "Description *",
   	max: 10000,
   	autoform: {
   		afFieldInput: SUMMERNOTE_OPTIONS
@@ -105,17 +99,23 @@ Buyers.attachSchema(
   },
   contactNumber: {
     type: String,
-    label: "Mobile Number",
+    label: "Mobile Number *",
     max: 128,
   },
   mobileCarrier: {
     type: String,
-    label: "Mobile Provider",
+    label: "Mobile Provider *",
     max: 128,
     autoform: {
       type: "select",
       options: MOBILE_CARRIERS
     }
+  },
+  smsAddress: {
+    type: String,
+    label: "SMS Address",
+    max: 256,
+    optional: true
   },
   createdAt: {
     type: Date,

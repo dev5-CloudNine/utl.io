@@ -171,16 +171,19 @@
 												<div class="list-group" width=100%>
 													{{#each appliedProviders}}
 														<a class="list-group-item" href="{{pathFor 'profile'}}" style="text-decoration: none">
-															<span class="pull-left thumb-sm">
+															<!-- <span class="pull-left thumb-sm">
 																<img class="thumb-sm" src="{{this.customImageUrl}}" alt="{{this.name}}">
 															</span>
 															<span>
 																<h5>{{this.name}}</h5>
 																<h6>{{this.title}}</h6>
+															</span> -->
+															<span>
+																<h4>{{this}}</h4>
 															</span>
 															<span>
-																<button class="btn btn-success btn-sm">Accept</button>
-																<button class="btn btn-danger btn-sm">Reject</button>
+																<button class="btn btn-success btn-sm acceptApplication">Accept</button>
+																<button class="btn btn-danger btn-sm rejectApplication">Reject</button>
 															</span>
 														</a>
 													{{else}}
@@ -454,8 +457,8 @@
 															{{/if}}
 														</span>
 														<span>
-															<button class="btn btn-success btn-sm">Accept</button>
-															<button class="btn btn-danger btn-sm">Reject</button>
+															<button class="btn btn-success btn-sm acceptApplication">Accept</button>
+															<button class="btn btn-danger btn-sm rejectApplication">Reject</button>
 														</span>
 													</a>
 												{{else}}

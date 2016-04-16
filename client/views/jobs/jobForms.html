@@ -73,7 +73,11 @@
     {{#if afFieldValueIs name="servicelocation" value="Field Job"}}
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {{> afQuickField name='location' placeholder="Where is this job located?"}}
+                <div class="form-group">
+                    <label for="loc" class="control-label">Location</label>
+                    <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="Location" autocomplete="off" spellcheck="off" data-source="location" maxlength="128" />
+                    <span class="help-block"></span>
+                </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 {{>afQuickField name="contactperson" placeholder=""}}

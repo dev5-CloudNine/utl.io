@@ -30,8 +30,12 @@ Template.buyerEdit.events({
       _id: this.buyerProfile._id
     });
   },
-  'change $(select[name="mobileCarrier"]': function(event, template) {
-    console.log(event.target.value);
+  'change select[name="mobileCarrier"]': function(event, template) {
+    var mobileNumber = $('input[name="contactNumber"]').val();
+    var mobileCarrier = event.target.value;
+    if(mobileCarrier == 'Appalachian Wireless') {
+      $('input[name="smsEmail"]').val()
+    }
   }
 });
 
@@ -66,11 +70,28 @@ Template.buyerFields.rendered = function() {
       });
     }
   }, 10);
+
+  Meteor.typeahead.inject('.typeahead');
 };
+
+var locLoaded=false;
 
 Template.buyerFields.helpers({
   "customImagePreviewUrl": function(event, template) {
     if(customImagePreviewUrl.get())
       return customImagePreviewUrl.get();
+  },
+  location: function(query, sync, callback) {
+      if(!locLoaded) $('.typeahead').addClass('loadinggif');
+      Meteor.call('location', query, {}, function(err, res) {
+          if (err) {
+              console.log(err);
+              return;
+          }
+          callback(res.map(function(v) {
+              locLoaded = true;
+              $('.typeahead').removeClass('loadinggif');
+              return { value: v.city + ", " + v.state + ", " + v.zip}; }));
+      });
   }
 });

@@ -6,7 +6,11 @@ Template.job.events({
   'click .applyJob': function(event, template) {
     event.preventDefault();
   	var jobId = this._id;
-  	Meteor.call('applyForThisJob', jobId, function(error) {
+    var applicationDetails = {
+      "userId": Meteor.userId(),
+      "applied_at": new Date()
+    }
+  	Meteor.call('applyForThisJob', jobId, applicationDetails, function(error) {
   		if(error) {
   			toastr.error(error.message, 'Error');
   		}
@@ -102,6 +106,14 @@ Template.job.events({
     var clientCost = totalamount + totalamount * 5/100;
     $('input[name="buyer_cost"]').val(clientCost);
     $('input[name="freelancer_nets"]').val(totalamount);
+  },
+  'click .acceptApplication': function(event, template) {
+    event.preventDefault();
+    console.log("button clicked");
+  },
+  'click .rejectApplication': function(event, template) {
+    event.preventDefault();
+    console.log("button clicked");
   },
   'click .counterOffer': function(event, template) {
     event.preventDefault();
@@ -215,10 +227,11 @@ Template.job.helpers({
     Jobs.findOne(this._id).appliedBy.forEach(function(providerId) {
       providerIds.push(providerId);
     });
-    providerIds.forEach(function(pId) {
-      providersApplied.push(Profiles.findOne({userId: pId}));
-    });
-    return providersApplied;
+    return providerIds;
+    // providerIds.forEach(function(pId) {
+    //   providersApplied.push(Profiles.findOne({userId: pId}));
+    // });
+    // return providersApplied;
   },
   'jobPostedBuyer': function() {
     var jobDetails = Jobs.findOne(this._id);

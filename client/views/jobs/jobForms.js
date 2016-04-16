@@ -19,6 +19,14 @@ AutoForm.addHooks(['jobNew', 'jobEdit'], {
 	}
 });
 
+Template.jobFields.rendered = function() {
+	Meteor.setTimeout(function(){
+		Meteor.typeahead.inject('.typeahead');
+	},1000);
+}
+
+var locLoaded=false;
+
 Template.jobFields.events({
 	'change input[name="fixedamount"], keyup input[name="fixedamount"]': function(event, template) {
 		var fixedamount = template.find('input[name="fixedamount"]').value;
@@ -70,5 +78,21 @@ Template.jobFields.events({
 		var freenet = totalamount - totalamount * 5/100;
 		template.find('input[name="your_cost"]').value = totalamount;
 		template.find('input[name="freelancer_nets"]').value = freenet;
+	}
+});
+
+Template.jobFields.helpers({
+	location: function (query, sync, callback) {
+		if(!locLoaded) $('.typeahead').addClass('loadinggif');
+		Meteor.call('location', query, {}, function(err, res) {
+			if (err) {
+			console.log(err);
+			return;
+		}
+		callback(res.map(function(v) {
+			locLoaded = true;
+			$('.typeahead').removeClass('loadinggif');
+			return { value: v.city + ", " + v.state + ", " + v.zip}; }));
+		});
 	}
 });

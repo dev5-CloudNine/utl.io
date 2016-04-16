@@ -85,7 +85,11 @@
 			{{>afQuickField name="eintinNumber" placeholder="99-9999999"}}
 		</div>		
 		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-			{{>afQuickField name='location' placeholder="Where is your company located"}}
+			<div class="form-group">
+                <label for="loc" class="control-label">Location</label>
+                <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="Location" autocomplete="off" spellcheck="off" data-source="location" maxlength="128" />
+                <span class="help-block"></span>
+            </div>
 		</div>
 	</div>
 	<hr>
