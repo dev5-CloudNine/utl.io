@@ -183,34 +183,45 @@ SUMMERNOTE_OPTIONS = {
 
 STATUSES = ["pending","active","flagged","inactive","filled"];
 
+APPLICATION_STATUSES = ["open", "frozen", "done"];
+
 RATE_BASIS = ['Fixed Pay', 'Per Hour', 'Per Device', 'Blended'];
 
 MOBILE_CARRIERS = function() {
   return [
-    {label: "Alltel", value: "Alltel"},
-    {label: "ATT", value: "ATT"},
+    {label: "Appalachian Wireless", value: "Appalachian Wireless"},
+    {label: "AT & T", value: "AT & T"},
+    {label: "Bluegrass Cellular", value: "Bluegrass Cellular"},
     {label: "Boost Mobile", value: "Boost Mobile"},
-    {label: "Cellcom", value: "Cellcom"},
+    {label: "Carolina West", value: "Carolina West"},
+    {label: "Cell Com", value: "Cell Com"},
+    {label: "Cellular One in Tx/Ok", value: "Cellular One in Tx/Ok"},
+    {label: "Cellular One 5", value: "Cellular One 5"},
     {label: "Cellular South", value: "Cellular South"},
+    {label: "Centennial Wireless", value: "Centennial Wireless"},
     {label: "Cincinnati Bell Wireless", value: "Cincinnati Bell Wireless"},
-    {label: "Cingular", value: "Cingular"},
-    {label: "Cricket", value: "Cricket"},
+    {label: "Embarq", value: "Embarq"},
+    {label: "H2O Wireless", value: "H2O Wireless"},
+    {label: "Helio", value: "Helio"},
     {label: "Inland Cellular", value: "Inland Cellular"},
-    {label: "IWireless", value: "IWireless"},
-    {label: "MetroPCS", value: "MetroPCS"},
-    {label: "Nextel", value: "Nextel"},
+    {label: "Metro PCS", value: "Metro PCS"},
+    {label: "MMS", value: "MMS"},
     {label: "Ntelos", value: "Ntelos"},
-    {label: "Project Fi", value: "Project Fi"},
-    {label: "Quest", value: "Quest"},
-    {label: "Republic Wireless", value: "Republic Wireless"},
+    {label: "Open Mobile", value: "Open Mobile"},
+    {label: "Pocket Communciations", value: "Pocket Communciations"},
     {label: "Simple Mobile", value: "Simple Mobile"},
     {label: "Southern LINC", value: "Southern LINC"},
-    {label: "Spring", value: "Spring"},
+    {label: "Sprint PCS", value: "Sprint PCS"},
     {label: "Straight Talk", value: "Straight Talk"},
+    {label: "Sun Com", value: "Sun Com"},
     {label: "T-Mobile", value: "T-Mobile"},
-    {label: "US Cellular", value: "US Cellular"},
+    {label: "Tech wireless", value: "Tech wireless"},
+    {label: "Tuyo", value: "Tuyo"},
+    {label: "USCellular", value: "USCellular"},
     {label: "Verizon", value: "Verizon"},
+    {label: "Viaero", value: "Viaero"},
     {label: "Virgin Mobile", value: "Virgin Mobile"},
+    {label: "Voice stream", value: "Voice stream"},
   ]
 },
 

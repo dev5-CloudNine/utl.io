@@ -63,7 +63,11 @@ Template.corporateFields.rendered = function() {
       });
     }
   }, 10);
+
+  Meteor.typeahead.inject('.typeahead');
 };
+
+var locLoaded=false;
 
 Template.corporateFields.helpers({
   "customImagePreviewUrl": function(event, template) {
@@ -79,5 +83,18 @@ Template.corporateFields.helpers({
   },
   pagerAddress: function() {
     return "some address";
+  },
+  location: function(query, sync, callback) {
+      if(!locLoaded) $('.typeahead').addClass('loadinggif');
+      Meteor.call('location', query, {}, function(err, res) {
+          if (err) {
+              console.log(err);
+              return;
+          }
+          callback(res.map(function(v) {
+              locLoaded = true;
+              $('.typeahead').removeClass('loadinggif');
+              return { value: v.city + ", " + v.state + ", " + v.zip}; }));
+      });
   }
 });

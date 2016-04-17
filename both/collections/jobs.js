@@ -8,12 +8,12 @@ Jobs.attachSchema(
   new SimpleSchema({
     title: {
       type: String,
-      label: "Job Title",
+      label: "Job Title *",
       max: 128
     },
     skillsrequired: {
       type: String,
-      label: "Required Skills",
+      label: "Required Skills *",
       max: 128,
     },
     location: {
@@ -23,15 +23,15 @@ Jobs.attachSchema(
     },
     jobtype: {
       type: String,
-      label: "Select your Industry",
+      label: "Select your Industry *",
       autoform: {
-        type: "select",
+        type: "selectize",
         options: INDUSTRY_TYPES
       }
     },
     ratebasis: {
       type: String,
-      label: "Pay Rate Basis",
+      label: "Pay Rate Basis *",
       autoform: {
         type: 'select',
         options: function() {
@@ -160,7 +160,7 @@ Jobs.attachSchema(
     },
     servicelocation: {
     optional: true,
-    label: "Service Location",
+    label: "Service Location *",
     type: String,
     autoform: {
       type: "select-radio-inline",
@@ -180,7 +180,7 @@ Jobs.attachSchema(
     },
     serviceschedule: {
     optional: true,
-    label: "Service Schedule",
+    label: "Service Schedule *",
     type: String,
     autoform: {
         type: "select-radio-inline",
@@ -208,12 +208,19 @@ Jobs.attachSchema(
     //     }
     //   }
     // },
-    appliedBy: {
+    applications: {
       type: Array,
       optional: true
     },
-    'appliedBy.$': {
+    'applications.$': {
+      type: Object,
+    },
+    'applications.$.userId': {
       type: String,
+      optional: true
+    },
+    'applications.$.applied_at': {
+      type: Date,
       optional: true
     },
     counterOffers: {
@@ -498,6 +505,13 @@ Jobs.attachSchema(
         afFieldInput: SUMMERNOTE_OPTIONS
       }
     },
+    confidentialDescription: {
+      type: String,
+      label: "Confidential Information",
+      autoform: {
+        afFieldInput: SUMMERNOTE_OPTIONS
+      }
+    },
     status: {
       type: String,
       allowedValues: STATUSES,
@@ -511,6 +525,19 @@ Jobs.attachSchema(
         }
       },
     },
+    applicationStatus: {
+      type: String,
+      allowedValues: APPLICATION_STATUSES,
+      autoValue: function() {
+        if(this.isInsert) {
+          return 'open';
+        } else if(this.isUpsert) {
+          return {
+            $setOnInsert: 'open'
+          };
+        }
+      }
+    },
     htmlDescription: {
       type: String,
       optional: true,
@@ -518,6 +545,16 @@ Jobs.attachSchema(
         var htmlContent = this.field("description");
         if (Meteor.isServer && htmlContent.isSet) {
           return cleanHtml(htmlContent.value);
+        }
+      }
+    },
+    htmlConfdentialDesc: {
+      type: String,
+      optional: true,
+      autoValue: function(doc) {
+        var htmlContent = this.field("confidentialDescription");
+        if(Meteor.isServer && htmlContent.isSet) {
+          return cleanHTML(htmlContent.value);
         }
       }
     },

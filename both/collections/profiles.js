@@ -123,9 +123,9 @@ Profiles.attachSchema(
       type: Number,
       label: "Average Rates Per Hour (USD) *",
     },
-    alternateEmail: {
+    smsAddress: {
       type: String,
-      label: "Alternate Email",
+      label: "SMS Address",
       optional: true
     },
     educationDetails: {
@@ -281,8 +281,6 @@ Profiles.attachSchema(
       allowedValues: STATUSES,
       defaultValue:"active"
     },
-    // Force value to be current date (on server) upon insert
-    // and prevent updates thereafter.
     createdAt: {
       type: Date,
       autoValue: function() {

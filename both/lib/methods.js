@@ -33,8 +33,8 @@ Meteor.methods({
     addBuyerToFav: function(uId) {
         Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteBuyers: uId}});
     },
-    applyForThisJob: function(jobId) {
-        Jobs.update(jobId, {$addToSet: {appliedBy: Meteor.userId()}});
+    applyForThisJob: function(jobId, applicationDetails) {
+        Jobs.update(jobId, {$addToSet: {applications: applicationDetails}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {appliedJobs: jobId}});
     },
     counterOfferThisJob: function(jobId, counterOffer) {
