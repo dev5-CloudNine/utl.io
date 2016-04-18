@@ -109,7 +109,17 @@ Template.job.events({
   },
   'click .acceptApplication': function(event, template) {
     event.preventDefault();
-    console.log("button clicked");
+    var jobId = Router.current().params._id;
+    var userId = this.userId;
+    var applicationTime = this.applied_at;
+    Meteor.call('acceptApplication', jobId, userId, applicationTime, function (error, result) {
+      if(error) {
+        toastr.error("Failed to accept the application");
+      }
+      else {
+        toastr.success("An invitation has been sent to the provider to confirm assigmnemt.");
+      }
+    });
   },
   'click .rejectApplication': function(event, template) {
     event.preventDefault();
@@ -199,9 +209,9 @@ Template.job.helpers({
   'hasLabel': function() {
     return this.jobType || this.featured;
   },
-  'appliedByCount': function() {
+  'applicationsCount': function() {
   	var count = 0;
-  	Jobs.findOne(this._id).appliedBy.forEach(function(uId) {
+  	Jobs.findOne(this._id).applications.forEach(function(uId) {
   		count++;
   	});
   	return count;
@@ -224,7 +234,7 @@ Template.job.helpers({
   'appliedProviders': function() {
     var providersApplied = [];
     var providerIds = [];
-    Jobs.findOne(this._id).appliedBy.forEach(function(providerId) {
+    Jobs.findOne(this._id).applications.forEach(function(providerId) {
       providerIds.push(providerId);
     });
     return providerIds;

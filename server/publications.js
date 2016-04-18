@@ -35,10 +35,6 @@ Meteor.publish("tempInvitation", function () {
     return TempInvitation.find();
 });
 
-Meteor.publish("citiesList", function() {
-    return Cities.find();
-})
-
 Meteor.publish("userList", function () {
     return Meteor.users.find({}, {fields: {emails: 1, profile: 1}});
 });
@@ -54,66 +50,39 @@ Meteor.publish('jobCount', function() {
     Counts.publish(this, 'jobs', Jobs.find({}));
 })
 
-Meteor.publish("homeJobs", function() {
-    check(arguments, [Match.Any]);
-    return [
-        Jobs.find({
-            featuredThrough: {
-                $exists:false
-            },
-            createdAt: {
-                $gte: daysUntilExpiration()
-            },
-            status: "active"
-        }, {
-            sort: {
-                createdAt: -1
-            },
-            limit: 10,
-            fields: {
-                title: true,
-                createdAt: true,
-                updatedAt: true,
-                jobtype: true,
-                status: true,
-                featuredThrough: true,
-                servicelocation: true,
-                ratebasis: true,
-                htmlDescription: true,
-                freelancer_nets: true,
-                servicelocation: true,
-                location: true
-            }
-        })
-    ];
-});
-
-Meteor.publish("featuredJobs", function() {
-    check(arguments, [Match.Any]);
-    return [
-        Jobs.find({
-            featuredThrough: {
-                $gte: new Date()
-            },
-            status: "active"
-        }, {
-            sort: {
-                featuredThrough: -1
-            },
-            fields: {
-                title: true,
-                company: true,
-                location: true,
-                createdAt: true,
-                updatedAt: true,
-                remote: true,
-                jobtype: true,
-                status: true,
-                featuredThrough: true
-            }
-        })
-    ];
-});
+// Meteor.publish("homeJobs", function() {
+//     check(arguments, [Match.Any]);
+//     return [
+//         Jobs.find({
+//             featuredThrough: {
+//                 $exists:false
+//             },
+//             createdAt: {
+//                 $gte: daysUntilExpiration()
+//             },
+//             status: "active"
+//         }, {
+//             sort: {
+//                 createdAt: -1
+//             },
+//             limit: 10,
+//             fields: {
+//                 title: true,
+//                 createdAt: true,
+//                 updatedAt: true,
+//                 jobtype: true,
+//                 status: true,
+//                 featuredThrough: true,
+//                 servicelocation: true,
+//                 ratebasis: true,
+//                 htmlDescription: true,
+//                 freelancer_nets: true,
+//                 servicelocation: true,
+//                 location: true
+//             }
+//         })
+//     ];
+// });
 
 Meteor.publishComposite('homeDevelopers', {
     find: function() {
@@ -157,57 +126,9 @@ Meteor.publishComposite('homeDevelopers', {
     }]
 });
 
-Meteor.publish("jobs", function(limit) {
-    check(limit, Number);
-
-    return Jobs.find({
-        createdAt: {
-            $gte: daysUntilExpiration()
-        },
-        status: "active"
-    }, {
-        fields: {
-            title: true,
-            company: true,
-            location: true,
-            createdAt: true,
-            updatedAt: true,
-            servicelocation: true,
-            jobtype: true,
-            status: true,
-            ratebasis: true,
-            featuredThrough: true,
-            htmlDescription: true,
-            freelancer_nets: true,
-            appliedBy: true,
-            counterOffers: true
-        },
-        sort: {
-            featuredThrough:-1,
-            createdAt: -1
-        },
-        limit: limit
-    });
-});
-
-Meteor.publish("favorite_jobs", function() {
+Meteor.publish("jobs", function() {
     check(arguments, [Match.Any]);
-    return Jobs.find({status: "active"}, {
-        fields: {
-            title: true,
-            company: true,
-            location: true,
-            createdAt: true,
-            updatedAt: true,
-            servicelocation: true,
-            jobtype: true,
-            status: true,
-            ratebasis: true,
-            featuredThrough: true,
-            htmlDescription: true,
-            freelancer_nets: true
-        }
-    })
+    return Jobs.find({status: "active"})
 });
 
 Meteor.publish("favorite_users", function() {
@@ -291,17 +212,17 @@ Meteor.publish("applied_profiles", function() {
     })
 })
 
-Meteor.publish("my_jobs", function() {
-    check(arguments, [Match.Any]);
-    if (this.userId) {
-        return [
-            Jobs.find({
-                userId: this.userId
-            })
-        ];
-    }
-    this.ready();
-});
+// Meteor.publish("my_jobs", function() {
+//     check(arguments, [Match.Any]);
+//     if (this.userId) {
+//         return [
+//             Jobs.find({
+//                 userId: this.userId
+//             })
+//         ];
+//     }
+//     this.ready();
+// });
 
 Meteor.publish("job", function(jobId) {
     check(arguments, [Match.Any]);

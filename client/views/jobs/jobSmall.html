@@ -29,10 +29,16 @@
                 </div>
             </div> -->
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <i class="fa fa-usd"></i>&nbsp;{{ratebasis}}{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;
                     <i class="fa fa-calendar"></i>&nbsp;Posted on: {{formatDate createdAt}}
                 </div>
+                {{#if acceptedProvider}}
+                    <div class="col-sm-6 text-right">
+                        <button class="btn btn-success">Accept Assignment</button>
+                        <button class="btn btn-warning">Reject Assignment</button>
+                    </div>
+                {{/if}}
             </div>
         </div>
     </div>
