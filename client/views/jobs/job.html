@@ -131,7 +131,7 @@
 											Apply
 										{{else}}
 											{{#if jobPostedBuyer}}
-												View Applicants ({{appliedByCount}})
+												View Applicants ({{applicationsCount}})
 											{{else}}
 												Applications
 											{{/if}}
@@ -160,7 +160,7 @@
 									<div class="panel">
 										<br>
 										{{#if isInRole 'provider, corporate-provider'}}
-											<p>{{appliedByCount}} user(s) have applied for this job so far.</p>
+											<p>{{applicationsCount}} user(s) have applied for this job so far.</p>
 											{{#if currentUser.isDeveloper}}
 												<button class="btn btn-primary applyJob">Apply</button>
 											{{else}}
@@ -179,7 +179,10 @@
 																<h6>{{this.title}}</h6>
 															</span> -->
 															<span>
-																<h4>{{this}}</h4>
+																<h4>{{this.userId}}</h4>
+															</span>
+															<span class="pull-right">
+																<h5><i class="fa fa-calendar"></i> {{this.applied_at}}</h5>
 															</span>
 															<span>
 																<button class="btn btn-success btn-sm acceptApplication">Accept</button>
@@ -191,7 +194,7 @@
 													{{/each}}
 												</div>
 											{{else}}
-												<p>{{appliedByCount}} user(s) have applied for this job so far.</p>
+												<p>{{applicationsCount}} user(s) have applied for this job so far.</p>
 											{{/if}}
 										{{/if}}
 									</div>

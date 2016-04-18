@@ -164,6 +164,17 @@ Buyers.allow({
   fetch: ['userId']
 });
 
+Buyers.deny({
+  update: function(userId, doc, fieldNames, modifier) {
+    if(Roles.userIsInRole(userId, ['admin']) || (!_.contains(fieldNames, 'randomSorter') && !_.contains(fieldNames, 'htmlDescription') && !_.contains(fieldNames, 'status') && userId && doc && userId === doc.userId)) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+  fetch: ['userId']
+})
+
 Buyers.helpers({
   displayName: function() {
     return this.name || this.userName;

@@ -4,6 +4,16 @@ Template.jobSmall.helpers({
 			_id: this._id
 		});
 		return jobDetails.htmlDescription.split('.')[0] + '.';
+	},
+	acceptedProvider: function() {
+		var userId = Meteor.userId();
+		var jobAccepted = Jobs.findOne({$and: [{'applications.userId': userId}, {'applications.app_status': 'accepted'}]});
+		if(this._id == jobAccepted._id) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 })
 Template.jobSmall.events({

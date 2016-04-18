@@ -46,22 +46,17 @@
                                 <li><a href="{{pathFor 'addTeam'}}">Add Your Team</a></li>
                             {{/if}}
                         {{else}}
-
-                          <li id="user-drop-down" class="dropdown">
-                            <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">Menu <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
-                                                    <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
-                                                    <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
-                                                    <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
-                                                    <li><a href="{{pathFor 'payments'}}">Pricing</a></li>
-                            </ul>
-
-
-                          </li>
-
-
+                            <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
+                            <li id="user-drop-down" class="dropdown">
+                                <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">Users <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
+                                    <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
+                                    <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{{pathFor 'payments'}}">Pricing</a></li>
                         {{/if}}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

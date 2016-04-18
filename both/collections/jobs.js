@@ -19,7 +19,8 @@ Jobs.attachSchema(
     location: {
       type: String,
       label: "Location",
-      max: 128
+      max: 128,
+      optional: true
     },
     jobtype: {
       type: String,
@@ -222,6 +223,20 @@ Jobs.attachSchema(
     'applications.$.applied_at': {
       type: Date,
       optional: true
+    },
+    'applications.$.app_status': {
+      type: String,
+      allowedValues: ['accepted', 'rejected'],
+      optional: true,
+      // autoValue: function() {
+      //   if(this.isInsert) {
+      //     return 'rejected';
+      //   } else if(this.isUpsert) {
+      //     return {
+      //       $setOnInsert: 'rejected'
+      //     };
+      //   }
+      // }
     },
     counterOffers: {
       type: Array,
@@ -510,7 +525,8 @@ Jobs.attachSchema(
       label: "Confidential Information",
       autoform: {
         afFieldInput: SUMMERNOTE_OPTIONS
-      }
+      },
+      optional: true
     },
     status: {
       type: String,
