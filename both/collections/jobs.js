@@ -523,10 +523,10 @@ Jobs.attachSchema(
     confidentialDescription: {
       type: String,
       label: "Confidential Information",
+      optional: true,
       autoform: {
         afFieldInput: SUMMERNOTE_OPTIONS
-      },
-      optional: true
+      }
     },
     status: {
       type: String,
@@ -570,7 +570,7 @@ Jobs.attachSchema(
       autoValue: function(doc) {
         var htmlContent = this.field("confidentialDescription");
         if(Meteor.isServer && htmlContent.isSet) {
-          return cleanHTML(htmlContent.value);
+          return cleanHtml(htmlContent.value);
         }
       }
     },

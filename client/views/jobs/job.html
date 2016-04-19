@@ -32,15 +32,6 @@
 						<div class="col-sm-3">
 							<i class="fa fa-calendar fa-fw"></i> Posted on {{formatDate createdAt}}<hr>
 							{{#with buyer}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{userName}}</a>{{/with}}<hr>
-							{{#if featured}}
-								<hr>
-								<i class="fa fa-trophy fa-fw"></i> Featured Until {{formatDate featuredThrough}}<hr>
-							{{/if}}
-							<div>
-								<a id="pvt-mail" class="btn btn-info">
-									<i class="fa fa-envelope"></i> Mail
-								</a>
-							</div>
 						</div>
 						<div class="col-sm-9">
 							{{>jobLabels}}

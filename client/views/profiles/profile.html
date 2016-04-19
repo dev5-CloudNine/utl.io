@@ -12,11 +12,9 @@
 							{{else}}
 								{{> avatar userId=userId size="large"}}
 							{{/if}}
-							
-							{{#if availableForHire}}
-								<br>
-								<span class="label label-primary"><i class="fa fa-rocket"></i> Hire Me</span>
-							{{/if}}
+							<br>
+							<button class="btn btn-primary btn-sm">Assign Job</button>
+							<button class="btn btn-primary btn-sm"><i class="fa fa-heart"></i>&nbsp;Like</button>
 							{{#if $eq type 'Company'}}
 								<span class="label label-danger"><i class="fa fa-users"></i> Company</span>
 							{{/if}}
@@ -80,7 +78,7 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<h4>
-										{{title}} - {{companyName}}
+										{{title}} {{#if companyName}} - {{companyName}} {{/if}}
 									</h4>
 								</div>
 							</div>

@@ -93,7 +93,7 @@
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 			<div class="form-group">
 	            <label for="loc" class="control-label">Location</label>
-	            <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="Location" autocomplete="off" spellcheck="off" data-source="location" maxlength="128" />
+	            <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="City, State, Zip" autocomplete="off" spellcheck="off" data-source="location" maxlength="128" />
 	            <span class="help-block"></span>
             </div>
 		</div>
@@ -112,7 +112,7 @@
 	<hr>
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			{{>afQuickField name='industryTypes' noselect="true"}}
+			{{>afQuickField name='industryTypes' noselect="true" placeholder="What are you interested in?"}}
 		</div>
 	</div>
 	<hr>

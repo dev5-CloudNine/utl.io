@@ -457,7 +457,8 @@ Router.map(function() {
 
 
     this.route('signUp', {
-        path: '/SignUp'
+        path: '/SignUp',
+        progress: true
     });
 
 

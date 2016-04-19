@@ -13,22 +13,13 @@
 								{{> avatar userId=userId size="large"}}
 							{{/if}}
 							<h4>{{companyName}}</h4>
+							{{#if companyUrl}}
+								<i class="fa fa-external-link"></i>&nbsp;<a href="{{companyUrl}}" target="_blank">{{companyUrl}}</a>
+							{{/if}}
 							<hr>
 							<small>
 								{{#if location}}
 									<i class="fa fa-map-marker"></i>&nbsp;{{location}}
-								{{/if}}
-								{{#if interestedIn}}
-									<hr>
-									<b>Interested Industries</b>
-									{{#each industryTypes}}
-										<br>
-										{{this}}
-									{{/each}}
-									<hr>
-								{{/if}}
-								{{#if url}}
-									<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Web Site</a>
 								{{/if}}
 								{{#if contact}}
 									<i class="fa fa-envelope"></i>&nbsp;{{contact}}
@@ -37,16 +28,9 @@
 							<hr>
 							<small>
 								{{#if eintinNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;EIN/TIN Number: {{eintinNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;EIN/TIN: {{eintinNumber}}
 								{{/if}}
 								<br>
-								{{#if socialSecurityNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;Social Security Number: {{socialSecurityNumber}}
-								{{/if}}
-								<br>
-								{{#if insuranceNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;Insurance Number: {{insuranceNumber}}
-								{{/if}}
 							</small>
 							<hr>
 							<i class="fa fa-calendar"></i> Created on {{formatDate createdAt}}
@@ -70,9 +54,14 @@
 								<div class="col-sm-12">
 									{{#if htmlDescription}}
 										<hr>
-										<h4>About Me</h4>
+										<h4>Overview</h4>
 										{{{htmlDescription}}}
 									{{/if}}
+								</div>
+								<hr>
+								<div class="col-sm-12">
+									<h4>Interested Industries</h4>
+									{{industryTypes}}
 								</div>
 							</div>
 						</div>
