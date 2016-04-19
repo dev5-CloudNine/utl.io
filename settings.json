@@ -9,8 +9,8 @@
     "ROOT_URL": "http://127.0.0.1:3000"
   },
   "kadira": {
-     "appId": "",
-     "appSecret": ""
+     "appId": "CPd37iCbYHWL36vpY",
+     "appSecret": "939d2694-ebc3-486c-a2ea-adf104c30b46"
   },
   "PrerenderIO": {
     "token": ""
