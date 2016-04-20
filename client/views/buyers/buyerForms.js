@@ -93,5 +93,9 @@ Template.buyerFields.helpers({
               $('.typeahead').removeClass('loadinggif');
               return { value: v.city + ", " + v.state + ", " + v.zip}; }));
       });
+  },
+  companyInvited: function() {
+    var corpInfo = Meteor.user();
+    return corpInfo.companyName;
   }
 });

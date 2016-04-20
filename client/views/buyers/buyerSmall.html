@@ -15,7 +15,7 @@
 					{{#if name}}{{name}}{{else}}{{userName}}{{/if}}
 				</a></h4>
                 <div class="title">
-                    <small>{{title}} - {{companyName}}</small>
+                    <small>{{title}} {{#if companyName}}- <b>{{companyName}}</b>{{/if}}</small>
                 </div>
                 <div class="location" style="margin-top: -35px;">
                     {{#if location}}

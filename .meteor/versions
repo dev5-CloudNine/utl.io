@@ -152,6 +152,7 @@ ongoworks:speakingurl@9.0.0
 ordered-dict@1.0.7
 ostrio:iron-router-helper-class@1.0.0
 ostrio:iron-router-title@1.0.2
+osv:mongo-counter@0.2.1
 pauli:accounts-linkedin@1.2.0
 pauli:linkedin@1.2.0
 peerlibrary:assert@0.2.5

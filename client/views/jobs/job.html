@@ -170,14 +170,10 @@
 																<h6>{{this.title}}</h6>
 															</span> -->
 															<span>
-																<h4>{{this.userId}}</h4>
-															</span>
-															<span class="pull-right">
-																<h5><i class="fa fa-calendar"></i> {{this.applied_at}}</h5>
-															</span>
-															<span>
+																<h4>{{this.name}}</h4>
+																<small>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</small>
+																<h5><i class="fa fa-calendar"></i> {{this.appliedAt}}</h5>
 																<button class="btn btn-success btn-sm acceptApplication">Accept</button>
-																<button class="btn btn-danger btn-sm rejectApplication">Reject</button>
 															</span>
 														</a>
 													{{else}}
@@ -452,7 +448,6 @@
 														</span>
 														<span>
 															<button class="btn btn-success btn-sm acceptApplication">Accept</button>
-															<button class="btn btn-danger btn-sm rejectApplication">Reject</button>
 														</span>
 													</a>
 												{{else}}

@@ -123,7 +123,17 @@ Template.job.events({
   },
   'click .rejectApplication': function(event, template) {
     event.preventDefault();
-    console.log("button clicked");
+    var jobId = Router.current().params._id;
+    var userId = this.userId;
+    var applicationTime = this.applied_at;
+    Meteor.call('rejectApplication', jobId, userId, applicationTime, function(error, result) {
+      if(error) {
+        toastr.error("Failed to reject the application");
+      }
+      else {
+        toastr.success("The application has been rejected.");
+      }
+    })
   },
   'click .counterOffer': function(event, template) {
     event.preventDefault();
@@ -232,16 +242,21 @@ Template.job.helpers({
     return counterOffers;
   },
   'appliedProviders': function() {
-    var providersApplied = [];
     var providerIds = [];
+    var providerDetails = {}
     Jobs.findOne(this._id).applications.forEach(function(providerId) {
-      providerIds.push(providerId);
+      var pDetails = Profiles.findOne({userId: providerId.userId});
+      console.log(pDetails);
+      providerDetails = {
+        userId: providerId.userId,
+        name: pDetails.name,
+        title: pDetails.title,
+        company: pDetails.companyName,
+        appliedAt: providerId.applied_at
+      }
+      providerIds.push(providerDetails);
     });
     return providerIds;
-    // providerIds.forEach(function(pId) {
-    //   providersApplied.push(Profiles.findOne({userId: pId}));
-    // });
-    // return providersApplied;
   },
   'jobPostedBuyer': function() {
     var jobDetails = Jobs.findOne(this._id);

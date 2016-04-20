@@ -20,7 +20,7 @@
                                 <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                             {{/if}}
-                            {{#if isInRole 'buyer'}}
+                            {{#if isInRole 'buyer, corporate-manager'}}
                                 <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
                                 <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
                                 {{#unless currentUser.isBuyer}}
@@ -37,13 +37,16 @@
                                 {{/unless}}
                             {{/if}}
                             {{#if isInRole 'corporate-admin'}}
+                                {{#with corpProfile}}<li><a href="{{pathFor 'corpTeam'}}">View Team</a></li>{{/with}}
+                                <li><a href="{{pathFor 'addTeam'}}">Add Your Team</a></li>
                                 {{#unless currentUser.isCorporate}}
                                     <li>
                                         <a href="{{pathFor 'corporateNew'}}">Create Your Profile</a>
                                     </li>
                                 {{/unless}}
-                                {{#with corpProfile}}<li><a href="{{pathFor 'corpTeam'}}">View Team</a></li>{{/with}}
-                                <li><a href="{{pathFor 'addTeam'}}">Add Your Team</a></li>
+                            {{/if}}
+                            {{#if isInRole 'corporate-accountant'}}
+                                <li><a href="#">View Payments</a></li>
                             {{/if}}
                         {{else}}
                             <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
@@ -86,7 +89,7 @@
 			{{> avatar user=currentUser size="small"}}{{currentUserDisplayName}} <span class="caret"></span>
 		</a>
         <ul class="dropdown-menu" role="menu">
-            {{#if isInRole 'buyer'}}
+            {{#if isInRole 'buyer, corporate-manager'}}
                 <li>
                     <a href="{{pathFor 'dashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a>
                     <li class="divider"></li>
@@ -123,7 +126,7 @@
                     </li>
                 {{/if}}
             {{/if}}
-            {{#if isInRole 'buyer'}}
+            {{#if isInRole 'buyer, corporate-manager'}}
                 {{#if currentUser.isBuyer}}
                     <li>
                         {{#with buyer}}<a href="{{pathFor 'buyer'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}

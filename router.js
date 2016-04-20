@@ -57,7 +57,10 @@ Router.map(function() {
 
     this.route('jobs', {
         path: '/jobs',
-        title: "UTL - All Jobs"
+        title: "UTL - All Jobs",
+        waitOn: function() {
+            return subs.subscribe("jobs");
+        }
     });
 
     this.route('appliedJobs', {
@@ -101,7 +104,7 @@ Router.map(function() {
         onBeforeAction: function () {
             if (Meteor.user() &&
                 Meteor.user().roles &&
-                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 )
+                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 || (Meteor.user().roles.indexOf("corporate-manager")) != -1 )
                 ) {
                 this.next();
             } else {
@@ -209,9 +212,10 @@ Router.map(function() {
 
     this.route('dashboard', {
         path: '/dashboard/:tab',
-        title: "UTL - Buyer Dashboard",
+        title: "UTL - Dashboard",
         waitOn: function() {
             Meteor.subscribe("userList");
+            Meteor.subscribe('jobs');
             return Meteor.subscribe("messages");
         },
         data: function() {

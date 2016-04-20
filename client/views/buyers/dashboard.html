@@ -27,7 +27,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="#postedJobs" data-toggle="tab">
-                                    {{#if isInRole 'buyer, corporate-admin'}}
+                                    {{#if isInRole 'buyer, corporate-admin, corporate-manager'}}
                                         Posted
                                     {{else}}
                                         {{#if isInRole 'provider, corporate-provider'}}

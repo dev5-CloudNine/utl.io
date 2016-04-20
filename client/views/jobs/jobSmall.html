@@ -6,7 +6,7 @@
                     {{>jobLabels}}
                 </div>
                 <div class="col-sm-4 text-right">
-                    <span><a href class="fa fa-heart fa-2x addToFavorites" style="text-decoration:none"></a></span>
+                    <!-- <span><a href class="fa fa-heart fa-2x addToFavorites" style="text-decoration:none"></a></span> -->
                 </div>
             </div>
             <div class="row">
@@ -31,13 +31,19 @@
             <div class="row">
                 <div class="col-sm-6">
                     <i class="fa fa-usd"></i>&nbsp;{{ratebasis}}{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;
-                    <i class="fa fa-calendar"></i>&nbsp;Posted on: {{formatDate createdAt}}
+                    <i class="fa fa-calendar"></i>&nbsp;Posted on: {{formatDate createdAt}}&nbsp;|&nbsp;<i class="fa fa-tag"></i>Status: {{applicationStatus}}
                 </div>
                 {{#if acceptedProvider}}
                     <div class="col-sm-6 text-right">
-                        <button class="btn btn-success">Accept Assignment</button>
-                        <button class="btn btn-warning">Reject Assignment</button>
+                        <button class="btn btn-success">Confirm Assignment</button>
+                        <button class="btn btn-warning">Decline Assignment</button>
                     </div>
+                {{else}}
+                    {{#if rejectedProvider}}
+                        <div class="col-sm-6 text-right">
+                            <h6>Your application has been rejected by the buyer.</h6>   
+                        </div>
+                    {{/if}}
                 {{/if}}
             </div>
         </div>
