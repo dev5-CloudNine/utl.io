@@ -51,7 +51,7 @@ Router.map(function() {
             };
         },
         subscriptions: function() {
-            return [subs.subscribe('jobs'), subs.subscribe('homeDevelopers')];
+            return [subs.subscribe('jobs'), subs.subscribe('providers')];
         }
     });
 
@@ -319,7 +319,8 @@ Router.map(function() {
         path: '/buyers/:_id/:slug/jobs',
         title: 'UTL - Buyer Jobs',
         waitOn: function() {
-            return subs.subscribe('buyer', this.params._id);
+            Meteor.subscribe('buyer', this.params._id);
+            return subs.subscribe('buyerPostedJobs', this.params._id);
         }
     })
 

@@ -5,10 +5,11 @@ Template.buyerJobs.helpers({
 		}).userId;
 		return Jobs.find({
 			userId: buyerId
-		}, {
+		},
+		{
 			sort: {
 				createdAt: -1
 			}
-		});
+		})
 	}
 });

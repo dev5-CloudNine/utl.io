@@ -423,10 +423,9 @@
 															<h6>{{this.title}}</h6>
 														</span> -->
 														<span>
-															<h4>{{this.userId}}</h4>
-															{{#if this.countered_at}}
-																<h5 class="pull-right"><i class="fa fa-calendar"></i>&nbsp;{{formatDate this.countered_at}}</h5>
-															{{/if}}
+															<h4>{{this.name}}</h4>
+															<small>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</small><br>
+															<small><i class="fa fa-calendar"></i>&nbsp;{{this.countered_at}}</small>
 															{{#if this.fixed_amount}}
 																<h5>Fixed Amount: {{this.fixed_amount}}</h5>
 															{{/if}}

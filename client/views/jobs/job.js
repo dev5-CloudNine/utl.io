@@ -237,7 +237,25 @@ Template.job.helpers({
     var counterOffers = [];
     counteredUsers = [];
     Jobs.findOne(this._id).counterOffers.forEach(function(counterOffer) {
-      counterOffers.push(counterOffer);
+      console.log(counterOffer)
+      var pDetails = Profiles.findOne({userId: counterOffer.userId});
+      providerDetails = {
+        userId: counterOffer.userId,
+        name: pDetails.name,
+        title: pDetails.title,
+        company: pDetails.companyName,
+        countered_at: counterOffer.countered_at,
+        fixed_amount:counterOffer.fixed_amount,
+        hourly_rate: counterOffer.hourly_rate,
+        max_hours: counterOffer.max_hours,
+        device_rate: counterOffer.device_rate,
+        max_devices: counterOffer.max_devices,
+        first_hours: counterOffer.first_hours,
+        first_max_hours: counterOffer.first_max_hours,
+        next_hours: counterOffer.next_hours,
+        next_max_hours: counterOffer.next_max_hours,
+      }
+      counterOffers.push(providerDetails);
     });
     return counterOffers;
   },

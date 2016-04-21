@@ -12,9 +12,11 @@
 							{{else}}
 								{{> avatar userId=userId size="large"}}
 							{{/if}}
-							<br>
-							<button class="btn btn-primary btn-sm">Assign Job</button>
-							<button class="btn btn-primary btn-sm"><i class="fa fa-heart"></i>&nbsp;Like</button>
+							{{#if isInRole 'buyer, corporate-manager'}}
+								<br>
+								<a class="btn btn-primary btn-sm">Assign Job</a>
+								<a class="btn btn-primary btn-sm addToFavorites"><i class="fa fa-heart"></i>&nbsp;Like</a>
+							{{/if}}
 							{{#if $eq type 'Company'}}
 								<span class="label label-danger"><i class="fa fa-users"></i> Company</span>
 							{{/if}}
@@ -27,13 +29,13 @@
 									<br>
 									<i class="fa fa-mobile">&nbsp;{{contactNumber}}</i>
 								{{/if}}
-								{{#if contactEmail}}
+								{{#if smsAddress}}
 									<br>
-									<i class="fa fa-envelope">&nbsp;{{contactEmail}}</i>
+									<i class="fa fa-envelope">&nbsp;{{smsAddress}}</i>
 								{{/if}}
 								<hr>
 								{{#if url}}
-									<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Web Site</a>
+									<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Website</a>
 								{{/if}}
 								{{#if contact}}
 									<br>

@@ -60,7 +60,6 @@ Template.buyerFields.rendered = function() {
       widget.onChange(function(file) {
         if (file) {
           file.done(function(info) {
-            console.log(info);
             customImagePreviewUrl.set(info.cdnUrl);
             analytics.track("Profile Image Uploaded");      
           });

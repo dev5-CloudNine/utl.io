@@ -46,7 +46,8 @@
                                 {{/unless}}
                             {{/if}}
                             {{#if isInRole 'corporate-accountant'}}
-                                <li><a href="#">View Payments</a></li>
+                                <li><a href="#">Approve Payments</a></li>
+                                {{#with corpProfile}}<li><a href="{{pathFor 'corpTeam'}}">View Team</a></li>{{/with}}
                             {{/if}}
                         {{else}}
                             <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
