@@ -23,16 +23,11 @@ AutoForm.addHooks(['buyerNew', 'buyerEdit'], {
   }
 });
 
-Template.buyerEdit.events({
-  'click #cancel': function(event, template) {
-    event.preventDefault();
-    Router.go("buyer", {
-      _id: this.buyerProfile._id
-    });
-  },
+Template.buyerFields.events({
   'change select[name="mobileCarrier"]': function(event, template) {
     var mobileNumber = $('input[name="contactNumber"]').val();
     var mobileCarrier = event.target.value;
+    console.log(mobileCarrier);
     var smsEmail = "";
     if(mobileCarrier == 'Appalachian Wireless') {
       smsEmail = mobileNumber + '@awsms.com';
@@ -92,6 +87,15 @@ Template.buyerEdit.events({
       smsEmail = mobileNumber + '@voicestream.net'
     }
     $('input[name="smsAddress"]').val(smsEmail);
+  }
+})
+
+Template.buyerEdit.events({
+  'click #cancel': function(event, template) {
+    event.preventDefault();
+    Router.go("buyer", {
+      _id: this.buyerProfile._id
+    });
   }
 });
 

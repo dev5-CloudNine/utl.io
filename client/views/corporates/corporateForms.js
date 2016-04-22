@@ -23,13 +23,7 @@ AutoForm.addHooks(['corporateNew', 'corporateEdit'], {
   }
 });
 
-Template.corporateEdit.events({
-  'click #cancel': function(event, template) {
-    event.preventDefault();
-    Router.go("corporate", {
-      _id: this.corporateProfile._id
-    });
-  },
+Template.corporateFields.events({
   'change select[name="mobileCarrier"]': function(event, template) {
     var mobileNumber = $('input[name="contactNumber"]').val();
     var mobileCarrier = event.target.value;
@@ -92,6 +86,15 @@ Template.corporateEdit.events({
       smsEmail = mobileNumber + '@voicestream.net'
     }
     $('input[name="smsAddress"]').val(smsEmail);
+  }
+})
+
+Template.corporateEdit.events({
+  'click #cancel': function(event, template) {
+    event.preventDefault();
+    Router.go("corporate", {
+      _id: this.corporateProfile._id
+    });
   }
 });
 

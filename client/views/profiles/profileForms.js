@@ -23,13 +23,7 @@ AutoForm.addHooks(['profileNew', 'profileEdit'], {
   }
 });
 
-Template.profileEdit.events({
-  'click #cancel': function(event, template) {
-    event.preventDefault();
-    Router.go("profile", {
-      _id: this.profile._id
-    });
-  },
+Template.profileFields.events({
   'change select[name="mobileCarrier"]': function(event, template) {
     var mobileNumber = $('input[name="contactNumber"]').val();
     var mobileCarrier = event.target.value;
@@ -92,6 +86,15 @@ Template.profileEdit.events({
       smsEmail = mobileNumber + '@voicestream.net'
     }
     $('input[name="smsAddress"]').val(smsEmail);
+  }
+})
+
+Template.profileEdit.events({
+  'click #cancel': function(event, template) {
+    event.preventDefault();
+    Router.go("profile", {
+      _id: this.profile._id
+    });
   }
 })
 
