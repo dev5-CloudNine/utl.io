@@ -14,16 +14,13 @@
 			</div>			
 			<div id="callToAction" class="row">
 				{{#if currentUser}}
-					{{#if isInRole 'buyer'}}
+					{{#if isInRole 'buyer, corporate-manager, corporate-admin'}}
 						<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
+						<a href="{{pathFor 'profiles'}}" class="text-center btn btn-primary btn-md" role="button">View Providers</a>
 					{{else}}
 						{{#if isInRole 'provider, corporate-provider'}}
-							<a class="text-center btn btn-success btn-md" role="button" href="{{pathFor 'jobs'}}">Find Jobs</a>
-							<a class="text-center btn btn-success btn-md" role="button" href="{{pathFor 'buyers'}}">View Buyers</a>
-						{{else}}
-							{{#if isInRole 'corporate-admin'}}
-								<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
-							{{/if}}
+							<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'jobs'}}">Find Jobs</a>
+							<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'buyers'}}">View Buyers</a>
 						{{/if}}
 					{{/if}}
 				{{else}}

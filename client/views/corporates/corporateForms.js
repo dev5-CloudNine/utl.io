@@ -29,6 +29,69 @@ Template.corporateEdit.events({
     Router.go("corporate", {
       _id: this.corporateProfile._id
     });
+  },
+  'change select[name="mobileCarrier"]': function(event, template) {
+    var mobileNumber = $('input[name="contactNumber"]').val();
+    var mobileCarrier = event.target.value;
+    var smsEmail = "";
+    if(mobileCarrier == 'Appalachian Wireless') {
+      smsEmail = mobileNumber + '@awsms.com';
+    }
+    else if(mobileCarrier == 'AT & T') {
+      smsEmail = mobileNumber + '@txt.att.net';
+    }
+    else if(mobileCarrier == 'Bluegrass Cellular') {
+      smsEmail = mobileNumber + '@sms.bluecell.com'
+    }
+    else if(mobileCarrier == 'Boost Mobile') {
+      smsEmail = mobileNumber + '@myboostmobile.com'
+    }
+    else if(mobileCarrier == 'Carolina West') {
+      smsEmail = mobileNumber + '@cwwsms.com'
+    }
+    else if(mobileCarrier == 'Cellular South') {
+      smsEmail = mobileNumber + '@south1.com'
+    }
+    else if(mobileCarrier == 'Centennial Wireless') {
+      smsEmail = mobileNumber + '@cwemail.com'
+    }
+    else if(mobileCarrier == 'Cincinnati Bell Wireless') {
+      smsEmail = mobileNumber + '@mobile.att.net'
+    }
+    else if(mobileCarrier == 'Inland Cellular') {
+      smsEmail = mobileNumber + '@inlandlink.com'
+    }
+    else if(mobileCarrier == 'Metro PCS') {
+      smsEmail = mobileNumber + '@metropcs.sms.us'
+    }
+    else if(mobileCarrier == 'Ntelos') {
+      smsEmail = mobileNumber + 'pcs.ntelos.com'
+    }
+    else if(mobileCarrier == 'Southern LINC') {
+      smsEmail = mobileNumber + '@page.southernlinc.com'
+    }
+    else if(mobileCarrier == 'Sprint PCS') {
+      smsEmail = mobileNumber + '@messaging.sprintpcs.com'
+    }
+    else if(mobileCarrier == 'Sun Com') {
+      smsEmail = mobileNumber + '@tms.suncom.com'
+    }
+    else if(mobileCarrier == 'T-Mobile') {
+      smsEmail = mobileNumber + '@tmomail.net'
+    }
+    else if(mobileCarrier == 'USCellular') {
+      smsEmail = mobileNumber + '@uscc.textmsg.com'
+    }
+    else if(mobileCarrier == 'Verizon') {
+      smsEmail = mobileNumber + '@vtext.com'
+    }
+    else if(mobileCarrier == 'Virgin Mobile') {
+      smsEmail = mobileNumber + '@vmobl.com'
+    }
+    else if(mobileCarrier == 'Voice stream') {
+      smsEmail = mobileNumber + '@voicestream.net'
+    }
+    $('input[name="smsAddress"]').val(smsEmail);
   }
 });
 
