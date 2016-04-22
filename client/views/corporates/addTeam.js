@@ -6,8 +6,8 @@ Template.addTeam.helpers({
 });
 
 Template.addTeam.events({
-	'click button.invite': function (event) {
-
+	'click button.invite': function (event, template) {
+		$(event.target).prop('disabled', true);
 		var email = $('input.email').val();
 		var type = $('input[name=corpRole]:checked').val();
 

@@ -99,6 +99,7 @@ iron:url@1.0.11
 jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.4.1
+jplack:bootstrap-timepicker@0.2.2
 jquery@1.11.8
 kadira:debug@3.2.2
 kadira:runtime-dev@0.0.1

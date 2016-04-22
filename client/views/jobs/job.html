@@ -12,44 +12,36 @@
 					{{>jobStatusAlert}}
 					<div class="row">
 						<div class="col-sm-12">
+							{{>jobLabels}}
 							<h2>
 								{{title}}
 							</h2>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3">
 							{{#if servicelocation}}
-								<span class="label label-primary"><i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}</span>
-								{{#if location}}
-									{{location}}
-								{{/if}}
+								<i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
 							{{/if}}
-						</div>
-					</div>
-					<hr>
-					<div class="row">
-						<div class="col-sm-3">
-							<i class="fa fa-calendar fa-fw"></i> Posted on {{formatDate createdAt}}<hr>
+							<i class="fa fa-calendar fa-fw"></i> Posted on {{createdAt}}&nbsp;|&nbsp;
 							{{#with buyer}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{userName}}</a>{{/with}}<hr>
 						</div>
-						<div class="col-sm-9">
-							{{>jobLabels}}
-							{{#if hasLabel}}
-								<hr>
-							{{/if}}
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
 							<h4>Skills Required</h4>
 							{{skillsrequired}}
 							<hr>
 							<h4>Description</h4>
 							{{{htmlDescription}}}
 							<hr>
+							{{#if location}}
+								<h4>Service Location</h4>
+								Address: {{location}}
+								<hr>
+							{{/if}}
 							<h4>Service Schedule</h4>
 							{{#if exactdate}}
-								On: {{formatDate exactdate}}
+								On: {{exactdate}}
 							{{/if}}
-							{{#if betweendates}}
-								Between: {{betweendates}}								
+							{{#if startdate}}
+								Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} through {{endtime}}
 							{{/if}}
 							{{#if ratebasis}}
 								<hr>
@@ -74,14 +66,14 @@
 										{{/if}}
 								{{/if}}
 							{{/if}}
-							{{#if contactperson}}
-								<hr>
-								<h4>Service Location</h4>
-								Address: {{location}}<br>
-								Contact Details: <br>
-								{{contactperson}}<br>
-								{{contactemail}}<br>
-								{{contactphone}}
+							{{#if assignedProvider}}
+								{{#if contactperson}}
+									<hr>
+									Contact Details: <br>
+									{{contactperson}}<br>
+									{{contactemail}}<br>
+									{{contactphone}}
+								{{/if}}
 							{{/if}}
 							{{#if tasks}}
 								<hr>
@@ -112,9 +104,8 @@
 					</div>
 					<hr>
 					<div class="row">
-						<div class="col-xs-3"></div>
-						<div class="col-xs-9">
-							<ul class="nav nav-pills nav-justified">
+						<div class="col-xs-12">
+							<ul class="nav nav-pills">
 								<li class="active"><a data-toggle="tab" href="#discussion">Post a Query</a></li>
 								<li>
 									<a data-toggle="tab" href="#apply">

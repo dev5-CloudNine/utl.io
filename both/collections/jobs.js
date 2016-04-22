@@ -339,24 +339,36 @@ Jobs.attachSchema(
         type: "bootstrap-datetimepicker"
       }
     },
-    betweendates: {
-      type: [Date],
-      label: "Between dates",
+    startdate: {
+      type: Date,
       optional: true,
+      label: "Starting from",
       autoform: {
-        type: "bootstrap-daterangepicker",
-        dateRangePickerValue: moment().add(0, 'days').format("MM/DD/YYYY") + " - " + moment().add(1, 'days').format("MM/DD/YYYY"),
-        dateRangePickerOptions: {
-          // minDate: moment().add(-150, 'days'),
-          // maxDate:moment().add(6, 'months'),
-          // startDate: moment().add(1, 'days'),
-          // endDate: moment().add(3, 'days'),
-          timePicker: false,
-          format: 'MM/DD/YYYY',
-          timePickerIncrement: 30,
-          timePicker12Hour: false,
-          timePickerSeconds: false
-        }
+        type: 'bootstrap-datepicker'
+      }
+    },
+    enddate: {
+      type: Date,
+      optional: true,
+      label: "Ending on",
+      autoform: {
+        type: 'bootstrap-datepicker'
+      }
+    },
+    starttime: {
+      type: String,
+      optional: true,
+      label: "Starting time",
+      autoform: {
+        type: "bootstrap-timepicker"
+      }
+    },
+    endtime: {
+      type: String,
+      optional: true,
+      label: "Ending time",
+      autoform: {
+        type: "bootstrap-timepicker"
       }
     },
     shipment: {
