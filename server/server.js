@@ -5,6 +5,10 @@ Meteor.methods({
     "postUserSignup": function(userId) {
         Accounts.sendVerificationEmail(userId);
         return;
+    },  
+    "verifyEmailTrue": function(userId) {
+        Meteor.users.update({_id:userId,"emails.verified":false},{$set:{'emails.$.verified':true}});
+        return;
     },
     "postMessage" : function(obj) {
     	Messages.insert(obj);

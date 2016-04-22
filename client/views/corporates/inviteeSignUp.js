@@ -1,6 +1,7 @@
 Template.inviteeSignUp.events({
 
  'submit #signup-form' : function (event) {
+  Router.go('home');
   event.preventDefault();
   var user = {};
   user['email'] = $('#email').val();
@@ -20,9 +21,8 @@ Template.inviteeSignUp.events({
     toastr.error(error.message,'Error');
     console.log(error);
    } else {
-    toastr.success('A verification link has been sent to your email. Please check your email.'); 
-    Meteor.call('postUserSignup', result, function (error, result2) {});
-    Router.go('home');
+    Meteor.call('verifyEmailTrue', result, function (error, result2) {});
+    Meteor.loginWithPassword(user.email, user.password);
    }
   });
  }

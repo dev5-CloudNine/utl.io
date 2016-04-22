@@ -23,6 +23,7 @@ Template.addTeam.events({
 		var exists = Meteor.users.findOne({'emails.address':email});
 		if(exists) {
 			toastr.error('Email ID exists');
+			return;
 		}
 
 		var invitation = {};
