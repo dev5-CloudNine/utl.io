@@ -12,14 +12,14 @@
 							{{else}}
 								{{> avatar userId=userId size="large"}}
 							{{/if}}
-							
-							{{#if availableForHire}}
+							{{#if isInRole 'buyer, corporate-manager'}}
 								<br>
-								<span class="label label-primary"><i class="fa fa-rocket"></i> Hire Me</span>
+								<a class="btn btn-primary btn-sm">Assign Job</a>
+								<a class="btn btn-primary btn-sm addToFavorites"><i class="fa fa-heart"></i>&nbsp;Like</a>
 							{{/if}}
-							{{#if $eq type 'Company'}}
+							<!-- {{#if $eq type 'Company'}}
 								<span class="label label-danger"><i class="fa fa-users"></i> Company</span>
-							{{/if}}
+							{{/if}} -->
 							<hr>
 							<small>
 								{{#if location}}
@@ -29,13 +29,13 @@
 									<br>
 									<i class="fa fa-mobile">&nbsp;{{contactNumber}}</i>
 								{{/if}}
-								{{#if contactEmail}}
+								{{#if smsAddress}}
 									<br>
-									<i class="fa fa-envelope">&nbsp;{{contactEmail}}</i>
+									<i class="fa fa-envelope">&nbsp;{{smsAddress}}</i>
 								{{/if}}
 								<hr>
 								{{#if url}}
-									<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Web Site</a>
+									<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Website</a>
 								{{/if}}
 								{{#if contact}}
 									<br>
@@ -80,7 +80,7 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<h4>
-										{{title}} - {{companyName}}
+										{{title}} {{#if companyName}} - {{companyName}} {{/if}}
 									</h4>
 								</div>
 							</div>

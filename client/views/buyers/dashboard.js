@@ -53,7 +53,6 @@ Template.dashboard.helpers({
 				_id: id
 			}));
 		});
-		console.log(favUserArray);
 		return favUserArray;
 	},
 	favBuyers: function() {

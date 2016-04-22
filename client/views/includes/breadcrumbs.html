@@ -1,0 +1,12 @@
+<template name="breadcrumbs">
+	<div class="container">
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{pathFor 'home'}}">Home</a>
+			</li>
+			{{#each path}}
+				<li>{{this}}</li>
+			{{/each}}
+		</ol>
+	</div>
+</template>

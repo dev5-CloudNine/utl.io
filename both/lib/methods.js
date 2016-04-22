@@ -38,7 +38,7 @@ Meteor.methods({
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {appliedJobs: jobId}});
     },
     acceptApplication: function(jobId, userId, applicationTime) {
-        Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applicationTime}, {$set: {'applications.$.app_status': 'accepted'}});
+        Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applicationTime}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen'}});
     },
     counterOfferThisJob: function(jobId, counterOffer) {
         console.log(counterOffer);

@@ -11,24 +11,20 @@
 						{{> avatar userId=userId size="medium" class="center-block"}}
 					{{/if}}
 				</a>
-                <h4 class="name"><a href="{{pathFor 'profile'}}">
+                <h4><a href="{{pathFor 'profile'}}">
 					{{#if name}}{{name}}{{else}}{{userName}}{{/if}}
 				</a></h4>
-                <div class="labels">
-                    {{#if availableForHire}}
-                        <span class="label label-primary"><i class="fa fa-rocket"></i> Assign Job</span>
-                    {{/if}}
+                <div>
+                    <small>{{title}} {{#if companyName}}- <b>{{companyName}}</b> {{/if}}</small>
                 </div>
-                <div class="title">
-                    <small>{{title}} - {{companyName}}</small>
-                </div>
-                <div class="location">
+                <div>
                     {{#if location}}
                         <small><i class="fa fa-map-marker"></i>&nbsp;{{location}}</small>
                     {{/if}}
                 </div>
-                <div class="text-center">
-                    <span><a href class="fa fa-heart fa-2x addToFavorites" style="text-decoration:none"></a></span>
+                <div>
+                    <span><a href="{{pathFor 'jobNew'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;Assign Job</a></span>
+                    <span><a class="btn btn-primary btn-xs addToFavorites"><i class="fa fa-heart"></i>&nbsp;Like</a></span>
                 </div>
             </div>
         </div>

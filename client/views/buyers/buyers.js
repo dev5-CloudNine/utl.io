@@ -15,4 +15,4 @@ Template.buyers.helpers({
             }
         });
     }
-})
+});

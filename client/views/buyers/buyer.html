@@ -12,16 +12,21 @@
 							{{else}}
 								{{> avatar userId=userId size="large"}}
 							{{/if}}
-							{{#if $eq type 'Company'}}
-								<span class="label label-danger"><i class="fa fa-users"></i> Company</span>
+							{{#if isInRole 'provider, corporate-provider, buyer, corporate-manager'}}
+								<br>
+								<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>
+								<a class="btn btn-primary btn-xs addToFavorites"><i class="fa fa-heart"></i>&nbsp;Like</a>
 							{{/if}}
+							<!-- {{#if $eq type 'Company'}}
+								<span class="label label-danger"><i class="fa fa-users"></i> Company</span>
+							{{/if}} -->
 							<hr>
 							<small>
 								<i class="fa fa-map-marker"></i>&nbsp;{{location}}
 								<br>
 								<i class="fa fa-mobile"></i>&nbsp;{{contactNumber}}
 								<br>
-								<i class="fa fa-mobile"></i>&nbsp; SMS Address
+								<i class="fa fa-mobile"></i>&nbsp; {{smsAddress}}
 								<br>
 								<i class="fa fa-user"></i>&nbsp;{{userName}}
 								<hr>
@@ -41,10 +46,6 @@
 							</small>
 							<hr>
 							<i class="fa fa-calendar"></i> Created on {{formatDate createdAt}}
-							<hr>
-							{{#if currentUser.isDeveloper}}
-								{{#with buyer}}<a href="{{pathFor 'buyerJobs'}}">View Jobs</a>{{/with}}
-							{{/if}}
 						</div>
 						<div class="col-sm-9">
 							<div class="row">

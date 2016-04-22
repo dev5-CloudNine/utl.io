@@ -51,13 +51,16 @@ Router.map(function() {
             };
         },
         subscriptions: function() {
-            return [subs.subscribe('jobs'), subs.subscribe('homeDevelopers')];
+            return [subs.subscribe('jobs'), subs.subscribe('providers')];
         }
     });
 
     this.route('jobs', {
         path: '/jobs',
-        title: "UTL - All Jobs"
+        title: "UTL - All Jobs",
+        waitOn: function() {
+            return subs.subscribe("jobs");
+        }
     });
 
     this.route('appliedJobs', {
@@ -101,7 +104,7 @@ Router.map(function() {
         onBeforeAction: function () {
             if (Meteor.user() &&
                 Meteor.user().roles &&
-                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 )
+                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 || (Meteor.user().roles.indexOf("corporate-manager")) != -1 )
                 ) {
                 this.next();
             } else {
@@ -209,9 +212,10 @@ Router.map(function() {
 
     this.route('dashboard', {
         path: '/dashboard/:tab',
-        title: "UTL - Buyer Dashboard",
+        title: "UTL - Dashboard",
         waitOn: function() {
             Meteor.subscribe("userList");
+            Meteor.subscribe('jobs');
             return Meteor.subscribe("messages");
         },
         data: function() {
@@ -315,7 +319,8 @@ Router.map(function() {
         path: '/buyers/:_id/:slug/jobs',
         title: 'UTL - Buyer Jobs',
         waitOn: function() {
-            return subs.subscribe('buyer', this.params._id);
+            Meteor.subscribe('buyer', this.params._id);
+            return subs.subscribe('buyerPostedJobs', this.params._id);
         }
     })
 
@@ -438,6 +443,10 @@ Router.map(function() {
         path: '/payments'
     });
 
+    this.route('faq', {
+        path: '/faq'
+    })
+
     //legacy url redirects
     this.route('experts', function() {
         this.redirect("profiles");
@@ -457,7 +466,8 @@ Router.map(function() {
 
 
     this.route('signUp', {
-        path: '/SignUp'
+        path: '/SignUp',
+        progress: true
     });
 
 

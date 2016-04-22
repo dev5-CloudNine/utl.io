@@ -111,7 +111,7 @@ Template.job.events({
     event.preventDefault();
     var jobId = Router.current().params._id;
     var userId = this.userId;
-    var applicationTime = this.applied_at;
+    var applicationTime = this.appliedAt;
     Meteor.call('acceptApplication', jobId, userId, applicationTime, function (error, result) {
       if(error) {
         toastr.error("Failed to accept the application");
@@ -120,10 +120,6 @@ Template.job.events({
         toastr.success("An invitation has been sent to the provider to confirm assigmnemt.");
       }
     });
-  },
-  'click .rejectApplication': function(event, template) {
-    event.preventDefault();
-    console.log("button clicked");
   },
   'click .counterOffer': function(event, template) {
     event.preventDefault();
@@ -227,21 +223,42 @@ Template.job.helpers({
     var counterOffers = [];
     counteredUsers = [];
     Jobs.findOne(this._id).counterOffers.forEach(function(counterOffer) {
-      counterOffers.push(counterOffer);
+      var pDetails = Profiles.findOne({userId: counterOffer.userId});
+      providerDetails = {
+        userId: counterOffer.userId,
+        name: pDetails.name,
+        title: pDetails.title,
+        company: pDetails.companyName,
+        countered_at: counterOffer.countered_at,
+        fixed_amount:counterOffer.fixed_amount,
+        hourly_rate: counterOffer.hourly_rate,
+        max_hours: counterOffer.max_hours,
+        device_rate: counterOffer.device_rate,
+        max_devices: counterOffer.max_devices,
+        first_hours: counterOffer.first_hours,
+        first_max_hours: counterOffer.first_max_hours,
+        next_hours: counterOffer.next_hours,
+        next_max_hours: counterOffer.next_max_hours,
+      }
+      counterOffers.push(providerDetails);
     });
     return counterOffers;
   },
   'appliedProviders': function() {
-    var providersApplied = [];
     var providerIds = [];
+    var providerDetails = {}
     Jobs.findOne(this._id).applications.forEach(function(providerId) {
-      providerIds.push(providerId);
+      var pDetails = Profiles.findOne({userId: providerId.userId});
+      providerDetails = {
+        userId: providerId.userId,
+        name: pDetails.name,
+        title: pDetails.title,
+        company: pDetails.companyName,
+        appliedAt: providerId.applied_at
+      }
+      providerIds.push(providerDetails);
     });
     return providerIds;
-    // providerIds.forEach(function(pId) {
-    //   providersApplied.push(Profiles.findOne({userId: pId}));
-    // });
-    // return providersApplied;
   },
   'jobPostedBuyer': function() {
     var jobDetails = Jobs.findOne(this._id);

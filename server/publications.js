@@ -27,9 +27,9 @@ Meteor.publish("messages", function () {
     return Messages.find();
 });
 
-Meteor.publish("cities", function() {
-    return Cities.find();
-});
+// Meteor.publish("cities", function() {
+//     return Cities.find();
+// });
 
 Meteor.publish("tempInvitation", function () {
     return TempInvitation.find();
@@ -84,7 +84,7 @@ Meteor.publish('jobCount', function() {
 //     ];
 // });
 
-Meteor.publishComposite('homeDevelopers', {
+Meteor.publishComposite('providers', {
     find: function() {
         return Profiles.find({
             status: "active"
@@ -104,7 +104,8 @@ Meteor.publishComposite('homeDevelopers', {
                 name: true,
                 userName: true,
                 status: true,
-                customImageUrl: true
+                customImageUrl: true,
+                companyName: true
             }
         });
     },
@@ -130,6 +131,11 @@ Meteor.publish("jobs", function() {
     check(arguments, [Match.Any]);
     return Jobs.find({status: "active"})
 });
+
+Meteor.publish("buyerPostedJobs", function(buyerId) {
+    check(arguments, [Match.Any]);
+    return Jobs.find({status: "active", userId: buyerId});
+})
 
 Meteor.publish("favorite_users", function() {
     check(arguments,[Match.Any]);

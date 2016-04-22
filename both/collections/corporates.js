@@ -111,9 +111,10 @@ Corporates.attachSchema(
         options: MOBILE_CARRIERS
       }
     },
-    pager: {
+    smsAddress: {
       type: String, 
-      label: "Pager Address",
+      label: "SMS Address",
+      max: 256,
       optional: true
     },
     createdAt: {

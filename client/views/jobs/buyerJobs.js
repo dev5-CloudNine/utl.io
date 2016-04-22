@@ -1,11 +1,15 @@
 Template.buyerJobs.helpers({
 	buyerJob: function () {
+		var buyerId = Buyers.findOne({
+			_id: Router.current().params._id
+		}).userId;
 		return Jobs.find({
-			userId: this.userId
-		}, {
+			userId: buyerId
+		},
+		{
 			sort: {
 				createdAt: -1
 			}
-		});
+		})
 	}
 });

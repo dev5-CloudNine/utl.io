@@ -14,6 +14,12 @@ UserSchema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Id
   },
+  // u_id: {
+  //   type: String,
+  //   autoValue: function() {
+  //     return 'utlu-' + incrementCounter('counters', 'uId');
+  //   }
+  // },
   username: {
     type: String,
     optional: true
