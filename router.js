@@ -443,6 +443,10 @@ Router.map(function() {
         path: '/payments'
     });
 
+    this.route('faq', {
+        path: '/faq'
+    })
+
     //legacy url redirects
     this.route('experts', function() {
         this.redirect("profiles");
