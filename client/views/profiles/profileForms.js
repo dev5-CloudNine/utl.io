@@ -144,6 +144,10 @@ Template.profileFields.helpers({
     var corpInfo = Meteor.user();
     return corpInfo.companyName;
   },
+  locationData : function(){
+    locLoaded = true;
+    return Profiles.findOne({_id:this.corporateProfile._id}).location;
+  },
   location: function(query, sync, callback) {
       if(!locLoaded) $('.typeahead').addClass('loadinggif');
       Meteor.call('location', query, {}, function(err, res) {

@@ -140,6 +140,10 @@ Template.buyerFields.helpers({
     if(customImagePreviewUrl.get())
       return customImagePreviewUrl.get();
   },
+  locationData : function(){
+    locLoaded = true;
+    return Buyers.findOne({_id:this.corporateProfile._id}).location;
+  },
   location: function(query, sync, callback) {
       if(!locLoaded) $('.typeahead').addClass('loadinggif');
       Meteor.call('location', query, {}, function(err, res) {

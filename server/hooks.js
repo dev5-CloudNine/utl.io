@@ -68,3 +68,25 @@ Jobs.after.insert(function(userId, doc){
             + Meteor.absoluteUrl("jobs/"+doc._id) + "\n\n\n\n\n\n"
     });
 });
+
+Jobs.before.insert(function(userId, doc){
+  var id = Jobs.findOne({},{limit:1,sort:{'readableID':-1}});
+  if(id) {
+    id = parseInt(id.readableID.substring(5));
+  } else {
+    id=0;
+  }
+  id++;
+  doc.readableID= "UTLJ-"+id;  
+});
+
+Meteor.users.before.insert(function(userId,doc){
+  var id = Meteor.users.findOne({},{limit:1,sort:{'readableID':-1}});
+  if(id) {
+    id = parseInt(id.readableID.substring(5));
+  } else {
+    id=0;
+  }
+  id++;
+  doc.readableID= "UTLM-"+id;  
+});

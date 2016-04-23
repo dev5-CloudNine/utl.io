@@ -150,6 +150,10 @@ Template.corporateFields.helpers({
   pagerAddress: function() {
     return "some address";
   },
+  locationData : function(){
+    locLoaded = true;
+    return Corporates.findOne({_id:this.corporateProfile._id}).location;
+  },
   location: function(query, sync, callback) {
       if(!locLoaded) $('.typeahead').addClass('loadinggif');
       Meteor.call('location', query, {}, function(err, res) {
