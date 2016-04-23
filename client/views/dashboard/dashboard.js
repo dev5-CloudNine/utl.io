@@ -41,6 +41,20 @@ Template.dashboard.helpers({
 		});
 		return appliedJobsArray;
 	},
+	ongoingJobs: function() {
+		var providerJobs = [];
+		var confirmedJobs = [];
+		Profiles.findOne({userId: Meteor.userId()}).ongoingJobs.forEach(function(ongoingJob) {
+			providerJobs.push(ongoingJob);
+		});
+		providerJobs.forEach(function(providerJob) {
+			var obj = Jobs.findOne({_id: providerJob});
+			obj.display = false;
+			confirmedJobs.push(obj);
+		});
+		console.log(confirmedJobs);
+		return confirmedJobs;
+	},
 	favUsers: function() {
 		var favUserIds = [];
 		var favUserArray = [];

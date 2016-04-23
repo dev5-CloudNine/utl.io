@@ -40,6 +40,11 @@ Meteor.methods({
     acceptApplication: function(jobId, userId, applicationTime) {
         Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applicationTime}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen'}});
     },
+    confirmAssignment: function(jobId) {
+        Profiles.update({userId: Meteor.userId()}, {$addToSet: {ongoingJobs: jobId}});
+        Profiles.update({userId: Meteor.userId()}, {$pull: {appliedJobs: jobId}});
+        Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned'}});
+    },
     counterOfferThisJob: function(jobId, counterOffer) {
         console.log(counterOffer);
         Jobs.update(jobId, {$addToSet: {counterOffers: counterOffer}});

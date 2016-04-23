@@ -1,156 +1,162 @@
 <template name="dashboard">
-    <div class="row">
-        <div class="board">
-            <div class="board-inner">
-                <ul class="nav nav-tabs nav-justified" id="myTab">
-                    <div class="liner"></div>
-                    <li class="{{#if $eq active 'dashboard'}}active{{/if}}">
-                        <a href="#dashboard" data-toggle="tab" title="welcome">
-                            <span class="round-tabs one">
-                                <i class="glyphicon glyphicon-home"></i>&nbsp; Dashboard
-                            </span>
-                        </a>
-                    </li>
-                    <li class="{{#if $eq active 'favusers'}}active{{/if}}">
-                        <a href="#favusers" data-toggle="tab" title="profile">
-                            <span class="round-tabs two">
-                                <i class="glyphicon glyphicon-user"></i>&nbsp; Fav Users
-                            </span>
-                        </a>
-                    </li>
-                    <li class="{{#if $eq active 'myjobs'}}active{{/if}} dropdown" role="presentation">
-                        <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
-                            <span class="round-tabs three">
-                                <i class="glyphicon glyphicon-gift"></i>&nbsp; Jobs <span class="caret"></span>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#postedJobs" data-toggle="tab">
-                                    {{#if isInRole 'buyer, corporate-admin, corporate-manager'}}
-                                        Posted
-                                    {{else}}
-                                        {{#if isInRole 'provider, corporate-provider'}}
-                                            Applied
-                                        {{/if}}
-                                    {{/if}} Jobs
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="board">
+                    <div class="board-inner">
+                        <ul class="nav nav-tabs nav-justified" id="myTab">
+                            <div class="liner"></div>
+                            <li class="{{#if $eq active 'dashboard'}}active{{/if}}">
+                                <a href="#dashboard" data-toggle="tab" title="welcome">
+                                    <span class="round-tabs one">
+                                        <i class="glyphicon glyphicon-home"></i>&nbsp; Dashboard
+                                    </span>
                                 </a>
                             </li>
-                            {{#if isInRole 'corporate-provider, provider'}}
-                                <li><a href="#favoriteJobs" data-toggle="tab">Favorite Jobs</a></li>
-                            {{/if}}
-                            <li><a href="#ongoingJobs" data-toggle="tab">Ongoing Jobs</a></li>
-                            <li><a href="#completedJobs" data-toggle="tab">Completed Jobs</a></li>
+                            <li class="{{#if $eq active 'favusers'}}active{{/if}}">
+                                <a href="#favusers" data-toggle="tab" title="profile">
+                                    <span class="round-tabs two">
+                                        <i class="glyphicon glyphicon-user"></i>&nbsp; Fav Users
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="{{#if $eq active 'myjobs'}}active{{/if}} dropdown" role="presentation">
+                                <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
+                                    <span class="round-tabs three">
+                                        <i class="glyphicon glyphicon-gift"></i>&nbsp; Jobs <span class="caret"></span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#postedJobs" data-toggle="tab">
+                                            {{#if isInRole 'buyer, corporate-admin, corporate-manager'}}
+                                                Posted
+                                            {{else}}
+                                                {{#if isInRole 'provider, corporate-provider'}}
+                                                    Applied
+                                                {{/if}}
+                                            {{/if}} Jobs
+                                        </a>
+                                    </li>
+                                    {{#if isInRole 'corporate-provider, provider'}}
+                                        <li><a href="#favoriteJobs" data-toggle="tab">Favorite Jobs</a></li>
+                                    {{/if}}
+                                    <li><a href="#ongoingJobs" data-toggle="tab">Ongoing Jobs</a></li>
+                                    <li><a href="#completedJobs" data-toggle="tab">Completed Jobs</a></li>
+                                </ul>
+                            </li>
+                            <li  class="{{#if $eq active 'messaging'}}active{{/if}}">
+                                <a href="#mails" data-toggle="tab" title="blah blah">
+                                    <span class="round-tabs four">
+                                      <i class="glyphicon glyphicon-comment"></i>&nbsp; Message Box
+                                 </span>
+                                </a>
+                            </li>
+                            <li class="{{#if $eq active 'piggyBank'}}active{{/if}} dropdown" role="presentation">
+                                <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
+                                    <span class="round-tabs three">
+                                        <i class="glyphicon glyphicon-gift"></i>&nbsp; Piggy Bank <span class="caret"></span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#deposits" data-toggle="tab">Deposits</a></li>
+                                    <li><a href="#withdrawls" data-toggle="tab">Withdrawls</a></li>
+                                    <li><a href="#transfers" data-toggle="tab">Transfers</a></li>
+                                    <li><a href="#allTransactions" data-toggle="tab">All Transactions</a></li>
+                                </ul>
+                            </li>
                         </ul>
-                    </li>
-                    <li  class="{{#if $eq active 'messaging'}}active{{/if}}">
-                        <a href="#mails" data-toggle="tab" title="blah blah">
-                            <span class="round-tabs four">
-                              <i class="glyphicon glyphicon-comment"></i>&nbsp; Message Box
-                         </span>
-                        </a>
-                    </li>
-                    <li class="{{#if $eq active 'piggyBank'}}active{{/if}} dropdown" role="presentation">
-                        <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
-                            <span class="round-tabs three">
-                                <i class="glyphicon glyphicon-gift"></i>&nbsp; Piggy Bank <span class="caret"></span>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#deposits" data-toggle="tab">Deposits</a></li>
-                            <li><a href="#withdrawls" data-toggle="tab">Withdrawls</a></li>
-                            <li><a href="#transfers" data-toggle="tab">Transfers</a></li>
-                            <li><a href="#allTransactions" data-toggle="tab">All Transactions</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="tab-content">
-                <div class="tab-pane fade {{#if $eq active 'dashboard'}} in active {{/if}}" id="dashboard">
-                    <h4>Dashboard (Coming soon! WIP!)</h4>
-                </div>
-                <div class="tab-pane fade {{#if $eq active 'favusers'}} in active {{/if}}" id="favusers">
-                    <br>
-                    {{#if isInRole 'buyer, corporate-manager'}}
-                        {{#each favUsers}}
-                            {{>profileSmall}}
-                        {{else}}
-                            You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
-                        {{/each}}
-                    {{else}}
-                        {{#if isInRole 'provider, corporate-provider'}}
-                            {{#each favBuyers}}
-                                {{>buyerSmall}}
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade {{#if $eq active 'dashboard'}} in active {{/if}}" id="dashboard">
+                            <h4>Dashboard (Coming soon! WIP!)</h4>
+                        </div>
+                        <div class="tab-pane fade {{#if $eq active 'favusers'}} in active {{/if}}" id="favusers">
+                            <br>
+                            {{#if isInRole 'buyer, corporate-manager'}}
+                                {{#each favUsers}}
+                                    {{>profileSmall}}
+                                {{else}}
+                                    You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
+                                {{/each}}
                             {{else}}
-                                You haven't added any favorite buyers. <a href="{{pathFor 'buyers'}}">View buyers</a> if you want to add some.
-                            {{/each}}
-                        {{/if}}
-                    {{/if}}
-                </div>
-                <br>
-                <div class="tab-pane fade {{#if $eq active 'postedJobs'}} in active {{/if}}" id="postedJobs">
-                    <br>
-                    {{#if currentUser.isDeveloper}}
-                        {{#each appliedJobs}}
-                            {{>jobSmall}}
-                        {{else}}
-                            You haven't applied for any jobs yet. <a href="{{pathFor 'jobs'}}">Find jobs</a> to apply.
-                        {{/each}}
-                    {{else}}
-                        {{#if currentUser.isBuyer}}
-                            {{#each jobs}}
+                                {{#if isInRole 'provider, corporate-provider'}}
+                                    {{#each favBuyers}}
+                                        {{>buyerSmall}}
+                                    {{else}}
+                                        You haven't added any favorite buyers. <a href="{{pathFor 'buyers'}}">View buyers</a> if you want to add some.
+                                    {{/each}}
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                        <br>
+                        <div class="tab-pane fade {{#if $eq active 'postedJobs'}} in active {{/if}}" id="postedJobs">
+                            <br>
+                            {{#if currentUser.isDeveloper}}
+                                {{#each appliedJobs}}
+                                    {{>jobSmall}}
+                                {{else}}
+                                    You haven't applied for any jobs yet. <a href="{{pathFor 'jobs'}}">Find jobs</a> to apply.
+                                {{/each}}
+                            {{else}}
+                                {{#if currentUser.isBuyer}}
+                                    {{#each jobs}}
+                                        {{>jobSmall}}
+                                    {{else}}
+                                        You haven't posted any jobs.  <a href="{{pathFor 'jobNew'}}">Post a Job</a> if you have one to offer.
+                                    {{/each}}
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                        <div class="tab-pane fade {{#if $eq active 'favoritejobs'}} in active {{/if}}" id="favoriteJobs">
+                            <br>
+                            {{#each favJobs}}
                                 {{>jobSmall}}
                             {{else}}
-                                You haven't posted any jobs.  <a href="{{pathFor 'jobNew'}}">Post a Job</a> if you have one to offer.
+                                You haven't added any favorites. <a href="{{pathFor 'jobs'}}">View jobs</a> if you want to add some.
                             {{/each}}
-                        {{/if}}
-                    {{/if}}
+                        </div>
+                        <div class="tab-pane fade {{#if $eq active 'ongoingJobs'}} in active {{/if}}" id="ongoingJobs">
+                            <br>
+                            {{#each ongoingJobs}}
+                                {{>jobSmall}}
+                            {{/each}}
+                        </div>
+                        <div class="tab-pane fade {{#if $eq active 'completedJobs'}} in active {{/if}}" id="completedJobs">
+                            <br>
+                            <h4>Completed Jobs (Coming Soon)</h4>
+                        </div>
+                        <div class="tab-pane fade {{#if $eq active 'messaging'}} in active {{/if}}" id="mails">
+                            <br> 
+                            {{#if $eq active 'messaging'}}
+                              {{#if layout.mails}}
+                                {{> mails}}
+                              {{/if}}
+                              {{#if layout.message}}
+                                {{> message}}
+                              {{/if}}
+                              {{#if layout.compose}}
+                                {{> compose}}
+                              {{/if}}
+                            {{else}}
+                              {{> mails}}
+                            {{/if}}
+                        </div>
+                        <div class="tab-pane fade" id="deposits">
+                            <h4>Deposits (Coming soon! WIP!)</h4>
+                        </div>
+                        <div class="tab-pane fade" id="withdrawls">
+                            <h4>Withdrawls (Coming soon! WIP!)</h4>
+                        </div>
+                        <div class="tab-pane fade" id="transfers">
+                            <h4>Transfers (Coming soon! WIP!)</h4>
+                        </div>
+                        <div class="tab-pane fade" id="allTransactions">
+                            <h4>All Transactions (Coming soon! WIP!)</h4>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
                 </div>
-                <div class="tab-pane fade {{#if $eq active 'favoritejobs'}} in active {{/if}}" id="favoriteJobs">
-                    <br>
-                    {{#each favJobs}}
-                        {{>jobSmall}}
-                    {{else}}
-                        You haven't added any favorites. <a href="{{pathFor 'jobs'}}">View jobs</a> if you want to add some.
-                    {{/each}}
-                </div>
-                <div class="tab-pane fade {{#if $eq active 'ongoingJobs'}} in active {{/if}}" id="ongoingJobs">
-                    <br>
-                    <h4>Ongoing Jobs (Coming Soon)</h4>
-                </div>
-                <div class="tab-pane fade {{#if $eq active 'completedJobs'}} in active {{/if}}" id="completedJobs">
-                    <br>
-                    <h4>Completed Jobs (Coming Soon)</h4>
-                </div>
-                <div class="tab-pane fade {{#if $eq active 'messaging'}} in active {{/if}}" id="mails">
-                    <br> 
-                    {{#if $eq active 'messaging'}}
-                      {{#if layout.mails}}
-                        {{> mails}}
-                      {{/if}}
-                      {{#if layout.message}}
-                        {{> message}}
-                      {{/if}}
-                      {{#if layout.compose}}
-                        {{> compose}}
-                      {{/if}}
-                    {{else}}
-                      {{> mails}}
-                    {{/if}}
-                </div>
-                <div class="tab-pane fade" id="deposits">
-                    <h4>Deposits (Coming soon! WIP!)</h4>
-                </div>
-                <div class="tab-pane fade" id="withdrawls">
-                    <h4>Withdrawls (Coming soon! WIP!)</h4>
-                </div>
-                <div class="tab-pane fade" id="transfers">
-                    <h4>Transfers (Coming soon! WIP!)</h4>
-                </div>
-                <div class="tab-pane fade" id="allTransactions">
-                    <h4>All Transactions (Coming soon! WIP!)</h4>
-                </div>
-                <div class="clearfix"></div>
             </div>
         </div>
     </div>

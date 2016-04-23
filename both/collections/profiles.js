@@ -272,6 +272,13 @@ Profiles.attachSchema(
     'appliedJobs.$': {
       type: String
     },
+    ongoingJobs: {
+      type: Array,
+      optional: true
+    },
+    'ongoingJobs.$': {
+      type: String
+    },
     randomSorter: {
       type: Number,
       defaultValue: Math.floor(Math.random() * 10000)

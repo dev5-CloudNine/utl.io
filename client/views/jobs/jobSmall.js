@@ -7,6 +7,9 @@ Template.jobSmall.helpers({
 	},
 	acceptedProvider: function() {
 		var userId = Meteor.userId();
+		if(this.display == false) {
+			return;
+		}
 		if(Jobs.findOne({$and:[{'_id': this._id}, {'applications.userId':userId},{'applications.app_status':'accepted'}]})) {
 			return true
 		}
@@ -26,5 +29,20 @@ Template.jobSmall.events({
 				console.log('Added to favorites');
 			}
 		});
+	},
+	'click button.confirmAssignment': function(event, template) {
+		console.log(this._id);
+		var jobId = this._id;
+		Meteor.call('confirmAssignment', jobId, function(error) {
+			if(error) {
+				toastr.error('Failed to confirm assignment.');
+			}
+			else {
+				toastr.success('The assignment has been confirmed.');
+			}
+		})
+	},
+	'click button.declineAssignment': function(event, template) {
+		console.log(this);
 	}
 })
