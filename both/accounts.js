@@ -16,6 +16,7 @@ AccountsTemplates.configure({
     negativeValidation: true,
     positiveValidation: false,
     positiveFeedback: false,
+    forbidClientAccountCreation : true,
 
     // Redirects
     homeRoutePath: '/',
