@@ -1,97 +1,99 @@
 <template name="buyer">
-	<div id="buyerProfile" class="row">
-		<div class="col-sm-12">
-			<div class="panel panel-default">
-  				<div class="panel-body">
-					<div class="row">
-						<div class="col-sm-3">
-							{{#if customImageUrl}}
-								<div class="avatar avatar-large">
-									<img class="img-responsive" src="{{resizeImageUrl customImageUrl 200 200}}"/>
-								</div>
-							{{else}}
-								{{> avatar userId=userId size="large"}}
-							{{/if}}
-							{{#if isInRole 'provider, corporate-provider, buyer, corporate-manager'}}
-								<br>
-								<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>
-								<a class="btn btn-primary btn-xs addToFavorites"><i class="fa fa-heart"></i>&nbsp;Like</a>
-							{{/if}}
-							<!-- {{#if $eq type 'Company'}}
-								<span class="label label-danger"><i class="fa fa-users"></i> Company</span>
-							{{/if}} -->
-							<hr>
-							<small>
-								<i class="fa fa-map-marker"></i>&nbsp;{{location}}
-								<br>
-								<i class="fa fa-mobile"></i>&nbsp;{{contactNumber}}
-								<br>
-								<i class="fa fa-mobile"></i>&nbsp; {{smsAddress}}
-								<br>
-								<i class="fa fa-user"></i>&nbsp;{{userName}}
+	<div class="container">
+		<div id="buyerProfile" class="row">
+			<div class="col-sm-12">
+				<div class="panel panel-default">
+	  				<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-3">
+								{{#if customImageUrl}}
+									<div class="avatar avatar-large">
+										<img class="img-responsive" src="{{resizeImageUrl customImageUrl 200 200}}"/>
+									</div>
+								{{else}}
+									{{> avatar userId=userId size="large"}}
+								{{/if}}
+								{{#if isInRole 'provider, corporate-provider, buyer, corporate-manager'}}
+									<br>
+									<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>
+									<a class="btn btn-primary btn-xs addToFavorites"><i class="fa fa-heart"></i>&nbsp;Like</a>
+								{{/if}}
+								<!-- {{#if $eq type 'Company'}}
+									<span class="label label-danger"><i class="fa fa-users"></i> Company</span>
+								{{/if}} -->
 								<hr>
-							</small>
-							<small>
-								{{#if eintinNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;EIN/TIN: {{eintinNumber}}
-								{{/if}}
-								<br>
-								{{#if socialSecurityNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;SSN: {{socialSecurityNumber}}
-								{{/if}}
-								<br>
-								{{#if alternateEmail}}
-									<i class="fa fa-envelope"></i>&nbsp;{{alternateEmail}}
-								{{/if}}
-							</small>
-							<hr>
-							<i class="fa fa-calendar"></i> Created on {{formatDate createdAt}}
-						</div>
-						<div class="col-sm-9">
-							<div class="row">
-								<div class="col-sm-12">
-									<h2 class="top-flush">
-										{{displayName}}
-									</h2>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-12">
-									<h4>
-										{{title}} - {{companyName}}
-									</h4>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-12">
-									{{#if htmlDescription}}
-										<hr>
-										<h4>About Me</h4>
-										{{{htmlDescription}}}
+								<small>
+									<i class="fa fa-map-marker"></i>&nbsp;{{location}}
+									<br>
+									<i class="fa fa-mobile"></i>&nbsp;{{contactNumber}}
+									<br>
+									<i class="fa fa-mobile"></i>&nbsp; {{smsAddress}}
+									<br>
+									<i class="fa fa-user"></i>&nbsp;{{userName}}
+									<hr>
+								</small>
+								<small>
+									{{#if eintinNumber}}
+										<i class="fa fa-envelope"></i>&nbsp;EIN/TIN: {{eintinNumber}}
 									{{/if}}
-									{{#if industryTypes}}
-										<hr>
-										<h4>Interested Industries</h4>
-										{{industryTypes}}
-										<hr>
+									<br>
+									{{#if socialSecurityNumber}}
+										<i class="fa fa-envelope"></i>&nbsp;SSN: {{socialSecurityNumber}}
 									{{/if}}
+									<br>
+									{{#if alternateEmail}}
+										<i class="fa fa-envelope"></i>&nbsp;{{alternateEmail}}
+									{{/if}}
+								</small>
+								<hr>
+								<i class="fa fa-calendar"></i> Created on {{formatDate createdAt}}
+							</div>
+							<div class="col-sm-9">
+								<div class="row">
+									<div class="col-sm-12">
+										<h2 class="top-flush">
+											{{displayName}}
+										</h2>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<h4>
+											{{title}} {{#if companyName}}- {{companyName}}{{/if}}
+										</h4>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										{{#if htmlDescription}}
+											<hr>
+											<h4>About Me</h4>
+											{{{htmlDescription}}}
+										{{/if}}
+										{{#if industryTypes}}
+											<hr>
+											<h4>Interested Industries</h4>
+											{{industryTypes}}
+											<hr>
+										{{/if}}
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							{{#if $eq userId $.Meteor.userId}}
-								<div class="pull-right">
-									&nbsp;
-									<a href="{{pathFor 'buyerEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
-								</div>
-								<div class="pull-right">
-									{{#quickRemoveButton collection="Buyers" _id=_id class="btn btn-danger" beforeRemove=beforeRemove}}
-										<i class="fa fa-trash-o"></i> Delete
-									{{/quickRemoveButton}}
-								</div>
-							{{/if}}
+						<div class="row">
+							<div class="col-sm-12">
+								{{#if $eq userId $.Meteor.userId}}
+									<div class="pull-right">
+										&nbsp;
+										<a href="{{pathFor 'buyerEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+									</div>
+									<div class="pull-right">
+										{{#quickRemoveButton collection="Buyers" _id=_id class="btn btn-danger" beforeRemove=beforeRemove}}
+											<i class="fa fa-trash-o"></i> Delete
+										{{/quickRemoveButton}}
+									</div>
+								{{/if}}
+							</div>
 						</div>
 					</div>
 				</div>

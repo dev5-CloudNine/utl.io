@@ -199,7 +199,9 @@ Template.job.events({
 });
 
 Template.job.helpers({
-  'buyer': function() {
+  'buyerData': function() {
+    console.log(this.userId);
+    console.log(Buyers.find({userId: this.userId}).fetch());
     return Buyers.findOne({userId: this.userId});
   },
   'hasLabel': function() {

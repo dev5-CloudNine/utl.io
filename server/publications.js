@@ -27,9 +27,10 @@ Meteor.publish("messages", function () {
     return Messages.find();
 });
 
-// Meteor.publish("cities", function() {
-//     return Cities.find();
-// });
+Meteor.publish('postedBuyer', function(jobId) {
+    var userId = Jobs.findOne({_id: jobId}).userId;
+    return Meteor.users.find({_id: userId});
+})
 
 Meteor.publish("tempInvitation", function () {
     return TempInvitation.find();
@@ -182,7 +183,8 @@ Meteor.publish("favorite_buyers", function() {
             htmlDescription: true,
             industryTypes: true,
             contactNumber: true,
-            mobileCarrier: true
+            mobileCarrier: true,
+            userId: true,
         }
     })
 })
