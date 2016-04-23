@@ -19,7 +19,11 @@ Template.SignUp.events({
   if(roleVal) {
     role.push(roleVal);
     user.profile["role"] = role;
-  }
+  } else {
+    toastr.error('Please select a role');
+    return;
+  } 
+
   Meteor.call('onUserSignup', user, function (error, result) {
    if (error) {
     toastr.error(error.message,'Error');
