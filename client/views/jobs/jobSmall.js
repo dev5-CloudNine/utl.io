@@ -7,13 +7,11 @@ Template.jobSmall.helpers({
 	},
 	acceptedProvider: function() {
 		var userId = Meteor.userId();
-		var jobAccepted = Jobs.findOne({$and: [{'applications.userId': userId}, {'applications.app_status': 'accepted'}]});
-		console.log(jobAccepted);
-		if(this._id == jobAccepted._id) {
-			return true;
+		if(Jobs.findOne({$and:[{'_id': this._id}, {'applications.userId':userId},{'applications.app_status':'accepted'}]})) {
+			return true
 		}
 		else {
-			return false;
+			return false
 		}
 	}
 })
