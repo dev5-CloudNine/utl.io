@@ -82,6 +82,10 @@ UserSchema = new SimpleSchema({
     type: Array,
     optional: true
   },
+  reableID: {
+    type: String,
+    optional: true
+  },
   'favoriteUsers.$': {
     type: String
   },

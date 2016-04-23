@@ -80,6 +80,10 @@ Template.jobFields.events({
 });
 
 Template.jobFields.helpers({
+	locationData : function(){
+		locLoaded = true;
+		return Jobs.findOne({_id:this.corporateProfile._id}).location;
+	},
 	location: function (query, sync, callback) {
 		if(!locLoaded) $('.typeahead').addClass('loadinggif');
 		Meteor.call('location', query, {}, function(err, res) {
