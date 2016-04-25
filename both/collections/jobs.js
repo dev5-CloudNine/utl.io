@@ -1,7 +1,7 @@
 Jobs = new Mongo.Collection("jobs");
 JobsIndex = new EasySearch.Index({
   collection: Jobs,
-  fields: ['title', 'skillsrequired', 'location', 'jobtype'],
+  fields: ['title', 'skillsrequired', 'location', 'jobtype', 'readableID'],
   engine: new EasySearch.Minimongo()
 });
 Jobs.attachSchema(
