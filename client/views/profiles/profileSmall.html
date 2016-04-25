@@ -12,8 +12,11 @@
 					{{/if}}
 				</a>
                 <h4><a href="{{pathFor 'profile'}}">
-					{{#if name}}{{name}}{{else}}{{userName}}{{/if}}
+					{{name}}
 				</a></h4>
+                <p class="label label-xs label-default">
+                    {{readableId}}
+                </p>
                 <div>
                     <small>{{title}} {{#if companyName}}- <b>{{companyName}}</b> {{/if}}</small>
                 </div>
@@ -23,7 +26,7 @@
                     {{/if}}
                 </div>
                 <div>
-                    <span><a href="{{pathFor 'jobNew'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;Assign Job</a></span>
+                    <span><a href class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;Assign Job</a></span>
                     <span><a class="btn btn-primary btn-xs addToFavorites"><i class="fa fa-heart"></i>&nbsp;Like</a></span>
                 </div>
             </div>

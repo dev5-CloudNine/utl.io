@@ -12,6 +12,9 @@ Template.profile.helpers({
   splitInterestedIn: function() {
     if (interestedIn)
       return interestedIn.split(",");
+  },
+  readableId: function() {
+    return (Users.findOne({_id: this.userId}).readableID);
   }
 });
 

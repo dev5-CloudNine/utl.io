@@ -1,12 +1,16 @@
 <template name="breadcrumbs">
 	<div class="container">
-		<ol class="breadcrumb">
-			<li>
-				<a href="{{pathFor 'home'}}">Home</a>
-			</li>
-			{{#each path}}
-				<li>{{this}}</li>
-			{{/each}}
-		</ol>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="well well-sm">
+					<span>
+						<a href="{{pathFor 'home'}}">Home</a>
+					</span>
+					<span class="pull-right">
+						<a href="javascript: history.go(-1)">Back</a>
+					</span>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>

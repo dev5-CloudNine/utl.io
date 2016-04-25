@@ -112,6 +112,10 @@ Template.job.events({
     var jobId = Router.current().params._id;
     var userId = this.userId;
     var applicationTime = this.appliedAt;
+    // if(!(Jobs.findOne($and: [{_id: jobid}, {applicationStatus: 'open'}]))) {
+    //   toastr.error("This job has already been assigned to some provider");
+    //   return;
+    // }
     Meteor.call('acceptApplication', jobId, userId, applicationTime, function (error, result) {
       if(error) {
         toastr.error("Failed to accept the application");

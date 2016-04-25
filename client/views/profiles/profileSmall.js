@@ -11,4 +11,10 @@ Template.profileSmall.events({
 			}
 		});
 	}
+});
+
+Template.profileSmall.helpers({
+	readableId: function() {
+		return(Users.findOne({_id: this.userId}).readableID);
+	}
 })

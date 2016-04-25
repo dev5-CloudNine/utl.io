@@ -24,5 +24,8 @@ Template.buyer.helpers({
         createdAt: -1
       }
     });
+  },
+  'readableId': function() {
+    return (Users.findOne({_id: this.userId}).readableID);
   }
 });
