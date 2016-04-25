@@ -259,6 +259,7 @@ Router.map(function() {
             });
         },
         waitOn: function() {
+            Meteor.subscribe('images');
             return subs.subscribe('buyer', this.params._id);
         },
         onBeforeAction: function() {
@@ -525,12 +526,6 @@ Router.plugin('ensureSignedIn', {
 });
 
 
-Router.onBeforeAction(function() {
-    loadUploadcare();
-    this.next();
-}, {
-    only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew', 'buyerEdit', 'buyerNew']
-});
 
 Router.plugin('dataNotFound', {
     notFoundTemplate: 'notFound'

@@ -41,7 +41,6 @@ mpowaga:autoform-summernote
 djedi:sanitize-html
 email
 gadicohen:sitemaps
-natestrauser:uploadcare-plus
 reactive-var
 yogiben:admin
 ongoworks:speakingurl
@@ -78,7 +77,8 @@ themeteorchef:jquery-validation
 pauli:accounts-linkedin
 easy:search
 arkham:comments-ui
-yogiben:autoform-file
+spunkedy:autoform-file
+cfs:filesystem
 standard-minifier-css
 standard-minifier-js
 cfs:gridfs

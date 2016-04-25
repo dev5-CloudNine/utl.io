@@ -87,6 +87,17 @@ Template.buyerFields.events({
       smsEmail = mobileNumber + '@voicestream.net'
     }
     $('input[name="smsAddress"]').val(smsEmail);
+  },
+  'click .js-af-remove-file' : function(event) {
+    if($('img.img-fileUpload-thumbnail')) {
+      var src = $('img.img-fileUpload-thumbnail').attr('src').split("/");
+      var docID = src[4]
+      Meteor.call('deleteFile', docID, function (error, result) {
+        if(error) {
+          toastr.error("Operation Failed. Please try again");
+        }
+      });
+    }
   }
 })
 
@@ -99,50 +110,17 @@ Template.buyerEdit.events({
   }
 });
 
-var customImagePreviewUrl = new ReactiveVar();
 
 Template.buyerFields.rendered = function() {
-  var interval;
-  var template = this;
-  interval = Meteor.setInterval(function() {
-    if (typeof uploadcare !== "undefined") {
-      Meteor.clearInterval(interval);
-      var widget = uploadcare.SingleWidget('#custom-image');
-      
-      if(template.data && template.data.buyer && template.data.buyer.customImageUrl){
-        var customImage = template.data.buyer.customImageUrl;
-        if(customImage){
-          widget.value(customImage);
-          customImagePreviewUrl.set(customImage);
-        }
-      }
-
-      widget.onChange(function(file) {
-        if (file) {
-          file.done(function(info) {
-            customImagePreviewUrl.set(info.cdnUrl);
-            analytics.track("Profile Image Uploaded");      
-          });
-        } else if(customImagePreviewUrl.get()){
-            customImagePreviewUrl.set(null);
-        }
-      });
-    }
-  }, 10);
-
   Meteor.typeahead.inject('.typeahead');
 };
 
 var locLoaded=false;
 
 Template.buyerFields.helpers({
-  "customImagePreviewUrl": function(event, template) {
-    if(customImagePreviewUrl.get())
-      return customImagePreviewUrl.get();
-  },
   locationData : function(){
     locLoaded = true;
-    return Buyers.findOne({_id:this.corporateProfile._id}).location;
+    return this.buyerProfile.location;
   },
   location: function(query, sync, callback) {
       if(!locLoaded) $('.typeahead').addClass('loadinggif');

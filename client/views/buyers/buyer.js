@@ -24,5 +24,12 @@ Template.buyer.helpers({
         createdAt: -1
       }
     });
+  },
+  customImageUrl: function(){
+    var avatarID = Buyers.findOne({userId: this.userId}).avatar;
+    if(!avatarID)
+      return;
+    var imgURL = Meteor.absoluteUrl()+"cfs/files/images/" + avatarID +"/"+Images.findOne({_id:avatarID}).original.name;
+    return imgURL;
   }
 });

@@ -1,15 +1,16 @@
-UploadedDocuments = new FS.Collection("uploadedDocuments", {
-	stores: [new FS.Store.GridFS("uploadedDocuments")]
+Images = new FS.Collection("images", {
+  stores: [new FS.Store.FileSystem("images", {path: "~/uploads"})]
 });
 
-UploadedDocuments.allow({
+Images.allow({
 	insert: function (userId, doc) {
+		console.log(Meteor.users.find().fetch());
 		return true;
 	},
 	update: function (userId, doc, fieldNames, modifier) {
 		return true;
 	},
-	remove: function (userId, doc) {
+	remove: function () {
 		return true;
 	},
 	download: function() {

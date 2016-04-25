@@ -50,6 +50,14 @@ Template.headerUserMenu.helpers({
     return Corporates.findOne({
       userId: Meteor.userId()
     });
+  },
+  customImageUrl: function(){
+    var avatarID = Buyers.findOne({userId: this.userId}).avatar;
+    if(!avatarID)
+      return;
+    var imgURL = Meteor.absoluteUrl()+"cfs/files/images/" + avatarID +"/"+Images.findOne({_id:avatarID}).original.name;
+    console.log(imgURL);
+    return imgURL;
   }
 });
 

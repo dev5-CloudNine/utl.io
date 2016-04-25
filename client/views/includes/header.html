@@ -88,7 +88,19 @@
     </li>
     <li id="user-drop-down" class="dropdown">
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-			{{> avatar user=currentUser size="small"}}{{currentUserDisplayName}} <span class="caret"></span>
+			
+
+            {{#if customImageUrl}}
+                <div class="avatar avatar-small">
+                    <img class="avatar-image" src="{{customImageUrl}}" alt="avatar" onerror="this.style.display='none';">
+                    <span class="avatar-initials" style="background-color: #aaa; color: #fff;"></span>
+                </div>
+            {{else}}
+                {{> avatar user=currentUser size="small"}}
+            {{/if}}
+
+
+            {{currentUserDisplayName}} <span class="caret"></span>
 		</a>
         <ul class="dropdown-menu" role="menu">
             {{#if isInRole 'buyer, corporate-manager'}}

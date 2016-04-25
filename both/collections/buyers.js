@@ -32,10 +32,18 @@ Buyers.attachSchema(
 			}
 		}
   },
-  customImageUrl: {
-		type: String,
-		optional: true
-    },
+  avatar: {
+    type: String,
+    optional: true,
+    autoform: {
+      afFieldInput: {
+        type: 'fileUpload',
+        collection: 'Images',
+        accept: 'image/*',
+        label: 'Choose file'
+      }
+    }
+  },
   name: {
 		type: String,
 		label: "Name *",
