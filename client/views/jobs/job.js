@@ -204,8 +204,6 @@ Template.job.events({
 
 Template.job.helpers({
   'buyerData': function() {
-    console.log(this.userId);
-    console.log(Buyers.find({userId: this.userId}).fetch());
     return Buyers.findOne({userId: this.userId});
   },
   'hasLabel': function() {
@@ -265,6 +263,9 @@ Template.job.helpers({
       providerIds.push(providerDetails);
     });
     return providerIds;
+  },
+  'applicationStatus': function() {
+    return Jobs.findOne({_id: Router.current().params._id}).applicationStatus;
   },
   'jobPostedBuyer': function() {
     var jobDetails = Jobs.findOne(this._id);

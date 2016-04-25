@@ -166,7 +166,21 @@
 																	<h4>{{this.name}}</h4>
 																	<small>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</small>
 																	<h5><i class="fa fa-calendar"></i> {{this.appliedAt}}</h5>
-																	<button class="btn btn-success btn-sm acceptApplication">Accept</button>
+																	{{#if $eq applicationStatus 'frozen'}}
+																	<h5>You've already chosen a provider.</h5>
+																	{{else}}
+																		{{#if $eq applicationStatus 'assigned'}}
+																			<h5>The job is already assigned.</h5>
+																		{{else}}
+																			{{#if $eq applicationStatus 'done'}}
+																				<h5>The project is completed.</h5>
+																			{{else}}
+																				{{#if applicationStatus 'open'}}
+																					<button class="btn btn-success btn-sm acceptApplication">Accept</button>
+																				{{/if}}
+																			{{/if}}
+																		{{/if}}
+																	{{/if}}
 																</span>
 															</a>
 														{{else}}

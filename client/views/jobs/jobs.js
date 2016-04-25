@@ -8,14 +8,15 @@ Template.jobs.onCreated(function() {
 });
 
 Template.jobs.helpers({
-    "jobs": function() {
-        return Jobs.find({}, {
-            sort: {
-                featuredThrough: -1,
-                createdAt: -1
-            }
-        });
-    },
+    // "jobs": function() {
+    //     console.log(this);
+    //     return Jobs.find({}, {
+    //         sort: {
+    //             featuredThrough: -1,
+    //             createdAt: -1
+    //         }
+    //     });
+    // },
     jobIndex: function() {
         return JobsIndex;
     }

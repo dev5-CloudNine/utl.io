@@ -35,10 +35,14 @@
                     <i class="fa fa-calendar"></i>&nbsp;Posted on: {{formatDate createdAt}}&nbsp;|&nbsp;<i class="fa fa-tag"></i>Status: {{applicationStatus}}
                 </div>
                 {{#if acceptedProvider}}
-                    <div class="col-sm-6 text-right">
-                        <button class="btn btn-success confirmAssignment">Confirm Assignment</button>
-                        <button class="btn btn-warning declineAssignment">Decline Assignment</button>
-                    </div>
+                    {{#if $eq applicationStatus 'assigned'}}
+                        <div></div>
+                    {{else}}
+                        <div class="col-sm-6 text-right">
+                            <button class="btn btn-success confirmAssignment">Confirm</button>
+                            <button class="btn btn-warning declineAssignment">Decline</button>
+                        </div>
+                    {{/if}}
                 {{/if}}
             </div>
         </div>
