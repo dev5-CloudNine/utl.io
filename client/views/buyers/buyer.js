@@ -25,9 +25,9 @@ Template.buyer.helpers({
       }
     });
   },
-  'readableId': function() {
+  readableId: function() {
     return (Users.findOne({_id: this.userId}).readableID);
-  }
+  },
   customImageUrl: function(){
     var avatarID = Buyers.findOne({userId: this.userId}).avatar;
     if(!avatarID)

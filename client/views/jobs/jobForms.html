@@ -14,8 +14,8 @@
                         {{#autoForm id="jobNew" collection="Jobs" type="insert" }}
                             {{>jobFields}}
                             <div>
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> Publish</button>
                                 <button class="btn btn-primary"><i class="fa fa-bookmark-o"></i> Save as Draft</button>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> Publish</button>
                             </div>
                         {{/autoForm}}
                     </div>
@@ -195,6 +195,26 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{>afArrayField name="shipment"}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="assignToProvider" data-schema-key="assignToProvider">Assign Job to Provider(s)
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row selectProviders" hidden>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{#each availableProviders}}
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">{{this}}
+                    </label>
+                </div>
+            {{/each}}
         </div>
     </div>
     <!-- {{> afQuickField name="fileId"}} -->

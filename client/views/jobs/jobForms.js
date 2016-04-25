@@ -76,6 +76,15 @@ Template.jobFields.events({
 		var freenet = totalamount - totalamount * 5/100;
 		template.find('input[name="your_cost"]').value = totalamount;
 		template.find('input[name="freelancer_nets"]').value = freenet;
+	},
+	'change input[name="assignToProvider"]': function(event, template) {
+		event.preventDefault();
+		if(event.target.checked) {
+			$('div.selectProviders').show();
+		}
+		else {
+			$('div.selectProviders').hide();
+		}
 	}
 });
 
@@ -96,5 +105,12 @@ Template.jobFields.helpers({
 			$('.typeahead').removeClass('loadinggif');
 			return { value: v.city + ", " + v.state + ", " + v.zip}; }));
 		});
+	},
+	availableProviders: function() {
+		var names = [];
+		Profiles.find().fetch().forEach(function(profile) {
+			names.push(profile.name);
+		});
+		return names;
 	}
 });

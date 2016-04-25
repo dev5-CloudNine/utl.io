@@ -77,7 +77,7 @@ Jobs.before.insert(function(userId, doc){
     id=0;
   }
   id++;
-  doc.readableID= "J"+id;
+  doc.readableID= "UTLJ-"+id;
 });
 
 Meteor.users.before.insert(function(userId,doc){

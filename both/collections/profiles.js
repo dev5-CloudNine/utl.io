@@ -279,10 +279,10 @@ Profiles.attachSchema(
     'ongoingJobs.$': {
       type: String
     },
-    randomSorter: {
-      type: Number,
-      defaultValue: Math.floor(Math.random() * 10000)
-    },
+    // randomSorter: {
+    //   type: Number,
+    //   defaultValue: Math.floor(Math.random() * 10000)
+    // },
     status: {
       type: String,
       allowedValues: STATUSES,

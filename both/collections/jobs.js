@@ -494,6 +494,19 @@ Jobs.attachSchema(
       max: 256,
       optional: true
     },
+    assignToProvider: {
+      type: String,
+      optional: true
+    },
+    selectProviders: {
+      type: [String],
+      label: "Select Providers",
+      optional: true,
+      autoform: {
+        type: "selectize",
+        multiple: true
+      }
+    },
     userId: {
       type: String,
       label: "User Id",

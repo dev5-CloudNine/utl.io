@@ -130,7 +130,7 @@ Meteor.publishComposite('providers', {
 
 Meteor.publish("jobs", function() {
     check(arguments, [Match.Any]);
-    return Jobs.find({status: "active"})
+    return Jobs.find({status: "active"}, {sort: {createdAt: -1}})
 });
 
 Meteor.publish("buyerPostedJobs", function(buyerId) {
