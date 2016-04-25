@@ -88,5 +88,5 @@ Meteor.users.before.insert(function(userId,doc){
     id=0;
   }
   id++;
-  doc.readableID= "M"+id;  
+  doc.readableID= "UTLM-"+id;  
 });

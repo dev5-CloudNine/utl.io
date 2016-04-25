@@ -382,3 +382,8 @@ Meteor.publish('corporates', function(limit) {
         }
     });
 });
+
+Meteor.publish('images', function() {
+  return Images.find();
+});
+

@@ -28,4 +28,11 @@ Template.buyer.helpers({
   'readableId': function() {
     return (Users.findOne({_id: this.userId}).readableID);
   }
+  customImageUrl: function(){
+    var avatarID = Buyers.findOne({userId: this.userId}).avatar;
+    if(!avatarID)
+      return;
+    var imgURL = Meteor.absoluteUrl()+"cfs/files/images/" + avatarID +"/"+Images.findOne({_id:avatarID}).original.name;
+    return imgURL;
+  }
 });

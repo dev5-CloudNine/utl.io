@@ -48,5 +48,8 @@ Meteor.methods({
         // TODO fix regexp to support multiple tokens
         var regex = new RegExp("^" + query,'gi');
         return Cities.find({city: {$regex:  regex}}, options).fetch();
+    },
+    "deleteFile": function(id) {
+        Images.remove({_id:id});
     }
 });
