@@ -8,6 +8,17 @@ Template.dashboard.helpers({
 			}
 		});
 	},
+	ongoingBuyerJobs: function() {
+		var jobIds = [];
+		var jobs = [];
+		Buyers.findOne({userId: Meteor.userId()}).ongoingJobs.forEach(function(ongoingJob) {
+			jobIds.push(ongoingJob);
+		});
+		jobIds.forEach(function(jobId) {
+			jobs.push(Jobs.findOne({_id: jobId}));
+		});
+		return jobs;
+	},
 	buyerProfile: function() {
 		return Buyers.find({
 			userId: Meteor.userId()
@@ -50,9 +61,9 @@ Template.dashboard.helpers({
 		providerJobs.forEach(function(providerJob) {
 			var obj = Jobs.findOne({_id: providerJob});
 			obj.display = false;
+			console.log(obj);
 			confirmedJobs.push(obj);
 		});
-		console.log(confirmedJobs);
 		return confirmedJobs;
 	},
 	favUsers: function() {

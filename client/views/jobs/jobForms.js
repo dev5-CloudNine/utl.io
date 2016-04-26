@@ -107,10 +107,10 @@ Template.jobFields.helpers({
 		});
 	},
 	availableProviders: function() {
-		var names = [];
+		var profiles = [];
 		Profiles.find().fetch().forEach(function(profile) {
-			names.push(profile.name);
+			profiles.push(profile);
 		});
-		return names;
+		return profiles;
 	}
 });

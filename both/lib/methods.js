@@ -44,6 +44,7 @@ Meteor.methods({
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {ongoingJobs: jobId}});
         Profiles.update({userId: Meteor.userId()}, {$pull: {appliedJobs: jobId}});
         Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned'}});
+        Buyers.update({userId: Meteor.userId()}, {$addToSet: {ongoingJobs: jobId}});
     },
     counterOfferThisJob: function(jobId, counterOffer) {
         console.log(counterOffer);

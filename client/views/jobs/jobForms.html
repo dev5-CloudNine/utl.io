@@ -209,9 +209,9 @@
     <div class="row selectProviders" hidden>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{#each availableProviders}}
-                <div class="checkbox">
+                <div class="radio-inline">
                     <label>
-                        <input type="checkbox">{{this}}
+                        <input type="radio" name="selectedProviders" data-schema-key="selectedProviders" value="{{this._id}}">{{#with this}} <a href="{{pathFor 'profile'}}"> {{this.name}}</a>{{/with}}
                     </label>
                 </div>
             {{/each}}
