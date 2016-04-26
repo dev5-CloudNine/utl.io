@@ -20,6 +20,7 @@ Template.jobSmall.helpers({
 })
 Template.jobSmall.events({
 	'click a.addToFavorites': function(event, template) {
+		event.preventDefault();
 		var jobId = this._id;
 		Meteor.call('addToFavorites', jobId, function(error) {
 			if(error) {
@@ -31,9 +32,10 @@ Template.jobSmall.events({
 		});
 	},
 	'click button.confirmAssignment': function(event, template) {
-		console.log(this._id);
+		event.preventDefault();
+		var buyerId = this.userId;
 		var jobId = this._id;
-		Meteor.call('confirmAssignment', jobId, function(error) {
+		Meteor.call('confirmAssignment', jobId, buyerId, function(error) {
 			if(error) {
 				toastr.error('Failed to confirm assignment.');
 			}
@@ -43,6 +45,7 @@ Template.jobSmall.events({
 		})
 	},
 	'click button.declineAssignment': function(event, template) {
+		event.preventDefault();
 		console.log(this);
 	}
 })

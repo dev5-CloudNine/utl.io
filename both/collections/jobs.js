@@ -496,7 +496,12 @@ Jobs.attachSchema(
     },
     assignToProvider: {
       type: String,
-      optional: true
+      optional: true,
+      autoform: {
+        afFieldInput: {
+          type: 'boolean-checkbox'
+        }
+      }
     },
     selectedProviders: {
       type: String,
