@@ -26,8 +26,8 @@
                     {{/if}}
                 </div>
                 <div>
-                    <span><a href class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;Assign Job</a></span>
-                    <span><a class="btn btn-primary btn-xs addToFavorites"><i class="fa fa-heart"></i>&nbsp;Like</a></span>
+                    <span><a href class="btn btn-primary btn-xs assignJob"><i class="fa fa-rocket"></i>&nbsp;Assign Job</a></span>
+                    <span><a class="btn btn-primary btn-xs {{#if liked}} removeFromFav {{else}} addToFavorites {{/if}}"><i class="fa fa-heart"></i>&nbsp;Like</a></span>
                 </div>
             </div>
         </div>

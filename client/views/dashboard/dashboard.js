@@ -23,7 +23,6 @@ Template.dashboard.helpers({
 		return Buyers.find({
 			userId: Meteor.userId()
 		});
-		console.log(buyerProfile);
 	},
 	favJobs: function() {
 		var favJobsIds = [];
@@ -61,7 +60,6 @@ Template.dashboard.helpers({
 		providerJobs.forEach(function(providerJob) {
 			var obj = Jobs.findOne({_id: providerJob});
 			obj.display = false;
-			console.log(obj);
 			confirmedJobs.push(obj);
 		});
 		return confirmedJobs;
@@ -92,7 +90,6 @@ Template.dashboard.helpers({
 				_id: id
 			}));
 		});
-		console.log(favBuyerArray);
 		return favBuyerArray;
 	}
 });

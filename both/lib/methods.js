@@ -30,8 +30,14 @@ Meteor.methods({
     addUserToFav: function(uId) {
         Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteUsers: uId}});
     },
+    removeUserFromFav: function(uId) {
+        Meteor.users.update(Meteor.userId(), {$pull: {favoriteUsers: uId}});
+    },
     addBuyerToFav: function(uId) {
         Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteBuyers: uId}});
+    },
+    removeBuyerFromFav: function(uId) {
+        Meteor.users.update(Meteor.userId(), {$pull: {favoriteBuyers: uId}});
     },
     applyForThisJob: function(jobId, applicationDetails) {
         Jobs.update(jobId, {$addToSet: {applications: applicationDetails}});
