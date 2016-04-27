@@ -47,14 +47,9 @@ Profiles.attachSchema(
       optional: true
     },
     freelancerSkills: {
-      type: [String],
+      type: String,
       label: "Skills",
       optional: true,
-      autoform: {
-        type: "selectize",
-        options: SKILL_SET,
-        multiple: true
-      }
     },
     title: {
       type: String,
@@ -98,7 +93,7 @@ Profiles.attachSchema(
     },
     industryTypes: {
       type: [String],
-      label: "Interested Industries *",
+      label: "Select Job Categories *",
       autoform: {
         type: "selectize",
         options: INDUSTRY_TYPES,

@@ -14,7 +14,7 @@
                         {{#autoForm id="jobNew" collection="Jobs" type="insert" }}
                             {{>jobFields}}
                             <div>
-                                <button class="btn btn-primary"><i class="fa fa-bookmark-o"></i> Save as Draft</button>
+                                <button type="submit" class="btn btn-primary saveAsDraft"><i class="fa fa-bookmark-o"></i> Save as Draft</button>
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> Publish</button>
                             </div>
                         {{/autoForm}}
@@ -67,38 +67,23 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{>afArrayField name="tasks"}}
+        <div class="col-sm-12">
+            <!-- <label class="control-label">Service Location</label><br>
+            <label class="radio-inline">
+                <input type="radio" name="servicelocation" data-schema-key="servicelocation" value="Remote Job"> Remote Job
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="servicelocation" data-schema-key="servicelocation" value="Field Job"> Field Job
+            </label>   -->
+            {{>afQuickField name="servicelocation"}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 loc" hidden>
+            <div class="form-group">
+                <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="City, State, Zip" autocomplete="off" spellcheck="off"  value="{{locationData}}"  data-source="location" maxlength="128" />
+                <span class="help-block"></span>
+            </div>
         </div>
     </div>
-    <hr>
-    {{> afQuickField name='servicelocation' noselect=true}}
-    {{#if afFieldValueIs name="servicelocation" value="Field Job"}}
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h4>Confidential (Only assigned providers can see this information)</h4>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                    <label for="loc" class="control-label">Location</label>
-                    <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="Location" autocomplete="off" spellcheck="off"  value="{{locationData}}"  data-source="location" maxlength="128" />
-                    <span class="help-block"></span>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                {{>afQuickField name="contactperson" placeholder=""}}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                {{>afQuickField name="contactemail"}}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                {{>afQuickField name="contactphone"}}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {{> afQuickField name='confidentialDescription' rows=4 placeholder="All the information you write here will only be display to the assigned provider."}}
-            </div>
-        </div>
-    {{/if}}
     <hr>
     {{> afQuickField name='serviceschedule' noselect=true}}
     <div class="row">
@@ -121,6 +106,24 @@
                 {{> afQuickField name="endtime"}}
             </div>
         {{/if}}
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h5>Confidential (Only assigned providers can see this information)</h5>
+                </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name="contactperson" placeholder=""}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name="contactemail"}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name="contactphone"}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{> afQuickField name='confidentialDescription' rows=4 placeholder="All the information you write here will only be display to the assigned provider."}}
+        </div>
     </div>
     <hr>
     <div class="row">        
@@ -193,17 +196,17 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            {{>afArrayField name="tasks"}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {{>afArrayField name="shipment"}}
         </div>
     </div>
+    <!-- <hr>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="assignToProvider" data-schema-key="assignToProvider">Assign Job to Provider(s)
-                </label>
-            </div>
+            {{>afQuickField name="assignToProvider"}}
         </div>
     </div>
     <div class="row selectProviders" hidden>
@@ -216,6 +219,6 @@
                 </div>
             {{/each}}
         </div>
-    </div>
+    </div> -->
     <!-- {{> afQuickField name="fileId"}} -->
 </template>

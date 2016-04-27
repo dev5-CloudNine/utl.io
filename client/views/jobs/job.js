@@ -273,5 +273,13 @@ Template.job.helpers({
       return true;
     else
       return false;
+  },
+  'assignedProvider': function() {
+    if(this.assignedProvider == Meteor.userId()) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 });

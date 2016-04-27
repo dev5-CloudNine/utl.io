@@ -136,7 +136,7 @@
     <hr>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{>afQuickField name="freelancerSkills" type="selectize" multiple=true placeholder="Cable Operator, DB Administrator, Hardware Technician, ..."}}
+            {{>afQuickField name="freelancerSkills" placeholder="Cable Operator, DB Administrator, Hardware Technician, ..."}}
         </div>
     </div>
     {{>afQuickField name='description' rows=8 placeholder="Tell us about your professional self, how long you've been programming, things like that"}}
@@ -149,17 +149,16 @@
     <hr>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{>afArrayField name="languages"}}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {{>afArrayField name="educationDetails"}}
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {{>afArrayField name="certifications"}}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{>afArrayField name="languages"}}
         </div>
     </div>
 </template>

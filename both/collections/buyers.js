@@ -97,8 +97,7 @@ Buyers.attachSchema(
   },
 	industryTypes: {
 		type: [String],
-		label: "Interested In",
-		optional: true,
+		label: "Select Job Categories *",
 		autoform: {
 			type: "selectize",
 			options: INDUSTRY_TYPES,

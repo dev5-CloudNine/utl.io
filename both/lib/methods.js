@@ -24,6 +24,9 @@ Meteor.methods({
         });
 
     },
+    saveJobAsDraft: function(doc) {
+        Jobs.insert(doc);
+    },
     addToFavorites: function(jobId) {
         Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteJobs: jobId}});
     },
@@ -49,8 +52,12 @@ Meteor.methods({
     confirmAssignment: function(jobId, buyerId) {
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {ongoingJobs: jobId}});
         Profiles.update({userId: Meteor.userId()}, {$pull: {appliedJobs: jobId}});
-        Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned'}});
+        Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned', assignedProvider: Meteor.userId()}});
         Buyers.update({userId: buyerId}, {$addToSet: {ongoingJobs: jobId}});
+    },
+    declineAssignment: function(jobId, userId) {
+        Jobs.update(jobId, {$set: {applicationStatus: 'open'}});
+        Profiles.update({'userId': userId}, {$pull: {appliedJobs: jobId}});
     },
     counterOfferThisJob: function(jobId, counterOffer) {
         console.log(counterOffer);

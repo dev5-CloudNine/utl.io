@@ -146,7 +146,7 @@ Template.profileFields.helpers({
   },
   locationData : function(){
     locLoaded = true;
-    return Profiles.findOne({_id:this.corporateProfile._id}).location;
+    return this.profile.location;
   },
   location: function(query, sync, callback) {
       if(!locLoaded) $('.typeahead').addClass('loadinggif');

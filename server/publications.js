@@ -30,7 +30,7 @@ Meteor.publish("messages", function () {
 Meteor.publish('postedBuyer', function(jobId) {
     var userId = Jobs.findOne({_id: jobId}).userId;
     return Meteor.users.find({_id: userId});
-})
+});
 
 Meteor.publish("tempInvitation", function () {
     return TempInvitation.find();
@@ -130,12 +130,18 @@ Meteor.publishComposite('providers', {
 
 Meteor.publish("jobs", function() {
     check(arguments, [Match.Any]);
-    return Jobs.find({status: "active"}, {sort: {createdAt: -1}})
+    return Jobs.find({status: "active", applicationStatus: 'open'}, {sort: {createdAt: -1}})
 });
 
-Meteor.publish("buyerPostedJobs", function(buyerId) {
+Meteor.publish('allJobs', function() {
     check(arguments, [Match.Any]);
-    return Jobs.find({status: "active", userId: buyerId});
+    return Jobs.find({status: 'active'}, {sort: {createdAt: -1}});
+});
+
+Meteor.publish('buyerPostedJobs', function(buyerId) {
+    check(arguments, [Match.Any]);
+    var uId = Buyers.findOne({_id: buyerId}).userId;
+    return Jobs.find({status: 'active', userId: uId}, {sort: {createdAt: -1}});
 })
 
 Meteor.publish("favorite_users", function() {

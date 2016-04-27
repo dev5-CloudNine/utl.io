@@ -24,7 +24,7 @@ Jobs.attachSchema(
     },
     jobtype: {
       type: String,
-      label: "Select your Industry *",
+      label: "Select Job Category *",
       autoform: {
         type: "selectize",
         options: INDUSTRY_TYPES
@@ -450,10 +450,6 @@ Jobs.attachSchema(
               value: "Check Out"
             },
             {
-              label: "Confirm assigment",
-              value: "Confirm assigment"
-            },
-            {
               label: "Enter shipment tracking",
               value: "Enter shipment tracking"
             },
@@ -494,19 +490,29 @@ Jobs.attachSchema(
       max: 256,
       optional: true
     },
-    assignToProvider: {
-      type: String,
-      optional: true,
-      autoform: {
-        afFieldInput: {
-          type: 'boolean-checkbox'
-        }
-      }
-    },
-    selectedProviders: {
-      type: String,
+    assignedProvider: {
+      type: String, 
       optional: true
     },
+    // assignToProvider: {
+    //   type: String,
+    //   optional: true,
+    //   label: 'Assign to Provider(s)',
+    //   autoform: {
+    //     type: "select",
+    //     options: function() {
+    //       return [
+    //         {label: 'Individual', value: 'Individual'},
+    //         {label: 'Favorites', value: 'Favorites'},
+    //         {label: 'All', value: 'All'}
+    //       ]
+    //     }
+    //   }
+    // },
+    // selectedProviders: {
+    //   type: String,
+    //   optional: true
+    // },
     userId: {
       type: String,
       label: "User Id",
@@ -548,10 +554,7 @@ Jobs.attachSchema(
     confidentialDescription: {
       type: String,
       label: "Confidential Information",
-      optional: true,
-      autoform: {
-        afFieldInput: SUMMERNOTE_OPTIONS
-      }
+      optional: true
     },
     status: {
       type: String,

@@ -215,7 +215,7 @@ Router.map(function() {
         title: "UTL - Dashboard",
         waitOn: function() {
             Meteor.subscribe("userList");
-            Meteor.subscribe('jobs');
+            Meteor.subscribe('allJobs');
             return Meteor.subscribe("messages");
         },
         data: function() {

@@ -25,6 +25,15 @@ Template.jobFields.rendered = function() {
 
 var locLoaded=false;
 
+Template.jobNew.events({
+	'click button.saveAsDraft': function(event, template) {
+		event.preventDefault();
+		Jobs.after.insert(function(userId, doc) {
+			Jobs.update(doc._id, {$set: {status: 'draft'}});
+		})
+	}
+})
+
 Template.jobFields.events({
 	'change input[name="fixedamount"], keyup input[name="fixedamount"]': function(event, template) {
 		var fixedamount = template.find('input[name="fixedamount"]').value;
@@ -77,13 +86,23 @@ Template.jobFields.events({
 		template.find('input[name="your_cost"]').value = totalamount;
 		template.find('input[name="freelancer_nets"]').value = freenet;
 	},
-	'change input[name="assignToProvider"]': function(event, template) {
-		event.preventDefault();
-		if(event.target.checked) {
-			$('div.selectProviders').show();
-		}
-		else {
-			$('div.selectProviders').hide();
+	// 'change input[name="assignToProvider"]': function(event, template) {
+	// 	event.preventDefault();
+	// 	if(event.target.checked) {
+	// 		event.target.checked = true;
+	// 		$('div.selectProviders').show();
+	// 	}
+	// 	else {
+	// 		event.target.checked = false;
+	// 		$('div.selectProviders').hide();
+	// 	}
+	// },
+	'change input[name="servicelocation"]': function(event, template) {
+		console.log(event.target.value);
+		if(event.target.value == 'Field Job') {
+			$('div.loc').show();
+		} else {
+			$('div.loc').hide();
 		}
 	}
 });

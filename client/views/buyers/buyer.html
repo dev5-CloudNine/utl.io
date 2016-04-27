@@ -13,14 +13,11 @@
 								{{else}}
 									{{> avatar userId=userId size="large"}}
 								{{/if}}
-								{{#if isInRole 'provider, corporate-provider, buyer, corporate-manager'}}
+								{{#if isInRole 'provider, corporate-provider'}}
 									<br>
 									<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>
 									<a class="btn btn-primary btn-xs addToFavorites"><i class="fa fa-heart"></i>&nbsp;Like</a>
 								{{/if}}
-								<!-- {{#if $eq type 'Company'}}
-									<span class="label label-danger"><i class="fa fa-users"></i> Company</span>
-								{{/if}} -->
 								<hr>
 								<small>
 									<i class="fa fa-map-marker"></i>&nbsp;{{location}}

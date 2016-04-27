@@ -15,16 +15,26 @@
 							<div class="col-sm-12">
 								<span class="label label-default label-xs">{{readableID}}</span>
 								{{>jobLabels}}
-								<h2>
+								<h4>
 									{{title}}
-								</h2>
-								{{#if servicelocation}}
-									<i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
-								{{/if}}
+								</h4>
+								{{#if $eq servicelocation 'Remote Job'}}
+			                        <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
+			                    {{else}}
+			                        <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
+			                    {{/if}}
 								<i class="fa fa-calendar fa-fw"></i> Posted on {{createdAt}}&nbsp;|&nbsp;
-								{{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}<hr>
+								{{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<small>
+			                    	<i class="fa fa-usd"></i>&nbsp;{{ratebasis}}{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}
+			                    </small>
+			                </div>
+						</div>
+						<hr>
 						<div class="row">
 							<div class="col-sm-12">
 								<h4>Skills Required</h4>
@@ -55,27 +65,26 @@
 										{{else}}
 											{{#if payforfirsthours}}
 												{{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours.
-												<br>Net: {{totalfromclient}} USD
+												<br>Net: {{freelancer_nets}} USD
 												{{else}}
 													{{#if rateperdevice}}
 														{{rateperdevice}} USD for {{maxdevices}} devices.
-														<br>Net: {{totalfromclient}} USD
+														<br>Net: {{freelancer_nets}} USD
 														{{else}}
 															{{#if fixedamount}}
-																Net: {{fixedamount}} USD.
+																Net: {{freelancer_nets}} USD.
 															{{/if}}
 													{{/if}}
 											{{/if}}
 									{{/if}}
 								{{/if}}
 								{{#if assignedProvider}}
-									{{#if contactperson}}
-										<hr>
-										Contact Details: <br>
-										{{contactperson}}<br>
-										{{contactemail}}<br>
-										{{contactphone}}
-									{{/if}}
+									<hr>
+									Confidential Info: <br>
+									{{contactperson}}<br>
+									{{contactemail}}<br>
+									{{contactphone}}<br>
+									{{confidentialDescription}}
 								{{/if}}
 								{{#if tasks}}
 									<hr>
@@ -200,21 +209,18 @@
 										{{#if isInRole 'provider, corporate-provider'}}
 											<p>{{counterOfferCount}} user(s) have countered this offer so far.</p>
 											<h4>Payment Details:</h4>
-											Payment type: {{ratebasis}}<br>
+											{{ratebasis}}
 											{{#if hourlyrate}}
-												{{hourlyrate}} USD per hour for {{maxhours}} hours.
-												<br>Net: {{freelancer_nets}} USD
+												- {{freelancer_nets}} USD
 												{{else}}
 													{{#if payforfirsthours}}
-														{{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours.
-														<br>Net: {{totalfromclient}} USD
+														- {{freelancer_nets}} USD
 														{{else}}
 															{{#if rateperdevice}}
-																{{rateperdevice}} USD for {{maxdevices}} devices.
-																<br>Net: {{totalfromclient}} USD
+																- {{freelancer_nets}} USD
 																{{else}}
 																	{{#if fixedamount}}
-																		Net: {{fixedamount}} USD.
+																		- {{freelancer_nets}} USD.
 																	{{/if}}
 															{{/if}}
 													{{/if}}

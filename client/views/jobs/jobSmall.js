@@ -16,6 +16,12 @@ Template.jobSmall.helpers({
 		else {
 			return false
 		}
+	},
+	assignedProfile: function() {
+		return Profiles.findOne({userId: this.assignedProvider});
+	},
+	'buyerData': function() {
+	    return Buyers.findOne({userId: this.userId});
 	}
 })
 Template.jobSmall.events({
@@ -45,7 +51,15 @@ Template.jobSmall.events({
 		})
 	},
 	'click button.declineAssignment': function(event, template) {
-		event.preventDefault();
 		console.log(this);
+		var jobId = this._id;
+		var userId = Meteor.userId();
+		Meteor.call('declineAssignment', jobId, userId, function(error) {
+			if(error) {
+				toastr.error('Failed to decline the assignment.');
+			} else {
+				toastr.success('Successfully declined the assignment.');
+			}
+		});
 	}
 })

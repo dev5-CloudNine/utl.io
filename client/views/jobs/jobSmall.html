@@ -6,42 +6,43 @@
                     <span class="label label-xs label-default">{{readableID}}</span>
                     {{>jobLabels}}
                 </div>
-                <div class="col-sm-4 text-right">
-                    <!-- <span><a href class="fa fa-heart fa-2x addToFavorites" style="text-decoration:none"></a></span> -->
-                </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <h4><a href="{{pathFor 'job'}}">{{title}}</a></h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-9">
-                    {{#if $eq servicelocation 'Field Job'}}
-                        <p><i class="fa fa-map-marker"></i>&nbsp;{{location}}</p>
+                    <h4>
+                        <a href="{{pathFor 'job'}}">{{title}}</a>
+                    </h4>
+                    {{#if $eq servicelocation 'Remote Job'}}
+                        <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
                     {{else}}
-                        <p><i class="fa fa-map-marker"></i>&nbsp;Remote Job</p>
+                        <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
                     {{/if}}
+                    <i class="fa fa-calendar fa-fw"></i> Posted on {{createdAt}}&nbsp;|&nbsp;
+                    {{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-sm-12">
-                    {{{shortDesc}}}
-                </div>
-            </div> -->
             <div class="row">
                 <div class="col-sm-6">
-                    <i class="fa fa-usd"></i>&nbsp;{{ratebasis}}{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;
-                    <i class="fa fa-calendar"></i>&nbsp;Posted on: {{formatDate createdAt}}&nbsp;|&nbsp;<i class="fa fa-tag"></i>Status: {{applicationStatus}}
+                    <small>
+                        <i class="fa fa-usd"></i>&nbsp;{{ratebasis}}{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}{{#if assignedProvider}}&nbsp;to&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{/if}}
+                    </small>
                 </div>
                 {{#if acceptedProvider}}
                     {{#if $eq applicationStatus 'assigned'}}
                         <div></div>
                     {{else}}
-                        <div class="col-sm-6 text-right">
-                            <button class="btn btn-success confirmAssignment">Confirm</button>
-                            <button class="btn btn-warning declineAssignment">Decline</button>
-                        </div>
+                        {{#if $eq applicationStatus 'open'}}
+                            <div></div>
+                        {{else}}
+                            {{#if $eq applicationStatus 'frozen'}}
+                                <div></div>
+                            {{else}}
+                                <div class="col-sm-6 text-right">
+                                    <button class="btn btn-success confirmAssignment">Confirm</button>
+                                    <button class="btn btn-warning declineAssignment">Decline</button>
+                                </div>
+                            {{/if}}
+                        {{/if}}
                     {{/if}}
                 {{/if}}
             </div>
