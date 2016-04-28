@@ -27,10 +27,32 @@ var locLoaded=false;
 
 Template.jobNew.events({
 	'click button.saveAsDraft': function(event, template) {
-		event.preventDefault();
-		Jobs.after.insert(function(userId, doc) {
-			Jobs.update(doc._id, {$set: {status: 'draft'}});
+		Jobs.before.insert(function(userId, doc) {
+			console.log(doc);
+			doc.status = 'draft';
+			debugger;
 		})
+	}
+});
+Template.assignJob.events({
+	'click button.assign': function(event, template) {
+		Jobs.before.insert(function(userId, doc) {
+			doc.selectedProvider = Router.current().params._id;
+			doc.applications = [];
+			var appDetails = {
+				userId: doc.selectedProvider,
+				applied_at: new Date(),
+				app_status: 'accepted'
+			}
+			debugger;
+			doc.applications.push(appDetails);
+		})
+	}
+});
+
+Template.assignJob.helpers({
+	'selectedProvider': function() {
+		return Profiles.findOne({_id: Router.current().params._id});
 	}
 })
 
@@ -98,7 +120,6 @@ Template.jobFields.events({
 	// 	}
 	// },
 	'change input[name="servicelocation"]': function(event, template) {
-		console.log(event.target.value);
 		if(event.target.value == 'Field Job') {
 			$('div.loc').show();
 		} else {

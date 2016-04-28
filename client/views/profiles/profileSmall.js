@@ -27,10 +27,6 @@ Template.profileSmall.events({
 				toastr.success('Removed user from favorites.');
 			}
 		})
-	},
-	'click a.assignJob': function(event, template) {
-		event.preventDefault();
-		console.log(this);
 	}
 });
 

@@ -6,7 +6,8 @@ Template.jobSmall.helpers({
 		return jobDetails.htmlDescription.split('.')[0] + '.';
 	},
 	acceptedProvider: function() {
-		var userId = Meteor.userId();
+		var uId = Meteor.userId();
+		var userId = Profiles.findOne({userId: uId})._id;
 		if(this.display == false) {
 			return;
 		}

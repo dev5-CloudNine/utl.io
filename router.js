@@ -113,6 +113,21 @@ Router.map(function() {
         }
     });
 
+    this.route('assignJob', {
+        path: '/job/:_id',
+        title: "UTL - Assign job to a provider",
+        onBeforeAction: function () {
+            if (Meteor.user() &&
+                Meteor.user().roles &&
+                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 || (Meteor.user().roles.indexOf("corporate-manager")) != -1 )
+                ) {
+                this.next();
+            } else {
+                this.render('notFound');
+            }
+        }
+    })
+
     this.route('jobEdit', {
         path: '/jobs/:_id/:slug/edit',
         title: "UTL - Edit Job Post",

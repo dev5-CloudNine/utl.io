@@ -46,6 +46,29 @@
         </div>
     </div>
 </template>
+<template name="assignJob">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="text-center">You are assigning this job to {{#with selectedProvider}}<a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}</h4>
+                <br>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Create Your Job Post</h4>
+                    </div>
+                    <div class="panel-body">
+                        {{#autoForm id="jobNew" collection="Jobs" type="insert" }}
+                            {{>jobFields}}
+                            <div>
+                                <button type="submit" class="btn btn-primary assign"><i class="fa fa-chevron-right"></i> Assign</button>
+                            </div>
+                        {{/autoForm}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
 <template name="jobFields">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

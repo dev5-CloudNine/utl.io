@@ -67,6 +67,11 @@ Jobs.after.insert(function(userId, doc){
       text: "Job needs to be approved before it is live:\n\n" 
             + Meteor.absoluteUrl("jobs/"+doc._id) + "\n\n\n\n\n\n"
     });
+  console.log(doc);
+  if(doc.selectedProvider) {
+    Jobs.update(doc._id, {$set: {applicationStatus: 'frozen'}});
+    Profiles.update({_id: doc.selectedProvider}, {$addToSet: {appliedJobs: doc._id}});
+  }
 });
 
 Jobs.before.insert(function(userId, doc){

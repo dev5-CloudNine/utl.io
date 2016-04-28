@@ -39,7 +39,7 @@ AccountsTemplates.configureRoute("signIn", {
             to: 'footer'
         }
     },
-    redirect: '/',
+    redirect: '/dashboard/dashboard',
 });
 // AccountsTemplates.configureRoute("signUp", {
 //     name: 'signUp',

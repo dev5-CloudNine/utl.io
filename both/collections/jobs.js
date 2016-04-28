@@ -509,10 +509,10 @@ Jobs.attachSchema(
     //     }
     //   }
     // },
-    // selectedProviders: {
-    //   type: String,
-    //   optional: true
-    // },
+    selectedProvider: {
+      type: String,
+      optional: true
+    },
     userId: {
       type: String,
       label: "User Id",

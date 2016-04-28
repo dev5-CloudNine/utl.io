@@ -6,8 +6,9 @@ Template.job.events({
   'click .applyJob': function(event, template) {
     event.preventDefault();
   	var jobId = this._id;
+    var uId = Profiles.findOne({userId: Meteor.userId()})._id
     var applicationDetails = {
-      "userId": Meteor.userId(),
+      "userId": uId,
       "applied_at": new Date()
     }
   	Meteor.call('applyForThisJob', jobId, applicationDetails, function(error) {
@@ -251,15 +252,16 @@ Template.job.helpers({
   'appliedProviders': function() {
     var providerIds = [];
     var providerDetails = {}
-    Jobs.findOne(this._id).applications.forEach(function(providerId) {
-      var pDetails = Profiles.findOne({userId: providerId.userId});
+    Jobs.findOne(this._id).applications.forEach(function(provider) {
+      var pDetails = Profiles.findOne({_id: provider.userId});
       providerDetails = {
-        userId: providerId.userId,
+        userId: pDetails._id,
         name: pDetails.name,
         title: pDetails.title,
         company: pDetails.companyName,
-        appliedAt: providerId.applied_at
+        appliedAt: provider.applied_at
       }
+      console.log(providerDetails)
       providerIds.push(providerDetails);
     });
     return providerIds;

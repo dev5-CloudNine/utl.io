@@ -181,7 +181,7 @@ SUMMERNOTE_OPTIONS = {
   styleWithSpan: false
 };
 
-STATUSES = ["pending", "active", "flagged", "inactive"];
+STATUSES = ["pending", "active", "flagged", "inactive", "draft"];
 
 APPLICATION_STATUSES = ["open", "frozen", "assigned", "done"];
 
