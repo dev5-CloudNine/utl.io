@@ -12,24 +12,26 @@
                     <h4>
                         <a href="{{pathFor 'job'}}">{{title}}</a>
                     </h4>
-                    {{#if $eq servicelocation 'Remote Job'}}
-                        <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
-                    {{else}}
-                        <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
-                    {{/if}}
-                    <i class="fa fa-calendar fa-fw"></i> Posted on {{createdAt}}&nbsp;|&nbsp;
-                    {{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}
+                    <small>
+                        {{#if $eq servicelocation 'Remote Job'}}
+                            <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
+                        {{else}}
+                            <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
+                        {{/if}}
+                        Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}{{#if assignedProvider}}&nbsp;to&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{/if}}&nbsp;|&nbsp;Applications: {{applicationsCount}}
+                    </small>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <small>
-                        <i class="fa fa-usd"></i>&nbsp;{{ratebasis}}{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}{{#if assignedProvider}}&nbsp;to&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{/if}}
+                        <i class="fa fa-calendar fa-fw"></i> Posted on {{createdAt}}&nbsp;|&nbsp;
+                        {{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}
                     </small>
                 </div>
                 {{#if acceptedProvider}}
-                    {{#if $eq applicationStatus 'assigned'}}
-                        <div></div>
+                    {{#if assignedProvider}}
+                        <div>Hello</div>
                     {{else}}
                         {{#if $eq applicationStatus 'open'}}
                             <div></div>

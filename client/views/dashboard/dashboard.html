@@ -9,27 +9,20 @@
                             <li class="{{#if $eq active 'dashboard'}}active{{/if}}">
                                 <a href="#dashboard" data-toggle="tab" title="welcome">
                                     <span class="round-tabs one">
-                                        <i class="glyphicon glyphicon-home"></i>&nbsp; Dashboard
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="{{#if $eq active 'favusers'}}active{{/if}}">
-                                <a href="#favusers" data-toggle="tab" title="profile">
-                                    <span class="round-tabs two">
-                                        <i class="glyphicon glyphicon-user"></i>&nbsp; Fav Users
+                                        <i class="glyphicon glyphicon-home"></i>&nbsp; Index
                                     </span>
                                 </a>
                             </li>
                             <li class="{{#if $eq active 'myjobs'}}active{{/if}} dropdown" role="presentation">
                                 <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
                                     <span class="round-tabs three">
-                                        <i class="glyphicon glyphicon-gift"></i>&nbsp; Jobs <span class="caret"></span>
+                                        <i class="glyphicon glyphicon-gift"></i>&nbsp; My Jobs <span class="caret"></span>
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a href="#postedJobs" data-toggle="tab">
-                                            {{#if isInRole 'buyer, corporate-admin, corporate-manager'}}
+                                            {{#if isInRole 'buyer, corporate-manager'}}
                                                 Posted
                                             {{else}}
                                                 {{#if isInRole 'provider, corporate-provider'}}
@@ -48,14 +41,14 @@
                             <li  class="{{#if $eq active 'messaging'}}active{{/if}}">
                                 <a href="#mails" data-toggle="tab" title="blah blah">
                                     <span class="round-tabs four">
-                                      <i class="glyphicon glyphicon-comment"></i>&nbsp; Message Box
+                                      <i class="glyphicon glyphicon-comment"></i>&nbsp; Messages
                                  </span>
                                 </a>
                             </li>
                             <li class="{{#if $eq active 'piggyBank'}}active{{/if}} dropdown" role="presentation">
                                 <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
                                     <span class="round-tabs three">
-                                        <i class="glyphicon glyphicon-gift"></i>&nbsp; Piggy Bank <span class="caret"></span>
+                                        <i class="glyphicon glyphicon-gift"></i>&nbsp; Wallet <span class="caret"></span>
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu">
@@ -69,23 +62,107 @@
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane fade {{#if $eq active 'dashboard'}} in active {{/if}}" id="dashboard">
-                            <h4>Dashboard (Coming soon! WIP!)</h4>
-                        </div>
-                        <div class="tab-pane fade {{#if $eq active 'favusers'}} in active {{/if}}" id="favusers">
                             <br>
                             {{#if isInRole 'buyer, corporate-manager'}}
-                                {{#each favUsers}}
-                                    {{>profileSmall}}
-                                {{else}}
-                                    You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
-                                {{/each}}
+                                <div class="row tile_count">
+                                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                        <span class="count_top"><i class="fa fa-user"></i> Jobs Posted</span>
+                                        <div class="count">2500</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                        <span class="count_top"><i class="fa fa-clock-o"></i> Jobs Completed</span>
+                                        <div class="count">2000</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                        <span class="count_top"><i class="fa fa-user"></i> Amount Spent</span>
+                                        <div class="count green">$ 2,500</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                        <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
+                                        <div class="count">2,315</div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                        <span class="count_top"><i class="fa fa-user"></i> Reviews</span>
+                                        <div class="count">7,325</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Notifications</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis non voluptates omnis labore, sunt sint in nobis voluptatem a provident atque officiis quod voluptas, dolorum quam ratione delectus, amet maiores.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Members to Review</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui ex consequuntur quibusdam quod quae commodi perferendis aliquam aut quos libero aperiam, vitae, ipsa obcaecati necessitatibus corporis veniam vel eligendi!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">My Transactions</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui ex consequuntur quibusdam quod quae commodi perferendis aliquam aut quos libero aperiam, vitae, ipsa obcaecati necessitatibus corporis veniam vel eligendi!
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {{else}}
                                 {{#if isInRole 'provider, corporate-provider'}}
-                                    {{#each favBuyers}}
-                                        {{>buyerSmall}}
-                                    {{else}}
-                                        You haven't added any favorite buyers. <a href="{{pathFor 'buyers'}}">View buyers</a> if you want to add some.
-                                    {{/each}}
+                                    <div class="row tile_count">
+                                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                            <span class="count_top"><i class="fa fa-user"></i> Jobs Applied</span>
+                                            <div class="count">2500</div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                            <span class="count_top"><i class="fa fa-user"></i> Jobs Completed</span>
+                                            <div class="count">2200</div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                            <span class="count_top"><i class="fa fa-clock-o"></i> Amount Earned</span>
+                                            <div class="count">$ 2000</div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                            <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
+                                            <div class="count">$ 2,315</div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                            <span class="count_top"><i class="fa fa-user"></i> Reviews</span>
+                                            <div class="count">7,325</div>
+                                        </div>
+                                    </div>
+                                {{else}}
+                                    {{#if isInRole 'corporate-admin'}}
+                                        <div class="row tile_count">
+                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                                <span class="count_top"><i class="fa fa-user"></i> Projects Complted</span>
+                                                <div class="count">2500</div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                                <span class="count_top"><i class="fa fa-user"></i> Amount Spent</span>
+                                                <div class="count">2200</div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                                <span class="count_top"><i class="fa fa-clock-o"></i> Amount Earned</span>
+                                                <div class="count">$ 2000</div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                                <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
+                                                <div class="count">$ 2,315</div>
+                                            </div>
+                                        </div>
+                                    {{/if}}
                                 {{/if}}
                             {{/if}}
                         </div>

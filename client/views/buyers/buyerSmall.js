@@ -36,5 +36,8 @@ Template.buyerSmall.helpers({
 			return false;
 		else
 			return true;
+	},
+	readableId: function() {
+		return Meteor.users.findOne({_id: this.userId}).readableID;
 	}
 });

@@ -24,6 +24,9 @@ Template.dashboard.helpers({
 			userId: Meteor.userId()
 		});
 	},
+	buyerDetails: function() {
+		return Buyers.findOne({userId: Meteor.userId()});
+	},
 	favJobs: function() {
 		var favJobsIds = [];
 		var favJobsArray = [];

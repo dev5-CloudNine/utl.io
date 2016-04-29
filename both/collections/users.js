@@ -82,7 +82,7 @@ UserSchema = new SimpleSchema({
     type: Array,
     optional: true
   },
-  reableID: {
+  readableID: {
     type: String,
     optional: true
   },

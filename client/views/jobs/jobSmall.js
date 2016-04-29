@@ -23,6 +23,18 @@ Template.jobSmall.helpers({
 	},
 	'buyerData': function() {
 	    return Buyers.findOne({userId: this.userId});
+	},
+	applicationsCount: function() {
+		var count = 0;
+		if(!this.applications) {
+			return 0
+		}
+		else {
+			this.applications.forEach(function(app) {
+				count++
+			});
+			return count;
+		}
 	}
 })
 Template.jobSmall.events({

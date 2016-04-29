@@ -21,15 +21,44 @@
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                             {{/if}}
                             {{#if isInRole 'buyer, corporate-manager'}}
+                                <li>
+                                    <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
+                                    <li class="divider"></li>
+                                </li>
+                                {{else}}
+                                {{#if isInRole 'corporate-admin, provider, corporate-provider'}}
+                                    <li><a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a></li>
+                                    <li class="divider"></li>
+                                {{/if}}
+                            {{/if}}
+                            {{#if isInRole 'buyer, corporate-manager'}}
                                 <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
-                                <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+                                        Providers <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a href="{{pathFor 'profiles'}}">All Providers</a></li>
+                                        <li><a href="{{pathFor 'favoriteProfiles'}}">Favorite Providers</a></li>
+                                    </ul>
+                                </li>
                                 {{#unless currentUser.isBuyer}}
                                     <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
                                 {{/unless}}
                             {{/if}}
                             {{#if isInRole 'provider, corporate-provider'}}
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
-                                <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+                                        Buyers <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a href="{{pathFor 'buyers'}}">All Buyers</a></li>
+                                        <li><a href="{{pathFor 'favoriteBuyers'}}">Favorite Buyers</a></li>
+                                    </ul>
+                                </li>
                                 {{#unless currentUser.isDeveloper}}
                                     <li class="{{isActiveRoute regex='^profile$'}}">
                                         <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
@@ -88,8 +117,6 @@
     </li>
     <li id="user-drop-down" class="dropdown">
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-			
-
             {{#if customImageUrl}}
                 <div class="avatar avatar-small">
                     <img class="avatar-image" src="{{customImageUrl}}" alt="avatar" onerror="this.style.display='none';">
@@ -98,22 +125,9 @@
             {{else}}
                 {{> avatar user=currentUser size="small"}}
             {{/if}}
-
-
             {{currentUserDisplayName}} <span class="caret"></span>
 		</a>
         <ul class="dropdown-menu" role="menu">
-            {{#if isInRole 'buyer, corporate-manager'}}
-                <li>
-                    <a href="{{pathFor 'dashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a>
-                    <li class="divider"></li>
-                </li>
-                {{else}}
-                {{#if isInRole 'corporate-admin, provider, corporate-provider'}}
-                    <li><a href="{{pathFor 'dashboard' tab='dashboard'}}"><i class="fa fa-building fa-fw"></i> Dashboard</a></li>
-                    <li class="divider"></li>
-                {{/if}}
-            {{/if}}
             {{#if isInRole 'admin'}}
                 <li><a href="/admin"><i class="fa fa-cogs fa-fw"></i> Admin</a></li>
                 <li class="divider"></li>

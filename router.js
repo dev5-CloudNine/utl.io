@@ -151,6 +151,16 @@ Router.map(function() {
         }
     });
 
+    this.route('favoriteProfiles', {
+        path: 'profiles/favorites',
+        title: "UTL - My Favorite Providers"
+    });
+
+    this.route('favoriteBuyers', {
+        path: 'buyers/favorites',
+        title: "UTL - My Favorite Buyers"
+    });
+
     this.route('profile', {
         path: '/profiles/:_id/:slug?',
         title: function() {

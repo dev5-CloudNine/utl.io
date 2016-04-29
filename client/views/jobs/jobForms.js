@@ -25,15 +25,6 @@ Template.jobFields.rendered = function() {
 
 var locLoaded=false;
 
-Template.jobNew.events({
-	'click button.saveAsDraft': function(event, template) {
-		Jobs.before.insert(function(userId, doc) {
-			console.log(doc);
-			doc.status = 'draft';
-			debugger;
-		})
-	}
-});
 Template.assignJob.events({
 	'click button.assign': function(event, template) {
 		Jobs.before.insert(function(userId, doc) {

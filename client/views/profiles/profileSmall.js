@@ -35,7 +35,7 @@ Template.profileSmall.helpers({
 		return(Users.findOne({_id: this.userId}).readableID);
 	},
 	liked: function () {
-		if(!(Meteor.users.findOne({_id: Meteor.userId()}, {favoriteUsers: {$in: [this._id]}})))
+		if(Meteor.users.findOne({_id: Meteor.userId()}, {favoriteUsers: {$in: [this._id]}}))
 			return false;
 		else
 			return true;
