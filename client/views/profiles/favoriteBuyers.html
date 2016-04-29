@@ -1,0 +1,9 @@
+<template name="favoriteBuyers">
+	{{#if isInRole 'provider, corporate-provider'}}
+        {{#each favBuyers}}
+            {{>buyerSmall}}
+        {{else}}
+            You haven't added any favorite buyers. <a href="{{pathFor 'buyers'}}">View buyers</a> if you want to add some.
+        {{/each}}
+    {{/if}}
+</template>
