@@ -6,9 +6,8 @@ Template.job.events({
   'click .applyJob': function(event, template) {
     event.preventDefault();
   	var jobId = this._id;
-    var uId = Profiles.findOne({userId: Meteor.userId()})._id
     var applicationDetails = {
-      "userId": uId,
+      "userId": Meteor.userId(),
       "applied_at": new Date()
     }
   	Meteor.call('applyForThisJob', jobId, applicationDetails, function(error) {
@@ -244,16 +243,17 @@ Template.job.helpers({
         first_max_hours: counterOffer.first_max_hours,
         next_hours: counterOffer.next_hours,
         next_max_hours: counterOffer.next_max_hours,
+        freelancer_nets: counterOffer.freelancer_nets
       }
       counterOffers.push(providerDetails);
-    });
+    }, {sort: {countered_at: -1}});
     return counterOffers;
   },
   'appliedProviders': function() {
     var providerIds = [];
     var providerDetails = {}
     Jobs.findOne(this._id).applications.forEach(function(provider) {
-      var pDetails = Profiles.findOne({_id: provider.userId});
+      var pDetails = Profiles.findOne({userId: provider.userId});
       providerDetails = {
         userId: pDetails._id,
         name: pDetails.name,
@@ -261,9 +261,8 @@ Template.job.helpers({
         company: pDetails.companyName,
         appliedAt: provider.applied_at
       }
-      console.log(providerDetails)
       providerIds.push(providerDetails);
-    });
+    }, {sort: {'provider.applied_at': -1}});
     return providerIds;
   },
   'applicationStatus': function() {

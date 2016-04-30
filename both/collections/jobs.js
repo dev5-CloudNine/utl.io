@@ -160,7 +160,6 @@ Jobs.attachSchema(
       }
     },
     servicelocation: {
-    optional: true,
     label: "Service Location *",
     type: String,
     autoform: {

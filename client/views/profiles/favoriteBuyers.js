@@ -3,7 +3,7 @@ Template.favoriteBuyers.helpers({
 		var favBuyerIds = [];
 		var favBuyerArray = [];
 		var userDetails = Meteor.user();
-		userDetails.favoriteBuyers.forEach(function(favBuyer) {
+		userDetails.favoriteUsers.forEach(function(favBuyer) {
 			favBuyerIds.push(favBuyer);
 		});
 		favBuyerIds.forEach(function(id) {

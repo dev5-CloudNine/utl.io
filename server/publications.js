@@ -48,7 +48,7 @@ Meteor.publish('developerCount', function() {
 });
 
 Meteor.publish('jobCount', function() {
-    Counts.publish(this, 'jobs', Jobs.find({}));
+    Counts.publish(this, 'jobs', Jobs.find({status: 'active', applicationStatus: 'open'}));
 })
 
 // Meteor.publish("homeJobs", function() {

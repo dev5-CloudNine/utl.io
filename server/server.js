@@ -129,7 +129,6 @@ Meteor.methods({
         Profiles.update({'userId': userId}, {$pull: {appliedJobs: jobId}});
     },
     counterOfferThisJob: function(jobId, counterOffer) {
-        console.log(counterOffer);
         Jobs.update(jobId, {$addToSet: {counterOffers: counterOffer}});
     },
     adminSetJobStatus: function(jobId, status) {

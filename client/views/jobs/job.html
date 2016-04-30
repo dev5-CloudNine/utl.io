@@ -227,6 +227,7 @@
 															{{/if}}
 													{{/if}}
 											{{/if}}
+											{{#unless $eq applicationStatus 'frozen'}}
 											<h4>Would you like to counter this?</h4>
 											<div class="panel panel-default">
 												<div class="panel-body">
@@ -427,6 +428,7 @@
 													</form>
 												</div>
 											</div>
+											{{/unless}}
 										{{else}}
 											{{#if jobPostedBuyer}}
 												<div class="list-group">
@@ -444,7 +446,7 @@
 																<small>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</small><br>
 																<small><i class="fa fa-calendar"></i>&nbsp;{{this.countered_at}}</small>
 																{{#if this.fixed_amount}}
-																	<h5>Fixed Amount: {{this.fixed_amount}}</h5>
+																	<h5>Fixed Amount: {{this.freelancer_nets}}</h5>
 																{{/if}}
 																{{#if this.hourly_rate}}
 																	<h5>Hourly Rate: {{this.hourly_rate}}</h5>
