@@ -52,6 +52,22 @@
 
 	Template.compose.helpers({
 	    userList: function() {
+	    	/*
+				1. If Buyer/Corp-Manager(clients) 
+					-> get all the jobs posted by him 
+						-> if application is accepted state then get userdID from application
+				2. If Provider/Corp-Provider(expert)
+					-> get ongoing jobs
+						-> get owners of the ongoing jobs 
+					-> if Corp-Provider(expert)
+						getAllCollegueIDs(companyName);
+				3. If Corp-Admin[Corporates](corporates)
+					-> getAllCollegueIDs(companyName);
+
+				4. write method getEMailID(userID);
+
+				5. write method getAllCollegueIDs(companyName);
+	    	*/
 	        var list = [];
 	        Meteor.users.find({_id:{$ne:Meteor.userId()}}).map(function(ele) {
 	            ele.email = ele.emails[0].address;
