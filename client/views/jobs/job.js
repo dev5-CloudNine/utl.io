@@ -3,7 +3,7 @@ Template.job.events({
     event.preventDefault();
     Modal.show('jobDeactivate',template.data);
   },
-  'click .applyJob': function(event, template) {
+  'click .applyInactive': function(event, template) {
     event.preventDefault();
   	var jobId = this._id;
     var applicationDetails = {
@@ -15,9 +15,23 @@ Template.job.events({
   			toastr.error(error.message, 'Error');
   		}
   		else {
-  			toastr.success("You've successfully applied for this job!");
+  			$(event.currentTarget).removeClass('applyInactive');
+        $(event.currentTarget).addClass('applyActive');
   		}
   	})
+  },
+  'click .applyActive': function(event, template) {
+    event.preventDefault();
+    var jobId = this._id;
+    Meteor.call('removeFromAppliedJobs', jobId, Meteor.userId(), function(error) {
+      if(error) {
+        toastr.error(error.message, 'Error');
+      }
+      else {
+        $(event.currentTarget).removeClass('applyActive');
+        $(event.currentTarget).addClass('applyInactive');
+      }
+    })
   },
   'change #counter_type': function(event, template) {
     event.preventDefault();
@@ -262,7 +276,7 @@ Template.job.helpers({
         appliedAt: provider.applied_at
       }
       providerIds.push(providerDetails);
-    }, {sort: {'provider.applied_at': -1}});
+    });
     return providerIds;
   },
   'applicationStatus': function() {
@@ -282,5 +296,11 @@ Template.job.helpers({
     else {
       return false;
     }
+  },
+  applied: function() {
+    var prov = Profiles.findOne({userId: Meteor.userId()});
+    prov.appliedJobs.forEach(function(job) {
+      
+    })
   }
 });

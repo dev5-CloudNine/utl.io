@@ -94,5 +94,12 @@ Template.dashboard.helpers({
 			}));
 		});
 		return favBuyerArray;
+	},
+	buyerJobsCount: function() {
+		return Jobs.find({userId: Meteor.userId()}).fetch().length;
+	},
+	providerJobsCount: function() {
+		var jobCount = Profiles.findOne({userId: Meteor.userId()}).appliedJobs.length + Profiles.findOne({userId: Meteor.userId()}).ongoingJobs.length;
+		return jobCount;
 	}
 });

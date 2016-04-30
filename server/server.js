@@ -115,6 +115,10 @@ Meteor.methods({
         Jobs.update(jobId, {$addToSet: {applications: applicationDetails}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {appliedJobs: jobId}});
     },
+    removeFromAppliedJobs: function(jobId, userId) {
+        Jobs.update({$and:[{_id:jobId},{'applications.userId':userId}]},{$pull:{"applications":{"userId":userId}}});
+        Profiles.update({userId: userId()}, {$pull: {appliedJobs: jobId}});
+    },
     acceptApplication: function(jobId, userId, applicationTime) {
         Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applicationTime}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen'}});
     },
