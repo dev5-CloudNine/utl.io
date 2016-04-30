@@ -110,7 +110,7 @@ Template.job.events({
   'click .acceptApplication': function(event, template) {
     event.preventDefault();
     var jobId = Router.current().params._id;
-    var userId = this.userId;
+    var userId = Profiles.findOne({_id: this.userId}).userId;
     var applicationTime = this.appliedAt;
     // if(!(Jobs.findOne($and: [{_id: jobid}, {applicationStatus: 'open'}]))) {
     //   toastr.error("This job has already been assigned to some provider");
