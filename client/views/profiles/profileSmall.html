@@ -27,11 +27,7 @@
                 </div>
                 <div>
                     <span><a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-xs assignJob"><i class="fa fa-rocket"></i>&nbsp;Assign Job</a></span>
-                    {{#unless liked}}
-                        <span><a href class="btn btn-primary btn-xs removeFromFav"><i class="fa fa-heart"></i>&nbsp; Like</a></span>
-                    {{else}}
-                        <span><a href class="btn btn-primary btn-xs addToFavorites"><i class="fa fa-heart"></i>&nbsp; Liked</a></span>
-                    {{/unless}}
+                    <span><a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up">Like</i></a></span>
                 </div>
             </div>
         </div>

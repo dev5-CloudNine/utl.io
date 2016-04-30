@@ -12,7 +12,7 @@
                     <h4>
                         <a href="{{pathFor 'job'}}">{{title}}</a>
                     </h4>
-                    <span class="pull-right"><a href><i class="fa fa-thumbs-up fa-2x"></i></a></span>
+                    <span class="pull-right"><i class="fa fa-thumbs-up fa-2x {{#if fav}}favActive{{else}}favInactive{{/if}}"></i></span>
                     <small>
                         {{#if $eq servicelocation 'Remote Job'}}
                             <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;

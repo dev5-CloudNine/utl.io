@@ -1,32 +1,30 @@
 Template.profileSmall.events({
-	'click a.addToFavorites': function(event, template) {
+	'click .favInactive': function(event, template) {
 		event.preventDefault();
-		var button = event.target;
-		$(button).toggleClass('removeFromFav');
-		$(button).toggleClass('addToFavorites');
-		var uId = this._id;
-		Meteor.call('addUserToFav', uId, function(err) {
-			if(err) {
-				toastr.error('Failed to add user to favorites');
+		Meteor.call('addToFav', this._id, "", function(error) {
+			if(error) {
+				console.log('Failed to add to favorites');
 			}
 			else {
-				toastr.success('Added user to favorites');
+				$(event.currentTarget).removeClass('favInactive');
+				$(event.currentTarget).addClass('favActive');
 			}
 		});
+		event.stopPropagation();
 	},
-	'click a.removeFromFav': function(event, template) {
+	'click .favActive': function(event, template) {
 		event.preventDefault();
-		$(event.target).toggleClass('addToFavorites');
-		$(event.target).toggleClass('removeFromFav');
-		var uId = this._id;
-		Meteor.call('removeUserFromFav', uId, function(err) {
-			if(err) {
-				toastr.error('Failed to remove user from favorites');
+		Meteor.call('removeFromFav', this._id, "", function(error) {
+			if(error) {
+				console.log('Failed to add to favorites');
 			}
 			else {
-				toastr.success('Removed user from favorites.');
+				$(event.currentTarget).removeClass('favActive');
+				$(event.currentTarget).addClass('favInactive');
+				console.log('Added to favorites');
 			}
-		})
+		});
+		event.stopPropagation();
 	}
 });
 
@@ -34,10 +32,7 @@ Template.profileSmall.helpers({
 	readableId: function() {
 		return(Users.findOne({_id: this.userId}).readableID);
 	},
-	liked: function () {
-		if(Meteor.users.findOne({_id: Meteor.userId()}, {favoriteUsers: {$in: [this._id]}}))
-			return false;
-		else
-			return true;
+	fav : function() {
+		return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this._id]}}]})?true:false;
 	}
 })

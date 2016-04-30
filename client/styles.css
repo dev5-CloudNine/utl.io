@@ -436,3 +436,23 @@ h4 {
   width: 12px;
 }
 /** /top tiles **/
+
+i.favActive {
+  cursor: pointer; 
+  color: #139AEC;
+}
+
+i.favInactive {
+  cursor: pointer; 
+  color: #999999;
+}
+
+a.favActive {
+    background-color: #139AEC;
+    color: #fff;
+}
+
+a.favInactive {
+    background-color: #999999;
+    color: #fff;
+}

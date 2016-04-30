@@ -1,43 +1,38 @@
 Template.buyerSmall.events({
-	'click a.addToFavorites': function(event, template) {
+	'click .favInactive': function(event, template) {
 		event.preventDefault();
-		var button = event.target;
-		$(button).toggleClass('removeFromFav');
-		$(button).toggleClass('addToFavorites');
-		var uId = this._id;
-		Meteor.call('addBuyerToFav', uId, function(err) {
-			if(err) {
-				toastr.error('Failed to add buyer to favorites');
+		Meteor.call('addToFav', this._id, "", function(error) {
+			if(error) {
+				console.log('Failed to add to favorites');
 			}
 			else {
-				toastr.success('Added buyer to favorites');
+				$(event.currentTarget).removeClass('favInactive');
+				$(event.currentTarget).addClass('favActive');
 			}
 		});
+		event.stopPropagation();
 	},
-	'click a.removeFromFav': function(event, template) {
+	'click .favActive': function(event, template) {
 		event.preventDefault();
-		$(event.target).toggleClass('addToFavorites');
-		$(event.target).toggleClass('removeFromFav');
-		var uId = this._id;
-		Meteor.call('removeBuyerFromFav', uId, function(err) {
-			if(err) {
-				toastr.error('Failed to remove buyer from favorites');
+		Meteor.call('removeFromFav', this._id, "", function(error) {
+			if(error) {
+				console.log('Failed to add to favorites');
 			}
 			else {
-				toastr.success('Removed buyer from favorites.');
+				$(event.currentTarget).removeClass('favActive');
+				$(event.currentTarget).addClass('favInactive');
+				console.log('Added to favorites');
 			}
-		})
+		});
+		event.stopPropagation();
 	}
 });
 
 Template.buyerSmall.helpers({
-	liked: function () {
-		if(!(Meteor.users.findOne({_id: Meteor.userId()}, {favoriteBuyers: {$in: [this._id]}})))
-			return false;
-		else
-			return true;
-	},
 	readableId: function() {
 		return Meteor.users.findOne({_id: this.userId}).readableID;
+	},
+	fav : function() {
+		return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this._id]}}]})?true:false;
 	}
 });

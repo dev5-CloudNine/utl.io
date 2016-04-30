@@ -35,17 +35,34 @@ Template.jobSmall.helpers({
 			});
 			return count;
 		}
+	},
+	fav : function() {
+		return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteJobs: {$in: [this._id]}}]})?true:false;
 	}
 })
 Template.jobSmall.events({
-	'click a.addToFavorites': function(event, template) {
-		event.preventDefault();
+	'click .favInactive': function(event, template) {
 		var jobId = this._id;
-		Meteor.call('addToFavorites', jobId, function(error) {
+		Meteor.call('addToFav', jobId, "job", function(error) {
 			if(error) {
 				console.log('Failed to add to favorites');
 			}
 			else {
+				$(event.target).removeClass('favInactive');
+				$(event.target).addClass('favActive');
+				console.log('Added to favorites');
+			}
+		});
+	},
+	'click .favActive': function(event, template) {
+		var jobId = this._id;
+		Meteor.call('removeFromFav', jobId, "job", function(error) {
+			if(error) {
+				console.log('Failed to add to favorites');
+			}
+			else {
+				$(event.target).removeClass('favActive');
+				$(event.target).addClass('favInactive');
 				console.log('Added to favorites');
 			}
 		});
