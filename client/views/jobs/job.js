@@ -3,7 +3,7 @@ Template.job.events({
     event.preventDefault();
     Modal.show('jobDeactivate',template.data);
   },
-  'click .applyJob': function(event, template) {
+  'click .applyInactive': function(event, template) {
     event.preventDefault();
     var jobId = this._id;
     var uId = Profiles.findOne({userId: Meteor.userId()})._id
@@ -11,13 +11,27 @@ Template.job.events({
       "userId": Meteor.userId(),
       "applied_at": new Date()
     }
-    Meteor.call('applyForThisJob', jobId, applicationDetails, function(error) {
-        if(error) {
-            toastr.error(error.message, 'Error');
-        }
-        else {
-            toastr.success("You've successfully applied for this job!");
-        }
+  	Meteor.call('applyForThisJob', jobId, applicationDetails, function(error) {
+  		if(error) {
+  			toastr.error(error.message, 'Error');
+  		}
+  		else {
+  			$(event.currentTarget).removeClass('applyInactive');
+        $(event.currentTarget).addClass('applyActive');
+  		}
+  	})
+  },
+  'click .applyActive': function(event, template) {
+    event.preventDefault();
+    var jobId = this._id;
+    Meteor.call('removeFromAppliedJobs', jobId, Meteor.userId(), function(error) {
+      if(error) {
+        toastr.error(error.message, 'Error');
+      }
+      else {
+        $(event.currentTarget).removeClass('applyActive');
+        $(event.currentTarget).addClass('applyInactive');
+      }
     })
   },
   'change #counter_type': function(event, template) {
@@ -292,5 +306,11 @@ Template.job.helpers({
   },
   taskList: function() {
     return Tasks.find({'jobID':this._id},{sort: {order:1}});
+  },
+  applied: function() {
+    var prov = Profiles.findOne({userId: Meteor.userId()});
+    prov.appliedJobs.forEach(function(job) {
+      
+    })
   }
-});
+  });

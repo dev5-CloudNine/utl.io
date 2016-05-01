@@ -161,7 +161,7 @@
                                                         <br> {{#if isInRole 'provider, corporate-provider'}}
                                                         <p>{{applicationsCount}} user(s) have applied for this job so far.</p>
                                                         {{#if $eq applicationStatus 'open'}} {{#if currentUser.isDeveloper}}
-                                                        <button class="btn btn-primary applyJob">Apply</button>
+														<a href="" class="btn btn-primary {{#if applied}}applyActive{{else}}applyInactive{{/if}}">Apply</a>
                                                         {{else}}
                                                         <h6>You must create your profile before you can apply for this job. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your profile.</h6> {{/if}} {{/if}} {{else}} {{#if jobPostedBuyer}}
                                                         <div class="list-group" width=100%>
