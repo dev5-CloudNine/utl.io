@@ -1,3 +1,10 @@
+S3.config = {
+    key: 'AKIAJFKN5NR3ZC2YF6KQ',
+    secret: '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',
+    bucket: 'project-tasks',
+    region: 'us-east-1' // Only needed if not "us-east-1" or "us-standard"
+};
+
 Meteor.methods({
     "onUserSignup": function(user) {
         return Accounts.createUser(user);
@@ -198,5 +205,8 @@ Meteor.methods({
                 }
             });
         }
+    },
+    updateTask: function(id,obj){
+        Tasks.update({'_id':id},{$set:{'state':obj.state,'comments':obj.comments}});
     }
 });

@@ -1,0 +1,79 @@
+<template name="task">
+    <div class="container">
+        <div id="job" class="row">
+            <div class="col-sm-12">
+
+            {{#each task}}
+                <form class="form-horizontal" role="form" id="task-form" data-id="{{_id}}">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="job">Job</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="job" readonly value={{jobName}}>
+                        </div>
+                    </div>
+
+					<div class="form-group">
+                        <label class="control-label col-sm-2" for="taskName">Task</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="taskName" readonly value={{taskName}}>
+                        </div>
+                    </div>
+
+					<div class="form-group">
+                        <label class="control-label col-sm-2" for="taskDesc">Description</label>
+                        <div class="col-sm-10">
+                           	<textarea class="form-control" readonly id="taskDesc">{{taskdescription}}</textarea>
+                        </div>
+                    </div>
+                    {{#if show}}
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="state">State</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="state" readonly="{{#if isBuyer}}readonly{{/if}}" style="width:auto;">
+                            	{{#each states}} 
+                            	<option value="{{value}}" selected="{{selected}}">{{value}}</option>
+                            	{{/each}}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="comments">Comments</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" readonly="{{#if isBuyer}}readonly{{/if}}" id="comments">{{comments}}</textarea>
+                        </div>
+                    </div>
+
+
+                    {{#if uploadFile}}
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">{{taskName}}</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="file_bag">
+    						<button class="upload" multiple="multiple">Upload</button>
+	                        {{#each files}}
+						        <p>{{percent_uploaded}}%</p>
+						    {{/each}}
+                        </div>
+                    </div>
+                    {{/if}}
+
+
+
+                    {{#if isBuyer}}
+                    {{else}}
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">Update</button>
+                        </div>
+                    </div>  
+                    {{/if}}
+                    {{/if}}
+                </form>
+
+            {{/each}}
+
+            </div>
+        </div>
+    </div>
+</template>

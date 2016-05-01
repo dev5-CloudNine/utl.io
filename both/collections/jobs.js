@@ -441,14 +441,6 @@ Jobs.attachSchema(
         options: function() {
           return [
             {
-              label: "Check In",
-              value: "Check in"
-            },
-            {
-              label: "Check Out",
-              value: "Check Out"
-            },
-            {
               label: "Enter shipment tracking",
               value: "Enter shipment tracking"
             },

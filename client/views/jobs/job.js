@@ -5,19 +5,20 @@ Template.job.events({
   },
   'click .applyJob': function(event, template) {
     event.preventDefault();
-  	var jobId = this._id;
+    var jobId = this._id;
+    var uId = Profiles.findOne({userId: Meteor.userId()})._id
     var applicationDetails = {
       "userId": Meteor.userId(),
       "applied_at": new Date()
     }
-  	Meteor.call('applyForThisJob', jobId, applicationDetails, function(error) {
-  		if(error) {
-  			toastr.error(error.message, 'Error');
-  		}
-  		else {
-  			toastr.success("You've successfully applied for this job!");
-  		}
-  	})
+    Meteor.call('applyForThisJob', jobId, applicationDetails, function(error) {
+        if(error) {
+            toastr.error(error.message, 'Error');
+        }
+        else {
+            toastr.success("You've successfully applied for this job!");
+        }
+    })
   },
   'change #counter_type': function(event, template) {
     event.preventDefault();
@@ -210,11 +211,11 @@ Template.job.helpers({
     return this.jobType || this.featured;
   },
   'applicationsCount': function() {
-  	var count = 0;
-  	Jobs.findOne(this._id).applications.forEach(function(uId) {
-  		count++;
-  	});
-  	return count;
+    var count = 0;
+    Jobs.findOne(this._id).applications.forEach(function(uId) {
+        count++;
+    });
+    return count;
   },
   'counterOfferCount': function() {
     var count = 0;
@@ -243,10 +244,9 @@ Template.job.helpers({
         first_max_hours: counterOffer.first_max_hours,
         next_hours: counterOffer.next_hours,
         next_max_hours: counterOffer.next_max_hours,
-        freelancer_nets: counterOffer.freelancer_nets
       }
       counterOffers.push(providerDetails);
-    }, {sort: {countered_at: -1}});
+    });
     return counterOffers;
   },
   'appliedProviders': function() {
@@ -261,8 +261,9 @@ Template.job.helpers({
         company: pDetails.companyName,
         appliedAt: provider.applied_at
       }
+      console.log(providerDetails)
       providerIds.push(providerDetails);
-    }, {sort: {'provider.applied_at': -1}});
+    });
     return providerIds;
   },
   'applicationStatus': function() {
@@ -282,5 +283,14 @@ Template.job.helpers({
     else {
       return false;
     }
+  },
+  notAccepted : function() {
+    return Jobs.findOne({$and:[{_id:this._id},{applicationStatus:{$nin:["assigned","frozen"]}}]})?true:false;
+  },
+  tasksExists : function() {
+    return Jobs.findOne(this._id).tasks?true:false;
+  },
+  taskList: function() {
+    return Tasks.find({'jobID':this._id},{sort: {order:1}});
   }
 });

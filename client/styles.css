@@ -456,3 +456,15 @@ a.favInactive {
     background-color: #999999;
     color: #fff;
 }
+
+li.task-title :before {
+  font-family: 'FontAwesome';
+  content: '\f08e';
+  margin:0 5px 0 -15px;
+  color: #f00;
+}
+
+li.task-title {
+  position: relative;
+  padding: 8px;  
+}

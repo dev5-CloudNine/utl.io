@@ -59,6 +59,29 @@ Corporates.after.remove(function(userId, doc) {
 });
 
 Jobs.after.insert(function(userId, doc){
+
+
+  var obj ={};
+
+  obj.taskName = "Check In";
+  obj.taskdescription = "Please complete this task to before starting any other tasks";
+  obj.jobID = doc._id;
+  obj.order = 0;
+  Tasks.insert(obj);
+  obj.taskName = "Check Out";
+  obj.taskdescription = "Please complete when you completed all other tasks";
+  obj.jobID = doc._id;
+  obj.order = 100;
+  Tasks.insert(obj);
+  var order = 1;
+  doc.tasks.map(function(task){
+      obj.taskName = task.taskname;
+      obj.taskdescription = task.taskdescription;
+      obj.jobID = doc._id;
+      obj.order = order++;
+      Tasks.insert(obj);
+  });
+
   var admin = Users.findOne({roles:"admin"});
   Email.send({
       to: getUserEmail(admin),
@@ -71,6 +94,7 @@ Jobs.after.insert(function(userId, doc){
     Jobs.update(doc._id, {$set: {applicationStatus: 'frozen'}});
     Profiles.update({_id: doc.selectedProvider}, {$addToSet: {appliedJobs: doc._id}});
   }
+
 });
 
 Jobs.before.insert(function(userId, doc){

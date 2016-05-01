@@ -80,6 +80,7 @@ Router.map(function() {
             });
         },
         waitOn: function() {
+            Meteor.subscribe("tasksOfaJob",this.params._id);
             return subs.subscribe("job", this.params._id);
         },
         onBeforeAction: function() {
@@ -509,6 +510,14 @@ Router.map(function() {
         }
     });
 
+    this.route('task', {
+        path: '/task/:jobID/:taskID',
+        title: 'UTL - All Corporates | Task',
+        waitOn: function() {
+            Meteor.subscribe("tasks",this.params.taskID);
+            return Meteor.subscribe("job",this.params.jobID);
+        }
+    });
 
 
 

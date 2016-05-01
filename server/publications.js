@@ -27,6 +27,17 @@ Meteor.publish("messages", function () {
     return Messages.find();
 });
 
+
+Meteor.publish("tasks", function (taskID) {
+    return Tasks.find({_id:taskID});
+});
+
+
+Meteor.publish("tasksOfaJob", function (id) {
+    return Tasks.find({jobID:id});
+});
+
+
 Meteor.publish('postedBuyer', function(jobId) {
     var userId = Jobs.findOne({_id: jobId}).userId;
     return Meteor.users.find({_id: userId});
