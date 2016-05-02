@@ -457,6 +457,18 @@ a.favInactive {
     color: #fff;
 }
 
+button.favActive {
+    background-color: #139AEC;
+    color: #fff;
+    border: none;
+}
+
+button.favInactive {
+    background-color: #999999;
+    color: #fff;
+    border: none;
+}
+
 li.task-title :before {
   font-family: 'FontAwesome';
   content: '\f08e';
@@ -467,4 +479,8 @@ li.task-title :before {
 li.task-title {
   position: relative;
   padding: 8px;  
+}
+
+.panel-white {
+  background-color: white !important;
 }

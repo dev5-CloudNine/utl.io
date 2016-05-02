@@ -1,9 +1,7 @@
 <template name="buyerJobs">
-	<div class="container">
-		{{#each buyerJob}}
-			{{>jobSmall}}
-		{{else}}
-			<h6>This buyer hasn't posted any job yet.</h6>
-		{{/each}}
-	</div>
+	{{#each buyerJob}}
+		{{>jobSmall}}
+	{{else}}
+		<h6>This buyer hasn't posted any job yet.</h6>
+	{{/each}}
 </template>

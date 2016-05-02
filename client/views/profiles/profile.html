@@ -1,153 +1,151 @@
 <template name="profile">
-	<div class="container">
-		<div id="profile" class="row">
-			<div class="col-sm-12">
-				<div class="panel panel-default">
-	  				<div class="panel-body">
-						<div class="row">
-							<div class="col-sm-3">
-								{{#if customImageUrl}}
-									<div class="avatar avatar-large">
-										<img class="img-responsive" src="{{resizeImageUrl customImageUrl 200 200}}"/>
-									</div>
-								{{else}}
-									{{> avatar userId=userId size="large"}}
+	<div id="profile" class="row">
+		<div class="col-sm-12">
+			<div class="panel panel-default">
+  				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-3">
+							{{#if customImageUrl}}
+								<div class="avatar avatar-large">
+									<img class="img-responsive" src="{{resizeImageUrl customImageUrl 200 200}}"/>
+								</div>
+							{{else}}
+								{{> avatar userId=userId size="large"}}
+							{{/if}}
+							{{#if isInRole 'buyer, corporate-manager'}}
+								<br>
+								<a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-xs">Assign Job</a>
+								<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up">Like</i></a>
+							{{/if}}
+							<hr>
+							<small>
+								{{#if location}}
+									<i class="fa fa-map-marker"></i>&nbsp;{{location}}
 								{{/if}}
-								{{#if isInRole 'buyer, corporate-manager'}}
+								{{#if contactNumber}}
 									<br>
-									<a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-sm">Assign Job</a>
-									<a class="btn btn-primary btn-sm addToFavorites"><i class="fa fa-heart"></i>&nbsp;Like</a>
+									<i class="fa fa-mobile">&nbsp;{{contactNumber}}</i>
+								{{/if}}
+								{{#if smsAddress}}
+									<br>
+									<i class="fa fa-envelope">&nbsp;{{smsAddress}}</i>
 								{{/if}}
 								<hr>
-								<small>
-									{{#if location}}
-										<i class="fa fa-map-marker"></i>&nbsp;{{location}}
-									{{/if}}
-									{{#if contactNumber}}
-										<br>
-										<i class="fa fa-mobile">&nbsp;{{contactNumber}}</i>
-									{{/if}}
-									{{#if smsAddress}}
-										<br>
-										<i class="fa fa-envelope">&nbsp;{{smsAddress}}</i>
-									{{/if}}
-									<hr>
-									{{#if url}}
-										<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Website</a>
-									{{/if}}
-									{{#if contact}}
-										<br>
-										<i class="fa fa-envelope"></i>&nbsp;{{contact}}
-									{{/if}}
-									{{#if resumeUrl}}
-										<br>
-										<i class="fa fa-file-text"></i>&nbsp;&nbsp;<a href="{{resumeUrl}}" target="_blank">View Resume</a>
-										<hr>
-									{{/if}}
-								</small>
-								<small>
-									{{#if eintinNumber}}
-										EIN/TIN: {{eintinNumber}}
-									{{/if}}
+								{{#if url}}
+									<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Website</a>
+								{{/if}}
+								{{#if contact}}
 									<br>
-									{{#if socialSecurityNumber}}
-										SSN: {{socialSecurityNumber}}
-									{{/if}}
+									<i class="fa fa-envelope"></i>&nbsp;{{contact}}
+								{{/if}}
+								{{#if resumeUrl}}
 									<br>
+									<i class="fa fa-file-text"></i>&nbsp;&nbsp;<a href="{{resumeUrl}}" target="_blank">View Resume</a>
 									<hr>
-								</small>
-								<i class="fa fa-calendar"></i> Created on {{formatDate createdAt}}
+								{{/if}}
+							</small>
+							<small>
+								{{#if eintinNumber}}
+									EIN/TIN: {{eintinNumber}}
+								{{/if}}
+								<br>
+								{{#if socialSecurityNumber}}
+									SSN: {{socialSecurityNumber}}
+								{{/if}}
+								<br>
+								<hr>
+							</small>
+							<i class="fa fa-calendar"></i> Created on {{formatDate createdAt}}
+						</div>
+						<div class="col-sm-9">
+							<div class="row">
+								<div class="col-sm-12">
+									<button class="btn btn-default btn-xs">{{readableId}}</button>
+								</div>
 							</div>
-							<div class="col-sm-9">
-								<div class="row">
-									<div class="col-sm-12">
-										<button class="btn btn-default btn-xs">{{readableId}}</button>
-									</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<h2 class="top-flush">
+										{{displayName}}
+									</h2>
 								</div>
-								<div class="row">
-									<div class="col-sm-12">
-										<h2 class="top-flush">
-											{{displayName}}
-										</h2>
-									</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<h4>
+										{{title}} {{#if companyName}} - {{companyName}} {{/if}}
+									</h4>
 								</div>
-								<div class="row">
-									<div class="col-sm-12">
-										<h4>
-											{{title}} {{#if companyName}} - {{companyName}} {{/if}}
-										</h4>
-									</div>
-									<div class="col-sm-12">
-										Average Rate per Hour: {{avgRatesPerHour}} USD
-									</div>
+								<div class="col-sm-12">
+									Average Rate per Hour: {{avgRatesPerHour}} USD
 								</div>
-								<div class="row">
-									<div class="col-sm-12">
-										{{#if htmlDescription}}
-											<hr>
-											<h4>About Me</h4>
-											{{{htmlDescription}}}
-										{{/if}}
-										{{#if freelancerSkills}}
-											<hr>
-											<h4>Skills</h4>
-											{{freelancerSkills}}
-										{{/if}}
-										{{#if industryTypes}}
-											<hr>
-											<h4>Job Categories</h4>
-											{{industryTypes}}
-										{{/if}}
-										{{#if preferredWorkLocation}}
-											<hr>
-											<h4>Preferred Work Location</h4>
-											{{preferredWorkLocation}}
-										{{/if}}
-										{{#if educationDetails}}
-											<hr>
-											<h4>Education Details</h4>
-											<ul>
-												{{#each educationDetails}}
-													<li>{{qualification}} from {{university}}, graduated in the year {{yearOfPassing}}</li>
-												{{/each}}
-											</ul>
-										{{/if}}
-										{{#if certifications}}
-											<hr>
-											<h4>Certifications</h4>
-											{{#each certifications}}
-												<h5>{{certificationName}}</h5>
-												<p>Authority:{{certificationAuthority}}</p>
-												<p>Start &amp; End Date: {{formatDate certificationStartDate}} - {{formatDate certificationEndDate}}</p>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									{{#if htmlDescription}}
+										<hr>
+										<h4>About Me</h4>
+										{{{htmlDescription}}}
+									{{/if}}
+									{{#if freelancerSkills}}
+										<hr>
+										<h4>Skills</h4>
+										{{freelancerSkills}}
+									{{/if}}
+									{{#if industryTypes}}
+										<hr>
+										<h4>Job Categories</h4>
+										{{industryTypes}}
+									{{/if}}
+									{{#if preferredWorkLocation}}
+										<hr>
+										<h4>Preferred Work Location</h4>
+										{{preferredWorkLocation}}
+									{{/if}}
+									{{#if educationDetails}}
+										<hr>
+										<h4>Education Details</h4>
+										<ul>
+											{{#each educationDetails}}
+												<li>{{qualification}} from {{university}}, graduated in the year {{yearOfPassing}}</li>
 											{{/each}}
-										{{/if}}
-										{{#if languages}}
-											<hr>
-											<h4>Languages Known</h4>
-											<ul>
-												{{#each languages}}
-													<li>{{level}} in {{language}}</li>
-												{{/each}}
-											</ul>
-										{{/if}}
-									</div>
+										</ul>
+									{{/if}}
+									{{#if certifications}}
+										<hr>
+										<h4>Certifications</h4>
+										{{#each certifications}}
+											<h5>{{certificationName}}</h5>
+											<p>Authority:{{certificationAuthority}}</p>
+											<p>Start &amp; End Date: {{formatDate certificationStartDate}} - {{formatDate certificationEndDate}}</p>
+										{{/each}}
+									{{/if}}
+									{{#if languages}}
+										<hr>
+										<h4>Languages Known</h4>
+										<ul>
+											{{#each languages}}
+												<li>{{level}} in {{language}}</li>
+											{{/each}}
+										</ul>
+									{{/if}}
 								</div>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-sm-12">
-								{{#if $eq userId $.Meteor.userId}}
-									<div class="pull-right">
-										&nbsp;
-										<a href="{{pathFor 'profileEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
-									</div>
-									<div class="pull-right">
-										{{#quickRemoveButton collection="Profiles" _id=_id class="btn btn-danger" beforeRemove=beforeRemove}}
-											<i class="fa fa-trash-o"></i> Delete
-										{{/quickRemoveButton}}
-									</div>
-								{{/if}}
-							</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							{{#if $eq userId $.Meteor.userId}}
+								<div class="pull-right">
+									&nbsp;
+									<a href="{{pathFor 'profileEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+								</div>
+								<div class="pull-right">
+									{{#quickRemoveButton collection="Profiles" _id=_id class="btn btn-danger" beforeRemove=beforeRemove}}
+										<i class="fa fa-trash-o"></i> Delete
+									{{/quickRemoveButton}}
+								</div>
+							{{/if}}
 						</div>
 					</div>
 				</div>

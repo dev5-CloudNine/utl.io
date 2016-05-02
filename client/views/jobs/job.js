@@ -3,13 +3,23 @@ Template.job.events({
     event.preventDefault();
     Modal.show('jobDeactivate',template.data);
   },
+  'change input[name="app_type"]': function(event, template) {
+    if(event.target.value == 'application') {
+      $('div#app_selected').show();
+      $('div#counter_selected').hide();
+    } else if(event.target.value == 'counteroffer') {
+      $('div#counter_selected').show();
+      $('div#app_selected').hide();
+    }
+  },
   'click .applyInactive': function(event, template) {
     event.preventDefault();
     var jobId = this._id;
     var uId = Profiles.findOne({userId: Meteor.userId()})._id
     var applicationDetails = {
       "userId": Meteor.userId(),
-      "applied_at": new Date()
+      "applied_at": new Date(),
+      "app_type": 'application'
     }
   	Meteor.call('applyForThisJob', jobId, applicationDetails, function(error) {
   		if(error) {
@@ -140,7 +150,7 @@ Template.job.events({
       }
     });
   },
-  'click .counterOffer': function(event, template) {
+  'click .counterInactive': function(event, template) {
     event.preventDefault();
     var jobId = this._id;
     var counterOffer = {}
@@ -165,7 +175,8 @@ Template.job.events({
         "total_amount": total_amount,
         "buyer_cost": buyer_cost,
         "freelancer_nets": freelancer_nets,
-        "countered_at": new Date()
+        "applied_at": new Date(),
+        "app_type": 'counteroffer'
       }
     }
     else if(counterType == "per_hour") {
@@ -177,7 +188,8 @@ Template.job.events({
         "total_amount": total_amount,
         "buyer_cost": buyer_cost,
         "freelancer_nets": freelancer_nets,
-        "countered_at": new Date()
+        "applied_at": new Date(),
+        "app_type": 'counteroffer'
       }
     }
     else if(counterType == "per_device") {
@@ -189,7 +201,8 @@ Template.job.events({
         "total_amount": total_amount,
         "buyer_cost": buyer_cost,
         "freelancer_nets": freelancer_nets,
-        "countered_at": new Date()
+        "applied_at": new Date(),
+        "app_type": 'counteroffer'
       }
     }
     else if(counterType == "blended") {
@@ -203,17 +216,48 @@ Template.job.events({
         "total_amount": total_amount,
         "buyer_cost": buyer_cost,
         "freelancer_nets": freelancer_nets,
-        "countered_at": new Date()
+        "applied_at": new Date(),
+        "app_type": 'counteroffer'
       }
     }
-    Meteor.call('counterOfferThisJob', jobId, counterOffer, function (error) {
+    Meteor.call('applyForThisJob', jobId, counterOffer, function (error) {
       if(error) {
         toastr.error(error.message, 'Error');
       }
       else {
-        toastr.success("You've counter offered to this job.");
+        $(event.currentTarget).find('i').html('Apply\'d')
+        $(event.currentTarget).removeClass('counterInactive');
+        $(event.currentTarget).addClass('counterActive');
       }
     });
+  },
+  'click .counterActive': function(event, template) {
+    event.preventDefault();
+    var jobId = this._id;
+    Meteor.call('removeFromAppliedJobs', jobId, Meteor.userId(), function(error) {
+      if(error) {
+        toastr.error(error.message, 'Error');
+      }
+      else {
+        $(event.currentTarget).find('i').html('Apply');
+        $(event.currentTarget).removeClass('counterActive');
+        $(event.currentTarget).addClass('counterInactive');
+      }
+    })
+  },
+  'click .acceptCounterOffer': function(event, template) {
+    var jobId = Router.current().params._id;
+    var userId = this.userId;
+    var countered_at = this.countered_at;
+    var freenets = this.freelancer_nets;
+    Meteor.call('acceptCounterOffer', jobId, userId, countered_at, freenets, function(error) {
+      if(error) {
+        toastr.error('Failed to accept counter offer', 'Error');
+      }
+      else {
+        toastr.success('An invitation has been sent to the provider to confirm assignment.');
+      }
+    })
   }
 });
 
@@ -238,31 +282,6 @@ Template.job.helpers({
     });
     return count;
   },
-  'counterOfferedProviders': function() {
-    var counterOffers = [];
-    counteredUsers = [];
-    Jobs.findOne(this._id).counterOffers.forEach(function(counterOffer) {
-      var pDetails = Profiles.findOne({userId: counterOffer.userId});
-      providerDetails = {
-        userId: counterOffer.userId,
-        name: pDetails.name,
-        title: pDetails.title,
-        company: pDetails.companyName,
-        countered_at: counterOffer.countered_at,
-        fixed_amount:counterOffer.fixed_amount,
-        hourly_rate: counterOffer.hourly_rate,
-        max_hours: counterOffer.max_hours,
-        device_rate: counterOffer.device_rate,
-        max_devices: counterOffer.max_devices,
-        first_hours: counterOffer.first_hours,
-        first_max_hours: counterOffer.first_max_hours,
-        next_hours: counterOffer.next_hours,
-        next_max_hours: counterOffer.next_max_hours,
-      }
-      counterOffers.push(providerDetails);
-    });
-    return counterOffers;
-  },
   'appliedProviders': function() {
     var providerIds = [];
     var providerDetails = {}
@@ -273,9 +292,20 @@ Template.job.helpers({
         name: pDetails.name,
         title: pDetails.title,
         company: pDetails.companyName,
-        appliedAt: provider.applied_at
+        app_type: provider.app_type,
+        appliedAt: provider.applied_at,
+        counter_type: provider.counterType,
+        fixed_amount:provider.fixed_amount,
+        hourly_rate: provider.hourly_rate,
+        max_hours: provider.max_hours,
+        device_rate: provider.device_rate,
+        max_devices: provider.max_devices,
+        first_hours: provider.first_hours,
+        first_max_hours: provider.first_max_hours,
+        next_hours: provider.next_hours,
+        next_max_hours: provider.next_max_hours,
+        freelancer_nets: provider.freelancer_nets
       }
-      console.log(providerDetails)
       providerIds.push(providerDetails);
     });
     return providerIds;
@@ -308,9 +338,6 @@ Template.job.helpers({
     return Tasks.find({'jobID':this._id},{sort: {order:1}});
   },
   applied: function() {
-    var prov = Profiles.findOne({userId: Meteor.userId()});
-    prov.appliedJobs.forEach(function(job) {
-      
-    })
+    return Profiles.findOne({$and: [{userId: Meteor.userId()}, {appliedJobs: {$in: [this._id]}}]})?true:false;
   }
-  });
+});

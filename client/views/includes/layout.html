@@ -1,8 +1,6 @@
 <template name="layout">
 	{{>yield region='header'}}
-	<div class="container">
-		{{>breadcrumbs}}
-	</div>
+	{{>breadcrumbs}}
 	<div id="content-wrapper main-wrapper" class="container">
 		{{>yield}}
 	</div>

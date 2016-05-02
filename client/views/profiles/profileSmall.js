@@ -6,7 +6,6 @@ Template.profileSmall.events({
 				console.log('Failed to add to favorites');
 			}
 			else {
-				$(event.currentTarget).find('i').html('Lik\'d');
 				$(event.currentTarget).removeClass('favInactive');
 				$(event.currentTarget).addClass('favActive');
 			}
@@ -20,7 +19,6 @@ Template.profileSmall.events({
 				console.log('Failed to add to favorites');
 			}
 			else {
-				$(event.currentTarget).find('i').html('Like');
 				$(event.currentTarget).removeClass('favActive');
 				$(event.currentTarget).addClass('favInactive');
 				console.log('Added to favorites');

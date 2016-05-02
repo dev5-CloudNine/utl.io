@@ -9,10 +9,10 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
+                    <span class="pull-right"><button class="btn btn-primary btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Lik'd{{else}}Like{{/if}}</button></span>
                     <h4>
                         <a href="{{pathFor 'job'}}">{{title}}</a>
                     </h4>
-                    <span class="pull-right"><i class="fa fa-thumbs-up fa-2x {{#if fav}}favActive{{else}}favInactive{{/if}}"></i></span>
                     <small>
                         {{#if $eq servicelocation 'Remote Job'}}
                             <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
