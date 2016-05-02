@@ -457,14 +457,14 @@ a.favInactive {
     color: #fff;
 }
 
-li.task-title :before {
+.task-title :before {
   font-family: 'FontAwesome';
-  content: '\f08e';
-  margin:0 5px 0 -15px;
+  content: '\f02b';
+  margin:0 5px 0 0;
   color: #f00;
 }
 
-li.task-title {
+.task-title {
   position: relative;
   padding: 8px;  
 }
