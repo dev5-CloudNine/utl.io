@@ -258,7 +258,7 @@ Template.job.events({
         toastr.success('An invitation has been sent to the provider to confirm assignment.');
       }
     })
-  }
+  },
   'click button[type=submit]': function(event, template) {
     event.preventDefault();
     var obj = {};

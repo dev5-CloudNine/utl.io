@@ -47,14 +47,9 @@ Template.dashboard.helpers({
 		Profiles.findOne({userId: Meteor.userId()}).appliedJobs.forEach(function(jobId) {
 			appliedJobIds.push(jobId);
 		});
-		Profiles.findOne({userId: Meteor.userId()}).counteredJobs.forEach(function(jobId) {
-			appliedJobIds.push(jobId);
+		appliedJobIds.forEach(function(jId) {
+			appliedJobsArray.push(Jobs.findOne({_id: jId}));
 		})
-		appliedJobIds.forEach(function(jobId) {
-			appliedJobsArray.push(Jobs.findOne({
-				_id: jobId
-			}));
-		});
 		return appliedJobsArray;
 	},
 	ongoingJobs: function() {

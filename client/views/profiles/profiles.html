@@ -1,11 +1,9 @@
 <template name="profiles">
 	{{#if currentUser}}
 		{{#if isInRole 'buyer, admin, corporate-admin, corporate-manager'}}
-			<div class="row">
-				{{#each profiles}}
-			        {{>profileSmall}}
-			    {{/each}}			    
-			</div>
+			{{#each profiles}}
+		        {{>profileSmall}}
+		    {{/each}}  
 		{{/if}}
 	{{/if}}
 	<div class="text-center">
