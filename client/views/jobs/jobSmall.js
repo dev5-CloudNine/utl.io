@@ -10,7 +10,7 @@ Template.jobSmall.helpers({
 		if(this.display == false) {
 			return;
 		}
-		if(Jobs.findOne({$and:[{'_id': this._id}, {'applications.userId':uId},{'applications.app_status':'accepted'}]})) {
+		if(Jobs.findOne({$and:[{'_id': this._id}, {$or: [{$and: [{'applications.userId':uId},{'applications.app_status':'accepted'}]}, {$and: [{'counterOffers.userId': uId},{'counterOffers.counter_status': 'accepted'}]}]}]})) {
 			return true
 		}
 		else {
@@ -49,7 +49,6 @@ Template.jobSmall.events({
 			else {
 				$(event.target).removeClass('favInactive');
 				$(event.target).addClass('favActive');
-				console.log('Added to favorites');
 			}
 		});
 	},
@@ -62,7 +61,6 @@ Template.jobSmall.events({
 			else {
 				$(event.target).removeClass('favActive');
 				$(event.target).addClass('favInactive');
-				console.log('Added to favorites');
 			}
 		});
 	},

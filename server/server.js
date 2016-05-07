@@ -102,46 +102,36 @@ Meteor.methods({
             Meteor.users.update(Meteor.userId(), {$pull: {favoriteUsers: id}});
         }
     },
-
-    // addToFavorites: function(jobId) {
-    //     Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteJobs: jobId}});
-    // },
-    // addUserToFav: function(uId) {
-    //     Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteUsers: uId}});
-    // },
-    // removeUserFromFav: function(uId) {
-    //     Meteor.users.update(Meteor.userId(), {$pull: {favoriteUsers: uId}});
-    // },
-    // addBuyerToFav: function(uId) {
-    //     Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteBuyers: uId}});
-    // },
-    // removeBuyerFromFav: function(uId) {
-    //     Meteor.users.update(Meteor.userId(), {$pull: {favoriteBuyers: uId}});
-    // },
     applyForThisJob: function(jobId, applicationDetails) {
         Jobs.update(jobId, {$addToSet: {applications: applicationDetails}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {appliedJobs: jobId}});
     },
     removeFromAppliedJobs: function(jobId, userId) {
         Jobs.update({$and:[{_id:jobId},{'applications.userId':userId}]},{$pull:{"applications":{"userId":userId}}});
-        Profiles.update({userId: userId()}, {$pull: {appliedJobs: jobId}});
+        Profiles.update({userId: userId}, {$pull: {appliedJobs: jobId}});
     },
     acceptApplication: function(jobId, userId, applicationTime) {
-        Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applicationTime}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen'}});
+        var jobNets = Jobs.findOne({_id: jobId}).freelancer_nets;
+        Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applicationTime}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen', proposedBudget: jobNets}});
+    },
+    acceptCounterOffer: function(jobId, userId, countered_at, freenets) {
+        Jobs.update({_id: jobId, 'counterOffers.userId': userId, 'counterOffers.countered_at': countered_at, 'counterOffers.freelancer_nets': freenets}, {$set: {'counterOffers.$.counter_status': 'accepted', applicationStatus: 'frozen', proposedBudget: freenets}})
     },
     confirmAssignment: function(jobId, buyerId) {
+        var proBudget = Jobs.findOne({_id: jobId}).proposedBudget;
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {ongoingJobs: jobId}});
         Profiles.update({userId: Meteor.userId()}, {$pull: {appliedJobs: jobId}});
-        Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned', assignedProvider: Meteor.userId()}});
+        Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned', assignedProvider: Meteor.userId(), projectBudget: proBudget}});
         Buyers.update({userId: buyerId}, {$addToSet: {ongoingJobs: jobId}});
     },
     declineAssignment: function(jobId, userId) {
         Jobs.update(jobId, {$set: {applicationStatus: 'open'}});
         Profiles.update({'userId': userId}, {$pull: {appliedJobs: jobId}});
     },
-    counterOfferThisJob: function(jobId, counterOffer) {
-        Jobs.update(jobId, {$addToSet: {counterOffers: counterOffer}});
-    },
+    // counterOfferThisJob: function(jobId, counterOffer) {
+    //     Jobs.update(jobId, {$addToSet: {counterOffers: counterOffer}});
+    //     Profiles.update({userId: Meteor.userId()}, {$addToSet: {counteredJobs: jobId}});
+    // },
     adminSetJobStatus: function(jobId, status) {
         check(jobId, String);
         check(status, String);

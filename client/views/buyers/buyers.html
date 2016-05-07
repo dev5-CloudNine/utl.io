@@ -1,16 +1,12 @@
 <template name="buyers">
-	<div class="container">
-		{{#if currentUser}}
-			{{#if isInRole 'corporate-admin, provider, admin, corporate-provider'}}
-				<div class="row">
-					{{#each buyers}}
-				        {{>buyerSmall}}
-				    {{/each}}	    
-				</div>
-			{{/if}}
+	{{#if currentUser}}
+		{{#if isInRole 'corporate-admin, provider, admin, corporate-provider'}}
+			{{#each buyers}}
+		        {{>buyerSmall}}
+		    {{/each}}
 		{{/if}}
-		<div class="text-center">
-			{{> infiniteScroll }}
-		</div>
+	{{/if}}
+	<div class="text-center">
+		{{> infiniteScroll }}
 	</div>
 </template>

@@ -47,11 +47,9 @@ Template.dashboard.helpers({
 		Profiles.findOne({userId: Meteor.userId()}).appliedJobs.forEach(function(jobId) {
 			appliedJobIds.push(jobId);
 		});
-		appliedJobIds.forEach(function(jobId) {
-			appliedJobsArray.push(Jobs.findOne({
-				_id: jobId
-			}));
-		});
+		appliedJobIds.forEach(function(jId) {
+			appliedJobsArray.push(Jobs.findOne({_id: jId}));
+		})
 		return appliedJobsArray;
 	},
 	ongoingJobs: function() {
@@ -61,7 +59,7 @@ Template.dashboard.helpers({
 			providerJobs.push(ongoingJob);
 		});
 		providerJobs.forEach(function(providerJob) {
-			var obj = Jobs.findOne({_id: providerJob});
+			var obj = Jobs.findOne({_id: providerJob}, {sort: {createdAt: -1}});
 			obj.display = false;
 			confirmedJobs.push(obj);
 		});

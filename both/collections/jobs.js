@@ -223,94 +223,94 @@ Jobs.attachSchema(
       type: Date,
       optional: true
     },
+    'applications.$.app_type': {
+      type: String,
+      optional: true,
+      allowedValues: ['application', 'counteroffer']
+    },
     'applications.$.app_status': {
       type: String,
-      allowedValues: ['accepted', 'rejected'],
-      optional: true,
-      // autoValue: function() {
-      //   if(this.isInsert) {
-      //     return 'rejected';
-      //   } else if(this.isUpsert) {
-      //     return {
-      //       $setOnInsert: 'rejected'
-      //     };
-      //   }
-      // }
-    },
-    counterOffers: {
-      type: Array,
+      allowedValues: ['accepted'],
       optional: true
     },
-    'counterOffers.$': {
-      type: Object
-    },
-    'counterOffers.$.userId': {
+    'applications.$.counterType': {
       type: String,
-      optional: true,
+      optional: true
     },
-    'counterOffers.$.fixed_amount': {
+    'applications.$.fixed_amount': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.hourly_rate': {
+    'applications.$.hourly_rate': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.max_hours': {
+    'applications.$.max_hours': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.device_rate': {
+    'applications.$.device_rate': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.max_devices': {
+    'applications.$.max_devices': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.first_hours': {
+    'applications.$.first_hours': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.first_max_hours': {
+    'applications.$.first_max_hours': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.next_hours': {
+    'applications.$.next_hours': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.next_max_hours': {
+    'applications.$.next_max_hours': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.total_amount': {
+    'applications.$.total_amount': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.buyer_cost': {
+    'applications.$.buyer_cost': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.freelancer_nets': {
+    'applications.$.freelancer_nets': {
       type: Number,
       decimal: true,
       optional: true
     },
-    'counterOffers.$.countered_at': {
-      type: Date,
-      optional: true,
+    proposedBudget: {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    acceptedBudget: {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    projectBudget: {
+      type: Number,
+      decimal: true,
+      optional: true
     },
     contactperson: {
       type: String,
@@ -479,6 +479,7 @@ Jobs.attachSchema(
     'tasks.$.taskdescription': {
       type: String,
       max: 256,
+      label: 'Task Description',
       optional: true
     },
     assignedProvider: {
