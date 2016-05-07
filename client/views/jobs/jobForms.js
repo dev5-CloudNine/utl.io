@@ -27,17 +27,29 @@ var locLoaded=false;
 
 Template.assignJob.events({
 	'click button.assign': function(event, template) {
+		var pId = Router.current().params._id;
 		Jobs.before.insert(function(userId, doc) {
-			doc.selectedProvider = Router.current().params._id;
+			doc.selectedProvider = Profiles.findOne({_id: pId}).userId;
 			doc.applications = [];
 			var appDetails = {
 				userId: doc.selectedProvider,
 				applied_at: new Date(),
-				app_status: 'accepted'
+				app_status: 'accepted',
+				app_type: 'application'
 			}
-			debugger;
 			doc.applications.push(appDetails);
-		})
+		});
+		Jobs.after.insert(function(userId, doc) {
+			doc.routed = true;
+			Meteor.call('assignJobUpdate', doc, pId, function(error) {
+				if(error) {
+					toastr.error('Failed to assign job to the provider');
+				}
+				else {
+					toastr.success('An invitation has been sent to the provider to confirm assignment.');
+				}
+			})
+		});
 	}
 });
 
@@ -99,17 +111,6 @@ Template.jobFields.events({
 		template.find('input[name="your_cost"]').value = totalamount;
 		template.find('input[name="freelancer_nets"]').value = freenet;
 	},
-	// 'change input[name="assignToProvider"]': function(event, template) {
-	// 	event.preventDefault();
-	// 	if(event.target.checked) {
-	// 		event.target.checked = true;
-	// 		$('div.selectProviders').show();
-	// 	}
-	// 	else {
-	// 		event.target.checked = false;
-	// 		$('div.selectProviders').hide();
-	// 	}
-	// },
 	'change input[name="servicelocation"]': function(event, template) {
 		if(event.target.value == 'Field Job') {
 			$('div.loc').show();
@@ -136,12 +137,5 @@ Template.jobFields.helpers({
 			$('.typeahead').removeClass('loadinggif');
 			return { value: v.city + ", " + v.state + ", " + v.zip}; }));
 		});
-	},
-	availableProviders: function() {
-		var profiles = [];
-		Profiles.find().fetch().forEach(function(profile) {
-			profiles.push(profile);
-		});
-		return profiles;
 	}
 });

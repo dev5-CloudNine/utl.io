@@ -10,7 +10,7 @@ Template.jobSmall.helpers({
 		if(this.display == false) {
 			return;
 		}
-		if(Jobs.findOne({$and:[{'_id': this._id}, {$or: [{$and: [{'applications.userId':uId},{'applications.app_status':'accepted'}]}, {$and: [{'counterOffers.userId': uId},{'counterOffers.counter_status': 'accepted'}]}]}]})) {
+		if(Jobs.findOne({$and: [{_id: this._id}, {'applications.userId': uId}, {'applications.app_status': 'accepted'}]})) {
 			return true
 		}
 		else {
@@ -19,6 +19,9 @@ Template.jobSmall.helpers({
 	},
 	assignedProfile: function() {
 		return Profiles.findOne({userId: this.assignedProvider});
+	},
+	routedProvider: function() {
+		return Profiles.findOne({userId: this.selectedProvider});
 	},
 	'buyerData': function() {
 	    return Buyers.findOne({userId: this.userId});

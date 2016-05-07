@@ -30,6 +30,10 @@ Jobs.attachSchema(
         options: INDUSTRY_TYPES
       }
     },
+    routed: {
+      type: Boolean,
+      optional: true
+    },
     ratebasis: {
       type: String,
       label: "Pay Rate Basis *",
@@ -141,10 +145,10 @@ Jobs.attachSchema(
     paidby: {
       type: String,
       label: "Paid By",
-      defaultValue: "Provider",
       optional: true,
       autoform: {
         type: 'select-radio-inline',
+        defaultValue: "Provider",
         options: function() {
           return [
             {
@@ -330,12 +334,25 @@ Jobs.attachSchema(
       max: 128,
       optional: true
     },
+    // fullAddress: {
+    //   type: String,
+    //   label: "Full Address",
+    //   optional: true
+    // },
     exactdate: {
       type: Date,
       optional: true,
       label: "Exactly on date and time",
       autoform: {
-        type: "bootstrap-datetimepicker"
+        type: "bootstrap-datepicker"
+      }
+    },
+    exacttime: {
+      type: String,
+      optional: true,
+      label: "Time",
+      autoform: {
+        type: "bootstrap-timepicker"
       }
     },
     startdate: {
@@ -545,7 +562,7 @@ Jobs.attachSchema(
     },
     confidentialDescription: {
       type: String,
-      label: "Confidential Information",
+      label: "Message",
       optional: true
     },
     status: {

@@ -13,7 +13,6 @@
                     {{#autoForm id="jobNew" collection="Jobs" type="insert" }}
                         {{>jobFields}}
                         <div>
-                            <button type="submit" class="btn btn-primary saveAsDraft"><i class="fa fa-bookmark-o"></i> Save as Draft</button>
                             <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> Publish</button>
                         </div>
                     {{/autoForm}}
@@ -89,13 +88,6 @@
     <hr>
     <div class="row">
         <div class="col-sm-12">
-            <!-- <label class="control-label">Service Location</label><br>
-            <label class="radio-inline">
-                <input type="radio" name="servicelocation" data-schema-key="servicelocation" value="Remote Job"> Remote Job
-            </label>
-            <label class="radio-inline">
-                <input type="radio" name="servicelocation" data-schema-key="servicelocation" value="Field Job"> Field Job
-            </label>   -->
             {{>afQuickField name="servicelocation"}}
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 loc" hidden>
@@ -109,8 +101,11 @@
     {{> afQuickField name='serviceschedule' noselect=true}}
     <div class="row">
         {{#if afFieldValueIs name="serviceschedule" value="exactdate"}}
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                 {{> afQuickField name="exactdate"}}
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                {{> afQuickField name="exacttime"}}
             </div>
         {{/if}}
         {{#if afFieldValueIs name="serviceschedule" value="betweendates"}}
@@ -131,8 +126,8 @@
     <hr>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <h5>Confidential (Only assigned providers can see this information)</h5>
-                </div>
+            <h5>Confidential Information (Only assigned providers can see this information)</h5>
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
             {{>afQuickField name="contactperson" placeholder=""}}
         </div>
@@ -142,6 +137,9 @@
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
             {{>afQuickField name="contactphone"}}
         </div>
+        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{>afQuickField name="fullAddress"}}
+        </div> -->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{> afQuickField name='confidentialDescription' rows=4 placeholder="All the information you write here will only be display to the assigned provider."}}
         </div>

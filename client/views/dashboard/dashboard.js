@@ -65,6 +65,19 @@ Template.dashboard.helpers({
 		});
 		return confirmedJobs;
 	},
+	providerRoutedJobs: function() {
+		var routedJobIds = [];
+		var routedJobsArray = [];
+		Profiles.findOne({userId: Meteor.userId()}).routedJobs.forEach(function(jobId) {
+			routedJobIds.push(jobId);
+		})
+		routedJobIds.forEach(function(jId) {
+			routedJobsArray.push(Jobs.findOne({_id: jId}));
+		})
+	},
+	buyerRoutedJobs: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {routed: true}]}, {sort: {createdAt: -1}});
+	},
 	favUsers: function() {
 		var favUserIds = [];
 		var favUserArray = [];

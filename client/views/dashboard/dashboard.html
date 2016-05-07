@@ -30,11 +30,12 @@
                                         {{/if}} Jobs
                                     </a>
                                 </li>
+                                <li><a href="#routedJobs" data-toggle="tab">Routed Jobs</a></li>
+                                <li><a href="#ongoingJobs" data-toggle="tab">Assigned Jobs</a></li>
+                                <li><a href="#completedJobs" data-toggle="tab">Completed Jobs</a></li>
                                 {{#if isInRole 'corporate-provider, provider'}}
                                     <li><a href="#favoriteJobs" data-toggle="tab">Favorite Jobs</a></li>
                                 {{/if}}
-                                <li><a href="#ongoingJobs" data-toggle="tab">Assigned Jobs</a></li>
-                                <li><a href="#completedJobs" data-toggle="tab">Completed Jobs</a></li>
                             </ul>
                         </li>
                         <li  class="{{#if $eq active 'messaging'}}active{{/if}}">
@@ -203,6 +204,20 @@
                         {{else}}
                             You haven't added any favorites. <a href="{{pathFor 'jobs'}}">View jobs</a> if you want to add some.
                         {{/each}}
+                    </div>
+                    <div class="tab-pane fade {{#if $eq active 'routedJobs'}} in active {{/if}}" id="routedJobs">
+                        <br>
+                        {{#if currentUser.isDeveloper}}
+                            {{#each providerRoutedJobs}}
+                                {{>jobSmall}}
+                            {{/each}}
+                        {{else}}
+                            {{#if currentUser.isBuyer}}
+                                {{#each buyerRoutedJobs}}
+                                    {{>jobSmall}}
+                                {{/each}}
+                            {{/if}}
+                        {{/if}}
                     </div>
                     <div class="tab-pane fade {{#if $eq active 'ongoingJobs'}} in active {{/if}}" id="ongoingJobs">
                         <br>

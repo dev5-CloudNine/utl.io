@@ -137,10 +137,6 @@ Template.job.events({
     var jobId = Router.current().params._id;
     var userId = Profiles.findOne({_id: this.userId}).userId;
     var applicationTime = this.appliedAt;
-    // if(!(Jobs.findOne($and: [{_id: jobid}, {applicationStatus: 'open'}]))) {
-    //   toastr.error("This job has already been assigned to some provider");
-    //   return;
-    // }
     Meteor.call('acceptApplication', jobId, userId, applicationTime, function (error, result) {
       if(error) {
         toastr.error("Failed to accept the application");
@@ -149,6 +145,22 @@ Template.job.events({
         toastr.success("An invitation has been sent to the provider to confirm assigmnemt.");
       }
     });
+  },
+  'click .acceptCounterOffer': function(event, template) {
+    console.log(this);
+    debugger;
+    var jobId = Router.current().params._id;
+    var userId = Profiles.findOne({_id: this.userId}).userId;
+    var applied_at = this.appliedAt;
+    var freenets = this.freelancer_nets;
+    Meteor.call('acceptCounterOffer', jobId, userId, applied_at, freenets, function(error) {
+      if(error) {
+        toastr.error('Failed to accept counter offer.');
+      }
+      else {
+        toastr.success('An invitation has been sent to the provider to confirm assignment.');
+      }
+    })
   },
   'click .counterInactive': function(event, template) {
     event.preventDefault();
@@ -245,20 +257,6 @@ Template.job.events({
       }
     })
   },
-  'click .acceptCounterOffer': function(event, template) {
-    var jobId = Router.current().params._id;
-    var userId = this.userId;
-    var countered_at = this.countered_at;
-    var freenets = this.freelancer_nets;
-    Meteor.call('acceptCounterOffer', jobId, userId, countered_at, freenets, function(error) {
-      if(error) {
-        toastr.error('Failed to accept counter offer', 'Error');
-      }
-      else {
-        toastr.success('An invitation has been sent to the provider to confirm assignment.');
-      }
-    })
-  },
   'click button[type=submit]': function(event, template) {
     event.preventDefault();
     var obj = {};
@@ -303,6 +301,10 @@ Template.job.helpers({
     });
     return count;
   },
+  assignedProfile: function() {
+    console.log(this);
+    return Profiles.findOne({userId: this.assignedProvider});
+  },
   'counterOfferCount': function() {
     var count = 0;
     Jobs.findOne(this._id).counterOffers.forEach(function(uId) {
@@ -311,9 +313,10 @@ Template.job.helpers({
     return count;
   },
   'appliedProviders': function() {
-    var providerIds = [];
-    var providerDetails = {}
-    Jobs.findOne(this._id).applications.forEach(function(provider) {
+    var providers = [];
+    var providerDetails = {};
+    var jobDetails = Jobs.findOne(this._id);
+    jobDetails.applications.forEach(function(provider) {
       var pDetails = Profiles.findOne({userId: provider.userId});
       providerDetails = {
         userId: pDetails._id,
@@ -332,12 +335,20 @@ Template.job.helpers({
         first_max_hours: provider.first_max_hours,
         next_hours: provider.next_hours,
         next_max_hours: provider.next_max_hours,
-        freelancer_nets: provider.freelancer_nets
+        freelancer_nets: provider.freelancer_nets,
       }
-      providerIds.push(providerDetails);
+      providers.push(providerDetails);
     });
-    return providerIds;
+    return providers;
   },
+  // 'selectedProvider': function() {
+  //   Jobs.findOne(this._id).applications.forEach(function(application) {
+  //     if(application.app_status == 'accepted') {
+  //       return true;
+  //     }
+  //     else return false;
+  //   })
+  // },
   'applicationStatus': function() {
     return Jobs.findOne({_id: Router.current().params._id}).applicationStatus;
   },
