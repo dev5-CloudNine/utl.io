@@ -367,12 +367,9 @@ Template.job.helpers({
       return false;
     }
   },
-  notAccepted : function() {
-    return Jobs.findOne({$and:[{_id:this._id},{applicationStatus:{$nin:["assigned","frozen"]}}]})?true:false;
-  },
-  tasksExists : function() {
-    return Jobs.findOne(this._id).tasks?true:false;
-  },
+  // notAccepted : function() {
+  //   return Jobs.findOne({$and:[{_id:this._id},{applicationStatus:{$nin:["assigned"]}}]})?true:false;
+  // },
   taskList: function() {
     return Tasks.find({'jobID':this._id},{sort: {order:1}});
   },
@@ -396,6 +393,7 @@ Template.job.helpers({
     return stateObjArr;
   },
   uploadFile:function(taskID){
+    console.log(taskID);
     var taskObj = Tasks.findOne({_id:taskID});
     if(taskObj && taskObj.taskName.toLowerCase().indexOf('upload') > -1) {
       return true;
