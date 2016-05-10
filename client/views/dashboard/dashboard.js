@@ -73,7 +73,8 @@ Template.dashboard.helpers({
 		})
 		routedJobIds.forEach(function(jId) {
 			routedJobsArray.push(Jobs.findOne({_id: jId}));
-		})
+		});
+		return routedJobsArray;
 	},
 	buyerRoutedJobs: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {routed: true}]}, {sort: {createdAt: -1}});

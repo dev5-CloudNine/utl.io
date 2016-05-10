@@ -1,7 +1,3 @@
-// Meteor.publish('images', function() {
-//     return Images.find();
-// })
-
 Meteor.publish("userData", function() {
     check(arguments, [Match.Any]);
     if (this.userId) {
@@ -399,8 +395,3 @@ Meteor.publish('corporates', function(limit) {
         }
     });
 });
-
-Meteor.publish('images', function() {
-  return Images.find();
-});
-

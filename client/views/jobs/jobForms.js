@@ -38,9 +38,9 @@ Template.assignJob.events({
 				app_type: 'application'
 			}
 			doc.applications.push(appDetails);
+			doc.routed = true;
 		});
 		Jobs.after.insert(function(userId, doc) {
-			doc.routed = true;
 			Meteor.call('assignJobUpdate', doc, pId, function(error) {
 				if(error) {
 					toastr.error('Failed to assign job to the provider');
