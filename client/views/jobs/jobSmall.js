@@ -10,12 +10,14 @@ Template.jobSmall.helpers({
 		if(this.display == false) {
 			return;
 		}
-		if(Jobs.findOne({$and: [{_id: this._id}, {'applications.userId': uId}, {'applications.app_status': 'accepted'}]})) {
-			return true
+		var jobs=Jobs.findOne({_id: this._id}).applications;
+
+		for(var i=0;i<jobs.length;i++){
+			if(jobs[i].userId == uId && jobs[i].app_status == 'accepted') {
+				return true;
+			}
 		}
-		else {
-			return false
-		}
+		return false;
 	},
 	assignedProfile: function() {
 		return Profiles.findOne({userId: this.assignedProvider});

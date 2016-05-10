@@ -59,31 +59,6 @@ Meteor.methods({
     "deleteFile": function(id) {
         Images.remove({_id:id});
     },
-    deactivateJob: function(jobId, filled) {
-        check(jobId, String);
-        check(filled, Boolean);
-
-        var job = Jobs.findOne({
-            _id: jobId
-        });
-        if (!job)
-            throw new Meteor.Error("Could not find job.");
-
-        if (this.userId !== job.userId)
-            throw new Meteor.Error("You can only deactivate your own job.");
-
-        if (job.status !== "active")
-            throw new Meteor.Error("You can only deactivate an active job.");      
-        
-        Jobs.update({
-            _id: jobId
-        }, {
-            $set: {
-                status:(filled ? "filled" : "inactive")
-            }
-        });
-
-    },
     saveJobAsDraft: function(doc) {
         Jobs.insert(doc);
     },
@@ -131,8 +106,8 @@ Meteor.methods({
         Buyers.update({userId: buyerId}, {$addToSet: {ongoingJobs: jobId}});
     },
     declineAssignment: function(jobId, userId) {
-        Jobs.update(jobId, {$set: {applicationStatus: 'open'}});
-        Profiles.update({'userId': userId}, {$pull: {appliedJobs: jobId}});
+        Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {applicationStatus: 'open', 'applications.$.app_status': 'declined'}});
+        // Profiles.update({'userId': userId}, {$pull: {appliedJobs: jobId}});
     },
     // counterOfferThisJob: function(jobId, counterOffer) {
     //     Jobs.update(jobId, {$addToSet: {counterOffers: counterOffer}});
