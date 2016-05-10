@@ -232,3 +232,5 @@ SKILL_SET = function() {
     {label: "Final Cut Pro X", value: "Final Cut Pro X"},
   ]
 }
+
+S3_FILEUPLOADS = "utl";

@@ -484,3 +484,8 @@ button.favInactive {
 .panel-white {
   background-color: white !important;
 }
+
+.form-group .input-group input[type=file] {
+    display:none;
+}
+

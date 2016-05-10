@@ -74,7 +74,7 @@ Jobs.after.insert(function(userId, doc){
   obj.order = 100;
   Tasks.insert(obj);
   var order = 1;
-  doc.tasks.map(function(task){
+  if(doc.tasks) doc.tasks.map(function(task){
       obj.taskName = task.taskname;
       obj.taskdescription = task.taskdescription;
       obj.jobID = doc._id;

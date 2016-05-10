@@ -208,5 +208,14 @@ Meteor.methods({
     },
     updateTask: function(id,obj){
         Tasks.update({'_id':id},{$set:{'state':obj.state,'comments':obj.comments}});
+    },
+    addFile: function(file,id) {
+        Tasks.update(id, {$addToSet: {files: file}});
+    },
+    deleteFile: function(file,id) {
+        Tasks.update(id, {$pull: {files: file}});
+    },
+    recordTime:function(id){
+        Tasks.update({'_id':id},{$set:{'time':new Date()}});
     }
 });
