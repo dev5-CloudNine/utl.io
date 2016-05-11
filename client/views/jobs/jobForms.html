@@ -76,7 +76,7 @@
             {{> afQuickField name='skillsrequired' placeholder="e.g. Cable Operator, DB Admin, Hardware.."}}            
         </div>
     </div>
-    {{> afQuickField name='description' rows=8 placeholder="Tell prospective service providers about this job in detail."}}
+    {{> afQuickField name='description' rows=12 placeholder="Tell prospective service providers about this job in detail."}}
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <label>Upload Documents</label>
@@ -135,9 +135,9 @@
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
             {{>afQuickField name="contactphone"}}
         </div>
-        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{>afQuickField name="fullAddress"}}
-        </div> -->
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{> afQuickField name='confidentialDescription' rows=4 placeholder="All the information you write here will only be display to the assigned provider."}}
         </div>
@@ -213,11 +213,11 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{>afArrayField name="tasks"}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            {{>afArrayField name="shipment"}}
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{> afQuickField name='shipment' rows=4 placeholder="Enter shipped item, shimpent carrier, shipment tracking number and all the other details clearly."}}
         </div>
     </div>
     <!-- <hr>
@@ -234,15 +234,6 @@
                         <input type="radio" name="selectedProviders" data-schema-key="selectedProviders" value="{{this._id}}">{{#with this}} <a href="{{pathFor 'profile'}}"> {{this.name}}</a>{{/with}}
                     </label>
                 </div>
-            {{/each}}
-        </div>
-    </div> -->
-    <!-- <div class="form-group">
-        <div class="col-sm-10">
-            <input type="file" class="file_bag">
-            <button class="upload" multiple="multiple">Upload</button>
-            {{#each files}}
-                <p>{{percent_uploaded}}%</p>
             {{/each}}
         </div>
     </div> -->

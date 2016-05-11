@@ -144,17 +144,16 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{>afArrayField name="languages"}}
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            {{>afQuickField name="educationDetails" rows=8 placeholder="Enter your education details."}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            {{>afQuickField rows=8 name="certifications" placeholder="Enter your certifications."}}
         </div>
     </div>
-    <hr>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            {{>afArrayField name="educationDetails"}}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            {{>afArrayField name="certifications"}}
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{>afArrayField name="languages"}}
         </div>
     </div>
 </template>

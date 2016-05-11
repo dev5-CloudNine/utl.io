@@ -76,10 +76,9 @@ Profiles.attachSchema(
     description: {
       type: String,
       label: "Description *",
-      max: 10000,
-      autoform: {
-        afFieldInput: SUMMERNOTE_OPTIONS
-      }
+      // autoform: {
+      //   afFieldInput: SUMMERNOTE_OPTIONS
+      // }
     },
     htmlDescription: {
       type: String,
@@ -124,67 +123,69 @@ Profiles.attachSchema(
       optional: true
     },
     educationDetails: {
-      type: Array,
-      optional: true
-    },
-    'educationDetails.$': {
-      type: Object,
-      optional: true
-    },
-    'educationDetails.$.qualification': {
       type: String,
-      label: "Qualification",
       optional: true,
-      max: 128
+      label: "Educational Qualification"
     },
-    'educationDetails.$.university': {
-      type: String,
-      label: "College or University",
-      optional: true,
-      max: 128
-    },
-    'educationDetails.$.yearOfPassing': {
-      type: String,
-      label: "Year of Passing",
-      optional: true,
-      max: 128
-    },
+    // 'educationDetails.$': {
+    //   type: Object,
+    //   optional: true
+    // },
+    // 'educationDetails.$.qualification': {
+    //   type: String,
+    //   label: "Qualification",
+    //   optional: true,
+    //   max: 128
+    // },
+    // 'educationDetails.$.university': {
+    //   type: String,
+    //   label: "College or University",
+    //   optional: true,
+    //   max: 128
+    // },
+    // 'educationDetails.$.yearOfPassing': {
+    //   type: String,
+    //   label: "Year of Passing",
+    //   optional: true,
+    //   max: 128
+    // },
     certifications: {
-      type: Array,
-      optional: true
-    },
-    'certifications.$': {
-      type: Object,
-      optional: true
-    },
-    'certifications.$.certificationName': {
       type: String,
-      label: "Certification Name",
       optional: true,
-      max: 128
+      label: "Professional Certifications"
     },
-    'certifications.$.certificationAuthority': {
-      type: String,
-      label: "Certification Authority",
-      optional: true,
-      max: 128
-    },
-    'certifications.$.certificationStartDate': {
-      type: Date,
-      label: "Start Date",
-      optional: true,
-      autoform: {
-        type: "bootstrap-datepicker"
-      }
-    },
-    'certifications.$.certificationEndDate': {
-      type: Date,
-      label: "End Date",
-      optional: true,
-      autoform: {
-        type: "bootstrap-datepicker"
-      }
-    },
+    // 'certifications.$': {
+    //   type: Object,
+    //   optional: true
+    // },
+    // 'certifications.$.certificationName': {
+    //   type: String,
+    //   label: "Certification Name",
+    //   optional: true,
+    //   max: 128
+    // },
+    // 'certifications.$.certificationAuthority': {
+    //   type: String,
+    //   label: "Certification Authority",
+    //   optional: true,
+    //   max: 128
+    // },
+    // 'certifications.$.certificationStartDate': {
+    //   type: Date,
+    //   label: "Start Date",
+    //   optional: true,
+    //   autoform: {
+    //     type: "bootstrap-datepicker"
+    //   }
+    // },
+    // 'certifications.$.certificationEndDate': {
+    //   type: Date,
+    //   label: "End Date",
+    //   optional: true,
+    //   autoform: {
+    //     type: "bootstrap-datepicker"
+    //   }
+    // },
     languages: {
       type: Array,
       optional: true

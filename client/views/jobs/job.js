@@ -284,7 +284,6 @@ Template.job.events({
 
         if (!files) return;
         var id = this._id;
-        console.log(files);
         S3.upload({
             files: files,
             path: S3_FILEUPLOADS
@@ -454,9 +453,9 @@ Template.job.helpers({
       return false;
     }
   },
-  // notAccepted : function() {
-  //   return Jobs.findOne({$and:[{_id:this._id},{applicationStatus:{$nin:["assigned"]}}]})?true:false;
-  // },
+  'providerAssigned': function() {
+    return this.assignedProvider;
+  },
   taskList: function() {
         return Tasks.find({ 'jobID': this._id }, { sort: { order: 1 } });
     },
@@ -537,5 +536,10 @@ Template.job.helpers({
     tasksCompleted:function(){
       var flag = Tasks.findOne({$and:[{ 'jobID': this._id},{'taskName':'Check Out'}]}).time;
       return flag?true:false;
+    },
+    notOpen: function() {
+      if(this.applicationStatus == 'frozen' || this.applicationStatus == 'assigned' || this.applicationStatus == 'done')
+        return true;
+      return false;
     }
 });

@@ -334,11 +334,11 @@ Jobs.attachSchema(
       max: 128,
       optional: true
     },
-    // fullAddress: {
-    //   type: String,
-    //   label: "Full Address",
-    //   optional: true
-    // },
+    fullAddress: {
+      type: String,
+      label: "Full Address",
+      optional: true
+    },
     exactdate: {
       type: Date,
       optional: true,
@@ -388,59 +388,60 @@ Jobs.attachSchema(
       }
     },
     shipment: {
-      type: Array,
-      optional: true,
-    },
-    'shipment.$': {
-      type: Object,
+      type: String,
+      label: "Shipments",
       optional: true
     },
-    'shipment.$.itembeingshipped': {
-      type: String,
-      label: "Shipped Item",
-      max: 128,
-      optional: true
-    },
-    'shipment.$.shipmentcarrier': {
-      type: String,
-      label: "Shipped via",
-      optional: true,
-      autoform: {
-        type: 'select',
-        options: function() {
-          return [
-            {
-              label: "UPS",
-              value: "UPS",
-            },
-            {
-              label: "DHL",
-              value: "DHL"
-            },
-            {
-              label: "Fedex",
-              value: "Fedex"
-            },
-            {
-              label: "Other",
-              value: "Other"
-            }
-          ]
-        }
-      }
-    },
-    'shipment.$.shipmentcarriername': {
-      type: String,
-      label: "Name",
-      max: 128,
-      optional: true
-    },
-    'shipment.$.shipmenttracking': {
-      type: String,
-      label: "Tracking Number",
-      max: 128,
-      optional: true
-    },
+    // 'shipment.$': {
+    //   type: Object,
+    //   optional: true
+    // },
+    // 'shipment.$.itembeingshipped': {
+    //   type: String,
+    //   label: "Shipped Item",
+    //   max: 128,
+    //   optional: true
+    // },
+    // 'shipment.$.shipmentcarrier': {
+    //   type: String,
+    //   label: "Shipped via",
+    //   optional: true,
+    //   autoform: {
+    //     type: 'select',
+    //     options: function() {
+    //       return [
+    //         {
+    //           label: "UPS",
+    //           value: "UPS",
+    //         },
+    //         {
+    //           label: "DHL",
+    //           value: "DHL"
+    //         },
+    //         {
+    //           label: "Fedex",
+    //           value: "Fedex"
+    //         },
+    //         {
+    //           label: "Other",
+    //           value: "Other"
+    //         }
+    //       ]
+    //     }
+    //   }
+    // },
+    // 'shipment.$.shipmentcarriername': {
+    //   type: String,
+    //   label: "Name",
+    //   max: 128,
+    //   optional: true
+    // },
+    // 'shipment.$.shipmenttracking': {
+    //   type: String,
+    //   label: "Tracking Number",
+    //   max: 128,
+    //   optional: true
+    // },
     tasks: {
       type: Array,
       optional: true
@@ -556,9 +557,9 @@ Jobs.attachSchema(
     description: {
       type: String,
       label: "Job Description",
-      autoform: {
-        afFieldInput: SUMMERNOTE_OPTIONS
-      }
+      // autoform: {
+      //   afFieldInput: SUMMERNOTE_OPTIONS
+      // }
     },
     confidentialDescription: {
       type: String,

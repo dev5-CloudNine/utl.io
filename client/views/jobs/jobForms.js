@@ -117,18 +117,7 @@ Template.jobFields.events({
 		} else {
 			$('div.loc').hide();
 		}
-	},
-	// "click button.upload": function(event){
-	// 	event.preventDefault();
- //        var files = $("input.file_bag")[0].files
-
- //        S3.upload({
- //                files:files,
- //                path:"subfolder"
- //            },function(e,r){
- //                console.log(r);
- //        });
- //    }
+	}
 });
 
 Template.jobFields.helpers({
@@ -148,8 +137,5 @@ Template.jobFields.helpers({
 			$('.typeahead').removeClass('loadinggif');
 			return { value: v.city + ", " + v.state + ", " + v.zip}; }));
 		});
-	},
-	// "files": function(){
- //        return S3.collection.find();
- //    }
+	}
 });
