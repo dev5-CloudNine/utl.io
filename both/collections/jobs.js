@@ -26,8 +26,18 @@ Jobs.attachSchema(
       type: String,
       label: "Select Job Category *",
       autoform: {
+        type: "selectize"
+      }
+    },
+    jobSubCategory: {
+      type: String,
+      label: "Select Job Sub Category *",
+      autoform: {
         type: "selectize",
-        options: INDUSTRY_TYPES
+        options: function() {
+          var parId = this.field('jobtype');
+          return SubCategories.find({parentId: parId});
+        }
       }
     },
     routed: {
@@ -388,60 +398,31 @@ Jobs.attachSchema(
       }
     },
     shipment: {
-      type: String,
+      type: Array,
       label: "Shipments",
       optional: true
     },
-    // 'shipment.$': {
-    //   type: Object,
-    //   optional: true
-    // },
-    // 'shipment.$.itembeingshipped': {
-    //   type: String,
-    //   label: "Shipped Item",
-    //   max: 128,
-    //   optional: true
-    // },
-    // 'shipment.$.shipmentcarrier': {
-    //   type: String,
-    //   label: "Shipped via",
-    //   optional: true,
-    //   autoform: {
-    //     type: 'select',
-    //     options: function() {
-    //       return [
-    //         {
-    //           label: "UPS",
-    //           value: "UPS",
-    //         },
-    //         {
-    //           label: "DHL",
-    //           value: "DHL"
-    //         },
-    //         {
-    //           label: "Fedex",
-    //           value: "Fedex"
-    //         },
-    //         {
-    //           label: "Other",
-    //           value: "Other"
-    //         }
-    //       ]
-    //     }
-    //   }
-    // },
-    // 'shipment.$.shipmentcarriername': {
-    //   type: String,
-    //   label: "Name",
-    //   max: 128,
-    //   optional: true
-    // },
-    // 'shipment.$.shipmenttracking': {
-    //   type: String,
-    //   label: "Tracking Number",
-    //   max: 128,
-    //   optional: true
-    // },
+    'shipment.$': {
+      type: Object,
+      optional: true
+    },
+    'shipment.$.itembeingshipped': {
+      type: String,
+      label: "Shipped Item",
+      max: 128,
+      optional: true
+    },
+    'shipment.$.shipmentcarrier': {
+      type: String,
+      label: "Shipment Courier Name",
+      optional: true
+    },
+    'shipment.$.shipmenttracking': {
+      type: String,
+      label: "Tracking Number",
+      max: 128,
+      optional: true
+    },
     tasks: {
       type: Array,
       optional: true

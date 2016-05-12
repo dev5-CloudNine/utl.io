@@ -29,7 +29,7 @@
                                 {{>jobExpiredAlert}} {{#if isInRole 'admin'}} {{>jobAdminEditLink}} {{>jobStatusToggle}} {{>jobSuggestedTweet}} {{/if}} {{>jobStatusAlert}}
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <span class="label label-default label-xs">{{readableID}}</span> {{>jobLabels}}
+                                        <span class="label label-default label-xs pull-right">{{readableID}}</span> {{>jobLabels}}
                                         <h4>{{title}}</h4>
                                         <small>
                                             {{#if $eq servicelocation 'Remote Job'}}

@@ -1,11 +1,13 @@
 <template name="profiles">
-	{{#if currentUser}}
-		{{#if isInRole 'buyer, admin, corporate-admin, corporate-manager'}}
-			{{#each profiles}}
-		        {{>profileSmall}}
-		    {{/each}}  
+	<div class="row">
+		{{#if currentUser}}
+			{{#if isInRole 'buyer, admin, corporate-admin, corporate-manager'}}
+				{{#each profiles}}
+			        {{>profileSmall}}
+			    {{/each}}  
+			{{/if}}
 		{{/if}}
-	{{/if}}
+	</div>
 	<div class="text-center">
 		{{> infiniteScroll }}
 	</div>

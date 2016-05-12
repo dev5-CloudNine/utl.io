@@ -70,7 +70,22 @@
             {{> afQuickField name='title' placeholder="This is the first thing providers see. So keep it precise and descriptive."}}
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            {{> afFormGroup name="jobtype"}}
+            <label for="parentCategories" class="control-label">Select Job Category *</label>
+            <select class="form-control" name="jobtype" id="parentCategories" data-schema-key="jobtype">
+                <option>Select One</option>
+                {{#each parentCategories}}
+                    <option value="{{value}}">{{label}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <label for="childCategories" class="control-label">Select Job Sub Category *</label>
+            <select name="jobSubCategory" id="childCategories" class="form-control" data-schema-key="jobSubCategory">
+                <option>Select One</option>
+                {{#each childCategories}}
+                    <option value="{{value}}">{{label}}</option>
+                {{/each}}
+            </select>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {{> afQuickField name='skillsrequired' placeholder="e.g. Cable Operator, DB Admin, Hardware.."}}            
@@ -217,7 +232,7 @@
             {{>afArrayField name="tasks"}}
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{> afQuickField name='shipment' rows=4 placeholder="Enter shipped item, shimpent carrier, shipment tracking number and all the other details clearly."}}
+            {{>afArrayField name="shipment"}}
         </div>
     </div>
     <!-- <hr>

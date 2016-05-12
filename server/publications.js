@@ -23,6 +23,13 @@ Meteor.publish("messages", function () {
     return Messages.find();
 });
 
+Meteor.publish('categories', function() {
+    return Categories.find({});
+});
+
+Meteor.publish('subcategories', function() {
+    return SubCategories.find({});
+})
 
 Meteor.publish("tasks", function (taskID) {
     return Tasks.find({_id:taskID});

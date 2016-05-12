@@ -61,52 +61,73 @@ Template.assignJob.helpers({
 
 Template.jobFields.events({
 	'change input[name="fixedamount"], keyup input[name="fixedamount"]': function(event, template) {
-		var fixedamount = template.find('input[name="fixedamount"]').value;
-		template.find('input[name="totalfromclient"]').value = fixedamount;
-		template.find('input[name="your_cost"]').value = fixedamount;
-		var freenet = fixedamount - (fixedamount * 5/100);
-		template.find('input[name="freelancer_nets"]').value = freenet;
+		var fixedamount = parseFloat($('input[name="fixedamount"]').val());
+		$('input[name="totalfromclient"]').val(fixedamount);
+		var paidBy = $('input[name="paidby"]:checked').val();
+		if(paidBy == 'You') {
+			$('input[name="your_cost"]').val(fixedamount + (fixedamount * 5/100));
+			$('input[name="freelancer_nets"]').val(fixedamount);
+		} else if(paidBy == 'Provider') {
+			$('input[name="your_cost"]').val(fixedamount);
+			$('input[name="freelancer_nets"]').val(fixedamount - (fixedamount * 5/100));
+		}
 	},
 	'change input[name="hourlyrate"], keyup input[name="hourlyrate"], change input[name="maxhours"], keyup input[name="maxhours"]': function(event, template) {
-		var hourlyrate = template.find('input[name="hourlyrate"]').value;
-		var maxhours = template.find('input[name="maxhours"]').value;
+		var hourlyrate = parseFloat($('input[name="hourlyrate"]').val());
+		var maxhours = parseFloat($('input[name="maxhours"]').val());
 		var totalamount = hourlyrate * maxhours;
-		template.find('input[name="totalfromclient"]').value = totalamount;
-		template.find('input[name="your_cost"]').value = totalamount;
-		var freenet = totalamount - (totalamount * 5/100);
-		template.find('input[name="freelancer_nets"]').value = freenet;
+		$('input[name="totalfromclient"]').val(totalamount);
+		var paidBy = $('input[name="paidby"]:checked').val();
+		if(paidBy == 'You') {
+			$('input[name="your_cost"]').val(totalamount + (totalamount * 5/100));
+			$('input[name="freelancer_nets"]').val(totalamount);
+		} else if(paidBy == 'Provider') {
+			$('input[name="your_cost"]').val(totalamount);
+			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
+		}
 	},
 	'change input[name="rateperdevice"], keyup input[name="rateperdevice"], change input[name="maxdevices"], keyup input[name="maxdevices"]': function(event, template) {
-		var rateperdevice = template.find('input[name="rateperdevice"]').value;
-		var maxdevices = template.find('input[name="maxdevices"]').value;
+		var rateperdevice = parseFloat($('input[name="rateperdevice"]').val());
+		var maxdevices = parseFloat($('input[name="maxdevices"]').val());
 		var totalamount = rateperdevice * maxdevices;
-		template.find('input[name="totalfromclient"]').value = totalamount;
-		template.find('input[name="your_cost"]').value = totalamount;
-		var freenet = totalamount - (totalamount * 5/100);
-		template.find('input[name="freelancer_nets"]').value = freenet;
+		$('input[name="totalfromclient"]').val(totalamount);
+		var paidBy = $('input[name="paidby"]:checked').val();
+		if(paidBy == 'You') {
+			$('input[name="your_cost"]').val(totalamount + (totalamount * 5/100));
+			$('input[name="freelancer_nets"]').val(totalamount);
+		} else if(paidBy == 'Provider') {
+			$('input[name="your_cost"]').val(totalamount);
+			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
+		}
 	},
 	'change input[name="payforfirsthours"], keyup input[name="payforfirsthours"], change input[name="firsthours"], keyup input[name="firsthours"], change input[name="payfornexthours"], keyup input[name="payfornexthours"], change input[name="nexthours"], keyup input[name="nexthours"]': function(event, template) {
-		var payforfirsthours = template.find('input[name="payforfirsthours"]').value;
-		var firsthours = template.find('input[name="firsthours"]').value;
-		var payfornexthours = template.find('input[name="payfornexthours"]').value;
-		var nexthours = template.find('input[name="nexthours"]').value;
+		var payforfirsthours = $('input[name="payforfirsthours"]').val();
+		var firsthours = $('input[name="firsthours"]').val();
+		var payfornexthours = $('input[name="payfornexthours"]').val();
+		var nexthours = $('input[name="nexthours"]').val();
 		var totalforfirsthours = payforfirsthours * firsthours;
 		var totalfornexthours = payfornexthours * nexthours;
 		var totalamount = totalforfirsthours + totalfornexthours;
-		template.find('input[name="totalfromclient"]').value = totalamount;
-		template.find('input[name="your_cost"]').value = totalamount;
-		var freenet = totalamount - (totalamount * 5/100);
-		template.find('input[name="freelancer_nets"]').value = freenet;
+		$('input[name="totalfromclient"]').val(totalamount);
+		var paidBy = $('input[name="paidby"]:checked').val();
+		if(paidBy == 'You') {
+			$('input[name="your_cost"]').val(totalamount + (totalamount * 5/100));
+			$('input[name="freelancer_nets"]').val(totalamount);
+		} else if(paidBy == 'Provider') {
+			$('input[name="your_cost"]').val(totalamount);
+			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
+		}
 	},
 	'change input[value="You"]': function(event, template) {
-		var totalamount = parseInt(template.find('input[name="totalfromclient"]').value);
+		event.preventDefault();
+		var totalamount = parseFloat(template.find('input[name="totalfromclient"]').value);
 		var clientCost = totalamount + totalamount * 5/100;
-		console.log(clientCost);
 		template.find('input[name="your_cost"]').value = clientCost;
 		template.find('input[name="freelancer_nets"]').value = totalamount;
 	},
 	'change input[value="Provider"]': function(event, template) {
-		var totalamount = parseInt(template.find('input[name="totalfromclient"]').value);
+		event.preventDefault();
+		var totalamount = parseFloat(template.find('input[name="totalfromclient"]').value);
 		var freenet = totalamount - totalamount * 5/100;
 		template.find('input[name="your_cost"]').value = totalamount;
 		template.find('input[name="freelancer_nets"]').value = freenet;
@@ -117,8 +138,16 @@ Template.jobFields.events({
 		} else {
 			$('div.loc').hide();
 		}
+	},
+	'change #parentCategories': function(event, instance) {
+		var parentId = $(event.target).val();
+		instance.selParent.set(parentId);
 	}
 });
+
+Template.jobFields.created = function() {
+	this.selParent = new ReactiveVar(null);
+}
 
 Template.jobFields.helpers({
 	locationData : function(){
@@ -137,5 +166,12 @@ Template.jobFields.helpers({
 			$('.typeahead').removeClass('loadinggif');
 			return { value: v.city + ", " + v.state + ", " + v.zip}; }));
 		});
+	},
+	parentCategories: function() {
+		return Categories.find().fetch();
+	},
+	childCategories: function () {
+		var parentId = Template.instance().selParent.get();
+		return parentId ? SubCategories.find({parentId: parentId}) : null;
 	}
 });

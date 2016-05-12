@@ -39,6 +39,21 @@ AdminConfig = {
         {label: 'User Name', name: 'userName'},
         {label: 'Status', name: 'status'}
       ]
+    },
+    Categories: {
+      icon: 'list',
+      tableColumns: [
+        {label: 'ID', name: "_id"},
+        {label: 'Category', name: 'label'}
+      ]
+    },
+    SubCategories: {
+      icon: 'list-alt',
+      tableColumns: [
+        {label: 'ID', name: "_id"},
+        {label: 'Category', name: 'parentId'},
+        {label: 'Sub Category', name: 'label'}
+      ]
     }
   },
   autoForm:{
