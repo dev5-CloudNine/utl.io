@@ -1,4 +1,6 @@
 <template name="job">
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <div id="job" class="row">
         <div class="col-sm-12">
             <div class="board">
@@ -19,6 +21,15 @@
                              </span>
                             </a>
                         </li>
+                        {{#if show _id}}
+                        <li>
+                            <a href="#timesheet" data-toggle="tab">
+                                <span class="round-tabs two">
+                                  <i class="glyphicon glyphicon-calendar"></i>&nbsp; Timesheet
+                             </span>
+                            </a>
+                        </li>
+                        {{/if}}
                     </ul>
                 </div>
                 <div class="tab-content">
@@ -434,20 +445,6 @@
                                                     </div>
                                                 </div>
                                                 {{#if show jobID}}
-                                                {{#if checkinout _id}}
-                                                    <div class="form-group">
-                                                        <label class="control-label col-sm-2" for="state">{{taskName}} </label>
-                                                        {{#if completed _id}}
-                                                        <div class="col-sm-10">
-                                                            <div style="padding-top: 8px"> {{momentjs time}}</div>
-                                                        </div>
-                                                        {{else}}
-                                                        <div class="col-sm-3">
-                                                        <button class="btn btn-success timer-btn" data-id="{{_id}}"><i class="fa fa-clock-o" aria-hidden="true"></i> Click here to {{taskName}}</button>
-                                                        </div>
-                                                        {{/if}}
-                                                    </div>
-                                                {{else}}
                                                     <div class="form-group">
                                                         <label class="control-label col-sm-2" for="state">State</label>
                                                         <div class="col-sm-10">
@@ -458,30 +455,33 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                {{/if}}
-                                                {{#if uploadFile _id}}
-                                                <div class="form-group">
-                                                    <label class="control-label col-sm-2" for="comments">Uploaded files</label>
-                                                    <div class="col-sm-10">
-                                                        <ul style="list-style-type: none;padding: 0;" class="files">
-                                                            {{#each fileList _id}}
-                                                            <li><i class="fa fa-times-circle remove-file" data-id="{{../_id}}" data-path={{this}} aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this}}" target="_blank">{{this}}</a> </li>
-                                                            {{else}}
-                                                            <li><a href="#">No files found</a></li>
-                                                            {{/each}}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-sm-2"></label>
-                                                    <div class="col-sm-2">
-                                                        <div class="input-group">
-                                                            <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px">
-                                                                <input type="file" class="file_bag" accept="{{fileType _id}}"> Upload New
-                                                            </label>
+                                                    {{#if uploadFile _id}}
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-2" for="comments">Uploaded files</label>
+                                                        <div class="col-sm-10">
+                                                            <ul style="list-style-type: none;padding: 0;" class="files">
+                                                                {{#each fileList _id}}
+                                                                <li>{{#if isBuyer}}<i class="fa fa-times-circle remove-file" data-id="{{../_id}}" data-path={{this}} aria-hidden="true" title="Remove" style="cursor: pointer;"></i> {{/if}}<a href="{{this}}" target="_blank">{{this}}</a> </li>
+                                                                {{else}}
+                                                                <li><a href="#">No files found</a></li>
+                                                                {{/each}}
+                                                            </ul>
                                                         </div>
                                                     </div>
-                                                </div>
+
+                                                    {{#unless isBuyer}}
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-2"></label>
+                                                        <div class="col-sm-2">
+                                                            <div class="input-group">
+                                                                <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px">
+                                                                    <input type="file" class="file_bag" accept="{{fileType _id}}"> Upload New
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {{/unless}}
                                                 {{/if}}
                                                 <div class="form-group">
                                                     <label class="control-label col-sm-2" for="comments">Comments</label>
@@ -492,7 +492,7 @@
                                                 {{#if isBuyer}} {{else}}
                                                 <div class="form-group">
                                                     <div class="col-sm-offset-2 col-sm-10">
-                                                        <button type="submit" class="btn btn-default">Update</button>
+                                                        <button type="submit" class="btn btn-default submit-task">Update</button>
                                                     </div>
                                                 </div>
                                                 {{/if}} {{/if}}
@@ -501,6 +501,53 @@
                                     </div>
                                 </div>
                                 {{/each}}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="timesheet">
+                            <br>
+                            <div class="panel panel-default">
+                            <div class="panel-body" style="background: #fff;">
+                            <div class="row">
+                                {{#if show _id}}
+                                {{#unless isBuyer}}
+                                <div class="col-sm-3">
+                                    <input type="checkbox" class="check-in-toggle" data-id={{_id}} data-onstyle="info" data-offstyle="default" data-toggle="toggle" data-on="Check In" data-off="Check Out">
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="alert alert-info show-checkin-time">
+                                      <strong>Checked In time</strong> <span class="checked-in-time">{{checkInTime}}</span>
+                                    </div>
+                                </div>
+                                {{/unless}}
+                                {{/if}}
+                                <div class="col-sm-4">
+                                    <div class="alert alert-success">
+                                      <strong>Total [{{totalHours}}]</strong> 
+                                    </div>
+                                </div>                                
+                            </div>
+                            <hr>
+                            {{#if timeLogs _id}}
+                            <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th>Check In</th>
+                                    <th>Check Out</th>
+                                    <th>Total (Days : Hours : Minutes)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {{#each timeLogs ../_id}}
+                                  <tr>
+                                    <td>{{in}}</td>
+                                    <td>{{out}}</td>
+                                    <td>{{total}}</td>
+                                  </tr>
+                                {{/each}}
+                                </tbody>
+                              </table>
+                              {{/if}}
+                            </div>
                             </div>
                         </div>
                     <div class="clearfix"></div>

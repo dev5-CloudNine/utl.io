@@ -489,3 +489,11 @@ button.favInactive {
     display:none;
 }
 
+.toggle.btn {
+    min-width: 100% !important;
+    min-height: 52px !important;
+}
+
+.toggle .toggle-group .btn {
+  padding: 15px;
+}

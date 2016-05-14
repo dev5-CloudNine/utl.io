@@ -62,29 +62,22 @@ Corporates.after.remove(function(userId, doc) {
   });
 });
 
+Jobs.after.remove(function(userId, doc) {
+  TimeSheet.remove({'jobID':doc._id});
+  Tasks.remove({'jobID':doc._id});
+});
+
+
 Jobs.after.insert(function(userId, doc){
-
-
   var obj ={};
-
-  obj.taskName = "Check In";
-  obj.taskdescription = "Please complete this task to before starting any other tasks";
-  obj.jobID = doc._id;
-  obj.order = 0;
-  Tasks.insert(obj);
-  obj.taskName = "Check Out";
-  obj.taskdescription = "Please complete when you completed all other tasks";
-  obj.jobID = doc._id;
-  obj.order = 100;
-  Tasks.insert(obj);
-  var order = 1;
   if(doc.tasks) doc.tasks.map(function(task){
       obj.taskName = task.taskname;
       obj.taskdescription = task.taskdescription;
       obj.jobID = doc._id;
-      obj.order = order++;
       Tasks.insert(obj);
   });
+
+  TimeSheet.insert({jobID:doc._id,"checkIn" : ""});
 
   var admin = Users.findOne({roles:"admin"});
   Email.send({
@@ -102,7 +95,7 @@ Jobs.after.insert(function(userId, doc){
 });
 
 Jobs.before.insert(function(userId, doc){
-  var id = Jobs.findOne({},{limit:1,sort:{'readableID':-1}});
+  var id = Jobs.findOne({},{limit:1,sort:{'createdAt':-1}});
   if(id) {
     id = parseInt(id.readableID.substring(5));
   } else {
@@ -113,7 +106,7 @@ Jobs.before.insert(function(userId, doc){
 });
 
 Meteor.users.before.insert(function(userId,doc){
-  var id = Meteor.users.findOne({},{limit:1,sort:{'readableID':-1}});
+  var id = Meteor.users.findOne({},{limit:1,sort:{'createdAt':-1}});
   if(id) {
     id = parseInt(id.readableID.substring(5));
   } else {
