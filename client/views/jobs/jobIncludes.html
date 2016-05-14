@@ -1,6 +1,6 @@
 <template name="jobLabels">
     {{#if featured}}<span class="label label-primary"><i class="fa fa-trophy"></i> Featured</span>{{/if}} <br>
-    {{#if jobtype}}<span><a href>{{jobtype}}</a></span>&nbsp;&gt;&nbsp;<a href>{{jobSubCategory}}</a>{{/if}}
+    {{#if jobtype}}<span><a href><small>{{jobtype}}</small></a></span>&nbsp;&gt;&nbsp;<a href><small>{{jobSubCategory}}</small></a>{{/if}}
 </template>
 <template name="jobExpiredAlert">
     {{#if expired}}

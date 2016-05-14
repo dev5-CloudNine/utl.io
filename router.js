@@ -28,16 +28,6 @@ Router.map(function() {
                     },
                     limit: 10
                 }),
-                featuredJobs: Jobs.find({
-                    featuredThrough: {
-                        $gte: new Date()
-                    },
-                    status: "active"
-                }, {
-                    sort: {
-                        featuredThrough: -1
-                    }
-                }),
                 profiles: Profiles.find({}, {
                     sort: {
                         availableForHire: -1,
@@ -61,11 +51,6 @@ Router.map(function() {
         waitOn: function() {
             return subs.subscribe("jobs");
         }
-    });
-
-    this.route('appliedJobs', {
-        path: '/myAppliedJobs',
-        title: "UTL - My Applied Jobs",
     });
 
     this.route('job', {

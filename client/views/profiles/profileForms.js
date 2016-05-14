@@ -130,7 +130,7 @@ Template.profileFields.rendered = function() {
     }
   }, 10);
 
-   Meteor.typeahead.inject('.typeahead');
+  Meteor.typeahead.inject('.typeahead');
 };
 
 var locLoaded=false;
@@ -160,6 +160,16 @@ Template.profileFields.helpers({
               $('.typeahead').removeClass('loadinggif');
               return { value: v.city + ", " + v.state + ", " + v.zip}; }));
       });
+  },
+  parentCategories: function() {
+    return Categories.find().fetch();
+  },
+  childCategories: function(parentId) {
+    return SubCategories.find({parentId: parentId}).map(function(c) {
+      return {label: c.value, value: c._id}
+    });
+  },
+  parentId: function() {
+    return Categories.findOne({value: this.parentId})._id;
   }
-
 });

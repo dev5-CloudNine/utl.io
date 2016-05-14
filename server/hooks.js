@@ -8,6 +8,10 @@ Profiles.after.insert(function(userId, doc) {
   });
 });
 
+Profiles.before.insert(function(userId, doc) {
+  console.log(doc);
+})
+
 Profiles.after.remove(function(userId, doc) {
   Users.update({
     _id: doc.userId

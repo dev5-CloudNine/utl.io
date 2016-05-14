@@ -24,10 +24,7 @@ Jobs.attachSchema(
     },
     jobtype: {
       type: String,
-      label: "Select Job Category *",
-      autoform: {
-        type: "selectize"
-      }
+      label: "Select Job Category *"
     },
     jobSubCategory: {
       type: String,
@@ -210,18 +207,10 @@ Jobs.attachSchema(
           }
         }
     },
-    // fileId: {
-    //   type: String,
-    //   label: "Upload File",
-    //   optional: true,
-    //   autoform: {
-    //     afFieldInput: {
-    //       type: 'file',
-    //       collection: "UploadedDocuments",
-    //       label: "Uploaded Documents"
-    //     }
-    //   }
-    // },
+    files: {
+      type: [String],
+      optional: true
+    },
     applications: {
       type: Array,
       optional: true

@@ -106,7 +106,7 @@ Meteor.publishComposite('providers', {
         }, {
             sort: {
                 availableForHire: -1,
-                randomSorter: 1
+                createdAt: 1
             },
             limit: 8,
             fields: {
@@ -376,7 +376,7 @@ Meteor.publish('profiles', function(limit) {
     return Profiles.find(selector, {
         limit: limit,
         sort: {
-            randomSorter: 1
+            createdAt: 1
         }
     });
 });

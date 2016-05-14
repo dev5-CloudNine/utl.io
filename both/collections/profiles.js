@@ -95,7 +95,11 @@ Profiles.attachSchema(
       label: "Select Job Categories *",
       autoform: {
         type: "selectize",
-        options: INDUSTRY_TYPES,
+        options: function() {
+          return SubCategories.find().map(function(category) {
+            return {label: category.label, value: category.value}
+          })
+        },
         multiple: true
       }
     },
