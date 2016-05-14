@@ -248,35 +248,25 @@ Template.job.events({
       }
     })
   },
-  'click button[type=submit]': function(event, template) {
-    event.preventDefault();
-    var obj = {};
-    obj.state = $('#state').val();
-    obj.comments = $('#comments').val();
-    obj.task = $('#taskName').val();
-    obj.jobID =  Router.current().params.jobID;
-    var id = $('#task-form').data('id');
-    Meteor.call('updateTask',id,obj,function(err,res){
-      if(err) {
-        toastr.error('Operation failed');
-      } else {
-        toastr.success('Task has been updated');
-      }
-    });
-    event.preventDefault();
-  },
-  "click button.upload": function(event){
-    event.preventDefault();
-        var files = $("input.file_bag")[0].files;
-        Meteor.call('updateTask',id,obj,function(err,res){
-          if(err) {
-            toastr.error('Operation failed');
-          } else {
-            toastr.success('Task has been updated');
-          }
-        });
-        event.preventDefault();
-    },
+  'click button.submit-task': function(event, template) {
+       event.preventDefault();
+       var id = $(event.currentTarget).parent().parent().parent().parent().find('.task-form').data('id');
+
+       var obj = {};
+       obj.state = $(event.currentTarget).parent().parent().parent().find('.state').val();
+       obj.comments = $(event.currentTarget).parent().parent().parent().find('.comments').val();
+       obj.task = $(event.currentTarget).parent().parent().parent().find('.taskName').val();
+       obj.jobID = Router.current().params.jobID;
+ 
+       Meteor.call('updateTask',id,obj,function(err,res){
+         if(err) {
+           toastr.error('Operation failed');
+         } else {
+           toastr.success('Task has been updated');
+         }
+       });
+       event.preventDefault();
+   },
     "change .file_bag": function(event) {
         event.preventDefault();
         $('#spinner').show();
@@ -318,40 +308,21 @@ Template.job.events({
           }
       });
     },
-    "click button.timer-btn": function(event){
-      event.preventDefault();
-      var id = $(event.currentTarget).data('id');        
-      var action = checkSequence(id);
-      if(action) {
-        toastr.warning(action);
-        return;
-      } 
-      Meteor.call('recordTime', id, function (error, result) {});
+    "change .check-in-toggle" : function(event) {
+      var id = $(event.currentTarget).data('id'); 
+      if($(event.currentTarget).is(":checked")){
+        //Checked Out
+        Meteor.call('recordTime',id,false,function (error, result) {});
+        $('.show-checkin-time').hide();
+      }
+      else{
+        //Checked In
+        Meteor.call('recordTime',id,true,function (error, result) {});
+        $('.show-checkin-time').show();
+      }
     }
 
 });
-
-function checkSequence(id) {
-  var task = Tasks.findOne({ '_id': id });
-  if(task.taskName=="Check In") {
-    return false;
-  } else if(task.taskName=="Check Out") {
-    var flag = Tasks.findOne({$and:[{ 'jobID': task.jobID},{'taskName':'Check In'}]}).time;
-    if(!flag) return "Start by Cheking In. Checkout once all the tasks are completed";
-    flag = Tasks.findOne({$and:[{ 'jobID': task.jobID },{state:{$ne:'Completed'}},{taskName:{$nin:['Check In','Check Out']}}]});
-    if(flag) return "Complete all the tasks before Checking out";
-  } else {
-    var flag = Tasks.findOne({$and:[{ 'jobID': task.jobID},{'taskName':'Check In'}]}).time;
-    if(!flag) return "Please Check In before completing other tasks";
-    var flag = Tasks.findOne({$and:[{ 'jobID': task.jobID },{'taskName':'Check Out'}]}).time;
-    if(flag) return "Check out has been made for this project. Any opetation on other tasks are considered invalid";
-  }
-  return false;
-}
-
-Template.job.rendered = function() {
-      $('#spinner').hide();
-};
 
 Template.job.helpers({
   'buyerData': function() {
@@ -490,6 +461,7 @@ Template.job.helpers({
     },
 
     show: function(jobID) {
+        delete Session.keys.totalHours;
         if (Meteor.user() &&
             Meteor.user().roles &&
             (Meteor.user().roles.indexOf("buyer")) != -1) {
@@ -519,13 +491,6 @@ Template.job.helpers({
             return "*";
       
     },
-    checkinout: function(taskID) {
-        var taskObj = Tasks.findOne({ _id: taskID });
-        if (taskObj && taskObj.taskName.toLowerCase().indexOf('check') > -1)
-            return true;
-        else
-            return false;
-    },
     completed: function(taskID) {
         var taskObj = Tasks.findOne({ _id: taskID });
         return taskObj.time?true:false;
@@ -541,5 +506,65 @@ Template.job.helpers({
       if(this.applicationStatus == 'frozen' || this.applicationStatus == 'assigned' || this.applicationStatus == 'done')
         return true;
       return false;
+    },
+    checkInTime: function(){
+      var date = TimeSheet.findOne({'jobID':this._id}).checkIn;
+      return moment(date).format('llll');
+    },
+    timeLogs:function(id){
+      var logList = [];
+      var totalHours = 0;
+      TimeSheet.findOne({'jobID':id}, { sort: { 'logs.checkOut': -1 } }).logs.map(function(log){
+        var obj = {};
+        obj.in = moment(log.checkIn).format('llll');
+        obj.out = moment(log.checkOut).format('llll');
+        var inT = moment(obj.in);
+        var ouT = moment(obj.out);
+        var diff = ouT.diff(inT);
+        var duration = moment.duration(diff,'milliseconds');
+        var days = Math.floor(duration.asDays());
+        var hours = Math.floor(duration.asHours()) - days * 24;
+        var hrs = days*24+hours;
+        var mins = Math.floor(duration.asMinutes()) - hrs * 60;
+        var total = "Days : " + days+", Hours : "+hours+", Mins : "+mins;
+        obj.total = total;
+        totalHours+=diff;
+        logList.push(obj);
+      });
+
+      var duration = moment.duration(totalHours,'milliseconds');
+      var days = Math.floor(duration.asDays());
+      var hours = Math.floor(duration.asHours()) - days * 24;
+      var hrs = days*24+hours;
+      var mins = Math.floor(duration.asMinutes()) - hrs * 60;
+      var total = "Days : " + days+", Hours : "+hours+", Mins : "+mins;
+      Session.set('totalHours',total);
+
+      return logList;
+    },
+    totalHours : function(){
+      return Session.get('totalHours');
     }
 });
+
+Template.job.rendered = function() {
+      $('#spinner').hide();
+      var id = $('.check-in-toggle').data('id');
+      var displayTime = TimeSheet.findOne({'jobID':id});
+      if(displayTime) {
+        displayTime = displayTime.checkIn;
+      } else {
+        $('.check-in-toggle').prop("checked", true);
+        $('.show-checkin-time').hide();
+        return;
+      }
+      if(displayTime=='') {
+        $('.check-in-toggle').prop("checked", true);
+        $('.show-checkin-time').hide();
+      }
+      else {
+        $('.check-in-toggle').prop("checked", false);
+        $('.show-checkin-time').show();
+      }
+
+};

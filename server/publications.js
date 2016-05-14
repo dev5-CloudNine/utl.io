@@ -34,6 +34,10 @@ Meteor.publish('subcategories', function() {
 Meteor.publish("tasks", function (taskID) {
     return Tasks.find({_id:taskID});
 });
+Meteor.publish("timeSheet", function (id) {
+    return TimeSheet.find({jobID:id});
+});
+
 
 
 Meteor.publish("tasksOfaJob", function (id) {

@@ -190,7 +190,16 @@ Meteor.methods({
     deleteFile: function(file,id) {
         Tasks.update(id, {$pull: {files: file}});
     },
-    recordTime:function(id){
-        Tasks.update({'_id':id},{$set:{'time':new Date()}});
+    recordTime:function(id,isCheckIn){
+        if(isCheckIn){
+            TimeSheet.update({'jobID':id},{$set:{'checkIn':new Date()}});
+        } else {
+            var checkInTime = TimeSheet.findOne({'jobID':id}).checkIn;
+            var obj = {};
+            obj.checkIn = checkInTime;
+            obj.checkOut = new Date();
+            TimeSheet.update({'jobID':id},{$set:{checkIn:''}});
+            TimeSheet.update({'jobID':id},{$push:{'logs':obj}});
+        }
     }
 });

@@ -2,6 +2,7 @@ Messages = new Meteor.Collection("messages");
 Tasks = new Meteor.Collection("tasks");
 Categories = new Meteor.Collection("Categories");
 SubCategories = new Meteor.Collection("subcategories");
+TimeSheet = new Meteor.Collection("timeSheet");
 
 Categories.attachSchema(
 	new SimpleSchema({

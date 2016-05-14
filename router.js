@@ -81,6 +81,7 @@ Router.map(function() {
         },
         waitOn: function() {
             Meteor.subscribe("tasksOfaJob",this.params._id);
+            Meteor.subscribe("timeSheet",this.params._id);
             return subs.subscribe("job", this.params._id);
         },
         onBeforeAction: function() {
