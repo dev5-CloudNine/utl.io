@@ -40,7 +40,7 @@
                                 {{>jobExpiredAlert}} {{#if isInRole 'admin'}} {{>jobAdminEditLink}} {{>jobStatusToggle}} {{>jobSuggestedTweet}} {{/if}} {{>jobStatusAlert}}
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <span class="label label-default label-xs pull-right">{{readableID}}</span> {{>jobLabels}}
+                                        <span class="label label-default label-xs">{{readableID}}</span> {{>jobLabels}}
                                         <h4>{{title}}</h4>
                                         <small>
                                             {{#if $eq servicelocation 'Remote Job'}}
@@ -67,7 +67,7 @@
                                         <hr>
                                         <h4>Description</h4> {{{htmlDescription}}}
                                         <hr> {{#if location}}
-                                        <h4>Service Location</h4> Address: {{location}}
+                                        <h4>Service Location</h4> {{location}}
                                         <hr> {{/if}}
                                         <h4>Service Schedule</h4> {{#if exactdate}} On: {{exactdate}} {{/if}} {{#if startdate}} Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} through {{endtime}} {{/if}} {{#if ratebasis}}
                                         <hr>
@@ -133,231 +133,236 @@
                                                     <div class="panel panel-white">
                                                         <br>
                                                         {{#if isInRole 'provider, corporate-provider'}}
-                                                            <div class="radio">
-                                                                <label>
-                                                                    <input type="radio" name="app_type" value="application">I accept the proposed budget.
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio">
-                                                                <label>
-                                                                    <input type="radio" name="app_type" value="counteroffer">I wish to counter offer.
-                                                                </label>
-                                                            </div>
-                                                            <div id="app_selected" hidden>
-                                                                {{#if $eq applicationStatus 'open'}} {{#if currentUser.isDeveloper}}
-                                                                <button class="btn btn-primary {{#if applied}}applyActive{{else}}applyInactive{{/if}}"><i>{{#if applied}}Cancel Application{{else}}Apply{{/if}}</i></button>
-                                                                {{else}}
-                                                                <h6>You must create your profile before you can apply for this job. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your profile.</h6> {{/if}} {{/if}}
-                                                            </div>
-                                                            <div id="counter_selected" hidden>
-                                                                {{#if $eq applicationStatus 'open'}} 
-                                                                    {{#if currentUser.isDeveloper}}
-                                                                        <div class="panel panel-default panel-white">
-                                                                            <div class="panel-body">
-                                                                                <form id="counter_offer_form">
-                                                                                    <div class="row">
-                                                                                        <div class="col-sm-6">
-                                                                                            <label>Payment Type</label>
-                                                                                            <select class="form-control" name="counter_type" id="counter_type" required>
-                                                                                                <option selected="selected">Select one</option>
-                                                                                                <option value="fixed_pay">Fixed Pay</option>
-                                                                                                <option value="per_hour">Per hour</option>
-                                                                                                <option value="per_device">Per device</option>
-                                                                                                <option value="blended">Blended</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <hr>
-                                                                                    <div id="fixed-pay-counter" hidden>
+                                                            {{#if applied}}
+                                                                <h5>You've applied for this job. You may cancel your application</h5>
+                                                                <button class="btn btn-primary applyActive">Cancel Application</button>
+                                                            {{else}}
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        <input type="radio" name="app_type" value="application">I accept the proposed budget.
+                                                                    </label>
+                                                                </div>
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        <input type="radio" name="app_type" value="counteroffer">I wish to counter offer.
+                                                                    </label>
+                                                                </div>
+                                                                <div id="app_selected" hidden>
+                                                                    {{#if $eq applicationStatus 'open'}} {{#if currentUser.isDeveloper}}
+                                                                    <button class="btn btn-primary {{#if applied}}applyActive{{else}}applyInactive{{/if}}"><i>{{#if applied}}Cancel Application{{else}}Apply{{/if}}</i></button>
+                                                                    {{else}}
+                                                                    <h6>You must create your profile before you can apply for this job. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your profile.</h6> {{/if}} {{/if}}
+                                                                </div>
+                                                                <div id="counter_selected" hidden>
+                                                                    {{#if $eq applicationStatus 'open'}} 
+                                                                        {{#if currentUser.isDeveloper}}
+                                                                            <div class="panel panel-default panel-white">
+                                                                                <div class="panel-body">
+                                                                                    <form id="counter_offer_form">
                                                                                         <div class="row">
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="fixed_amount">Fixed Amount</label>
-                                                                                                <input type="number" class="form-control" id="fixed_amount" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="fixed_total">Total Amount</label>
-                                                                                                <input type="number" class="form-control" id="fixed_total" name="total_amount" readonly="true" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="utl_fees">UTL Fees</label>
-                                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                                                                            <div class="col-sm-6">
+                                                                                                <label>Payment Type</label>
+                                                                                                <select class="form-control" name="counter_type" id="counter_type" required>
+                                                                                                    <option selected="selected">Select one</option>
+                                                                                                    <option value="fixed_pay">Fixed Pay</option>
+                                                                                                    <option value="per_hour">Per hour</option>
+                                                                                                    <option value="per_device">Per device</option>
+                                                                                                    <option value="blended">Blended</option>
+                                                                                                </select>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label>Paid By</label>
-                                                                                                <br>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="provider" checked="checked"> Provider
-                                                                                                </label>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                                                </label>
+                                                                                        <hr>
+                                                                                        <div id="fixed-pay-counter" hidden>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="fixed_amount">Fixed Amount</label>
+                                                                                                    <input type="number" class="form-control" id="fixed_amount" step="any" min="1">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label for="fixed_total">Total Amount</label>
+                                                                                                    <input type="number" class="form-control" id="fixed_total" name="total_amount" readonly="true" step="any" min="1">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="utl_fees">UTL Fees</label>
+                                                                                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                                                                                </div>
                                                                                             </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="buyer_fixed_cost">Buyer's Cost</label>
-                                                                                                <input type="number" class="form-control" id="buyer_fixed_cost" name="buyer_cost" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="freelancer_fixed_nets">Freelancer Nets</label>
-                                                                                                <input type="number" id="freelancer_fixed_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label>Paid By</label>
+                                                                                                    <br>
+                                                                                                    <label class="radio-inline">
+                                                                                                        <input type="radio" name="paidby" value="provider" checked="checked"> Provider
+                                                                                                    </label>
+                                                                                                    <label class="radio-inline">
+                                                                                                        <input type="radio" name="paidby" value="buyer"> Buyer
+                                                                                                    </label>
+                                                                                                </div>
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label for="buyer_fixed_cost">Buyer's Cost</label>
+                                                                                                    <input type="number" class="form-control" id="buyer_fixed_cost" name="buyer_cost" step="any" min="1" readonly="true">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="freelancer_fixed_nets">Freelancer Nets</label>
+                                                                                                    <input type="number" id="freelancer_fixed_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                    </div>
-                                                                                    <div id="hourly-counter" hidden>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="hourly_rate">Hourly Rate (USD)</label>
-                                                                                                <input type="number" class="form-control" id="hourly_rate" step="any" min="1">
+                                                                                        <div id="hourly-counter" hidden>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="hourly_rate">Hourly Rate (USD)</label>
+                                                                                                    <input type="number" class="form-control" id="hourly_rate" step="any" min="1">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="max_hours">Maximum Hours</label>
+                                                                                                    <input type="number" class="form-control" id="max_hours" step="any" min="1">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label for="hourly_total">Total Amount</label>
+                                                                                                    <input type="number" class="form-control" name="total_amount" id="hourly_total" readonly="true" step="any" min="1">
+                                                                                                </div>
                                                                                             </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="max_hours">Maximum Hours</label>
-                                                                                                <input type="number" class="form-control" id="max_hours" step="any" min="1">
+                                                                                            <br>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="utl_fees">UTL Fees</label>
+                                                                                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                                                                                </div>
                                                                                             </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="hourly_total">Total Amount</label>
-                                                                                                <input type="number" class="form-control" name="total_amount" id="hourly_total" readonly="true" step="any" min="1">
+                                                                                            <br>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label>Paid By</label>
+                                                                                                    <br>
+                                                                                                    <label class="radio-inline">
+                                                                                                        <input type="radio" name="paidby" value="provider" checked="checked"> Provider
+                                                                                                    </label>
+                                                                                                    <label class="radio-inline">
+                                                                                                        <input type="radio" name="paidby" value="buyer"> Buyer
+                                                                                                    </label>
+                                                                                                </div>
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label for="buyer_cost">Buyer's Cost</label>
+                                                                                                    <input type="number" class="form-control" name="buyer_cost" id="buyer_hourly_cost" step="any" min="1" readonly="true">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="freelancer_hourly_nets">Freelancer Nets</label>
+                                                                                                    <input type="number" id="freelancer_hourly_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div id="per-device-counter" hidden>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="device_rate">Device Rate (USD)</label>
+                                                                                                    <input type="number" class="form-control" id="device_rate" step="any" min="1">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="max_devices">Maximum devices</label>
+                                                                                                    <input type="number" class="form-control" id="max_devices" step="any" min="1">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label for="device_total">Total Amount</label>
+                                                                                                    <input type="number" class="form-control" name="total_amount" id="device_total" readonly="true" step="any" min="1">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="utl_fees">UTL Fees</label>
+                                                                                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label>Paid By</label>
+                                                                                                    <br>
+                                                                                                    <label class="radio-inline">
+                                                                                                        <input type="radio" name="paidby" value="provider" checked="checked"> Provider
+                                                                                                    </label>
+                                                                                                    <label class="radio-inline">
+                                                                                                        <input type="radio" name="paidby" value="buyer"> Buyer
+                                                                                                    </label>
+                                                                                                </div>
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label for="buyer_device_cost">Buyer's Cost</label>
+                                                                                                    <input type="number" class="form-control" name="buyer_cost" id="buyer_device_cost" step="any" min="1" readonly="true">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="freelancer_device_nets">Freelancer Nets</label>
+                                                                                                    <input type="number" id="freelancer_device_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div id="blended-counter" hidden>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-3">
+                                                                                                    <label for="first_hours">Pay USD</label>
+                                                                                                    <input type="number" class="form-control" id="first_hours" step="any" min="1">
+                                                                                                </div>
+                                                                                                <div class="col-sm-3">
+                                                                                                    <label for="first_max_hours">total for the first</label>
+                                                                                                    <input type="number" class="form-control" id="first_max_hours" step="any" min="1">
+                                                                                                </div>
+                                                                                                <div class="col-sm-3">
+                                                                                                    <label for="next_hours">hour(s) and then USD</label>
+                                                                                                    <input type="number" class="form-control" id="next_hours" step="any" min="1">
+                                                                                                </div>
+                                                                                                <div class="col-sm-3">
+                                                                                                    <label for="next_max_hours">per hour for upto</label>
+                                                                                                    <input type="number" class="form-control" id="next_max_hours" step="any" min="1">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label for="blended_total">Total Amount</label>
+                                                                                                    <input type="number" class="form-control" name="total_amount" id="blended_total" readonly="true" step="any" min="1">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="utl_fees">UTL Fees</label>
+                                                                                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label>Paid By</label>
+                                                                                                    <br>
+                                                                                                    <label class="radio-inline">
+                                                                                                        <input type="radio" name="paidby" value="provider"> Provider
+                                                                                                    </label>
+                                                                                                    <label class="radio-inline">
+                                                                                                        <input type="radio" name="paidby" value="buyer"> Buyer
+                                                                                                    </label>
+                                                                                                </div>
+                                                                                                <div class="col-sm-4" hidden="true">
+                                                                                                    <label for="buyer_blended_cost">Buyer's Cost</label>
+                                                                                                    <input type="number" class="form-control" name="buyer_cost" id="buyer_blended_cost" step="any" min="1" readonly="true">
+                                                                                                </div>
+                                                                                                <div class="col-sm-4">
+                                                                                                    <label for="freelancer_blended_nets">Freelancer Nets</label>
+                                                                                                    <input type="number" id="freelancer_blended_nets" class="form-control" name="freelancer_nets" step="any" min="1" readonly="true">
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <br>
                                                                                         <div class="row">
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="utl_fees">UTL Fees</label>
-                                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                                                                            <div class="col-sm-12">
+                                                                                                <div class="button-group">
+                                                                                                    <button class="btn btn-primary {{#if applied}}counterActive{{else}}counterInactive{{/if}}"><i>{{#if applied}}Cancel Application{{else}}Apply{{/if}}</i></button>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label>Paid By</label>
-                                                                                                <br>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="provider" checked="checked"> Provider
-                                                                                                </label>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="buyer_cost">Buyer's Cost</label>
-                                                                                                <input type="number" class="form-control" name="buyer_cost" id="buyer_hourly_cost" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="freelancer_hourly_nets">Freelancer Nets</label>
-                                                                                                <input type="number" id="freelancer_hourly_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div id="per-device-counter" hidden>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="device_rate">Device Rate (USD)</label>
-                                                                                                <input type="number" class="form-control" id="device_rate" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="max_devices">Maximum devices</label>
-                                                                                                <input type="number" class="form-control" id="max_devices" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="device_total">Total Amount</label>
-                                                                                                <input type="number" class="form-control" name="total_amount" id="device_total" readonly="true" step="any" min="1">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="utl_fees">UTL Fees</label>
-                                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label>Paid By</label>
-                                                                                                <br>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="provider" checked="checked"> Provider
-                                                                                                </label>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="buyer_device_cost">Buyer's Cost</label>
-                                                                                                <input type="number" class="form-control" name="buyer_cost" id="buyer_device_cost" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="freelancer_device_nets">Freelancer Nets</label>
-                                                                                                <input type="number" id="freelancer_device_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div id="blended-counter" hidden>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-3">
-                                                                                                <label for="first_hours">Pay USD</label>
-                                                                                                <input type="number" class="form-control" id="first_hours" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-3">
-                                                                                                <label for="first_max_hours">total for the first</label>
-                                                                                                <input type="number" class="form-control" id="first_max_hours" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-3">
-                                                                                                <label for="next_hours">hour(s) and then USD</label>
-                                                                                                <input type="number" class="form-control" id="next_hours" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-3">
-                                                                                                <label for="next_max_hours">per hour for upto</label>
-                                                                                                <input type="number" class="form-control" id="next_max_hours" step="any" min="1">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="blended_total">Total Amount</label>
-                                                                                                <input type="number" class="form-control" name="total_amount" id="blended_total" readonly="true" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="utl_fees">UTL Fees</label>
-                                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label>Paid By</label>
-                                                                                                <br>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="provider"> Provider
-                                                                                                </label>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="buyer_blended_cost">Buyer's Cost</label>
-                                                                                                <input type="number" class="form-control" name="buyer_cost" id="buyer_blended_cost" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="freelancer_blended_nets">Freelancer Nets</label>
-                                                                                                <input type="number" id="freelancer_blended_nets" class="form-control" name="freelancer_nets" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <br>
-                                                                                    <div class="row">
-                                                                                        <div class="col-sm-12">
-                                                                                            <div class="button-group">
-                                                                                                <button class="btn btn-primary {{#if applied}}counterActive{{else}}counterInactive{{/if}}"><i>{{#if applied}}Cancel Application{{else}}Apply{{/if}}</i></button>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </form>
+                                                                                    </form>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
+                                                                        {{/if}}
                                                                     {{/if}}
-                                                                {{/if}}
-                                                            </div>
+                                                                </div>
+                                                            {{/if}}
                                                         {{else}} 
                                                             {{#if jobPostedBuyer}}
                                                                 <div class="list-group">
@@ -463,6 +468,7 @@
                                                             </ul>
                                                         </div>
                                                     </div>
+
                                                     {{#unless isBuyer}}
                                                     <div class="form-group">
                                                         <label class="control-label col-sm-2"></label>

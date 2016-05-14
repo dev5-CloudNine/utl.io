@@ -100,7 +100,9 @@ Buyers.attachSchema(
 		label: "Select Job Categories *",
 		autoform: {
 			type: "selectize",
-			options: INDUSTRY_TYPES,
+			options: function() {
+        return Categories.find().fetch();
+      },
       multiple: true
 		}
   },

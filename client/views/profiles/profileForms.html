@@ -26,7 +26,7 @@
                 <div class="panel-body">
                     {{#autoForm collection="Profiles" id="profileEdit" type="update" doc=profile}} {{>profileFields}}
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Update</button>
+                        <button class="btn btn-primary editProfile"><i class="fa fa-floppy-o"></i> Update</button>
                         <button id="cancel" class="btn btn-default"> Cancel</button>
                     </div>
                     {{/autoForm}}
@@ -125,8 +125,24 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{>afQuickField name='industryTypes' placeholder="What are you interested in?"}}
+        <!-- {{#each parentCategories}}
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                <h5>
+                    {{this.label}}
+                </h5>
+                {{#each childCategories this.value}}
+                    <div class="checkbox">
+                        <label>
+                            <small>
+                                <input type="checkbox" value="{{this.value}}" name="industryTypes" data-schema-key="industryTypes"> {{this.label}}
+                            </small>
+                        </label>
+                    </div>
+                {{/each}}
+            </div>
+        {{/each}} -->
+        <div class="col-sm-12">
+            {{>afQuickField name="industryTypes"}}
         </div>
     </div>
     <hr>
