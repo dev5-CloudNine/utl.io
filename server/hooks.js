@@ -90,6 +90,17 @@ Jobs.after.insert(function(userId, doc){
 
 });
 
+
+Jobs.after.update(function(userId, doc){
+  var obj ={};
+  if(doc.tasks) doc.tasks.map(function(task){
+      obj.taskName = task.taskname;
+      obj.taskdescription = task.taskdescription;
+      obj.jobID = doc._id;
+      Tasks.insert(obj);
+  });
+});
+
 Jobs.before.insert(function(userId, doc){
   var id = Jobs.findOne({},{limit:1,sort:{'createdAt':-1}});
   if(id) {
