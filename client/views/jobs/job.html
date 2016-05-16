@@ -563,6 +563,7 @@
                                     <th>Check In</th>
                                     <th>Check Out</th>
                                     <th>Total (Days : Hours : Minutes)</th>
+                                    <th>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -571,6 +572,7 @@
                                     <td>{{in}}</td>
                                     <td>{{out}}</td>
                                     <td>{{total}}</td>
+                                    <td><button class="btn btn-default remove-log" data-parentid="{{../_id}}" data-id="{{id}}" style="font-size: 14px;padding: 2px;width: 100%;" type="submit">Remove</button></td>
                                   </tr>
                                 {{/each}}
                                 </tbody>
