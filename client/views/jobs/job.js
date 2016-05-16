@@ -269,7 +269,6 @@ Template.job.events({
    },
     "change .file_bag": function(event) {
         event.preventDefault();
-        $('#spinner').show();
         var files = $(event.currentTarget)[0].files
 
         if (!files) return;
@@ -278,7 +277,7 @@ Template.job.events({
             files: files,
             path: S3_FILEUPLOADS
         }, function(err, res) {
-            $('#spinner').hide();
+            $('.progress').remove();
             if (err) toastr.error("Failed to upload file");
             else {
                 Meteor.call('addFile', res.url, id,function (error, result) {
@@ -544,6 +543,9 @@ Template.job.helpers({
     },
     totalHours : function(){
       return Session.get('totalHours');
+    },
+    "files": function(){
+        return S3.collection.find();
     }
 });
 

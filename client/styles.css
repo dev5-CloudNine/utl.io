@@ -497,3 +497,15 @@ button.favInactive {
 .toggle .toggle-group .btn {
   padding: 15px;
 }
+
+.close-preview {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 100;
+    background: white;
+    width: 21px;
+    line-height: 20px;
+    font-size: x-large;
+    text-align: center;
+}
