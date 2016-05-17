@@ -196,10 +196,14 @@ Meteor.methods({
         } else {
             var checkInTime = TimeSheet.findOne({'jobID':id}).checkIn;
             var obj = {};
+            obj.id = Random.id();
             obj.checkIn = checkInTime;
             obj.checkOut = new Date();
             TimeSheet.update({'jobID':id},{$set:{checkIn:''}});
             TimeSheet.update({'jobID':id},{$push:{'logs':obj}});
         }
+    },
+    removeLog:function(logID,jobID) {
+        TimeSheet.update({jobID:jobID},{$pull:{'logs':{'id':logID}}});
     }
 });

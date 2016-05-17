@@ -10,14 +10,11 @@ Template.dashboard.helpers({
 	},
 	ongoingBuyerJobs: function() {
 		var jobIds = [];
-		var jobs = [];
 		Buyers.findOne({userId: Meteor.userId()}).ongoingJobs.forEach(function(ongoingJob) {
 			jobIds.push(ongoingJob);
 		});
-		jobIds.forEach(function(jobId) {
-			jobs.push(Jobs.findOne({_id: jobId}));
-		});
-		return jobs;
+
+		return Jobs.find({_id: {$in:jobIds}},{sort: {createdAt: -1}});
 	},
 	buyerProfile: function() {
 		return Buyers.find({
@@ -34,12 +31,7 @@ Template.dashboard.helpers({
 		userDetails.favoriteJobs.forEach(function (favjobs) {
 			favJobsIds.push(favjobs);
 		});
-		favJobsIds.forEach(function(id) {
-			favJobsArray.push(Jobs.findOne({
-				_id: id
-			}));
-		});
-		return favJobsArray;
+		return Jobs.find({_id: {$in:favJobsIds}},{sort: {createdAt: -1}});
 	},
 	appliedJobs: function() {
 		var appliedJobIds = [];
@@ -47,10 +39,7 @@ Template.dashboard.helpers({
 		Profiles.findOne({userId: Meteor.userId()}).appliedJobs.forEach(function(jobId) {
 			appliedJobIds.push(jobId);
 		});
-		appliedJobIds.forEach(function(jId) {
-			appliedJobsArray.push(Jobs.findOne({_id: jId}));
-		})
-		return appliedJobsArray;
+		return Jobs.find({_id: {$in:appliedJobIds}},{sort: {createdAt: -1}});
 	},
 	ongoingJobs: function() {
 		var providerJobs = [];
@@ -58,23 +47,18 @@ Template.dashboard.helpers({
 		Profiles.findOne({userId: Meteor.userId()}).ongoingJobs.forEach(function(ongoingJob) {
 			providerJobs.push(ongoingJob);
 		});
-		providerJobs.forEach(function(providerJob) {
-			var obj = Jobs.findOne({_id: providerJob}, {sort: {createdAt: -1}});
-			obj.display = false;
-			confirmedJobs.push(obj);
+		Jobs.find({_id: {$in:providerJobs}},{sort: {createdAt: -1}}).map(function(job){
+			job.display = false;
+			confirmedJobs.push(job);
 		});
 		return confirmedJobs;
 	},
 	providerRoutedJobs: function() {
 		var routedJobIds = [];
-		var routedJobsArray = [];
 		Profiles.findOne({userId: Meteor.userId()}).routedJobs.forEach(function(jobId) {
 			routedJobIds.push(jobId);
 		})
-		routedJobIds.forEach(function(jId) {
-			routedJobsArray.push(Jobs.findOne({_id: jId}));
-		});
-		return routedJobsArray;
+		return Jobs.find({_id: {$in:routedJobIds}},{sort: {createdAt: -1}});
 	},
 	buyerRoutedJobs: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {routed: true}]}, {sort: {createdAt: -1}});

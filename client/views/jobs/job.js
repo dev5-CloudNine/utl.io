@@ -269,7 +269,6 @@ Template.job.events({
    },
     "change .file_bag": function(event) {
         event.preventDefault();
-        $('#spinner').show();
         var files = $(event.currentTarget)[0].files
 
         if (!files) return;
@@ -278,7 +277,7 @@ Template.job.events({
             files: files,
             path: S3_FILEUPLOADS
         }, function(err, res) {
-            $('#spinner').hide();
+            $('.progress').remove();
             if (err) toastr.error("Failed to upload file");
             else {
                 Meteor.call('addFile', res.url, id,function (error, result) {
@@ -320,6 +319,11 @@ Template.job.events({
         Meteor.call('recordTime',id,true,function (error, result) {});
         $('.show-checkin-time').show();
       }
+    },
+    "click button.remove-log" : function(event) {
+      var id = $(event.currentTarget).data('id'); 
+      var jobID = $(event.currentTarget).data('parentid'); 
+      Meteor.call('removeLog',id,jobID,function(err,res){});
     }
 
 });
@@ -516,6 +520,7 @@ Template.job.helpers({
       var totalHours = 0;
       TimeSheet.findOne({'jobID':id}, { sort: { 'logs.checkOut': -1 } }).logs.map(function(log){
         var obj = {};
+        obj.id = log.id;
         obj.in = moment(log.checkIn).format('llll');
         obj.out = moment(log.checkOut).format('llll');
         var inT = moment(obj.in);
@@ -544,6 +549,9 @@ Template.job.helpers({
     },
     totalHours : function(){
       return Session.get('totalHours');
+    },
+    "files": function(){
+        return S3.collection.find();
     }
 });
 

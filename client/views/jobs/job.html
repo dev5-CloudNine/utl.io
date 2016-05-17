@@ -467,13 +467,42 @@
                                                     <div class="form-group">
                                                         <label class="control-label col-sm-2" for="comments">Uploaded files</label>
                                                         <div class="col-sm-10">
-                                                            <ul style="list-style-type: none;padding: 0;" class="files">
+                                                            
+                                                            <div class="row">
                                                                 {{#each fileList _id}}
-                                                                <li>{{#if isBuyer}}<i class="fa fa-times-circle remove-file" data-id="{{../_id}}" data-path={{this}} aria-hidden="true" title="Remove" style="cursor: pointer;"></i> {{/if}}<a href="{{this}}" target="_blank">{{this}}</a> </li>
+                                                                    <div class="col-xs-6 col-md-3">
+                                                                        <div class="thumbnail" style="position: relative;">
+                                                                        <span title="Remove" data-id="{{../_id}}" data-path={{this}} class="close-preview remove-file" style="cursor: pointer;">&times;</span>
+                                                                        <a href="{{this}}" target="_blank">
+                                                                          <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
+                                                                        </a>
+                                                                        <div class="caption" style="overflow: hidden;word-wrap: break-word;">
+                                                                            <a href="{{this}}" target="_blank">{{this}}</a>
+                                                                        </div>
+                                                                        </div>
+                                                                    </div>
                                                                 {{else}}
-                                                                <li><a href="#">No files found</a></li>
+                                                                    No files found
                                                                 {{/each}}
-                                                            </ul>
+                                                            </div>
+                                                            <div class="row utl-progress-bar">
+                                                                <div class="col-md-12"> 
+                                                                {{#each files}}
+                                                                    <div class="progress">
+                                                                      <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                                      aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">
+                                                                        {{percent_uploaded}}%
+                                                                      </div>
+                                                                    </div>
+                                                                {{/each}}
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- <li>{{#if isBuyer}}<i class="fa fa-times-circle remove-file" data-id="{{../_id}}" data-path={{this}} aria-hidden="true" title="Remove" style="cursor: pointer;"></i> {{/if}}<a href="{{this}}" target="_blank">{{this}}</a> </li>                                                             {{else}}
+                                                            <li><a href="#">No files found</a></li>
+                                                            <li></li>
+                                                            {{/each}}-->
+
                                                         </div>
                                                     </div>
 
@@ -542,6 +571,7 @@
                                     <th>Check In</th>
                                     <th>Check Out</th>
                                     <th>Total (Days : Hours : Minutes)</th>
+                                    <th>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -550,6 +580,7 @@
                                     <td>{{in}}</td>
                                     <td>{{out}}</td>
                                     <td>{{total}}</td>
+                                    <td><button class="btn btn-default remove-log" data-parentid="{{../_id}}" data-id="{{id}}" style="font-size: 14px;padding: 2px;width: 100%;" type="submit">Remove</button></td>
                                   </tr>
                                 {{/each}}
                                 </tbody>
