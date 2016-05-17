@@ -91,6 +91,14 @@
                                             {{/each}}
                                         </ul>
                                         {{/if}}
+                                        {{#if files}}
+                                            <hr>
+                                            <ul style="list-style: none;">
+                                                {{#each files}}
+                                                    <li><a href="{{this}}" download>{{this}}</a></li>
+                                                {{/each}}
+                                            </ul>
+                                        {{/if}}
                                     </div>
                                 </div>
                                 <div class="row">

@@ -25,8 +25,7 @@ Router.map(function() {
                 }, {
                     sort: {
                         createdAt: -1
-                    },
-                    limit: 10
+                    }
                 }),
                 profiles: Profiles.find({}, {
                     sort: {
@@ -48,8 +47,8 @@ Router.map(function() {
     this.route('jobs', {
         path: '/jobs',
         title: "UTL - All Jobs",
-        waitOn: function() {
-            return subs.subscribe("jobs");
+        subscriptions: function() {
+            return subs.subscribe('jobs');
         }
     });
 

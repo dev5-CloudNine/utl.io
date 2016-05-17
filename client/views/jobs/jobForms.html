@@ -74,9 +74,21 @@
     </div>
     {{> afQuickField name='description' rows=12 placeholder="Tell prospective service providers about this job in detail."}}
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <label>Upload Documents</label>
-            <input type="file" class="form-control" multiple>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            <div class="form-group">
+                <label class="control-label"></label>
+                <div class="input-group">
+                    <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px">
+                        <input type="file" class="file_bag" name="files" data-schema-key="files" multiple=true> Upload Documents
+                    </label>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-sm-12">                
+            <ul class="fileList">
+                
+            </ul>
         </div>
     </div>
     <hr>
@@ -233,22 +245,4 @@
             {{/each}}
         </div>
     </div> -->
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-            <div class="form-group">
-                <label class="control-label"></label>
-                <div class="input-group">
-                    <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px">
-                        <input type="file" class="file_bag" name="files" data-schema-key="files" multiple=true> Upload Documents
-                    </label>
-                </div>
-            </div>
-            
-        </div>
-        <div class="col-sm-12">                
-            <ul class="fileList">
-                
-            </ul>
-        </div>
-    </div>
 </template>
