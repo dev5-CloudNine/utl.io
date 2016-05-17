@@ -96,10 +96,15 @@
         <div class="col-sm-12">
             {{>afQuickField name="servicelocation"}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 loc" hidden>
-            <div class="form-group">
-                <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="City, State, Zip" autocomplete="off" spellcheck="off"  value="{{locationData}}"  data-source="location" maxlength="128" />
-                <span class="help-block"></span>
+        <div class="loc" hidden>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{>afQuickField name="fullAddress"}}
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                    <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="City, State, Zip" autocomplete="off" spellcheck="off"  value="{{locationData}}"  data-source="location" maxlength="128" />
+                    <span class="help-block"></span>
+                </div>
             </div>
         </div>
     </div>
@@ -142,9 +147,6 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
             {{>afQuickField name="contactphone"}}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{>afQuickField name="fullAddress"}}
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{> afQuickField name='confidentialDescription' rows=4 placeholder="All the information you write here will only be display to the assigned provider."}}

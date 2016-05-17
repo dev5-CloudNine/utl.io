@@ -54,8 +54,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#deposits" data-toggle="tab">Deposits</a></li>
                                 <li><a href="#withdrawls" data-toggle="tab">Withdrawls</a></li>
-                                <li><a href="#transfers" data-toggle="tab">Transfers</a></li>
-                                <li><a href="#allTransactions" data-toggle="tab">All Transactions</a></li>
+                                <li><a href="#transfers" data-toggle="tab">Invoices</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -180,8 +179,8 @@
                     </div>
                     <br>
                     <div class="tab-pane fade {{#if $eq active 'postedJobs'}} in active {{/if}}" id="postedJobs">
-                        <br>
                         {{#if currentUser.isDeveloper}}
+                            <h5>Applied Jobs</h5>
                             {{#each appliedJobs}}
                                 {{>jobSmall}}
                             {{else}}
@@ -189,6 +188,7 @@
                             {{/each}}
                         {{else}}
                             {{#if currentUser.isBuyer}}
+                                <h5>Posted Jobs</h5>
                                 {{#each jobs}}
                                     {{>jobSmall}}
                                 {{else}}
@@ -198,7 +198,7 @@
                         {{/if}}
                     </div>
                     <div class="tab-pane fade {{#if $eq active 'favoritejobs'}} in active {{/if}}" id="favoriteJobs">
-                        <br>
+                        <h5>Favorite Jobs</h5>
                         {{#each favJobs}}
                             {{>jobSmall}}
                         {{else}}
@@ -206,7 +206,7 @@
                         {{/each}}
                     </div>
                     <div class="tab-pane fade {{#if $eq active 'routedJobs'}} in active {{/if}}" id="routedJobs">
-                        <br>
+                        <h5>Routed Jobs</h5>
                         {{#if currentUser.isDeveloper}}
                             {{#each providerRoutedJobs}}
                                 {{>jobSmall}}
@@ -220,7 +220,7 @@
                         {{/if}}
                     </div>
                     <div class="tab-pane fade {{#if $eq active 'ongoingJobs'}} in active {{/if}}" id="ongoingJobs">
-                        <br>
+                        <h5>Assigned Jobs</h5>
                         {{#if currentUser.isDeveloper}}
                             {{#each ongoingJobs}}
                                 {{>jobSmall}}
@@ -234,8 +234,7 @@
                         {{/if}}
                     </div>
                     <div class="tab-pane fade {{#if $eq active 'completedJobs'}} in active {{/if}}" id="completedJobs">
-                        <br>
-                        <h4>Completed Jobs (Coming Soon)</h4>
+                        <h5>Completed Jobs</h5>
                     </div>
                     <div class="tab-pane fade {{#if $eq active 'messaging'}} in active {{/if}}" id="mails">
                         <br> 
@@ -254,16 +253,226 @@
                         {{/if}}
                     </div>
                     <div class="tab-pane fade" id="deposits">
-                        <h4>Deposits (Coming soon! WIP!)</h4>
+                        <h5>Deposit Funds</h5>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                Account Balance: $ 0.00
+                                <br><br>
+                                <form>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Deposit Amount:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+                                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                                <span class="input-group-addon">.00</span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h5>Payment Methods</h5>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Payment Method</th>
+                                                        <th>Cost</th>
+                                                        <th>Approval</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <label>
+                                                            <input type="radio" name="payVia" id="payeezy" value="payeezy" checked>Payeezy
+                                                            </label>
+                                                    </td>
+                                                        <td>No Cost</td>
+                                                        <td>Instant*</td>
+                                                        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet atque quasi iusto.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label>
+                                                            <input type="radio" name="payVia" id="credit" value="creditcard">Credit Card
+                                                            </label>
+                                                        </td>
+                                                        <td>No Cost</td>
+                                                        <td>Instant*</td>
+                                                        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet atque quasi iusto.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="text-center">
+                                                <button class="btn btn-primary btn-sm" type="submit">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h5>Previous Transactions (Deposits)</h5>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>S. No</th>
+                                                    <th>Payment Method</th>
+                                                    <th>Amout</th>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Payezee</td>
+                                                    <td>$ 90.00</td>
+                                                    <td>Mon May 16 2016 11:09:29 GMT+0530 (IST)</td>
+                                                    <td>Pending</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Credit Card</td>
+                                                    <td>$ 90.00</td>
+                                                    <td>Mon May 28 2016 04:09:29 GMT+0530 (IST)</td>
+                                                    <td>Success</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="withdrawls">
-                        <h4>Withdrawls (Coming soon! WIP!)</h4>
+                        <h5>Withdraw Funds</h5>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                Account Balance: $ 0.00
+                                <br><br>
+                                <form>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Withdraw Amount:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+                                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                                <span class="input-group-addon">.00</span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h5>Payment Methods</h5>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Payment Method</th>
+                                                        <th>Cost</th>
+                                                        <th>Approval</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <label>
+                                                            <input type="radio" name="payVia" id="payeezy" value="payeezy" checked>Payeezy
+                                                            </label>
+                                                        </td>
+                                                        <td>No Cost</td>
+                                                        <td>Instant*</td>
+                                                        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet atque quasi iusto.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label>
+                                                            <input type="radio" name="payVia" id="credit" value="creditcard">Credit Card
+                                                            </label>
+                                                        </td>
+                                                        <td>No Cost</td>
+                                                        <td>Instant*</td>
+                                                        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet atque quasi iusto.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="text-center">
+                                                <button class="btn btn-primary btn-sm" type="submit">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h5>Previous Transactions (Withdrawls)</h5>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>S. No</th>
+                                                    <th>Payment Method</th>
+                                                    <th>Amout</th>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Payezee</td>
+                                                    <td>$ 90.00</td>
+                                                    <td>Mon May 16 2016 11:09:29 GMT+0530 (IST)</td>
+                                                    <td>Pending</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Credit Card</td>
+                                                    <td>$ 90.00</td>
+                                                    <td>Mon May 28 2016 04:09:29 GMT+0530 (IST)</td>
+                                                    <td>Success</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="transfers">
-                        <h4>Transfers (Coming soon! WIP!)</h4>
-                    </div>
-                    <div class="tab-pane fade" id="allTransactions">
-                        <h4>All Transactions (Coming soon! WIP!)</h4>
+                        <h5>Invoices</h5>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                Account Balance: $ 0.00
+                                <br><br>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>S. No</th>
+                                            <th>Date</th>
+                                            <th>Invoice</th>
+                                            <th>Project Title</th>
+                                            <th>Sent By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Mon May 16 2016 11:09:29 GMT+0530 (IST)</td>
+                                            <td>INV101</td>
+                                            <td>Job 1</td>
+                                        </tr>
+                                    </tbody>  
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div class="clearfix"></div>
                 </div>

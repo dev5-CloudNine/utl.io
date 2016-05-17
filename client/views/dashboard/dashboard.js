@@ -21,6 +21,9 @@ Template.dashboard.helpers({
 			userId: Meteor.userId()
 		});
 	},
+	providerProfile: function() {
+		return Profiles.findOne({userId: Meteor.userId()});
+	},
 	buyerDetails: function() {
 		return Buyers.findOne({userId: Meteor.userId()});
 	},
