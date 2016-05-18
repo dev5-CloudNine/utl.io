@@ -7,9 +7,9 @@ Template.jobSmall.helpers({
 	},
 	acceptedProvider: function() {
 		var uId = Meteor.userId();
-		if(this.display == false) {
-			return;
-		}
+		// if(this.display == false) {
+		// 	return;
+		// }
 		var jobs=Jobs.findOne({_id: this._id}).applications;
 
 		for(var i=0;i<jobs.length;i++){
@@ -42,6 +42,13 @@ Template.jobSmall.helpers({
 	},
 	fav : function() {
 		return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteJobs: {$in: [this._id]}}]})?true:false;
+	},
+	'jobPostedBuyer': function() {
+	    var jobDetails = Jobs.findOne(this._id);
+	    if(jobDetails.userId == Meteor.userId())
+	      return true;
+	    else
+	      return false;
 	}
 })
 Template.jobSmall.events({
@@ -91,6 +98,40 @@ Template.jobSmall.events({
 				toastr.error('Failed to decline the assignment.');
 			} else {
 				toastr.success('Successfully declined the assignment.');
+			}
+		});
+	},
+	'click button.submitAssignment': function(event, template) {
+		event.preventDefault();
+		var jobId = this._id;
+		Meteor.call('submitAssignment', jobId, function(error) {
+			if(error) {
+				toastr.error('Failed to submit assignment. Please try again.');
+			} else {
+				toastr.success('Successfully submitted the assignment.');
+			}
+		});
+	},
+	'click button.approveAssignment': function(event, template) {
+		event.preventDefault();
+		var jobId = this._id;
+		var providerId = this.assignedProvider;
+		console.log(providerId);
+		Meteor.call('approveAssignment', jobId, providerId, function(error) {
+			if(error) {
+				toastr.error('Failed to approve assignment. Please try again.');
+			} else {
+				toastr.success('Approved assignment Successfully');
+			}
+		});
+	},
+	'click button.rejectAssignment': function(event, template) {
+		var jobId = this._id;
+		Meteor.call('rejectAssignment', jobId, function(error) {
+			if(error) {
+				toastr.error('Failed to reject assignment. Please try again.');
+			} else {
+				toastr.success('Rejected assignment successfully');
 			}
 		});
 	}

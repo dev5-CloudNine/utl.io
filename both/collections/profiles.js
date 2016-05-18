@@ -286,11 +286,11 @@ Profiles.attachSchema(
     'ongoingJobs.$': {
       type: String
     },
-    counteredJobs: {
+    completedJobs: {
       type: Array,
       optional: true
     },
-    'counteredJobs.$': {
+    'completedJobs.$': {
       type: String, 
       optional: true
     },

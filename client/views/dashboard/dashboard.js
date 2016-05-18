@@ -100,5 +100,11 @@ Template.dashboard.helpers({
 	providerJobsCount: function() {
 		var jobCount = Profiles.findOne({userId: Meteor.userId()}).appliedJobs.length + Profiles.findOne({userId: Meteor.userId()}).ongoingJobs.length;
 		return jobCount;
+	},
+	providerCompletedJobs: function() {
+		return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'done'}, {assignmentStatus: 'approved'}]}).fetch();
+	},
+	buyerCompletedJobs: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}]}).fetch();
 	}
 });
