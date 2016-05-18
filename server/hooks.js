@@ -101,7 +101,9 @@ Jobs.after.update(function(userId, doc){
       obj.taskName = task.taskname;
       obj.taskdescription = task.taskdescription;
       obj.jobID = doc._id;
-      Tasks.insert(obj);
+      var exists = Tasks.findOne({$and:[{jobID:obj.jobID},{taskName:obj.taskName}]});
+      if(!exists)
+        Tasks.insert(obj);
   });
 });
 
