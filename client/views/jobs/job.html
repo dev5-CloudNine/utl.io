@@ -66,21 +66,35 @@
                                         <h4>Skills Required</h4> {{skillsrequired}}
                                         <hr>
                                         <h4>Description</h4> {{{htmlDescription}}}
-                                        <hr> {{#if location}}
-                                        <h4>Service Location</h4> {{location}}
-                                        <hr> {{/if}}
+                                        {{#if files}}
+                                            <hr>
+                                            <h4>Attached Documents</h4>
+                                            <ul style="list-style: none;">
+                                                {{#each files}}
+                                                    <li><a href="{{this}}" download>{{this}}</a></li>
+                                                {{/each}}
+                                            </ul>
+                                            <hr>
+                                        {{/if}}
+                                        {{#if location}}
+                                            <h4>Service Location</h4> {{location}}
+                                            <hr>
+                                        {{/if}}
                                         <h4>Service Schedule</h4> {{#if exactdate}} On: {{exactdate}} {{/if}} {{#if startdate}} Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} through {{endtime}} {{/if}} {{#if ratebasis}}
                                         <hr>
                                         <h4>Budget</h4> Payment type: {{ratebasis}}
                                         <br> {{#if hourlyrate}} {{hourlyrate}} USD per hour for {{maxhours}} hours.
                                         <br>Net: {{freelancer_nets}} USD {{else}} {{#if payforfirsthours}} {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours.
                                         <br>Net: {{freelancer_nets}} USD {{else}} {{#if rateperdevice}} {{rateperdevice}} USD for {{maxdevices}} devices.
-                                        <br>Net: {{freelancer_nets}} USD {{else}} {{#if fixedamount}} Net: {{freelancer_nets}} USD. {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{#if assignedProvider}}
-                                        <hr> Confidential Info:
-                                        <br> {{contactperson}}
-                                        <br> {{contactemail}}
-                                        <br> {{contactphone}}
-                                        <br> {{confidentialDescription}} {{/if}} 
+                                        <br>Net: {{freelancer_nets}} USD {{else}} {{#if fixedamount}} Net: {{freelancer_nets}} USD. {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} 
+                                        {{#if assignedProvider}}
+                                            <hr> Confidential Info:
+                                            <br> {{contactperson}}
+                                            <br> {{contactemail}}
+                                            <br> {{contactphone}}
+                                            <br> {{confidentialDescription}}
+                                            <br> {{fullAddress}}
+                                        {{/if}} 
                                         {{#if shipment}}
                                         <hr>
                                         <h4>Shipments to site</h4>
@@ -458,8 +472,7 @@
                                                     {{#if uploadFile _id}}
                                                     <div class="form-group">
                                                         <label class="control-label col-sm-2" for="comments">Uploaded files</label>
-                                                        <div class="col-sm-10">
-                                                            
+                                                        <div class="col-sm-10">                                   
                                                             <div class="row">
                                                                 {{#each fileList _id}}
                                                                     <div class="col-xs-6 col-md-3">
@@ -479,7 +492,7 @@
                                                             </div>
                                                             <div class="row utl-progress-bar">
                                                                 <div class="col-md-12"> 
-                                                                {{#each files}}
+                                                                {{#each uploadedFiles}}
                                                                     <div class="progress">
                                                                       <div class="progress-bar progress-bar-striped active" role="progressbar"
                                                                       aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">
@@ -489,12 +502,6 @@
                                                                 {{/each}}
                                                                 </div>
                                                             </div>
-
-                                                            <!-- <li>{{#if isBuyer}}<i class="fa fa-times-circle remove-file" data-id="{{../_id}}" data-path={{this}} aria-hidden="true" title="Remove" style="cursor: pointer;"></i> {{/if}}<a href="{{this}}" target="_blank">{{this}}</a> </li>                                                             {{else}}
-                                                            <li><a href="#">No files found</a></li>
-                                                            <li></li>
-                                                            {{/each}}-->
-
                                                         </div>
                                                     </div>
 

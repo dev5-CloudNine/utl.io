@@ -398,7 +398,7 @@ Template.job.helpers({
       }
       providers.push(providerDetails);
     });
-    return providers;
+    return _.sortBy(providers, function(provider) {return -provider.appliedAt});
   },
   'selectedProvider': function() {
     var uId = Profiles.findOne({_id: this.userId}).userId;
@@ -550,7 +550,7 @@ Template.job.helpers({
     totalHours : function(){
       return Session.get('totalHours');
     },
-    "files": function(){
+    "uploadedFiles": function(){
         return S3.collection.find();
     }
 });
