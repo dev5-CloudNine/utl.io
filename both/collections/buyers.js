@@ -126,13 +126,13 @@ Buyers.attachSchema(
     max: 256,
     optional: true
   },
-  ongoingJobs: {
-    type: Array,
-    optional: true
-  },
-  'ongoingJobs.$': {
-    type: String,
-  },
+  // ongoingJobs: {
+  //   type: Array,
+  //   optional: true
+  // },
+  // 'ongoingJobs.$': {
+  //   type: String,
+  // },
   createdAt: {
     type: Date,
     autoValue: function() {

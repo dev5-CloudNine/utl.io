@@ -3,6 +3,7 @@ Tasks = new Meteor.Collection("tasks");
 Categories = new Meteor.Collection("Categories");
 SubCategories = new Meteor.Collection("subcategories");
 TimeSheet = new Meteor.Collection("timeSheet");
+Reviews = new Meteor.Collection("reviews");
 
 Categories.attachSchema(
 	new SimpleSchema({

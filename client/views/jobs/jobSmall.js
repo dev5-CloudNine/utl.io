@@ -49,8 +49,17 @@ Template.jobSmall.helpers({
 	      return true;
 	    else
 	      return false;
+	},
+	reviewed: function() {
+		return Reviews.findOne({$and: [{reviewedJobId: this._id}, {reviewedBy: Meteor.userId()}, {providerId: this.assignedProvider}]})? true : false;
 	}
-})
+});
+
+Template.jobSmall.rendered = function() {
+	this.$('.rateit').rateit();
+	this.ratingPoints = new ReactiveVar(null);
+}
+
 Template.jobSmall.events({
 	'click .favInactive': function(event, template) {
 		var jobId = this._id;
@@ -134,5 +143,28 @@ Template.jobSmall.events({
 				toastr.success('Rejected assignment successfully');
 			}
 		});
+	},
+	'rated .rateit': function(event, instance) {
+		var rating = $(event.target).rateit('value');
+		instance.ratingPoints.set(rating);
+	},
+	'submit #review': function(event, template) {
+		event.preventDefault();
+		var assignedProvider = this.assignedProvider;
+		var userId = this.userId;
+		var jobId = this._id;
+		var timeReviewed = new Date();
+		var ratedPoints = Template.instance().ratingPoints.get();
+		var reviewMessage = "";
+		$('textarea[name="reviewMessage"]').each(function() {
+			reviewMessage += $(this).val();
+		})
+		Meteor.call('writeReview', assignedProvider, userId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
+			if(error) {
+				toastr.error('Failed to submit review. Please try again.');
+			} else {
+				toastr.success('Submitted the review successfully.');
+			}
+		})
 	}
 })

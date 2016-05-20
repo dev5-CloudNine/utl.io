@@ -18,8 +18,18 @@ Template.profile.helpers({
   },
   fav : function() {
     return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this._id]}}]})?true:false;
+  },
+  providerCompletedJobs: function() {
+    return Jobs.find({$and:[{assignedProvider: this.userId}, {applicationStatus: 'done'}]});
+  },
+  reviews: function() {
+    return Reviews.findOne({$and: [{providerId: this.assignedProvider}, {reviewedBy: this.userId}, {reviewedJobId: this._id}]});
   }
 });
+
+Template.profile.rendered = function() {
+  this.$('.rateit').rateit();
+}
 
 Template.profile.events({
   'click .favInactive': function(event, template) {

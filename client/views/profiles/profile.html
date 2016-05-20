@@ -149,5 +149,26 @@
 				</div>
 			</div>
 		</div>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h5>Job History and Feedback</h5>
+						<ul class="list-group">
+							{{#each providerCompletedJobs}}
+								<li class="list-group-item">
+									<a href="{{pathFor 'job'}}">{{this.title}}</a>
+									<h5>Review</h5>
+									{{#with reviews}}
+										<span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly=true></span> <br>
+										Message: {{this.reviewMessage}}
+									{{/with}}
+								</li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>

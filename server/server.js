@@ -100,24 +100,32 @@ Meteor.methods({
     },
     confirmAssignment: function(jobId, buyerId) {
         var proBudget = Jobs.findOne({_id: jobId}).proposedBudget;
-        Profiles.update({userId: Meteor.userId()}, {$addToSet: {ongoingJobs: jobId}});
         Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned', assignedProvider: Meteor.userId(), projectBudget: proBudget}});
-        Buyers.update({userId: buyerId}, {$addToSet: {ongoingJobs: jobId}});
     },
     declineAssignment: function(jobId, userId) {
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {applicationStatus: 'open', 'applications.$.app_status': 'declined'}});
-        // Profiles.update({'userId': userId}, {$pull: {appliedJobs: jobId}});
     },
     submitAssignment: function(jobId) {
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'submitted'}});
     },
     approveAssignment: function(jobId, providerId) {
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'done'}});
-        Profiles.update({userId: providerId}, {$addToSet: {completedJobs: jobId}}, {$pull: {ongoingJobs: jobId}});
-        Buyers.update({userId: Meteor.userId()}, {$pull: {ongoingJobs: jobId}});
+        // Profiles.update({userId: providerId}, {$addToSet: {completedJobs: jobId}}, {$pull: {ongoingJobs: jobId}});
+        // Buyers.update({userId: Meteor.userId()}, {$pull: {ongoingJobs: jobId}});
     },
     rejectAssignment: function(jobId) {
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'rejected'}});
+    },
+    writeReview: function(assignedProvider, userId, jobId, timeReviewed, ratedPoints, reviewMessage) {
+        var review = {
+            providerId: assignedProvider,
+            reviewedBy: userId,
+            reviewedJobId: jobId,
+            reviewedAt: timeReviewed,
+            pointsRated: ratedPoints,
+            reviewMessage: reviewMessage
+        };
+        Reviews.insert(review);
     },
     adminSetJobStatus: function(jobId, status) {
         check(jobId, String);
