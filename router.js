@@ -92,6 +92,26 @@ Router.map(function() {
         }
     });
 
+    this.route('filteredJobs', {
+        path: '/category/:category',
+        title: function() {
+            return "UTL - " + this.params.category;
+        },
+        subscriptions: function() {
+            return subs.subscribe('jobs');
+        }
+    });
+
+    this.route('subCategoryJobs', {
+        path: '/subcategory/:subcategory',
+        title: function() {
+            return "UTL - " + this.params.subcategory;
+        },
+        subscriptions: function() {
+            return subs.subscribe('jobs');
+        }
+    })
+
     this.route('jobNew', {
         path: '/job',
         title: "UTL - Post a Job",

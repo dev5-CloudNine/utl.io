@@ -68,6 +68,10 @@ Profiles.attachSchema(
       max: 128,
       optional: true
     },
+    files: {
+      type: String,
+      optional: true
+    },
     location: {
       type: String,
       label: "Location *",

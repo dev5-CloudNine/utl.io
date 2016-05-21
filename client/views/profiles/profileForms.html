@@ -112,15 +112,23 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{>afQuickField name='url' placeholder="URL your personal website/blog"}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{>afQuickField name='resumeUrl' placeholder="URL of resume/cv hosted externally (dropbox, gdrive, etc)"}}
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            <div class="form-group">
+                <label class="control-label"></label>
+                <div class="input-group">
+                    <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px">
+                        <input type="file" class="file_bag" name="files" data-schema-key="files" accept=".doc,.docx,.odt,.pdf"> Upload Resume
+                    </label>
+                </div>
+            </div>            
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            <label>Upload Resume</label>
-            <input type="file" class="form-control">
+        <div class="col-sm-12">                
+            <ul class="fileList">
+                
+            </ul>
         </div>
     </div>
     <hr>
