@@ -1,4 +1,4 @@
-AutoForm.addHooks(['jobNew', 'jobEdit'], {
+AutoForm.addHooks(['jobNew', 'jobEdit','assignJob'], {
 	after: {
 		insert: function(error, result) {
 			if (error) {
@@ -6,7 +6,6 @@ AutoForm.addHooks(['jobNew', 'jobEdit'], {
 			} else {
 				analytics.track("Job Created");
         		Router.go('job', {_id:result});
-        		// location.reload();
 			}
 		},
 		update: function(error, result) {
