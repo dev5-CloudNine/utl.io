@@ -34,11 +34,14 @@ Meteor.publish('subcategories', function() {
 Meteor.publish("tasks", function (taskID) {
     return Tasks.find({_id:taskID});
 });
+
 Meteor.publish("timeSheet", function (id) {
     return TimeSheet.find({jobID:id});
 });
 
-
+Meteor.publish("reviews", function() {
+    return Reviews.find({});
+});
 
 Meteor.publish("tasksOfaJob", function (id) {
     return Tasks.find({jobID:id});
@@ -150,6 +153,11 @@ Meteor.publish("jobs", function() {
     check(arguments, [Match.Any]);
     return Jobs.find({status: "active", applicationStatus: 'open'}, {sort: {createdAt: -1}})
 });
+
+Meteor.publish('completedJobs', function() {
+    check(arguments, [Match.Any]);
+    return Jobs.find({status: 'active', applicationStatus: 'done'}, {sort: {createdAt: -1}});
+})
 
 Meteor.publish('allJobs', function() {
     check(arguments, [Match.Any]);

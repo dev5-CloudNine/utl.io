@@ -279,21 +279,21 @@ Profiles.attachSchema(
     'routedJobs.$': {
       type: String
     },
-    ongoingJobs: {
-      type: Array,
-      optional: true
-    },
-    'ongoingJobs.$': {
-      type: String
-    },
-    counteredJobs: {
-      type: Array,
-      optional: true
-    },
-    'counteredJobs.$': {
-      type: String, 
-      optional: true
-    },
+    // ongoingJobs: {
+    //   type: Array,
+    //   optional: true
+    // },
+    // 'ongoingJobs.$': {
+    //   type: String
+    // },
+    // completedJobs: {
+    //   type: Array,
+    //   optional: true
+    // },
+    // 'completedJobs.$': {
+    //   type: String, 
+    //   optional: true
+    // },
     status: {
       type: String,
       allowedValues: STATUSES,

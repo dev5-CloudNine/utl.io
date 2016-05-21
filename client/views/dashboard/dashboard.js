@@ -8,13 +8,11 @@ Template.dashboard.helpers({
 			}
 		});
 	},
+	buyerCompletedJobsCount: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}]}).count();
+	},
 	ongoingBuyerJobs: function() {
-		var jobIds = [];
-		Buyers.findOne({userId: Meteor.userId()}).ongoingJobs.forEach(function(ongoingJob) {
-			jobIds.push(ongoingJob);
-		});
-
-		return Jobs.find({_id: {$in:jobIds}},{sort: {createdAt: -1}});
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
 	},
 	buyerProfile: function() {
 		return Buyers.find({
@@ -45,16 +43,17 @@ Template.dashboard.helpers({
 		return Jobs.find({_id: {$in:appliedJobIds}},{sort: {createdAt: -1}});
 	},
 	ongoingJobs: function() {
-		var providerJobs = [];
-		var confirmedJobs = [];
-		Profiles.findOne({userId: Meteor.userId()}).ongoingJobs.forEach(function(ongoingJob) {
-			providerJobs.push(ongoingJob);
-		});
-		Jobs.find({_id: {$in:providerJobs}},{sort: {createdAt: -1}}).map(function(job){
-			job.display = false;
-			confirmedJobs.push(job);
-		});
-		return confirmedJobs;
+		// var providerJobs = [];
+		// var confirmedJobs = [];
+		// Profiles.findOne({userId: Meteor.userId()}).ongoingJobs.forEach(function(ongoingJob) {
+		// 	providerJobs.push(ongoingJob);
+		// });
+		// Jobs.find({_id: {$in:providerJobs}},{sort: {createdAt: -1}}).map(function(job){
+		// 	job.display = false;
+		// 	confirmedJobs.push(job);
+		// });
+		// return confirmedJobs;
+		return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
 	},
 	providerRoutedJobs: function() {
 		var routedJobIds = [];
@@ -95,10 +94,16 @@ Template.dashboard.helpers({
 		return favBuyerArray;
 	},
 	buyerJobsCount: function() {
-		return Jobs.find({userId: Meteor.userId()}).fetch().length;
+		return Jobs.find({userId: Meteor.userId()}).count();
 	},
 	providerJobsCount: function() {
 		var jobCount = Profiles.findOne({userId: Meteor.userId()}).appliedJobs.length + Profiles.findOne({userId: Meteor.userId()}).ongoingJobs.length;
 		return jobCount;
+	},
+	providerCompletedJobs: function() {
+		return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'done'}, {assignmentStatus: 'approved'}]}).fetch();
+	},
+	buyerCompletedJobs: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}]}).fetch();
 	}
 });

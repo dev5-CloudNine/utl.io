@@ -568,6 +568,19 @@ Jobs.attachSchema(
         }
       }
     },
+    assignmentStatus: {
+      type: String,
+      allowedValues: ['submitted', 'approved', 'rejected'],
+      autoValue: function() {
+        if(this.isInsert) {
+          return 'rejected';
+        } else if(this.isUpsert) {
+          return {
+            $setOnInsert: 'rejected'
+          };
+        }
+      }
+    },
     htmlDescription: {
       type: String,
       optional: true,

@@ -159,6 +159,8 @@ Router.map(function() {
             });
         },
         waitOn: function() {
+            Meteor.subscribe('completedJobs');
+            Meteor.subscribe('reviews');
             return subs.subscribe('profile', this.params._id);
         },
         onBeforeAction: function() {
@@ -201,18 +203,18 @@ Router.map(function() {
         waitOn: function() {
             return subs.subscribe('profile', this.params._id);
         },
-        // onBeforeAction: function() {
-        //     var currentUserId = Profiles.findOne({userId: Meteor.userId()})._id || Buyers.findOne({userId: Meteor.userId()})._id;
-        //     if(currentUserId !== this.params._id) {
-        //         this.redirect("profile", {
-        //             _id: this.params._id
-        //         });
-        //         toastr.error("You cannot edit this profile");
-        //     }
-        //     else {
-        //         this.next();
-        //     }
-        // }
+        onBeforeAction: function() {
+            var currentUserId = Profiles.findOne({userId: Meteor.userId()})._id || Buyers.findOne({userId: Meteor.userId()})._id;
+            if(currentUserId !== this.params._id) {
+                this.redirect("profile", {
+                    _id: this.params._id
+                });
+                toastr.error("You cannot edit this profile");
+            }
+            else {
+                this.next();
+            }
+        }
     });
 
     this.route('providerDashboard', {
@@ -227,6 +229,7 @@ Router.map(function() {
         waitOn: function() {
             Meteor.subscribe("userList");
             Meteor.subscribe('allJobs');
+            Meteor.subscribe('reviews');
             return Meteor.subscribe("messages");
         },
         data: function() {
@@ -313,18 +316,18 @@ Router.map(function() {
         waitOn: function() {
             return subs.subscribe('buyer', this.params._id);
         },
-        // onBeforeAction: function() {
-        //     var currentUserId = Buyers.findOne({usrId: Meteor.userId()})._id || Profiles.findOne({userId: Meteor.userId()})._id;
-        //     if(currentUserId !== this.params._id) {
-        //         this.redirect("buyer", {
-        //             _id: this.params._id
-        //         });
-        //         toastr.error("You cannot edit this profile");
-        //     }
-        //     else {
-        //         this.next();
-        //     }
-        // }
+        onBeforeAction: function() {
+            var currentUserId = Buyers.findOne({usrId: Meteor.userId()})._id || Profiles.findOne({userId: Meteor.userId()})._id;
+            if(currentUserId !== this.params._id) {
+                this.redirect("buyer", {
+                    _id: this.params._id
+                });
+                toastr.error("You cannot edit this profile");
+            }
+            else {
+                this.next();
+            }
+        }
     });
 
     this.route('buyerJobs', {

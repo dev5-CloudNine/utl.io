@@ -21,7 +21,11 @@
                         {{else}}
                             <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
                         {{/if}}
-                        Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}{{#if assignedProvider}}&nbsp;to&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{/if}}&nbsp;|&nbsp;{{#if selectedProvider}}Routed to {{#with routedProvider}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
+                        Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}
+                        {{#if assignedProvider}}
+                            &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
+                        {{/if}}
+                        &nbsp;|&nbsp;{{#if selectedProvider}}Routed to {{#with routedProvider}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
                     </small>
                 </div>
             </div>
@@ -33,16 +37,48 @@
                     </small>
                 </div>
                 {{#if acceptedProvider}}
-                    {{#if $eq applicationStatus 'assigned'}}
-                        <div></div>
+                    {{#if $eq applicationStatus 'frozen'}}
+                        <div class="col-sm-12 text-right">
+                            <button class="btn btn-success confirmAssignment">Confirm</button>
+                            <button class="btn btn-warning declineAssignment">Decline</button>
+                        </div>
                     {{else}}
-                        {{#if $eq applicationStatus 'open'}}
-                            <div></div>
-                        {{else}}
-                            {{#if $eq applicationStatus 'frozen'}}
+                        {{#if $eq applicationStatus 'assigned'}}
+                            {{#if $eq assignmentStatus 'rejected'}}
                                 <div class="col-sm-12 text-right">
-                                    <button class="btn btn-success confirmAssignment">Confirm</button>
-                                    <button class="btn btn-warning declineAssignment">Decline</button>
+                                    <button class="btn btn-success submitAssignment">Submit Assignment</button>
+                                </div>
+                            {{else}}
+                                {{#if $eq assignmentStatus 'submitted'}}
+                                    <div class="col-sm-12 text-right">
+                                        <h5>You've submitted the assignment for approval.</h5>
+                                    </div>
+                                {{/if}}
+                            {{/if}}
+                        {{/if}}
+                    {{/if}}
+                {{else}}
+                    {{#if jobPostedBuyer}}
+                        {{#if $eq assignmentStatus 'submitted'}}
+                            <div class="col-sm-12 text-right">
+                                <button class="btn btn-success approveAssignment">Approve Assignment</button>
+                                <button class="btn btn-success rejectAssignment">Reject Assignment</button>
+                            </div>
+                        {{else}}
+                            {{#if $eq assignmentStatus 'approved'}}
+                                <div class="col-sm-12">
+                                    {{#if reviewed}}
+                                        You've reviewed the provider for this job.
+                                    {{else}}
+                                        <form id="review">
+                                            <div class="form-group">                                        
+                                                <label for="writeReview">Write a review</label>
+                                                <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
+                                                <label>Rate provider's performance</label>&nbsp;<span class="rateit"></span>
+                                            </div>
+                                            <button class="btn btn-success" type="submit">Submit</button>
+                                        </form>
+                                    {{/if}}
                                 </div>
                             {{/if}}
                         {{/if}}

@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
                                     <span class="count_top"><i class="fa fa-clock-o"></i> Jobs Completed</span>
-                                    <div class="count">0</div>
+                                    <div class="count">{{buyerCompletedJobsCount}}</div>
                                 </div>
                                 <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
                                     <span class="count_top"><i class="fa fa-user"></i> Amount Spent</span>
@@ -235,6 +235,17 @@
                     </div>
                     <div class="tab-pane fade {{#if $eq active 'completedJobs'}} in active {{/if}}" id="completedJobs">
                         <h5>Completed Jobs</h5>
+                        {{#if currentUser.isDeveloper}}
+                            {{#each providerCompletedJobs}}
+                                {{>jobSmall}}
+                            {{/each}}
+                        {{else}}
+                            {{#if currentUser.isBuyer}}
+                                {{#each buyerCompletedJobs}}
+                                    {{>jobSmall}}
+                                {{/each}}
+                            {{/if}}
+                        {{/if}}
                     </div>
                     <div class="tab-pane fade {{#if $eq active 'messaging'}} in active {{/if}}" id="mails">
                         <br> 
