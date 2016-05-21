@@ -11,7 +11,7 @@ Template.profiles.helpers({
     "profiles": function() {
         return Profiles.find({}, {
             sort: {
-                randomSorter: 1
+                createdAt: -1
             }
         });
     }

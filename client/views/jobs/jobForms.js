@@ -6,7 +6,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit'], {
 			} else {
 				analytics.track("Job Created");
         		Router.go('job', {_id:result});
-        		location.reload();
+        		// location.reload();
 			}
 		},
 		update: function(error, result) {

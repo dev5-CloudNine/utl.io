@@ -52,6 +52,14 @@ Router.map(function() {
         }
     });
 
+    this.route('recommendedJobs', {
+        path: '/recommendedjobs',
+        title: 'UTL - Recommended Jobs',
+        subscriptions: function() {
+            return subs.subscribe('jobs');
+        }
+    })
+
     this.route('job', {
         path: '/jobs/:_id/:slug?',
         title: function() {
