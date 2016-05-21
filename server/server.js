@@ -93,9 +93,6 @@ Meteor.methods({
         Profiles.update({_id: pId}, {$addToSet: {routedJobs: doc._id}});
     },
     "acceptCounterOffer": function(jobId, userId, applied_at, freenets) {
-        console.log(userId);
-        console.log(applied_at);
-        console.log(freenets);
         Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applied_at, 'applications.freelancer_nets': freenets}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen', proposedBudget: freenets}})
     },
     confirmAssignment: function(jobId, buyerId) {
@@ -204,20 +201,28 @@ Meteor.methods({
     deleteFile: function(file,id) {
         Tasks.update(id, {$pull: {files: file}});
     },
-    recordTime:function(id,isCheckIn){
+    recordTime:function(id,data,isCheckIn){
         if(isCheckIn){
-            TimeSheet.update({'jobID':id},{$set:{'checkIn':new Date()}});
+            TimeSheet.update({'jobID':id},{$set:{'checkIn':data.in}});
         } else {
             var checkInTime = TimeSheet.findOne({'jobID':id}).checkIn;
             var obj = {};
-            obj.id = Random.id();
-            obj.checkIn = checkInTime;
-            obj.checkOut = new Date();
-            TimeSheet.update({'jobID':id},{$set:{checkIn:''}});
-            TimeSheet.update({'jobID':id},{$push:{'logs':obj}});
+            obj.checkIn = data.in;
+            obj.checkOut = data.out;
+
+            if(data.logID=="new") {
+                obj.id = Random.id();
+                TimeSheet.update({'jobID':id},{$set:{checkIn:''}});
+                TimeSheet.update({'jobID':id},{$push:{'logs':obj}});
+            } else {
+                console.log(data.logID);
+                console.log(id);
+
+                TimeSheet.update({$and:[{'jobID':id},{"logs.id" : data.logID}]}, {"$set" : {"logs.$.checkIn" : obj.checkIn,"logs.$.checkOut" : obj.checkOut}});
+            }
         }
     },
-    removeLog:function(logID,jobID) {
+    removeLog:function(jobID,isCheckIn,logID) {
         TimeSheet.update({jobID:jobID},{$pull:{'logs':{'id':logID}}});
     }
 });

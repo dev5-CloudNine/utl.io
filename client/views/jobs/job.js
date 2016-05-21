@@ -294,7 +294,6 @@ Template.job.events({
       var url = $(event.currentTarget).data('path');
       var index = url.indexOf(S3_FILEUPLOADS)-1;
       var path = url.substr(index);
-      console.log(url);
       S3.delete(path, function(err, res) {
           $('#spinner').hide();
           if (err) {
@@ -320,10 +319,94 @@ Template.job.events({
         $('.show-checkin-time').show();
       }
     },
-    "click button.remove-log" : function(event) {
-      var id = $(event.currentTarget).data('id'); 
-      var jobID = $(event.currentTarget).data('parentid'); 
-      Meteor.call('removeLog',id,jobID,function(err,res){});
+    "click button.remove-log-entry" : function(event) {
+      var id = $(event.currentTarget).val();
+      var jobID = Router.current().params._id;
+      $("div[data-logid='"+id+"']").attr('data-logid','new');
+      Meteor.call('removeLog',jobID,false,id,function(err,res){});
+    },
+    "click button.edit-log" : function(event) {
+      $('button.submit-log').html('Update');
+      var logID = $(event.currentTarget).parent().data('id');  
+      var jobID = Router.current().params._id;
+      $("div[data-logid]").attr('data-logid',logID);
+      var obj = TimeSheet.findOne({'jobID':jobID}).logs;
+      obj.map(function(ele){
+        if(ele.id==logID){
+          var chkIn = moment(new Date(ele.checkIn)).format('MM/DD/YYYY h:mm A');
+          var chkOut = moment(new Date(ele.checkOut)).format('MM/DD/YYYY h:mm A');
+          $("#datetimepicker1").find("input").val(chkIn);
+          $("#datetimepicker2").find("input").val(chkOut);
+          return;
+        }
+      });
+    },
+    "click span.timesheet" : function(event)  {
+      $('#datetimepicker1').datetimepicker();
+      $('#datetimepicker2').datetimepicker();
+    },
+    "click button.submit-log" : function(event) {
+      var logID = $("div[data-logid]").attr('data-logid');
+      var start = $("#datetimepicker1").find("input").val();
+      var end = $("#datetimepicker2").find("input").val();
+
+      var jobID = Router.current().params._id;
+      start = start?new Date(start):false;
+      end = end?new Date(end):false;
+      if(start && end) {
+        // Complete Entry
+        var timeDiff = end - start;
+        if(timeDiff<0) {
+          toastr.warning('Checkout should be done after checking in');
+          return;
+        }
+        var obj = {};
+        obj.in = start;
+        obj.out = end;
+        obj.logID = logID;
+        Meteor.call('recordTime',jobID,obj,false,function (error, result) {});
+      } else if(start && !end) {
+        // Incomplete Entry
+        var obj = {};
+        obj.in = start;
+        Meteor.call('recordTime',jobID,obj,true,function (error, result) {});
+      } else {
+        // Error
+        toastr.warning('Enter valid date time');
+      }
+
+      $('button.submit-log').html('Save');
+      $("#datetimepicker1").find("input").val('');
+      $("#datetimepicker2").find("input").val('');
+      $("div[data-logid]").attr('data-logid','new');
+    },
+    "click button.delete-log" : function(event) {
+      var logID = $(event.currentTarget).parent().data('logid');
+      var jobID = Router.current().params._id;
+      if(logID=="new"){
+        Meteor.call('removeLog',jobID,true,'',function (error, result) {});
+      } else {
+        Meteor.call('removeLog',jobID,false,logID,function (error, result) {});
+      }
+      $("div[data-logid]").attr('data-logid','new');
+      $("#datetimepicker1").find("input").val('');
+      $("#datetimepicker2").find("input").val('');
+      $('button.submit-log').html('Save');
+    },
+    "click div.date" : function(event) {    
+      $('#datetimepicker1').datetimepicker();
+      $('#datetimepicker2').datetimepicker();
+    },
+    "click button.clear-log" : function(event) {
+      var logID = $(event.currentTarget).parent().data('logid');
+      var jobID = Router.current().params._id;
+      if(logID=="new"){
+        Meteor.call('removeLog',jobID,true,'',function (error, result) {});
+      }
+      $("#datetimepicker1").find("input").val('');
+      $("#datetimepicker2").find("input").val('');
+      $("div[data-logid]").attr('data-logid','new');
+      $('button.submit-log').html('Save');
     }
 
 });
@@ -464,8 +547,11 @@ Template.job.helpers({
         return Tasks.findOne({ _id: taskID }).files;
     },
 
-    show: function(jobID) {
-        delete Session.keys.totalHours;
+    show: function(jobID,keepSession) {
+        if(!keepSession){
+          delete Session.keys.totalHours;
+        }
+        
         if (Meteor.user() &&
             Meteor.user().roles &&
             (Meteor.user().roles.indexOf("buyer")) != -1) {
@@ -513,18 +599,21 @@ Template.job.helpers({
     },
     checkInTime: function(){
       var date = TimeSheet.findOne({'jobID':this._id}).checkIn;
-      return moment(date).format('llll');
+      if(!date) return '';
+      return moment(date).format('MM/DD/YYYY h:mm A');
     },
     timeLogs:function(id){
       var logList = [];
       var totalHours = 0;
-      TimeSheet.findOne({'jobID':id}, { sort: { 'logs.checkOut': -1 } }).logs.map(function(log){
+      var logs = TimeSheet.findOne({'jobID':id}, { sort: { 'logs.checkOut': -1 } }).logs;
+      if(!logs) return;
+      logs.map(function(log){
         var obj = {};
         obj.id = log.id;
         obj.in = moment(log.checkIn).format('llll');
         obj.out = moment(log.checkOut).format('llll');
-        var inT = moment(obj.in);
-        var ouT = moment(obj.out);
+        var inT = moment(new Date(obj.in));
+        var ouT = moment(new Date(obj.out));
         var diff = ouT.diff(inT);
         var duration = moment.duration(diff,'milliseconds');
         var days = Math.floor(duration.asDays());
@@ -543,7 +632,12 @@ Template.job.helpers({
       var hrs = days*24+hours;
       var mins = Math.floor(duration.asMinutes()) - hrs * 60;
       var total = "Days : " + days+", Hours : "+hours+", Mins : "+mins;
-      Session.set('totalHours',total);
+      if(duration==0) {
+        Session.set('totalHours','No activities are done so far');
+      } else {
+        Session.set('totalHours',total);
+      }
+      
 
       return logList;
     },
@@ -574,5 +668,4 @@ Template.job.rendered = function() {
         $('.check-in-toggle').prop("checked", false);
         $('.show-checkin-time').show();
       }
-
 };
