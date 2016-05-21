@@ -1,0 +1,11 @@
+<template name="recommendedJobs">
+	<div class="row">
+		<div class="col-sm-12">
+			{{#if currentUser}}
+				{{#each recommendedJobs}}
+					{{>jobSmall}}
+				{{/each}}
+			{{/if}}
+		</div>
+	</div>
+</template>

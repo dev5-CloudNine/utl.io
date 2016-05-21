@@ -105,5 +105,8 @@ Template.dashboard.helpers({
 	},
 	buyerCompletedJobs: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}]}).fetch();
+	},
+	providerCompletedJobsCount: function() {
+		return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'done'}]}).count();
 	}
 });

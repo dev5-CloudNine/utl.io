@@ -38,8 +38,7 @@
                                         Providers <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li>
-                                            <a href="{{pathFor 'profiles'}}">All Providers</a></li>
+                                        <li><a href="{{pathFor 'profiles'}}">All Providers</a></li>
                                         <li><a href="{{pathFor 'favoriteProfiles'}}">Favorite Providers</a></li>
                                     </ul>
                                 </li>
@@ -48,7 +47,13 @@
                                 {{/unless}}
                             {{/if}}
                             {{#if isInRole 'provider, corporate-provider'}}
-                                <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Find Jobs <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{pathFor 'jobs'}}">All Jobs</a></li>
+                                        <li><a href="{{pathFor 'recommendedJobs'}}">Recommended Jobs</a></li>
+                                    </ul>
+                                </li>
                                 <li id="user-drop-down" class="dropdown">
                                     <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
                                         Buyers <span class="caret"></span>
