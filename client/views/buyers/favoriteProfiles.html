@@ -4,7 +4,9 @@
 	        {{#each favUsers}}
 	            {{>profileSmall}}
 	        {{else}}
-	            You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
+	        	<div class="col-sm-12">
+	            	You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
+	            </div>
 	        {{/each}}
 	    {{/if}}
 	</div>

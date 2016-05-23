@@ -4,7 +4,9 @@
 	        {{#each favBuyers}}
 	            {{>buyerSmall}}
 	        {{else}}
-	            You haven't added any favorite buyers. <a href="{{pathFor 'buyers'}}">View buyers</a> if you want to add some.
+	        	<div class="col-sm-12">
+	            	You haven't added any favorite buyers. <a href="{{pathFor 'buyers'}}">View buyers</a> if you want to add some.
+	            </div>
 	        {{/each}}
 	    {{/if}}
 	</div>

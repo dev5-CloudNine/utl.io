@@ -533,9 +533,9 @@ Jobs.attachSchema(
     description: {
       type: String,
       label: "Job Description",
-      // autoform: {
-      //   afFieldInput: SUMMERNOTE_OPTIONS
-      // }
+      autoform: {
+        afFieldInput: SUMMERNOTE_OPTIONS
+      }
     },
     confidentialDescription: {
       type: String,

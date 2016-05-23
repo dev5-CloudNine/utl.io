@@ -116,7 +116,25 @@ Template.profileFields.events({
       }
     })
   }
-})
+});
+
+Array.prototype.pushArray = function() {
+  this.push.apply(this, this.concat.apply([], arguments));
+};
+
+removeFile = function(url) {
+  console.log(url);
+  var index = url.indexOf(S3_FILEUPLOADS)-1;
+  var path = url.substr(index);
+  S3.delete(path, function(err, res) {
+    if (err) {
+      toastr.error("Operation failed");
+    } else {
+      $("ul.fileList").find("[data-url='"+url+"']").remove();
+      toastr.success('Removed File');
+    }
+  });
+}
 
 Template.profileEdit.events({
   'click #cancel': function(event, template) {

@@ -129,9 +129,7 @@ Template.jobFields.events({
 				$('.fileList').append(fileListItem);
 				$('ul.fileList li').each(function(li) {
 					files.push($(this).data('url'));
-					console.log(li);
 				})
-				console.log(files);
 				Jobs.before.insert(function(userId, doc) {
 					doc.files = [];
 					doc.files.pushArray(files);

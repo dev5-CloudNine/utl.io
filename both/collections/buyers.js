@@ -80,7 +80,6 @@ Buyers.attachSchema(
   description: {
   	type: String,
   	label: "Description *",
-  	max: 10000,
   	autoform: {
   		afFieldInput: SUMMERNOTE_OPTIONS
   	}
@@ -101,7 +100,7 @@ Buyers.attachSchema(
 		autoform: {
 			type: "selectize",
 			options: function() {
-        return Categories.find().fetch();
+        return SubCategories.find().fetch()
       },
       multiple: true
 		}
