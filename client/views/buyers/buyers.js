@@ -11,7 +11,7 @@ Template.buyers.helpers({
     "buyers": function() {
         return Buyers.find({}, {
             sort: {
-                randomSorter: 1
+                createdAt: -1
             }
         });
     }
