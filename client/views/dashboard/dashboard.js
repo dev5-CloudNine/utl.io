@@ -56,11 +56,7 @@ Template.dashboard.helpers({
 		return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
 	},
 	providerRoutedJobs: function() {
-		var routedJobIds = [];
-		Profiles.findOne({userId: Meteor.userId()}).routedJobs.forEach(function(jobId) {
-			routedJobIds.push(jobId);
-		})
-		return Jobs.find({_id: {$in:routedJobIds}},{sort: {createdAt: -1}});
+		return Jobs.find({"selectedProvider": Meteor.userId()}, {"routed": true}, {"applicationStatus": "frozen"}).fetch();
 	},
 	buyerRoutedJobs: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {routed: true}]}, {sort: {createdAt: -1}});
@@ -97,7 +93,7 @@ Template.dashboard.helpers({
 		return Jobs.find({userId: Meteor.userId()}).count();
 	},
 	providerJobsCount: function() {
-		var jobCount = Profiles.findOne({userId: Meteor.userId()}).appliedJobs.length + Profiles.findOne({userId: Meteor.userId()}).ongoingJobs.length;
+		var jobCount = Profiles.findOne({userId: Meteor.userId()}).appliedJobs.length;
 		return jobCount;
 	},
 	providerCompletedJobs: function() {

@@ -89,9 +89,9 @@ Meteor.methods({
         var jobNets = Jobs.findOne({_id: jobId}).freelancer_nets;
         Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applicationTime}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen', proposedBudget: jobNets}});
     },
-    assignJobUpdate: function(doc, pId) {
-        Profiles.update({_id: pId}, {$addToSet: {routedJobs: doc._id}});
-    },
+    // assignJobUpdate: function(doc, pId) {
+    //     Profiles.update({_id: pId}, {$addToSet: {routedJobs: doc._id}});
+    // },
     "acceptCounterOffer": function(jobId, userId, applied_at, freenets) {
         Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applied_at, 'applications.freelancer_nets': freenets}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen', proposedBudget: freenets}})
     },
