@@ -94,7 +94,9 @@
 								{{#if industryTypes}}
 									<hr>
 									<h4>Job Categories</h4>
-									{{industryTypes}}
+									{{#each industryTypes}}
+										<a href="/subcategory/{{this}}">{{this}}</a>
+									{{/each}}
 								{{/if}}
 								{{#if preferredWorkLocation}}
 									<hr>
