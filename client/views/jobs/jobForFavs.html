@@ -1,0 +1,21 @@
+<template name="jobForFavs">
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="text-center">You are routing this job to your favorite providers</h4>
+            <br>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Create Your Job Post</h4>
+                </div>
+                <div class="panel-body">
+                    {{#autoForm id="jobNew" collection="Jobs" type="insert"}}
+                        {{>jobFields}}
+                        <div>
+                            <button class="btn btn-primary assign" type="submit"><i class="fa fa-chevron-right"></i> Submit</button>
+                        </div>
+                    {{/autoForm}}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

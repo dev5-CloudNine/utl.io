@@ -1,4 +1,4 @@
-AutoForm.addHooks(['jobNew', 'jobEdit','assignJob'], {
+AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob', 'jobForFavs'], {
 	after: {
 		insert: function(error, result) {
 			if (error) {
@@ -186,5 +186,24 @@ Template.jobFields.helpers({
 	childCategories: function () {
 		var parentId = Template.instance().selParent.get();
 		return parentId ? SubCategories.find({parentId: parentId}) : null;
+	}
+});
+
+Template.jobNew.events({
+	'click .publishToFavs': function(event, template) {
+		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
+		for(var i = 0; i < favProviders.length; i++) {
+			var application = {
+				userId: favProviders[i],
+				applied_at: new Date(),
+				app_status: 'accepted',
+				app_type: 'application'
+			}
+			Jobs.before.insert(function(userId, doc) {
+				doc.applications = [];
+				doc.applications.push(application);
+				debugger;
+			})
+		}
 	}
 });

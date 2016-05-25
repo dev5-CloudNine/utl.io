@@ -499,6 +499,10 @@ Jobs.attachSchema(
       type: String,
       optional: true
     },
+    favoriteProviders: {
+      type: [String],
+      optional: true
+    },
     userId: {
       type: String,
       label: "User Id",
@@ -557,16 +561,7 @@ Jobs.attachSchema(
     },
     applicationStatus: {
       type: String,
-      allowedValues: APPLICATION_STATUSES,
-      autoValue: function() {
-        if(this.isInsert) {
-          return 'open';
-        } else if(this.isUpsert) {
-          return {
-            $setOnInsert: 'open'
-          };
-        }
-      }
+      allowedValues: APPLICATION_STATUSES
     },
     assignmentStatus: {
       type: String,

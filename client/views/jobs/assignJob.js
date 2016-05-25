@@ -11,22 +11,10 @@ Template.assignJob.events({
 				app_status: 'accepted',
 				app_type: 'application'
 			}
-			doc.applications.push(appDetails);
 			doc.applicationStatus = 'frozen';
+			doc.applications.push(appDetails);
 			doc.routed = true;
 		});
-		// Jobs.after.insert(function(userId, doc) {
-		// 	// if(Router.current().route.getName() != 'assignJob')
-		// 	// 	return;
-		// 	Meteor.call('assignJobUpdate', doc, Router.current().params._id, function(error) {
-		// 		if(error) {
-		// 			toastr.error('Failed to assign job to the provider');
-		// 		}
-		// 		else {
-		// 			toastr.success('An invitation has been sent to the provider to confirm assignment.');
-		// 		}
-		// 	})
-		// });
 	}
 });
 
