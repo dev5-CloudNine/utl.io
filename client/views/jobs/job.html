@@ -37,7 +37,7 @@
                             <div class="panel-body">
                                 {{>jobExpiredAlert}} {{#if isInRole 'admin'}} {{>jobAdminEditLink}} {{>jobStatusToggle}} {{>jobSuggestedTweet}} {{/if}} {{>jobStatusAlert}}
                                 <div class="row">
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-12">
                                         <span class="label label-default label-xs">{{readableID}}</span> {{>jobLabels}}
                                         <h4>{{title}}</h4>
                                         <small>
@@ -46,41 +46,9 @@
                                             {{else}}
                                                 <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
                                             {{/if}}
-                                            Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}{{#if providerAssigned}}&nbsp;to&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{/if}}
+                                            Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}
+                                                &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
                                         </small>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        {{#if acceptedProvider}}
-                                            {{#if $eq applicationStatus 'frozen'}}
-                                                <div class="col-sm-12 text-right">
-                                                    <button class="btn btn-success confirmAssignment">Confirm</button>
-                                                    <button class="btn btn-warning declineAssignment">Decline</button>
-                                                </div>
-                                            {{else}}
-                                                {{#if $eq applicationStatus 'assigned'}}
-                                                    {{#if $eq assignmentStatus 'rejected'}}
-                                                        <div class="col-sm-12 text-right">
-                                                            <button class="btn btn-success submitAssignment">Submit Assignment</button>
-                                                        </div>
-                                                    {{else}}
-                                                        {{#if $eq assignmentStatus 'submitted'}}
-                                                            <div class="col-sm-12 text-right">
-                                                                <h5>You've submitted the assignment for approval.</h5>
-                                                            </div>
-                                                        {{/if}}
-                                                    {{/if}}
-                                                {{/if}}
-                                            {{/if}}
-                                        {{else}}
-                                            {{#if jobPostedBuyer}}
-                                                {{#if $eq assignmentStatus 'submitted'}}
-                                                    <div class="col-sm-12 text-right">
-                                                        <button class="btn btn-success approveAssignment">Approve Assignment</button>
-                                                        <button class="btn btn-success rejectAssignment">Reject Assignment</button>
-                                                    </div>
-                                                {{/if}}
-                                            {{/if}}
-                                        {{/if}}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -89,6 +57,34 @@
                                             <i class="fa fa-calendar fa-fw"></i> Posted on {{createdAt}}&nbsp;|&nbsp;
                                             {{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}
                                         </small>
+                                    </div>
+                                    <hr>
+                                    <div class="col-sm-12">
+                                        {{#if acceptedProvider}}
+                                            {{#if $eq applicationStatus 'frozen'}}
+                                                <button class="btn btn-success btn-sm confirmAssignment">Confirm</button>
+                                                <button class="btn btn-warning btn-sm declineAssignment">Decline</button>
+                                            {{else}}
+                                                {{#if $eq applicationStatus 'assigned'}}
+                                                    {{#if $eq assignmentStatus 'rejected'}}
+                                                        <button class="btn btn-success btn-sm submitAssignment">Submit Job for approval</button>
+                                                    {{else}}
+                                                        {{#if $eq assignmentStatus 'submitted'}}
+                                                            <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
+                                                        {{/if}}
+                                                    {{/if}}
+                                                {{/if}}
+                                            {{/if}}
+                                        {{else}}
+                                            {{#if jobPostedBuyer}}
+                                                {{#if $eq assignmentStatus 'submitted'}}
+                                                    <div class="col-sm-12 text-right">
+                                                        <button class="btn btn-success btn-sm approveAssignment">Approve Assignment</button>
+                                                        <button class="btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
+                                                    </div>
+                                                {{/if}}
+                                            {{/if}}
+                                        {{/if}}
                                     </div>
                                 </div>
                                 <hr>
@@ -156,7 +152,7 @@
                                     <div class="col-xs-12">
                                         <ul class="nav nav-pills">
                                             <li class="active"><a data-toggle="tab" href="#discussion">Post a Query</a></li>
-                                            <li class="{{#if notOpen}} hidden {{/if}}">
+                                            <li>
                                                 <a data-toggle="tab" href="#apply">
                                                     {{#if currentUser.isDeveloper}}
                                                         Apply or Counter Offer

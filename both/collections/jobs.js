@@ -503,8 +503,8 @@ Jobs.attachSchema(
     //     }
     //   }
     // },
-    selectedProviders: {
-      type: [String],
+    selectedProvider: {
+      type: String,
       optional: true
     },
     userId: {
@@ -566,15 +566,15 @@ Jobs.attachSchema(
     applicationStatus: {
       type: String,
       allowedValues: APPLICATION_STATUSES,
-      autoValue: function() {
-        if(this.isInsert) {
-          return 'open';
-        } else if(this.isUpsert) {
-          return {
-            $setOnInsert: 'open'
-          };
-        }
-      }
+      // autoValue: function() {
+      //   if(this.isInsert) {
+      //     return 'open';
+      //   } else if(this.isUpsert) {
+      //     return {
+      //       $setOnInsert: 'open'
+      //     };
+      //   }
+      // }
     },
     assignmentStatus: {
       type: String,

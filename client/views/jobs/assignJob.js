@@ -3,6 +3,7 @@ Template.assignJob.events({
 		Jobs.before.insert(function(userId, doc) {
 			if(Router.current().route.getName() != 'assignJob')
 				return;
+			doc.selectedProvider = "";
 			doc.selectedProvider = Profiles.findOne({_id: Router.current().params._id}).userId;
 			doc.applications = [];
 			var appDetails = {
@@ -14,6 +15,8 @@ Template.assignJob.events({
 			doc.applicationStatus = 'frozen';
 			doc.applications.push(appDetails);
 			doc.routed = true;
+			console.log(doc);
+			debugger;
 		});
 	}
 });
