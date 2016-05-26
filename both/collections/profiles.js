@@ -281,6 +281,10 @@ Profiles.attachSchema(
     'routedJobs.$': {
       type: String
     },
+    invitedJobs: {
+      type: [String],
+      optional: true
+    },
     // ongoingJobs: {
     //   type: Array,
     //   optional: true

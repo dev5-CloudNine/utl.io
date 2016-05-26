@@ -104,6 +104,7 @@ Jobs.after.update(function(userId, doc){
 });
 
 Jobs.before.insert(function(userId, doc){
+  doc.invited = false;
   var id = Jobs.findOne({},{limit:1,sort:{'createdAt':-1}});
   if(id) {
     id = parseInt(id.readableID.substring(5));

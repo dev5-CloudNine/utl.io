@@ -47,6 +47,14 @@ Jobs.attachSchema(
       type: Boolean,
       optional: true
     },
+    invited: {
+      type: Boolean,
+      optional: true
+    },
+    favoriteProviders: {
+      type: [String],
+      optional: true
+    },
     ratebasis: {
       type: String,
       label: "Pay Rate Basis *",
@@ -495,11 +503,7 @@ Jobs.attachSchema(
     //     }
     //   }
     // },
-    selectedProvider: {
-      type: String,
-      optional: true
-    },
-    favoriteProviders: {
+    selectedProviders: {
       type: [String],
       optional: true
     },
@@ -561,7 +565,16 @@ Jobs.attachSchema(
     },
     applicationStatus: {
       type: String,
-      allowedValues: APPLICATION_STATUSES
+      allowedValues: APPLICATION_STATUSES,
+      autoValue: function() {
+        if(this.isInsert) {
+          return 'open';
+        } else if(this.isUpsert) {
+          return {
+            $setOnInsert: 'open'
+          };
+        }
+      }
     },
     assignmentStatus: {
       type: String,

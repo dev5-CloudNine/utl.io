@@ -69,7 +69,7 @@ Meteor.publish('developerCount', function() {
 });
 
 Meteor.publish('jobCount', function() {
-    Counts.publish(this, 'jobs', Jobs.find({status: 'active', applicationStatus: 'open'}));
+    Counts.publish(this, 'jobs', Jobs.find({status: 'active', applicationStatus: 'open', invited: false}));
 })
 
 // Meteor.publish("homeJobs", function() {
@@ -151,8 +151,13 @@ Meteor.publishComposite('providers', {
 
 Meteor.publish("jobs", function() {
     check(arguments, [Match.Any]);
-    return Jobs.find({status: "active", applicationStatus: 'open'}, {sort: {createdAt: -1}})
+    return Jobs.find({$and: [{status: "active", applicationStatus: 'open', invited: false}]}, {sort: {createdAt: -1}})
 });
+
+Meteor.publish('invitedJobs', function() {
+    check(arguments, [Match.Any]);
+    return Jobs.find({$and: [{status: 'active', applicationStatus:'open', invited: true}]}, {sort: {createdAt: -1}});
+})
 
 Meteor.publish('completedJobs', function() {
     check(arguments, [Match.Any]);

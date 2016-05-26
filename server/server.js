@@ -110,6 +110,12 @@ Meteor.methods({
     rejectAssignment: function(jobId) {
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'rejected'}});
     },
+    publishToFavsUpdate: function(job) {
+        Jobs.update({_id: job._id}, {$set: {invited: true}});
+        for(var i = 0; i < job.favoriteProviders.length; i++) {
+            Profiles.update({userId: job.favoriteProviders[i]}, {$addToSet: {invitedJobs: job._id}});
+        }
+    },
     writeReview: function(assignedProvider, userId, jobId, timeReviewed, ratedPoints, reviewMessage) {
         var review = {
             providerId: assignedProvider,

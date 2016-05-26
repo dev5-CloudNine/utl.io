@@ -8,7 +8,7 @@ Template.favoriteProfiles.helpers({
 		});
 		favUserIds.forEach(function(id) {
 			favUserArray.push(Profiles.findOne({
-				_id: id
+				userId: id
 			}));
 		});
 		return favUserArray;

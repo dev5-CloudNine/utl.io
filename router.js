@@ -58,7 +58,15 @@ Router.map(function() {
         subscriptions: function() {
             return subs.subscribe('jobs');
         }
-    })
+    });
+
+    this.route('invitedJobs', {
+        path: '/invitedJobs',
+        title: 'UTL - Invited Jobs',
+        subscriptions: function() {
+            return subs.subscribe('invitedJobs');
+        }
+    });
 
     this.route('job', {
         path: '/jobs/:_id/:slug?',

@@ -8,7 +8,7 @@ Template.favoriteBuyers.helpers({
 		});
 		favBuyerIds.forEach(function(id) {
 			favBuyerArray.push(Buyers.findOne({
-				_id: id
+				userId: id
 			}));
 		});
 		return favBuyerArray;

@@ -1,4 +1,4 @@
-AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob', 'jobForFavs'], {
+AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob'], {
 	after: {
 		insert: function(error, result) {
 			if (error) {
@@ -192,17 +192,26 @@ Template.jobFields.helpers({
 Template.jobNew.events({
 	'click .publishToFavs': function(event, template) {
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
-		for(var i = 0; i < favProviders.length; i++) {
-			var application = {
-				userId: favProviders[i],
-				applied_at: new Date(),
-				app_status: 'accepted',
-				app_type: 'application'
-			}
+		console.log($(event.target).text());
+		if($(event.target).text() != "Publish to Fav's")
+			return;
+		else {
 			Jobs.before.insert(function(userId, doc) {
-				doc.applications = [];
-				doc.applications.push(application);
-				debugger;
+				doc.invited = true;
+				doc.favoriteProviders = [];
+				for(var i = 0; i < favProviders.length; i++) {
+					doc.favoriteProviders.push(favProviders[i]);
+				}
+			})
+			Jobs.after.insert(function(userId, doc) {
+				doc.invited = true;
+				Meteor.call('publishToFavsUpdate', doc, function(error) {
+					if(error) {
+						toastr.error('Failed to publish job to favorites. Please try again');
+					} else {
+						toastr.success('An invitation has been sent to your favorite providers to apply for this job.');
+					}
+				})
 			})
 		}
 	}
