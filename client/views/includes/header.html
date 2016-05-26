@@ -32,7 +32,21 @@
                                 {{/if}}
                             {{/if}}
                             {{#if isInRole 'buyer, corporate-manager'}}
-                                <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
+                                <!-- <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li> -->
+                                <li id="user-drop-down" class="dropdown">
+                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+                                        Jobs <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown-header">My Jobs</li>
+                                        <li><a href>Posted Jobs</a></li>
+                                        <li><a href>Routed Jobs</a></li>
+                                        <li><a href>Assigned Jobs</a></li>
+                                        <li><a href>Completed Jobs</a></li>
+                                    </ul>
+                                </li>
                                 <li id="user-drop-down" class="dropdown">
                                     <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
                                         Providers <span class="caret"></span>
@@ -48,10 +62,17 @@
                             {{/if}}
                             {{#if isInRole 'provider, corporate-provider'}}
                                 <li id="user-drop-down" class="dropdown">
-                                    <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Find Jobs <span class="caret"></span></a>
+                                    <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Jobs <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="{{pathFor 'jobs'}}">All Jobs</a></li>
                                         <li><a href="{{pathFor 'recommendedJobs'}}">Recommended Jobs</a></li>
+                                        <li><a href="{{pathFor 'invitedJobs'}}">Invited Jobs</a></li>
+                                        <li class="divider" role="seperator"></li>
+                                        <li class="dropdown-header">My Jobs</li>
+                                        <li><a href>Applied Jobs</a></li>
+                                        <li><a href>Routed Jobs</a></li>
+                                        <li><a href>Assigned Jobs</a></li>
+                                        <li><a href>Completed Jobs</a></li>
                                     </ul>
                                 </li>
                                 <li id="user-drop-down" class="dropdown">

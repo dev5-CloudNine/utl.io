@@ -1,55 +1,56 @@
 <template name="corpTeam">
-    <div class="container">
-    	{{#if currentUser}}
-    		{{#if isInRole 'corporate-admin, corporate-manager'}}
-    			<ul class="nav nav-tabs" id="myTab">
-                    <div class="liner"></div>
-                    <li class="{{#if $eq active 'corp-providers'}}active{{/if}}">
-                        <a href="#corp-providers" data-toggle="tab" title="welcome">
-                            <span class="round-tabs one">
-                                <i class="glyphicon glyphicon-user"></i>&nbsp; Corporate Providers
-                            </span>
-                        </a>
-                    </li>
-                    <li class="{{#if $eq active 'corp-managers'}}active{{/if}}">
-                        <a href="#corp-managers" data-toggle="tab" title="profile">
-                            <span class="round-tabs two">
-                                <i class="glyphicon glyphicon-user"></i>&nbsp; Corporate Managers
-                            </span>
-                        </a>
-                    </li>
-                	<li class="{{#if $eq active 'corp-accountants'}}active{{/if}}">
-                        <a href="#corp-accountants" data-toggle="tab" title="profile">
-                            <span class="round-tabs two">
-                                <i class="glyphicon glyphicon-user"></i>&nbsp; Corporate Accountants
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                	<div class="tab-pane fade {{#if $eq active 'corp-providers'}}in active{{/if}}" id="corp-providers">
-                        <br>
+	{{#if currentUser}}
+		{{#if isInRole 'corporate-admin, corporate-manager'}}
+			<ul class="nav nav-tabs" id="myTab">
+                <div class="liner"></div>
+                <li class="{{#if $eq active 'corp-providers'}}active{{/if}}">
+                    <a href="#corp-providers" data-toggle="tab" title="welcome">
+                        <span class="round-tabs one">
+                            <i class="glyphicon glyphicon-user"></i>&nbsp; Corporate Providers
+                        </span>
+                    </a>
+                </li>
+                <li class="{{#if $eq active 'corp-managers'}}active{{/if}}">
+                    <a href="#corp-managers" data-toggle="tab" title="profile">
+                        <span class="round-tabs two">
+                            <i class="glyphicon glyphicon-user"></i>&nbsp; Corporate Managers
+                        </span>
+                    </a>
+                </li>
+            	<li class="{{#if $eq active 'corp-accountants'}}active{{/if}}">
+                    <a href="#corp-accountants" data-toggle="tab" title="profile">
+                        <span class="round-tabs two">
+                            <i class="glyphicon glyphicon-user"></i>&nbsp; Corporate Accountants
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+            	<div class="tab-pane fade {{#if $eq active 'corp-providers'}}in active{{/if}}" id="corp-providers">
+                    <br>
+                    <div class="row">
                 		{{#each corpProviders}}
-    						{{>corpProviderSmall}}
+    						{{>profileSmall}}
                 		{{/each}}
-                		<div class="text-center">
-                			{{>infiniteScroll}}
-                		</div>
-                	</div>
-                	<div class="tab-pane fade {{#if $eq active 'corp-managers'}}in active{{/if}}" id="corp-managers">
-                        <br>
+                    </div>
+            	</div>
+            	<div class="tab-pane fade {{#if $eq active 'corp-managers'}}in active{{/if}}" id="corp-managers">
+                    <br>
+                    <div class="row">
                 		{{#each corpManagers}}
-    						{{>corpManagerSmall}}
+    						{{>buyerSmall}}
                 		{{/each}}
-                	</div>
-                	<div class="tab-pane fade {{#if $eq active 'corp-accountants'}}in active{{/if}}" id="corp-accountants">
-                        <br>
+                    </div>
+            	</div>
+            	<div class="tab-pane fade {{#if $eq active 'corp-accountants'}}in active{{/if}}" id="corp-accountants">
+                    <br>
+                    <div class="row">
                 		{{#each corpAccountants}}
                 			{{>corpAccountantSmall}}
                 		{{/each}}
-                	</div>
-                </div>
-    		{{/if}}
-    	{{/if}}
-    </div>
+                    </div>
+            	</div>
+            </div>
+		{{/if}}
+	{{/if}}
 </template>

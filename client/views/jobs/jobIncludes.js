@@ -66,3 +66,10 @@ Template.jobStatusToggle.events({
 // Template.jobShortDesc.helpers({
 //   shortDesc: 
 // })
+
+// Template.jobLabels.events({
+//   'click .jobTypeFilter': function(event, template) {
+//     event.preventDefault();
+//     console.log($(event.target.innerText));
+//   }
+// })

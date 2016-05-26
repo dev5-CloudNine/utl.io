@@ -47,6 +47,14 @@ Jobs.attachSchema(
       type: Boolean,
       optional: true
     },
+    invited: {
+      type: Boolean,
+      optional: true
+    },
+    favoriteProviders: {
+      type: [String],
+      optional: true
+    },
     ratebasis: {
       type: String,
       label: "Pay Rate Basis *",
@@ -533,9 +541,9 @@ Jobs.attachSchema(
     description: {
       type: String,
       label: "Job Description",
-      // autoform: {
-      //   afFieldInput: SUMMERNOTE_OPTIONS
-      // }
+      autoform: {
+        afFieldInput: SUMMERNOTE_OPTIONS
+      }
     },
     confidentialDescription: {
       type: String,
@@ -558,15 +566,15 @@ Jobs.attachSchema(
     applicationStatus: {
       type: String,
       allowedValues: APPLICATION_STATUSES,
-      autoValue: function() {
-        if(this.isInsert) {
-          return 'open';
-        } else if(this.isUpsert) {
-          return {
-            $setOnInsert: 'open'
-          };
-        }
-      }
+      // autoValue: function() {
+      //   if(this.isInsert) {
+      //     return 'open';
+      //   } else if(this.isUpsert) {
+      //     return {
+      //       $setOnInsert: 'open'
+      //     };
+      //   }
+      // }
     },
     assignmentStatus: {
       type: String,

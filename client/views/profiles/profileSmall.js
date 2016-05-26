@@ -1,7 +1,7 @@
 Template.profileSmall.events({
 	'click .favInactive': function(event, template) {
 		event.preventDefault();
-		Meteor.call('addToFav', this._id, "", function(error) {
+		Meteor.call('addToFav', this.userId, "", function(error) {
 			if(error) {
 				console.log('Failed to add to favorites');
 			}
@@ -14,7 +14,7 @@ Template.profileSmall.events({
 	},
 	'click .favActive': function(event, template) {
 		event.preventDefault();
-		Meteor.call('removeFromFav', this._id, "", function(error) {
+		Meteor.call('removeFromFav', this.userId, "", function(error) {
 			if(error) {
 				console.log('Failed to add to favorites');
 			}
@@ -33,6 +33,6 @@ Template.profileSmall.helpers({
 		return(Users.findOne({_id: this.userId}).readableID);
 	},
 	fav : function() {
-		return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this._id]}}]})?true:false;
+		return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this.userId]}}]})?true:false;
 	}
 })

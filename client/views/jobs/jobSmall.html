@@ -35,23 +35,24 @@
                         <i class="fa fa-calendar fa-fw"></i> Posted on {{createdAt}}&nbsp;|&nbsp;
                         {{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}
                     </small>
+                    <br><br>
                 </div>
                 {{#if acceptedProvider}}
                     {{#if $eq applicationStatus 'frozen'}}
                         <div class="col-sm-12 text-right">
-                            <button class="btn btn-success confirmAssignment">Confirm</button>
-                            <button class="btn btn-warning declineAssignment">Decline</button>
+                            <button class="btn btn-success btn-sm confirmAssignment">Confirm</button>
+                            <button class="btn btn-warning btn-sm declineAssignment">Decline</button>
                         </div>
                     {{else}}
                         {{#if $eq applicationStatus 'assigned'}}
                             {{#if $eq assignmentStatus 'rejected'}}
-                                <div class="col-sm-12 text-right">
-                                    <button class="btn btn-success submitAssignment">Submit Assignment</button>
+                                <div class="col-sm-12">
+                                    <button class="btn btn-success btn-sm submitAssignment">Submit Job for Approval.</button>
                                 </div>
                             {{else}}
                                 {{#if $eq assignmentStatus 'submitted'}}
-                                    <div class="col-sm-12 text-right">
-                                        <h5>You've submitted the assignment for approval.</h5>
+                                    <div class="col-sm-12">
+                                        <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
                                     </div>
                                 {{/if}}
                             {{/if}}
@@ -60,9 +61,9 @@
                 {{else}}
                     {{#if jobPostedBuyer}}
                         {{#if $eq assignmentStatus 'submitted'}}
-                            <div class="col-sm-12 text-right">
-                                <button class="btn btn-success approveAssignment">Approve Assignment</button>
-                                <button class="btn btn-success rejectAssignment">Reject Assignment</button>
+                            <div class="col-sm-12">
+                                <button class="btn btn-success btn-sm approveAssignment">Approve Assignment</button>
+                                <button class="btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
                             </div>
                         {{else}}
                             {{#if $eq assignmentStatus 'approved'}}

@@ -1,9 +1,13 @@
 <template name="favoriteProfiles">
-	{{#if isInRole 'buyer, corporate-manager'}}
-        {{#each favUsers}}
-            {{>profileSmall}}
-        {{else}}
-            You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
-        {{/each}}
-    {{/if}}
+	<div class="row">
+		{{#if isInRole 'buyer, corporate-manager'}}
+	        {{#each favUsers}}
+	            {{>profileSmall}}
+	        {{else}}
+	        	<div class="col-sm-12">
+	            	You haven't added any favorite users. <a href="{{pathFor 'profiles'}}">View providers</a> if you want to add some.
+	            </div>
+	        {{/each}}
+	    {{/if}}
+	</div>
 </template>

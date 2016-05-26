@@ -68,6 +68,10 @@ Profiles.attachSchema(
       max: 128,
       optional: true
     },
+    files: {
+      type: [String],
+      optional: true
+    },
     location: {
       type: String,
       label: "Location *",
@@ -76,9 +80,9 @@ Profiles.attachSchema(
     description: {
       type: String,
       label: "Description *",
-      // autoform: {
-      //   afFieldInput: SUMMERNOTE_OPTIONS
-      // }
+      autoform: {
+        afFieldInput: SUMMERNOTE_OPTIONS
+      }
     },
     htmlDescription: {
       type: String,
@@ -96,9 +100,7 @@ Profiles.attachSchema(
       autoform: {
         type: "selectize",
         options: function() {
-          return SubCategories.find().map(function(category) {
-            return {label: category.label, value: category.value}
-          })
+          return SubCategories.find().fetch()
         },
         multiple: true
       }
@@ -278,6 +280,10 @@ Profiles.attachSchema(
     },
     'routedJobs.$': {
       type: String
+    },
+    invitedJobs: {
+      type: [String],
+      optional: true
     },
     // ongoingJobs: {
     //   type: Array,

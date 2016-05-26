@@ -8,10 +8,6 @@ Profiles.after.insert(function(userId, doc) {
   });
 });
 
-Profiles.before.insert(function(userId, doc) {
-  console.log(doc);
-})
-
 Profiles.after.remove(function(userId, doc) {
   Users.update({
     _id: doc.userId
@@ -108,6 +104,7 @@ Jobs.after.update(function(userId, doc){
 });
 
 Jobs.before.insert(function(userId, doc){
+  doc.invited = false;
   var id = Jobs.findOne({},{limit:1,sort:{'createdAt':-1}});
   if(id) {
     id = parseInt(id.readableID.substring(5));

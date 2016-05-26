@@ -249,166 +249,224 @@ Template.job.events({
     })
   },
   'click button.submit-task': function(event, template) {
-       event.preventDefault();
-       var id = $(event.currentTarget).parent().parent().parent().parent().find('.task-form').data('id');
+    event.preventDefault();
+    var id = $(event.currentTarget).parent().parent().parent().parent().find('.task-form').data('id');
 
-       var obj = {};
-       obj.state = $(event.currentTarget).parent().parent().parent().find('.state').val();
-       obj.comments = $(event.currentTarget).parent().parent().parent().find('.comments').val();
-       obj.task = $(event.currentTarget).parent().parent().parent().find('.taskName').val();
-       obj.jobID = Router.current().params.jobID;
- 
-       Meteor.call('updateTask',id,obj,function(err,res){
-         if(err) {
-           toastr.error('Operation failed');
-         } else {
-           toastr.success('Task has been updated');
-         }
-       });
-       event.preventDefault();
-   },
-    "change .file_bag": function(event) {
-        event.preventDefault();
-        var files = $(event.currentTarget)[0].files
+    var obj = {};
+    obj.state = $(event.currentTarget).parent().parent().parent().find('.state').val();
+    obj.comments = $(event.currentTarget).parent().parent().parent().find('.comments').val();
+    obj.task = $(event.currentTarget).parent().parent().parent().find('.taskName').val();
+    obj.jobID = Router.current().params.jobID;
 
-        if (!files) return;
-        var id = this._id;
-        S3.upload({
-            files: files,
-            path: S3_FILEUPLOADS
-        }, function(err, res) {
-            $('.progress').remove();
-            if (err) toastr.error("Failed to upload file");
-            else {
-                Meteor.call('addFile', res.url, id,function (error, result) {
-                  if(!error)
-                    toastr.success("File uploaded successssfully");
-                });
-            }
-        });
-    },
-    "click .remove-file" : function(event) {
-      event.preventDefault();
-      $('#spinner').show();
-      var id = $(event.currentTarget).data('id');
-      var url = $(event.currentTarget).data('path');
-      var index = url.indexOf(S3_FILEUPLOADS)-1;
-      var path = url.substr(index);
-      S3.delete(path, function(err, res) {
-          $('#spinner').hide();
-          if (err) {
-              toastr.error("Operation failed");
-          } else {
-              Meteor.call('deleteFile', url, id,function (error, result) {
-                  if(!error)
-                    toastr.success("Deleted");
-              });
-          }
-      });
-    },
-    "change .check-in-toggle" : function(event) {
-      var id = $(event.currentTarget).data('id'); 
-      if($(event.currentTarget).is(":checked")){
-        //Checked Out
-        Meteor.call('recordTime',id,false,function (error, result) {});
-        $('.show-checkin-time').hide();
-      }
-      else{
-        //Checked In
-        Meteor.call('recordTime',id,true,function (error, result) {});
-        $('.show-checkin-time').show();
-      }
-    },
-    "click button.remove-log-entry" : function(event) {
-      var id = $(event.currentTarget).val();
-      var jobID = Router.current().params._id;
-      $("div[data-logid='"+id+"']").attr('data-logid','new');
-      Meteor.call('removeLog',jobID,false,id,function(err,res){});
-    },
-    "click button.edit-log" : function(event) {
-      $('button.submit-log').html('Update');
-      var logID = $(event.currentTarget).parent().data('id');  
-      var jobID = Router.current().params._id;
-      $("div[data-logid]").attr('data-logid',logID);
-      var obj = TimeSheet.findOne({'jobID':jobID}).logs;
-      obj.map(function(ele){
-        if(ele.id==logID){
-          var chkIn = moment(new Date(ele.checkIn)).format('MM/DD/YYYY h:mm A');
-          var chkOut = moment(new Date(ele.checkOut)).format('MM/DD/YYYY h:mm A');
-          $("#datetimepicker1").find("input").val(chkIn);
-          $("#datetimepicker2").find("input").val(chkOut);
-          return;
+    Meteor.call('updateTask',id,obj,function(err,res){
+     if(err) {
+       toastr.error('Operation failed');
+     } else {
+       toastr.success('Task has been updated');
+     }
+    });
+    event.preventDefault();
+  },
+  "change .file_bag": function(event) {
+    event.preventDefault();
+    var files = $(event.currentTarget)[0].files
+
+    if (!files) return;
+    var id = this._id;
+    S3.upload({
+        files: files,
+        path: S3_FILEUPLOADS
+    }, function(err, res) {
+        $('.progress').remove();
+        if (err) toastr.error("Failed to upload file");
+        else {
+            Meteor.call('addFile', res.url, id,function (error, result) {
+              if(!error)
+                toastr.success("File uploaded successssfully");
+            });
         }
-      });
-    },
-    "click span.timesheet" : function(event)  {
-      $('#datetimepicker1').datetimepicker();
-      $('#datetimepicker2').datetimepicker();
-    },
-    "click button.submit-log" : function(event) {
-      var logID = $("div[data-logid]").attr('data-logid');
-      var start = $("#datetimepicker1").find("input").val();
-      var end = $("#datetimepicker2").find("input").val();
-
-      var jobID = Router.current().params._id;
-      start = start?new Date(start):false;
-      end = end?new Date(end):false;
-      if(start && end) {
-        // Complete Entry
-        var timeDiff = end - start;
-        if(timeDiff<0) {
-          toastr.warning('Checkout should be done after checking in');
-          return;
+    });
+  },
+  "click .remove-file" : function(event) {
+    event.preventDefault();
+    $('#spinner').show();
+    var id = $(event.currentTarget).data('id');
+    var url = $(event.currentTarget).data('path');
+    var index = url.indexOf(S3_FILEUPLOADS)-1;
+    var path = url.substr(index);
+    S3.delete(path, function(err, res) {
+        $('#spinner').hide();
+        if (err) {
+            toastr.error("Operation failed");
+        } else {
+            Meteor.call('deleteFile', url, id,function (error, result) {
+                if(!error)
+                  toastr.success("Deleted");
+            });
         }
-        var obj = {};
-        obj.in = start;
-        obj.out = end;
-        obj.logID = logID;
-        Meteor.call('recordTime',jobID,obj,false,function (error, result) {});
-      } else if(start && !end) {
-        // Incomplete Entry
-        var obj = {};
-        obj.in = start;
-        Meteor.call('recordTime',jobID,obj,true,function (error, result) {});
-      } else {
-        // Error
-        toastr.warning('Enter valid date time');
+    });
+  },
+  "change .check-in-toggle" : function(event) {
+    var id = $(event.currentTarget).data('id'); 
+    if($(event.currentTarget).is(":checked")){
+      //Checked Out
+      Meteor.call('recordTime',id,false,function (error, result) {});
+      $('.show-checkin-time').hide();
+    }
+    else{
+      //Checked In
+      Meteor.call('recordTime',id,true,function (error, result) {});
+      $('.show-checkin-time').show();
+    }
+  },
+  "click button.remove-log-entry" : function(event) {
+    var id = $(event.currentTarget).val();
+    var jobID = Router.current().params._id;
+    $("div[data-logid='"+id+"']").attr('data-logid','new');
+    Meteor.call('removeLog',jobID,false,id,function(err,res){});
+  },
+  "click button.edit-log" : function(event) {
+    $('button.submit-log').html('Update');
+    var logID = $(event.currentTarget).parent().data('id');  
+    var jobID = Router.current().params._id;
+    $("div[data-logid]").attr('data-logid',logID);
+    var obj = TimeSheet.findOne({'jobID':jobID}).logs;
+    obj.map(function(ele){
+      if(ele.id==logID){
+        var chkIn = moment(new Date(ele.checkIn)).format('MM/DD/YYYY h:mm A');
+        var chkOut = moment(new Date(ele.checkOut)).format('MM/DD/YYYY h:mm A');
+        $("#datetimepicker1").find("input").val(chkIn);
+        $("#datetimepicker2").find("input").val(chkOut);
+        return;
       }
+    });
+  },
+  "click span.timesheet" : function(event)  {
+    $('#datetimepicker1').datetimepicker();
+    $('#datetimepicker2').datetimepicker();
+  },
+  "click button.submit-log" : function(event) {
+    var logID = $("div[data-logid]").attr('data-logid');
+    var start = $("#datetimepicker1").find("input").val();
+    var end = $("#datetimepicker2").find("input").val();
 
-      $('button.submit-log').html('Save');
-      $("#datetimepicker1").find("input").val('');
-      $("#datetimepicker2").find("input").val('');
-      $("div[data-logid]").attr('data-logid','new');
-    },
-    "click button.delete-log" : function(event) {
-      var logID = $(event.currentTarget).parent().data('logid');
-      var jobID = Router.current().params._id;
-      if(logID=="new"){
-        Meteor.call('removeLog',jobID,true,'',function (error, result) {});
-      } else {
-        Meteor.call('removeLog',jobID,false,logID,function (error, result) {});
+    var jobID = Router.current().params._id;
+    start = start?new Date(start):false;
+    end = end?new Date(end):false;
+    if(start && end) {
+      // Complete Entry
+      var timeDiff = end - start;
+      if(timeDiff<0) {
+        toastr.warning('Checkout should be done after checking in');
+        return;
       }
-      $("div[data-logid]").attr('data-logid','new');
-      $("#datetimepicker1").find("input").val('');
-      $("#datetimepicker2").find("input").val('');
-      $('button.submit-log').html('Save');
-    },
-    "click div.date" : function(event) {    
-      $('#datetimepicker1').datetimepicker();
-      $('#datetimepicker2').datetimepicker();
-    },
-    "click button.clear-log" : function(event) {
-      var logID = $(event.currentTarget).parent().data('logid');
-      var jobID = Router.current().params._id;
-      if(logID=="new"){
-        Meteor.call('removeLog',jobID,true,'',function (error, result) {});
-      }
-      $("#datetimepicker1").find("input").val('');
-      $("#datetimepicker2").find("input").val('');
-      $("div[data-logid]").attr('data-logid','new');
-      $('button.submit-log').html('Save');
+      var obj = {};
+      obj.in = start;
+      obj.out = end;
+      obj.logID = logID;
+      Meteor.call('recordTime',jobID,obj,false,function (error, result) {});
+    } else if(start && !end) {
+      // Incomplete Entry
+      var obj = {};
+      obj.in = start;
+      Meteor.call('recordTime',jobID,obj,true,function (error, result) {});
+    } else {
+      // Error
+      toastr.warning('Enter valid date time');
     }
 
+    $('button.submit-log').html('Save');
+    $("#datetimepicker1").find("input").val('');
+    $("#datetimepicker2").find("input").val('');
+    $("div[data-logid]").attr('data-logid','new');
+  },
+  "click button.delete-log" : function(event) {
+    var logID = $(event.currentTarget).parent().data('logid');
+    var jobID = Router.current().params._id;
+    if(logID=="new"){
+      Meteor.call('removeLog',jobID,true,'',function (error, result) {});
+    } else {
+      Meteor.call('removeLog',jobID,false,logID,function (error, result) {});
+    }
+    $("div[data-logid]").attr('data-logid','new');
+    $("#datetimepicker1").find("input").val('');
+    $("#datetimepicker2").find("input").val('');
+    $('button.submit-log').html('Save');
+  },
+  "click div.date" : function(event) {    
+    $('#datetimepicker1').datetimepicker();
+    $('#datetimepicker2').datetimepicker();
+  },
+  "click button.clear-log" : function(event) {
+    var logID = $(event.currentTarget).parent().data('logid');
+    var jobID = Router.current().params._id;
+    if(logID=="new"){
+      Meteor.call('removeLog',jobID,true,'',function (error, result) {});
+    }
+    $("#datetimepicker1").find("input").val('');
+    $("#datetimepicker2").find("input").val('');
+    $("div[data-logid]").attr('data-logid','new');
+    $('button.submit-log').html('Save');
+  },
+  'click button.confirmAssignment': function(event, template) {
+      event.preventDefault();
+      var buyerId = this.userId;
+      var jobId = this._id;
+      Meteor.call('confirmAssignment', jobId, buyerId, function(error) {
+        if(error) {
+          toastr.error('Failed to confirm assignment.');
+        }
+        else {
+          toastr.success('The assignment has been confirmed.');
+        }
+      })
+    },
+    'click button.declineAssignment': function(event, template) {
+      console.log(this);
+      var jobId = this._id;
+      var userId = Meteor.userId();
+      Meteor.call('declineAssignment', jobId, userId, function(error) {
+        if(error) {
+          toastr.error('Failed to decline the assignment.');
+        } else {
+          toastr.success('Successfully declined the assignment.');
+        }
+      });
+    },
+    'click button.submitAssignment': function(event, template) {
+      event.preventDefault();
+      var jobId = this._id;
+      Meteor.call('submitAssignment', jobId, function(error) {
+        if(error) {
+          toastr.error('Failed to submit assignment. Please try again.');
+        } else {
+          toastr.success('Successfully submitted the assignment.');
+        }
+      });
+    },
+    'click button.approveAssignment': function(event, template) {
+      event.preventDefault();
+      var jobId = this._id;
+      var providerId = this.assignedProvider;
+      console.log(providerId);
+      Meteor.call('approveAssignment', jobId, providerId, function(error) {
+        if(error) {
+          toastr.error('Failed to approve assignment. Please try again.');
+        } else {
+          toastr.success('Approved assignment Successfully');
+        }
+      });
+    },
+    'click button.rejectAssignment': function(event, template) {
+      var jobId = this._id;
+      Meteor.call('rejectAssignment', jobId, function(error) {
+        if(error) {
+          toastr.error('Failed to reject assignment. Please try again.');
+        } else {
+          toastr.success('Rejected assignment successfully');
+        }
+      });
+    }
 });
 
 Template.job.helpers({
@@ -646,6 +704,16 @@ Template.job.helpers({
     },
     "uploadedFiles": function(){
         return S3.collection.find();
+    },
+    'acceptedProvider': function() {
+      var uId = Meteor.userId();
+      var jobs=Jobs.findOne({_id: this._id}).applications;
+      for(var i=0;i<jobs.length;i++){
+        if(jobs[i].userId == uId && jobs[i].app_status == 'accepted') {
+          return true;
+        }
+      }
+      return false;
     }
 });
 

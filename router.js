@@ -58,7 +58,15 @@ Router.map(function() {
         subscriptions: function() {
             return subs.subscribe('jobs');
         }
-    })
+    });
+
+    this.route('invitedJobs', {
+        path: '/invitedJobs',
+        title: 'UTL - Invited Jobs',
+        subscriptions: function() {
+            return subs.subscribe('invitedJobs');
+        }
+    });
 
     this.route('job', {
         path: '/jobs/:_id/:slug?',
@@ -92,6 +100,26 @@ Router.map(function() {
         }
     });
 
+    this.route('filteredJobs', {
+        path: '/category/:category',
+        title: function() {
+            return "UTL - " + this.params.category;
+        },
+        subscriptions: function() {
+            return subs.subscribe('jobs');
+        }
+    });
+
+    this.route('subCategoryJobs', {
+        path: '/subcategory/:subcategory',
+        title: function() {
+            return "UTL - " + this.params.subcategory;
+        },
+        subscriptions: function() {
+            return subs.subscribe('jobs');
+        }
+    })
+
     this.route('jobNew', {
         path: '/job',
         title: "UTL - Post a Job",
@@ -109,7 +137,22 @@ Router.map(function() {
 
     this.route('assignJob', {
         path: '/job/:_id',
-        title: "UTL - Assign job to a provider",
+        title: "UTL - Route job to a provider",
+        onBeforeAction: function () {
+            if (Meteor.user() &&
+                Meteor.user().roles &&
+                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 || (Meteor.user().roles.indexOf("corporate-manager")) != -1 )
+                ) {
+                this.next();
+            } else {
+                this.render('notFound');
+            }
+        }
+    });
+
+    this.route('jobForFavs', {
+        path: '/job/new/favorites',
+        title: "UTL - Route job to favorite providers",
         onBeforeAction: function () {
             if (Meteor.user() &&
                 Meteor.user().roles &&
@@ -211,18 +254,18 @@ Router.map(function() {
         waitOn: function() {
             return subs.subscribe('profile', this.params._id);
         },
-        onBeforeAction: function() {
-            var currentUserId = Profiles.findOne({userId: Meteor.userId()})._id || Buyers.findOne({userId: Meteor.userId()})._id;
-            if(currentUserId !== this.params._id) {
-                this.redirect("profile", {
-                    _id: this.params._id
-                });
-                toastr.error("You cannot edit this profile");
-            }
-            else {
-                this.next();
-            }
-        }
+        // onBeforeAction: function() {
+        //     var currentUserId = Profiles.findOne({userId: Meteor.userId()})._id || Buyers.findOne({userId: Meteor.userId()})._id;
+        //     if(currentUserId !== this.params._id) {
+        //         this.redirect("profile", {
+        //             _id: this.params._id
+        //         });
+        //         toastr.error("You cannot edit this profile");
+        //     }
+        //     else {
+        //         this.next();
+        //     }
+        // }
     });
 
     this.route('providerDashboard', {
@@ -324,18 +367,18 @@ Router.map(function() {
         waitOn: function() {
             return subs.subscribe('buyer', this.params._id);
         },
-        onBeforeAction: function() {
-            var currentUserId = Buyers.findOne({usrId: Meteor.userId()})._id || Profiles.findOne({userId: Meteor.userId()})._id;
-            if(currentUserId !== this.params._id) {
-                this.redirect("buyer", {
-                    _id: this.params._id
-                });
-                toastr.error("You cannot edit this profile");
-            }
-            else {
-                this.next();
-            }
-        }
+        // onBeforeAction: function() {
+        //     var currentUserId = Buyers.findOne({usrId: Meteor.userId()})._id || Profiles.findOne({userId: Meteor.userId()})._id;
+        //     if(currentUserId !== this.params._id) {
+        //         this.redirect("buyer", {
+        //             _id: this.params._id
+        //         });
+        //         toastr.error("You cannot edit this profile");
+        //     }
+        //     else {
+        //         this.next();
+        //     }
+        // }
     });
 
     this.route('buyerJobs', {

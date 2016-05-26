@@ -86,8 +86,55 @@ Template.profileFields.events({
       smsEmail = mobileNumber + '@voicestream.net'
     }
     $('input[name="smsAddress"]').val(smsEmail);
+  },
+  'change .file_bag': function(event, template){
+    event.preventDefault();
+    $('#spinner').show();
+    var files = $(event.currentTarget)[0].files;
+    if(!files)
+      return;
+    S3.upload({
+      files: files,
+      path: S3_FILEUPLOADS
+    }, function(error, result) {
+      $('#spinner').hide();
+      if(error) {
+        toastr.error('Failed to upload documents.');
+      }
+      else {
+        var files = [];
+        var fileListItem = '<li data-url='+result.url+' style="list-style: none;"><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.url+'\')"></i> <a href='+result.url+' target="_blank">'+result.url+'</a></li>'
+        $('.fileList').append(fileListItem);
+        $('ul.fileList li').each(function(li) {
+          files.push($(this).data('url'));
+        })
+        Profiles.before.insert(function(userId, doc) {
+          doc.files = [];
+          doc.files.pushArray(files);
+        })        
+        toastr.success('Uploaded documents successfully');
+      }
+    })
   }
-})
+});
+
+Array.prototype.pushArray = function() {
+  this.push.apply(this, this.concat.apply([], arguments));
+};
+
+removeFile = function(url) {
+  console.log(url);
+  var index = url.indexOf(S3_FILEUPLOADS)-1;
+  var path = url.substr(index);
+  S3.delete(path, function(err, res) {
+    if (err) {
+      toastr.error("Operation failed");
+    } else {
+      $("ul.fileList").find("[data-url='"+url+"']").remove();
+      toastr.success('Removed File');
+    }
+  });
+}
 
 Template.profileEdit.events({
   'click #cancel': function(event, template) {

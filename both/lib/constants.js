@@ -231,6 +231,10 @@ SKILL_SET = function() {
     {label: "FL Studio", value: "FL Studio"},
     {label: "Final Cut Pro X", value: "Final Cut Pro X"},
   ]
+},
+
+CATEGORIES = function() {
+  return Categories.find().fetch();
 }
 
 S3_FILEUPLOADS = "utl";

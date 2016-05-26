@@ -1,0 +1,11 @@
+<template name="invitedJobs">
+	<div class="row">
+		<div class="col-sm-12">
+			{{#if currentUser}}
+				{{#each invitedJobs}}
+					{{>jobSmall}}
+				{{/each}}
+			{{/if}}
+		</div>
+	</div>
+</template>
