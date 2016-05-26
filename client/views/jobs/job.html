@@ -22,8 +22,17 @@
                         {{#if show _id}}
                         <li>
                             <a href="#timesheet" data-toggle="tab">
-                                <span class="round-tabs two timesheet">
+                                <span class="round-tabs three timesheet">
                                   <i class="glyphicon glyphicon-calendar"></i>&nbsp; Timesheet
+                             </span>
+                            </a>
+                        </li>
+                        {{/if}}
+                        {{#if show _id}}
+                        <li>
+                            <a href="#disc" data-toggle="tab">
+                                <span class="round-tabs four disc">
+                                  <i class="glyphicon glyphicon-calendar"></i>&nbsp; Discussion
                              </span>
                             </a>
                         </li>
@@ -122,7 +131,9 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <ul class="nav nav-pills">
+                                            {{#if $eq applicationStatus 'open'}}
                                             <li class="active"><a data-toggle="tab" href="#discussion">Post a Query</a></li>
+                                            {{/if}}
                                             <li class="{{#if notOpen}} hidden {{/if}}">
                                                 <a data-toggle="tab" href="#apply">
                                                     {{#if currentUser.isDeveloper}}
@@ -138,7 +149,8 @@
                                             </li>
                                         </ul>
                                         <div class="tab-content">
-                                                <div id="discussion" class="tab-pane fade in active">
+
+                                                <div id="discussion" class="tab-pane fade in active {{#if $eq applicationStatus 'assigned'}}pub-disc{{/if}}">
                                                     {{> commentsBox id=_id}}
                                                 </div>
                                                 <div id="apply" class="tab-pane fade">
@@ -625,6 +637,16 @@
                             </div>
                             </div>
                         </div>
+                        {{#if show _id}}
+                        <div class="tab-pane fade" id="disc">
+                            <br>
+                            <div class="panel panel-default">
+                            <div class="panel-body" style="background: #fff;">
+                                {{> commentsBox id=readableID}}
+                            </div>
+                            </div>
+                        </div>
+                        {{/if}}
                     <div class="clearfix"></div>
                 </div>
             </div>

@@ -509,3 +509,11 @@ button.favInactive {
     font-size: x-large;
     text-align: center;
 }
+
+div.pub-disc .comments-box form.comment-form {
+  display: none;
+} 
+
+div.pub-disc .comments-box .actions {
+  display: none;
+} 
