@@ -61,7 +61,6 @@ Meteor.publish("userList", function () {
     return Meteor.users.find({}, {fields: {emails: 1, profile: 1, readableID: 1}});
 });
 
-
 Meteor.publish('developerCount', function() {
     Counts.publish(this, 'developers', Profiles.find({
         status: "active"
@@ -157,6 +156,64 @@ Meteor.publish("jobs", function() {
 Meteor.publish('invitedJobs', function() {
     check(arguments, [Match.Any]);
     return Jobs.find({$and: [{status: 'active', applicationStatus:'open', invited: true}]}, {sort: {createdAt: -1}});
+});
+
+Meteor.publish("my_jobs", function() {
+    check(arguments, [Match.Any]);
+    if (this.userId) {
+        return [
+            Jobs.find({
+                userId: this.userId
+            })
+        ];
+    }
+    this.ready();
+});
+
+Meteor.publish('providerRoutedJobs', function() {
+    check(arguments, [Match.Any]);
+    if(this.userId) {
+        return [
+            Jobs.find({
+                'selectedProvider': this.userId
+            }, {
+                'routed': true
+            }, {
+                'applicationStatus': 'frozen'
+            })
+        ];
+        this.ready();
+    }
+});
+
+Meteor.publish('providerAssignedJobs', function() {
+    check(arguments, [Match.Any]);
+    if(this.userId) {
+        return [
+            Jobs.find({
+                'assignedProvider': this.userId
+            }, {
+                'applicationStatus': 'assigned'
+            })
+        ];
+        this.ready();
+    }
+});
+
+Meteor.publish('providerCompletedJobs', function() {
+    check(arguments, [Match.Any]);
+    if(this.userId) {
+        return [
+            Jobs.find({
+                'assignedProvider': this.userId
+            }, {
+                'applicationStatus': 'done'
+            }, {
+                'assignmentStatus': 'approved'
+            })
+        ];
+        this.ready();
+    }
 })
 
 Meteor.publish('completedJobs', function() {

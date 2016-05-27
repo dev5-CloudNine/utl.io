@@ -566,6 +566,7 @@ Jobs.attachSchema(
     applicationStatus: {
       type: String,
       allowedValues: APPLICATION_STATUSES,
+      defaultValue: 'open'
       // autoValue: function() {
       //   if(this.isInsert) {
       //     return 'open';

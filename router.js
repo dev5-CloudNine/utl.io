@@ -52,6 +52,84 @@ Router.map(function() {
         }
     });
 
+    this.route('myJobs', {
+        path: '/myjobs',
+        title: "UTL - Posted Jobs",
+        data: function() {
+            return {
+                jobs: Jobs.find({
+                    userId: Meteor.userId()
+                }, {
+                    sort: {
+                        createdAt: -1
+                    }
+                })
+            };
+        },
+        waitOn: function() {
+            Meteor.subscribe('reviews');
+            return subs.subscribe('my_jobs');
+        }
+    });
+
+    this.route('appliedJobs', {
+        path: '/appliedJobs',
+        title: 'UTL - Applied Jobs',
+        waitOn: function() {
+            return subs.subscribe('allJobs')
+        }
+    })
+
+    this.route('buyerRoutedJobs', {
+        path: '/myJobs/routed',
+        title: 'UTL - Routed Jobs',
+        waitOn: function() {
+            Meteor.subscribe('reviews');
+            return subs.subscribe('my_jobs');
+        }
+    });
+
+    this.route('providerRoutedJobs', {
+        path: '/routedJobs',
+        title: 'UTL - Routed Jobs',
+        waitOn: function() {
+            return subs.subscribe('providerRoutedJobs');
+        }
+    });
+
+    this.route('buyerAssignedJobs', {
+        path: '/myJobs/assigned',
+        title: 'UTL - Assigned Jobs',
+        waitOn: function() {
+            return subs.subscribe('my_jobs');
+        }
+    });
+
+    this.route('providerAssignedJobs', {
+        path: '/assignedJobs',
+        title: 'UTL - Assigned Jobs',
+        waitOn: function() {
+            return subs.subscribe('providerAssignedJobs');
+        }
+    });
+
+    this.route('buyerCompletedJobs', {
+        path: 'myJobs/completed',
+        title: 'UTL - Completed Jobs',
+        waitOn: function() {
+            Meteor.subscribe('reviews');
+            return subs.subscribe('my_jobs');
+        }
+    });
+
+    this.route('providerCompletedJobs', {
+        path: '/completedJobs',
+        title: 'UTL - Completed Jobs',
+        waitOn: function() {
+            return subs.subscribe('providerCompletedJobs');
+        }
+    })
+
     this.route('recommendedJobs', {
         path: '/recommendedjobs',
         title: 'UTL - Recommended Jobs',
@@ -267,12 +345,6 @@ Router.map(function() {
         //     }
         // }
     });
-
-    this.route('providerDashboard', {
-        path: '/providerDashboard',
-        title: "UTL - Provider Dashboard"
-    });
-
 
     this.route('dashboard', {
         path: '/dashboard/:tab',

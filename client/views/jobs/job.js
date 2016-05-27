@@ -714,6 +714,9 @@ Template.job.helpers({
         }
       }
       return false;
+    },
+    routedProvider: function() {
+      return Profiles.findOne({userId: this.selectedProvider});
     }
 });
 

@@ -12,7 +12,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="{{#if $eq active 'myjobs'}}active{{/if}} dropdown" role="presentation">
+                        <!-- <li class="{{#if $eq active 'myjobs'}}active{{/if}} dropdown" role="presentation">
                             <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
                                 <span class="round-tabs three">
                                     <i class="glyphicon glyphicon-gift"></i>&nbsp; My Jobs <span class="caret"></span>
@@ -37,7 +37,7 @@
                                     <li><a href="#favoriteJobs" data-toggle="tab">Favorite Jobs</a></li>
                                 {{/if}}
                             </ul>
-                        </li>
+                        </li> -->
                         <li  class="{{#if $eq active 'messaging'}}active{{/if}}">
                             <a href="#mails" data-toggle="tab" title="blah blah">
                                 <span class="round-tabs four">
@@ -178,7 +178,7 @@
                         {{/if}}
                     </div>
                     <br>
-                    <div class="tab-pane fade {{#if $eq active 'postedJobs'}} in active {{/if}}" id="postedJobs">
+                    <!-- <div class="tab-pane fade {{#if $eq active 'postedJobs'}} in active {{/if}}" id="postedJobs">
                         {{#if currentUser.isDeveloper}}
                             <h5>Applied Jobs</h5>
                             {{#each appliedJobs}}
@@ -246,7 +246,7 @@
                                 {{/each}}
                             {{/if}}
                         {{/if}}
-                    </div>
+                    </div> -->
                     <div class="tab-pane fade {{#if $eq active 'messaging'}} in active {{/if}}" id="mails">
                         <br> 
                         {{#if $eq active 'messaging'}}

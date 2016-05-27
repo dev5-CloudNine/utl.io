@@ -56,7 +56,8 @@
                                                 <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
                                             {{/if}}
                                             Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}
-                                                &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
+                                                &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
+                                                &nbsp;|&nbsp;{{#if selectedProvider}}Routed to {{#with routedProvider}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
                                         </small>
                                     </div>
                                 </div>
@@ -67,18 +68,20 @@
                                             {{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}
                                         </small>
                                     </div>
-                                    <hr>
                                     <div class="col-sm-12">
                                         {{#if acceptedProvider}}
+                                            <hr>
                                             {{#if $eq applicationStatus 'frozen'}}
                                                 <button class="btn btn-success btn-sm confirmAssignment">Confirm</button>
                                                 <button class="btn btn-warning btn-sm declineAssignment">Decline</button>
                                             {{else}}
                                                 {{#if $eq applicationStatus 'assigned'}}
+                                                    <hr>
                                                     {{#if $eq assignmentStatus 'rejected'}}
                                                         <button class="btn btn-success btn-sm submitAssignment">Submit Job for approval</button>
                                                     {{else}}
                                                         {{#if $eq assignmentStatus 'submitted'}}
+                                                            <hr>
                                                             <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
                                                         {{/if}}
                                                     {{/if}}
@@ -87,6 +90,7 @@
                                         {{else}}
                                             {{#if jobPostedBuyer}}
                                                 {{#if $eq assignmentStatus 'submitted'}}
+                                                    <hr>
                                                     <div class="col-sm-12 text-right">
                                                         <button class="btn btn-success btn-sm approveAssignment">Approve Assignment</button>
                                                         <button class="btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
@@ -187,7 +191,7 @@
                                                         <br>
                                                         {{#if isInRole 'provider, corporate-provider'}}
                                                             {{#if applied}}
-                                                                <h5>You've applied for this job. You may cancel your application</h5>
+                                                                <p>You've applied for this job. You'll be notified when the buyer accepts your application. <br>You may cancel your application by clicking the button below.</p>
                                                                 <button class="btn btn-primary applyActive">Cancel Application</button>
                                                             {{else}}
                                                                 <div class="radio">
@@ -440,9 +444,9 @@
                                                                                 <br> {{#if first_hours}} Pay {{first_hours}} USD for the first {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours.
                                                                                 <br> Net: {{freelancer_nets}} {{else}} {{#if device_rate}} Pay {{device_rate}} USD for {{max_devices}} devices.
                                                                                 <br> Net: {{freelancer_nets}}
-                                                                                <br> {{else}} {{#if hourlu_rate}} Pay {{hourly_rate}} USD for {{max_hours}} hours.
+                                                                                <br> {{else}} {{#if hourly_rate}} Pay {{hourly_rate}} USD for {{max_hours}} hours.
                                                                                 <br> Net: {{freelancer_nets}}
-                                                                                <br> {{else}} {{#if fixed_amount}} Pay {{fixed_amount}} USD.
+                                                                                <br> {{else}} {{#if fixed_amount}} Pay fixed amount {{fixed_amount}} USD.
                                                                                 <br> Net: {{freelancer_nets}}
                                                                                 <br> {{/if}} {{/if}} {{/if}} {{/if}} {{#if $eq applicationStatus 'frozen'}}
                                                                                 <h5>Avaiting confirmation from provider.</h5> {{else}} {{#if $eq applicationStatus 'assigned'}}
