@@ -192,7 +192,6 @@ Template.jobFields.helpers({
 Template.jobNew.events({
 	'click .publishToFavs': function(event, template) {
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
-		console.log($(event.target).text());
 		if($(event.target).text() != "Publish to Fav's")
 			return;
 		else {

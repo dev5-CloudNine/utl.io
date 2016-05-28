@@ -61,4 +61,4 @@ SubCategories.allow({
 	remove: function() {
 		return true;
 	}
-})
+});
