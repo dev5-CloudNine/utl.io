@@ -145,6 +145,15 @@
                                             {{/each}}
                                         </ul>
                                         {{/if}}
+                                        {{#if tasks}}
+                                        <hr>
+                                        <h4>Tasks</h4>
+                                        <ul>
+                                            {{#each tasks}}
+                                                <li>{{taskname}}</li>
+                                            {{/each}}
+                                        </ul>
+                                        {{/if}}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -424,7 +433,7 @@
                                                             {{#if jobPostedBuyer}}
                                                                 <div class="list-group">
                                                                     {{#each appliedProviders}}
-                                                                    <a class="list-group-item" href="{{pathFor 'profile'}}" style="text-decoration: none">
+                                                                    
                                                                         <span>
                                                                             {{#if $eq this.app_type 'application'}}
                                                                                 <h4>{{this.name}}</h4>
@@ -441,14 +450,28 @@
                                                                                 <span class="label label-success pull-right">{{this.app_type}}</span>
                                                                                 <small>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</small>&nbsp;|&nbsp;
                                                                                 <small>Applied At: {{this.appliedAt}}</small>
-                                                                                <br> {{#if first_hours}} Pay {{first_hours}} USD for the first {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours.
-                                                                                <br> Net: {{freelancer_nets}} {{else}} {{#if device_rate}} Pay {{device_rate}} USD for {{max_devices}} devices.
-                                                                                <br> Net: {{freelancer_nets}}
-                                                                                <br> {{else}} {{#if hourly_rate}} Pay {{hourly_rate}} USD for {{max_hours}} hours.
-                                                                                <br> Net: {{freelancer_nets}}
-                                                                                <br> {{else}} {{#if fixed_amount}} Pay fixed amount {{fixed_amount}} USD.
-                                                                                <br> Net: {{freelancer_nets}}
-                                                                                <br> {{/if}} {{/if}} {{/if}} {{/if}} {{#if $eq applicationStatus 'frozen'}}
+                                                                                <br> 
+                                                                                {{#if first_hours}}
+                                                                                    <p>Payment type: Blended <br>
+                                                                                    Pay {{first_hours}} USD for the first {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours.
+                                                                                    <br> Net: {{freelancer_nets}} USD</p> 
+                                                                                {{else}}
+                                                                                    {{#if device_rate}}
+                                                                                        <p>Payment type: Per device <br>{{device_rate}} USD for {{max_devices}} devices.
+                                                                                        <br> Net: {{freelancer_nets}} USD</p>
+                                                                                    {{else}}
+                                                                                        {{#if hourly_rate}} 
+                                                                                            <p>Payment type: Per hour <br> {{hourly_rate}} USD for {{max_hours}} hours.
+                                                                                            <br> Net: {{freelancer_nets}} USD</p>
+                                                                                        {{else}}
+                                                                                            {{#if fixed_amount}} 
+                                                                                                <p>Payment type: Fixed <br> {{fixed_amount}} USD.
+                                                                                                <br> Net: {{freelancer_nets}} USD</p>
+                                                                                            {{/if}}
+                                                                                        {{/if}}
+                                                                                    {{/if}}
+                                                                                {{/if}}
+                                                                            {{#if $eq applicationStatus 'frozen'}}
                                                                                 <h5>Avaiting confirmation from provider.</h5> {{else}} {{#if $eq applicationStatus 'assigned'}}
                                                                                 <h5>The job is assigned.</h5> {{else}} {{#if $eq applicationStatus 'done'}}
                                                                                 <h5>The project is completed.</h5> {{else}} {{#if applicationStatus 'open'}}
@@ -456,7 +479,6 @@
                                                                                 {{/if}} {{/if}} {{/if}} {{/if}}
                                                                             {{/if}}
                                                                         </span>
-                                                                    </a>
                                                                     {{else}}
                                                                     <h6>No providers have applied for this job yet.</h6> {{/each}}
                                                                 </div>
