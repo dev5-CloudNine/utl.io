@@ -1,5 +1,15 @@
 Buyers = new Mongo.Collection("clients");
-
+BuyersIndex = new EasySearch.Index({
+  collection: Buyers,
+  fields: ['name', 'companyName', 'title', 'location', 'readableID'],
+  engine: new EasySearch.Minimongo({
+    sort: function (searchObject) {
+        return {
+          createdAt: -1
+        };
+    }
+  })
+});
 Buyers.attachSchema(
   new SimpleSchema({
 	userId: {

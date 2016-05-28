@@ -1,10 +1,15 @@
 <template name="buyers">
 	<div class="row">
 		{{#if currentUser}}
+			<div class="col-sm-12">
+				<div class="well">
+					{{>EasySearch.Input index=buyerIndex}}
+				</div>
+			</div>
 			{{#if isInRole 'corporate-admin, provider, admin, corporate-provider'}}
-				{{#each buyers}}
+				{{#EasySearch.Each index=buyerIndex}}
 			        {{>buyerSmall}}
-			    {{/each}}
+			    {{/EasySearch.Each}}
 			{{/if}}
 		{{/if}}
 	</div>

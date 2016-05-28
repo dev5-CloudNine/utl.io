@@ -48,20 +48,20 @@
         </div> -->
         <div class="col-md-12">
         	{{#if currentUser}}
-				<!-- <div class="well">
+				<div class="well">
 					{{>EasySearch.Input index=jobIndex}}
 				</div>
                 {{#if isInRole 'admin, provider, corporate-admin, corporate-provider'}}
     				{{#EasySearch.Each index=jobIndex}}
     					{{>jobSmall}}
     				{{/EasySearch.Each}}
-                {{/if}} -->
-                {{#each jobs}}
+                {{/if}}
+                <!-- {{#each jobs}}
                     {{>jobSmall}}
                 {{/each}}
                 <div class="text-center">
                     {{> infiniteScroll}}
-                </div>
+                </div> -->
 			{{/if}}
         </div>
     </div>

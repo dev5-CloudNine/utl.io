@@ -14,5 +14,8 @@ Template.profiles.helpers({
                 createdAt: -1
             }
         });
+    },
+    'profileIndex': function() {
+        return ProfilesIndex;
     }
 })

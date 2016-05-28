@@ -14,7 +14,7 @@ Template.header.events({
 Template.header.helpers({
   corpProfile: function() {
     return Corporates.findOne({
-      userId: Meteor.userId()
+      companyName: Meteor.user().companyName
     })
   }
 });

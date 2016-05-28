@@ -10,14 +10,15 @@ Meteor.publish("userData", function() {
             }),
             Buyers.find({
                 userId: this.userId
-            }),
-            Corporates.find({
-                userId: this.userId
             })
         ];
     }
     this.ready();
 });
+
+Meteor.publish('corporates', function() {
+    return Corporates.find({});
+})
 
 Meteor.publish("messages", function () {
     return Messages.find();
@@ -459,17 +460,6 @@ Meteor.publish('buyers', function(limit) {
     var selector = {};
     check(limit, Number);
     return Buyers.find(selector, {
-        limit: limit,
-        sort: {
-            randomSorter: 1
-        }
-    });
-});
-
-Meteor.publish('corporates', function(limit) {
-    var selector = {};
-    check(limit, Number);
-    return Corporates.find(selector, {
         limit: limit,
         sort: {
             randomSorter: 1

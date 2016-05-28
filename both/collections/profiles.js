@@ -1,5 +1,17 @@
 Profiles = new Mongo.Collection("experts"); //todo - rename underlying collection to reflect code refactor
 
+ProfilesIndex = new EasySearch.Index({
+  collection: Profiles,
+  fields: ['name', 'companyName', 'title', 'location', 'readableID'],
+  engine: new EasySearch.Minimongo({
+    sort: function (searchObject) {
+        return {
+          createdAt: -1
+        };
+    }
+  })
+})
+
 Profiles.attachSchema(
   new SimpleSchema({
     userId: {
@@ -16,6 +28,18 @@ Profiles.attachSchema(
         }
       },
       denyUpdate: true
+    },
+    readableID: {
+      type: String,
+      autoValue: function() {
+        if(this.isInsert) {
+          return Meteor.user().readableID;
+        } else if(this.isUpsert) {
+          return {
+            $setOnInsert: Meteor.user().readableID
+          }
+        }
+      }
     },
     userName: {
       type: String,

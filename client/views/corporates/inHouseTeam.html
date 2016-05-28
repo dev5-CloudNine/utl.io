@@ -1,6 +1,6 @@
 <template name="corpTeam">
 	{{#if currentUser}}
-		{{#if isInRole 'corporate-admin, corporate-manager'}}
+		{{#if isInRole 'corporate-admin, corporate-manager, corporate-provider'}}
 			<ul class="nav nav-tabs" id="myTab">
                 <div class="liner"></div>
                 <li class="{{#if $eq active 'corp-providers'}}active{{/if}}">

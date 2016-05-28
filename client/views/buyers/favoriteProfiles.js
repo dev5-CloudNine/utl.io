@@ -12,5 +12,8 @@ Template.favoriteProfiles.helpers({
 			}));
 		});
 		return favUserArray;
-	}
+	},
+	'profileIndex': function() {
+        return ProfilesIndex;
+    }
 })
