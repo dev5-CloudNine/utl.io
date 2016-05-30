@@ -12,9 +12,11 @@
 							{{> avatar userId=userId size="large"}}
 						{{/if}}
 						{{#if isInRole 'buyer, corporate-manager'}}
-							<br>
-							<a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-xs">Route Job</a>
-							<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up">Like</i></a>
+							{{#if currentUser.isBuyer}}
+								<br>
+								<a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-xs">Route Job</a>
+								<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up">Like</i></a>
+							{{/if}}
 						{{/if}}
 						<hr>
 						<small>

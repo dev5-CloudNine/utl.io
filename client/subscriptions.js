@@ -1,4 +1,5 @@
 Meteor.subscribe("userData");
+Meteor.subscribe('corporates');
 Meteor.subscribe("jobCount");
 Meteor.subscribe('providers');
 Meteor.subscribe("developerCount");

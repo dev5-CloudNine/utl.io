@@ -20,19 +20,12 @@
                                 <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
                                 <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
                             {{/if}}
-                            {{#if isInRole 'buyer, corporate-manager'}}
+                            {{#if isInRole 'buyer, corporate-manager, corporate-admin, provider, corporate-provider, corporate-accountant'}}
                                 <li>
                                     <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
-                                    <li class="divider"></li>
                                 </li>
-                                {{else}}
-                                {{#if isInRole 'corporate-admin, provider, corporate-provider'}}
-                                    <li><a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a></li>
-                                    <li class="divider"></li>
-                                {{/if}}
                             {{/if}}
-                            {{#if isInRole 'buyer, corporate-manager'}}
-                                <!-- <li class="{{isActiveRoute regex='jobNew'}}"><a href="{{pathFor 'jobNew'}}">Post a Job</a></li> -->
+                            {{#if isInRole 'buyer'}}
                                 <li id="user-drop-down" class="dropdown">
                                     <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
                                         Jobs <span class="caret"></span>
@@ -60,7 +53,7 @@
                                     <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
                                 {{/unless}}
                             {{/if}}
-                            {{#if isInRole 'provider, corporate-provider'}}
+                            {{#if isInRole 'provider'}}
                                 <li id="user-drop-down" class="dropdown">
                                     <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Jobs <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
@@ -98,6 +91,67 @@
                                     <li>
                                         <a href="{{pathFor 'corporateNew'}}">Create Your Profile</a>
                                     </li>
+                                {{/unless}}
+                            {{/if}}
+                            {{#if isInRole 'corporate-provider'}}
+                                {{#with corpProfile}}<li><a href="{{pathFor 'corpTeam'}}">View Team</a></li>{{/with}}
+                                <li id="user-drop-down" class="dropdown">
+                                    <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Jobs <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{pathFor 'jobs'}}">All Jobs</a></li>
+                                        <li><a href="{{pathFor 'recommendedJobs'}}">Recommended Jobs</a></li>
+                                        <li><a href="{{pathFor 'invitedJobs'}}">Invited Jobs</a></li>
+                                        <li class="divider" role="seperator"></li>
+                                        <li class="dropdown-header">My Jobs</li>
+                                        <li><a href="{{pathFor 'appliedJobs'}}">Applied Jobs</a></li>
+                                        <li><a href="{{pathFor 'providerRoutedJobs'}}">Routed Jobs</a></li>
+                                        <li><a href="{{pathFor 'providerAssignedJobs'}}">Assigned Jobs</a></li>
+                                        <li><a href="{{pathFor 'providerCompletedJobs'}}">Completed Jobs</a></li>
+                                    </ul>
+                                </li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+                                        Buyers <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a href="{{pathFor 'buyers'}}">All Buyers</a></li>
+                                        <li><a href="{{pathFor 'favoriteBuyers'}}">Favorite Buyers</a></li>
+                                    </ul>
+                                </li>
+                                {{#unless currentUser.isDeveloper}}
+                                    <li class="{{isActiveRoute regex='^profile$'}}">
+                                        <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
+                                    </li>
+                                {{/unless}}
+                            {{/if}}
+                            {{#if isInRole 'corporate-manager'}}
+                                {{#with corpProfile}}<li><a href="{{pathFor 'corpTeam'}}">View Team</a></li>{{/with}}
+                                <li id="user-drop-down" class="dropdown">
+                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+                                        Jobs <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown-header">My Jobs</li>
+                                        <li><a href="{{pathFor 'myJobs'}}">Posted Jobs</a></li>
+                                        <li><a href="{{pathFor 'buyerRoutedJobs'}}">Routed Jobs</a></li>
+                                        <li><a href="{{pathFor 'buyerAssignedJobs'}}">Assigned Jobs</a></li>
+                                        <li><a href="{{pathFor 'buyerCompletedJobs'}}">Completed Jobs</a></li>
+                                    </ul>
+                                </li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+                                        Providers <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{pathFor 'profiles'}}">All Providers</a></li>
+                                        <li><a href="{{pathFor 'favoriteProfiles'}}">Favorite Providers</a></li>
+                                    </ul>
+                                </li>
+                                {{#unless currentUser.isBuyer}}
+                                    <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
                                 {{/unless}}
                             {{/if}}
                             {{#if isInRole 'corporate-accountant'}}

@@ -618,9 +618,7 @@ Template.job.helpers({
         return Jobs.findOne({
             $and: [
                 { _id: jobID },
-                { applicationStatus: "assigned" },
-                { applications: { $elemMatch: { app_status: 'accepted' } } },
-                { applications: { $elemMatch: { userId: Meteor.userId() } } }
+                { assignedProvider: Meteor.userId() }
             ]
         }) ? true : false;
     },

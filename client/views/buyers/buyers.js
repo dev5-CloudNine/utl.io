@@ -14,5 +14,8 @@ Template.buyers.helpers({
                 createdAt: -1
             }
         });
+    },
+    buyerIndex: function() {
+        return BuyersIndex;
     }
 });
