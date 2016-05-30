@@ -34,7 +34,7 @@ Template.profile.rendered = function() {
 Template.profile.events({
   'click .favInactive': function(event, template) {
     event.preventDefault();
-    Meteor.call('addToFav', this._id, "", function(error) {
+    Meteor.call('addToFav', this.userId, "", function(error) {
       if(error) {
         console.log('Failed to add to favorites');
       }
@@ -48,7 +48,7 @@ Template.profile.events({
   },
   'click .favActive': function(event, template) {
     event.preventDefault();
-    Meteor.call('removeFromFav', this._id, "", function(error) {
+    Meteor.call('removeFromFav', this.userId, "", function(error) {
       if(error) {
         console.log('Failed to add to favorites');
       }
