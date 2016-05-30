@@ -54,6 +54,13 @@ AdminConfig = {
         {label: 'Category', name: 'parentId'},
         {label: 'Sub Category', name: 'label'}
       ]
+    },
+    Skills: {
+      icon: 'list-alt',
+      tableColumns: [
+        {label: 'ID', name: "_id"},
+        {label: 'Skill', name: 'label'}
+      ]
     }
   },
   autoForm:{

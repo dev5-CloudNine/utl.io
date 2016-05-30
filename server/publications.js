@@ -28,6 +28,10 @@ Meteor.publish('categories', function() {
     return Categories.find({});
 });
 
+Meteor.publish('skills', function() {
+    return Skills.find({});
+});
+
 Meteor.publish('subcategories', function() {
     return SubCategories.find({});
 })

@@ -115,8 +115,35 @@ Template.profileFields.events({
         toastr.success('Uploaded documents successfully');
       }
     })
+  },
+  'keyup .skills input' : function(event) {
+    var newSkill = $('.skills input').val();
+    if (event.which === 13) {
+         var exists = Skills.findOne({value:newSkill});
+         if(!exists) {
+            new Confirmation({
+              message: "Do you want to add '"+newSkill+ "' to skills?",
+              title: "Confirmation",
+              cancelText: "Cancel",
+              okText: "Ok",
+              success: true, // whether the button should be green or red
+              focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
+            }, function (ok) {
+              if(ok) {                
+                Meteor.call('addNewSkill',newSkill);
+                toastr.info("'"+newSkill + "' has been added. Please select it");
+                $('.skills input').val('');
+              }
+            });
+         }
+         event.stopPropagation();
+         return false;
+    }
   }
 });
+
+
+
 
 Array.prototype.pushArray = function() {
   this.push.apply(this, this.concat.apply([], arguments));
@@ -166,7 +193,6 @@ Template.profileFields.rendered = function() {
       widget.onChange(function(file) {
         if (file) {
           file.done(function(info) {
-            console.log(info);
             customImagePreviewUrl.set(info.cdnUrl);
             analytics.track("Profile Image Uploaded");      
           });

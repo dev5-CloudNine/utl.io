@@ -10,3 +10,4 @@ Meteor.subscribe("userList");
 Meteor.subscribe('categories');
 Meteor.subscribe('subcategories');
 Meteor.subscribe('notifications');
+Meteor.subscribe('skills');

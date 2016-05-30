@@ -71,9 +71,19 @@ Profiles.attachSchema(
       optional: true
     },
     freelancerSkills: {
-      type: String,
-      label: "Skills",
-      optional: true,
+      type: [String],
+      label: "Select a Skill *",
+      autoform: {
+        type: "selectize",
+        options: function() {
+          return Skills.find().fetch()
+        },
+        selectizeOptions: {
+          hideSelected: true
+        },
+        isReactiveOptions:true,
+        multiple: true
+      }
     },
     title: {
       type: String,
