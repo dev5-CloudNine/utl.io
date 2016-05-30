@@ -9,3 +9,4 @@ Meteor.subscribe("applied_profiles");
 Meteor.subscribe("userList");
 Meteor.subscribe('categories');
 Meteor.subscribe('subcategories');
+Meteor.subscribe('notifications');

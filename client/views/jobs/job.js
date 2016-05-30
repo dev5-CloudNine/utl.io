@@ -422,7 +422,6 @@ Template.job.events({
       })
     },
     'click button.declineAssignment': function(event, template) {
-      console.log(this);
       var jobId = this._id;
       var userId = Meteor.userId();
       Meteor.call('declineAssignment', jobId, userId, function(error) {

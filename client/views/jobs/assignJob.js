@@ -1,5 +1,6 @@
 Template.assignJob.events({
 	'click button.assign': function(event, template) {
+		Session.set('routingJob', true);
 		Jobs.before.insert(function(userId, doc) {
 			if(Router.current().route.getName() != 'assignJob')
 				return;
@@ -18,6 +19,18 @@ Template.assignJob.events({
 			console.log(doc);
 			debugger;
 		});
+		Jobs.after.insert(function(userId, doc) {
+			if(!Session.get('routingJob'))
+				return;
+			Meteor.call('routeNotification', doc.selectedProvider, Meteor.userId(), doc._id, function(error) {
+				if(error) {
+					toastr.error('Failed to route job.');
+				} else {
+					delete Session.keys['routingJob'];
+					toastr.success('A notification has been sent to the provider to confirm assignment.');
+				}
+			})
+		})
 	}
 });
 

@@ -516,4 +516,16 @@ div.pub-disc .comments-box form.comment-form {
 
 div.pub-disc .comments-box .actions {
   display: none;
-} 
+}
+#staticPageIntro {
+  height: 240px;
+  padding: 40px;
+  color: white !important;
+}
+.gradient-red-orange-h {
+    background: url("images/glossy.png") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
+  }
+
+.white {
+  color: white !important;
+}

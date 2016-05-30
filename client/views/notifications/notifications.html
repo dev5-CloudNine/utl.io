@@ -1,0 +1,40 @@
+<template name="notifications">
+	{{#if currentUser.isBuyer}}
+		{{#each buyerNotifications}}
+			{{#if $eq this.notificationType 'newJobApplication'}}
+				<li>
+					{{#with this}}<a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has applied for your job - {{bjobDetails}}</a>{{/with}}
+				</li>
+			{{/if}}
+			{{#if $eq this.notificationType 'confirmAssignment'}}
+				<li>
+					{{#with this}}<a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has confirmed assignment - {{bjobDetails}}</a>{{/with}}
+				</li>
+			{{/if}}
+			{{#if $eq this.notificationType 'declineAssignment'}}
+				<li>
+					{{#with this}}<a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has declined assignment - {{bjobDetails}}</a>{{/with}}
+				</li>
+			{{/if}}
+		{{/each}}
+	{{/if}}
+	{{#if currentUser.isDeveloper}}
+		{{#each providerNotifications}}
+			{{#if $eq this.notificationType 'applicationAccepted'}}
+				<li>
+					{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has accepted your application.</a>{{/with}}
+				</li>
+			{{/if}}
+			{{#if $eq this.notificationType 'jobInvitation'}}
+				<li>
+					{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has invited you to bid on job - {{pjobDetails}}.</a>{{/with}}
+				</li>
+			{{/if}}
+			{{#if $eq this.notificationType 'routedJob'}}
+				<li>
+					{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has directly routed to you a job - {{pjobDetails}}.</a>{{/with}}
+				</li>
+			{{/if}}
+		{{/each}}
+	{{/if}}
+</template>

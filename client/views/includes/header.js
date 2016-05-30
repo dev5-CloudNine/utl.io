@@ -30,10 +30,11 @@ Template.headerUserMenu.helpers({
       userId: Meteor.userId()
     });
   },
-  msgCount: function() {
-    return Messages.find({
-      $and:[{recipient: Meteor.userId()},{ "read" :false }]
-    }).fetch().length;   
+  bNotificationCount: function() {
+    return Notifications.find({$and: [{buyerId: Meteor.userId()}, {read: false}]}).count();
+  },
+  pNotificationCount: function() {
+    return Notifications.find({$and: [{providerId: Meteor.userId()}, {read: false}]}).count();
   },
   msgs: function() {
     var count = Messages.find({

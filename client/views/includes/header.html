@@ -189,10 +189,10 @@
 <template name="headerUserMenu">
     <li id="user-drop-down" class="dropdown">
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-            <i style="font-size: 20px;padding: 3px;color: #6C6C6C;" class="fa fa-envelope fa-fw"></i>({{msgCount}})<span class="caret"></span>
+            <i style="font-size: 20px;padding: 3px;color: #6C6C6C;" class="fa fa-bell fa-fw"></i>({{#if currentUser.isBuyer}}{{bNotificationCount}}{{else}}{{#if currentUser.isDeveloper}}{{pNotificationCount}}{{/if}}{{/if}})<span class="caret"></span>
         </a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="{{pathFor 'dashboard' tab='mails-inbox'}}"><i class="fa fa-folder-open"></i>Goto Inbox</a></li>
+            {{>notifications}}
         </ul>
     </li>
     <li id="user-drop-down" class="dropdown">

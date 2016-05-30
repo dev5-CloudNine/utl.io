@@ -48,6 +48,10 @@ Meteor.publish("tasksOfaJob", function (id) {
     return Tasks.find({jobID:id});
 });
 
+Meteor.publish('notifications', function() {
+    return Notifications.find({});
+})
+
 
 Meteor.publish('postedBuyer', function(jobId) {
     var userId = Jobs.findOne({_id: jobId}).userId;
