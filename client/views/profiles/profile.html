@@ -15,7 +15,7 @@
 							{{#if currentUser.isBuyer}}
 								<br>
 								<a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-xs">Route Job</a>
-								<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up">Like</i></a>
+								<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>{{#if fav}}Like'd{{else}}Like{{/if}}</a>
 							{{/if}}
 						{{/if}}
 						<hr>
