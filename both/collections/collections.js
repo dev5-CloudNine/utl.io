@@ -4,6 +4,7 @@ Categories = new Meteor.Collection("Categories");
 SubCategories = new Meteor.Collection("subcategories");
 TimeSheet = new Meteor.Collection("timeSheet");
 Reviews = new Meteor.Collection("reviews");
+Skills = new Meteor.Collection("skills");
 
 Categories.attachSchema(
 	new SimpleSchema({
@@ -28,6 +29,31 @@ Categories.allow({
 		return true;
 	}
 });
+
+Skills.attachSchema(
+	new SimpleSchema({
+		label: {
+			type: String
+		},
+		value: {
+			type: String,
+			autoValue: function(doc) {
+				return this.field('label').value;
+			}
+		}
+	}));
+Skills.allow({
+	insert: function() {
+		return true;
+	},
+	update: function() {
+		return true;
+	},
+	remove: function() {
+		return true;
+	}
+});
+
 
 SubCategories.attachSchema(new SimpleSchema({
 	parentId: {

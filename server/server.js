@@ -227,5 +227,9 @@ Meteor.methods({
     },
     removeLog:function(jobID,isCheckIn,logID) {
         TimeSheet.update({jobID:jobID},{$pull:{'logs':{'id':logID}}});
+    },
+    addNewSkill : function(skill,ID) {
+        Skills.insert({"label" : skill, "value" : skill });
+        Profiles.update({_id: ID}, {$addToSet: {freelancerSkills: skill}});
     }
 });
