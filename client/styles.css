@@ -12,7 +12,7 @@ footer {
 }
 
 .panel {
-    background: #fffff2 !important;
+    background: #f2f2f2 !important;
 }
 .switch-calculator {
     margin-top: 10px;
@@ -528,4 +528,9 @@ div.pub-disc .comments-box .actions {
 
 .white {
   color: white !important;
+}
+footer {
+    border-top: 2px solid #999999 !important;
+    margin-top: 20px;
+    padding: 20px 0px 20px 0px;
 }
