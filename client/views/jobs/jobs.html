@@ -51,7 +51,7 @@
 				<div class="well">
 					{{>EasySearch.Input index=jobIndex}}
 				</div>
-                {{#if isInRole 'admin, provider, corporate-admin, corporate-provider'}}
+                {{#if isInRole 'provider, corporate-admin, corporate-provider'}}
     				{{#EasySearch.Each index=jobIndex}}
     					{{>jobSmall}}
     				{{/EasySearch.Each}}

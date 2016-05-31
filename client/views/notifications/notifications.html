@@ -1,4 +1,5 @@
 <template name="notifications">
+	<li><a href="">Welcome to UTL. View your notifications here.</a></li>
 	{{#if currentUser.isBuyer}}
 		{{#each buyerNotifications}}
 			{{#if $eq this.notificationType 'newJobApplication'}}

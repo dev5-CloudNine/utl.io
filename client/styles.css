@@ -5,14 +5,14 @@ footer {
 }
 
 .jumbotron {
-    min-height: 620px;
+    min-height: 440px;
     background-size: 100%;
     background-color: #f2f2f2 !important;
     background-repeat: no-repeat;
 }
 
 .panel {
-    background: #f2f2f2 !important;
+    background: #f7f7f7 !important;
 }
 .switch-calculator {
     margin-top: 10px;
@@ -27,9 +27,12 @@ h4 {
     font-weight: normal !important;
 }
 
-.home-image {
+#homePageIntro {
+
+}
+.gradient-blue-orange-h {
     height: auto;
-    background-image: url('images/home-image.png');
+    background: url("images/glossy.png") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
 }
 
 #home-wrapper {
@@ -518,7 +521,7 @@ div.pub-disc .comments-box .actions {
   display: none;
 }
 #staticPageIntro {
-  height: 240px;
+  height: 180px;
   padding: 40px;
   color: white !important;
 }
@@ -533,4 +536,17 @@ footer {
     border-top: 2px solid #999999 !important;
     margin-top: 20px;
     padding: 20px 0px 20px 0px;
+}
+
+.label-assigned {
+  background-color: #FF6600;
+}
+.label-open {
+  background-color: #00BA35;
+}
+.label-frozen {
+  background-color: #0AD561;
+}
+.label-done {
+  background-color: #EA2A1B;
 }

@@ -11,3 +11,6 @@ Meteor.subscribe('categories');
 Meteor.subscribe('subcategories');
 Meteor.subscribe('notifications');
 Meteor.subscribe('skills');
+Meteor.subscribe('adminJobCount');
+Meteor.subscribe('allCompletedJobs');
+Meteor.subscribe('usersCount');

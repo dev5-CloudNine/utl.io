@@ -16,9 +16,27 @@
                     <ul class="nav navbar-nav">
                         {{#if currentUser}}
                             {{#if isInRole 'admin'}}
-                                <li><a href="{{pathFor 'profiles'}}">View Providers</a></li>
-                                <li><a href="{{pathFor 'buyers'}}">View Buyers</a></li>
-                                <li><a href="{{pathFor 'jobs'}}">Find Jobs</a></li>
+                                <li><a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a></li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+                                        Users <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{pathFor 'buyers'}}">Buyers</a></li>
+                                        <li><a href="{{pathFor 'profiles'}}">Providers</a></li>
+                                        <li><a href="{{pathFor 'corporates'}}">Corporate Accounts</a></li>
+                                    </ul>
+                                </li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+                                        Jobs <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{pathFor 'allJobs'}}">All Jobs</a></li>
+                                        <li><a href="{{pathFor 'allAssignedJobs'}}">Assigned Jobs</a></li>
+                                        <li><a href="{{pathFor 'allCompletedJobs'}}">Completed Jobs</a></li>
+                                    </ul>
+                                </li>
                             {{/if}}
                             {{#if isInRole 'buyer, corporate-manager, corporate-admin, provider, corporate-provider, corporate-accountant'}}
                                 <li>
@@ -35,9 +53,9 @@
                                         <li class="divider"></li>
                                         <li class="dropdown-header">My Jobs</li>
                                         <li><a href="{{pathFor 'myJobs'}}">Posted Jobs</a></li>
-                                        <li><a href="{{pathFor 'buyerRoutedJobs'}}">Routed Jobs</a></li>
-                                        <li><a href="{{pathFor 'buyerAssignedJobs'}}">Assigned Jobs</a></li>
-                                        <li><a href="{{pathFor 'buyerCompletedJobs'}}">Completed Jobs</a></li>
+                                        <li><a href="{{pathFor 'routedJobs'}}">Routed Jobs</a></li>
+                                        <li><a href="{{pathFor 'assignedJobs'}}">Assigned Jobs</a></li>
+                                        <li><a href="{{pathFor 'completedJobs'}}">Completed Jobs</a></li>
                                     </ul>
                                 </li>
                                 <li id="user-drop-down" class="dropdown">
@@ -189,14 +207,6 @@
 <template name="headerUserMenu">
     <li id="user-drop-down" class="dropdown">
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-            <i style="font-size: 20px;padding: 3px;color: #6C6C6C;" class="fa fa-bell fa-fw"></i>({{#if currentUser.isBuyer}}{{bNotificationCount}}{{else}}{{#if currentUser.isDeveloper}}{{pNotificationCount}}{{/if}}{{/if}})<span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu">
-            {{>notifications}}
-        </ul>
-    </li>
-    <li id="user-drop-down" class="dropdown">
-        <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
             {{#if customImageUrl}}
                 <div class="avatar avatar-small">
                     <img class="avatar-image" src="{{customImageUrl}}" alt="avatar" onerror="this.style.display='none';">
@@ -250,6 +260,14 @@
             </li>
             <li class="divider"></li>
             <li><a href="#" id="signOut"><i class="fa fa-sign-out fa-fw"></i> Sign Out</a></li>
+        </ul>
+    </li>
+    <li id="user-drop-down" class="dropdown">
+        <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+            <i style="font-size: 20px;padding: 3px;color: #6C6C6C;" class="fa fa-bell fa-fw"></i>({{#if currentUser.isBuyer}}{{bNotificationCount}}{{else}}{{#if currentUser.isDeveloper}}{{pNotificationCount}}{{/if}}{{/if}})<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            {{>notifications}}
         </ul>
     </li>
 </template>

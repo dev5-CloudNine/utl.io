@@ -52,6 +52,16 @@ Template.jobSmall.helpers({
 	},
 	reviewed: function() {
 		return Reviews.findOne({$and: [{reviewedJobId: this._id}, {reviewedBy: Meteor.userId()}, {providerId: this.assignedProvider}]})? true : false;
+	},
+	appStatusLabel: function() {
+		if(this.applicationStatus == 'assigned') 
+			return 'label-assigned';
+		else if(this.applicationStatus == 'frozen')
+			return 'label-frozen';
+		else if(this.applicationStatus == 'open')
+			return 'label-open';
+		else if(this.applicationStatus == 'done')
+			return 'label-done';
 	}
 });
 

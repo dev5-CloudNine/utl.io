@@ -1,5 +1,5 @@
 <template name="corporateSmall">
-    <div class="container">
+    <div class="row">
     	<div class="col-md-3">
             <div class="corporate-grid panel panel-default text-center">
                 <div class="panel-body">
@@ -15,10 +15,11 @@
                     <h4 class="name"><a href="{{pathFor 'corporate'}}">
     					{{#if name}}{{name}}{{else}}{{userName}}{{/if}}
     				</a></h4>
+                    <div>
+                        <label class="btn btn-default btn-xs">{{readableId}}</label>
+                    </div>
                     <div class="labels">
-                        {{#if $eq type 'Company'}}
-                            <span class="label label-danger"><i class="fa fa-users"></i> Company</span>
-                        {{/if}}
+                        {{companyName}}
                     </div>
                     <div class="title">
                         <small>{{title}}</small>

@@ -157,6 +157,23 @@ Meteor.publishComposite('providers', {
     }]
 });
 
+Meteor.publish('adminJobs', function() {
+    check(arguments, [Match.Any]);
+    return Jobs.find({}, {sort: {createdAt: -1}});
+});
+
+Meteor.publish('adminJobCount', function() {
+    Counts.publish(this, 'adminJobs', Jobs.find({}));
+});
+
+Meteor.publish('allCompletedJobs', function() {
+    Counts.publish(this, 'allCompletedJobs', Jobs.find({applicationStatus: 'done'}));
+});
+
+Meteor.publish('usersCount', function() {
+    Counts.publish(this, 'userCount', Users.find({}));
+})
+
 Meteor.publish("jobs", function() {
     check(arguments, [Match.Any]);
     return Jobs.find({$and: [{status: "active", applicationStatus: 'open', invited: false}]}, {sort: {createdAt: -1}})

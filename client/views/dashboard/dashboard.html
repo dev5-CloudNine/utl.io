@@ -12,32 +12,6 @@
                                 </span>
                             </a>
                         </li>
-                        <!-- <li class="{{#if $eq active 'myjobs'}}active{{/if}} dropdown" role="presentation">
-                            <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
-                                <span class="round-tabs three">
-                                    <i class="glyphicon glyphicon-gift"></i>&nbsp; My Jobs <span class="caret"></span>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#postedJobs" data-toggle="tab">
-                                        {{#if isInRole 'buyer, corporate-manager'}}
-                                            Posted
-                                        {{else}}
-                                            {{#if isInRole 'provider, corporate-provider'}}
-                                                Applied
-                                            {{/if}}
-                                        {{/if}} Jobs
-                                    </a>
-                                </li>
-                                <li><a href="#routedJobs" data-toggle="tab">Routed Jobs</a></li>
-                                <li><a href="#ongoingJobs" data-toggle="tab">Assigned Jobs</a></li>
-                                <li><a href="#completedJobs" data-toggle="tab">Completed Jobs</a></li>
-                                {{#if isInRole 'corporate-provider, provider'}}
-                                    <li><a href="#favoriteJobs" data-toggle="tab">Favorite Jobs</a></li>
-                                {{/if}}
-                            </ul>
-                        </li> -->
                         <li  class="{{#if $eq active 'messaging'}}active{{/if}}">
                             <a href="#mails" data-toggle="tab" title="blah blah">
                                 <span class="round-tabs four">
@@ -177,80 +151,36 @@
                                             <div class="count">$ 0</div>
                                         </div>
                                     </div>
+                                {{else}}
+                                    {{#if isInRole 'admin'}}
+                                        <div class="row tile_count">
+                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                                <span class="count_top"><i class="fa fa-user"></i> No. of Users</span>
+                                                <div class="count green">{{getPublishedCount 'userCount'}}</div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                                <span class="count_top"><i class="fa fa-user"></i> Jobs Posted</span>
+                                                <div class="count">{{getPublishedCount 'adminJobs'}}</div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                                <span class="count_top"><i class="fa fa-clock-o"></i> Jobs Completed</span>
+                                                <div class="count">{{getPublishedCount 'allCompletedJobs'}}</div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                                <span class="count_top"><i class="fa fa-user"></i> Amount Earned</span>
+                                                <div class="count green">$ 0</div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                                <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
+                                                <div class="count green">$ 0</div>
+                                            </div>                                            
+                                        </div>
+                                    {{/if}}
                                 {{/if}}
                             {{/if}}
                         {{/if}}
                     </div>
                     <br>
-                    <!-- <div class="tab-pane fade {{#if $eq active 'postedJobs'}} in active {{/if}}" id="postedJobs">
-                        {{#if currentUser.isDeveloper}}
-                            <h5>Applied Jobs</h5>
-                            {{#each appliedJobs}}
-                                {{>jobSmall}}
-                            {{else}}
-                                You haven't applied for any jobs yet. <a href="{{pathFor 'jobs'}}">Find jobs</a> to apply.
-                            {{/each}}
-                        {{else}}
-                            {{#if currentUser.isBuyer}}
-                                <h5>Posted Jobs</h5>
-                                {{#each jobs}}
-                                    {{>jobSmall}}
-                                {{else}}
-                                    You haven't posted any jobs.  <a href="{{pathFor 'jobNew'}}">Post a Job</a> if you have one to offer.
-                                {{/each}}
-                            {{/if}}
-                        {{/if}}
-                    </div>
-                    <div class="tab-pane fade {{#if $eq active 'favoritejobs'}} in active {{/if}}" id="favoriteJobs">
-                        <h5>Favorite Jobs</h5>
-                        {{#each favJobs}}
-                            {{>jobSmall}}
-                        {{else}}
-                            You haven't added any favorites. <a href="{{pathFor 'jobs'}}">View jobs</a> if you want to add some.
-                        {{/each}}
-                    </div>
-                    <div class="tab-pane fade {{#if $eq active 'routedJobs'}} in active {{/if}}" id="routedJobs">
-                        <h5>Routed Jobs</h5>
-                        {{#if currentUser.isDeveloper}}
-                            {{#each providerRoutedJobs}}
-                                {{>jobSmall}}
-                            {{/each}}
-                        {{else}}
-                            {{#if currentUser.isBuyer}}
-                                {{#each buyerRoutedJobs}}
-                                    {{>jobSmall}}
-                                {{/each}}
-                            {{/if}}
-                        {{/if}}
-                    </div>
-                    <div class="tab-pane fade {{#if $eq active 'ongoingJobs'}} in active {{/if}}" id="ongoingJobs">
-                        <h5>Assigned Jobs</h5>
-                        {{#if currentUser.isDeveloper}}
-                            {{#each ongoingJobs}}
-                                {{>jobSmall}}
-                            {{/each}}
-                        {{else}}
-                            {{#if currentUser.isBuyer}}
-                                {{#each ongoingBuyerJobs}}
-                                    {{>jobSmall}}
-                                {{/each}}
-                            {{/if}}
-                        {{/if}}
-                    </div>
-                    <div class="tab-pane fade {{#if $eq active 'completedJobs'}} in active {{/if}}" id="completedJobs">
-                        <h5>Completed Jobs</h5>
-                        {{#if currentUser.isDeveloper}}
-                            {{#each providerCompletedJobs}}
-                                {{>jobSmall}}
-                            {{/each}}
-                        {{else}}
-                            {{#if currentUser.isBuyer}}
-                                {{#each buyerCompletedJobs}}
-                                    {{>jobSmall}}
-                                {{/each}}
-                            {{/if}}
-                        {{/if}}
-                    </div> -->
                     <div class="tab-pane fade {{#if $eq active 'messaging'}} in active {{/if}}" id="mails">
                         <br> 
                         {{#if $eq active 'messaging'}}

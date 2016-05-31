@@ -52,6 +52,45 @@ Router.map(function() {
         }
     });
 
+    this.route('allJobs', {
+        path: '/allJobs',
+        title: 'UTL - All Jobs',
+        subscriptions: function() {
+            return subs.subscribe('adminJobs');
+        },
+        data: function() {
+            return {
+                jobs: Jobs.find({}, {sort: {createdAt: -1}})
+            }
+        }
+    });
+
+    this.route('allAssignedJobs', {
+        path: '/allAssignedJobs',
+        title: 'UTL - All Assigned Jobs',
+        subscriptions: function() {
+            return subs.subscribe('adminJobs');
+        },
+        data: function() {
+            return {
+                jobs: Jobs.find({applicationStatus: 'assigned'}, {sort: {createdAt: -1}})
+            }
+        }
+    });
+
+    this.route('allCompletedJobs', {
+        path: '/allCompletedJobs',
+        title: 'UTL - All Completed Jobs',
+        subscriptions: function() {
+            return subs.subscribe('adminJobs');
+        },
+        data: function() {
+            return {
+                jobs: Jobs.find({applicationStatus: 'done'}, {sort: {createdAt: -1}})
+            }
+        }
+    })
+
     this.route('myJobs', {
         path: '/myjobs',
         title: "UTL - Posted Jobs",

@@ -57,9 +57,7 @@
                                             {{else}}
                                                 <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
                                             {{/if}}
-                                            Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}
-                                                &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
-                                                &nbsp;|&nbsp;{{#if selectedProvider}}Routed to {{#with routedProvider}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
+                                            Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;
                                         </small>
                                     </div>
                                 </div>
@@ -68,6 +66,8 @@
                                         <small>
                                             <i class="fa fa-calendar fa-fw"></i> Posted on {{createdAt}}&nbsp;|&nbsp;
                                             {{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}
+                                            <br>
+                                            Status: <span class="label label-sm {{appStatusLabel}}">{{applicationStatus}}</span>&nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}&nbsp;|&nbsp;{{#if selectedProvider}} Routed to {{#with routedProvider}}<a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
                                         </small>
                                     </div>
                                     <div class="col-sm-12">

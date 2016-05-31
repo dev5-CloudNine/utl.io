@@ -21,21 +21,24 @@
                         {{else}}
                             <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
                         {{/if}}
-                        Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;|&nbsp;Status: {{applicationStatus}}
-                        {{#if assignedProvider}}
-                            &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
-                        {{/if}}
-                        &nbsp;|&nbsp;{{#if selectedProvider}}Routed to {{#with routedProvider}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
+                        Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}
                     </small>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
                     <small>
-                        <i class="fa fa-calendar fa-fw"></i> Posted on {{createdAt}}&nbsp;|&nbsp;
+                        Posted on {{createdAt}}&nbsp;|&nbsp;
                         {{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}
                     </small>
-                    <br><br>
+                    <br>
+                    <small>
+                    Status: <span class="label label-sm {{appStatusLabel}}">{{applicationStatus}}</span>
+                    {{#if assignedProvider}}
+                        &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
+                    {{/if}}
+                    &nbsp;|&nbsp;{{#if selectedProvider}}Routed to {{#with routedProvider}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}</small>
+                    <br>
                 </div>
                 {{#if acceptedProvider}}
                     {{#if $eq applicationStatus 'frozen'}}

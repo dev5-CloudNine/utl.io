@@ -1,0 +1,17 @@
+<template name="allJobs">
+	<div class="row">
+		<div class="col-sm-12">
+			{{#if currentUser}}
+				{{#if isInRole 'admin'}}
+					<h5>All Jobs</h5>
+					<div class="well">
+						{{>EasySearch.Input index=jobIndex}}
+					</div>
+					{{#EasySearch.Each index=jobIndex}}
+						{{>jobSmall}}
+					{{/EasySearch.Each}}
+                {{/if}}
+			{{/if}}
+		</div>
+	</div>
+</template>

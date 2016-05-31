@@ -714,6 +714,16 @@ Template.job.helpers({
     },
     routedProvider: function() {
       return Profiles.findOne({userId: this.selectedProvider});
+    },
+    appStatusLabel: function() {
+      if(this.applicationStatus == 'assigned') 
+        return 'label-assigned';
+      else if(this.applicationStatus == 'frozen')
+        return 'label-frozen';
+      else if(this.applicationStatus == 'open')
+        return 'label-open';
+      else if(this.applicationStatus == 'done')
+        return 'label-done';
     }
 });
 
