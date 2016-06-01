@@ -37,6 +37,9 @@ Template.buyer.helpers({
   },
   fav : function() {
     return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this.userId]}}]})?true:false;
+  },
+  userRole: function() {
+    return Meteor.users.findOne({_id: this.userId}).roles[0];
   }
 });
 

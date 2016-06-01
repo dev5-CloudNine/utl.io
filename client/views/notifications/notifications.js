@@ -1,6 +1,6 @@
 Template.notifications.helpers({
 	'buyerNotifications': function() {
-		var notifications = Notifications.find({buyerId: Meteor.userId()}, {sort: {timeStamp: -1}});
+		var notifications = Notifications.find({$and: [{buyerId: Meteor.userId()}, {side: 'buyer'}]}, {sort: {timeStamp: -1}});
 		var notificationDetails = [];
 		notifications.forEach(function(notification) {
 			providerName = Profiles.findOne({userId: notification.providerId}).name;
@@ -10,20 +10,19 @@ Template.notifications.helpers({
 				pname: providerName,
 				_id: notification.jobId,
 				slug: jobDetails.slug(),
-				notificationId: notification._id
+				notificationId: notification._id,
+				side: notification.side,
+				notificationTime: notification.timeStamp
 			}
 			notificationDetails.push(notif);
 		});
 		return notificationDetails;
 	},
-	bjobDetails: function() {
-		return Jobs.findOne({_id: this._id}).title;
-	},
-	pjobDetails: function() {
-		return Jobs.findOne({_id: this._id}).title;
+	jobName: function() {
+		return Jobs.findOne({_id: this._id}).title || "";
 	},
 	'providerNotifications': function() {
-		var notifications = Notifications.find({providerId: Meteor.userId()}, {sort: {timeStamp: -1}});
+		var notifications = Notifications.find({$and: [{providerId: Meteor.userId()}, {side: 'provider'}]}, {sort: {timeStamp: -1}});
 		var notificationDetails = [];
 		notifications.forEach(function (notification) {
 			buyerName = Buyers.findOne({userId: notification.buyerId}).name;
@@ -32,16 +31,62 @@ Template.notifications.helpers({
 				notificationType: notification.notificationType,
 				bname: buyerName,
 				_id: notification.jobId,
-				slug: jobDetails.slug()
+				slug: jobDetails.slug(),
+				notificationId: notification._id,
+				side: notification.side,
+				notificationTime: notification.timeStamp
 			}
 			notificationDetails.push(notif);
 		});
+		return notificationDetails;
+	},
+	'adminNotifications': function() {
+		var notifications = Notifications.find({}, {sort: {timeStamp: -1}});
+		var notificationDetails = [];
+		notifications.forEach(function(notification) {
+			var notif = {}
+			if(notification.notificationType == 'userSignUp') {
+				notif = {
+					notificationType: notification.notificationType,
+					notificationTime: notification.timeStamp,
+					notificationId: notification._id
+				}
+				notificationDetails.push(notif);
+			} else if(notification.notificationType == 'newJob') {
+				var buyerName = Buyers.findOne({userId: notification.buyerId}).name;
+				var jobDetails = Jobs.findOne({_id: notification.jobId});
+				notif = {
+					notificationType: notification.notificationType,
+					notificationTime: notification.timeStamp,
+					notificationId: notification._id,
+					_id: notification.jobId,
+					slug: jobDetails.slug(),
+					bname: buyerName
+				}
+				notificationDetails.push(notif);
+			} else {
+				var buyerName = Buyers.findOne({userId: notification.buyerId}).name;
+				var providerName = Profiles.findOne({userId: notification.providerId}).name;
+				var jobDetails = Jobs.findOne({_id: notification.jobId});
+				notif = {
+					notificationType: notification.notificationType,
+					notificationTime: notification.timeStamp,
+					notificationId: notification._id,
+					_id: notification.jobId,
+					slug: jobDetails.slug(),
+					bname: buyerName,
+					pname: providerName
+				}
+				notificationDetails.push(notif);
+			}
+		});
+		console.log(notificationDetails);
 		return notificationDetails;
 	}
 });
 
 Template.notifications.events({
 	'click a.markRead': function(event, template) {
-		Meteor.call('markRead', this.notificationId);
+		Meteor.call('markRead', this.notificationId, this.side);
 	}
 })

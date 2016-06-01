@@ -78,12 +78,10 @@
                                                 <button class="btn btn-warning btn-sm declineAssignment">Decline</button>
                                             {{else}}
                                                 {{#if $eq applicationStatus 'assigned'}}
-                                                    <hr>
                                                     {{#if $eq assignmentStatus 'rejected'}}
                                                         <button class="btn btn-success btn-sm submitAssignment">Submit Job for approval</button>
                                                     {{else}}
                                                         {{#if $eq assignmentStatus 'submitted'}}
-                                                            <hr>
                                                             <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
                                                         {{/if}}
                                                     {{/if}}
@@ -93,7 +91,7 @@
                                             {{#if jobPostedBuyer}}
                                                 {{#if $eq assignmentStatus 'submitted'}}
                                                     <hr>
-                                                    <div class="col-sm-12 text-right">
+                                                    <div class="col-sm-12">
                                                         <button class="btn btn-success btn-sm approveAssignment">Approve Assignment</button>
                                                         <button class="btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
                                                     </div>

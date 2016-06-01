@@ -264,7 +264,17 @@
     </li>
     <li id="user-drop-down" class="dropdown">
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-            <i style="font-size: 20px;padding: 3px;color: #6C6C6C;" class="fa fa-bell fa-fw"></i>({{#if currentUser.isBuyer}}{{bNotificationCount}}{{else}}{{#if currentUser.isDeveloper}}{{pNotificationCount}}{{/if}}{{/if}})<span class="caret"></span>
+            <i style="font-size: 20px;padding: 3px;color: #6C6C6C;" class="fa fa-bell fa-fw"></i>({{#if currentUser.isBuyer}}
+                    {{bNotificationCount}}
+                {{else}}
+                    {{#if currentUser.isDeveloper}}
+                        {{pNotificationCount}}
+                    {{else}}
+                        {{#if isInRole 'admin'}}
+                            {{adminNotificationCount}}
+                        {{/if}}
+                    {{/if}}
+                {{/if}})<span class="caret"></span>
         </a>
         <ul class="dropdown-menu" role="menu">
             {{>notifications}}

@@ -75,6 +75,15 @@ Jobs.after.insert(function(userId, doc){
 
   TimeSheet.insert({jobID:doc._id,"checkIn" : ""});
 
+  var notificationObj = {
+    notificationType: 'newJob',
+    timeStamp: new Date(),
+    jobId: doc._id,
+    buyerId: doc.userId,
+    read: false
+  }
+  Notifications.insert(notificationObj);
+
   var admin = Users.findOne({roles:"admin"});
   Email.send({
       to: getUserEmail(admin),

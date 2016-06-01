@@ -40,7 +40,7 @@ Router.map(function() {
             };
         },
         subscriptions: function() {
-            return [subs.subscribe('jobs'), subs.subscribe('providers'), subs.subscribe('invitedJobs'), subs.subscribe('providerRoutedJobs'), subs.subscribe('my_jobs')];
+            return [subs.subscribe('jobs'), subs.subscribe('providers'), subs.subscribe('invitedJobs'), subs.subscribe('providerRoutedJobs'), subs.subscribe('my_jobs'), subs.subscribe('notifications')];
         }
     });
 

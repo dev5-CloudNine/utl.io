@@ -10,6 +10,14 @@ Meteor.methods({
         return Accounts.createUser(user);
     },    
     "postUserSignup": function(userId) {
+        var notificationObj = {
+            notificationType: 'userSignUp',
+            timeStamp: new Date,
+            userId: userId,
+            adminSide: true,
+            adminRead: false
+        }
+        Notifications.insert(notificationObj);
         Accounts.sendVerificationEmail(userId);
         return;
     },  
@@ -84,7 +92,9 @@ Meteor.methods({
             buyerId: Jobs.findOne({_id: jobId}).userId,
             timeStamp: applicationDetails.applied_at,
             notificationType: 'newJobApplication',
-            read: false
+            read: false,
+            side: 'buyer',
+            adminRead: false
         }
         Jobs.update(jobId, {$addToSet: {applications: applicationDetails}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {appliedJobs: jobId}});
@@ -101,7 +111,9 @@ Meteor.methods({
             buyerId: Jobs.findOne({_id: jobId}).userId,
             timeStamp: new Date(),
             notificationType: 'applicationAccepted',
-            read: false
+            read: false,
+            side: 'provider',
+            adminRead: false
         }
         var jobNets = Jobs.findOne({_id: jobId}).freelancer_nets;
         Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applicationTime}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen', proposedBudget: jobNets}});
@@ -114,7 +126,9 @@ Meteor.methods({
             buyerId: Jobs.findOne({_id: jobId}).userId,
             timeStamp: new Date(),
             notificationType: 'applicationAccepted',
-            read: false
+            read: false,
+            side: 'provider',
+            adminRead: false
         }
         Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.applied_at': applied_at, 'applications.freelancer_nets': freenets}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen', proposedBudget: freenets}})
         Notifications.insert(notificationObj);
@@ -126,7 +140,9 @@ Meteor.methods({
             buyerId: buyerId,
             timeStamp: new Date(),
             notificationType: 'confirmAssignment',
-            read: false
+            read: false,
+            side: 'buyer',
+            adminRead: false
         }
         var proBudget = Jobs.findOne({_id: jobId}).proposedBudget;
         Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned', assignedProvider: Meteor.userId(), projectBudget: proBudget}});
@@ -139,21 +155,56 @@ Meteor.methods({
             buyerId: Jobs.findOne({_id: jobId}).userId,
             timeStamp: new Date(),
             notificationType: 'declineAssignment',
-            read: false
+            read: false,
+            side: 'buyer',
+            adminRead: false
         }
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {applicationStatus: 'open', 'applications.$.app_status': 'declined'}});
         Notifications.insert(notificationObj);
     },
     submitAssignment: function(jobId) {
+        var notificationObj = {
+            jobId: jobId,
+            providerId: Meteor.userId(),
+            buyerId: Jobs.findOne({_id: jobId}).userId,
+            timeStamp: new Date(),
+            notificationType: 'submitAssignment',
+            read: false,
+            side: 'buyer',
+            adminRead: false
+        }
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'submitted'}});
+        Notifications.insert(notificationObj);
     },
     approveAssignment: function(jobId, providerId) {
+        var notificationObj = {
+            jobId: jobId,
+            providerId: providerId,
+            buyerId: Meteor.userId(),
+            timeStamp: new Date(),
+            notificationType: 'approveAssignment',
+            read: false,
+            side: 'provider',
+            adminRead: false
+        }
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'done'}});
         // Profiles.update({userId: providerId}, {$addToSet: {completedJobs: jobId}}, {$pull: {ongoingJobs: jobId}});
         // Buyers.update({userId: Meteor.userId()}, {$pull: {ongoingJobs: jobId}});
+        Notifications.insert(notificationObj);
     },
     rejectAssignment: function(jobId) {
+        var notificationObj = {
+            jobId: jobId,
+            providerId: Jobs.findOne({_id: jobId}).assignedProvider,
+            buyerId: Meteor.userId(),
+            timeStamp: new Date(),
+            notificationType: 'rejectAssignment',
+            read: false,
+            side: 'provider',
+            adminRead: false
+        }
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'rejected'}});
+        Notifications.insert(notificationObj);
     },
     publishToFavsUpdate: function(job) {
         Jobs.update({_id: job._id}, {$set: {invited: true}});
@@ -165,7 +216,9 @@ Meteor.methods({
                 buyerId: Meteor.userId(),
                 timeStamp: new Date(),
                 notificationType: 'jobInvitation',
-                read: false
+                read: false,
+                side: 'provider',
+                adminRead: false
             };
             Notifications.insert(notificationObj);
         }
@@ -177,7 +230,9 @@ Meteor.methods({
             jobId: jobId,
             timeStamp: new Date(),
             notificationType: 'routedJob',
-            read: false
+            read: false,
+            side: 'provider',
+            adminRead: false
         };
         Notifications.insert(notificationObj);
     },
@@ -192,8 +247,12 @@ Meteor.methods({
         };
         Reviews.insert(review);
     },
-    markRead: function(notificationId) {
-        Notifications.update({_id: notificationId}, {$set: {read: true}});
+    markRead: function(notificationId, side) {
+        if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+            Notifications.update({_id: notificationId}, {$set: {adminRead: true}});
+            return;
+        }
+        Notifications.update({$and: [{_id: notificationId}, {side: side}]}, {$set: {read: true}});
     },
     adminSetJobStatus: function(jobId, status) {
         check(jobId, String);

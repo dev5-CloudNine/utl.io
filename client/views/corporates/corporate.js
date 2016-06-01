@@ -12,5 +12,11 @@ Template.corporate.helpers({
   splitInterestedIn: function() {
     if (interestedIn)
       return interestedIn.split(",");
+  },
+  readableId: function() {
+    return Meteor.users.findOne({_id: this.userId}).readableID;
+  },
+  userRole: function() {
+    return Meteor.users.findOne({_id: this.userId}).roles[0];
   }
 });

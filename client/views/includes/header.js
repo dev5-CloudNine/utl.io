@@ -31,10 +31,13 @@ Template.headerUserMenu.helpers({
     });
   },
   bNotificationCount: function() {
-    return Notifications.find({$and: [{buyerId: Meteor.userId()}, {read: false}]}).count();
+    return Notifications.find({$and: [{buyerId: Meteor.userId()}, {side: 'buyer'}, {read: false}]}).count();
   },
   pNotificationCount: function() {
-    return Notifications.find({$and: [{providerId: Meteor.userId()}, {read: false}]}).count();
+    return Notifications.find({$and: [{providerId: Meteor.userId()}, {side: 'provider'}, {read: false}]}).count();
+  },
+  adminNotificationCount: function() {
+    return Notifications.find({$and: [{adminSide: true}, {adminRead: false}]}).count();
   },
   msgs: function() {
     var count = Messages.find({
