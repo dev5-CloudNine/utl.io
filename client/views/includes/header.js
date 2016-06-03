@@ -85,6 +85,11 @@ Template.headerUserMenu.events({
   'click #userProfile': function(event, template) {
     event.preventDefault();
     Modal.show('userProfile');
+  },
+  'click #notification_link': function(event, template) {
+    console.log(event);
+    $("#notification_container").fadeToggle(300);
+    return false;
   }
 });
 

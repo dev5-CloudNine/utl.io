@@ -53,9 +53,9 @@
                                         <li class="divider"></li>
                                         <li class="dropdown-header">My Jobs</li>
                                         <li><a href="{{pathFor 'myJobs'}}">Posted Jobs</a></li>
-                                        <li><a href="{{pathFor 'routedJobs'}}">Routed Jobs</a></li>
-                                        <li><a href="{{pathFor 'assignedJobs'}}">Assigned Jobs</a></li>
-                                        <li><a href="{{pathFor 'completedJobs'}}">Completed Jobs</a></li>
+                                        <li><a href="{{pathFor 'buyerRoutedJobs'}}">Routed Jobs</a></li>
+                                        <li><a href="{{pathFor 'buyerAssignedJobs'}}">Assigned Jobs</a></li>
+                                        <li><a href="{{pathFor 'buyerCompletedJobs'}}">Completed Jobs</a></li>
                                     </ul>
                                 </li>
                                 <li id="user-drop-down" class="dropdown">
@@ -276,8 +276,8 @@
                     {{/if}}
                 {{/if}})<span class="caret"></span>
         </a>
-        <ul class="dropdown-menu" role="menu">
+        <ul class="dropdown-menu" role="menu" id="notifications">
             {{>notifications}}
         </ul>
-    </li>
+    </li>    
 </template>

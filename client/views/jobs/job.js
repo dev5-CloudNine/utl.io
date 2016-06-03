@@ -469,6 +469,9 @@ Template.job.events({
 });
 
 Template.job.helpers({
+  'postedTime': function() {
+    return moment(this.createdAt).fromNow();
+  },
   'buyerData': function() {
     return Buyers.findOne({userId: this.userId});
   },
@@ -523,7 +526,7 @@ Template.job.helpers({
         title: pDetails.title,
         company: pDetails.companyName,
         app_type: provider.app_type,
-        appliedAt: provider.applied_at,
+        appliedAt: moment(provider.applied_at).fromNow(),
         counter_type: provider.counterType,
         fixed_amount:provider.fixed_amount,
         hourly_rate: provider.hourly_rate,

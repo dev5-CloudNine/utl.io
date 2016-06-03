@@ -12,7 +12,7 @@ Template.notifications.helpers({
 				slug: jobDetails.slug(),
 				notificationId: notification._id,
 				side: notification.side,
-				notificationTime: notification.timeStamp
+				notificationTime: moment(notification.timeStamp).fromNow()
 			}
 			notificationDetails.push(notif);
 		});
@@ -34,7 +34,7 @@ Template.notifications.helpers({
 				slug: jobDetails.slug(),
 				notificationId: notification._id,
 				side: notification.side,
-				notificationTime: notification.timeStamp
+				notificationTime: moment(notification.timeStamp).fromNow()
 			}
 			notificationDetails.push(notif);
 		});
@@ -48,7 +48,7 @@ Template.notifications.helpers({
 			if(notification.notificationType == 'userSignUp') {
 				notif = {
 					notificationType: notification.notificationType,
-					notificationTime: notification.timeStamp,
+					notificationTime: moment(notification.timeStamp).fromNow(),
 					notificationId: notification._id
 				}
 				notificationDetails.push(notif);
@@ -57,7 +57,7 @@ Template.notifications.helpers({
 				var jobDetails = Jobs.findOne({_id: notification.jobId});
 				notif = {
 					notificationType: notification.notificationType,
-					notificationTime: notification.timeStamp,
+					notificationTime: moment(notification.timeStamp).fromNow(),
 					notificationId: notification._id,
 					_id: notification.jobId,
 					slug: jobDetails.slug(),
@@ -70,7 +70,7 @@ Template.notifications.helpers({
 				var jobDetails = Jobs.findOne({_id: notification.jobId});
 				notif = {
 					notificationType: notification.notificationType,
-					notificationTime: notification.timeStamp,
+					notificationTime: moment(notification.timeStamp).fromNow(),
 					notificationId: notification._id,
 					_id: notification.jobId,
 					slug: jobDetails.slug(),

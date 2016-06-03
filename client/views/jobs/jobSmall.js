@@ -62,6 +62,9 @@ Template.jobSmall.helpers({
 			return 'label-open';
 		else if(this.applicationStatus == 'done')
 			return 'label-done';
+	},
+	postedTime: function() {
+		return moment(this.createdAt).fromNow();
 	}
 });
 
