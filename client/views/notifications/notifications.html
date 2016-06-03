@@ -1,106 +1,207 @@
 <template name="notifications">
-	{{#if currentUser.isBuyer}}
-		{{#each buyerNotifications}}
-			{{#if $eq this.notificationType 'newJobApplication'}}
-				<li>
-					{{#with this}}<a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has applied for your job - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-				</li>
-			{{/if}}
-			{{#if $eq this.notificationType 'confirmAssignment'}}
-				<li>
-					{{#with this}}<a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has confirmed assignment - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-				</li>
-			{{/if}}
-			{{#if $eq this.notificationType 'declineAssignment'}}
-				<li>
-					{{#with this}}<a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has declined assignment - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-				</li>
-			{{/if}}
-			{{#if $eq this.notificationType 'submitAssignment'}}
-				<li>
-					{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has submitted an assignment for approval - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-				</li>
-			{{/if}}
-		{{/each}}
-	{{/if}}
-	{{#if currentUser.isDeveloper}}
-		{{#each providerNotifications}}
-			{{#if $eq this.notificationType 'applicationAccepted'}}
-				<li>
-					{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has accepted your application. ({{this.notificationTime}})</a>{{/with}}
-				</li>
-			{{/if}}
-			{{#if $eq this.notificationType 'jobInvitation'}}
-				<li>
-					{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has invited you to bid on job - {{jobName}}. ({{this.notificationTime}})</a>{{/with}}
-				</li>
-			{{/if}}
-			{{#if $eq this.notificationType 'routedJob'}}
-				<li>
-					{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has directly routed to you a job - {{jobName}}. ({{this.notificationTime}})</a>{{/with}}
-				</li>
-			{{/if}}
-			{{#if $eq this.notificationType 'approveAssignment'}}
-				<li>
-					{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has approved your assignment - {{jobName}}. ({{this.notificationTime}})</a>{{/with}}
-				</li>
-			{{/if}}
-			{{#if $eq this.notificationType 'rejectAssignment'}}
-				<li>
-					{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has rejected your assignment - {{jobName}}.</a>{{/with}}
-				</li>
-			{{/if}}
-		{{/each}}
-	{{/if}}
-	{{#if currentUser}}
-		{{#if isInRole 'admin'}}
-			{{#each adminNotifications}}
-				{{#if $eq this.notificationType 'userSignUp'}}
-					<li>
-						<a href class="markRead">A user has signed up for UTL. ({{this.notificationTime}})</a>
-					</li>
-				{{/if}}
-				{{#if $eq this.notificationType 'newJob'}}
-					<li>
-						{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has posted a new job - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-					</li>
-				{{/if}}
+	<div class="notifications-wrapper">
+		{{#if currentUser.isBuyer}}
+			{{#each buyerNotifications}}
 				{{#if $eq this.notificationType 'newJobApplication'}}
-					<li>
-						{{#with this}}<a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has applied for job - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-					</li>
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has applied for your job.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
 				{{/if}}
 				{{#if $eq this.notificationType 'confirmAssignment'}}
-					<li>
-						{{#with this}}<a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has confirmed assignment - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-					</li>
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has confirmed assignment.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
 				{{/if}}
 				{{#if $eq this.notificationType 'declineAssignment'}}
-					<li>
-						{{#with this}}<a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has declined assignment - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-					</li>
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has declined assignment.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
 				{{/if}}
 				{{#if $eq this.notificationType 'submitAssignment'}}
-					<li>
-						{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has submitted an assignment for approval - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-					</li>
-				{{/if}}
-				{{#if $eq this.notificationType 'applicationAccepted'}}
-					<li>
-						{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has accepted application - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-					</li>
-				{{/if}}
-				{{#if $eq this.notificationType 'approveAssignment'}}
-					<li>
-						{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has approved assignment - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-					</li>
-				{{/if}}
-				{{#if $eq this.notificationType 'rejectAssignment'}}
-					<li>
-						{{#with this}} <a href="{{pathFor 'job'}}" class="markRead">{{this.bname}} has rejected assignment - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-					</li>
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class=" markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has submitted assignment for approval.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
 				{{/if}}
 			{{/each}}
 		{{/if}}
-	{{/if}}
+		{{#if currentUser.isDeveloper}}
+			{{#each providerNotifications}}
+				{{#if $eq this.notificationType 'applicationAccepted'}}
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.bname}} has accepted your application.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
+				{{#if $eq this.notificationType 'jobInvitation'}}
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.bname}} has invited you to bid on job.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
+				{{#if $eq this.notificationType 'routedJob'}}
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.bname}} has directly routed to you a job.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
+				{{#if $eq this.notificationType 'approveAssignment'}}
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.bname}} has approved your assignment.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
+				{{#if $eq this.notificationType 'rejectAssignment'}}
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.bname}} has rejected your assignment.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
+			{{/each}}
+		{{/if}}
+		{{#if currentUser}}
+			{{#if isInRole 'admin'}}
+				{{#each adminNotifications}}
+					{{#if $eq this.notificationType 'userSignUp'}}
+						<a class=" markRead">
+							<div class="notification-item">
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<h4 class="item-title">A user has signed up for UTL.</h4>
+							</div>
+						</a>
+					{{/if}}
+					{{#if $eq this.notificationType 'newJob'}}
+						{{#with this}}
+							<a href="{{pathFor 'job'}}" class="markRead">
+								<div class="notification-item">
+									<h4 class="item-title">{{this.bname}} has posted a new job.</h4>
+									<small class="pull-right">{{this.notificationTime}}</small>
+									<p class="item-info">{{jobName}}</p>
+								</div>
+							</a>
+						{{/with}}
+					{{/if}}
+					{{#if $eq this.notificationType 'newJobApplication'}}
+						{{#with this}}
+							<a href="{{pathFor 'job'}}" class="markRead">
+								<div class="notification-item">
+									<h4 class="item-title">{{this.pname}} has applied for a job.</h4>
+									<small class="pull-right">{{this.notificationTime}}</small>
+									<p class="item-info">{{jobName}}</p>
+								</div>
+							</a>
+						{{/with}}
+					{{/if}}
+					{{#if $eq this.notificationType 'confirmAssignment'}}
+						{{#with this}}
+							<a href="{{pathFor 'job'}}" class="markRead">
+								<div class="notification-item">
+									<h4 class="item-title">{{this.pname}} has confirmed assignment.</h4>
+									<small class="pull-right">{{this.notificationTime}}</small>
+									<p class="item-info">{{jobName}}</p>
+								</div>
+							</a>
+						{{/with}}
+					{{/if}}
+					{{#if $eq this.notificationType 'declineAssignment'}}
+						<li>
+							{{#with this}}<a href="{{pathFor 'job'}}" class="markRead">{{this.pname}} has declined assignment - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
+						</li>
+					{{/if}}
+					{{#if $eq this.notificationType 'submitAssignment'}}
+						{{#with this}}
+							<a href="{{pathFor 'job'}}" class="markRead">
+								<div class="notification-item">
+									<h4 class="item-title">{{this.pname}} has declined assignment.</h4>
+									<small class="pull-right">{{this.notificationTime}}</small>
+									<p class="item-info">{{jobName}}</p>
+								</div>
+							</a>
+						{{/with}}
+					{{/if}}
+					{{#if $eq this.notificationType 'applicationAccepted'}}
+						{{#with this}}
+							<a href="{{pathFor 'job'}}" class="markRead">
+								<div class="notification-item">
+									<h4 class="item-title">{{this.bname}} has accpeted application.</h4>
+									<small class="pull-right">{{this.notificationTime}}</small>
+									<p class="item-info">{{jobName}}</p>
+								</div>
+							</a>
+						{{/with}}
+					{{/if}}
+					{{#if $eq this.notificationType 'approveAssignment'}}
+						{{#with this}}
+							<a href="{{pathFor 'job'}}" class="markRead">
+								<div class="notification-item">
+									<h4 class="item-title">{{this.pname}} has approved assignment.</h4>
+									<small class="pull-right">{{this.notificationTime}}</small>
+									<p class="item-info">{{jobName}}</p>
+								</div>
+							</a>
+						{{/with}}
+					{{/if}}
+					{{#if $eq this.notificationType 'rejectAssignment'}}
+						{{#with this}}
+							<a href="{{pathFor 'job'}}" class="markRead">
+								<div class="notification-item">
+									<h4 class="item-title">{{this.pname}} has rejected assignment.</h4>
+									<small class="pull-right">{{this.notificationTime}}</small>
+									<p class="item-info">{{jobName}}</p>
+								</div>
+							</a>
+						{{/with}}
+					{{/if}}
+				{{/each}}
+			{{/if}}
+		{{/if}}
+	</div>
 </template>
