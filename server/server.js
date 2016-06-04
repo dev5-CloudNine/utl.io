@@ -347,8 +347,6 @@ Meteor.methods({
                 TimeSheet.update({'jobID':id},{$set:{checkIn:''}});
                 TimeSheet.update({'jobID':id},{$push:{'logs':obj}});
             } else {
-                console.log(data.logID);
-                console.log(id);
 
                 TimeSheet.update({$and:[{'jobID':id},{"logs.id" : data.logID}]}, {"$set" : {"logs.$.checkIn" : obj.checkIn,"logs.$.checkOut" : obj.checkOut}});
             }
@@ -360,5 +358,12 @@ Meteor.methods({
     addNewSkill : function(skill,ID) {
         Skills.insert({"label" : skill, "value" : skill });
         Profiles.update({_id: ID}, {$addToSet: {freelancerSkills: skill}});
+    },
+    updateImgURL: function(id,url){
+        if(url){
+            Meteor.users.update({_id:id},{$set:{'imgURL':url}});
+        } else {
+            Meteor.users.update({_id:id},{$set:{'imgURL':''}});
+        }
     }
 });

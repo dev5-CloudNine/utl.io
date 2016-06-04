@@ -6,7 +6,7 @@
 					<div class="col-sm-3">
 						{{#if customImageUrl}}
 							<div class="avatar avatar-large">
-								<img class="img-responsive" src="{{resizeImageUrl customImageUrl 200 200}}"/>
+								<img class="img-responsive" src="{{customImageUrl}}"  style="height:200px;width:200px" />
 							</div>
 						{{else}}
 							{{> avatar userId=userId size="large"}}

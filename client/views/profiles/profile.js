@@ -27,7 +27,10 @@ Template.profile.helpers({
   },
   userRole: function() {
     return Users.findOne({_id: this.userId}).roles[0];
-  }
+  },
+  "customImageUrl": function() {
+    return Meteor.users.findOne().imgURL;
+  },
 });
 
 Template.profile.rendered = function() {

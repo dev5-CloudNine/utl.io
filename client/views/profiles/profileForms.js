@@ -112,6 +112,7 @@ Template.profileFields.events({
     }
   }
 });
+var customImagePreviewUrl = new ReactiveVar();
 
 Template.profileEdit.events({
   'click #cancel': function(event, template) {
@@ -119,40 +120,53 @@ Template.profileEdit.events({
     Router.go("profile", {
       _id: this.profile._id
     });
-  }
-})
+  },
+  "change .file_bag": function(event,template) {
+    event.preventDefault();
+    var files = $(event.currentTarget)[0].files
 
-var customImagePreviewUrl = new ReactiveVar();
+    if (!files) return;
+    S3.upload({
+        files: files,
+        path: S3_FILEUPLOADS
+    }, function(err, res) {
+        $('.progress').hide();
+        if (err) toastr.error("Failed to upload image");
+        else {
+          Meteor.call('updateImgURL', Meteor.userId(),res.url, function (error, result) {
+            if(error){
+              toastr.error('Failed to update');
+            }
+          });
+        }
+    });
+  },
+  "click .remove-img" : function(event) {
+    event.preventDefault();
+    $('#spinner').show();
+    var url = Profiles.findOne({_id:Router.current().params._id}).customImageUrl;
+    var index = url.indexOf(S3_FILEUPLOADS)-1;
+    var path = url.substr(index);
+    S3.delete(path, function(err, res) {
+        $('#spinner').hide();
+        if (err) {
+            toastr.error("Operation failed");
+        } else {
+          Meteor.call('updateImgURL', Meteor.userId(), function (error, result) {
+            if(error){
+              toastr.error('Failed to update');
+            }
+          });
+        }
+    });
+  }
+});
+
+
 
 Template.profileFields.rendered = function() {
-  var interval;
-  var template = this;
-  interval = Meteor.setInterval(function() {
-    if (typeof uploadcare !== "undefined") {
-      Meteor.clearInterval(interval);
-      var widget = uploadcare.SingleWidget('#custom-image');
-      
-      if(template.data && template.data.profile && template.data.profile.customImageUrl){
-        var customImage = template.data.profile.customImageUrl;
-        if(customImage){
-          widget.value(customImage);
-          customImagePreviewUrl.set(customImage);
-        }
-      }
-
-      widget.onChange(function(file) {
-        if (file) {
-          file.done(function(info) {
-            customImagePreviewUrl.set(info.cdnUrl);
-            analytics.track("Profile Image Uploaded");      
-          });
-        } else if(customImagePreviewUrl.get()){
-          	customImagePreviewUrl.set(null);
-        }
-      });
-    }
-  }, 10);
-
+  $('#spinner').hide();
+  $('.progress').hide();
   Meteor.typeahead.inject('.typeahead');
   $('.note-editor .note-toolbar .note-insert').remove();
 };
@@ -160,9 +174,8 @@ Template.profileFields.rendered = function() {
 var locLoaded=false;
 
 Template.profileFields.helpers({
-  "customImagePreviewUrl": function(event, template) {
-    if(customImagePreviewUrl.get())
-    	return customImagePreviewUrl.get();
+  "customImagePreviewUrl": function() {
+    return Meteor.users.findOne().imgURL;
   },
   companyInvited: function() {
     var corpInfo = Meteor.user();
@@ -195,5 +208,8 @@ Template.profileFields.helpers({
   },
   parentId: function() {
     return Categories.findOne({value: this.parentId})._id;
-  }
+  },
+  "uploadedFiles": function(){
+      return S3.collection.find();
+  },
 });

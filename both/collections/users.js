@@ -86,6 +86,10 @@ UserSchema = new SimpleSchema({
     type: String,
     optional: true
   },
+  imgURL: {
+    type: String,
+    optional: true
+  },
   'favoriteUsers.$': {
     type: String
   },

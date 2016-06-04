@@ -56,12 +56,7 @@ Template.headerUserMenu.helpers({
     });
   },
   customImageUrl: function(){
-    var avatarID = Buyers.findOne({userId: this.userId}).avatar;
-    if(!avatarID)
-      return;
-    var imgURL = Meteor.absoluteUrl()+"cfs/files/images/" + avatarID +"/"+Images.findOne({_id:avatarID}).original.name;
-    console.log(imgURL);
-    return imgURL;
+    return Meteor.users.findOne().imgURL;
   }
 });
 
@@ -95,5 +90,4 @@ Template.headerUserMenu.events({
 
 Template.headerUserMenu.onRendered(function(){
   this.$('.dropdown-toggle').dropdown();
-  Meteor.subscribe("messages");
 });
