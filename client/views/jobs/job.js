@@ -435,6 +435,12 @@ Template.job.events({
     'click button.submitAssignment': function(event, template) {
       event.preventDefault();
       var jobId = this._id;
+      //check for task status
+      var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
+      if(tasksClosed) {
+        toastr.error('Please close all the tasks before submitting the assignment');
+        return;
+      }
       Meteor.call('submitAssignment', jobId, function(error) {
         if(error) {
           toastr.error('Failed to submit assignment. Please try again.');
@@ -727,6 +733,9 @@ Template.job.helpers({
         return 'label-open';
       else if(this.applicationStatus == 'done')
         return 'label-done';
+    },
+    showTabs: function(id) {
+        return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned','submitted','approved','rejected']}}]}) ? true : false;      
     }
 });
 

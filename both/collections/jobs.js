@@ -467,10 +467,6 @@ Jobs.attachSchema(
               value: "Upload a file"
             },
             {
-              label: "Enter close out notes",
-              value: "Enter close out notes"
-            },
-            {
               label: "Unique task",
               value: "Unique task"
             }

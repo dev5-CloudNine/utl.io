@@ -43,14 +43,14 @@
                 {{#if acceptedProvider}}
                     {{#if $eq applicationStatus 'frozen'}}
                         <div class="col-sm-12 text-right">
-                            <button class="btn btn-success btn-sm confirmAssignment">Confirm</button>
-                            <button class="btn btn-warning btn-sm declineAssignment">Decline</button>
+                            <button class="margin-top-5 btn btn-success btn-sm confirmAssignment">Confirm</button>
+                            <button class="margin-top-5 btn btn-warning btn-sm declineAssignment">Decline</button>
                         </div>
                     {{else}}
                         {{#if $eq applicationStatus 'assigned'}}
                             {{#if $eq assignmentStatus 'rejected'}}
                                 <div class="col-sm-12">
-                                    <button class="btn btn-success btn-sm submitAssignment">Submit Job for Approval.</button>
+                                    <button class="margin-top-5 btn btn-success btn-sm submitAssignment">Submit Job for Approval.</button>
                                 </div>
                             {{else}}
                                 {{#if $eq assignmentStatus 'submitted'}}
@@ -65,8 +65,8 @@
                     {{#if jobPostedBuyer}}
                         {{#if $eq assignmentStatus 'submitted'}}
                             <div class="col-sm-12">
-                                <button class="btn btn-success btn-sm approveAssignment">Approve Assignment</button>
-                                <button class="btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
+                                <button class="margin-top-5 btn btn-success btn-sm approveAssignment">Approve Assignment</button>
+                                <button class="margin-top-5 btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
                             </div>
                         {{else}}
                             {{#if $eq assignmentStatus 'approved'}}
@@ -80,7 +80,7 @@
                                                 <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
                                                 <label>Rate provider's performance</label>&nbsp;<span class="rateit"></span>
                                             </div>
-                                            <button class="btn btn-success" type="submit">Submit</button>
+                                            <button class="margin-top-5 btn btn-success" type="submit">Submit</button>
                                         </form>
                                     {{/if}}
                                 </div>

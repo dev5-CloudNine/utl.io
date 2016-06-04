@@ -73,6 +73,11 @@ Jobs.after.insert(function(userId, doc){
       Tasks.insert(obj);
   });
 
+  obj.taskName = 'Enter close out notes';
+  obj.taskdescription = 'Please enter notes before submitting the work. Make sure that you have completed all the tasks before submitting the project.';
+  obj.jobID = doc._id;
+  Tasks.insert(obj);
+
   TimeSheet.insert({jobID:doc._id,"checkIn" : ""});
 
   var notificationObj = {
