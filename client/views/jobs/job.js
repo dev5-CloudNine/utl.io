@@ -733,6 +733,9 @@ Template.job.helpers({
         return 'label-open';
       else if(this.applicationStatus == 'done')
         return 'label-done';
+    },
+    showTabs: function(id) {
+        return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned','submitted','approved','rejected']}}]}) ? true : false;      
     }
 });
 

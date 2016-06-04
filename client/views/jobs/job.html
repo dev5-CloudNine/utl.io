@@ -12,6 +12,7 @@
                                 </span>
                             </a>
                         </li>
+                        {{#if showTabs _id}}
                         {{#if show _id}}
                         <li>
                             <a href="#tasks" data-toggle="tab">
@@ -38,6 +39,7 @@
                              </span>
                             </a>
                         </li>
+                        {{/if}}
                         {{/if}}
                     </ul>
                 </div>
