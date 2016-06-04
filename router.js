@@ -40,15 +40,15 @@ Router.map(function() {
             };
         },
         subscriptions: function() {
-            return [subs.subscribe('jobs'), subs.subscribe('providers'), subs.subscribe('invitedJobs'), subs.subscribe('providerRoutedJobs'), subs.subscribe('my_jobs'), subs.subscribe('notifications')];
+            return [Meteor.subscribe('jobs'), Meteor.subscribe('providers'), subs.subscribe('invitedJobs'), subs.subscribe('providerRoutedJobs'), subs.subscribe('my_jobs'), Meteor.subscribe('notifications')];
         }
     });
 
     this.route('jobs', {
         path: '/jobs',
         title: "UTL - All Jobs",
-        subscriptions: function() {
-            return subs.subscribe('jobs');
+        waitOn: function() {
+            return Meteor.subscribe('jobs');
         }
     });
 
@@ -115,7 +115,7 @@ Router.map(function() {
         path: '/appliedJobs',
         title: 'UTL - Applied Jobs',
         waitOn: function() {
-            return subs.subscribe('allJobs')
+            return Meteor.subscribe('allJobs')
         }
     })
 
@@ -124,7 +124,7 @@ Router.map(function() {
         title: 'UTL - Routed Jobs',
         waitOn: function() {
             Meteor.subscribe('reviews');
-            return subs.subscribe('my_jobs');
+            return Meteor.subscribe('my_jobs');
         }
     });
 
@@ -132,7 +132,7 @@ Router.map(function() {
         path: '/routedJobs',
         title: 'UTL - Routed Jobs',
         waitOn: function() {
-            return subs.subscribe('providerRoutedJobs');
+            return Meteor.subscribe('providerRoutedJobs');
         }
     });
 
@@ -140,7 +140,7 @@ Router.map(function() {
         path: '/myJobs/assigned',
         title: 'UTL - Assigned Jobs',
         waitOn: function() {
-            return subs.subscribe('my_jobs');
+            return Meteor.subscribe('my_jobs');
         }
     });
 
@@ -148,7 +148,7 @@ Router.map(function() {
         path: '/assignedJobs',
         title: 'UTL - Assigned Jobs',
         waitOn: function() {
-            return subs.subscribe('providerAssignedJobs');
+            return Meteor.subscribe('providerAssignedJobs');
         }
     });
 
@@ -157,7 +157,7 @@ Router.map(function() {
         title: 'UTL - Completed Jobs',
         waitOn: function() {
             Meteor.subscribe('reviews');
-            return subs.subscribe('my_jobs');
+            return Meteor.subscribe('my_jobs');
         }
     });
 
@@ -165,7 +165,7 @@ Router.map(function() {
         path: '/completedJobs',
         title: 'UTL - Completed Jobs',
         waitOn: function() {
-            return subs.subscribe('providerCompletedJobs');
+            return Meteor.subscribe('providerCompletedJobs');
         }
     })
 
@@ -173,7 +173,7 @@ Router.map(function() {
         path: '/recommendedjobs',
         title: 'UTL - Recommended Jobs',
         subscriptions: function() {
-            return subs.subscribe('jobs');
+            return Meteor.subscribe('jobs');
         }
     });
 
@@ -181,7 +181,7 @@ Router.map(function() {
         path: '/invitedJobs',
         title: 'UTL - Invited Jobs',
         subscriptions: function() {
-            return subs.subscribe('invitedJobs');
+            return Meteor.subscribe('invitedJobs');
         }
     });
 
@@ -199,7 +199,7 @@ Router.map(function() {
         waitOn: function() {
             Meteor.subscribe("tasksOfaJob",this.params._id);
             Meteor.subscribe("timeSheet",this.params._id);
-            return subs.subscribe("job", this.params._id);
+            return Meteor.subscribe("job", this.params._id);
         },
         onBeforeAction: function() {
             var expectedSlug = this.data().slug();
@@ -223,7 +223,7 @@ Router.map(function() {
             return "UTL - " + this.params.category;
         },
         subscriptions: function() {
-            return subs.subscribe('jobs');
+            return Meteor.subscribe('jobs');
         }
     });
 
@@ -233,7 +233,7 @@ Router.map(function() {
             return "UTL - " + this.params.subcategory;
         },
         subscriptions: function() {
-            return subs.subscribe('jobs');
+            return Meteor.subscribe('jobs');
         }
     })
 
@@ -293,7 +293,7 @@ Router.map(function() {
             };
         },
         waitOn: function() {
-            return subs.subscribe("job", this.params._id);
+            return Meteor.subscribe("job", this.params._id);
         },
         onBeforeAction: function() {
             var id = this.params._id;
@@ -396,8 +396,9 @@ Router.map(function() {
         title: "UTL - Dashboard",
         waitOn: function() {
             Meteor.subscribe("userList");
-            Meteor.subscribe('allJobs');
+            subs.subscribe('allJobs');
             Meteor.subscribe('reviews');
+            subs.subscribe('notifications');
             return Meteor.subscribe("messages");
         },
         data: function() {

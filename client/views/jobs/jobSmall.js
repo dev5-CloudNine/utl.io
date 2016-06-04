@@ -7,11 +7,7 @@ Template.jobSmall.helpers({
 	},
 	acceptedProvider: function() {
 		var uId = Meteor.userId();
-		// if(this.display == false) {
-		// 	return;
-		// }
 		var jobs=Jobs.findOne({_id: this._id}).applications;
-
 		for(var i=0;i<jobs.length;i++){
 			if(jobs[i].userId == uId && jobs[i].app_status == 'accepted') {
 				return true;
@@ -162,6 +158,26 @@ Template.jobSmall.events({
 				toastr.success('Rejected assignment successfully');
 			}
 		});
+	},
+	'click button.requestPayment': function(event, template) {
+		var jobId = this._id;
+		Meteor.call('requestPayment', jobId, function(error) {
+			if(error) {
+				toastr.error('Failed to request paymet. Pleast try again.');
+			} else {
+				toastr.success('Payment requested successfully.');
+			}
+		})
+	},
+	'click button.approvePayment': function(event, template) {
+		var jobId = this._id;
+		Meteor.call('approvePayment', jobId, function(error) {
+			if(error) {
+				toastr.error('Failed to approve payment. Please try again.');
+			} else {
+				toastr.success('Payment approved successfully.');
+			}
+		})
 	},
 	'rated .rateit': function(event, instance) {
 		var rating = $(event.target).rateit('value');

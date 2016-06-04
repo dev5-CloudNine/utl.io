@@ -575,7 +575,7 @@ Jobs.attachSchema(
     },
     assignmentStatus: {
       type: String,
-      allowedValues: ['submitted', 'approved', 'rejected'],
+      allowedValues: ['submitted', 'approved', 'rejected', 'pending_payment', 'paid'],
       autoValue: function() {
         if(this.isInsert) {
           return 'rejected';
