@@ -204,6 +204,7 @@ Template.profileFields.rendered = function() {
   }, 10);
 
   Meteor.typeahead.inject('.typeahead');
+  $('.note-editor .note-toolbar .note-insert').remove();
 };
 
 var locLoaded=false;

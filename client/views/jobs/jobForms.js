@@ -21,6 +21,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob'], {
 
 Template.jobFields.rendered = function() {
 	Meteor.typeahead.inject('.typeahead');
+	$('.note-editor .note-toolbar .note-insert').remove();
 }
 
 var locLoaded=false;
