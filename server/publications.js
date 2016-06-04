@@ -25,15 +25,27 @@ Meteor.publish("messages", function () {
 });
 
 Meteor.publish('categories', function() {
-    return Categories.find({});
+    if(this.userId) {
+        var user = Meteor.users.findOne({_id: this.userId});
+        if(user) 
+            return Categories.find({});
+    }
 });
 
 Meteor.publish('skills', function() {
-    return Skills.find({});
+    if(this.userId) {
+        var user = Meteor.users.findOne({_id: this.userId});
+        if(user)
+            return Skills.find({});
+    }
 });
 
 Meteor.publish('subcategories', function() {
-    return SubCategories.find({});
+    if(this.userId) {
+        var user = Meteor.users.findOne({_id: this.userId});
+        if(user) 
+            return SubCategories.find({});
+    }
 })
 
 Meteor.publish("tasks", function (taskID) {
@@ -53,8 +65,14 @@ Meteor.publish("tasksOfaJob", function (id) {
 });
 
 Meteor.publish('notifications', function() {
-    return Notifications.find({});
-})
+    if(this.userId) {
+        var user = Meteor.users.findOne({_id: this.userId});
+        if(user) {
+            return Notifications.find({});
+        }
+    }
+
+});
 
 
 Meteor.publish('postedBuyer', function(jobId) {

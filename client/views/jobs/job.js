@@ -409,69 +409,89 @@ Template.job.events({
     $('button.submit-log').html('Save');
   },
   'click button.confirmAssignment': function(event, template) {
-      event.preventDefault();
-      var buyerId = this.userId;
-      var jobId = this._id;
-      Meteor.call('confirmAssignment', jobId, buyerId, function(error) {
-        if(error) {
-          toastr.error('Failed to confirm assignment.');
-        }
-        else {
-          toastr.success('The assignment has been confirmed.');
-        }
-      })
-    },
-    'click button.declineAssignment': function(event, template) {
-      var jobId = this._id;
-      var userId = Meteor.userId();
-      Meteor.call('declineAssignment', jobId, userId, function(error) {
-        if(error) {
-          toastr.error('Failed to decline the assignment.');
-        } else {
-          toastr.success('Successfully declined the assignment.');
-        }
-      });
-    },
-    'click button.submitAssignment': function(event, template) {
-      event.preventDefault();
-      var jobId = this._id;
-      //check for task status
-      var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
-      if(tasksClosed) {
-        toastr.error('Please close all the tasks before submitting the assignment');
-        return;
+    event.preventDefault();
+    var buyerId = this.userId;
+    var jobId = this._id;
+    Meteor.call('confirmAssignment', jobId, buyerId, function(error) {
+      if(error) {
+        toastr.error('Failed to confirm assignment.');
       }
-      Meteor.call('submitAssignment', jobId, function(error) {
-        if(error) {
-          toastr.error('Failed to submit assignment. Please try again.');
-        } else {
-          toastr.success('Successfully submitted the assignment.');
-        }
-      });
-    },
-    'click button.approveAssignment': function(event, template) {
-      event.preventDefault();
-      var jobId = this._id;
-      var providerId = this.assignedProvider;
-      console.log(providerId);
-      Meteor.call('approveAssignment', jobId, providerId, function(error) {
-        if(error) {
-          toastr.error('Failed to approve assignment. Please try again.');
-        } else {
-          toastr.success('Approved assignment Successfully');
-        }
-      });
-    },
-    'click button.rejectAssignment': function(event, template) {
-      var jobId = this._id;
-      Meteor.call('rejectAssignment', jobId, function(error) {
-        if(error) {
-          toastr.error('Failed to reject assignment. Please try again.');
-        } else {
-          toastr.success('Rejected assignment successfully');
-        }
-      });
+      else {
+        toastr.success('The assignment has been confirmed.');
+      }
+    })
+  },
+  'click button.declineAssignment': function(event, template) {
+    var jobId = this._id;
+    var userId = Meteor.userId();
+    Meteor.call('declineAssignment', jobId, userId, function(error) {
+      if(error) {
+        toastr.error('Failed to decline the assignment.');
+      } else {
+        toastr.success('Successfully declined the assignment.');
+      }
+    });
+  },
+  'click button.submitAssignment': function(event, template) {
+    event.preventDefault();
+    var jobId = this._id;
+    //check for task status
+    var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
+    if(tasksClosed) {
+      toastr.error('Please close all the tasks before submitting the assignment');
+      return;
     }
+    Meteor.call('submitAssignment', jobId, function(error) {
+      if(error) {
+        toastr.error('Failed to submit assignment. Please try again.');
+      } else {
+        toastr.success('Successfully submitted the assignment.');
+      }
+    });
+  },
+  'click button.approveAssignment': function(event, template) {
+    event.preventDefault();
+    var jobId = this._id;
+    var providerId = this.assignedProvider;
+    console.log(providerId);
+    Meteor.call('approveAssignment', jobId, providerId, function(error) {
+      if(error) {
+        toastr.error('Failed to approve assignment. Please try again.');
+      } else {
+        toastr.success('Approved assignment Successfully');
+      }
+    });
+  },
+  'click button.rejectAssignment': function(event, template) {
+    var jobId = this._id;
+    Meteor.call('rejectAssignment', jobId, function(error) {
+      if(error) {
+        toastr.error('Failed to reject assignment. Please try again.');
+      } else {
+        toastr.success('Rejected assignment successfully');
+      }
+    });
+  },
+  'click button.requestPayment': function(event, template) {
+    var jobId = this._id;
+    Meteor.call('requestPayment', jobId, function(error) {
+      if(error) {
+        toastr.error('Failed to request paymet. Pleast try again.');
+      } else {
+        toastr.success('Payment requested successfully.');
+      }
+    })
+  },
+  'click button.approvePayment': function(event, template) {
+    var jobId = this._id;
+    Meteor.call('approvePayment', jobId, function(error) {
+      if(error) {
+        toastr.error('Failed to approve payment. Please try again.');
+      } else {
+        toastr.success('Payment approved successfully.');
+      }
+    })
+  }
 });
 
 Template.job.helpers({

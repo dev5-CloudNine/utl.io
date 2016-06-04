@@ -189,9 +189,7 @@ Meteor.methods({
             side: 'provider',
             adminRead: false
         }
-        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'done'}});
-        // Profiles.update({userId: providerId}, {$addToSet: {completedJobs: jobId}}, {$pull: {ongoingJobs: jobId}});
-        // Buyers.update({userId: Meteor.userId()}, {$pull: {ongoingJobs: jobId}});
+        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved'}});
         Notifications.insert(notificationObj);
     },
     rejectAssignment: function(jobId) {
@@ -236,6 +234,34 @@ Meteor.methods({
             side: 'provider',
             adminRead: false
         };
+        Notifications.insert(notificationObj);
+    },
+    requestPayment: function(jobId) {
+        var notificationObj = {
+            providerId: Meteor.userId(),
+            buyerId: Jobs.findOne({_id: jobId}).userId,
+            jobId: jobId,
+            timeStamp: new Date(),
+            notificationType: 'requestPayment',
+            read: false,
+            side: 'buyer',
+            adminRead: false
+        };
+        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'pending_payment'}});
+        Notifications.insert(notificationObj);
+    },
+    approvePayment: function(jobId) {
+        var notificationObj = {
+            providerId: Jobs.findOne({_id: jobId}).assignedProvider,
+            buyerId: Meteor.userId(),
+            jobId: jobId,
+            timeStamp: new Date(),
+            notificationType: 'approvePayment',
+            read: false,
+            side: 'provider',
+            adminRead: false
+        };
+        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'paid', applicationStatus: 'done'}});
         Notifications.insert(notificationObj);
     },
     writeReview: function(assignedProvider, userId, jobId, timeReviewed, ratedPoints, reviewMessage) {

@@ -74,17 +74,32 @@
                                     </div>
                                     <div class="col-sm-12">
                                         {{#if acceptedProvider}}
-                                            <hr>
                                             {{#if $eq applicationStatus 'frozen'}}
-                                                <button class="btn btn-success btn-sm confirmAssignment">Confirm</button>
-                                                <button class="btn btn-warning btn-sm declineAssignment">Decline</button>
+                                                <hr>
+                                                <div class="col-sm-12 text-right">
+                                                    <button class="margin-top-5 btn btn-success btn-sm confirmAssignment">Confirm</button>
+                                                    <button class="margin-top-5 btn btn-warning btn-sm declineAssignment">Decline</button>
+                                                </div>
                                             {{else}}
                                                 {{#if $eq applicationStatus 'assigned'}}
                                                     {{#if $eq assignmentStatus 'rejected'}}
-                                                        <button class="btn btn-success btn-sm submitAssignment">Submit Job for approval</button>
+                                                        <hr>
+                                                        <div class="col-sm-12">
+                                                            <button class="margin-top-5 btn btn-success btn-sm submitAssignment">Submit Job for Approval.</button>
+                                                        </div>
                                                     {{else}}
                                                         {{#if $eq assignmentStatus 'submitted'}}
-                                                            <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
+                                                            <hr>
+                                                            <div class="col-sm-12">
+                                                                <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
+                                                            </div>
+                                                        {{else}}
+                                                            {{#if $eq assignmentStatus 'approved'}}
+                                                                <hr>
+                                                                <div class="col-sm-12">
+                                                                    <button class=" margin-top-5 btn btn-sm btn-success requestPayment">Request Payment</button>
+                                                                </div>
+                                                            {{/if}}
                                                         {{/if}}
                                                     {{/if}}
                                                 {{/if}}
@@ -94,9 +109,16 @@
                                                 {{#if $eq assignmentStatus 'submitted'}}
                                                     <hr>
                                                     <div class="col-sm-12">
-                                                        <button class="btn btn-success btn-sm approveAssignment">Approve Assignment</button>
-                                                        <button class="btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
+                                                        <button class="margin-top-5 btn btn-success btn-sm approveAssignment">Approve Assignment</button>
+                                                        <button class="margin-top-5 btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
                                                     </div>
+                                                {{else}}
+                                                    {{#if $eq assignmentStatus 'pending_payment'}}
+                                                        <hr>
+                                                        <div class="col-sm-12">
+                                                            <button class="btn btn-sm btn-success margin-top-5 approvePayment">Approve Payment</button>
+                                                        </div>
+                                                    {{/if}}
                                                 {{/if}}
                                             {{/if}}
                                         {{/if}}

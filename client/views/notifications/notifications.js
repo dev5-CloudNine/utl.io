@@ -12,6 +12,7 @@ Template.notifications.helpers({
 				slug: jobDetails.slug(),
 				notificationId: notification._id,
 				side: notification.side,
+				read: notification.read,
 				notificationTime: moment(notification.timeStamp).fromNow()
 			}
 			notificationDetails.push(notif);

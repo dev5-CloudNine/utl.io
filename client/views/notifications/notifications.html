@@ -46,6 +46,17 @@
 						</a>
 					{{/with}}
 				{{/if}}
+				{{#if $eq this.notificationType 'requestPayment'}}
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class=" markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has requested for payment.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
 			{{/each}}
 		{{/if}}
 		{{#if currentUser.isDeveloper}}
@@ -99,6 +110,17 @@
 						<a href="{{pathFor 'job'}}" class="markRead">
 							<div class="notification-item">
 								<h4 class="item-title">{{this.bname}} has rejected your assignment.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
+				{{#if $eq this.notificationType 'approvePayment'}}
+					{{#with this}}
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.bname}} has approved your payment request.</h4>
 								<small class="pull-right">{{this.notificationTime}}</small>
 								<p class="item-info">{{jobName}}</p>
 							</div>
