@@ -5,7 +5,7 @@
                 <a href="{{pathFor 'buyer'}}">
 					{{#if customImageUrl}}
 						<div class="avatar center-block">
-							<img class="img-responsive" src="{{resizeImageUrl customImageUrl 100 100}}"/>
+							<img class="img-thumbnail" src="{{customImageUrl}}"/>
 						</div>
 					{{else}}
 						{{> avatar userId=userId size="medium" class="center-block"}}

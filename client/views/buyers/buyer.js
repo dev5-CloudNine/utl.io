@@ -29,11 +29,7 @@ Template.buyer.helpers({
     return (Users.findOne({_id: this.userId}).readableID);
   },
   customImageUrl: function(){
-    var avatarID = Buyers.findOne({userId: this.userId}).avatar;
-    if(!avatarID)
-      return;
-    var imgURL = Meteor.absoluteUrl()+"cfs/files/images/" + avatarID +"/"+Images.findOne({_id:avatarID}).original.name;
-    return imgURL;
+    return Meteor.users.findOne({_id: this.userId}).imgURL;
   },
   fav : function() {
     return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this.userId]}}]})?true:false;

@@ -4,12 +4,12 @@
             <div class="panel-body">
                 <a href="{{pathFor 'profile'}}">
 					{{#if customImageUrl}}
-						<div class="avatar center-block">
-							<img class="img-responsive" src="{{resizeImageUrl customImageUrl 100 100}}"/>
-						</div>
-					{{else}}
-						{{> avatar userId=userId size="medium" class="center-block"}}
-					{{/if}}
+                        <div class="avatar center-block">
+                            <img class="img-thumbnail" src="{{customImageUrl}}"/>
+                        </div>
+                    {{else}}
+                        {{> avatar userId=userId size="medium" class="center-block"}}
+                    {{/if}}
 				</a>
                 <h4><a href="{{pathFor 'profile'}}">
 					{{name}}

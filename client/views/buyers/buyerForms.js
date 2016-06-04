@@ -88,16 +88,44 @@ Template.buyerFields.events({
     }
     $('input[name="smsAddress"]').val(smsEmail);
   },
-  'click .js-af-remove-file' : function(event) {
-    if($('img.img-fileUpload-thumbnail')) {
-      var src = $('img.img-fileUpload-thumbnail').attr('src').split("/");
-      var docID = src[4]
-      Meteor.call('deleteFile', docID, function (error, result) {
-        if(error) {
-          toastr.error("Operation Failed. Please try again");
+  "change .file_bag": function(event,template) {
+    event.preventDefault();
+    var files = $(event.currentTarget)[0].files
+
+    if (!files) return;
+    S3.upload({
+        files: files,
+        path: S3_FILEUPLOADS
+    }, function(err, res) {
+        $('.progress').hide();
+        if (err) toastr.error("Failed to upload image");
+        else {
+          Meteor.call('updateImgURL', Meteor.userId(),res.url, function (error, result) {
+            if(error){
+              toastr.error('Failed to update');
+            }
+          });
         }
-      });
-    }
+    });
+  },
+  "click .remove-img" : function(event) {
+    event.preventDefault();
+    $('#spinner').show();
+    var url = Profiles.findOne({_id:Router.current().params._id}).customImageUrl;
+    var index = url.indexOf(S3_FILEUPLOADS)-1;
+    var path = url.substr(index);
+    S3.delete(path, function(err, res) {
+        $('#spinner').hide();
+        if (err) {
+            toastr.error("Operation failed");
+        } else {
+          Meteor.call('updateImgURL', Meteor.userId(), function (error, result) {
+            if(error){
+              toastr.error('Failed to update');
+            }
+          });
+        }
+    });
   }
 })
 
@@ -112,6 +140,8 @@ Template.buyerEdit.events({
 
 
 Template.buyerFields.rendered = function() {
+  $('#spinner').hide();
+  $('.progress').hide();
   Meteor.typeahead.inject('.typeahead');
   $('.note-editor .note-toolbar .note-insert').remove();
 };
@@ -119,25 +149,32 @@ Template.buyerFields.rendered = function() {
 var locLoaded=false;
 
 Template.buyerFields.helpers({
+  "customImagePreviewUrl": function() {
+    return Meteor.users.findOne().imgURL;
+  },
   locationData : function(){
     locLoaded = true;
     return this.buyerProfile.location;
   },
   location: function(query, sync, callback) {
-      if(!locLoaded) $('.typeahead').addClass('loadinggif');
-      Meteor.call('location', query, {}, function(err, res) {
-          if (err) {
-              console.log(err);
-              return;
-          }
-          callback(res.map(function(v) {
-              locLoaded = true;
-              $('.typeahead').removeClass('loadinggif');
-              return { value: v.city + ", " + v.state + ", " + v.zip}; }));
-      });
+    if(!locLoaded) $('.typeahead').addClass('loadinggif');
+    Meteor.call('location', query, {}, function(err, res) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      callback(res.map(function(v) {
+        locLoaded = true;
+        $('.typeahead').removeClass('loadinggif');
+        return { value: v.city + ", " + v.state + ", " + v.zip}; 
+      }));
+    });
   },
   companyInvited: function() {
     var corpInfo = Meteor.user();
     return corpInfo.companyName;
+  },
+  "uploadedFiles": function(){
+      return S3.collection.find();
   }
 });

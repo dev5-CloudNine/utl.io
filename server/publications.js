@@ -85,7 +85,7 @@ Meteor.publish("tempInvitation", function () {
 });
 
 Meteor.publish("userList", function () {
-    return Meteor.users.find({}, {fields: {emails: 1, profile: 1, readableID: 1, roles: 1}});
+    return Meteor.users.find({}, {fields: {emails: 1, profile: 1, readableID: 1, roles: 1, imgURL: 1}});
 });
 
 Meteor.publish('developerCount', function() {
