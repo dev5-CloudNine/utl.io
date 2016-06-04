@@ -435,6 +435,12 @@ Template.job.events({
     'click button.submitAssignment': function(event, template) {
       event.preventDefault();
       var jobId = this._id;
+      //check for task status
+      var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
+      if(tasksClosed) {
+        toastr.error('Please close all the tasks before submitting the assignment');
+        return;
+      }
       Meteor.call('submitAssignment', jobId, function(error) {
         if(error) {
           toastr.error('Failed to submit assignment. Please try again.');
