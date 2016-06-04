@@ -113,6 +113,7 @@ Template.buyerEdit.events({
 
 Template.buyerFields.rendered = function() {
   Meteor.typeahead.inject('.typeahead');
+  $('.note-editor .note-toolbar .note-insert').remove();
 };
 
 var locLoaded=false;

@@ -1,5 +1,6 @@
 	Template.compose.onRendered(function() {
 		$('#summernote').summernote();
+		$('.note-editor .note-toolbar .note-insert').remove();
 	});
 
 
