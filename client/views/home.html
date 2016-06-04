@@ -32,11 +32,7 @@
 	{{#if currentUser}}
 		<div class="container">
 			{{#if isInRole 'corporate-admin, provider, corporate-provider'}}
-				<div class="row">
-					<div class="col-sm-12">
-						{{>jobsRecent}}
-					</div>
-				</div>
+				{{>jobsRecent}}
 			{{/if}}
 			{{#if isInRole 'corporate-admin, corporate-manager, buyer'}}
 				<div class="row">
