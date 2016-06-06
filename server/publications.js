@@ -74,7 +74,6 @@ Meteor.publish('notifications', function() {
 
 });
 
-
 Meteor.publish('postedBuyer', function(jobId) {
     var userId = Jobs.findOne({_id: jobId}).userId;
     return Meteor.users.find({_id: userId});

@@ -1,7 +1,7 @@
 <template name="appliedJobs">
 	<div class="row">
 		<div class="col-sm-12">
-			<h5>Applied Jobs</h5>
+			<h5>Applied Jobs &#124; <a href="{{pathFor 'providerRoutedJobs'}}">Routed Jobs</a> &#124; <a href="{{pathFor 'providerAssignedJobs'}}">Assigned Jobs</a> &#124; <a href="{{pathFor 'providerCompletedJobs'}}">Completed Jobs</a></h5>
 		</div>
 		<div class="col-sm-12">
 			{{#each appliedJobs}}

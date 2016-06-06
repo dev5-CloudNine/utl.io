@@ -56,7 +56,7 @@ Template.headerUserMenu.helpers({
     });
   },
   customImageUrl: function(){
-    return Meteor.users.findOne().imgURL;
+    return Meteor.users.findOne({_id: Meteor.userId()}).imgURL;
   }
 });
 

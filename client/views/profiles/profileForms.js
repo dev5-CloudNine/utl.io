@@ -143,7 +143,7 @@ Template.profileEdit.events({
   "click .remove-img" : function(event) {
     event.preventDefault();
     $('#spinner').show();
-    var url = Profiles.findOne({_id:Router.current().params._id}).customImageUrl;
+    var url = Meteor.users.findOne({_id: Meteor.userId()}).imgURL;
     var index = url.indexOf(S3_FILEUPLOADS)-1;
     var path = url.substr(index);
     S3.delete(path, function(err, res) {
@@ -174,7 +174,7 @@ var locLoaded=false;
 
 Template.profileFields.helpers({
   "customImagePreviewUrl": function() {
-    return Meteor.users.findOne().imgURL;
+    return Meteor.users.findOne({_id: Meteor.userId()}).imgURL;
   },
   companyInvited: function() {
     var corpInfo = Meteor.user();
