@@ -26,10 +26,8 @@ Template.notifications.helpers({
 		var notifications = Notifications.find({$and: [{providerId: Meteor.userId()}, {side: 'provider'}]}, {sort: {timeStamp: -1}});
 		var notificationDetails = [];
 		notifications.forEach(function (notification) {
-			console.log(notification);
 			buyerName = Buyers.findOne({userId: notification.buyerId}).name;
 			jobDetails = Jobs.findOne({_id: notification.jobId});
-			console.log(jobDetails.slug());
 			var notif = {
 				notificationType: notification.notificationType,
 				bname: buyerName,

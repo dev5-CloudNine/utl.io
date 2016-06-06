@@ -110,16 +110,6 @@ Template.profileFields.events({
          event.stopPropagation();
          return false;
     }
-  }
-});
-var customImagePreviewUrl = new ReactiveVar();
-
-Template.profileEdit.events({
-  'click #cancel': function(event, template) {
-    event.preventDefault();
-    Router.go("profile", {
-      _id: this.profile._id
-    });
   },
   "change .file_bag": function(event,template) {
     event.preventDefault();
@@ -160,8 +150,16 @@ Template.profileEdit.events({
     });
   }
 });
+var customImagePreviewUrl = new ReactiveVar();
 
-
+Template.profileEdit.events({
+  'click #cancel': function(event, template) {
+    event.preventDefault();
+    Router.go("profile", {
+      _id: this.profile._id
+    });
+  }
+});
 
 Template.profileFields.rendered = function() {
   $('#spinner').hide();
