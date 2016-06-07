@@ -35,6 +35,7 @@ Template.notifications.helpers({
 				slug: jobDetails.slug(),
 				notificationId: notification._id,
 				side: notification.side,
+				read: notification.read,
 				notificationTime: moment(notification.timeStamp).fromNow()
 			}
 			notificationDetails.push(notif);
@@ -83,6 +84,9 @@ Template.notifications.helpers({
 		});
 		console.log(notificationDetails);
 		return notificationDetails;
+	},
+	welcomeNotification: function() {
+		return Notifications.findOne({$and: [{notificationType: 'welcomeNotification'}, {userId: Meteor.userId()}]});
 	}
 });
 

@@ -30,7 +30,7 @@ Template.profileSmall.events({
 
 Template.profileSmall.helpers({
 	readableId: function() {
-		return(Users.findOne({_id: this.userId}).readableID);
+		return (Users.findOne({_id: this.userId}).readableID);
 	},
 	fav : function() {
 		return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this.userId]}}]})?true:false;

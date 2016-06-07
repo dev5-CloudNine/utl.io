@@ -13,7 +13,8 @@ Profiles.after.remove(function(userId, doc) {
     _id: doc.userId
   }, {
     $set: {
-      isDeveloper: false
+      isDeveloper: false,
+      imgURL: ""
     }
   });
 });
@@ -33,7 +34,8 @@ Buyers.after.remove(function(userId, doc) {
     _id: doc.userId
   }, {
     $set: {
-      isBuyer: false
+      isBuyer: false,
+      imgURL: ""
     }
   });
 });
@@ -67,10 +69,10 @@ Jobs.after.remove(function(userId, doc) {
 Jobs.after.insert(function(userId, doc){
   var obj ={};
   if(doc.tasks) doc.tasks.map(function(task){
-      obj.taskName = task.taskname;
-      obj.taskdescription = task.taskdescription;
-      obj.jobID = doc._id;
-      Tasks.insert(obj);
+    obj.taskName = task.taskname;
+    obj.taskdescription = task.taskdescription;
+    obj.jobID = doc._id;
+    Tasks.insert(obj);
   });
 
   obj.taskName = 'Enter close out notes';

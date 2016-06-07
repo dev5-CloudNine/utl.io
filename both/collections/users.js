@@ -90,6 +90,10 @@ UserSchema = new SimpleSchema({
     type: String,
     optional: true
   },
+  resumeURL: {
+    type: String,
+    optional: true
+  },
   'favoriteUsers.$': {
     type: String
   },

@@ -39,7 +39,7 @@
     <div class="row">
         <div class="col-md-4">
             <div class="form-group" id="profileAvatarPreview">
-                <label class="control-label">{{#if customImagePreviewUrl}}Corporate{{else}}Automatic Corporate{{/if}} Avatar</label>
+                <label class="control-label">{{#if customImagePreviewUrl}}Profile{{else}}Automatic{{/if}} Avatar</label>
                 {{#if customImagePreviewUrl}}
                 <div class="avatar avatar-large">
                     <img class="img-responsive" src="{{customImagePreviewUrl}}" onerror="this.src='/images/avatar.png'" style="height:200px;width:200px" />
@@ -51,7 +51,7 @@
                 <div class="input-group">
                     &nbsp;
                     <label class="btn btn-success input-group-btn btn-lbl"  style="font-size: 15px;margin-left:5px" data-toggle="tooltip" data-placement="top">
-                        <input type="file" accept="image/*" class="file_bag" name="files" data-schema-key="files"> Change
+                        <input type="file" accept="image/*" class="file_bag"> Change
                     </label>
                     <button type="button" class="btn btn-danger remove-img">Remove</button>
                 </div>
@@ -65,11 +65,9 @@
         </div>
         <div class="col-xs-12">
             {{#each uploadedFiles}}
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped active" role="progressbar"
-                  aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">
-                    {{percent_uploaded}}%
-                  </div>
+                <div class="profileImgProgress">
+                    <div class="progress-bar progress-bar-striped" role="progressbar"
+                    aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">{{percent_uploaded}}%</div>
                 </div>
             {{/each}}
         </div>
@@ -126,34 +124,29 @@
                 <label class="control-label"></label>
                 <div class="input-group">
                     <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px">
-                        <input type="file" class="file_bag" name="files" data-schema-key="files" multiple=true> Upload Resume
+                        <input type="file" class="resume_bag" accept="application/pdf,application/msword"> Upload Resume
                     </label>
                 </div>
             </div>
         </div>
         <div class="col-sm-12">
-            <ul class="fileList">
-            </ul>
+            {{#each uploadedFiles}}
+                <div class="resumeProgress">
+                    <div class="progress-bar progress-bar-striped" role="progressbar"
+                    aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">{{percent_uploaded}}%</div>
+                </div>
+            {{/each}}
+        </div>
+        <div class="col-sm-12">
+            {{#if resumeUrl}}
+                <ul class="list-unstyled">
+                    <li><a href="{{resumeUrl}}">{{resumeUrl}}</a>&nbsp;(<a href class="remove-resume">Remove</a>)</li>
+                </ul>
+            {{/if}}
         </div>
     </div>
     <hr>
     <div class="row">
-        <!-- {{#each parentCategories}}
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                <h5>
-                    {{this.label}}
-                </h5>
-                {{#each childCategories this.value}}
-                    <div class="checkbox">
-                        <label>
-                            <small>
-                                <input type="checkbox" value="{{this.value}}" name="industryTypes" data-schema-key="industryTypes"> {{this.label}}
-                            </small>
-                        </label>
-                    </div>
-                {{/each}}
-            </div>
-        {{/each}} -->
         <div class="col-sm-12">
             {{>afQuickField name='industryTypes' noselect="true" placeholder="What are you interested in?"}}
         </div>

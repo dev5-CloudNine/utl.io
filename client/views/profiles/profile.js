@@ -20,7 +20,13 @@ Template.profile.helpers({
     return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this.userId]}}]})?true:false;
   },
   providerCompletedJobs: function() {
-    return Jobs.find({$and:[{assignedProvider: this.userId}, {applicationStatus: 'done'}]});
+    var completedJobs = [];
+    if(this.completedJobs) {
+      for(var i = 0; i < this.completedJobs.length; i++) {
+        completedJobs.push(Jobs.findOne({_id: this.completedJobs[i]}));
+      }
+      return completedJobs;
+    }
   },
   reviews: function() {
     return Reviews.findOne({$and: [{providerId: this.assignedProvider}, {reviewedBy: this.userId}, {reviewedJobId: this._id}]});

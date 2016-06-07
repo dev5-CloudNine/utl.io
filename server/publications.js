@@ -71,7 +71,6 @@ Meteor.publish('notifications', function() {
             return Notifications.find({});
         }
     }
-
 });
 
 Meteor.publish('postedBuyer', function(jobId) {
@@ -242,6 +241,20 @@ Meteor.publish('providerAssignedJobs', function() {
         this.ready();
     }
 });
+
+Meteor.publish('providerPaymentPending', function() {
+    check(arguments, [Match.Any]);
+    if(this.userId) {
+        return [
+            Jobs.find({
+                'assignedProvider': this.userId
+            }, {
+                'assignmentStatus': 'pending_payment'
+            })
+        ];
+        this.ready();
+    }
+})
 
 Meteor.publish('providerCompletedJobs', function() {
     check(arguments, [Match.Any]);

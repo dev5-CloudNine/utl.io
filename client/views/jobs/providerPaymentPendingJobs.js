@@ -1,12 +1,12 @@
-Template.providerAssignedJobs.helpers({
-	providerAssignedJobs: function() {
-		var assignedJobIds = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
-		var assignedJobs = [];
-		if(assignedJobIds) {
-			for(var i = 0; i < assignedJobIds.length; i++) {
-				assignedJobs.push(Jobs.findOne({_id: assignedJobIds[i]}));
+Template.providerPaymentPendingJobs.helpers({
+	providerPaymentPendingJobs: function() {
+		var paymentPendingJobIds = Profiles.findOne({userId: Meteor.userId()}).paymentPendingJobs;
+		var paymentPendingJobs = [];
+		if(paymentPendingJobIds) {
+			for(var i = 0; i < paymentPendingJobIds.length; i++) {
+				paymentPendingJobs.push(Jobs.findOne({_id: paymentPendingJobIds[i]}));
 			}
-			return assignedJobs;
+			return paymentPendingJobs;
 		}
 	},
 	appliedJobsCount: function() {

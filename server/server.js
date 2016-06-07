@@ -12,12 +12,19 @@ Meteor.methods({
     "postUserSignup": function(userId) {
         var notificationObj = {
             notificationType: 'userSignUp',
-            timeStamp: new Date,
+            timeStamp: new Date(),
             userId: userId,
             adminSide: true,
             adminRead: false
-        }
+        };
+        var welcomeNotification = {
+            notificationType: 'welcomeNotification',
+            timeStamp: new Date(),
+            userId: userId,
+            read: false
+        };
         Notifications.insert(notificationObj);
+        Notifications.insert(welcomeNotification);
         Accounts.sendVerificationEmail(userId);
         return;
     },  
@@ -148,6 +155,7 @@ Meteor.methods({
         }
         var proBudget = Jobs.findOne({_id: jobId}).proposedBudget;
         Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned', assignedProvider: Meteor.userId(), projectBudget: proBudget}});
+        Profiles.update({userId: Meteor.userId()}, {$addToSet: {assignedJobs: jobId}});
         Notifications.insert(notificationObj);
     },
     declineAssignment: function(jobId, userId) {
@@ -248,6 +256,8 @@ Meteor.methods({
             adminRead: false
         };
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'pending_payment'}});
+        Profiles.update({userId: Meteor.userId()}, {$pull: {assignedJobs: jobId}});
+        Profiles.update({userId: Meteor.userId()}, {$addToSet: {paymentPendingJobs: jobId}});
         Notifications.insert(notificationObj);
     },
     approvePayment: function(jobId) {
@@ -262,6 +272,8 @@ Meteor.methods({
             adminRead: false
         };
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'paid', applicationStatus: 'done'}});
+        Profiles.update({userId: Jobs.findOne({_id: jobId}).assignedProvider}, {$addToSet: {completedJobs: jobId}});
+        Profiles.update({userId: Jobs.findOne({_id: jobId}).assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
         Notifications.insert(notificationObj);
     },
     writeReview: function(assignedProvider, userId, jobId, timeReviewed, ratedPoints, reviewMessage) {
@@ -390,6 +402,13 @@ Meteor.methods({
             Meteor.users.update({_id:id},{$set:{'imgURL':url}});
         } else {
             Meteor.users.update({_id:id},{$set:{'imgURL':''}});
+        }
+    },
+    updateResumeURL: function(id, url) {
+        if(url) {
+            Meteor.users.update({_id: id}, {$set: {'resumeURL': url}});
+        } else {
+            Meteor.users.update({_id: id}, {$set: {'resumeURL': ''}});
         }
     }
 });

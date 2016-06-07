@@ -102,10 +102,6 @@ Profiles.attachSchema(
       max: 128,
       optional: true
     },
-    files: {
-      type: [String],
-      optional: true
-    },
     location: {
       type: String,
       label: "Location *",
@@ -308,6 +304,13 @@ Profiles.attachSchema(
     'appliedJobs.$': {
       type: String
     },
+    assignedJobs: {
+      type: Array,
+      optional: true
+    },
+    'assignedJobs.$': {
+      type: String
+    },
     routedJobs: {
       type: Array,
       optional: true
@@ -319,21 +322,27 @@ Profiles.attachSchema(
       type: [String],
       optional: true
     },
-    // ongoingJobs: {
-    //   type: Array,
-    //   optional: true
-    // },
-    // 'ongoingJobs.$': {
-    //   type: String
-    // },
-    // completedJobs: {
-    //   type: Array,
-    //   optional: true
-    // },
-    // 'completedJobs.$': {
-    //   type: String, 
-    //   optional: true
-    // },
+    assignedJobs: {
+      type: Array,
+      optional: true
+    },
+    'assignedJobs.$': {
+      type: String
+    },
+    paymentPendingJobs: {
+      type: Array,
+      optional: true
+    },
+    'paymentPendingJobs.$': {
+      type: String
+    },
+    completedJobs: {
+      type: Array,
+      optional: true
+    },
+    'completedJobs.$': {
+      type: String
+    },
     status: {
       type: String,
       allowedValues: STATUSES,
@@ -354,8 +363,6 @@ Profiles.attachSchema(
       },
       denyUpdate: true
     },
-    // Force value to be current date (on server) upon update
-    // and don't allow it to be set upon insert.
     updatedAt: {
       type: Date,
       autoValue: function() {

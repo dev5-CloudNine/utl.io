@@ -32,7 +32,7 @@
                                         Jobs <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{pathFor 'allJobs'}}">All Jobs</a></li>
+                                        <li><a href="{{pathFor 'allJobs'}}">All New Jobs</a></li>
                                         <li><a href="{{pathFor 'allAssignedJobs'}}">Assigned Jobs</a></li>
                                         <li><a href="{{pathFor 'allCompletedJobs'}}">Completed Jobs</a></li>
                                     </ul>
@@ -80,10 +80,11 @@
                                         <li><a href="{{pathFor 'invitedJobs'}}">Invited Jobs</a></li>
                                         <li class="divider" role="seperator"></li>
                                         <li class="dropdown-header">My Jobs</li>
-                                        <li><a href="{{pathFor 'appliedJobs'}}">Applied Jobs</a></li>
-                                        <li><a href="{{pathFor 'providerRoutedJobs'}}">Routed Jobs</a></li>
-                                        <li><a href="{{pathFor 'providerAssignedJobs'}}">Assigned Jobs</a></li>
-                                        <li><a href="{{pathFor 'providerCompletedJobs'}}">Completed Jobs</a></li>
+                                        <li><a href="{{pathFor 'appliedJobs'}}">Applied Jobs <span class="badge pull-right">{{appliedJobsCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'providerRoutedJobs'}}">Routed Jobs <span class="badge pull-right">{{routedJobsCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'providerAssignedJobs'}}">Assigned Jobs <span class="badge pull-right">{{assignedJobsCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'providerPaymentPendingJobs'}}">Payment Pending</a><span class="badge pull-right">{{proPaymentJobsCount}}</span></li>
+                                        <li><a href="{{pathFor 'providerCompletedJobs'}}">Completed Jobs <span class="badge pull-right">{{completedJobsCount}}</span></a></li>
                                     </ul>
                                 </li>
                                 <li id="user-drop-down" class="dropdown">
@@ -255,9 +256,6 @@
                     </li>
                 {{/if}}
             {{/if}}
-            <li>
-                <a href="#" id="userProfile"><i class="fa fa-user fa-fw"></i> User Name</a>
-            </li>
             <li class="divider"></li>
             <li><a href="#" id="signOut"><i class="fa fa-sign-out fa-fw"></i> Sign Out</a></li>
         </ul>

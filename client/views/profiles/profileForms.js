@@ -111,6 +111,26 @@ Template.profileFields.events({
          return false;
     }
   },
+  "change .resume_bag": function(event, template) {
+    event.preventDefault();
+    var files = $(event.currentTarget)[0].files;
+    if(!files) return;
+    S3.upload({
+      files: files,
+      path: S3_FILEUPLOADS
+    }, function(err, res) {
+      $('.resumeProgress').hide();
+      $('.profileImgProgress').hide();
+      if(err) toastr.error("Failed to upload resume");
+      else {
+        Meteor.call('updateResumeURL', Meteor.userId(), res.url, function(error, result) {
+          if(error) {
+            toastr.error('Failed to update');
+          }
+        })
+      }
+    });
+  },
   "change .file_bag": function(event,template) {
     event.preventDefault();
     var files = $(event.currentTarget)[0].files;
@@ -119,10 +139,30 @@ Template.profileFields.events({
       files: files,
       path: S3_FILEUPLOADS
     }, function(err, res) {
-      $('.progress').hide();
+      $('.profileImgProgress').hide();
+      $('.resumeProgress').hide();
       if (err) toastr.error("Failed to upload image");
       else {
         Meteor.call('updateImgURL', Meteor.userId(),res.url, function (error, result) {
+          if(error){
+            toastr.error('Failed to update');
+          }
+        });
+      }
+    });
+  },
+  "click .remove-resume" : function(event) {
+    event.preventDefault();
+    $('#spinner').show();
+    var url = Meteor.users.findOne({_id: Meteor.userId()}).resumeURL;
+    var index = url.indexOf(S3_FILEUPLOADS)-1;
+    var path = url.substr(index);
+    S3.delete(path, function(err, res) {
+      $('#spinner').hide();
+      if (err) {
+          toastr.error("Operation failed");
+      } else {
+        Meteor.call('updateResumeURL', Meteor.userId(), function (error, result) {
           if(error){
             toastr.error('Failed to update');
           }
@@ -150,7 +190,7 @@ Template.profileFields.events({
     });
   }
 });
-var customImagePreviewUrl = new ReactiveVar();
+// var customImagePreviewUrl = new ReactiveVar();
 
 Template.profileEdit.events({
   'click #cancel': function(event, template) {
@@ -163,7 +203,8 @@ Template.profileEdit.events({
 
 Template.profileFields.rendered = function() {
   $('#spinner').hide();
-  $('.progress').hide();
+  $('.profileImgProgress').hide();
+  $('.resumeProgress').hide();
   Meteor.typeahead.inject('.typeahead');
   $('.note-editor .note-toolbar .note-insert').remove();
 };
@@ -173,6 +214,9 @@ var locLoaded=false;
 Template.profileFields.helpers({
   "customImagePreviewUrl": function() {
     return Meteor.users.findOne({_id: Meteor.userId()}).imgURL;
+  },
+  resumeUrl: function() {
+    return Meteor.users.findOne({_id: Meteor.userId()}).resumeURL;
   },
   companyInvited: function() {
     var corpInfo = Meteor.user();
@@ -185,14 +229,15 @@ Template.profileFields.helpers({
   location: function(query, sync, callback) {
       if(!locLoaded) $('.typeahead').addClass('loadinggif');
       Meteor.call('location', query, {}, function(err, res) {
-          if (err) {
-              console.log(err);
-              return;
-          }
-          callback(res.map(function(v) {
-              locLoaded = true;
-              $('.typeahead').removeClass('loadinggif');
-              return { value: v.city + ", " + v.state + ", " + v.zip}; }));
+        if (err) {
+          console.log(err);
+          return;
+        }
+        callback(res.map(function(v) {
+          locLoaded = true;
+          $('.typeahead').removeClass('loadinggif');
+          return { value: v.city + ", " + v.state + ", " + v.zip}; 
+        }));
       });
   },
   parentCategories: function() {
@@ -207,6 +252,6 @@ Template.profileFields.helpers({
     return Categories.findOne({value: this.parentId})._id;
   },
   "uploadedFiles": function(){
-      return S3.collection.find();
-  },
+    return S3.collection.find();
+  }
 });

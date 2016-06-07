@@ -225,5 +225,15 @@
 				{{/each}}
 			{{/if}}
 		{{/if}}
+		{{#if currentUser}}
+			{{#if welcomeNotification}}
+				<a href class="markRead">
+					<div class="notification-item">
+						<h4 class="item-title">Welcome to UTL.</h4>
+						<small>{{this.notificationTime}}</small>
+					</div>
+				</a>
+			{{/if}}
+		{{/if}}
 	</div>
 </template>

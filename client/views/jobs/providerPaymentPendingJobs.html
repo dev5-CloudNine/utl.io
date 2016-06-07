@@ -1,0 +1,15 @@
+<template name="providerPaymentPendingJobs">
+	<div class="row">
+		<div class="col-sm-12">
+			<h5>My Jobs: <a href="{{pathFor 'appliedJobs'}}">Applied Jobs ({{appliedJobsCount}})</a> &#124; <a href="{{pathFor 'providerRoutedJobs'}}">Routed Jobs ({{routedJobsCount}})</a> &#124; <a href="{{pathFor 'providerAssignedJobs'}}">Assigned Jobs ({{assignedJobsCount}})</a> &#124; Payment Pending Jobs ({{proPaymentJobsCount}}) &#124; <a href="{{pathFor 'providerCompletedJobs'}}">Completed Jobs ({{completedJobsCount}})</a></h5>
+		</div>
+		<div class="col-sm-12">
+			{{#each providerPaymentPendingJobs}}
+				{{>jobSmall}}
+			{{else}}
+				<hr>
+				<p>You have no jobs that are pending payments at this moment.</p>
+			{{/each}}
+		</div>
+	</div>
+</template>

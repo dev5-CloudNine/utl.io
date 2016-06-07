@@ -1,11 +1,14 @@
 <template name="providerCompletedJobs">
 	<div class="row">
 		<div class="col-sm-12">
-			<h5><a href="{{pathFor 'appliedJobs'}}">Applied Jobs</a> &#124; <a href="{{pathFor 'providerRoutedJobs'}}">Routed Jobs</a> &#124; <a href="{{pathFor 'providerAssignedJobs'}}">Assigned Jobs</a> &#124; Completed Jobs</h5>
+			<h5>My Jobs: <a href="{{pathFor 'appliedJobs'}}">Applied Jobs ({{appliedJobsCount}})</a> &#124; <a href="{{pathFor 'providerRoutedJobs'}}">Routed Jobs ({{routedJobsCount}})</a> &#124; <a href="{{pathFor 'providerAssignedJobs'}}">Assigned Jobs ({{assignedJobsCount}})</a> &#124; <a href="{{pathFor 'providerPaymentPendingJobs'}}">Payment Pending Jobs ({{proPaymentJobsCount}})</a> &#124; Completed Jobs ({{completedJobsCount}})</h5>
 		</div>
 		<div class="col-sm-12">
 			{{#each providerCompletedJobs}}
 				{{>jobSmall}}
+			{{else}}
+				<hr>
+				<p>You still have not completed any jobs yet.</p>
 			{{/each}}
 		</div>
 	</div>

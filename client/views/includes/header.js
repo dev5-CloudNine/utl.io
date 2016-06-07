@@ -16,6 +16,56 @@ Template.header.helpers({
     return Corporates.findOne({
       companyName: Meteor.user().companyName
     })
+  },
+  appliedJobsCount: function() {
+    var count = 0;
+    var appliedJobs = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
+    if(appliedJobs) {
+      for(var i = 0; i < appliedJobs.length; i++)
+        count++;
+      return count;
+    }
+    return count;
+  },
+  routedJobsCount: function() {
+    var count = 0;
+    var routedJobs = Profiles.findOne({userId: Meteor.userId()}).routedJobs;
+    if(routedJobs) {
+      for(var i = 0; i < routedJobs.count; i++)
+        count++;
+      return count;
+    }
+    return count;
+  },
+  assignedJobsCount: function() {
+    var count = 0;
+    var assignedJobs = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
+    if(assignedJobs) {
+      for(var i = 0; i < assignedJobs.length; i++)
+        count++;
+      return count;
+    }
+    return count;
+  },
+  completedJobsCount: function() {
+    var count = 0;
+    var completedJobs = Profiles.findOne({userId: Meteor.userId()}).completedJobs;
+    if(completedJobs) {
+      for(var i = 0; i < completedJobs.length; i++)
+        count++;
+      return count;
+    }
+    return count;
+  },
+  proPaymentJobsCount: function() {
+    var count = 0;
+    var paymentPendingJobs = Profiles.findOne({userId: Meteor.userId()}).paymentPendingJobs;
+    if(paymentPendingJobs) {
+      for(var i = 0; i < paymentPendingJobs.length; i++)
+        count++;
+      return count;
+    }
+    return count;
   }
 });
 
@@ -76,10 +126,6 @@ Template.headerUserMenu.events({
          targetButton.click()
       }
     }
-  },
-  'click #userProfile': function(event, template) {
-    event.preventDefault();
-    Modal.show('userProfile');
   },
   'click #notification_link': function(event, template) {
     console.log(event);
