@@ -28,7 +28,7 @@ Meteor.publish('categories', function() {
     if(this.userId) {
         var user = Meteor.users.findOne({_id: this.userId});
         if(user) 
-            return Categories.find({});
+            return Categories.find();
     }
 });
 
@@ -36,7 +36,7 @@ Meteor.publish('skills', function() {
     if(this.userId) {
         var user = Meteor.users.findOne({_id: this.userId});
         if(user)
-            return Skills.find({});
+            return Skills.find();
     }
 });
 
@@ -44,7 +44,7 @@ Meteor.publish('subcategories', function() {
     if(this.userId) {
         var user = Meteor.users.findOne({_id: this.userId});
         if(user) 
-            return SubCategories.find({});
+            return SubCategories.find();
     }
 })
 
@@ -65,12 +65,7 @@ Meteor.publish("tasksOfaJob", function (id) {
 });
 
 Meteor.publish('notifications', function() {
-    if(this.userId) {
-        var user = Meteor.users.findOne({_id: this.userId});
-        if(user) {
-            return Notifications.find({});
-        }
-    }
+    return Notifications.find();
 });
 
 Meteor.publish('postedBuyer', function(jobId) {
@@ -95,40 +90,6 @@ Meteor.publish('developerCount', function() {
 Meteor.publish('jobCount', function() {
     Counts.publish(this, 'jobs', Jobs.find({status: 'active', applicationStatus: 'open', invited: false}));
 })
-
-// Meteor.publish("homeJobs", function() {
-//     check(arguments, [Match.Any]);
-//     return [
-//         Jobs.find({
-//             featuredThrough: {
-//                 $exists:false
-//             },
-//             createdAt: {
-//                 $gte: daysUntilExpiration()
-//             },
-//             status: "active"
-//         }, {
-//             sort: {
-//                 createdAt: -1
-//             },
-//             limit: 10,
-//             fields: {
-//                 title: true,
-//                 createdAt: true,
-//                 updatedAt: true,
-//                 jobtype: true,
-//                 status: true,
-//                 featuredThrough: true,
-//                 servicelocation: true,
-//                 ratebasis: true,
-//                 htmlDescription: true,
-//                 freelancer_nets: true,
-//                 servicelocation: true,
-//                 location: true
-//             }
-//         })
-//     ];
-// });
 
 Meteor.publishComposite('providers', {
     find: function() {

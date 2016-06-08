@@ -27,6 +27,7 @@ Template.notifications.helpers({
 		var notificationDetails = [];
 		notifications.forEach(function (notification) {
 			buyerName = Buyers.findOne({userId: notification.buyerId}).name;
+			console.log(notification);
 			jobDetails = Jobs.findOne({_id: notification.jobId});
 			var notif = {
 				notificationType: notification.notificationType,
@@ -43,10 +44,10 @@ Template.notifications.helpers({
 		return notificationDetails;
 	},
 	'adminNotifications': function() {
-		var notifications = Notifications.find({}, {sort: {timeStamp: -1}});
+		var notifications = Notifications.find({}, {sort: {timeStamp: -1}}).fetch();
 		var notificationDetails = [];
 		notifications.forEach(function(notification) {
-			var notif = {}
+			var notif = {};
 			if(notification.notificationType == 'userSignUp') {
 				notif = {
 					notificationType: notification.notificationType,
@@ -66,6 +67,8 @@ Template.notifications.helpers({
 					bname: buyerName
 				}
 				notificationDetails.push(notif);
+			} else if(notification.notificationType == 'welcomeNotification') {
+				return;
 			} else {
 				var buyerName = Buyers.findOne({userId: notification.buyerId}).name;
 				var providerName = Profiles.findOne({userId: notification.providerId}).name;
@@ -82,7 +85,6 @@ Template.notifications.helpers({
 				notificationDetails.push(notif);
 			}
 		});
-		console.log(notificationDetails);
 		return notificationDetails;
 	},
 	welcomeNotification: function() {

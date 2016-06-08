@@ -39,8 +39,12 @@ Router.map(function() {
                 })
             };
         },
-        subscriptions: function() {
-            return [Meteor.subscribe('jobs'), Meteor.subscribe('providers'), subs.subscribe('invitedJobs'), subs.subscribe('providerRoutedJobs'), subs.subscribe('my_jobs'), Meteor.subscribe('notifications')];
+        waitOn: function() {
+            Meteor.subscribe('jobs');
+            Meteor.subscribe('providers');
+            Meteor.subscribe('invitedJobs');
+            Meteor.subscribe('my_jobs');
+            return Meteor.subscribe('notifications');
         }
     });
 
@@ -49,6 +53,11 @@ Router.map(function() {
         title: "UTL - All Jobs",
         waitOn: function() {
             return Meteor.subscribe('jobs');
+        },
+        data: function() {
+            return {
+                jobs: Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'open'}]}).fetch()
+            }
         }
     });
 
@@ -132,7 +141,7 @@ Router.map(function() {
         path: '/routedJobs',
         title: 'UTL - Routed Jobs',
         waitOn: function() {
-            return Meteor.subscribe('providerRoutedJobs');
+            return subs.subscribe('providerRoutedJobs');
         }
     });
 
@@ -148,7 +157,7 @@ Router.map(function() {
         path: '/assignedJobs',
         title: 'UTL - Assigned Jobs',
         waitOn: function() {
-            return Meteor.subscribe('providerAssignedJobs');
+            return subs.subscribe('providerAssignedJobs');
         }
     });
 
@@ -165,7 +174,7 @@ Router.map(function() {
         path: '/paymentPendingJobs',
         title: 'UTL - Payment Pending Jobs',
         waitOn: function() {
-            return Meteor.subscribe('providerPaymentPending');
+            return subs.subscribe('providerPaymentPending');
         }
     })
 
@@ -173,7 +182,7 @@ Router.map(function() {
         path: '/completedJobs',
         title: 'UTL - Completed Jobs',
         waitOn: function() {
-            return Meteor.subscribe('providerCompletedJobs');
+            return subs.subscribe('providerCompletedJobs');
         }
     });
 

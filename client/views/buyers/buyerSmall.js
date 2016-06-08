@@ -40,5 +40,8 @@ Template.buyerSmall.helpers({
 		if(imgUrl) {
 			return imgUrl;
 		}
+	},
+	buyer: function() {
+		return Buyers.findOne({_id: this._id});
 	}
 });

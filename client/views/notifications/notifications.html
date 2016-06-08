@@ -226,13 +226,25 @@
 			{{/if}}
 		{{/if}}
 		{{#if currentUser}}
-			{{#if welcomeNotification}}
-				<a href class="markRead">
-					<div class="notification-item">
-						<h4 class="item-title">Welcome to UTL.</h4>
-						<small>{{this.notificationTime}}</small>
-					</div>
-				</a>
+			{{#if isInRole 'provider, corporate-provider'}}
+				{{#if welcomeNotification}}
+					<a href="{{#unless currentUser.isDeveloper}}{{pathFor 'profileNew'}}{{/unless}}" class="markRead">
+						<div class="notification-item">
+							<h4 class="item-title">Welcome to UTL.{{#unless currentUser.isDeveloper}} Click here to create your profile.{{/unless}}</h4>
+							<small>{{this.notificationTime}}</small>
+						</div>
+					</a>
+				{{/if}}
+			{{/if}}
+			{{#if isInRole 'buyer, corporate-manager'}}
+				{{#if welcomeNotification}}
+					<a href="{{#unless currentUser.isBuyer}}{{pathFor 'buyerNew'}}{{/unless}}" class="markRead">
+						<div class="notification-item">
+							<h4 class="item-title">Welcome to UTL. {{#unless currentUser.isBuyer}} Click here to create your profile.{{/unless}}</h4>
+							<small>{{this.notificationTime}}</small>
+						</div>
+					</a>
+				{{/if}}
 			{{/if}}
 		{{/if}}
 	</div>

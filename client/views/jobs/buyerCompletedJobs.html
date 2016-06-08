@@ -1,11 +1,14 @@
 <template name="buyerCompletedJobs">
 	<div class="row">
 		<div class="col-sm-12">
-			<h5><a href="{{pathFor 'myJobs'}}">Posted Jobs</a> &#124; <a href="{{pathFor 'buyerRoutedJobs'}}">Routed Jobs</a> &#124; <a href="{{pathFor 'buyerAssignedJobs'}}">Assigned Jobs</a> &#124; Completed Jobs</h5>
+			<p>My Jobs: <a href="{{pathFor 'myJobs'}}">Posted Jobs  ({{postedJobCount}})</a> &#124; <a href="{{pathFor 'buyerRoutedJobs'}}">Routed Jobs  ({{buyerRoutedCount}})</a> &#124; <a href="{{pathFor 'buyerAssignedJobs'}}">Assigned Jobs  ({{buyerAssignedCount}})</a> &#124; Completed Jobs  ({{buyerCompletedCount}})</p>
 		</div>
 		<div class="col-sm-12">
 			{{#each buyerCompletedJobs}}
 				{{>jobSmall}}
+			{{else}}
+				<hr>
+				<p>There are no completed jobs at this moment.</p>
 			{{/each}}
 		</div>
 	</div>

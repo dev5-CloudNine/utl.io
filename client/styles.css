@@ -562,11 +562,11 @@ footer {
 }
 
 .notifications {
-  min-width:420px; 
+  width:420px !important; 
 }
 
 .notifications-wrapper {
-  height:250px;
+  height: auto;
   overflow-y: auto;
 }
 
@@ -616,4 +616,12 @@ footer {
 
 .note-editor .note-toolbar .note-insert {
     display: none;
+}
+
+.dropdown-menu {
+  min-width: 240px !important;
+}
+
+.avatar-large {
+  height: auto !important;
 }

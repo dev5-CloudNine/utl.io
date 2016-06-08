@@ -42,7 +42,7 @@
                 <label class="control-label">{{#if customImagePreviewUrl}}Profile{{else}}Automatic{{/if}} Avatar</label>
                 {{#if customImagePreviewUrl}}
                 <div class="avatar avatar-large">
-                    <img class="img-responsive" src="{{customImagePreviewUrl}}" onerror="this.src='/images/avatar.png'" style="height:200px;width:200px" />
+                    <img class="img-responsive" src="{{customImagePreviewUrl}}" onerror="this.src='/images/avatar.png'"/>
                 </div>
                 {{else}} {{> avatar user=currentUser size="large"}} {{/if}}
             </div>
