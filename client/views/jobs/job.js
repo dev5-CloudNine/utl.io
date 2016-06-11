@@ -751,6 +751,8 @@ Template.job.helpers({
         return 'label-frozen';
       else if(this.applicationStatus == 'open')
         return 'label-open';
+      else if(this.applicationStatus == 'pending_payment')
+        return 'label-pending';
       else if(this.applicationStatus == 'done')
         return 'label-done';
     },
