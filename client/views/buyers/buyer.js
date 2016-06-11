@@ -9,9 +9,8 @@ Template.buyer.helpers({
       }
     };
   },
-  splitInterestedIn: function() {
-    if (interestedIn)
-      return interestedIn.split(",");
+  splitIndustryTypes: function() {
+    console.log(this.industryTypes);
   },
   buyer: function() {
     return Buyers.findOne({userId: this.userId});

@@ -98,7 +98,12 @@
 									<hr>
 									<h4>Job Categories</h4>
 									{{#each industryTypes}}
-										<a href="/subcategory/{{this}}">{{this}}</a>
+										{{#if isInRole 'provider, corporate-provider'}}
+											<a href="/subcategory/{{this}}">{{this}}</a>
+										{{/if}}
+										{{#if isInRole 'buyer, corporate-manager'}}
+											<a href="/pro/{{this}}">{{this}}</a>
+										{{/if}}
 									{{/each}}
 								{{/if}}
 								{{#if preferredWorkLocation}}

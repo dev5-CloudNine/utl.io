@@ -1,0 +1,9 @@
+<template name="subcategoryProfiles">
+	<div class="row">
+		{{#if isInRole 'buyer, corporate-provider'}}
+			{{#each subcategoryProfiles}}
+				{{>profileSmall}}
+			{{/each}}
+		{{/if}}
+	</div>
+</template>

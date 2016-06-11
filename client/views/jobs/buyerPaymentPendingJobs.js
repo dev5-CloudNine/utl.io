@@ -1,6 +1,12 @@
-Template.buyerAssignedJobs.helpers({
-	buyerAssignedJobs: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
+Template.buyerPaymentPendingJobs.helpers({
+	buyerPaymentPendingJobs: function() {
+		return Jobs.find({
+			$and: [{
+				userId: Meteor.userId()
+			}, {
+				"applicationStatus" : "pending_payment"
+			}]
+		})
 	},
 	buyerPaymentPendingCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {'applicationStatus': 'pending_payment'}]}).count();

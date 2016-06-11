@@ -13,5 +13,8 @@ Template.buyerRoutedJobs.helpers({
 	},
 	buyerCompletedCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}, {assignmentStatus: 'paid'}]}).count();
+	},
+	buyerPaymentPendingCount: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {'applicationStatus': 'pending_payment'}]}).count();
 	}
 })

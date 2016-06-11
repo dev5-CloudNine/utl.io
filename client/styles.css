@@ -550,6 +550,9 @@ footer {
 .label-done {
   background-color: #EA2A1B;
 }
+.label-pending {
+    background-color: #a479e2;
+}
 .dropdown {
   display:inline-block;
 }

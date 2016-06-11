@@ -1,4 +1,7 @@
 Template.myJobs.helpers({
+	buyerPaymentPendingCount: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {'applicationStatus': 'pending_payment'}]}).count();
+	},
 	postedJobCount: function() {
 		return Jobs.find({userId: Meteor.userId()}).count();
 	},

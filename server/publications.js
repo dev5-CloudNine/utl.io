@@ -482,3 +482,8 @@ Meteor.publish('buyers', function(limit) {
         }
     });
 });
+
+Meteor.publish('subcategoryProfiles', function(subcategory) {
+    check(arguments, [Match.Any]);
+    return Profiles.find({industryTypes: {$in: [subcategory]}});
+})

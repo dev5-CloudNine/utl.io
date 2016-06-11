@@ -255,7 +255,7 @@ Meteor.methods({
             side: 'buyer',
             adminRead: false
         };
-        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'pending_payment'}});
+        Jobs.update({_id: jobId}, {$set: {applicationStatus: 'pending_payment', assignmentStatus: 'pending_payment'}});
         Profiles.update({userId: Meteor.userId()}, {$pull: {assignedJobs: jobId}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {paymentPendingJobs: jobId}});
         Notifications.insert(notificationObj);
