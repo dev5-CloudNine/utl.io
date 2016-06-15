@@ -124,6 +124,7 @@ Router.map(function() {
         path: '/appliedJobs',
         title: 'UTL - Applied Jobs',
         waitOn: function() {
+            Meteor.subscribe('reviews');
             return Meteor.subscribe('allJobs')
         }
     })

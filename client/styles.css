@@ -569,7 +569,7 @@ footer {
 }
 
 .notifications-wrapper {
-  height: auto;
+  height: 400px !important;
   overflow-y: auto;
 }
 

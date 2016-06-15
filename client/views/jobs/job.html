@@ -224,7 +224,41 @@
                                                         <br>
                                                         {{#if isInRole 'provider, corporate-provider'}}
                                                             {{#if applied}}
-                                                                <p>You've applied for this job. You'll be notified when the buyer accepts your application. <br>You may cancel your application by clicking the button below.</p>
+                                                                {{#with applicationDetails}}
+                                                                    {{#if $eq this.app_type 'application'}}
+                                                                        <p>You've applied for this job. You'll be notified when the buyer accepts your application. <br>You may cancel your application by clicking the button below.</p>
+                                                                    {{else}}
+                                                                        {{#if $eq this.app_type 'counteroffer'}}
+                                                                            <h4>Budget</h4>
+                                                                            Counter Type: {{this.counterType}}<br>
+                                                                            {{#if this.hourly_rate}}
+                                                                                {{this.hourly_rate}} USD for {{this.max_hours}} hours.
+                                                                                <br>
+                                                                                Net: {{this.freelancer_nets}}
+                                                                            {{else}}
+                                                                                {{#if this.device_rate}}
+                                                                                    {{this.device_rate}} USD for {{this.max_devices}} devices.
+                                                                                    <br>
+                                                                                    Net: {{this.freelancer_nets}}
+                                                                                {{else}}
+                                                                                    {{#if this.first_hours}}
+                                                                                        {{this.first_hours}} for the first {{this.first_max_hours}} and then {{this.next_hours}} for the next {{this.next_max_hours}} hours.
+                                                                                        <br>
+                                                                                        Net: {{this.freelancer_nets}}
+                                                                                    {{else}}
+                                                                                        {{#if this.fixed_amount}}
+                                                                                            Fixed amount: {{this.fixed_amount}} USD.
+                                                                                            <br>
+                                                                                            Net: {{this.freelancer_nets}}
+                                                                                        {{/if}}
+                                                                                    {{/if}}
+                                                                                {{/if}}
+                                                                            {{/if}}
+                                                                            <hr>
+                                                                            <p>You've applied this job. You'll be notified when the buyer accepts your application. <br>You may cancel your application by clicking the button below.</p>
+                                                                        {{/if}}
+                                                                    {{/if}}
+                                                                {{/with}}
                                                                 <button class="btn btn-primary applyActive">Cancel Application</button>
                                                             {{else}}
                                                                 <div class="radio">
@@ -456,8 +490,7 @@
                                                         {{else}} 
                                                             {{#if jobPostedBuyer}}
                                                                 <div class="list-group">
-                                                                    {{#each appliedProviders}}
-                                                                    
+                                                                    {{#each appliedProviders}}    
                                                                         <span>
                                                                             {{#if $eq this.app_type 'application'}}
                                                                                 <h4>{{this.name}}</h4>

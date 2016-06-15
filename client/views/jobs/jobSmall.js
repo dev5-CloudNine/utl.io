@@ -50,7 +50,6 @@ Template.jobSmall.helpers({
 		return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]})? true : false;
 	},
 	reviewedBuyer: function() {
-		console.log(this);
 		return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]})? true: false;
 	},
 	appStatusLabel: function() {
@@ -114,7 +113,6 @@ Template.jobSmall.events({
 		})
 	},
 	'click button.declineAssignment': function(event, template) {
-		console.log(this);
 		var jobId = this._id;
 		var userId = Meteor.userId();
 		Meteor.call('declineAssignment', jobId, userId, function(error) {
@@ -146,7 +144,6 @@ Template.jobSmall.events({
 		event.preventDefault();
 		var jobId = this._id;
 		var providerId = this.assignedProvider;
-		console.log(providerId);
 		Meteor.call('approveAssignment', jobId, providerId, function(error) {
 			if(error) {
 				toastr.error('Failed to approve assignment. Please try again.');

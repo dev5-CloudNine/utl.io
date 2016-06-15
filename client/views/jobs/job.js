@@ -453,7 +453,6 @@ Template.job.events({
     event.preventDefault();
     var jobId = this._id;
     var providerId = this.assignedProvider;
-    console.log(providerId);
     Meteor.call('approveAssignment', jobId, providerId, function(error) {
       if(error) {
         toastr.error('Failed to approve assignment. Please try again.');
@@ -605,6 +604,13 @@ Template.job.helpers({
     },
     applied: function() {
         return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { appliedJobs: { $in: [this._id] } }] }) ? true : false;
+    },
+    applicationDetails: function() {
+      for(var i = 0; i < this.applications.length; i++) {
+        if(this.applications[i].userId == Meteor.userId()) {
+          return this.applications[i];
+        }
+      }
     },
     states: function(taskID) {
         var staticStates = ['Open', 'On Hold', 'Working', 'Completed'];
