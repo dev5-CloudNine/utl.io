@@ -67,6 +67,24 @@
                             {{/if}}
                         {{/if}}
                     {{/if}}
+                    {{#if $eq applicationStatus 'done'}}
+                        <div class="col-sm-12">
+                            {{#if reviewedBuyer}}
+                                <hr>
+                                You've reviewed the buyer for this job.
+                            {{else}}
+                                <hr>
+                                <form id="reviewBuyer">
+                                    <div class="form-group">                                    
+                                        <label for="writeReview">Write a review</label>
+                                        <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
+                                        <label>Rate buyer</label>&nbsp;<span class="rateit"></span>
+                                    </div>
+                                    <button class="margin-top-5 btn btn-success" type="submit">Submit</button>
+                                </form>
+                            {{/if}}
+                        </div>
+                    {{/if}}
                 {{else}}
                     {{#if jobPostedBuyer}}
                         {{#if $eq assignmentStatus 'submitted'}}
@@ -82,15 +100,18 @@
                             {{/if}}
                         {{/if}}
                         {{#if $eq applicationStatus 'done'}}
+                            <hr>
                             <div class="col-sm-12">
-                                {{#if reviewed}}
+                                {{#if reviewedProvider}}
+                                    <hr>
                                     You've reviewed the provider for this job.
                                 {{else}}
-                                    <form id="review">
-                                        <div class="form-group">                                    
+                                    <hr>
+                                    <form id="reviewProvider">
+                                        <div class="form-group">                                 
                                             <label for="writeReview">Write a review</label>
                                             <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
-                                            <label>Rate provider's performance</label>&nbsp;<span class="rateit"></span>
+                                            <label>Rate provider</label>&nbsp;<span class="rateit"></span>
                                         </div>
                                         <button class="margin-top-5 btn btn-success" type="submit">Submit</button>
                                     </form>

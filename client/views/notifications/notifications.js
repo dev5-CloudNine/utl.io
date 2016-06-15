@@ -27,7 +27,6 @@ Template.notifications.helpers({
 		var notificationDetails = [];
 		notifications.forEach(function (notification) {
 			buyerName = Buyers.findOne({userId: notification.buyerId}).name;
-			console.log(notification);
 			jobDetails = Jobs.findOne({_id: notification.jobId});
 			var notif = {
 				notificationType: notification.notificationType,

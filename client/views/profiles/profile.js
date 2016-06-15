@@ -29,7 +29,7 @@ Template.profile.helpers({
     }
   },
   reviews: function() {
-    return Reviews.findOne({$and: [{providerId: this.assignedProvider}, {reviewedBy: this.userId}, {reviewedJobId: this._id}]});
+    return Reviews.findOne({$and: [{providerId: this.assignedProvider}, {reviewedBy: 'buyer'}, {reviewedJobId: this._id}]});
   },
   userRole: function() {
     return Users.findOne({_id: this.userId}).roles[0];

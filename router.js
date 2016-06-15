@@ -190,6 +190,7 @@ Router.map(function() {
         path: '/completedJobs',
         title: 'UTL - Completed Jobs',
         waitOn: function() {
+            Meteor.subscribe('reviews');
             return Meteor.subscribe('providerCompletedJobs');
         }
     });
@@ -478,6 +479,8 @@ Router.map(function() {
         },
         waitOn: function() {
             Meteor.subscribe('images');
+            Meteor.subscribe('reviews');
+            Meteor.subscribe('buyerPostedJobs', this.params._id);
             return subs.subscribe('buyer', this.params._id);
         },
         onBeforeAction: function() {
@@ -536,6 +539,7 @@ Router.map(function() {
         title: 'UTL - Buyer Jobs',
         waitOn: function() {
             Meteor.subscribe('buyer', this.params._id);
+            Meteor.subscribe('reviews');
             return Meteor.subscribe('buyerPostedJobs', this.params._id);
         }
     })

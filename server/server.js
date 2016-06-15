@@ -122,8 +122,6 @@ Meteor.methods({
             side: 'provider',
             adminRead: false
         }
-        console.log(jobId);
-        console.log(userId);
         var jobNets = Jobs.findOne({_id: jobId}).freelancer_nets;
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen', proposedBudget: jobNets}});
         Notifications.insert(notificationObj);
@@ -276,15 +274,28 @@ Meteor.methods({
         Profiles.update({userId: Jobs.findOne({_id: jobId}).assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
         Notifications.insert(notificationObj);
     },
-    writeReview: function(assignedProvider, userId, jobId, timeReviewed, ratedPoints, reviewMessage) {
+    reviewProvider: function(providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage) {
         var review = {
-            providerId: assignedProvider,
-            reviewedBy: userId,
+            providerId: providerId,
+            buyerId: buyerId,
+            reviewedBy: 'buyer',
             reviewedJobId: jobId,
             reviewedAt: timeReviewed,
             pointsRated: ratedPoints,
             reviewMessage: reviewMessage
         };
+        Reviews.insert(review);
+    },
+    reviewBuyer: function(providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage) {
+        var review = {
+            providerId: providerId,
+            buyerId: buyerId,
+            reviewedBy: 'provider',
+            reviewedJobId: jobId,
+            reviewedAt: timeReviewed,
+            pointsRated: ratedPoints,
+            reviewMessage: reviewMessage
+        }
         Reviews.insert(review);
     },
     markRead: function(notificationId, side) {

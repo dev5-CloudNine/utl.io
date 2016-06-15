@@ -46,8 +46,12 @@ Template.jobSmall.helpers({
 	    else
 	      return false;
 	},
-	reviewed: function() {
-		return Reviews.findOne({$and: [{reviewedJobId: this._id}, {reviewedBy: Meteor.userId()}, {providerId: this.assignedProvider}]})? true : false;
+	reviewedProvider: function() {
+		return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]})? true : false;
+	},
+	reviewedBuyer: function() {
+		console.log(this);
+		return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]})? true: false;
 	},
 	appStatusLabel: function() {
 		if(this.applicationStatus == 'assigned') 
@@ -185,10 +189,10 @@ Template.jobSmall.events({
 		var rating = $(event.target).rateit('value');
 		instance.ratingPoints.set(rating);
 	},
-	'submit #review': function(event, template) {
+	'submit #reviewProvider': function(event, template) {
 		event.preventDefault();
-		var assignedProvider = this.assignedProvider;
-		var userId = this.userId;
+		var providerId = this.assignedProvider;
+		var buyerId = this.userId;
 		var jobId = this._id;
 		var timeReviewed = new Date();
 		var ratedPoints = Template.instance().ratingPoints.get();
@@ -196,7 +200,26 @@ Template.jobSmall.events({
 		$('textarea[name="reviewMessage"]').each(function() {
 			reviewMessage += $(this).val();
 		})
-		Meteor.call('writeReview', assignedProvider, userId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
+		Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
+			if(error) {
+				toastr.error('Failed to submit review. Please try again.');
+			} else {
+				toastr.success('Submitted the review successfully.');
+			}
+		})
+	},
+	'submit #reviewBuyer': function(event, template) {
+		event.preventDefault();
+		var providerId = this.assignedProvider;
+		var buyerId = this.userId;
+		var jobId = this._id;
+		var timeReviewed = new Date();
+		var ratedPoints = Template.instance().ratingPoints.get();
+		var reviewMessage = "";
+		$('textarea[name="reviewMessage"]').each(function() {
+			reviewMessage += $(this).val();
+		})
+		Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
 			if(error) {
 				toastr.error('Failed to submit review. Please try again.');
 			} else {
