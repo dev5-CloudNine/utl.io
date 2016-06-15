@@ -192,15 +192,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel panel-default panel-white">
+                        <div class="panel panel-default panel-white {{#if currentUser.isDeveloper}}{{#if notOpen}} hidden {{/if}}{{/if}}">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <ul class="nav nav-pills">
-                                            {{#if $eq applicationStatus 'open'}}
                                             <li class="active"><a data-toggle="tab" href="#discussion">Post a Query</a></li>
-                                            {{/if}}
-                                            <li class="{{#if notOpen}} hidden {{/if}}">
+                                            <li>
                                                 <a data-toggle="tab" href="#apply">
                                                     {{#if currentUser.isDeveloper}}
                                                         Apply or Counter Offer
@@ -215,8 +213,7 @@
                                             </li>
                                         </ul>
                                         <div class="tab-content">
-
-                                                <div id="discussion" class="tab-pane fade in active {{#if $eq applicationStatus 'assigned'}}pub-disc{{/if}}">
+                                                <div id="discussion" class="tab-pane fade in active">
                                                     {{> commentsBox id=_id}}
                                                 </div>
                                                 <div id="apply" class="tab-pane fade">

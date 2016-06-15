@@ -569,7 +569,7 @@ footer {
 }
 
 .notifications-wrapper {
-  height: 400px !important;
+  height: 250px !important;
   overflow-y: auto;
 }
 
@@ -590,7 +590,6 @@ footer {
 .notification-heading, .notification-footer  {
   padding:2px 10px;
 }
-    
       
 .dropdown-menu.divider {
   margin:2px 0;          

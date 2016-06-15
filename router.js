@@ -543,6 +543,25 @@ Router.map(function() {
             Meteor.subscribe('reviews');
             return Meteor.subscribe('buyerPostedJobs', this.params._id);
         }
+    });
+
+    this.route('buyerNotifications', {
+        path: '/buyers/:_id/:slug/notifications',
+        title: 'UTL - Notifications',
+        waitOn: function() {
+            return Meteor.subscribe('buyerPostedJobs', this.params._id);
+        }
+    });
+
+    this.route('providerNotifications', {
+        path: '/profiles/:_id/:slug/notifications',
+        title: 'UTL - Notifications',
+        waitOn: function() {
+            Meteor.subscribe('providerAssignedJobs');
+            Meteor.subscribe('providerPaymentPending');
+            Meteor.subscribe('providerRoutedJobs');
+            return Meteor.subscribe('providerCompletedJobs');
+        }
     })
 
     this.route('corporates', {
@@ -648,7 +667,7 @@ Router.map(function() {
                 this.next();
             }
         }
-    })
+    });
 
     this.route('aboutUs', {
         path: '/about'

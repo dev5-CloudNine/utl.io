@@ -280,6 +280,18 @@
                 <h4 class="menu-title">Notifications</h4>
             </div>
             {{>notifications}}
+            <div class="notification-footer text-center">
+                {{#if currentUser.isDeveloper}}
+                    {{#with profile}}
+                        <a href="{{pathFor 'providerNotifications'}}">View All Notifications</a>
+                    {{/with}}
+                {{/if}}
+                {{#if currentUser.isBuyer}}
+                    {{#with buyer}}
+                        <a href="{{pathFor 'buyerNotifications'}}">View All Notifications</a>
+                    {{/with}}
+                {{/if}}
+            </div>
         </ul>
     </li>    
 </template>

@@ -1,0 +1,71 @@
+<template name="buyerNotifications">
+	<ul class="list-group">
+		{{#each buyerNotifications}}
+			{{#if $eq this.notificationType 'newJobApplication'}}
+				{{#with this}}
+					<li class="list-group-item">
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has applied for your job.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					</li>
+				{{/with}}
+			{{/if}}
+			{{#if $eq this.notificationType 'confirmAssignment'}}
+				{{#with this}}
+					<li class="list-group-item">
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has confirmed assignment.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					</li>
+				{{/with}}
+			{{/if}}
+			{{#if $eq this.notificationType 'declineAssignment'}}
+				{{#with this}}
+					<li class="list-group-item">
+						<a href="{{pathFor 'job'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has declined assignment.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					</li>
+				{{/with}}
+			{{/if}}
+			{{#if $eq this.notificationType 'submitAssignment'}}
+				{{#with this}}
+					<li class="list-group-item">
+						<a href="{{pathFor 'job'}}" class=" markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has submitted assignment for approval.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					</li>
+				{{/with}}
+			{{/if}}
+			{{#if $eq this.notificationType 'requestPayment'}}
+				{{#with this}}
+					<li class="list-group-item">
+						<a href="{{pathFor 'job'}}" class=" markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has requested for payment.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					</li>
+				{{/with}}
+			{{/if}}
+		{{/each}}
+	</ul>
+</template>

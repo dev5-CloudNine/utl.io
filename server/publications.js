@@ -65,7 +65,7 @@ Meteor.publish("tasksOfaJob", function (id) {
 });
 
 Meteor.publish('notifications', function() {
-    return Notifications.find();
+    return Notifications.find({});
 });
 
 Meteor.publish('postedBuyer', function(jobId) {
