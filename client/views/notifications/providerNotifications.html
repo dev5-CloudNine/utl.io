@@ -1,55 +1,66 @@
-<template name="buyerNotifications">
+<template name="providerNotifications">
 	<ul class="list-group">
-		{{#each buyerNotifications}}
-			{{#if $eq this.notificationType 'newJobApplication'}}
+		{{#each providerNotifications}}
+			{{#if $eq this.notificationType 'applicationAccepted'}}
 				{{#with this}}
 					<a href="{{pathFor 'job'}}" class="markRead">
 						<div class="notification-item">
-							<h4 class="item-title">{{this.pname}} has applied for your job.</h4>
+							<h4 class="item-title">{{this.bname}} has accepted your application.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 							<p class="item-info">{{jobName}}</p>
 						</div>
 					</a>
 				{{/with}}
 			{{/if}}
-			{{#if $eq this.notificationType 'confirmAssignment'}}
+			{{#if $eq this.notificationType 'jobInvitation'}}
 				{{#with this}}
 					<a href="{{pathFor 'job'}}" class="markRead">
 						<div class="notification-item">
-							<h4 class="item-title">{{this.pname}} has confirmed assignment.</h4>
+							<h4 class="item-title">{{this.bname}} has invited you to bid on job.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 							<p class="item-info">{{jobName}}</p>
 						</div>
 					</a>
 				{{/with}}
 			{{/if}}
-			{{#if $eq this.notificationType 'declineAssignment'}}
+			{{#if $eq this.notificationType 'routedJob'}}
 				{{#with this}}
 					<a href="{{pathFor 'job'}}" class="markRead">
 						<div class="notification-item">
-							<h4 class="item-title">{{this.pname}} has declined assignment.</h4>
+							<h4 class="item-title">{{this.bname}} has directly routed to you a job.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 							<p class="item-info">{{jobName}}</p>
 						</div>
 					</a>
 				{{/with}}
 			{{/if}}
-			{{#if $eq this.notificationType 'submitAssignment'}}
+			{{#if $eq this.notificationType 'approveAssignment'}}
 				{{#with this}}
-					<a href="{{pathFor 'job'}}" class=" markRead">
+					<a href="{{pathFor 'job'}}" class="markRead">
 						<div class="notification-item">
-							<h4 class="item-title">{{this.pname}} has submitted assignment for approval.</h4>
+							<h4 class="item-title">{{this.bname}} has approved your assignment.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 							<p class="item-info">{{jobName}}</p>
 						</div>
 					</a>
 				{{/with}}
 			{{/if}}
-			{{#if $eq this.notificationType 'requestPayment'}}
+			{{#if $eq this.notificationType 'rejectAssignment'}}
 				{{#with this}}
-					<a href="{{pathFor 'job'}}" class=" markRead">
+					<a href="{{pathFor 'job'}}" class="markRead">
 						<div class="notification-item">
-							<h4 class="item-title">{{this.pname}} has requested for payment.</h4>
+							<h4 class="item-title">{{this.bname}} has rejected your assignment.</h4>
+							<small class="pull-right">{{this.notificationTime}}</small>
+							<p class="item-info">{{jobName}}</p>
+						</div>
+					</a>
+				{{/with}}
+			{{/if}}
+			{{#if $eq this.notificationType 'approvePayment'}}
+				{{#with this}}
+					<a href="{{pathFor 'job'}}" class="markRead">
+						<div class="notification-item">
+							<h4 class="item-title">{{this.bname}} has approved your payment request.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 							<p class="item-info">{{jobName}}</p>
 						</div>

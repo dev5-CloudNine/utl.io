@@ -28,10 +28,10 @@ Template.header.helpers({
     return count;
   },
   routedJobsCount: function() {
-    var count = 0;
     var routedJobs = Profiles.findOne({userId: Meteor.userId()}).routedJobs;
+    var count = 0;
     if(routedJobs) {
-      for(var i = 0; i < routedJobs.count; i++)
+      for(var i = 0; i < routedJobs.length; i++)
         count++;
       return count;
     }

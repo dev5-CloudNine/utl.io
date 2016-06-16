@@ -42,8 +42,6 @@ Router.map(function() {
         waitOn: function() {
             Meteor.subscribe('jobs');
             Meteor.subscribe('providers');
-            Meteor.subscribe('invitedJobs');
-            Meteor.subscribe('my_jobs');
             return Meteor.subscribe('notifications');
         }
     });

@@ -23,6 +23,7 @@ Template.job.events({
   		else {
   			$(event.currentTarget).removeClass('applyInactive');
         $(event.currentTarget).addClass('applyActive');
+        toastr.success('An Email has been sent to the buyer.');
   		}
   	})
   },
