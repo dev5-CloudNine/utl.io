@@ -57,6 +57,26 @@
 						</a>
 					{{/with}}
 				{{/if}}
+				{{#if $eq this.notificationType 'addFavBuyer'}}
+					{{#with this}}
+						<a href="{{pathFor 'profile'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has added you to his/her favorites.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
+				{{#if $eq this.notificationType 'remFavBuyer'}}
+					{{#with this}}
+						<a href="{{pathFor 'profile'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.pname}} has removed you from his/her favorites.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
 			{{/each}}
 		{{/if}}
 		{{#if currentUser.isDeveloper}}
@@ -123,6 +143,26 @@
 								<h4 class="item-title">{{this.bname}} has approved your payment request.</h4>
 								<small class="pull-right">{{this.notificationTime}}</small>
 								<p class="item-info">{{jobName}}</p>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
+				{{#if $eq this.notificationType 'addFavProvider'}}
+					{{#with this}}
+						<a href="{{pathFor 'buyer'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.bname}} has added you to his/her favorites.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
+							</div>
+						</a>
+					{{/with}}
+				{{/if}}
+				{{#if $eq this.notificationType 'remFavProvider'}}
+					{{#with this}}
+						<a href="{{pathFor 'buyer'}}" class="markRead">
+							<div class="notification-item">
+								<h4 class="item-title">{{this.bname}} has removed you from his/her favorites.</h4>
+								<small class="pull-right">{{this.notificationTime}}</small>
 							</div>
 						</a>
 					{{/with}}

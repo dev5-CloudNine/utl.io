@@ -41,7 +41,6 @@ Router.map(function() {
         },
         waitOn: function() {
             Meteor.subscribe('jobs');
-            Meteor.subscribe('providers');
             return Meteor.subscribe('notifications');
         }
     });
@@ -547,6 +546,8 @@ Router.map(function() {
         path: '/buyers/:_id/:slug/notifications',
         title: 'UTL - Notifications',
         waitOn: function() {
+            Meteor.subscribe('userList');
+            Meteor.subscribe('notifications');
             return Meteor.subscribe('buyerPostedJobs', this.params._id);
         }
     });
@@ -555,6 +556,7 @@ Router.map(function() {
         path: '/profiles/:_id/:slug/notifications',
         title: 'UTL - Notifications',
         waitOn: function() {
+            Meteor.subscribe('userList');
             Meteor.subscribe('providerAssignedJobs');
             Meteor.subscribe('providerPaymentPending');
             Meteor.subscribe('providerRoutedJobs');

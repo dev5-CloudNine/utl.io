@@ -78,18 +78,92 @@ Meteor.methods({
         Jobs.insert(doc);
     },
 
-    addToFav: function(id,type) {
-        if(type=="job") {
-            Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteJobs: id}});
-        } else {
-            Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteUsers: id}});
+    addToFav: function(id, role) {
+        if(role == 'buyer' || role == 'corporate-manager'){
+            var notificationObj = {
+                buyerId: Meteor.userId(),
+                providerId: id,
+                notificationType: 'addFavProvider',
+                timeStamp: new Date(),
+                side: 'provider',
+                read: false,
+                adminRead: false
+            }
+        } else if(role == 'provider' || role == 'corporate-provider') {
+            var notificationObj = {
+                providerId: Meteor.userId(),
+                buyerId: id,
+                notificationType: 'addFavBuyer',
+                timeStamp: new Date(),
+                side: 'buyer',
+                read: false,
+                adminRead: false
+            }
+        }
+        Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteUsers: id}});
+        Notifications.insert(notificationObj);
+        if(role == 'buyer' || role =='corporate-manager') {
+            var providerName = Profiles.findOne({userId: id}).name;
+            var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
+            Email.send({
+                to: getUserEmail(Meteor.users.findOne({_id: id})),
+                from: FROM_EMAIL,
+                subject: 'A user has added you to his/her favorites.',
+                text: 'Hello, ' + providerName + ', ' + buyerDetails.name + ' has added you to his/her favorites. Click the following link to see his/her profile. ' + Meteor.absoluteUrl('buyers/' + buyerDetails._id + '/' + buyerDetails.slug())
+            })
+        } else if(role == 'provider' || role == 'corporate-provider') {
+            var buyerName = Buyers.findOne({userId: id}).name;
+            var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+            Email.send({
+                to: getUserEmail(Meteor.users.findOne({_id: id})),
+                from: FROM_EMAIL,
+                subject: 'A user has added you to his/her favorites.',
+                text: 'Hello ' + buyerName + ', ' + providerDetails.name + ' has added you to his/her favorites. Click the following link to see his/her profile. ' + Meteor.absoluteUrl('profiles/' + providerDetails._id + '/' + providerDetails.slug())
+            })
         }
     },
-    removeFromFav: function(id,type) {
-        if(type=="job") {
-            Meteor.users.update(Meteor.userId(), {$pull: {favoriteJobs: id}});
-        } else {
-            Meteor.users.update(Meteor.userId(), {$pull: {favoriteUsers: id}});
+    removeFromFav: function(id, role) {
+        if(role == 'buyer' || role == 'corporate-manager') {
+            var notificationObj = {
+                buyerId: Meteor.userId(),
+                providerId: id,
+                notificationType: 'remFavProvider',
+                timeStamp: new Date(),
+                side: 'provider',
+                read: false,
+                adminRead: false
+            }
+        }else if(role == 'provider' || role == 'corporate-provider') {
+            var notificationObj = {
+                providerId: Meteor.userId(),
+                buyerId: id,
+                notificationType: 'remFavBuyer',
+                timeStamp: new Date(),
+                side: 'buyer',
+                read: false,
+                adminRead: false
+            }
+        }
+        Meteor.users.update(Meteor.userId(), {$pull: {favoriteUsers: id}});
+        Notifications.insert(notificationObj);
+        if(role == 'buyer' || role =='corporate-manager') {
+            var providerName = Profiles.findOne({userId: id}).name;
+            var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
+            Email.send({
+                to: getUserEmail(Meteor.users.findOne({_id: id})),
+                from: FROM_EMAIL,
+                subject: 'A user has removed you from his/her favorites.',
+                text: 'Hello, ' + providerName + ', ' + buyerDetails.name + ' has removed you from his/her favorites. Click the following link to see his/her profile. ' + Meteor.absoluteUrl('buyers/' + buyerDetails._id + '/' + buyerDetails.slug())
+            })
+        } else if(role == 'provider' || role == 'corporate-provider') {
+            var buyerName = Buyers.findOne({userId: id}).name;
+            var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+            Email.send({
+                to: getUserEmail(Meteor.users.findOne({_id: id})),
+                from: FROM_EMAIL,
+                subject: 'A user has removed you from his/her favorites.',
+                text: 'Hello ' + buyerName + ', ' + providerDetails.name + ' has removed you from his/her favorites. Click the following link to see his/her profile. ' + Meteor.absoluteUrl('profiles/' + providerDetails._id + '/' + providerDetails.slug())
+            })
         }
     },
     applyForThisJob: function(jobId, applicationDetails) {
@@ -270,7 +344,7 @@ Meteor.methods({
     },
     rejectAssignment: function(jobId) {
         var providerName = Profiles.findOne({userId: Jobs.findOne({_id: jobId}).assignedProvider}).name;
-        var buyerName = Buyers.findOne({usreId: Meteor.userId()}).name;
+        var buyerName = Buyers.findOne({userId: Meteor.userId()}).name;
         var jobName = Jobs.findOne({_id: jobId}).title;
         var jobSlug = Jobs.findOne({_id: jobId}).slug();
         var notificationObj = {
@@ -286,7 +360,7 @@ Meteor.methods({
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'rejected'}});
         Notifications.insert(notificationObj);
         Email.send({
-            to: getUserEmail(Meteor.usrs.findOne({_id: Jobs.findOne({_id: jobId}).assignedProvider})),
+            to: getUserEmail(Meteor.users.findOne({_id: Jobs.findOne({_id: jobId}).assignedProvider})),
             from: FROM_EMAIL,
             subject: 'Buyer has rejected your assignment.',
             text: 'Hello ' + providerName + ', ' + buyerName + ' has rejected your assignment for the job ' + jobName + '. Click the following link to submit the assignment. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
