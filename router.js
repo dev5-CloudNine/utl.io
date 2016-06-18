@@ -429,11 +429,11 @@ Router.map(function() {
         path: '/dashboard/:tab',
         title: "UTL - Dashboard",
         waitOn: function() {
-            Meteor.subscribe("userList");
+            Meteor.subscribe("contacts",Meteor.userId());
             Meteor.subscribe('allJobs');
             Meteor.subscribe('reviews');
             subs.subscribe('notifications');
-            return Meteor.subscribe("messages");
+            return Meteor.subscribe("messages",Meteor.userId());
         },
         data: function() {
             if(this.params.tab.substr(0, 5)=='mails') {
