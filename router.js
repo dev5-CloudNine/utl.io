@@ -231,7 +231,7 @@ Router.map(function() {
                 this.redirect("job", {
                     _id: this.params._id,
                     slug: expectedSlug
-                });
+                },{replaceState: true});
             } else {
                 this.next();
             }
@@ -380,7 +380,7 @@ Router.map(function() {
                 this.redirect("profile", {
                     _id: this.params._id,
                     slug: expectedSlug
-                });
+                },{replaceState: true});
             } else {
                 this.next();
             }
@@ -487,7 +487,7 @@ Router.map(function() {
                 this.redirect("buyer", {
                     _id: this.params._id,
                     slug: expectedSlug
-                });
+                },{replaceState: true});
             } else {
                 this.next();
             }
@@ -589,7 +589,7 @@ Router.map(function() {
                 this.redirect("corporate", {
                     _id: this.params._id,
                     slug: expectedSlug
-                });
+                },{replaceState: true});
             } else {
                 this.next();
             }
