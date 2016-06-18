@@ -78,12 +78,12 @@ Meteor.publish("tempInvitation", function () {
 });
 
 Meteor.publish("userList", function () {
-    return Meteor.users.find({}, {fields: {emails: 1, profile: 1, readableID: 1, roles: 1, imgURL: 1,companyName:1}});
+    return Meteor.users.find({}, {fields: {emails: 1, profile: 1, readableID: 1, roles: 1, imgURL: 1,companyName:1, contacts:1}});
 });
 
 Meteor.publish("contacts", function (userID) {
-    var ids = Meteor.users.findOne({_id:userID}).contacts;
-    return Meteor.users.find({$in:{_id:ids}});
+    var ids = Meteor.users.findOne({_id:userID}) && Meteor.users.findOne({_id:userID}).contacts;
+    return Meteor.users.find({_id:{$in:ids||[]}},{fields: {emails: 1, roles: 1, companyName:1, contacts:1}});
 });
 
 Meteor.publish('developerCount', function() {

@@ -1,3 +1,6 @@
+
+	var selectionChange = new Deps.Dependency;
+
 	Template.compose.onRendered(function() {
 		$('#summernote').summernote();
 		$('.note-editor .note-toolbar .note-insert').remove();
@@ -48,33 +51,52 @@
 	            }
 	        })
 
+	    },
+	    'change #project' : function(event,template){
+	    	selectionChange.changed();
+	    	SelectedProject = $(event.currentTarget).val();
 	    }
 	});
 
+	var SelectedProject;
+
 	Template.compose.helpers({
 	    userList: function() {
-
+	    	selectionChange.depend();
 	    	var emailIDs = [];
-	    	if(Meteor.user().roles.indexOf("corporate-accountant")>-1 || Meteor.user().roles.indexOf("corporate-admin")>-1 
-	    		|| Meteor.user().roles.indexOf("corporate-manager")>-1 || Meteor.user().roles.indexOf("corporate-provider")>-1) {
-		    	var userCollection = Meteor.users.findOne({_id:Meteor.userId()});
-		    	var companyName = userCollection.companyName;
-		    	var contacts = userCollection.contacts;
-		    	console.log(companyName);
-		    	console.log(contacts);
-		    	Meteor.users.find({$and:[{_id:{$ne:Meteor.userId()}},{$or:[{_id:{$in:contacts||[]}},{companyName:companyName}]}]}).map(function(ele){
-		    		emailIDs.push({email:ele.emails[0].address});
-		    	});
-		    	return emailIDs;
+	    	if(!SelectedProject) {
+	    		return ['Please select a project'];
+	    	} else if(SelectedProject=='other') {
+	    		var companyName = Meteor.users.findOne({_id:Meteor.userId()}).companyName;
+	    		Meteor.users.find({$and:[{_id:{$ne:Meteor.userId()}},{companyName:companyName}]}).map(function(ele){
+	    			emailIDs.push({id:ele._id,email:ele.emails[0].address});
+	    		});
 	    	}
-
-	    	var ids = Meteor.users.findOne({_id:Meteor.userId()}).contacts;
-	    	for(var i=0;i<ids.length;i++) {
-
-	    		emailIDs.push({email:Meteor.users.findOne({_id:ids[i]}).emails[0].address});
-	    	}
+    		Meteor.users.find({$and:[{_id:{$ne:Meteor.userId()}},{contacts:{$regex: SelectedProject}}]}).map(function(ele){
+    			emailIDs.push({id:ele._id,email:ele.emails[0].address});
+    		});
 	    	return emailIDs;
+	    },
+	    projectList: function() {
+	    	var projects = [];
+	    	if(Meteor.user().roles.indexOf("corporate-accountant")>-1 || Meteor.user().roles.indexOf("corporate-admin")>-1 
+	    		|| Meteor.user().roles.indexOf("corporate-manager")>-1) {
+	    		projects.push({title:'Other',
+	    						id:'other'});
+	    	} else {
 
+		    	var userCollection = Meteor.users.findOne({_id:Meteor.userId()});
+		    	var contactsPair = userCollection.contacts;
+		    	var jobIDs = [];
+		    	for(var i=0;i<contactsPair.length;i++) {
+		    		jobIDs.push(contactsPair[i].split(':')[1]);
+		    	}
+		    	Jobs.find({_id:{$in:jobIDs||[]}}).map(function(ele){
+		    		projects.push({title:ele.title,
+		    						id:ele._id});
+		    	});
+	    	}
+	    	return projects;
 	    },
 	    type: function() {
 	    	var param = Router.current().params.tab;
@@ -159,12 +181,7 @@
 					}).appendTo(messageHeader);
 
 		    });
-		    //console.log(row[0].innerHTML);
 		    return row[0].innerHTML;
-
-
-
-
 	    }
 
 	    // },

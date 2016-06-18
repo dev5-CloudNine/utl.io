@@ -28,19 +28,40 @@
                 <div class="compose-body">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label for="to" class="col-sm-2 pull-left control-label">To</label>
+                            <label for="subject" class="col-sm-2 control-label">Project</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="to">
+
+                                <select class="form-control" id="project">
+                                    <option value="">Select project</option>
+
+                                    {{#each projectList}}
+                                    <option value="{{id}}">{{title}}</option>
+                                    {{/each}} 
+                                </select>                                
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="to" class="col-sm-2 pull-left control-label">Recipient</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="recipient">
                                     {{#if $eq type 'newrep'}}
                                     <option value="{{parentID.id}}"> {{parentID.username}}</option>
                                     {{else}}
                                     <option value="">Select recipient</option>
+                                    <!-- {{#each userList}} -->
+                                    <!-- <option value="{{_id}}">{{email}}</option> -->
+
+                                    <!-- {{/each}} -->
+
                                     {{#each userList}}
-                                    <option value="{{_id}}">{{email}}</option>
-                                    {{/each}} {{/if}}
+                                    <option value="{{id}}">{{email}}</option>
+                                    {{/each}} 
+                                    {{/if}}
                                 </select>
                             </div>
                         </div>
+                        <!--
                         <div class="form-group">
                             <label for="subject" class="col-sm-2 control-label">Subject</label>
                             <div class="col-sm-10">
@@ -55,6 +76,7 @@
                                 {{/if}}
                             </div>
                         </div>
+                        -->
                     </form>
                 </div>
                 <div class="compose-message">

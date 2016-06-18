@@ -259,8 +259,8 @@ Meteor.methods({
             side: 'buyer',
             adminRead: false
         }
-        Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {contacts: buyerId}});
-        Meteor.users.update({_id: buyerId}, {$addToSet: {contacts: Meteor.userId()}});
+        Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {contacts: buyerId+":"+jobId}});
+        Meteor.users.update({_id: buyerId}, {$addToSet: {contacts: Meteor.userId()+":"+jobId}});
         var proBudget = Jobs.findOne({_id: jobId}).proposedBudget;
         Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned', assignedProvider: Meteor.userId(), projectBudget: proBudget}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {assignedJobs: jobId}});
