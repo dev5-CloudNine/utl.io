@@ -490,7 +490,7 @@
                                                                     {{#each appliedProviders}}    
                                                                         <span>
                                                                             {{#if $eq this.app_type 'application'}}
-                                                                                <h4>{{this.name}}</h4>
+                                                                                <h4><a href="/profiles/{{this.userId}}">{{this.name}}</a></h4>
                                                                                 <span class="label label-success pull-right">{{this.app_type}}</span>
                                                                                 <small>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</small>&nbsp;|&nbsp;
                                                                                 <small>Applied {{this.appliedAt}}</small>

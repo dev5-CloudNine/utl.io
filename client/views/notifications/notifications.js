@@ -9,7 +9,7 @@ Template.notifications.helpers({
 				var notif = {
 					notificationType: notification.notificationType,
 					pname: providerDetails.name,
-					_id: providerDetails._id,
+					providerId: providerDetails._id,
 					slug: providerDetails.slug(),
 					notificationId: notification._id,
 					side: notification.side,
@@ -20,7 +20,7 @@ Template.notifications.helpers({
 				var notif = {
 					notificationType: notification.notificationType,
 					pname: providerDetails.name,
-					_id: providerDetails._id,
+					providerId: providerDetails._id,
 					slug: providerDetails.slug(),
 					notificationId: notification._id,
 					side: notification.side,
@@ -32,7 +32,7 @@ Template.notifications.helpers({
 					var notif = {
 						notificationType: notification.notificationType,
 						pname: providerDetails.name,
-						_id: notification.jobId,
+						jobId: notification.jobId,
 						slug: jobDetails.slug(),
 						notificationId: notification._id,
 						side: notification.side,
@@ -46,7 +46,7 @@ Template.notifications.helpers({
 		return notificationDetails;
 	},
 	jobName: function() {
-		return Jobs.findOne({_id: this._id}).title || "";
+		return Jobs.findOne({_id: this.jobId}).title || "";
 	},
 	'providerNotifications': function() {
 		var notifications = Notifications.find({$and: [{providerId: Meteor.userId()}, {side: 'provider'}]}, {sort: {timeStamp: -1}});
@@ -58,7 +58,7 @@ Template.notifications.helpers({
 				var notif = {
 					notificationType: notification.notificationType,
 					bname: buyerDetails.name,
-					_id: buyerDetails._id,
+					buyerId: buyerDetails._id,
 					slug: buyerDetails.slug(),
 					notificationId: notification._id,
 					side: notification.side,
@@ -70,7 +70,7 @@ Template.notifications.helpers({
 				var notif = {
 					notificationType: notification.notificationType,
 					bname: buyerDetails.name,
-					_id: buyerDetails._id,
+					buyerId: buyerDetails._id,
 					slug: buyerDetails.slug(),
 					notificationId: notification._id,
 					side: notification.side,
@@ -82,7 +82,7 @@ Template.notifications.helpers({
 					var notif = {
 						notificationType: notification.notificationType,
 						bname: buyerDetails.name,
-						_id: notification.jobId,
+						jobId: notification.jobId,
 						slug: jobDetails.slug(),
 						notificationId: notification._id,
 						side: notification.side,
@@ -129,7 +129,7 @@ Template.notifications.helpers({
 					notificationType: notification.notificationType,
 					notificationTime: moment(notification.timeStamp).fromNow(),
 					notificationId: notification._id,
-					_id: notification.jobId,
+					jobId: notification.jobId,
 					slug: jobDetails.slug(),
 					bname: buyerName,
 					pname: providerName

@@ -3,7 +3,7 @@
 		{{#each buyerNotifications}}
 			{{#if $eq this.notificationType 'newJobApplication'}}
 				{{#with this}}
-					<a href="{{pathFor 'job'}}" class="markRead">
+					<a href="/jobs/{{this.jobId}}" class="markRead">
 						<div class="notification-item">
 							<h4 class="item-title">{{this.pname}} has applied for your job.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
@@ -14,7 +14,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'confirmAssignment'}}
 				{{#with this}}
-					<a href="{{pathFor 'job'}}" class="markRead">
+					<a href="/jobs/{{this.jobId}}" class="markRead">
 						<div class="notification-item">
 							<h4 class="item-title">{{this.pname}} has confirmed assignment.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
@@ -25,7 +25,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'declineAssignment'}}
 				{{#with this}}
-					<a href="{{pathFor 'job'}}" class="markRead">
+					<a href="/jobs/{{this.jobId}}" class="markRead">
 						<div class="notification-item">
 							<h4 class="item-title">{{this.pname}} has declined assignment.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
@@ -36,7 +36,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'submitAssignment'}}
 				{{#with this}}
-					<a href="{{pathFor 'job'}}" class=" markRead">
+					<a href="/jobs/{{this.jobId}}" class=" markRead">
 						<div class="notification-item">
 							<h4 class="item-title">{{this.pname}} has submitted assignment for approval.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
@@ -47,7 +47,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'requestPayment'}}
 				{{#with this}}
-					<a href="{{pathFor 'job'}}" class=" markRead">
+					<a href="/jobs/{{this.jobId}}" class=" markRead">
 						<div class="notification-item">
 							<h4 class="item-title">{{this.pname}} has requested for payment.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
@@ -58,7 +58,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'addFavBuyer'}}
 				{{#with this}}
-					<a href="{{pathFor 'profile'}}" class="markRead">
+					<a href="/profiles/{{this.providerId}}" class="markRead">
 						<div class="notification-item">
 							<h4 class="item-title">{{this.pname}} has added you to his/her favorites.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
@@ -68,7 +68,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'remFavBuyer'}}
 				{{#with this}}
-					<a href="{{pathFor 'profile'}}" class="markRead">
+					<a href="/profiles/{{this.providerId}}" class="markRead">
 						<div class="notification-item">
 							<h4 class="item-title">{{this.pname}} has removed you from his/her favorites.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>

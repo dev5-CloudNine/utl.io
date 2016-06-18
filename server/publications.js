@@ -64,8 +64,28 @@ Meteor.publish("tasksOfaJob", function (id) {
     return Tasks.find({jobID:id});
 });
 
-Meteor.publish('notifications', function() {
-    return Notifications.find({});
+Meteor.publish('notifications', function(userId) {
+    var roles = Meteor.users.findOne({_id: userId}).roles;
+    if(roles.indexOf('buyer') > -1 || roles.indexOf('corporate-manager') > -1) {
+        return Notifications.find({$and: [{buyerId: this.userId}, {side: 'buyer'}]});
+    } else if(roles.indexOf('provider') > -1 || roles.indexOf('corporate-provider') > -1) {
+        return Notifications.find({$and: [{providerId: this.userId}, {side: 'provider'}]});
+    }
+});
+
+Meteor.publish('notificationsJobs', function(userId) {
+    var jobIDs = [];
+    var notifications;
+    var roles = Meteor.users.findOne({_id: userId}).roles
+    if (roles.indexOf('buyer') > -1 || roles.indexOf('corporate-manager') > -1) {
+       notifications = Notifications.find({ $and: [{ buyerId: this.userId}, { side: 'buyer' }] });
+    } else if (roles.indexOf('provider') > -1 || roles.indexOf('corporate-provider') > -1) {
+       notifications = Notifications.find({ $and: [{ providerId: this.userId}, { side: 'provider' }] });
+    }
+    notifications.map(function(ele){
+        jobIDs.push(ele.jobId);
+    });
+    return Jobs.find({_id:{$in:jobIDs}});
 });
 
 Meteor.publish('postedBuyer', function(jobId) {
@@ -486,4 +506,4 @@ Meteor.publish('buyers', function(limit) {
 Meteor.publish('subcategoryProfiles', function(subcategory) {
     check(arguments, [Match.Any]);
     return Profiles.find({industryTypes: {$in: [subcategory]}});
-})
+});

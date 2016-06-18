@@ -20,8 +20,13 @@ Router.map(function() {
         layoutTemplate: 'layoutNoContainer',
         data: function() {
             return {
-                jobs: Jobs.find({
-                    status: "active"
+                jobs: Jobs.find(
+                {
+                    $and: [
+                        {status: "active"},
+                        {applicationStatus: 'open'},
+                        {invited: false}
+                    ]
                 }, {
                     sort: {
                         createdAt: -1
@@ -40,8 +45,7 @@ Router.map(function() {
             };
         },
         waitOn: function() {
-            Meteor.subscribe('jobs');
-            return Meteor.subscribe('notifications');
+            return Meteor.subscribe('jobs');
         }
     });
 
@@ -53,7 +57,7 @@ Router.map(function() {
         },
         data: function() {
             return {
-                jobs: Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'open'}]}).fetch()
+                jobs: Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'open'}, {invited: false}]}).fetch()
             }
         }
     });
@@ -432,7 +436,6 @@ Router.map(function() {
             Meteor.subscribe("userList");
             Meteor.subscribe('allJobs');
             Meteor.subscribe('reviews');
-            subs.subscribe('notifications');
             return Meteor.subscribe("messages");
         },
         data: function() {
@@ -547,7 +550,6 @@ Router.map(function() {
         title: 'UTL - Notifications',
         waitOn: function() {
             Meteor.subscribe('userList');
-            Meteor.subscribe('notifications');
             return Meteor.subscribe('buyerPostedJobs', this.params._id);
         }
     });
