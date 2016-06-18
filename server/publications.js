@@ -20,8 +20,8 @@ Meteor.publish('corporates', function() {
     return Corporates.find({});
 })
 
-Meteor.publish("messages", function () {
-    return Messages.find();
+Meteor.publish("messages", function (id) {
+    return Messages.find({$or:[{recipient:id},{sender:id},{chain:id}]});
 });
 
 Meteor.publish('categories', function() {
@@ -98,7 +98,12 @@ Meteor.publish("tempInvitation", function () {
 });
 
 Meteor.publish("userList", function () {
-    return Meteor.users.find({}, {fields: {emails: 1, profile: 1, readableID: 1, roles: 1, imgURL: 1}});
+    return Meteor.users.find({}, {fields: {emails: 1, profile: 1, readableID: 1, roles: 1, imgURL: 1,companyName:1}});
+});
+
+Meteor.publish("contacts", function (userID) {
+    var ids = Meteor.users.findOne({_id:userID}).contacts;
+    return Meteor.users.find({$in:{_id:ids}});
 });
 
 Meteor.publish('developerCount', function() {

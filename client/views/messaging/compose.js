@@ -53,28 +53,27 @@
 
 	Template.compose.helpers({
 	    userList: function() {
-	    	/*
-				1. If Buyer/Corp-Manager(clients) 
-					-> get all the jobs posted by him 
-						-> if application is accepted state then get userdID from application
-				2. If Provider/Corp-Provider(expert)
-					-> get ongoing jobs
-						-> get owners of the ongoing jobs 
-					-> if Corp-Provider(expert)
-						getAllCollegueIDs(companyName);
-				3. If Corp-Admin[Corporates](corporates)
-					-> getAllCollegueIDs(companyName);
 
-				4. write method getEMailID(userID);
+	    	var emailIDs = [];
+	    	if(Meteor.user().roles.indexOf("corporate-accountant")>-1 || Meteor.user().roles.indexOf("corporate-admin")>-1 
+	    		|| Meteor.user().roles.indexOf("corporate-manager")>-1 || Meteor.user().roles.indexOf("corporate-provider")>-1) {
+		    	var userCollection = Meteor.users.findOne({_id:Meteor.userId()});
+		    	var companyName = userCollection.companyName;
+		    	var contacts = userCollection.contacts;
+		    	console.log(companyName);
+		    	console.log(contacts);
+		    	Meteor.users.find({$and:[{_id:{$ne:Meteor.userId()}},{$or:[{_id:{$in:contacts||[]}},{companyName:companyName}]}]}).map(function(ele){
+		    		emailIDs.push({email:ele.emails[0].address});
+		    	});
+		    	return emailIDs;
+	    	}
 
-				5. write method getAllCollegueIDs(companyName);
-	    	*/
-	        var list = [];
-	        Meteor.users.find({_id:{$ne:Meteor.userId()}}).map(function(ele) {
-	            ele.email = ele.emails[0].address;
-	            list.push(ele);
-	        });
-	        return list;
+	    	var ids = Meteor.users.findOne({_id:Meteor.userId()}).contacts;
+	    	for(var i=0;i<ids.length;i++) {
+
+	    		emailIDs.push({email:Meteor.users.findOne({_id:ids[i]}).emails[0].address});
+	    	}
+	    	return emailIDs;
 
 	    },
 	    type: function() {
