@@ -9,7 +9,7 @@ Template.providerNotifications.helpers({
 				var notif = {
 					notificationType: notification.notificationType,
 					bname: buyerDetails.name,
-					_id: buyerDetails._id,
+					buyerId: buyerDetails._id,
 					slug: buyerDetails.slug(),
 					notificationId: notification._id,
 					side: notification.side,
@@ -21,7 +21,7 @@ Template.providerNotifications.helpers({
 				var notif = {
 					notificationType: notification.notificationType,
 					bname: buyerDetails.name,
-					_id: buyerDetails._id,
+					buyerId: buyerDetails._id,
 					slug: buyerDetails.slug(),
 					notificationId: notification._id,
 					side: notification.side,
@@ -33,7 +33,7 @@ Template.providerNotifications.helpers({
 					var notif = {
 						notificationType: notification.notificationType,
 						bname: buyerDetails.name,
-						_id: notification.jobId,
+						jobId: notification.jobId,
 						slug: jobDetails.slug(),
 						notificationId: notification._id,
 						side: notification.side,
@@ -47,7 +47,7 @@ Template.providerNotifications.helpers({
 		return notificationDetails;
 	},
 	jobName: function() {
-		return Jobs.findOne({_id: this._id}).title || "";
+		return Jobs.findOne({_id: this.jobId}).title || "";
 	}
 })
 

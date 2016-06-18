@@ -3,6 +3,11 @@ JobsIndex = new EasySearch.Index({
   collection: Jobs,
   fields: ['title', 'skillsrequired', 'location', 'jobtype', 'jobSubCategory', 'readableID'],
   engine: new EasySearch.Minimongo({
+    selector: function(searchObject, options, aggregation) {
+     var selector = this.defaultConfiguration().selector(searchObject, options, aggregation);
+     selector.applicationStatus = 'open';     
+     return selector;
+   },
     sort: function (searchObject) {
         return {
           createdAt: -1

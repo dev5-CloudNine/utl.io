@@ -151,4 +151,6 @@ Template.headerUserMenu.events({
 
 Template.headerUserMenu.onRendered(function(){
   this.$('.dropdown-toggle').dropdown();
+  Meteor.subscribe('notifications', Meteor.userId());
+  Meteor.subscribe('notificationsJobs', Meteor.userId());
 });
