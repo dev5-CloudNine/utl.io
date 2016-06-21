@@ -126,6 +126,7 @@ Router.map(function() {
         title: 'UTL - Applied Jobs',
         waitOn: function() {
             Meteor.subscribe('reviews');
+            Meteor.subscribe('usersTasks');
             return Meteor.subscribe('allJobs')
         }
     })
@@ -167,6 +168,7 @@ Router.map(function() {
         path: '/assignedJobs',
         title: 'UTL - Assigned Jobs',
         waitOn: function() {
+            Meteor.subscribe('usersTasks');
             return Meteor.subscribe('providerAssignedJobs');
         }
     });

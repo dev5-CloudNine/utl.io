@@ -9,14 +9,14 @@
 
 	Template.compose.events({
 	    'click #sendMail': function(event, template) {
-	        var recipient = $('#to').val();
+	        var recipient = $('#recipient').val();
 	        if (!recipient) {
 	        	toastr.error('Please select recipient');
 	        	return;
 	        }
-	        var subject = $('#subject').val();
-	        if (!subject) {
-	        	toastr.error('Please enter subject');
+	        var projectID = $('#project').val();
+	        if (!projectID) {
+	        	toastr.error('Please select a project');
 	        	return;
 	        } 
 	        var content = $('#summernote').summernote('code');
@@ -24,7 +24,8 @@
 	        var sender = Meteor.userId();
 	        var message = {};
 	        message.recipient = recipient;
-	        message.subject = subject;
+	        message.subject = $( "#project option:selected" ).text();
+	        message.projectID = projectID;
 	        message.sender = sender;
 	        message.content = content;
 	        message.date = new Date();
@@ -54,24 +55,31 @@
 	    },
 	    'change #project' : function(event,template){
 	    	selectionChange.changed();
-	    	SelectedProject = $(event.currentTarget).val();
 	    }
 	});
 
 	var SelectedProject;
 
 	Template.compose.helpers({
-	    userList: function() {
+	    userList: function(project) {
 	    	selectionChange.depend();
+	    	SelectedProject= $('#project').val();
+	    	if(Router.current().params.tab.substr(0,6) == 'newrep') {
+		    	var id = Router.current().params.tab.substr(6);
+		    	SelectedProject = Messages.findOne({'_id':id}).projectID;
+	    	}
+	    	var defaultOpt = {id:null,email:'Select recipient'};
 	    	var emailIDs = [];
 	    	if(!SelectedProject) {
-	    		return ['Please select a project'];
+	    		return [{id:null,email:'Please select a project'}];
 	    	} else if(SelectedProject=='other') {
+	    		emailIDs.push(defaultOpt);
 	    		var companyName = Meteor.users.findOne({_id:Meteor.userId()}).companyName;
 	    		Meteor.users.find({$and:[{_id:{$ne:Meteor.userId()}},{companyName:companyName}]}).map(function(ele){
 	    			emailIDs.push({id:ele._id,email:ele.emails[0].address});
 	    		});
 	    	}
+	    	emailIDs.push(defaultOpt);
     		Meteor.users.find({$and:[{_id:{$ne:Meteor.userId()}},{contacts:{$regex: SelectedProject}}]}).map(function(ele){
     			emailIDs.push({id:ele._id,email:ele.emails[0].address});
     		});
@@ -150,7 +158,10 @@
 
 			var ids = [];
 			ids.push(id);
-			ids = ids.concat(Messages.findOne({'_id':param.substr(6)}).chain);
+			var msgObj = Messages.findOne({'_id':param.substr(6)});
+			if(msgObj) {
+				ids = ids.concat(msgObj.chain);
+			}
 		    Messages.find({
 		    	_id:{$in:ids}
 		    }).map(function(ele){

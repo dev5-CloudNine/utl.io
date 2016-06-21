@@ -132,6 +132,7 @@ Template.jobSmall.events({
 			toastr.error('Please close all the tasks before submitting the assignment');
 			return;
 		}
+		
 		Meteor.call('submitAssignment', jobId, function(error) {
 			if(error) {
 				toastr.error('Failed to submit assignment. Please try again.');
