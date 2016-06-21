@@ -98,7 +98,7 @@ Meteor.publish("tempInvitation", function () {
 });
 
 Meteor.publish("userList", function () {
-    return Meteor.users.find({}, {fields: {emails: 1, profile: 1, readableID: 1, roles: 1, imgURL: 1, companyName: 1, contacts: 1, favCount: 1}});
+    return Meteor.users.find({}, {fields: {emails: 1, profile: 1, readableID: 1, roles: 1, imgURL: 1, companyName: 1, contacts: 1, favCount: 1, resumeURL: 1}});
 });
 
 Meteor.publish("contacts", function (userID) {
@@ -122,7 +122,6 @@ Meteor.publishComposite('providers', {
             status: "active"
         }, {
             sort: {
-                availableForHire: -1,
                 createdAt: 1
             },
             limit: 8,

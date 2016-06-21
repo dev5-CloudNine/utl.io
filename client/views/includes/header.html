@@ -105,7 +105,7 @@
                                 {{/unless}}
                             {{/if}}
                             {{#if isInRole 'corporate-admin'}}
-                                {{#with corpProfile}}<li><a href="{{pathFor 'corpTeam'}}">View Team</a></li>{{/with}}
+                                {{#with corpProfile}}<li><a href="{{pathFor 'corpTeam' tab='corp-providers'}}">View Team</a></li>{{/with}}
                                 <li><a href="{{pathFor 'addTeam'}}">Add Your Team</a></li>
                                 {{#unless currentUser.isCorporate}}
                                     <li>

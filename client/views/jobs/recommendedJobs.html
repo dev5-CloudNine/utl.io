@@ -7,6 +7,8 @@
 			{{#if currentUser}}
 				{{#each recommendedJobs}}
 					{{>jobSmall}}
+				{{else}}
+					<p>There are not recommended jobs at this moment.</p>
 				{{/each}}
 			{{/if}}
 		</div>

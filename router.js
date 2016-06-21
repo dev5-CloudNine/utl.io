@@ -647,9 +647,9 @@ Router.map(function() {
     });
 
     this.route('corpTeam', {
-        path: '/corporates/:_id/:slug/team',
+        path: '/corporates/:_id/:slug/team/:tab',
         title: function() {
-            return "UTL - " + this.data().displayName() + " - " + this.data().title;
+            return "UTL - In house team"
         },
         data: function() {
             return Corporates.findOne({
@@ -666,9 +666,8 @@ Router.map(function() {
                     _id: this.params._id,
                     slug: expectedSlug
                 });
-            } else {
-                this.next();
             }
+            this.next();
         }
     });
 

@@ -40,6 +40,10 @@ Template.profile.helpers({
   "customImageUrl": function() {
     return Meteor.users.findOne({_id: this.userId}).imgURL;
   },
+  resumeUrl: function() {
+    console.log(this);
+    return Meteor.users.findOne({_id: this.userId}).resumeURL;
+  }
 });
 
 Template.profile.rendered = function() {

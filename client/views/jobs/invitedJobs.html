@@ -7,6 +7,8 @@
 			{{#if currentUser}}
 				{{#each invitedJobs}}
 					{{>jobSmall}}
+				{{else}}
+					<p>You have not been invited to apply on any jobs yet.</p>
 				{{/each}}
 			{{/if}}
 		</div>
