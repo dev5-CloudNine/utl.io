@@ -29,7 +29,7 @@
                     {{#if currentUser.isDeveloper}}
                         <div>
                             <span>{{#with buyer}}<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>{{/with}}</span>
-                            <span><a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up">{{#if fav}}Lik'd{{else}}Like{{/if}}</i></a></span>
+                            <span><a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</a></span>
                         </div>
                     {{/if}}
                 {{/if}}

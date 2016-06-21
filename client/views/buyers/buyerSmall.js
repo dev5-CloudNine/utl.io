@@ -34,6 +34,9 @@ Template.buyerSmall.helpers({
 	fav : function() {
 		return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this.userId]}}]})?true:false;
 	},
+	favCount: function() {
+		return (Users.findOne({_id: this.userId}).favCount);
+	},
 	customImageUrl: function() {
 		var imgUrl = Meteor.users.findOne({_id: this.userId}).imgURL;
 		if(imgUrl) {

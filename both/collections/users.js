@@ -89,6 +89,15 @@ UserSchema = new SimpleSchema({
     type: Array,
     optional: true
   },
+  favCount: {
+    type: Number,
+    optional: true,
+    autoValue: function() {
+      if(this.isInsert) {
+        return 0;
+      }
+    }
+  },
   readableID: {
     type: String,
     optional: true

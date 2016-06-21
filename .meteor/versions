@@ -29,6 +29,7 @@ binary-heap@1.0.8
 blaze@2.1.7
 blaze-html-templates@1.0.4
 blaze-tools@1.0.8
+blueimp:javascript-load-image@1.13.1
 boilerplate-generator@1.0.8
 caching-compiler@1.0.4
 caching-html-compiler@1.0.6
@@ -75,6 +76,7 @@ easysearch:components@2.0.9
 easysearch:core@2.0.9
 ecmascript@0.4.3
 ecmascript-runtime@0.2.10
+edgee:slingshot@0.7.1
 ejson@1.0.11
 email@1.0.12
 fastclick@1.0.11
@@ -200,6 +202,7 @@ summernote:standalone@0.8.1
 templating@1.1.9
 templating-tools@1.0.4
 themeteorchef:jquery-validation@1.14.0
+thinksoftware:image-resize-client@1.0.0
 tmeasday:publish-counts@0.7.3
 tracker@1.0.13
 tsega:bootstrap3-datetimepicker@3.1.3_3

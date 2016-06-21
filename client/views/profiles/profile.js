@@ -19,6 +19,9 @@ Template.profile.helpers({
   fav : function() {
     return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this.userId]}}]})?true:false;
   },
+  favCount: function() {
+    return Meteor.users.findOne({_id: this.userId}).favCount;
+  },
   providerCompletedJobs: function() {
     var completedJobs = [];
     if(this.completedJobs) {

@@ -46,7 +46,7 @@
                 <label class="control-label">{{#if customImagePreviewUrl}}Custom{{else}}Automatic{{/if}} Avatar</label>
                 {{#if customImagePreviewUrl}}
                 <div class="avatar avatar-large">
-                    <img class="img-responsive" src="{{customImagePreviewUrl}}" onerror="this.src='/images/avatar.png'" style="width:200px" />
+                    <img class="img-responsive" src="{{customImagePreviewUrl}}" onerror="this.src='/images/avatar.png'" />
                 </div>
                 {{else}} {{> avatar user=currentUser size="large"}} {{/if}}
             </div>
@@ -54,10 +54,10 @@
                 <label class="control-label"></label>
                 <div class="input-group">
                     &nbsp;
-                    <label class="btn btn-success input-group-btn btn-lbl"  style="font-size: 15px;margin-left:5px" data-toggle="tooltip" data-placement="top">
-                        <input type="file" accept="image/*" class="file_bag"> Change
+                    <label class="btn btn-success" data-toggle="tooltip" data-placement="top">
+                        <input type="file" accept="image/*" class="file_bag"> Upload
                     </label>
-                    <button type="button" class="btn btn-danger remove-img">Remove</button>
+                    <!-- <button type="button" class="btn btn-danger remove-img">Remove</button> -->
                 </div>
             </div>
             <hr>

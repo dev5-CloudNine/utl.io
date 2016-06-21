@@ -1,9 +1,23 @@
-S3.config = {
-    key: 'AKIAJFKN5NR3ZC2YF6KQ',
-    secret: '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',
+// S3.config = {
+//     key: 'AKIAJFKN5NR3ZC2YF6KQ',
+//     secret: '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',
+//     bucket: 'project-tasks',
+//     region: 'us-east-1' // Only needed if not "us-east-1" or "us-standard"
+// };
+
+Slingshot.createDirective('userImages', Slingshot.S3Storage, {
     bucket: 'project-tasks',
-    region: 'us-east-1' // Only needed if not "us-east-1" or "us-standard"
-};
+    region: 'us-east-1',
+    AWSAccessKeyId: 'AKIAJFKN5NR3ZC2YF6KQ',
+    AWSSecretAccessKey: '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',
+    acl: 'public-read',
+    authorize: function() {
+        return true
+    },
+    key: function(file){
+        return new Date().getTime() + "_" + file.name;
+    }
+})
 
 Meteor.methods({
     "onUserSignup": function(user) {
@@ -101,6 +115,7 @@ Meteor.methods({
             }
         }
         Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteUsers: id}});
+        Meteor.users.update({_id: id}, {$inc: {favCount: 1}});
         Notifications.insert(notificationObj);
         if(role == 'buyer' || role =='corporate-manager') {
             var providerName = Profiles.findOne({userId: id}).name;
@@ -145,6 +160,7 @@ Meteor.methods({
             }
         }
         Meteor.users.update(Meteor.userId(), {$pull: {favoriteUsers: id}});
+        Meteor.users.update({_id: id}, {$inc: {favCount: -1}});
         Notifications.insert(notificationObj);
         if(role == 'buyer' || role =='corporate-manager') {
             var providerName = Profiles.findOne({userId: id}).name;
