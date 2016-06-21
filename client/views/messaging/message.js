@@ -34,7 +34,10 @@ Template.message.helpers({
 
     var ids = [];
     ids.push(msgID);
-    ids = ids.concat(Messages.findOne({'_id':msgID}).chain);
+    var msgObj = Messages.findOne({'_id':msgID});
+    if(msgObj) {
+      ids = ids.concat(msgObj.chain);
+    }
 
     Messages.find({'_id':{$in:ids}}, 
     {

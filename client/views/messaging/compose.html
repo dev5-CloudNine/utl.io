@@ -31,13 +31,27 @@
                             <label for="subject" class="col-sm-2 control-label">Project</label>
                             <div class="col-sm-10">
 
-                                <select class="form-control" id="project">
-                                    <option value="">Select project</option>
 
-                                    {{#each projectList}}
-                                    <option value="{{id}}">{{title}}</option>
-                                    {{/each}} 
-                                </select>                                
+                                {{#if $eq type 'newfwd'}}                                
+                                    <select class="form-control" id="project">
+                                        <option value="">Select project</option>
+                                        {{#each projectList}}
+                                        <option value="{{id}}">{{title}}</option>
+                                        {{/each}} 
+                                    </select> 
+                                {{/if}}
+                                {{#if $eq type 'newrep'}}
+                                    <input type="text" disabled class="form-control" id="project" value="{{parentSub}}"> 
+                                {{/if}}
+                                {{#if $eq type 'new'}}
+                                    <select class="form-control" id="project">
+                                        <option value="">Select project</option>
+                                        {{#each projectList}}
+                                        <option value="{{id}}">{{title}}</option>
+                                        {{/each}} 
+                                    </select> 
+                                {{/if}}
+                               
 
                             </div>
                         </div>
@@ -45,19 +59,9 @@
                             <label for="to" class="col-sm-2 pull-left control-label">Recipient</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="recipient">
-                                    {{#if $eq type 'newrep'}}
-                                    <option value="{{parentID.id}}"> {{parentID.username}}</option>
-                                    {{else}}
-                                    <option value="">Select recipient</option>
-                                    <!-- {{#each userList}} -->
-                                    <!-- <option value="{{_id}}">{{email}}</option> -->
-
-                                    <!-- {{/each}} -->
-
-                                    {{#each userList}}
-                                    <option value="{{id}}">{{email}}</option>
-                                    {{/each}} 
-                                    {{/if}}
+                                        {{#each userList}}
+                                        <option value="{{id}}">{{email}}</option>
+                                        {{/each}}
                                 </select>
                             </div>
                         </div>
