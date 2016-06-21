@@ -48,6 +48,26 @@ Meteor.publish('subcategories', function() {
     }
 })
 
+Meteor.publish('usersTasks', function() {
+    if(this.userId) {
+        var user = Meteor.users.findOne({_id: this.userId});
+        if(user) {
+            var jobs = [];
+            var userCollection = Meteor.users.findOne({_id:this.userId});
+            var contactsPair = userCollection.contacts;
+            var jobIDs = [];
+            for(var i=0;i<contactsPair.length;i++) {
+                jobIDs.push(contactsPair[i].split(':')[1]);
+            }
+            Jobs.find({_id:{$in:jobIDs||[]}}).map(function(ele){
+                jobs.push(ele._id);
+            });
+            return Tasks.find({jobID:{$in:jobs||[]}});
+        }
+    }
+})
+
+
 Meteor.publish("tasks", function (taskID) {
     return Tasks.find({_id:taskID});
 });
@@ -65,7 +85,11 @@ Meteor.publish("tasksOfaJob", function (id) {
 });
 
 Meteor.publish('notifications', function(userId) {
-    var roles = Meteor.users.findOne({_id: userId}).roles;
+    var usrObj = Meteor.users.findOne({_id: userId});
+    var roles=[];
+    if(usrObj) {
+        roles = usrObj.roles;
+    }
     if(roles.indexOf('buyer') > -1 || roles.indexOf('corporate-manager') > -1) {
         return Notifications.find({$and: [{buyerId: this.userId}, {side: 'buyer'}]});
     } else if(roles.indexOf('provider') > -1 || roles.indexOf('corporate-provider') > -1) {
@@ -512,3 +536,4 @@ Meteor.publish('subcategoryProfiles', function(subcategory) {
     check(arguments, [Match.Any]);
     return Profiles.find({industryTypes: {$in: [subcategory]}});
 });
+
