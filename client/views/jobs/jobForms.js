@@ -126,7 +126,7 @@ Template.jobFields.events({
 			}
 			else {
 				var files = [];
-				var fileListItem = '<li data-url='+result.url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.url+'\')"></i> <a href='+result.url+' target="_blank">'+result.url+'</a></li>'
+				var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.url+'\')"></i> <a href='+result.url+' target="_blank">'+result.url+'</a></li>'
 				$('.fileList').append(fileListItem);
 				$('ul.fileList li').each(function(li) {
 					files.push($(this).data('url'));
