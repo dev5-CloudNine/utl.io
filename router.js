@@ -481,7 +481,6 @@ Router.map(function() {
             });
         },
         waitOn: function() {
-            Meteor.subscribe('images');
             Meteor.subscribe('reviews');
             Meteor.subscribe('buyerPostedJobs', this.params._id);
             return subs.subscribe('buyer', this.params._id);
