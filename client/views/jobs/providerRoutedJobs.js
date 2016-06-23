@@ -3,7 +3,7 @@ Template.providerRoutedJobs.helpers({
 		var routedJobIds = Profiles.findOne({userId: Meteor.userId()}).routedJobs;
 		var routedJobs = [];
 		if(routedJobIds) {
-			for(var i = 0; i < routedJobIds.length; i++) {
+			for(var i = routedJobIds.length; i >= 0; i--) {
 				routedJobs.push(Jobs.findOne({_id: routedJobIds[i]}));
 			}
 			return routedJobs;

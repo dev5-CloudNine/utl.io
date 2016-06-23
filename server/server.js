@@ -411,16 +411,15 @@ Meteor.methods({
             })
         }
     },
-    routeNotification: function(providerId, buyerId, jobId) {
-        Profiles.update({userId: providerId}, {$addToSet: {routedJobs: jobId}});
-        var providerName = Profiles.findOne({userId: providerId}).name;
+    routeNotification: function(buyerId, doc) {
+        Profiles.update({userId: doc.selectedProvider}, {$addToSet: {routedJobs: doc._id}});
+        var providerName = Profiles.findOne({userId: doc.selectedProvider}).name;
         var buyerName = Buyers.findOne({userId: buyerId}).name;
-        var jobName = Jobs.findOne({_id: jobId}).title;
-        var jobSlug = Jobs.findOne({_id: jobId}).slug();
+        var jobName = doc.title;
         var notificationObj = {
-            providerId: providerId,
+            providerId: doc.selectedProvider,
             buyerId: buyerId, 
-            jobId: jobId,
+            jobId: doc._id,
             timeStamp: new Date(),
             notificationType: 'routedJob',
             read: false,
@@ -429,10 +428,10 @@ Meteor.methods({
         };
         Notifications.insert(notificationObj);
         Email.send({
-            to: getUserEmail(Meteor.users.findOne({_id: providerId})),
+            to: getUserEmail(Meteor.users.findOne({_id: doc.selectedProvider})),
             from: FROM_EMAIL,
             subject: 'A buyer has directly routed a job to you.',
-            text: 'Hello ' + providerName + ', ' + buyerName + ' has directly routed a job ' + jobName + ' to you. You may confirm the assignment or reject the assignment by clicking the following link. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
+            text: 'Hello ' + providerName + ', ' + buyerName + ' has directly routed a job ' + jobName + ' to you. You may confirm the assignment or reject the assignment by clicking the following link. ' + Meteor.absoluteUrl('jobs/' + doc._id)
         })
     },
     requestPayment: function(jobId) {

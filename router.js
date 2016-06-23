@@ -376,8 +376,8 @@ Router.map(function() {
             });
         },
         waitOn: function() {
-            Meteor.subscribe('completedJobs');
-            subs.subscribe('reviews');
+            // Meteor.subscribe('completedJobs');
+            // subs.subscribe('reviews');
             return subs.subscribe('profile', this.params._id);
         },
         onBeforeAction: function() {
@@ -438,7 +438,6 @@ Router.map(function() {
             Meteor.subscribe("contacts",Meteor.userId());
             Meteor.subscribe('allJobs');
             Meteor.subscribe('reviews');
-            subs.subscribe('notifications');
             return Meteor.subscribe("messages",Meteor.userId());
         },
         data: function() {

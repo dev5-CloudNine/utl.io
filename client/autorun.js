@@ -5,6 +5,9 @@ Tracker.autorun(function() {
     $('.content-inner').scrollTop(0);
     $(window).scrollTop(0);
   });
+  $(window).on('beforeunload', function() {
+  	socket.close();
+  })
 });
 
 

@@ -22,7 +22,9 @@ Template.assignJob.events({
 		Jobs.after.insert(function(userId, doc) {
 			if(!Session.get('routingJob'))
 				return;
-			Meteor.call('routeNotification', doc.selectedProvider, Meteor.userId(), doc._id, function(error) {
+			console.log(doc);
+			debugger;
+			Meteor.call('routeNotification', Meteor.userId(), doc, function(error) {
 				if(error) {
 					toastr.error('Failed to route job.');
 				} else {
