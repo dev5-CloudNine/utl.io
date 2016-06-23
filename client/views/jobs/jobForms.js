@@ -216,5 +216,15 @@ Template.jobNew.events({
 				}
 			})
 		})
+	},
+	'click .saveAsDraft': function(event, template) {
+		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
+		Session.set('saveAsDraft', true);
+		Jobs.before.insert(function(userId, doc) {
+			if(!Session.get('saveAsDraft2'))
+				return;
+			doc.status = 'draft';
+			delete Session.keys['saveAsDraft'];
+		})
 	}
 });

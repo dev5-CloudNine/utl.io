@@ -554,15 +554,16 @@ Jobs.attachSchema(
     status: {
       type: String,
       allowedValues: STATUSES,
-      autoValue: function() {
-        if (this.isInsert) {
-          return 'active';
-        } else if (this.isUpsert) {
-          return {
-            $setOnInsert: 'active'
-          };
-        }
-      },
+      defaultValue: 'active'
+      // autoValue: function() {
+      //   if (this.isInsert) {
+      //     return 'active';
+      //   } else if (this.isUpsert) {
+      //     return {
+      //       $setOnInsert: 'active'
+      //     };
+      //   }
+      // },
     },
     applicationStatus: {
       type: String,
