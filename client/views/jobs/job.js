@@ -281,7 +281,7 @@ Template.job.events({
         $('.progress').remove();
         if (err) toastr.error("Failed to upload file");
         else {
-            Meteor.call('addFile', res.url, id,function (error, result) {
+            Meteor.call('addFile', res.secure_url, id,function (error, result) {
               if(!error)
                 toastr.success("File uploaded successssfully");
             });

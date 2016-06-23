@@ -123,7 +123,7 @@ Template.profileFields.events({
       $('.profileImgProgress').hide();
       if(err) toastr.error("Failed to upload resume");
       else {
-        Meteor.call('updateResumeURL', Meteor.userId(), res.url, function(error, result) {
+        Meteor.call('updateResumeURL', Meteor.userId(), res.secure_url, function(error, result) {
           if(error) {
             toastr.error('Failed to update');
           }
