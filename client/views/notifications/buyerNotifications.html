@@ -4,7 +4,7 @@
 			{{#if $eq this.notificationType 'newJobApplication'}}
 				{{#with this}}
 					<a href="/jobs/{{this.jobId}}" class="markRead">
-						<div class="notification-item">
+						<div class="notification-item {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
 							<h4 class="item-title">{{this.pname}} has applied for your job.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 							<p class="item-info">{{jobName}}</p>
@@ -15,7 +15,7 @@
 			{{#if $eq this.notificationType 'confirmAssignment'}}
 				{{#with this}}
 					<a href="/jobs/{{this.jobId}}" class="markRead">
-						<div class="notification-item">
+						<div class="notification-item {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
 							<h4 class="item-title">{{this.pname}} has confirmed assignment.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 							<p class="item-info">{{jobName}}</p>
@@ -26,7 +26,7 @@
 			{{#if $eq this.notificationType 'declineAssignment'}}
 				{{#with this}}
 					<a href="/jobs/{{this.jobId}}" class="markRead">
-						<div class="notification-item">
+						<div class="notification-item {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
 							<h4 class="item-title">{{this.pname}} has declined assignment.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 							<p class="item-info">{{jobName}}</p>
@@ -37,7 +37,7 @@
 			{{#if $eq this.notificationType 'submitAssignment'}}
 				{{#with this}}
 					<a href="/jobs/{{this.jobId}}" class=" markRead">
-						<div class="notification-item">
+						<div class="notification-item {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
 							<h4 class="item-title">{{this.pname}} has submitted assignment for approval.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 							<p class="item-info">{{jobName}}</p>
@@ -48,7 +48,7 @@
 			{{#if $eq this.notificationType 'requestPayment'}}
 				{{#with this}}
 					<a href="/jobs/{{this.jobId}}" class=" markRead">
-						<div class="notification-item">
+						<div class="notification-item {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
 							<h4 class="item-title">{{this.pname}} has requested for payment.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 							<p class="item-info">{{jobName}}</p>
@@ -59,7 +59,7 @@
 			{{#if $eq this.notificationType 'addFavBuyer'}}
 				{{#with this}}
 					<a href="/profiles/{{this.providerId}}" class="markRead">
-						<div class="notification-item">
+						<div class="notification-item {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
 							<h4 class="item-title">{{this.pname}} has added you to his/her favorites.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 						</div>
@@ -69,7 +69,7 @@
 			{{#if $eq this.notificationType 'remFavBuyer'}}
 				{{#with this}}
 					<a href="/profiles/{{this.providerId}}" class="markRead">
-						<div class="notification-item">
+						<div class="notification-item {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
 							<h4 class="item-title">{{this.pname}} has removed you from his/her favorites.</h4>
 							<small class="pull-right">{{this.notificationTime}}</small>
 						</div>

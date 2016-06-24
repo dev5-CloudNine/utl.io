@@ -377,7 +377,7 @@ Router.map(function() {
         },
         waitOn: function() {
             // Meteor.subscribe('completedJobs');
-            // subs.subscribe('reviews');
+            Meteor.subscribe('reviews');
             return subs.subscribe('profile', this.params._id);
         },
         onBeforeAction: function() {

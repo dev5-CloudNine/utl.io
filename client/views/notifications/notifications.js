@@ -39,6 +39,7 @@ Template.notifications.helpers({
 						read: notification.read,
 						notificationTime: moment(notification.timeStamp).fromNow()
 					}
+					console.log(notif);
 				}
 			}
 			notificationDetails.push(notif);
