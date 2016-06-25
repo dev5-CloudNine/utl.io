@@ -46,29 +46,23 @@
 			<div class="col-md-4">
 				{{#if customImagePreviewUrl}}
 					<div class="avatar avatar-large">
-						<img class="img-responsive" src="{{resizeImageUrl customImagePreviewUrl 200 200}}"/>
+						<img class="img-responsive" src="{{customImagePreviewUrl}}"/>
 					</div>
 				{{else}}
 					{{> avatar user=currentUser size="large"}}
 				{{/if}}
 			</div>
+		</div>
+		<div class="row">
 			<div class="col-md-4">
-				<input
-					id="custom-image"
-					name="customImageUrl"
-					data-schema-key="customImageUrl" 
-					type="hidden"
-					role="uploadcare-uploader"
-					data-tabs="file camera url facebook gdrive dropbox instagram flickr skydrive"
-					data-image-shrink="800x800"
-					data-images-only="true"
-					data-preview-step="true"
-					data-clearable="true"
-					data-multiple="false"
-					data-system-dialog="false"
-					data-crop="800:800"
-					data-cdn-base="https://ucarecdn.com/"
-				/>
+				<label class="control-label"></label>
+                <div class="input-group">
+                    &nbsp;
+                    <label class="btn btn-success" data-toggle="tooltip" data-placement="top">
+                        <input type="file" accept="image/*" class="file_bag"> Upload
+                    </label>
+                    <!-- <button type="button" class="btn btn-danger remove-img">Remove</button> -->
+                </div>
 			</div>
 		</div>
 	</div>

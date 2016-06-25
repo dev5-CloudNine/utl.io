@@ -639,3 +639,7 @@ footer {
 .isRead {
   background-color: #ffffff !important;
 }
+
+.avatar-large .avatar-image {
+  position: inherit;
+}

@@ -86,6 +86,26 @@ Template.corporateFields.events({
       smsEmail = mobileNumber + '@voicestream.net'
     }
     $('input[name="smsAddress"]').val(smsEmail);
+  },
+  'change .file_bag': function(event, template) {
+    event.preventDefault();
+    var files = $(event.currentTarget)[0].files;
+    Resizer.resize(files[0], {width: 200, height: 200, cropSquare: true}, function(err, file) {
+      var uploader = new Slingshot.Upload('userImages');
+      uploader.send(file, function(err, imgUrl) {
+        if(err)
+          console.log(err);
+        else {
+          Meteor.call('updateImgURL', Meteor.userId(), imgUrl, function(error, result) {
+            if(error)
+              toastr.error("Failed to update.");
+            else {
+              toastr.success('Successfully updated.');
+            }
+          })
+        }
+      })
+    })
   }
 })
 
@@ -138,8 +158,7 @@ var locLoaded=false;
 
 Template.corporateFields.helpers({
   "customImagePreviewUrl": function(event, template) {
-    if(customImagePreviewUrl.get())
-      return customImagePreviewUrl.get();
+    return Meteor.users.findOne({_id: Meteor.userId()}).imgURL;
   },
   companyName: function() {
     var corpInfo = Meteor.user();
@@ -156,16 +175,16 @@ Template.corporateFields.helpers({
     return Corporates.findOne({_id:this.corporateProfile._id}).location;
   },
   location: function(query, sync, callback) {
-      if(!locLoaded) $('.typeahead').addClass('loadinggif');
-      Meteor.call('location', query, {}, function(err, res) {
-          if (err) {
-              console.log(err);
-              return;
-          }
-          callback(res.map(function(v) {
-              locLoaded = true;
-              $('.typeahead').removeClass('loadinggif');
-              return { value: v.city + ", " + v.state + ", " + v.zip}; }));
-      });
+    if(!locLoaded) $('.typeahead').addClass('loadinggif');
+    Meteor.call('location', query, {}, function(err, res) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        callback(res.map(function(v) {
+            locLoaded = true;
+            $('.typeahead').removeClass('loadinggif');
+            return { value: v.city + ", " + v.state + ", " + v.zip}; }));
+    });
   }
 });
