@@ -106,9 +106,9 @@ Template.job.events({
     var firsthours = $('#first_max_hours').val();
     var payfornexthours = $('#next_hours').val();
     var nexthours = $('#next_max_hours').val();
-    var totalforfirsthours = payforfirsthours * firsthours;
+    var totalforfirsthours = parseFloat(payforfirsthours);
     var totalfornexthours = payfornexthours * nexthours;
-    var totalamount = totalforfirsthours + totalfornexthours;
+    var totalamount = parseFloat(totalforfirsthours + totalfornexthours);
     $('input[name="total_amount"]').val(totalamount);
     $('input[name="buyer_cost"]').val(totalamount)
     var freenet = totalamount - (totalamount * 5/100);

@@ -56,20 +56,11 @@
                     <!-- <button type="button" class="btn btn-danger remove-img">Remove</button> -->
                 </div>
             </div>
-            <hr>
         </div>
     </div>
     <div class="row">
         <div id="spinner" style="position: relative;">
             {{> spinner}}
-        </div>
-        <div class="col-xs-12">
-            {{#each uploadedFiles}}
-                <div class="profileImgProgress">
-                    <div class="progress-bar progress-bar-striped" role="progressbar"
-                    aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">{{percent_uploaded}}%</div>
-                </div>
-            {{/each}}
         </div>
     </div>
     <div class="row">

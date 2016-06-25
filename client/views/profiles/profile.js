@@ -41,7 +41,6 @@ Template.profile.helpers({
     return Meteor.users.findOne({_id: this.userId}).imgURL;
   },
   resumeUrl: function() {
-    console.log(this);
     return Meteor.users.findOne({_id: this.userId}).resumeURL;
   }
 });

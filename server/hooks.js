@@ -96,7 +96,7 @@ Jobs.after.insert(function(userId, doc){
       to: getUserEmail(admin),
       from: FROM_EMAIL,
       subject: "New Job Posted - " + doc.title,
-      text: "Job needs to be approved before it is live:\n\n" 
+      text: "A new job is posted: " + doc.title + "\n\n" 
             + Meteor.absoluteUrl("jobs/"+doc._id) + "\n\n\n\n\n\n"
     });
   if(doc.selectedProvider) {

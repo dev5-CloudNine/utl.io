@@ -72,9 +72,9 @@ Template.jobFields.events({
 		var firsthours = $('input[name="firsthours"]').val();
 		var payfornexthours = $('input[name="payfornexthours"]').val();
 		var nexthours = $('input[name="nexthours"]').val();
-		var totalforfirsthours = payforfirsthours * firsthours;
+		var totalforfirsthours = parseFloat(payforfirsthours);
 		var totalfornexthours = payfornexthours * nexthours;
-		var totalamount = totalforfirsthours + totalfornexthours;
+		var totalamount = parseFloat(totalforfirsthours + totalfornexthours);
 		$('input[name="totalfromclient"]').val(totalamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
 		if(paidBy == 'You') {
