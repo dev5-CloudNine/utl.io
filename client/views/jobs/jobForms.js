@@ -195,6 +195,7 @@ Template.jobNew.events({
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
 		Session.set('publishToFav', true);
 		Jobs.before.insert(function(userId, doc) {
+			$(event.target).prop('disabled', true);
 			if(!Session.get('publishToFav'))
 				return;
 			doc.invited = true;
@@ -202,7 +203,7 @@ Template.jobNew.events({
 			for(var i = 0; i < favProviders.length; i++) {
 				doc.favoriteProviders.push(favProviders[i]);
 			}
-		})
+		});
 		Jobs.after.insert(function(userId, doc) {
 			if(!Session.get('publishToFav'))
 				return;
@@ -215,7 +216,7 @@ Template.jobNew.events({
 					toastr.success('An invitation has been sent to your favorite providers to apply for this job.');
 				}
 			})
-		})
+		});
 	},
 	'click .saveAsDraft': function(event, template) {
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
