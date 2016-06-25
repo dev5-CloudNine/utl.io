@@ -378,7 +378,7 @@ Router.map(function() {
         waitOn: function() {
             // Meteor.subscribe('completedJobs');
             Meteor.subscribe('reviews');
-            return subs.subscribe('profile', this.params._id);
+            return Meteor.subscribe('profile', this.params._id);
         },
         onBeforeAction: function() {
             var expectedSlug = this.data().slug();
