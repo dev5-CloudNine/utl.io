@@ -38,7 +38,7 @@
 				{{#if $eq this.notificationType 'submitAssignment'}}
 					{{#with this}}
 						<a href="/jobs/{{this.jobId}}" class=" markRead">
-							<div class="notification-item alert alert-success {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+							<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 								<h4 class="item-title">{{this.pname}} has submitted assignment for approval.</h4>
 								<small class="pull-right">{{this.notificationTime}}</small>
 								<p class="item-info">{{jobName}}</p>
@@ -60,7 +60,7 @@
 				{{#if $eq this.notificationType 'addFavBuyer'}}
 					{{#with this}}
 						<a href="/profiles/{{this.providerId}}" class="markRead">
-							<div class="notification-item alert {{#if this.read}} isRead {{else}} alert-success {{/if}}">
+							<div class="notification-item{{#if this.read}} isRead {{else}} isNotRead {{/if}}">
 								<h4 class="item-title">{{this.pname}} has added you to his/her favorites.</h4>
 								<small class="pull-right">{{this.notificationTime}}</small>
 							</div>
@@ -70,7 +70,7 @@
 				{{#if $eq this.notificationType 'remFavBuyer'}}
 					{{#with this}}
 						<a href="/profiles/{{this.providerId}}" class="markRead">
-							<div class="notification-item alert {{#if this.read}} isRead {{else}} alert-info {{/if}}">
+							<div class="notification-item {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
 								<h4 class="item-title">{{this.pname}} has removed you from his/her favorites.</h4>
 								<small class="pull-right">{{this.notificationTime}}</small>
 							</div>
