@@ -491,6 +491,26 @@ Template.job.events({
         toastr.success('Payment approved successfully.');
       }
     })
+  },
+  'click button.deactivateJob': function(event, template) {
+    var jobId = this._id;
+    Meteor.call('deactivateJob', jobId, function(error) {
+      if(error) {
+        toastr.error('Failed to deactivate the job. Please try again.');
+      } else {
+        toastr.success('Deactivated the job successfully.');
+      }
+    })
+  },
+  'click button.activateJob': function(event, template) {
+    var jobId = this._id;
+    Meteor.call('activateJob', jobId, function(error) {
+      if(error) {
+        toastr.error('Failed to activate the job. Please try again.');
+      } else {
+        toastr.success('Activated the job successfully.');
+      }
+    })
   }
 });
 
@@ -728,8 +748,6 @@ Template.job.helpers({
       } else {
         Session.set('totalHours',total);
       }
-      
-
       return logList;
     },
     totalHours : function(){
@@ -754,6 +772,8 @@ Template.job.helpers({
     appStatusLabel: function() {
       if(this.applicationStatus == 'assigned') 
         return 'label-assigned';
+      else if(this.applicationStatus == 'deactivated')
+        return 'label-deactivated';
       else if(this.applicationStatus == 'frozen')
         return 'label-frozen';
       else if(this.applicationStatus == 'open')
@@ -765,6 +785,12 @@ Template.job.helpers({
     },
     showTabs: function(id) {
         return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned','submitted','approved','rejected']}}]}) ? true : false;      
+    },
+    jobNotAssigned: function() {
+      if(this.applicationStatus == 'open' && this.status == 'active') {
+        return true;
+      }
+      return false;
     }
 });
 

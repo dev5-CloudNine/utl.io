@@ -182,6 +182,13 @@ Router.map(function() {
         }
     });
 
+    this.route('deactivatedJobs', {
+        path: 'myJobs/deactivatedJobs',
+        waitOn: function() {
+            return Meteor.subscribe('my_jobs');
+        }
+    })
+
     this.route('providerPaymentPendingJobs', {
         path: '/paymentPendingJobs',
         title: 'UTL - Payment Pending Jobs',

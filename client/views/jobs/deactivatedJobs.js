@@ -1,9 +1,6 @@
-Template.buyerPaymentPendingJobs.helpers({
-	buyerPaymentPendingJobs: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {"applicationStatus" : "pending_payment"}]});
-	},
-	buyerPaymentPendingCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {'applicationStatus': 'pending_payment'}]}).count();
+Template.deactivatedJobs.helpers({
+	deactivatedJobs: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {status: 'deactivated'}]});
 	},
 	postedJobCount: function() {
 		return Jobs.find({userId: Meteor.userId()}).count();
@@ -16,6 +13,9 @@ Template.buyerPaymentPendingJobs.helpers({
 	},
 	buyerCompletedCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}, {assignmentStatus: 'paid'}]}).count();
+	},
+	buyerPaymentPendingCount: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {'applicationStatus': 'pending_payment'}]}).count();
 	},
 	deactivatedCount: function() {
 	    return Jobs.find({$and: [{userId: Meteor.userId()}, {status: 'deactivated'}]}).count();

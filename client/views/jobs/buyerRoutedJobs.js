@@ -16,5 +16,8 @@ Template.buyerRoutedJobs.helpers({
 	},
 	buyerPaymentPendingCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {'applicationStatus': 'pending_payment'}]}).count();
+	},
+	deactivatedCount: function() {
+	    return Jobs.find({$and: [{userId: Meteor.userId()}, {status: 'deactivated'}]}).count();
 	}
 })

@@ -13,5 +13,8 @@ Template.myJobs.helpers({
 	},
 	buyerCompletedCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}, {assignmentStatus: 'paid'}]}).count();
+	},
+	deactivatedCount: function() {
+	    return Jobs.find({$and: [{userId: Meteor.userId()}, {status: 'deactivated'}]}).count();
 	}
 })

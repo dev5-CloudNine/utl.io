@@ -541,6 +541,9 @@ footer {
 .label-assigned {
   background-color: #FF6600;
 }
+.label-deactivated {
+  background-color: #CC181E;
+}
 .label-open {
   background-color: #00BA35;
 }

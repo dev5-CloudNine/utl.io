@@ -633,5 +633,11 @@ Meteor.methods({
         } else {
             Meteor.users.update({_id: id}, {$set: {'resumeURL': ''}});
         }
+    },
+    deactivateJob: function(jobId) {
+        Jobs.update({_id: jobId}, {$set: {status: 'deactivated', applicationStatus: 'deactivated'}});
+    },
+    activateJob: function(jobId) {
+        Jobs.update({$and: [{_id: jobId}, {status: 'deactivated'}]}, {$set: {status: 'active', applicationStatus: 'open'}});
     }
 });

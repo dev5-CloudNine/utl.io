@@ -55,6 +55,8 @@ Template.jobSmall.helpers({
 	appStatusLabel: function() {
 		if(this.applicationStatus == 'assigned') 
 			return 'label-assigned';
+		else if(this.applicationStatus == 'deactivated')
+			return 'label-deactivated';
 		else if(this.applicationStatus == 'frozen')
 			return 'label-frozen';
 		else if(this.applicationStatus == 'open')

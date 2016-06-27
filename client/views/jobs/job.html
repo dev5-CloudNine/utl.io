@@ -73,6 +73,12 @@
                                         </small>
                                     </div>
                                     <div class="col-sm-12">
+                                        {{#if isInRole 'provider, corporate-provider'}}
+                                            {{#if $eq status 'deactivated'}}
+                                                <hr>
+                                                <p>This job has been deactivated by the buyer.</p>
+                                            {{/if}}
+                                        {{/if}}
                                         {{#if acceptedProvider}}
                                             {{#if $eq applicationStatus 'frozen'}}
                                                 <hr>
@@ -186,6 +192,12 @@
                                             <div class="pull-right">
                                                 &nbsp;
                                                 <a href="{{pathFor 'jobEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                                                {{#if jobNotAssigned}}
+                                                    <button class="btn btn-primary deactivateJob">Deactivate Job</button>
+                                                {{/if}}
+                                                {{#if $eq status 'deactivated'}}
+                                                    <button class="btn btn-primary activateJob">Activate Job</button>
+                                                {{/if}}
                                             </div>
                                         {{/if}}
                                     </div>
@@ -497,9 +509,9 @@
                                                                                 <br> {{#if $eq applicationStatus 'frozen'}}
                                                                                 <h5>Avaiting confirmation from provider.</h5> {{else}} {{#if $eq applicationStatus 'assigned'}}
                                                                                 <h5>The job is assigned.</h5> {{else}} {{#if $eq applicationStatus 'done'}}
-                                                                                <h5>The project is completed.</h5> {{else}} {{#if applicationStatus 'open'}}
+                                                                                <h5>The project is completed.</h5> {{else}} {{#if $eq applicationStatus 'deactivated'}} <h5>You have deactivated the job. Activate it to accept the application.</h5> {{else}} {{#if $eq applicationStatus 'open'}}
                                                                                 <button class="btn btn-success btn-sm acceptApplication">Accept</button>
-                                                                                {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{#if $eq this.app_type 'counteroffer'}}
+                                                                                {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{#if $eq this.app_type 'counteroffer'}}
                                                                                 <h4>{{this.name}}</h4>
                                                                                 <span class="label label-success pull-right">{{this.app_type}}</span>
                                                                                 <small>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</small>&nbsp;|&nbsp;
