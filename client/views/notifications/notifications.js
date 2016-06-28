@@ -5,8 +5,13 @@ Template.notifications.helpers({
 		notifications.forEach(function(notification) {
 			providerDetails = Profiles.findOne({userId: notification.providerId});
 			jobDetails = Jobs.findOne({_id: notification.jobId});
+			var imgUrl;
+			var img = Users.findOne({_id: notification.providerId}).imgURL;
+			if(img)
+				imgUrl = img;
 			if(notification.notificationType == 'addFavBuyer') {
 				var notif = {
+					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
 					pname: providerDetails.name,
 					providerId: providerDetails._id,
@@ -18,6 +23,7 @@ Template.notifications.helpers({
 				}
 			} else if(notification.notificationType == 'remFavBuyer') {
 				var notif = {
+					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
 					pname: providerDetails.name,
 					providerId: providerDetails._id,
@@ -30,7 +36,9 @@ Template.notifications.helpers({
 			} else {
 				if(jobDetails) {
 					var notif = {
+						imgUrl: imgUrl,
 						notificationType: notification.notificationType,
+						providerId: providerDetails._id,
 						pname: providerDetails.name,
 						jobId: notification.jobId,
 						slug: jobDetails.slug(),
@@ -54,8 +62,13 @@ Template.notifications.helpers({
 		notifications.forEach(function (notification) {
 			buyerDetails = Buyers.findOne({userId: notification.buyerId});
 			jobDetails = Jobs.findOne({_id: notification.jobId});
+			var imgUrl;
+			var img = Users.findOne({_id: notification.buyerId}).imgURL;
+			if(img)
+				imgUrl = img;
 			if(notification.notificationType == 'addFavProvider') {
 				var notif = {
+					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
 					bname: buyerDetails.name,
 					buyerId: buyerDetails._id,
@@ -68,6 +81,7 @@ Template.notifications.helpers({
 
 			} else if(notification.notificationType == 'remFavProvider') {
 				var notif = {
+					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
 					bname: buyerDetails.name,
 					buyerId: buyerDetails._id,
@@ -80,8 +94,10 @@ Template.notifications.helpers({
 			} else {
 				if(jobDetails) {
 					var notif = {
+						imgUrl: imgUrl,
 						notificationType: notification.notificationType,
 						bname: buyerDetails.name,
+						buyerId: buyerDetails._id,
 						jobId: notification.jobId,
 						slug: jobDetails.slug(),
 						notificationId: notification._id,

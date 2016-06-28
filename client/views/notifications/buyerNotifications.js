@@ -5,8 +5,13 @@ Template.buyerNotifications.helpers({
 		notifications.forEach(function(notification) {
 			providerDetails = Profiles.findOne({userId: notification.providerId});
 			jobDetails = Jobs.findOne({_id: notification.jobId});
+			var imgUrl;
+			var img = Users.findOne({_id: notification.providerId}).imgURL;
+			if(img)
+				imgUrl = img;
 			if(notification.notificationType == 'addFavBuyer') {
 				var notif = {
+					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
 					pname: providerDetails.name,
 					providerId: providerDetails._id,
@@ -18,6 +23,7 @@ Template.buyerNotifications.helpers({
 				}
 			} else if(notification.notificationType == 'remFavBuyer') {
 				var notif = {
+					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
 					pname: providerDetails.name,
 					providerId: providerDetails._id,
@@ -30,7 +36,9 @@ Template.buyerNotifications.helpers({
 			} else {
 				if(jobDetails) {
 					var notif = {
+						imgUrl: imgUrl,
 						notificationType: notification.notificationType,
+						providerId: providerDetails._id,
 						pname: providerDetails.name,
 						jobId: notification.jobId,
 						slug: jobDetails.slug(),

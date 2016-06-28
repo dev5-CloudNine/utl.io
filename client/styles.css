@@ -572,7 +572,7 @@ footer {
 }
 
 .notifications-wrapper {
-  height: 250px !important;
+  height: 420px !important;
   overflow-y: auto;
 }
 
@@ -645,4 +645,8 @@ footer {
 
 .avatar-large .avatar-image {
   position: inherit;
+}
+
+.media-body a {
+  font-size: 16px !important;
 }
