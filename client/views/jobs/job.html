@@ -502,20 +502,44 @@
                                                                     {{#each appliedProviders}}    
                                                                         <span>
                                                                             {{#if $eq this.app_type 'application'}}
-                                                                                <h4><a href="/profiles/{{this.userId}}">{{this.name}}</a></h4>
-                                                                                <span class="label label-success pull-right">{{this.app_type}}</span>
-                                                                                <small>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</small>&nbsp;|&nbsp;
-                                                                                <small>Applied {{this.appliedAt}}</small>
+                                                                                <div class="media">
+                                                                                    {{#if this.imgUrl}}
+                                                                                        <a class="pull-left" href="#">
+                                                                                            <img class="media-object dp img-rounded" src="{{this.imgUrl}}" width="100px">
+                                                                                        </a>
+                                                                                    {{else}}
+                                                                                        {{>avatar size="small"}}
+                                                                                    {{/if}}
+                                                                                    <div class="media-body">
+                                                                                        <h4 media-heading><a href="/profiles/{{this.userId}}">{{this.name}}</a></h4>
+                                                                                        <span class="label label-success pull-right">{{this.app_type}}</span>
+                                                                                        <h5>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</h5>
+                                                                                        <hr style="margin:8px auto">
+                                                                                        Applied {{this.appliedAt}}
+                                                                                    </div>
+                                                                                </div>
                                                                                 <br> {{#if $eq applicationStatus 'frozen'}}
                                                                                 <h5>Avaiting confirmation from provider.</h5> {{else}} {{#if $eq applicationStatus 'assigned'}}
                                                                                 <h5>The job is assigned.</h5> {{else}} {{#if $eq applicationStatus 'done'}}
                                                                                 <h5>The project is completed.</h5> {{else}} {{#if $eq applicationStatus 'deactivated'}} <h5>You have deactivated the job. Activate it to accept the application.</h5> {{else}} {{#if $eq applicationStatus 'open'}}
                                                                                 <button class="btn btn-success btn-sm acceptApplication">Accept</button>
                                                                                 {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{#if $eq this.app_type 'counteroffer'}}
-                                                                                <h4>{{this.name}}</h4>
-                                                                                <span class="label label-success pull-right">{{this.app_type}}</span>
-                                                                                <small>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</small>&nbsp;|&nbsp;
-                                                                                <small>Applied {{this.appliedAt}}</small>
+                                                                                <div class="media">
+                                                                                    {{#if this.imgUrl}}
+                                                                                        <a class="pull-left" href="#">
+                                                                                            <img class="media-object dp img-rounded" src="{{this.imgUrl}}" width="100px">
+                                                                                        </a>
+                                                                                    {{else}}
+                                                                                        {{>avatar size="small"}}
+                                                                                    {{/if}}
+                                                                                    <div class="media-body">
+                                                                                        <h4 media-heading><a href="/profiles/{{this.userId}}">{{this.name}}</a></h4>
+                                                                                        <span class="label label-success pull-right">{{this.app_type}}</span>
+                                                                                        <h5>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</h5>
+                                                                                        <hr style="margin:8px auto">
+                                                                                        Applied {{this.appliedAt}}
+                                                                                    </div>
+                                                                                </div>
                                                                                 <br> 
                                                                                 {{#if first_hours}}
                                                                                     <p>Payment type: Blended <br>

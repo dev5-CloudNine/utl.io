@@ -566,7 +566,12 @@ Template.job.helpers({
     var jobDetails = Jobs.findOne(this._id);
     jobDetails.applications.forEach(function(provider) {
       var pDetails = Profiles.findOne({userId: provider.userId});
+      var imgURL
+      var imgUrl = Users.findOne({_id: provider.userId}).imgURL;
+      if(imgUrl)
+        imgURL = imgUrl;
       providerDetails = {
+        imgUrl: imgURL,
         userId: pDetails._id,
         name: pDetails.name,
         title: pDetails.title,
