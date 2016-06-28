@@ -13,7 +13,7 @@
                         <span class="pull-right"><button class="btn btn-primary btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Lik'd{{else}}Like{{/if}}</button></span>
                     {{/if}} -->
                     <h4>
-                        <a href="{{pathFor 'job'}}">{{title}}</a>
+                        <a href="{{#if currentUser}}{{pathFor 'job'}}{{else}}/sign-in{{/if}}">{{title}}</a>
                     </h4>
                     <small>
                         {{#if $eq servicelocation 'Remote Job'}}

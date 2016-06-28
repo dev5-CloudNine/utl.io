@@ -1,4 +1,5 @@
 <template name="job">
+    {{#if currentUser}}
     <div id="job" class="row">
         <div class="col-sm-12">
             <div class="board">
@@ -797,4 +798,7 @@
             </div>
         </div>
     </div>
+    {{else}}
+        <p>You access is restricted. <a href="/sign-in">Login</a></p>
+    {{/if}}
 </template>

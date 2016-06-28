@@ -1,4 +1,5 @@
 <template name="profile">
+	{{#if currentUser}}
 	<div id="profile">
 		<div class="panel panel-default">
 			<div class="panel-body">
@@ -189,4 +190,7 @@
 			</div>
 		</div>
 	</div>
+	{{else}}
+		<p>You access is restricted. <a href="/sign-in">Login</a></p>
+	{{/if}}
 </template>
