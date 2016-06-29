@@ -134,15 +134,27 @@ Template.jobFields.events({
 				Jobs.before.insert(function(userId, doc) {
 					doc.files = [];
 					doc.files.pushArray(files);
-				})				
+				});
+				// Jobs.before.update(function(userId, doc) {
+				// 	if(doc.files) {
+				// 		doc.files.pushArray(files);
+				// 	} else {
+				// 		doc.files = new Array();
+				// 		for(var i = 0; i < files.length; i++) {
+				// 			doc.files.push(files[i]);
+				// 		}
+				// 		console.log(doc.files);
+				// 		debugger;
+				// 	}
+				// })
 				toastr.success('Uploaded documents successfully');
 			}
 		})
 	}
 });
 
-Array.prototype.pushArray = function() {
-	this.push.apply(this, this.concat.apply([], arguments));
+Array.prototype.pushArray = function(files) {
+	files.push.apply(files, files.concat.apply([], arguments));
 };
 
 removeFile = function(url) {
