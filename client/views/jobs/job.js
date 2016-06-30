@@ -789,7 +789,7 @@ Template.job.helpers({
         return 'label-done';
     },
     showTabs: function(id) {
-        return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned','submitted','approved','rejected']}}]}) ? true : false;      
+        return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned','pending_payment','done']}}]}) ? true : false;      
     },
     jobNotAssigned: function() {
       if(this.applicationStatus == 'open' && this.status == 'active') {
