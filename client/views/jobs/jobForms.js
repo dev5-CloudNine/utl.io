@@ -106,7 +106,7 @@ Template.jobFields.events({
 			$('div.loc').hide();
 		}
 	},
-	'change #parentCategories': function(event, instance) {
+	'change select[name="jobtype"]': function(event, instance) {
 		var parentId = $(event.target).val();
 		instance.selParent.set(parentId);
 	},
@@ -172,7 +172,7 @@ removeFile = function(url) {
 }
 
 Template.jobFields.created = function() {
-	this.selParent = new ReactiveVar(null);
+	this.selParent = new ReactiveVar(this.data.job.jobtype);
 }
 
 Template.jobFields.helpers({
@@ -198,7 +198,7 @@ Template.jobFields.helpers({
 	},
 	childCategories: function () {
 		var parentId = Template.instance().selParent.get();
-		return parentId ? SubCategories.find({parentId: parentId}) : null;
+		return parentId ? SubCategories.find({parentId: parentId}).fetch() : null;
 	}
 });
 
