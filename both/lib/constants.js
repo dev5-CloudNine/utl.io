@@ -230,7 +230,6 @@ MOBILE_CARRIERS = function() {
     {label: "Pioneer Cellular", value: "@zsend.com"},
     {label: "Pocket Wireless", value: "@sms.pocket.com"},
     {label: "Qwest Wireless", value: "@qwestmp.com"},
-    {label: "Red Pocket Mobile", value: "@mms.att.net"},
     {label: "Rogers Wireless", value: "@mms.rogers.com"},
     {label: "Simple Mobile", value: "@smtext.com"},
     {label: "Southern LINC", value: "@page.southernlinc.com"},
