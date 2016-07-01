@@ -114,20 +114,12 @@
 								{{#if educationDetails}}
 									<hr>
 									<h4>Education Details</h4>
-									<ul>
-										{{#each educationDetails}}
-											<li>{{qualification}} from {{university}}, graduated in the year {{yearOfPassing}}</li>
-										{{/each}}
-									</ul>
+									<p>{{educationDetails}}</p>
 								{{/if}}
 								{{#if certifications}}
 									<hr>
 									<h4>Certifications</h4>
-									{{#each certifications}}
-										<h5>{{certificationName}}</h5>
-										<p>Authority:{{certificationAuthority}}</p>
-										<p>Start &amp; End Date: {{formatDate certificationStartDate}} - {{formatDate certificationEndDate}}</p>
-									{{/each}}
+									<p>{{certifications}}</p>
 								{{/if}}
 								{{#if languages}}
 									<hr>
