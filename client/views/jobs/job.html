@@ -109,6 +109,11 @@
                                                             {{/if}}
                                                         {{/if}}
                                                     {{/if}}
+                                                {{else}}
+                                                    {{#if $eq applicationStatus 'pending_payment'}}
+                                                        <hr>
+                                                        <small>You have requested the payment. A notification has been sent to the  buyer. You'll be notified when the payment is released.</small>
+                                                    {{/if}}
                                                 {{/if}}
                                             {{/if}}
                                         {{else}}
@@ -120,11 +125,18 @@
                                                         <button class="margin-top-5 btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
                                                     </div>
                                                 {{else}}
-                                                    {{#if $eq assignmentStatus 'pending_payment'}}
+                                                    {{#if $eq assignmentStatus 'approved'}}
                                                         <hr>
                                                         <div class="col-sm-12">
-                                                            <button class="btn btn-sm btn-success margin-top-5 approvePayment">Approve Payment</button>
+                                                            <small>You have approved the job submitted. The provider will now be able to request for payment.</small>
                                                         </div>
+                                                    {{else}}
+                                                        {{#if $eq assignmentStatus 'pending_payment'}}
+                                                            <hr>
+                                                            <div class="col-sm-12">
+                                                                <button class="btn btn-sm btn-success margin-top-5 approvePayment">Release Payment</button>
+                                                            </div>
+                                                        {{/if}}
                                                     {{/if}}
                                                 {{/if}}
                                             {{/if}}
@@ -153,11 +165,25 @@
                                         {{/if}}
                                         <h4>Service Schedule</h4> {{#if exactdate}} On: {{exactdate}} {{/if}} {{#if startdate}} Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} through {{endtime}} {{/if}} {{#if ratebasis}}
                                         <hr>
-                                        <h4>Budget</h4> Payment type: {{ratebasis}}
-                                        <br> {{#if hourlyrate}} {{hourlyrate}} USD per hour for {{maxhours}} hours.
-                                        <br>Net: {{freelancer_nets}} USD {{else}} {{#if payforfirsthours}} {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours.
-                                        <br>Net: {{freelancer_nets}} USD {{else}} {{#if rateperdevice}} {{rateperdevice}} USD for {{maxdevices}} devices.
-                                        <br>Net: {{freelancer_nets}} USD {{else}} {{#if fixedamount}} Net: {{freelancer_nets}} USD. {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} 
+                                        <h4>Budget</h4>
+                                        Payment Type: {{ratebasis}} <br>
+                                        {{#if $eq ratebasis 'Blended'}}
+                                            {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
+                                            Net: {{freelancer_nets}} USD.
+                                        {{/if}}
+                                        {{#if $eq ratebasis 'Per Device'}}
+                                            {{rateperdevice}} USD for {{maxdevices}} devices.
+                                            <br>Net: {{freelancer_nets}} USD. 
+                                        {{/if}}
+                                        {{#if $eq ratebasis 'Per Hour'}}
+                                            {{hourlyrate}} USD per hour for {{maxhours}} hours.
+                                            <br>Net: {{freelancer_nets}} USD.
+                                        {{/if}}
+                                        {{#if $eq ratebasis 'Fixed Pay'}}
+                                            Fixed amount: {{fixedamount}} USD.
+                                            <br>Net: {{freelancer_nets}} USD.
+                                        {{/if}}
+                                        {{/if}} 
                                         {{#if assignedProvider}}
                                             <hr> Confidential Info:
                                             <br> {{contactperson}}
@@ -506,42 +532,60 @@
                                                                                 <div class="media">
                                                                                     {{#if this.imgUrl}}
                                                                                         <a class="pull-left" href="/profiles/{{this.userId}}">
-                                                                                            <img class="media-object dp img-rounded" src="{{this.imgUrl}}" width="100px">
+                                                                                            <img class="media-object" src="{{this.imgUrl}}" width="75px">
                                                                                         </a>
                                                                                     {{else}}
                                                                                         {{>avatar size="small"}}
                                                                                     {{/if}}
                                                                                     <div class="media-body">
                                                                                         <h4 media-heading><a href="/profiles/{{this.userId}}">{{this.name}}</a></h4>
-                                                                                        <span class="label label-success pull-right">{{this.app_type}}</span>
                                                                                         <h5>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</h5>
-                                                                                        <hr style="margin:8px auto">
                                                                                         Applied {{this.appliedAt}}
                                                                                     </div>
                                                                                 </div>
+                                                                                <span class="label label-success">{{this.app_type}}</span><br>
+                                                                                {{#with paymentDetails}}
+                                                                                    Payment Type: {{ratebasis}} <br>
+                                                                                    {{#if $eq ratebasis 'Blended'}}
+                                                                                        {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
+                                                                                        Net: {{freelancer_nets}} USD.
+                                                                                    {{/if}}
+                                                                                    {{#if $eq ratebasis 'Per Device'}}
+                                                                                        {{rateperdevice}} USD for {{maxdevices}} devices.
+                                                                                        <br>Net: {{freelancer_nets}} USD. 
+                                                                                    {{/if}}
+                                                                                    {{#if $eq ratebasis 'Per Hour'}}
+                                                                                        {{hourlyrate}} USD per hour for {{maxhours}} hours.
+                                                                                        <br>Net: {{freelancer_nets}} USD.
+                                                                                    {{/if}}
+                                                                                    {{#if $eq ratebasis 'Fixed Pay'}}
+                                                                                        Fixed amount: {{fixedamount}} USD.
+                                                                                        <br>Net: {{freelancer_nets}} USD.
+                                                                                    {{/if}}
+                                                                                {{/with}}
                                                                                 <br> {{#if $eq applicationStatus 'frozen'}}
                                                                                 <h5>Avaiting confirmation from provider.</h5> {{else}} {{#if $eq applicationStatus 'assigned'}}
                                                                                 <h5>The job is assigned.</h5> {{else}} {{#if $eq applicationStatus 'done'}}
                                                                                 <h5>The project is completed.</h5> {{else}} {{#if $eq applicationStatus 'deactivated'}} <h5>You have deactivated the job. Activate it to accept the application.</h5> {{else}} {{#if $eq applicationStatus 'open'}}
                                                                                 <button class="btn btn-success btn-sm acceptApplication">Accept</button>
-                                                                                {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{#if $eq this.app_type 'counteroffer'}}
+                                                                                {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} 
+                                                                                {{#if $eq this.app_type 'counteroffer'}}
                                                                                 <div class="media">
                                                                                     {{#if this.imgUrl}}
                                                                                         <a class="pull-left" href="/profiles/{{this.userId}}">
-                                                                                            <img class="media-object dp img-rounded" src="{{this.imgUrl}}" width="100px">
+                                                                                            <img class="media-object" src="{{this.imgUrl}}" width="75px">
                                                                                         </a>
                                                                                     {{else}}
                                                                                         {{>avatar size="small"}}
                                                                                     {{/if}}
                                                                                     <div class="media-body">
                                                                                         <h4 media-heading><a href="/profiles/{{this.userId}}">{{this.name}}</a></h4>
-                                                                                        <span class="label label-success pull-right">{{this.app_type}}</span>
                                                                                         <h5>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</h5>
-                                                                                        <hr style="margin:8px auto">
                                                                                         Applied {{this.appliedAt}}
                                                                                     </div>
                                                                                 </div>
-                                                                                <br> 
+                                                                                <br>
+                                                                                <span class="label label-success">{{this.app_type}}</span><br>
                                                                                 {{#if first_hours}}
                                                                                     <p>Payment type: Blended <br>
                                                                                     Pay {{first_hours}} USD for the first {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours.
@@ -570,6 +614,7 @@
                                                                                 {{/if}} {{/if}} {{/if}} {{/if}}
                                                                             {{/if}}
                                                                         </span>
+                                                                        <hr>
                                                                     {{else}}
                                                                     <h6>No providers have applied for this job yet.</h6> {{/each}}
                                                                 </div>

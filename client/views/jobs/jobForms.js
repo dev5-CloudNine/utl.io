@@ -67,7 +67,7 @@ Template.jobFields.events({
 			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
 		}
 	},
-	'change input[name="payforfirsthours"], keyup input[name="payforfirsthours"], change input[name="firsthours"], keyup input[name="firsthours"], change input[name="payfornexthours"], keyup input[name="payfornexthours"], change input[name="nexthours"], keyup input[name="nexthours"]': function(event, template) {
+	'change input[name="payforfirsthours"], keyup input[name="payforfirsthours"], change input[name="payfornexthours"], keyup input[name="payfornexthours"], change input[name="nexthours"], keyup input[name="nexthours"]': function(event, template) {
 		var payforfirsthours = $('input[name="payforfirsthours"]').val();
 		var firsthours = $('input[name="firsthours"]').val();
 		var payfornexthours = $('input[name="payfornexthours"]').val();
@@ -172,7 +172,11 @@ removeFile = function(url) {
 }
 
 Template.jobFields.created = function() {
-	this.selParent = new ReactiveVar(this.data.job.jobtype);
+	if(this.data) {
+		this.selParent = new ReactiveVar(this.data.job.jobtype);
+	} else {
+		this.selParent = new ReactiveVar(null);
+	}
 }
 
 Template.jobFields.helpers({

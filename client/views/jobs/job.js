@@ -796,6 +796,10 @@ Template.job.helpers({
         return true;
       }
       return false;
+    },
+    paymentDetails: function() {
+      var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+      return jobDetails;
     }
 });
 
