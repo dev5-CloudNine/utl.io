@@ -3,7 +3,7 @@
 		{{#each providerNotifications}}
 			{{#if $eq this.notificationType 'applicationAccepted'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -17,7 +17,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'jobInvitation'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -31,7 +31,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'routedJob'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -45,7 +45,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'approveAssignment'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -59,7 +59,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'rejectAssignment'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -73,7 +73,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'approvePayment'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -87,7 +87,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'addFavProvider'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -100,7 +100,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'remFavProvider'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">

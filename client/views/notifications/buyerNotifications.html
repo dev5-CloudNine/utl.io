@@ -3,7 +3,7 @@
 		{{#each buyerNotifications}}
 			{{#if $eq this.notificationType 'newJobApplication'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -17,7 +17,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'confirmAssignment'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -31,7 +31,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'declineAssignment'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -45,7 +45,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'submitAssignment'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -59,7 +59,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'requestPayment'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -73,7 +73,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'addFavBuyer'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">
@@ -86,7 +86,7 @@
 			{{/if}}
 			{{#if $eq this.notificationType 'remFavBuyer'}}
 				{{#with this}}
-					<div class="notification-item {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
+					<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 						<div class="media">
 							<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
 							<div class="media-body">

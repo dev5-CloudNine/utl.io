@@ -60,7 +60,7 @@ Template.providerNotifications.helpers({
 })
 
 Template.providerNotifications.events({
-	'click a.markRead': function(event, template) {
+	'click div.markRead': function(event, template) {
 		Meteor.call('markRead', this.notificationId, this.side);
 	}
 })
