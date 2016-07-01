@@ -505,7 +505,7 @@
                                                                             {{#if $eq this.app_type 'application'}}
                                                                                 <div class="media">
                                                                                     {{#if this.imgUrl}}
-                                                                                        <a class="pull-left" href="#">
+                                                                                        <a class="pull-left" href="/profiles/{{this.userId}}">
                                                                                             <img class="media-object dp img-rounded" src="{{this.imgUrl}}" width="100px">
                                                                                         </a>
                                                                                     {{else}}
@@ -527,7 +527,7 @@
                                                                                 {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{/if}} {{#if $eq this.app_type 'counteroffer'}}
                                                                                 <div class="media">
                                                                                     {{#if this.imgUrl}}
-                                                                                        <a class="pull-left" href="#">
+                                                                                        <a class="pull-left" href="/profiles/{{this.userId}}">
                                                                                             <img class="media-object dp img-rounded" src="{{this.imgUrl}}" width="100px">
                                                                                         </a>
                                                                                     {{else}}
