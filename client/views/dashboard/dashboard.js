@@ -110,5 +110,8 @@ Template.dashboard.helpers({
 	},
 	providerCompletedJobsCount: function() {
 		return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'done'}]}).count();
+	},
+	accountBalance: function() {
+		return Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 	}
 });
