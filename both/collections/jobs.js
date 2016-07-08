@@ -227,10 +227,6 @@ Jobs.attachSchema(
         }
     },
     files: {
-      type: Array,
-      optional: true
-    },
-    'files.$': {
       type: String,
       optional: true
     },

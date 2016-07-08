@@ -125,28 +125,20 @@ Template.jobFields.events({
 				toastr.error('Failed to upload documents.');
 			}
 			else {
+				Session.set('fileUpload', true);
 				var files = [];
-				var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.url+'\')"></i> <a href='+result.url+' target="_blank">'+result.url+'</a></li>'
+				var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.secure_url+'</a></li>'
 				$('.fileList').append(fileListItem);
 				$('ul.fileList li').each(function(li) {
 					files.push($(this).data('url'));
 				})
 				Jobs.before.insert(function(userId, doc) {
-					doc.files = [];
-					doc.files.pushArray(files);
+					doc.files = files.toString();
+					//doc.files.pushArray(files);
 				});
-				// Jobs.before.update(function(userId, doc) {
-				// 	if(doc.files) {
-				// 		doc.files.pushArray(files);
-				// 	} else {
-				// 		doc.files = new Array();
-				// 		for(var i = 0; i < files.length; i++) {
-				// 			doc.files.push(files[i]);
-				// 		}
-				// 		console.log(doc.files);
-				// 		debugger;
-				// 	}
-				// })
+				Jobs.before.update(function(userId, doc) {
+					doc.files +=  ','+files.toString();
+				});
 				toastr.success('Uploaded documents successfully');
 			}
 		})
@@ -166,7 +158,7 @@ removeFile = function(url) {
 	    toastr.error("Operation failed");
 	  } else {
 	  	$("ul.fileList").find("[data-url='"+url+"']").remove();
-	  	toastr.success('Removed File');
+	  	toastr.success('Document is deleted successfully');
 	  }
 	});
 }

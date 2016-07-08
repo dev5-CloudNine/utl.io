@@ -800,6 +800,9 @@ Template.job.helpers({
     paymentDetails: function() {
       var jobDetails = Jobs.findOne({_id: Router.current().params._id});
       return jobDetails;
+    },
+    convertToArray: function(files) {
+      return files.split(',');
     }
 });
 

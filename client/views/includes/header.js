@@ -86,7 +86,7 @@ Template.header.helpers({
     return Jobs.find({$and: [{userId: Meteor.userId()}, {status: 'deactivated'}]}).count();
   },
   dwollaId: function() {
-    var dwollaId = Wallet.findOne({userId: Meteor.userId()}).dwollaId;
+    var dwollaId = Wallet.findOne({userId: Meteor.userId()}) && Wallet.findOne({userId: Meteor.userId()}).dwollaId;
     if(dwollaId)
       return true;
     return false;

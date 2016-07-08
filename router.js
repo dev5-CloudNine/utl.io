@@ -753,6 +753,23 @@ Router.map(function() {
         path: '/notFound'
     });
 
+    this.route('payment',{
+    });
+
+
+    this.route('oauth_return',{
+        where: 'server',
+        onBeforeAction: function () {
+            var userId = this.request.query.id;
+            var code = this.request.query.code;
+            console.log(Meteor.call("finishAuth",code,userId));
+            this.response.writeHead(302, {
+                'Location': 'http://localhost:3000/payment'
+            });
+            this.response.end();
+        }
+    });
+
 
 });
 

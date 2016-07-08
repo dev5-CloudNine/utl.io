@@ -1,0 +1,19 @@
+{
+  "name": "utl.io",
+  "version": "1.0.0",
+  "description": "# IT related Job Board and Developer Directory",
+  "main": "router.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/yashosagar/utl.io.git"
+  },
+  "author": "Prathviraj",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/yashosagar/utl.io#readme",
+  "dependencies": {
+    "dwolla-node": "^1.1.3"
+  }
+}
