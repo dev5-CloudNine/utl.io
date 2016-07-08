@@ -1,6 +1,6 @@
 <template name="jobLabels">
     {{#if featured}}<span class="label label-primary"><i class="fa fa-trophy"></i> Featured</span>{{/if}} <br>
-    {{#if jobtype}}<span><small><a href="/category/{{jobtype}}" class="jobTypeFilter">{{jobtype}}</a></small></span>&nbsp;&raquo;&nbsp;<a href="{{#if isInRole 'provider, corporate-provider'}}/subcategory/{{jobSubCategory}}{{/if}}{{#if isInRole 'buyer, corporate-manager'}}/pro/{{jobSubCategory}}{{/if}}"><small>{{jobSubCategory}}</small></a>{{/if}}
+    {{#if jobtype}}<span><small><a href="/category/{{jobtype}}" class="jobTypeFilter">{{jobtype}}</a></small></span>&nbsp;&raquo;&nbsp;<a href="{{#if isInRole 'provider, corporate-provider'}}/subcategory/{{jobSCategory}}{{/if}}{{#if isInRole 'buyer, corporate-manager'}}/pro/{{jobSCategory}}{{/if}}"><small>{{jobSubCategory}}</small></a>{{/if}}
 </template>
 <template name="jobExpiredAlert">
     {{#if expired}}

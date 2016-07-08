@@ -16,6 +16,28 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob'], {
         		Router.go('job', {_id: Router.current().params._id});
 			}
 		}
+	},
+	before: {
+		insert: function(doc) {
+			var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+			var your_cost = doc.your_cost;
+			if(buyerAccBalance < your_cost) {
+				alert("You don't have sufficient account balance to post this job");
+				return;
+			} else {
+				this.result(doc);
+			}
+		},
+		update: function(doc) {
+			var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+			var your_cost = doc.$set.your_cost;
+			if(buyerAccBalance < your_cost) {
+				alert("You don't have sufficient account balance to post this job");
+				return;
+			} else {
+				this.result(doc);
+			}
+		}
 	}
 });
 
