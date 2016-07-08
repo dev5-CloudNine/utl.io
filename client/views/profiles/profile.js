@@ -42,6 +42,17 @@ Template.profile.helpers({
   },
   resumeUrl: function() {
     return Meteor.users.findOne({_id: this.userId}).resumeURL;
+  },
+  itypes: function() {
+    var itypes = [];
+    var industryTypes = this.industryTypes;
+    for(var i  = 0; i < industryTypes.length; i++) {
+      itypes.push({
+        encodedType: encodeURIComponent(industryTypes[i]),
+        decodedType: industryTypes[i]
+      });
+    }
+    return itypes;
   }
 });
 

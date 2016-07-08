@@ -97,12 +97,12 @@
 								{{#if industryTypes}}
 									<hr>
 									<h4>Job Categories</h4>
-									{{#each industryTypes}}
+									{{#each itypes}}
 										{{#if isInRole 'provider, corporate-provider'}}
-											<a href="/subcategory/{{this}}">{{this}}</a>
+											<a href="/subcategory/{{this.encodedType}}" class="label label-default">{{this.decodedType}}</a>
 										{{/if}}
 										{{#if isInRole 'buyer, corporate-manager'}}
-											<a href="/pro/{{this}}">{{this}}</a>
+											<a href="/pro/{{this.encodedType}}" class="label label-default">{{this.decodedType}}</a>
 										{{/if}}
 									{{/each}}
 								{{/if}}
