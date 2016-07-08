@@ -67,7 +67,6 @@ Meteor.publish('usersTasks', function() {
     }
 })
 
-
 Meteor.publish("tasks", function (taskID) {
     return Tasks.find({_id:taskID});
 });
@@ -536,3 +535,7 @@ Meteor.publish('subcategoryProfiles', function(subcategory) {
     return Profiles.find({industryTypes: {$in: [subcategory]}});
 });
 
+Meteor.publish('userWallet', function(userId) {
+    check(arguments, [Match.Any]);
+    return Wallet.find({userId: userId});
+})

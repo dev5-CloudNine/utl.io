@@ -6,6 +6,7 @@ TimeSheet = new Meteor.Collection("timeSheet");
 Reviews = new Meteor.Collection("reviews");
 Notifications = new Meteor.Collection("notifications");
 Skills = new Meteor.Collection("skills");
+Wallet = new Meteor.Collection("wallet");
 
 Categories.attachSchema(
 	new SimpleSchema({
@@ -87,5 +88,17 @@ SubCategories.allow({
 	},
 	remove: function() {
 		return true;
+	}
+});
+
+Wallet.allow({
+	insert: function(userId, doc) {
+		return false;
+	},
+	update: function(userId, doc, fields, modifier) {
+		return false;
+	},
+	remove: function() {
+		return false;
 	}
 });

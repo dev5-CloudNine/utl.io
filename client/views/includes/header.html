@@ -72,6 +72,9 @@
                                 {{#unless currentUser.isBuyer}}
                                     <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
                                 {{/unless}}
+                                {{#unless dwollaId}}
+                                    <li><a href="https://www.dwolla.com/Register" target="_blank">Create Dwolla Account</a></li>
+                                {{/unless}}
                             {{/if}}
                             {{#if isInRole 'provider'}}
                                 <li id="user-drop-down" class="dropdown">
@@ -103,6 +106,9 @@
                                     <li class="{{isActiveRoute regex='^profile$'}}">
                                         <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
                                     </li>
+                                {{/unless}}
+                                {{#unless dwollaId}}
+                                    <li><a href="https://www.dwolla.com/Register" target="_blank">Create Dwolla Account</a></li>
                                 {{/unless}}
                             {{/if}}
                             {{#if isInRole 'corporate-admin'}}

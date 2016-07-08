@@ -1,5 +1,4 @@
-.jumbotron,
-footer {
+.jumbotron, footer {
     color: #27272b !important;
     background-color: #fff !important;
 }
@@ -22,14 +21,10 @@ footer {
     line-height: 50px;
 }
 
-h3,
-h4 {
+h3, h4 {
     font-weight: normal !important;
 }
 
-#homePageIntro {
-
-}
 .gradient-blue-orange-h {
     height: auto;
     background: url("images/glossy.png") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
@@ -644,6 +639,10 @@ footer {
 }
 
 .avatar-large .avatar-image {
+  position: inherit;
+}
+
+.avatar-medium .avatar-image {
   position: inherit;
 }
 

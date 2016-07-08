@@ -141,3 +141,7 @@ Meteor.users.before.insert(function(userId,doc){
   id++;
   doc.readableID= "UTLM-"+id;  
 });
+
+Meteor.users.after.insert(function(userId, doc) {
+  Wallet.insert({userId: doc._id, dwollaId: null, accountBalance: 0.0});
+});

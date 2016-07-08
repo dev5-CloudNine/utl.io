@@ -804,22 +804,22 @@ Template.job.helpers({
 });
 
 Template.job.rendered = function() {
-      $('#spinner').hide();
-      var id = $('.check-in-toggle').data('id');
-      var displayTime = TimeSheet.findOne({'jobID':id});
-      if(displayTime) {
-        displayTime = displayTime.checkIn;
-      } else {
-        $('.check-in-toggle').prop("checked", true);
-        $('.show-checkin-time').hide();
-        return;
-      }
-      if(displayTime=='') {
-        $('.check-in-toggle').prop("checked", true);
-        $('.show-checkin-time').hide();
-      }
-      else {
-        $('.check-in-toggle').prop("checked", false);
-        $('.show-checkin-time').show();
-      }
+  $('#spinner').hide();
+  var id = $('.check-in-toggle').data('id');
+  var displayTime = TimeSheet.findOne({'jobID':id});
+  if(displayTime) {
+    displayTime = displayTime.checkIn;
+  } else {
+    $('.check-in-toggle').prop("checked", true);
+    $('.show-checkin-time').hide();
+    return;
+  }
+  if(displayTime=='') {
+    $('.check-in-toggle').prop("checked", true);
+    $('.show-checkin-time').hide();
+  }
+  else {
+    $('.check-in-toggle').prop("checked", false);
+    $('.show-checkin-time').show();
+  }
 };
