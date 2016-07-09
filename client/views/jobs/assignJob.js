@@ -16,14 +16,10 @@ Template.assignJob.events({
 			doc.applicationStatus = 'frozen';
 			doc.applications.push(appDetails);
 			doc.routed = true;
-			console.log(doc);
-			debugger;
 		});
 		Jobs.after.insert(function(userId, doc) {
 			if(!Session.get('routingJob'))
 				return;
-			console.log(doc);
-			debugger;
 			Meteor.call('routeNotification', Meteor.userId(), doc, function(error) {
 				if(error) {
 					toastr.error('Failed to route job.');

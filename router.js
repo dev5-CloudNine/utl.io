@@ -311,6 +311,9 @@ Router.map(function() {
             } else {
                 this.render('notFound');
             }
+        },
+        waiton: function() {
+            return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
 
