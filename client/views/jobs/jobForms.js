@@ -19,7 +19,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob'], {
 	},
 	before: {
 		insert: function(doc) {
-			var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+			var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}) && Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 			var your_cost = doc.your_cost;
 			if(buyerAccBalance < your_cost) {
 				alert("You don't have sufficient account balance to post this job");
@@ -29,7 +29,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob'], {
 			}
 		},
 		update: function(doc) {
-			var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+			var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}) && Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 			var your_cost = doc.$set.your_cost;
 			if(buyerAccBalance < your_cost) {
 				alert("You don't have sufficient account balance to post this job");
@@ -42,6 +42,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob'], {
 });
 
 Template.jobFields.rendered = function() {
+  	$('#spinner').hide();
 	Meteor.typeahead.inject('.typeahead');
 	$('.note-editor .note-toolbar .note-insert').remove();
 }
@@ -136,6 +137,9 @@ Template.jobFields.events({
 		event.preventDefault();
 		$('#spinner').show();
 		var files = $(event.currentTarget)[0].files;
+		
+
+		
 		if(!files)
 			return;
 		S3.upload({
@@ -147,26 +151,47 @@ Template.jobFields.events({
 				toastr.error('Failed to upload documents.');
 			}
 			else {
-				Session.set('fileUpload', true);
-				var files = [];
-				var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.secure_url+'</a></li>'
-				$('.fileList').append(fileListItem);
-				$('ul.fileList li').each(function(li) {
-					files.push($(this).data('url'));
-				})
-				Jobs.before.insert(function(userId, doc) {
-					doc.files = files.toString();
-				});
-				Jobs.before.update(function(userId, doc) {
-					if(doc.files) {
-						doc.files +=  ','+files.toString();
-					} else {
-						doc.files = files.toString();
+				var jobID = Router.current().params._id;
+				if(jobID) {
+		            Meteor.call('addJobFile', result.secure_url, jobID,function (error, result) {
+		              if(!error)
+		                toastr.success("File uploaded successssfully");
+		            });
+				} else {
+					var files = [];
+					var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.secure_url+'</a></li>'
+					$('.fileList').append(fileListItem);
+					$('ul.fileList li').each(function(li) {
+						files.push($(this).data('url'));
+					})
+					Jobs.before.insert(function(userId, doc) {
+						doc.files = files;
+					});
+					toastr.success('File uploaded successssfully');
 					}
-				});
-				toastr.success('Uploaded documents successfully');
 			}
 		})
+		
+	},
+	'click .remove-job-file' : function(event, template) {
+	    event.preventDefault();
+	    $('#spinner').show();
+		var jobID = Router.current().params._id;
+	    var url = $(event.currentTarget).data('url');
+	    var index = url.indexOf(S3_FILEUPLOADS)-1;
+	    var path = url.substr(index);
+	    S3.delete(path, function(err, res) {
+	        $('#spinner').hide();
+	        if (err) {
+	            toastr.error("Operation failed");
+	        } else {
+	            Meteor.call('deleteJobFile', url, jobID,function (error, result) {
+	                if(!error)
+	                  toastr.success("Deleted");
+	            });
+	        }
+	    });
+	    event.stopPropagation();
 	}
 });
 
@@ -220,6 +245,10 @@ Template.jobFields.helpers({
 	childCategories: function () {
 		var parentId = Template.instance().selParent.get();
 		return parentId ? SubCategories.find({parentId: parentId}).fetch() : null;
+	},
+	files: function() {
+		if(!this.job) return []; 
+		return Jobs.findOne({_id:this.job._id}).files;
 	}
 });
 

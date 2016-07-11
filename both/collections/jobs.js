@@ -227,8 +227,11 @@ Jobs.attachSchema(
         }
     },
     files: {
-      type: String,
+      type: Array,
       optional: true
+    },
+    'files.$': {
+      type: String,
     },
     applications: {
       type: Array,

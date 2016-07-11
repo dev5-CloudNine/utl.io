@@ -67,14 +67,21 @@
                 <label class="control-label"></label>
                 <div class="input-group">
                     <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px">
-                        <input type="file" class="file_bag" name="files" data-schema-key="files" multiple=true> Upload Documents
+                        <input type="file" class="file_bag" multiple=true> Upload Documents
                     </label>
                 </div>
             </div>
             
         </div>
-        <div class="col-sm-12">                
-            <ul class="fileList">
+        <div class="col-sm-12">  
+            <div id="spinner">
+                {{> spinner}}
+            </div>              
+            <ul class="fileList" style="list-style-type: none;">
+            
+            {{#each files}}
+            <li><i class="fa fa-times-circle remove-job-file" data-url="{{this}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this}}" target="_blank">{{this}}</a></li>
+            {{/each}}
                 
             </ul>
         </div>
