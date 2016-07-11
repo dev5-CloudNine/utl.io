@@ -649,3 +649,7 @@ footer {
 .media-body a {
   font-size: 16px !important;
 }
+
+.profileLabel {
+  line-height: 2.4 !important;
+}

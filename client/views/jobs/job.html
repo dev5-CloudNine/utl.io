@@ -169,18 +169,21 @@
                                         Payment Type: {{ratebasis}} <br>
                                         {{#if $eq ratebasis 'Blended'}}
                                             {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
+                                            Gross: {{totalfromclient}} USD.
                                             Net: {{freelancer_nets}} USD.
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Device'}}
-                                            {{rateperdevice}} USD for {{maxdevices}} devices.
-                                            <br>Net: {{freelancer_nets}} USD. 
+                                            {{rateperdevice}} USD for {{maxdevices}} devices. <br>
+                                            Gross: {{totalfromclient}} USD. <br>
+                                            Net: {{freelancer_nets}} USD. 
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Hour'}}
-                                            {{hourlyrate}} USD per hour for {{maxhours}} hours.
-                                            <br>Net: {{freelancer_nets}} USD.
+                                            {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
+                                            Gross: {{totalfromclient}} USD. <br>
+                                            Net: {{freelancer_nets}} USD.
                                         {{/if}}
                                         {{#if $eq ratebasis 'Fixed Pay'}}
-                                            Fixed amount: {{fixedamount}} USD.
+                                            Gross: {{fixedamount}} USD.
                                             <br>Net: {{freelancer_nets}} USD.
                                         {{/if}}
                                         {{/if}} 
@@ -532,7 +535,7 @@
                                                                                 <div class="media">
                                                                                     {{#if this.imgUrl}}
                                                                                         <a class="pull-left" href="/profiles/{{this.userId}}">
-                                                                                            <img class="media-object" src="{{this.imgUrl}}" width="75px">
+                                                                                            <img class="media-object" src="{{this.imgUrl}}" width="64px">
                                                                                         </a>
                                                                                     {{else}}
                                                                                         {{>avatar size="small"}}
@@ -542,29 +545,35 @@
                                                                                         <h5>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</h5>
                                                                                         Applied {{this.appliedAt}}
                                                                                     </div>
+                                                                                    <div class="media-body">
+                                                                                        <span class="label label-success">{{this.app_type}}</span>
+                                                                                        <br>
+                                                                                        {{#with paymentDetails}}
+                                                                                            Payment type: {{ratebasis}} <br>
+                                                                                            {{#if $eq ratebasis 'Blended'}}
+                                                                                                {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
+                                                                                                Gross: {{totalfromclient}} USD. <br>
+                                                                                                Net: {{freelancer_nets}} USD.
+                                                                                            {{/if}}
+                                                                                            {{#if $eq ratebasis 'Per Device'}}
+                                                                                                {{rateperdevice}} USD for {{maxdevices}} devices. <br>
+                                                                                                Gross: {{totalfromclient}} USD.
+                                                                                                <br>Net: {{freelancer_nets}} USD. 
+                                                                                            {{/if}}
+                                                                                            {{#if $eq ratebasis 'Per Hour'}}
+                                                                                                {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
+                                                                                                Gross: {{totalfromclient}} USD. <br>
+                                                                                                Net: {{freelancer_nets}} USD.
+                                                                                            {{/if}}
+                                                                                            {{#if $eq ratebasis 'Fixed Pay'}}
+                                                                                                Gross: {{fixedamount}} USD.
+                                                                                                <br>Net: {{freelancer_nets}} USD.
+                                                                                            {{/if}}
+                                                                                        {{/with}}
+                                                                                    </div>
                                                                                 </div>
-                                                                                <span class="label label-success">{{this.app_type}}</span><br>
-                                                                                {{#with paymentDetails}}
-                                                                                    Payment Type: {{ratebasis}} <br>
-                                                                                    {{#if $eq ratebasis 'Blended'}}
-                                                                                        {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
-                                                                                        Net: {{freelancer_nets}} USD.
-                                                                                    {{/if}}
-                                                                                    {{#if $eq ratebasis 'Per Device'}}
-                                                                                        {{rateperdevice}} USD for {{maxdevices}} devices.
-                                                                                        <br>Net: {{freelancer_nets}} USD. 
-                                                                                    {{/if}}
-                                                                                    {{#if $eq ratebasis 'Per Hour'}}
-                                                                                        {{hourlyrate}} USD per hour for {{maxhours}} hours.
-                                                                                        <br>Net: {{freelancer_nets}} USD.
-                                                                                    {{/if}}
-                                                                                    {{#if $eq ratebasis 'Fixed Pay'}}
-                                                                                        Fixed amount: {{fixedamount}} USD.
-                                                                                        <br>Net: {{freelancer_nets}} USD.
-                                                                                    {{/if}}
-                                                                                {{/with}}
                                                                                 <br> {{#if $eq applicationStatus 'frozen'}}
-                                                                                <h5>Avaiting confirmation from provider.</h5> {{else}} {{#if $eq applicationStatus 'assigned'}}
+                                                                                <h5>Awaiting confirmation from provider.</h5> {{else}} {{#if $eq applicationStatus 'assigned'}}
                                                                                 <h5>The job is assigned.</h5> {{else}} {{#if $eq applicationStatus 'done'}}
                                                                                 <h5>The project is completed.</h5> {{else}} {{#if $eq applicationStatus 'deactivated'}} <h5>You have deactivated the job. Activate it to accept the application.</h5> {{else}} {{#if $eq applicationStatus 'open'}}
                                                                                 <button class="btn btn-success btn-sm acceptApplication">Accept</button>
@@ -573,7 +582,7 @@
                                                                                 <div class="media">
                                                                                     {{#if this.imgUrl}}
                                                                                         <a class="pull-left" href="/profiles/{{this.userId}}">
-                                                                                            <img class="media-object" src="{{this.imgUrl}}" width="75px">
+                                                                                            <img class="media-object" src="{{this.imgUrl}}" width="64px">
                                                                                         </a>
                                                                                     {{else}}
                                                                                         {{>avatar size="small"}}
@@ -583,31 +592,36 @@
                                                                                         <h5>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</h5>
                                                                                         Applied {{this.appliedAt}}
                                                                                     </div>
-                                                                                </div>
-                                                                                <br>
-                                                                                <span class="label label-success">{{this.app_type}}</span><br>
-                                                                                {{#if first_hours}}
-                                                                                    <p>Payment type: Blended <br>
-                                                                                    Pay {{first_hours}} USD for the first {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours.
-                                                                                    <br> Net: {{freelancer_nets}} USD</p> 
-                                                                                {{else}}
-                                                                                    {{#if device_rate}}
-                                                                                        <p>Payment type: Per device <br>{{device_rate}} USD for {{max_devices}} devices.
-                                                                                        <br> Net: {{freelancer_nets}} USD</p>
-                                                                                    {{else}}
-                                                                                        {{#if hourly_rate}} 
-                                                                                            <p>Payment type: Per hour <br> {{hourly_rate}} USD for {{max_hours}} hours.
-                                                                                            <br> Net: {{freelancer_nets}} USD</p>
+                                                                                    <div class="media-body">
+                                                                                        <span class="label label-success">{{this.app_type}}</span>
+                                                                                        {{#if first_hours}}
+                                                                                            <p>Payment type: Blended <br>
+                                                                                            Pay {{first_hours}} USD for the first {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours. <br>
+                                                                                            Gross: {{buyer_cost}} USD.
+                                                                                            <br> Net: {{freelancer_nets}} USD</p> 
                                                                                         {{else}}
-                                                                                            {{#if fixed_amount}} 
-                                                                                                <p>Payment type: Fixed <br> {{fixed_amount}} USD.
+                                                                                            {{#if device_rate}}
+                                                                                                <p>Payment type: Per device <br>{{device_rate}} USD for {{max_devices}} devices. <br>
+                                                                                                Gross: {{buyer_cost}} USD.
                                                                                                 <br> Net: {{freelancer_nets}} USD</p>
+                                                                                            {{else}}
+                                                                                                {{#if hourly_rate}} 
+                                                                                                    <p>Payment type: Per hour <br> {{hourly_rate}} USD for {{max_hours}} hours. <br>
+                                                                                                    Gross: {{buyer_cost}} USD.
+                                                                                                    <br> Net: {{freelancer_nets}} USD</p>
+                                                                                                {{else}}
+                                                                                                    {{#if fixed_amount}} 
+                                                                                                        <p>Payment type: Fixed Pay <br>Gross:  {{fixed_amount}} USD.
+                                                                                                        <br> Net: {{freelancer_nets}} USD</p>
+                                                                                                    {{/if}}
+                                                                                                {{/if}}
                                                                                             {{/if}}
                                                                                         {{/if}}
-                                                                                    {{/if}}
-                                                                                {{/if}}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <br>
                                                                             {{#if $eq applicationStatus 'frozen'}}
-                                                                                <h5>Avaiting confirmation from provider.</h5> {{else}} {{#if $eq applicationStatus 'assigned'}}
+                                                                                <h5>Awaiting confirmation from provider.</h5> {{else}} {{#if $eq applicationStatus 'assigned'}}
                                                                                 <h5>The job is assigned.</h5> {{else}} {{#if $eq applicationStatus 'done'}}
                                                                                 <h5>The project is completed.</h5> {{else}} {{#if applicationStatus 'open'}}
                                                                                 <button class="btn btn-success btn-sm acceptCounterOffer">Accept</button>

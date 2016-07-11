@@ -156,10 +156,13 @@ Template.jobFields.events({
 				})
 				Jobs.before.insert(function(userId, doc) {
 					doc.files = files.toString();
-					//doc.files.pushArray(files);
 				});
 				Jobs.before.update(function(userId, doc) {
-					doc.files +=  ','+files.toString();
+					if(doc.files) {
+						doc.files +=  ','+files.toString();
+					} else {
+						doc.files = files.toString();
+					}
 				});
 				toastr.success('Uploaded documents successfully');
 			}
