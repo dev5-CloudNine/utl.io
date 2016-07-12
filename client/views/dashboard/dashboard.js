@@ -113,5 +113,11 @@ Template.dashboard.helpers({
 	},
 	accountBalance: function() {
 		return Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+	},
+	amountSpent: function() {
+		return Wallet.findOne({userId: Meteor.userId()}).amountSpent;
+	},
+	amountEarned: function() {
+		return Wallet.findOne({userId: Meteor.userId()}).amountEarned;
 	}
 });

@@ -275,7 +275,8 @@ Meteor.methods({
         })
     },
     confirmAssignment: function(jobId, buyerId) {
-        var jobName = Jobs.findOne({_id: jobId}).title;
+        var jobDetails = Jobs.findOne({_id: jobId});
+        var jobName = jobDetails.title;
         var providerName = Profiles.findOne({userId: Meteor.userId()}).name;
         var jobSlug = Jobs.findOne({_id: jobId}).slug();
         var buyerName = Buyers.findOne({userId: buyerId}).name;
@@ -292,7 +293,11 @@ Meteor.methods({
         }
         Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {contacts: buyerId+":"+jobId}});
         Meteor.users.update({_id: buyerId}, {$addToSet: {contacts: Meteor.userId()+":"+jobId}});
-        var proBudget = Jobs.findOne({_id: jobId}).proposedBudget;
+        var proBudget = jobDetails.proposedBudget;
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        var buyerCost = jobDetails.your_cost;
+        Wallet.update({userId: buyerId}, {$inc: {accountBalance: -buyerCost}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: buyerCost}});
         Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned', assignedProvider: Meteor.userId(), projectBudget: proBudget}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {assignedJobs: jobId}});
         Notifications.insert(notificationObj);
@@ -491,13 +496,15 @@ Meteor.methods({
         });
     },
     approvePayment: function(jobId) {
-        var providerName = Profiles.findOne({userId: Jobs.findOne({_id: jobId}).assignedProvider}).name;
-        var providerSmsEmail = Profiles.findOne({userId: Jobs.findOne({_id: jobId}).assignedProvider}).smsAddress;
+        var jobDetails = Jobs.findOne({_id: jobId});
+        var providerDetails = Profiles.findOne({userId: jobDetails.assignedProvider});
+        var providerName = providerDetails.name;
+        var providerSmsEmail = providerDetails.smsAddress;
         var buyerName = Buyers.findOne({userId: Meteor.userId()}).name;
-        var jobName = Jobs.findOne({_id: jobId}).title;
-        var jobSlug = Jobs.findOne({_id: jobId}).slug();
+        var jobName = jobDetails.title;
+        var jobSlug = jobDetails.slug();
         var notificationObj = {
-            providerId: Jobs.findOne({_id: jobId}).assignedProvider,
+            providerId: jobDetails.assignedProvider,
             buyerId: Meteor.userId(),
             jobId: jobId,
             timeStamp: new Date(),
@@ -507,11 +514,16 @@ Meteor.methods({
             adminRead: false
         };
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'paid', applicationStatus: 'done'}});
-        Profiles.update({userId: Jobs.findOne({_id: jobId}).assignedProvider}, {$addToSet: {completedJobs: jobId}});
-        Profiles.update({userId: Jobs.findOne({_id: jobId}).assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
+        Profiles.update({userId: jobDetails.assignedProvider}, {$addToSet: {completedJobs: jobId}});
+        Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        var projectBudget = jobDetails.projectBudget;
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: -projectBudget}});
+        Wallet.update({userId: Meteor.userId()}, {$inc: {amountSpent: projectBudget}});
+        Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: projectBudget}}, {$inc: {amountEarned: projectBudget}});
         Notifications.insert(notificationObj);
         Email.send({
-            to: getUserEmail(Meteor.users.findOne({_id: Jobs.findOne({_id: jobId}).assignedProvider})),
+            to: getUserEmail(Meteor.users.findOne({_id: jobDetails.assignedProvider})),
             Cc: providerSmsEmail,
             from: FROM_EMAIL,
             subject: 'Buyer has approved payment for your job.',
