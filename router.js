@@ -296,6 +296,9 @@ Router.map(function() {
             } else {
                 this.render('notFound');
             }
+        },
+        waitOn: function() {
+            return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
 
@@ -343,6 +346,7 @@ Router.map(function() {
             };
         },
         waitOn: function() {
+            Meteor.subscribe("userWallet", Meteor.userId());
             return Meteor.subscribe("job", this.params._id);
         },
         onBeforeAction: function() {
@@ -469,6 +473,10 @@ Router.map(function() {
             } else if(this.params.tab=='dashboard') {
                 return {
                   active: 'dashboard',
+                };
+            } else if(this.params.tab == 'deposits') {
+                return {
+                    active: 'piggyBank'
                 };
             }
         } 
@@ -776,43 +784,15 @@ Router.map(function() {
 
 });
 
-
-
-
-// Router.route('/job', {
-//     name: 'jobNew',
-//     action: function() {
-//         if (Meteor.user() &&
-//             Meteor.user().roles &&
-//             (Meteor.user().roles.indexOf("employer")) != -1) {
-//             this.render('job');
-//         } 
-//     }
-// });
-
-
-
-
-
 Router.route('/posts/:_id', function () {
   this.render('Post');
 }, {
   name: 'post.show'
 });
 
-// Router.route('/signup', {
-//     name: 'sign.up', 
-//     action: function(){
-//         this.render("SignUp");
-//     }
-// });
-
-
 Router.plugin('ensureSignedIn', {
     only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew', 'buyerEdit', 'buyerNew']
 });
-
-
 
 Router.plugin('dataNotFound', {
     notFoundTemplate: 'notFound'

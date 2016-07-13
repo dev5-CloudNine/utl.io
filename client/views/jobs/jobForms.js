@@ -16,28 +16,6 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob'], {
         		Router.go('job', {_id: Router.current().params._id});
 			}
 		}
-	},
-	before: {
-		insert: function(doc) {
-			var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}) && Wallet.findOne({userId: Meteor.userId()}).accountBalance;
-			var your_cost = doc.your_cost;
-			if(buyerAccBalance < your_cost) {
-				alert("You don't have sufficient account balance to post this job");
-				return;
-			} else {
-				this.result(doc);
-			}
-		},
-		update: function(doc) {
-			var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}) && Wallet.findOne({userId: Meteor.userId()}).accountBalance;
-			var your_cost = doc.$set.your_cost;
-			if(buyerAccBalance < your_cost) {
-				alert("You don't have sufficient account balance to post this job");
-				return;
-			} else {
-				this.result(doc);
-			}
-		}
 	}
 });
 
@@ -52,6 +30,7 @@ var locLoaded=false;
 Template.jobFields.events({
 	'change input[name="fixedamount"], keyup input[name="fixedamount"]': function(event, template) {
 		var fixedamount = parseFloat($('input[name="fixedamount"]').val());
+		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		$('input[name="totalfromclient"]').val(fixedamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
 		if(paidBy == 'You') {
@@ -61,10 +40,20 @@ Template.jobFields.events({
 			$('input[name="your_cost"]').val(fixedamount);
 			$('input[name="freelancer_nets"]').val(fixedamount - (fixedamount * 5/100));
 		}
+		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+			$('div.notEnoughBalance').show();
+			$('div.enoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', true);
+		} else {
+			$('div.enoughBalance').show();
+			$('div.notEnoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', false);
+		}
 	},
 	'change input[name="hourlyrate"], keyup input[name="hourlyrate"], change input[name="maxhours"], keyup input[name="maxhours"]': function(event, template) {
 		var hourlyrate = parseFloat($('input[name="hourlyrate"]').val());
 		var maxhours = parseFloat($('input[name="maxhours"]').val());
+		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		var totalamount = hourlyrate * maxhours;
 		$('input[name="totalfromclient"]').val(totalamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
@@ -75,10 +64,20 @@ Template.jobFields.events({
 			$('input[name="your_cost"]').val(totalamount);
 			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
 		}
+		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+			$('div.notEnoughBalance').show();
+			$('div.enoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', true);
+		} else {
+			$('div.enoughBalance').show();
+			$('div.notEnoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', false);
+		}
 	},
 	'change input[name="rateperdevice"], keyup input[name="rateperdevice"], change input[name="maxdevices"], keyup input[name="maxdevices"]': function(event, template) {
 		var rateperdevice = parseFloat($('input[name="rateperdevice"]').val());
 		var maxdevices = parseFloat($('input[name="maxdevices"]').val());
+		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		var totalamount = rateperdevice * maxdevices;
 		$('input[name="totalfromclient"]').val(totalamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
@@ -89,12 +88,22 @@ Template.jobFields.events({
 			$('input[name="your_cost"]').val(totalamount);
 			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
 		}
+		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+			$('div.notEnoughBalance').show();
+			$('div.enoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', true);
+		} else {
+			$('div.enoughBalance').show();
+			$('div.notEnoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', false);
+		}
 	},
 	'change input[name="payforfirsthours"], keyup input[name="payforfirsthours"], change input[name="payfornexthours"], keyup input[name="payfornexthours"], change input[name="nexthours"], keyup input[name="nexthours"]': function(event, template) {
 		var payforfirsthours = $('input[name="payforfirsthours"]').val();
 		var firsthours = $('input[name="firsthours"]').val();
 		var payfornexthours = $('input[name="payfornexthours"]').val();
 		var nexthours = $('input[name="nexthours"]').val();
+		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		var totalforfirsthours = parseFloat(payforfirsthours);
 		var totalfornexthours = payfornexthours * nexthours;
 		var totalamount = parseFloat(totalforfirsthours + totalfornexthours);
@@ -107,23 +116,52 @@ Template.jobFields.events({
 			$('input[name="your_cost"]').val(totalamount);
 			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
 		}
+		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+			$('div.notEnoughBalance').show();
+			$('div.enoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', true);
+		} else {
+			$('div.enoughBalance').show();
+			$('div.notEnoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', false);
+		}
 	},
 	'change input[value="You"]': function(event, template) {
 		event.preventDefault();
 		var totalamount = parseFloat(template.find('input[name="totalfromclient"]').value);
 		var clientCost = totalamount + totalamount * 5/100;
+		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		template.find('input[name="your_cost"]').value = clientCost;
 		template.find('input[name="freelancer_nets"]').value = totalamount;
+		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+			$('div.notEnoughBalance').show();
+			$('div.enoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', true);
+		} else {
+			$('div.enoughBalance').show();
+			$('div.notEnoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', false);
+		}
 	},
 	'change input[value="Provider"]': function(event, template) {
 		event.preventDefault();
 		var totalamount = parseFloat(template.find('input[name="totalfromclient"]').value);
 		var freenet = totalamount - totalamount * 5/100;
+		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		template.find('input[name="your_cost"]').value = totalamount;
 		template.find('input[name="freelancer_nets"]').value = freenet;
+		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+			$('div.notEnoughBalance').show();
+			$('div.enoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', true);
+		} else {
+			$('div.enoughBalance').show();
+			$('div.notEnoughBalance').hide();
+			$('button[type="submit"]').prop('disabled', false);
+		}
 	},
 	'change input[name="servicelocation"]': function(event, template) {
-		if(event.target.value == 'Field Job') {
+		if(event.target.value == 'Field Job') {var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 			$('div.loc').show();
 		} else {
 			$('div.loc').hide();
@@ -137,9 +175,6 @@ Template.jobFields.events({
 		event.preventDefault();
 		$('#spinner').show();
 		var files = $(event.currentTarget)[0].files;
-		
-
-		
 		if(!files)
 			return;
 		S3.upload({

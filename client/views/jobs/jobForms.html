@@ -30,7 +30,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
-                        {{#autoForm id="jobEdit" collection="Jobs" doc=job type="update" }}
+                        {{#autoForm id="jobEdit" collection="Jobs" doc=job type="update"}}
                             {{>jobFields}}
                             <div>
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Update</button>
@@ -211,6 +211,16 @@
                     {{>afQuickField name="freelancer_nets" readonly="true"}}
                 </div>
             {{/if}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="alert alert-info enoughBalance" hidden>
+                <strong>You have enough balance.</strong>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="alert alert-danger notEnoughBalance" hidden>
+                <strong>You don't have enough balance. <a href="{{pathFor 'dashboard' tab="deposits"}}">Click here</a> to deposit</strong>
+            </div>
         </div>
     </div>
     <hr>
