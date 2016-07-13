@@ -503,6 +503,20 @@ Meteor.methods({
         var buyerName = Buyers.findOne({userId: Meteor.userId()}).name;
         var jobName = jobDetails.title;
         var jobSlug = jobDetails.slug();
+        var buyerInvoiceDetails = {
+            jobId: jobId,
+            providerId: providerDetails.userId,
+            budget: jobDetails.projectBudget,
+            date: new Date(),
+            invoiceId: 'INV' + jobDetails.readableID
+        }
+        var providerInvoiceDetails = {
+            jobId: jobId,
+            buyerId: jobDetails.userId,
+            budget: jobDetails.projectBudget,
+            date: new Date(),
+            invoiceId: 'INV' + jobDetails.readableID
+        }
         var notificationObj = {
             providerId: jobDetails.assignedProvider,
             buyerId: Meteor.userId(),
@@ -520,7 +534,9 @@ Meteor.methods({
         var projectBudget = jobDetails.projectBudget;
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -projectBudget}});
         Wallet.update({userId: Meteor.userId()}, {$inc: {amountSpent: projectBudget}});
+        Wallet.update({userId: Meteor.userId()}, {$addToSet: {invoices: buyerInvoiceDetails}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: projectBudget}}, {$inc: {amountEarned: projectBudget}});
+        Wallet.update({userId: providerDetails.userId}, {$addToSet: {invoices: providerInvoiceDetails}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: jobDetails.assignedProvider})),

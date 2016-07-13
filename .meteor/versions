@@ -79,6 +79,7 @@ ecmascript-runtime@0.2.10
 edgee:slingshot@0.7.1
 ejson@1.0.11
 email@1.0.12
+ephemer:reactive-datatables@1.1.0
 fastclick@1.0.11
 force-ssl@1.0.11
 fortawesome:fontawesome@4.5.0

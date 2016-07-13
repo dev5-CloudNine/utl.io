@@ -65,38 +65,6 @@
                                 	</div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Notifications</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis non voluptates omnis labore, sunt sint in nobis voluptatem a provident atque officiis quod voluptas, dolorum quam ratione delectus, amet maiores.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Members to Review</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui ex consequuntur quibusdam quod quae commodi perferendis aliquam aut quos libero aperiam, vitae, ipsa obcaecati necessitatibus corporis veniam vel eligendi!
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">My Transactions</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui ex consequuntur quibusdam quod quae commodi perferendis aliquam aut quos libero aperiam, vitae, ipsa obcaecati necessitatibus corporis veniam vel eligendi!
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         {{else}}
                             {{#if isInRole 'provider, corporate-provider'}}
                                 <div class="row tile_count">
@@ -392,32 +360,12 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="transfers">
-                        <h5>Invoices</h5>
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                Account Balance: $ 0.00
-                                <br><br>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>S. No</th>
-                                            <th>Date</th>
-                                            <th>Invoice</th>
-                                            <th>Project Title</th>
-                                            <th>Sent By</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Mon May 16 2016 11:09:29 GMT+0530 (IST)</td>
-                                            <td>INV101</td>
-                                            <td>Job 1</td>
-                                        </tr>
-                                    </tbody>  
-                                </table>
-                            </div>
-                        </div>
+                        {{#if isInRole 'buyer, corporate-manager'}}
+                            {{> ReactiveDatatable tableData=buyerInvoices options=buyerOptionsObject}}
+                        {{/if}}
+                        {{#if isInRole 'provider, corporate-provider'}}
+                            {{> ReactiveDatatable tableData=buyerInvoices options=providerOptionsObject}}
+                        {{/if}}
                     </div>
                     <div class="clearfix"></div>
                 </div>

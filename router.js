@@ -452,6 +452,7 @@ Router.map(function() {
             Meteor.subscribe("contacts",Meteor.userId());
             Meteor.subscribe('allJobs');
             Meteor.subscribe('reviews');
+            Meteor.subscribe('userWallet', Meteor.userId());
             return Meteor.subscribe("messages",Meteor.userId());
         },
         data: function() {

@@ -1,3 +1,24 @@
+invoicesData = function() {
+	return Wallet.findOne({userId: Meteor.userId()}).invoices;
+};
+var buyerOptionsObject = {
+	columns: [
+		{title: 'Invoice ID', data: 'invoiceId'},
+		{title: 'Job Name', data: function(invoice) {return Jobs.findOne({_id: invoice.jobId}).title}},
+		{title: 'Provider Name', data: function(invoice) {console.log(invoice); return Profiles.findOne({userId: invoice.providerId}).name}},
+		{title: 'Amount', data: 'budget'},
+		{title: 'Date', data: 'date'}
+	]
+};
+var providerOptionsObject = {
+	columns: [
+		{title: 'Invoice ID', data: 'invoiceId'},
+		{title: 'Job Name', data: function(invoice) {return Jobs.findOne({_id: invoice.jobId}).title}},
+		{title: 'Buyer Name', data: function(invoice) {return Buyers.findOne({userId: invoice.buyerId}).name}},
+		{title: 'Amount', data: 'budget'},
+		{title: 'Date', data: 'date'}
+	]
+}
 Template.dashboard.helpers({
 	jobs: function() {
 		return Jobs.find({
@@ -119,5 +140,13 @@ Template.dashboard.helpers({
 	},
 	amountEarned: function() {
 		return Wallet.findOne({userId: Meteor.userId()}).amountEarned;
-	}
+	},
+	buyerInvoices: function() {
+		return invoicesData;
+	},
+	providerInvoices: function() {
+		return invoicesData;
+	},
+	buyerOptionsObject: buyerOptionsObject,
+	providerOptionsObject: providerOptionsObject
 });
