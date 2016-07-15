@@ -46,7 +46,7 @@ AccountsTemplates.configureRoute("signIn", {
           Router.go('/admin');
         }
         else {
-          Router.go('/dashboard/dashboard');
+          Router.go('/dashboard');
         }
     }
 });

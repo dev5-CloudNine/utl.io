@@ -315,7 +315,7 @@ Router.map(function() {
                 this.render('notFound');
             }
         },
-        waiton: function() {
+        waitOn: function() {
             return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
