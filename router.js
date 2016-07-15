@@ -303,7 +303,7 @@ Router.map(function() {
     });
 
     this.route('assignJob', {
-        path: '/job/:_id',
+        path: '/job/:userId',
         title: "UTL - Route job to a provider",
         onBeforeAction: function () {
             if (Meteor.user() &&

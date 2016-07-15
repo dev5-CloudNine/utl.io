@@ -187,7 +187,19 @@ Template.jobFields.events({
 			}
 			else {
 				var jobID = Router.current().params._id;
-				if(jobID) {
+				if(Router.current().params.userId) {
+					var files = [];
+					var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.secure_url+'</a></li>'
+					$('.fileList').append(fileListItem);
+					$('ul.fileList li').each(function(li) {
+						files.push($(this).data('url'));
+					})
+					Jobs.before.insert(function(userId, doc) {
+						doc.files = files;
+					});
+					console.log(files);
+					toastr.success('File uploaded successssfully');
+				} else if(jobID) {
 		            Meteor.call('addJobFile', result.secure_url, jobID,function (error, result) {
 		              if(!error)
 		                toastr.success("File uploaded successssfully");
@@ -202,8 +214,9 @@ Template.jobFields.events({
 					Jobs.before.insert(function(userId, doc) {
 						doc.files = files;
 					});
+					console.log(files);
 					toastr.success('File uploaded successssfully');
-					}
+				}
 			}
 		})
 		
@@ -282,7 +295,7 @@ Template.jobFields.helpers({
 		return parentId ? SubCategories.find({parentId: parentId}).fetch() : null;
 	},
 	files: function() {
-		if(!this.job) return []; 
+		if(!this.job) return [];
 		return Jobs.findOne({_id:this.job._id}).files;
 	}
 });
