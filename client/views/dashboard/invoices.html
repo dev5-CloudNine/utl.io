@@ -1,0 +1,8 @@
+<template name="invoices">
+	{{#if isInRole 'buyer, corporate-manager'}}
+        {{> ReactiveDatatable tableData=buyerInvoices options=buyerOptionsObject}}
+    {{/if}}
+    {{#if isInRole 'provider, corporate-provider'}}
+        {{> ReactiveDatatable tableData=buyerInvoices options=providerOptionsObject}}
+    {{/if}}
+</template>

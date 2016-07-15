@@ -549,7 +549,10 @@ footer {
   background-color: #EA2A1B;
 }
 .label-pending {
-    background-color: #a479e2;
+  background-color: #a479e2;
+}
+.label-paid {
+  background-color: #589636;
 }
 .dropdown {
   display:inline-block;

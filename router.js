@@ -446,7 +446,7 @@ Router.map(function() {
     });
 
     this.route('dashboard', {
-        path: '/dashboard/:tab',
+        path: '/dashboard',
         title: "UTL - Dashboard",
         waitOn: function() {
             Meteor.subscribe("contacts",Meteor.userId());
@@ -455,6 +455,22 @@ Router.map(function() {
             Meteor.subscribe('userWallet', Meteor.userId());
             return Meteor.subscribe("messages",Meteor.userId());
         },
+        // data: function() {
+        //     else if(this.params.tab=='dashboard') {
+        //         return {
+        //           active: 'dashboard',
+        //         };
+        //     } else if(this.params.tab == 'deposits') {
+        //         return {
+        //             active: 'piggyBank'
+        //         };
+        //     }
+        // } 
+    });
+
+    this.route('mailBox', {
+        path: '/mailbox/:tab',
+        title: 'Messages',
         data: function() {
             if(this.params.tab.substr(0, 5)=='mails') {
                 return {
@@ -471,16 +487,27 @@ Router.map(function() {
                   layout: {message: true},
                   active: 'messaging'
                 };
-            } else if(this.params.tab=='dashboard') {
-                return {
-                  active: 'dashboard',
-                };
-            } else if(this.params.tab == 'deposits') {
-                return {
-                    active: 'piggyBank'
-                };
             }
-        } 
+        }
+    });
+
+    this.route('deposit', {
+        path: '/wallet/deposit',
+        title: 'Deposit Funds'
+    });
+
+    this.route('withdraw', {
+        path: 'wallet/withdraw',
+        title: 'Withdraw Funds'
+    });
+
+    this.route('invoices', {
+        path: 'wallet/invoices',
+        title: 'Invoices',
+        waitOn: function() {
+            Meteor.subscribe('allJobs');
+            return Meteor.subscribe('userWallet', Meteor.userId());
+        }
     });
 
     this.route('buyers', {
@@ -782,7 +809,13 @@ Router.map(function() {
         }
     });
 
-
+    this.route('invoice', {
+        path: '/invoices/:invoiceId',
+        title: 'Invoice',
+        waitOn: function() {
+            return Meteor.subscribe('userWallet', Meteor.userId());
+        }
+    })
 });
 
 Router.route('/posts/:_id', function () {

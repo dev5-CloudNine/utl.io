@@ -1,0 +1,15 @@
+<template name="mailBox">
+	{{#if $eq active 'messaging'}}
+		{{#if layout.mails}}
+			{{> mails}}
+		{{/if}}
+		{{#if layout.message}}
+			{{> message}}
+		{{/if}}
+		{{#if layout.compose}}
+			{{> compose}}
+		{{/if}}
+	{{else}}
+		{{> mails}}
+	{{/if}}
+</template>

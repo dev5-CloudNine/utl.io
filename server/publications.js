@@ -343,6 +343,7 @@ Meteor.publish("favorite_buyers", function() {
             contactNumber: true,
             mobileCarrier: true,
             userId: true,
+            userName: true
         }
     })
 })

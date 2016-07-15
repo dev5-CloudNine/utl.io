@@ -16,7 +16,7 @@
                     <ul class="nav navbar-nav">
                         {{#if currentUser}}
                             {{#if isInRole 'admin'}}
-                                <li><a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a></li>
+                                <li><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>
                                 <li id="user-drop-down" class="dropdown">
                                     <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
                                         Users <span class="caret"></span>
@@ -69,11 +69,19 @@
                                         <li><a href="{{pathFor 'favoriteProfiles'}}">Favorite Providers</a></li>
                                     </ul>
                                 </li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Wallet <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {{#unless dwollaId}}
+                                            <li><a href="https://www.dwolla.com/Register" target="_blank">Create Dwolla Account</a></li>
+                                        {{/unless}}
+                                        <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
+                                        <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
+                                        <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
+                                    </ul>
+                                </li>
                                 {{#unless currentUser.isBuyer}}
                                     <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
-                                {{/unless}}
-                                {{#unless dwollaId}}
-                                    <li><a href="https://www.dwolla.com/Register" target="_blank">Create Dwolla Account</a></li>
                                 {{/unless}}
                             {{/if}}
                             {{#if isInRole 'provider'}}
@@ -102,13 +110,21 @@
                                         <li><a href="{{pathFor 'favoriteBuyers'}}">Favorite Buyers</a></li>
                                     </ul>
                                 </li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Wallet <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {{#unless dwollaId}}
+                                            <li><a href="https://www.dwolla.com/Register" target="_blank">Create Dwolla Account</a></li>
+                                        {{/unless}}
+                                        <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
+                                        <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
+                                        <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
+                                    </ul>
+                                </li>
                                 {{#unless currentUser.isDeveloper}}
                                     <li class="{{isActiveRoute regex='^profile$'}}">
                                         <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
                                     </li>
-                                {{/unless}}
-                                {{#unless dwollaId}}
-                                    <li><a href="https://www.dwolla.com/Register" target="_blank">Create Dwolla Account</a></li>
                                 {{/unless}}
                             {{/if}}
                             {{#if isInRole 'corporate-admin'}}
@@ -147,6 +163,17 @@
                                         <li><a href="{{pathFor 'favoriteBuyers'}}">Favorite Buyers</a></li>
                                     </ul>
                                 </li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Wallet <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {{#unless dwollaId}}
+                                            <li><a href="https://www.dwolla.com/Register" target="_blank">Create Dwolla Account</a></li>
+                                        {{/unless}}
+                                        <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
+                                        <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
+                                        <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
+                                    </ul>
+                                </li>
                                 {{#unless currentUser.isDeveloper}}
                                     <li class="{{isActiveRoute regex='^profile$'}}">
                                         <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
@@ -176,6 +203,17 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="{{pathFor 'profiles'}}">All Providers</a></li>
                                         <li><a href="{{pathFor 'favoriteProfiles'}}">Favorite Providers</a></li>
+                                    </ul>
+                                </li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Wallet <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {{#unless dwollaId}}
+                                            <li><a href="https://www.dwolla.com/Register" target="_blank">Create Dwolla Account</a></li>
+                                        {{/unless}}
+                                        <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
+                                        <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
+                                        <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
                                     </ul>
                                 </li>
                                 {{#unless currentUser.isBuyer}}
@@ -236,6 +274,10 @@
                     <li>
                         {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
                     </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{{pathFor 'mailBox' tab="mails"}}"><i class="fa fa-envelope fa-fw"></i> Messages</a>
+                    </li>
                 {{else}}
                     <li>
                         <a href="{{pathFor 'profileNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
@@ -247,6 +289,10 @@
                     <li>
                         {{#with corporate}}<a href="{{pathFor 'corporate'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
                     </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{{pathFor 'mailBox' tab="mails"}}"><i class="fa fa-envelope fa-fw"></i> Messages</a>
+                    </li>
                 {{else}}
                     <li>
                         <a href="{{pathFor 'corporateNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
@@ -257,6 +303,10 @@
                 {{#if currentUser.isBuyer}}
                     <li>
                         {{#with buyer}}<a href="{{pathFor 'buyer'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{{pathFor 'mailBox' tab="mails"}}"><i class="fa fa-envelope fa-fw"></i> Messages</a>
                     </li>
                 {{else}}
                     <li>

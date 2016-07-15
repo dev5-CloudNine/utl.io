@@ -67,10 +67,11 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <small>
-                                            <i class="fa fa-calendar fa-fw"></i> Posted: {{postedTime}}&nbsp;|&nbsp;
-                                            {{#with buyerData}}<i class="fa fa-user fa-fw"></i> By <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}
+                                            <i class="fa fa-user fa-fw"></i>Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
                                             <br>
-                                            Status: <span class="label label-sm {{appStatusLabel}}">{{applicationStatus}}</span>&nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}&nbsp;|&nbsp;{{#if selectedProvider}} Routed to {{#with routedProvider}}<a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
+                                        </small>
+                                        <small>
+                                            <span class="label label-sm {{appStatusLabel}}">Status: {{applicationStatus}}</span>&nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}&nbsp;|&nbsp;{{#if selectedProvider}} Routed to {{#with routedProvider}}<a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
                                         </small>
                                     </div>
                                     <div class="col-sm-12">
