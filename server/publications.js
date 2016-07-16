@@ -539,3 +539,9 @@ Meteor.publish('userWallet', function(userId) {
     check(arguments, [Match.Any]);
     return Wallet.find({userId: userId});
 })
+
+Meteor.publish('transactions', function(userId) {
+    check(arguments, [Match.Any]);
+    return Transactions.find({userID: userId});
+})
+

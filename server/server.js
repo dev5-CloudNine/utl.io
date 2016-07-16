@@ -677,5 +677,11 @@ Meteor.methods({
     },
     activateJob: function(jobId) {
         Jobs.update({$and: [{_id: jobId}, {status: 'deactivated'}]}, {$set: {status: 'active', applicationStatus: 'open'}});
+    },
+    saveReceipt : function(data) {
+        return Transactions.insert(data);
+    },
+    updateTransaction: function(docID,userID) {
+        Transactions.update({_id:docID},{$set:{'userID':userID}});
     }
 });

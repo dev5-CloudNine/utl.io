@@ -653,3 +653,62 @@ footer {
 .profileLabel {
   line-height: 2.4 !important;
 }
+
+/* Pay Now button CSS */
+div#payeezy-button {
+    width: 200px;
+    background-color: #139AEC;
+}
+
+div#payeezy-button:hover {
+    cursor: pointer
+}
+
+div#payeezy-button * {
+    background-color: #139AEC;
+}
+
+div#payeezy-button form {
+    margin: 0;
+    padding: 0;
+    text-align: center
+}
+
+div#payeezy-button div.cpwrap {
+    width: 90%;
+    border: 0;
+    margin: 0 auto;
+    padding: 0px;
+    background-color: #139AEC
+}
+
+div#payeezy-button button {
+    width: 95%;
+    border: 0;
+    margin: 0;
+    padding: 3px 0;
+    background-color: #139AEC;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+div#payeezy-button:hover button {
+    text-decoration: underline
+}
+
+div#payeezy-button button:focus,
+div#payeezy-button button:visited,
+div#payeezy-button button:active {
+    border: none;
+    outline: none
+}
+
+div#payeezy-button button {
+    font-size: 16px
+}
+
+div#payeezy-button {
+    border: 2px solid #139AEC
+}
+
+/* Pay Now button CSS ENDs*/

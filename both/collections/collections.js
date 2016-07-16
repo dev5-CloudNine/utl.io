@@ -7,6 +7,7 @@ Reviews = new Meteor.Collection("reviews");
 Notifications = new Meteor.Collection("notifications");
 Skills = new Meteor.Collection("skills");
 Wallet = new Meteor.Collection("wallet");
+Transactions = new Meteor.Collection("transactions");
 
 Categories.attachSchema(
 	new SimpleSchema({

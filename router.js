@@ -765,11 +765,45 @@ Router.map(function() {
         onBeforeAction: function () {
             var userId = this.request.query.id;
             var code = this.request.query.code;
-            console.log(Meteor.call("finishAuth",code,userId));
+            Meteor.call("finishAuth",code,userId);
             this.response.writeHead(302, {
-                'Location': 'http://localhost:3000/payment'
+                'Location': URL+'/payment'
             });
             this.response.end();
+        }
+    });
+
+
+    this.route('receipt',{
+        where: 'server',
+        onBeforeAction: function () {
+            console.log(this.request.body);// Comment this later
+            var data = {};
+            var res = this.request.body;
+            data.trans_id = res.x_trans_id;
+            data.dollarAmount = res.DollarAmount;
+            data.email = res.x_email;
+            data.cardNumber = res.Card_Number;
+            data.transactionTag = res.Transaction_Tag;
+            data.authorizationNum = res.Authorization_Num;
+            data.cardHoldersName = res.CardHoldersName;
+            data.bankMessage = res.Bank_Message;
+            data.retrievalRefNo = res.Retrieval_Ref_No;
+            data.transactionCardType = res.TransactionCardType;
+            data.merchantName = res.MerchantName;
+            var id = Meteor.call("saveReceipt",data);
+            this.response.writeHead(302, {
+                'Location': URL+'/paymentStatus?id='+id
+            });
+            this.response.end();
+        }
+    });
+
+
+
+    this.route('paymentStatus', {
+        waitOn: function() {
+            return Meteor.subscribe("transactions",Meteor.userId());
         }
     });
 

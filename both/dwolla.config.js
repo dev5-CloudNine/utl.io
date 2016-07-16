@@ -10,7 +10,7 @@ if (Meteor.isServer) {
 
     var Dwolla = Npm.require('dwolla-node')(cfg.apiKey, cfg.apiSecret);
 
-    var redirect_uri = 'http://localhost:3000/oauth_return';
+    var redirect_uri = URL+'/oauth_return';
     Dwolla.sandbox = true;
 
 
