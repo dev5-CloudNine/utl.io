@@ -1,427 +1,117 @@
 <template name="dashboard">
     <div class="row">
         <div class="col-sm-12">
-            <div class="board">
-                <div class="board-inner">
-                    <ul class="nav nav-tabs" id="myTab">
-                        <div class="liner"></div>
-                        <li class="{{#if $eq active 'dashboard'}}active{{/if}}">
-                            <a href="#dashboard" data-toggle="tab" title="welcome">
-                                <span class="round-tabs one">
-                                    <i class="glyphicon glyphicon-home"></i>&nbsp; Index
-                                </span>
-                            </a>
-                        </li>
-                        <li  class="{{#if $eq active 'messaging'}}active{{/if}}">
-                            <a href="#mails" data-toggle="tab" title="blah blah">
-                                <span class="round-tabs four">
-                                  <i class="glyphicon glyphicon-comment"></i>&nbsp; Messages
-                             </span>
-                            </a>
-                        </li>
-                        <li class="{{#if $eq active 'piggyBank'}}active{{/if}} dropdown" role="presentation">
-                            <a href data-toggle="dropdown" class="dropdown-toggle" role="button">
-                                <span class="round-tabs three">
-                                    <i class="glyphicon glyphicon-gift"></i>&nbsp; Wallet <span class="caret"></span>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#deposits" data-toggle="tab">Deposits</a></li>
-                                <li><a href="#withdrawls" data-toggle="tab">Withdrawls</a></li>
-                                <li><a href="#transfers" data-toggle="tab">Invoices</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+            {{#if isInRole 'buyer, corporate-manager'}}
+                <div class="row tile_count">
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Jobs Posted</span>
+                        <div class="count">{{buyerJobsCount}}</div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-clock-o"></i> Jobs Completed</span>
+                        <div class="count">{{buyerCompletedJobsCount}}</div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Amount Spent</span>
+                        <div class="count green">$ {{amountSpent}}</div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
+                        <div class="count">$ {{accountBalance}}</div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Reviews (2 Reviews)</span>
+                        <div class="count">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-full"></i>
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="tab-content">
-                    <div class="tab-pane fade {{#if $eq active 'dashboard'}} in active {{/if}}" id="dashboard">
-                        <br>
-                        {{#if isInRole 'buyer, corporate-manager'}}
+            {{else}}
+                {{#if isInRole 'provider, corporate-provider'}}
+                    <div class="row tile_count">
+                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                            <span class="count_top"><i class="fa fa-user"></i> Jobs Applied</span>
+                            <div class="count">{{providerJobsCount}}</div>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                            <span class="count_top"><i class="fa fa-user"></i> Jobs Completed</span>
+                            <div class="count">{{providerCompletedJobsCount}}</div>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                            <span class="count_top"><i class="fa fa-clock-o"></i> Amount Earned</span>
+                            <div class="count">$ {{amountEarned}}</div>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                            <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
+                            <div class="count">$ {{accountBalance}}</div>
+                        </div>
+                        <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                            <span class="count_top"><i class="fa fa-user"></i> Reviews (2 Reviews)</span>
+                            <div class="count">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-full"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                {{else}}
+                    {{#if isInRole 'corporate-admin'}}
+                        <div class="row tile_count">
+                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i> Jobs Posted</span>
+                                <div class="count">0</div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i> Jobs Complted</span>
+                                <div class="count">0</div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i> Amount Spent</span>
+                                <div class="count">$ 0</div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-clock-o"></i> Amount Earned</span>
+                                <div class="count">$ 0</div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
+                                <div class="count">$ {{accountBalance}}</div>
+                            </div>
+                        </div>
+                    {{else}}
+                        {{#if isInRole 'admin'}}
                             <div class="row tile_count">
                                 <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                    <span class="count_top"><i class="fa fa-user"></i> No. of Users</span>
+                                    <div class="count green">{{getPublishedCount 'userCount'}}</div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
                                     <span class="count_top"><i class="fa fa-user"></i> Jobs Posted</span>
-                                    <div class="count">{{buyerJobsCount}}</div>
+                                    <div class="count">{{getPublishedCount 'adminJobs'}}</div>
                                 </div>
                                 <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
                                     <span class="count_top"><i class="fa fa-clock-o"></i> Jobs Completed</span>
-                                    <div class="count">{{buyerCompletedJobsCount}}</div>
+                                    <div class="count">{{getPublishedCount 'allCompletedJobs'}}</div>
                                 </div>
                                 <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-user"></i> Amount Spent</span>
+                                    <span class="count_top"><i class="fa fa-user"></i> Amount Earned</span>
                                     <div class="count green">$ 0</div>
                                 </div>
                                 <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
                                     <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
-                                    <div class="count">$ {{accountBalance}}</div>
-                                </div>
-                                <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-user"></i> Reviews (2 Reviews)</span>
-                                    <div class="count">
-                                		<i class="fa fa-star"></i>
-                                		<i class="fa fa-star"></i>
-                                		<i class="fa fa-star"></i>
-                                		<i class="fa fa-star-half-full"></i>
-                                		<i class="fa fa-star-o"></i>
-                                	</div>
-                                </div>
+                                    <div class="count green">$ {{accountBalance}}</div>
+                                </div>                                            
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Notifications</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis non voluptates omnis labore, sunt sint in nobis voluptatem a provident atque officiis quod voluptas, dolorum quam ratione delectus, amet maiores.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Members to Review</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui ex consequuntur quibusdam quod quae commodi perferendis aliquam aut quos libero aperiam, vitae, ipsa obcaecati necessitatibus corporis veniam vel eligendi!
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">My Transactions</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui ex consequuntur quibusdam quod quae commodi perferendis aliquam aut quos libero aperiam, vitae, ipsa obcaecati necessitatibus corporis veniam vel eligendi!
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {{else}}
-                            {{#if isInRole 'provider, corporate-provider'}}
-                                <div class="row tile_count">
-                                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                        <span class="count_top"><i class="fa fa-user"></i> Jobs Applied</span>
-                                        <div class="count">{{providerJobsCount}}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                        <span class="count_top"><i class="fa fa-user"></i> Jobs Completed</span>
-                                        <div class="count">{{providerCompletedJobsCount}}</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                        <span class="count_top"><i class="fa fa-clock-o"></i> Amount Earned</span>
-                                        <div class="count">$ 0</div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                        <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
-                                        <div class="count">$ {{accountBalance}}</div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
-                                        <span class="count_top"><i class="fa fa-user"></i> Reviews (2 Reviews)</span>
-                                        <div class="count">
-                                    		<i class="fa fa-star"></i>
-                                    		<i class="fa fa-star"></i>
-                                    		<i class="fa fa-star"></i>
-                                    		<i class="fa fa-star-half-full"></i>
-                                    		<i class="fa fa-star-o"></i>
-                                    	</div>
-                                    </div>
-                                </div>
-                            {{else}}
-                                {{#if isInRole 'corporate-admin'}}
-                                    <div class="row tile_count">
-                                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                            <span class="count_top"><i class="fa fa-user"></i> Jobs Posted</span>
-                                            <div class="count">0</div>
-                                        </div>
-                                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                            <span class="count_top"><i class="fa fa-user"></i> Jobs Complted</span>
-                                            <div class="count">0</div>
-                                        </div>
-                                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                            <span class="count_top"><i class="fa fa-user"></i> Amount Spent</span>
-                                            <div class="count">$ 0</div>
-                                        </div>
-                                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                            <span class="count_top"><i class="fa fa-clock-o"></i> Amount Earned</span>
-                                            <div class="count">$ 0</div>
-                                        </div>
-                                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                            <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
-                                            <div class="count">$ {{accountBalance}}</div>
-                                        </div>
-                                    </div>
-                                {{else}}
-                                    {{#if isInRole 'admin'}}
-                                        <div class="row tile_count">
-                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                                <span class="count_top"><i class="fa fa-user"></i> No. of Users</span>
-                                                <div class="count green">{{getPublishedCount 'userCount'}}</div>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                                <span class="count_top"><i class="fa fa-user"></i> Jobs Posted</span>
-                                                <div class="count">{{getPublishedCount 'adminJobs'}}</div>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                                <span class="count_top"><i class="fa fa-clock-o"></i> Jobs Completed</span>
-                                                <div class="count">{{getPublishedCount 'allCompletedJobs'}}</div>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                                <span class="count_top"><i class="fa fa-user"></i> Amount Earned</span>
-                                                <div class="count green">$ 0</div>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                                <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
-                                                <div class="count green">$ {{accountBalance}}</div>
-                                            </div>                                            
-                                        </div>
-                                    {{/if}}
-                                {{/if}}
-                            {{/if}}
                         {{/if}}
-                    </div>
-                    <br>
-                    <div class="tab-pane fade {{#if $eq active 'messaging'}} in active {{/if}}" id="mails">
-                        <br> 
-                        {{#if $eq active 'messaging'}}
-                          {{#if layout.mails}}
-                            {{> mails}}
-                          {{/if}}
-                          {{#if layout.message}}
-                            {{> message}}
-                          {{/if}}
-                          {{#if layout.compose}}
-                            {{> compose}}
-                          {{/if}}
-                        {{else}}
-                          {{> mails}}
-                        {{/if}}
-                    </div>
-                    <div class="tab-pane fade" id="deposits">
-                        <h5>Deposit Funds</h5>
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                Account Balance: $ 0.00
-                                <br><br>
-                                <form>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <label>Deposit Amount:</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon">$</span>
-                                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                                                <span class="input-group-addon">.00</span>
-                                            </div>  
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h5>Payment Methods</h5>
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Payment Method</th>
-                                                        <th>Cost</th>
-                                                        <th>Approval</th>
-                                                        <th>Description</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <label>
-                                                            <input type="radio" name="payVia" id="payeezy" value="payeezy" checked>Payeezy
-                                                            </label>
-                                                    </td>
-                                                        <td>No Cost</td>
-                                                        <td>Instant*</td>
-                                                        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet atque quasi iusto.</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <label>
-                                                            <input type="radio" name="payVia" id="credit" value="creditcard">Credit Card
-                                                            </label>
-                                                        </td>
-                                                        <td>No Cost</td>
-                                                        <td>Instant*</td>
-                                                        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet atque quasi iusto.</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="text-center">
-                                                <button class="btn btn-primary btn-sm" type="submit">
-                                                    Submit
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <h5>Previous Transactions (Deposits)</h5>
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>S. No</th>
-                                                    <th>Payment Method</th>
-                                                    <th>Amout</th>
-                                                    <th>Date</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Payezee</td>
-                                                    <td>$ 90.00</td>
-                                                    <td>Mon May 16 2016 11:09:29 GMT+0530 (IST)</td>
-                                                    <td>Pending</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Credit Card</td>
-                                                    <td>$ 90.00</td>
-                                                    <td>Mon May 28 2016 04:09:29 GMT+0530 (IST)</td>
-                                                    <td>Success</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="withdrawls">
-                        <h5>Withdraw Funds</h5>
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                Account Balance: $ 0.00
-                                <br><br>
-                                <form>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <label>Withdraw Amount:</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon">$</span>
-                                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                                                <span class="input-group-addon">.00</span>
-                                            </div>  
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h5>Payment Methods</h5>
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Payment Method</th>
-                                                        <th>Cost</th>
-                                                        <th>Approval</th>
-                                                        <th>Description</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <label>
-                                                            <input type="radio" name="payVia" id="payeezy" value="payeezy" checked>Payeezy
-                                                            </label>
-                                                        </td>
-                                                        <td>No Cost</td>
-                                                        <td>Instant*</td>
-                                                        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet atque quasi iusto.</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <label>
-                                                            <input type="radio" name="payVia" id="credit" value="creditcard">Credit Card
-                                                            </label>
-                                                        </td>
-                                                        <td>No Cost</td>
-                                                        <td>Instant*</td>
-                                                        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet atque quasi iusto.</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="text-center">
-                                                <button class="btn btn-primary btn-sm" type="submit">
-                                                    Submit
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <h5>Previous Transactions (Withdrawls)</h5>
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>S. No</th>
-                                                    <th>Payment Method</th>
-                                                    <th>Amout</th>
-                                                    <th>Date</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Payezee</td>
-                                                    <td>$ 90.00</td>
-                                                    <td>Mon May 16 2016 11:09:29 GMT+0530 (IST)</td>
-                                                    <td>Pending</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Credit Card</td>
-                                                    <td>$ 90.00</td>
-                                                    <td>Mon May 28 2016 04:09:29 GMT+0530 (IST)</td>
-                                                    <td>Success</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="transfers">
-                        <h5>Invoices</h5>
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                Account Balance: $ 0.00
-                                <br><br>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>S. No</th>
-                                            <th>Date</th>
-                                            <th>Invoice</th>
-                                            <th>Project Title</th>
-                                            <th>Sent By</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Mon May 16 2016 11:09:29 GMT+0530 (IST)</td>
-                                            <td>INV101</td>
-                                            <td>Job 1</td>
-                                        </tr>
-                                    </tbody>  
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
+                    {{/if}}
+                {{/if}}
+            {{/if}}
         </div>
     </div>
 </template>

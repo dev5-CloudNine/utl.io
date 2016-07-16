@@ -478,7 +478,7 @@ Template.job.events({
       if(error) {
         toastr.error('Failed to request paymet. Pleast try again.');
       } else {
-        toastr.success('Payment requested successfully.');
+        toastr.success('Payment requested successfully. An invoice has been generated and a notification has been sent to the buyer.');
       }
     })
   },

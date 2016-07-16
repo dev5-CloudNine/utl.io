@@ -296,11 +296,14 @@ Router.map(function() {
             } else {
                 this.render('notFound');
             }
+        },
+        waitOn: function() {
+            return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
 
     this.route('assignJob', {
-        path: '/job/:_id',
+        path: '/job/:userId',
         title: "UTL - Route job to a provider",
         onBeforeAction: function () {
             if (Meteor.user() &&
@@ -312,7 +315,7 @@ Router.map(function() {
                 this.render('notFound');
             }
         },
-        waiton: function() {
+        waitOn: function() {
             return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
@@ -343,6 +346,7 @@ Router.map(function() {
             };
         },
         waitOn: function() {
+            Meteor.subscribe("userWallet", Meteor.userId());
             return Meteor.subscribe("job", this.params._id);
         },
         onBeforeAction: function() {
@@ -442,14 +446,31 @@ Router.map(function() {
     });
 
     this.route('dashboard', {
-        path: '/dashboard/:tab',
+        path: '/dashboard',
         title: "UTL - Dashboard",
         waitOn: function() {
             Meteor.subscribe("contacts",Meteor.userId());
             Meteor.subscribe('allJobs');
             Meteor.subscribe('reviews');
+            Meteor.subscribe('userWallet', Meteor.userId());
             return Meteor.subscribe("messages",Meteor.userId());
         },
+        // data: function() {
+        //     else if(this.params.tab=='dashboard') {
+        //         return {
+        //           active: 'dashboard',
+        //         };
+        //     } else if(this.params.tab == 'deposits') {
+        //         return {
+        //             active: 'piggyBank'
+        //         };
+        //     }
+        // } 
+    });
+
+    this.route('mailBox', {
+        path: '/mailbox/:tab',
+        title: 'Messages',
         data: function() {
             if(this.params.tab.substr(0, 5)=='mails') {
                 return {
@@ -466,12 +487,27 @@ Router.map(function() {
                   layout: {message: true},
                   active: 'messaging'
                 };
-            } else if(this.params.tab=='dashboard') {
-                return {
-                  active: 'dashboard',
-                };
             }
-        } 
+        }
+    });
+
+    this.route('deposit', {
+        path: '/wallet/deposit',
+        title: 'Deposit Funds'
+    });
+
+    this.route('withdraw', {
+        path: 'wallet/withdraw',
+        title: 'Withdraw Funds'
+    });
+
+    this.route('invoices', {
+        path: 'wallet/invoices',
+        title: 'Invoices',
+        waitOn: function() {
+            Meteor.subscribe('allJobs');
+            return Meteor.subscribe('userWallet', Meteor.userId());
+        }
     });
 
     this.route('buyers', {
@@ -773,7 +809,6 @@ Router.map(function() {
         }
     });
 
-
     this.route('receipt',{
         where: 'server',
         onBeforeAction: function () {
@@ -808,25 +843,14 @@ Router.map(function() {
     });
 
 
+    this.route('invoice', {
+        path: '/invoices/:invoiceId',
+        title: 'Invoice',
+        waitOn: function() {
+            return Meteor.subscribe('userWallet', Meteor.userId());
+        }
+    })
 });
-
-
-
-
-// Router.route('/job', {
-//     name: 'jobNew',
-//     action: function() {
-//         if (Meteor.user() &&
-//             Meteor.user().roles &&
-//             (Meteor.user().roles.indexOf("employer")) != -1) {
-//             this.render('job');
-//         } 
-//     }
-// });
-
-
-
-
 
 Router.route('/posts/:_id', function () {
   this.render('Post');
@@ -834,19 +858,9 @@ Router.route('/posts/:_id', function () {
   name: 'post.show'
 });
 
-// Router.route('/signup', {
-//     name: 'sign.up', 
-//     action: function(){
-//         this.render("SignUp");
-//     }
-// });
-
-
 Router.plugin('ensureSignedIn', {
     only: ['profileEdit', 'profileNew', 'jobEdit', 'jobNew', 'buyerEdit', 'buyerNew']
 });
-
-
 
 Router.plugin('dataNotFound', {
     notFoundTemplate: 'notFound'

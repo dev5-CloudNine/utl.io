@@ -1,0 +1,117 @@
+<template name="invoice">
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<h5 class="pull-left">{{invoiceId}}</h5>
+			<button class="btn btn-info pull-right printInvoice">Print</button>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			{{#if isInRole 'buyer, corporate-manager'}}				
+				<div class="panel panel-white">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								{{#with providerDetails}}
+									<strong>From:</strong>
+									<h6>{{name}}</h6>
+									<small>{{title}}</small> <br>
+									<small>{{location}}</small> <br>
+									<small>{{contactNumber}}</small> <br>
+									<small>{{userName}}</small> <br>
+								{{/with}}
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								{{#with buyerAtProvider}}
+									<strong>To:</strong>
+									<h6>{{name}}</h6>
+									<small>{{title}}</small> <br>
+									<small>{{location}}</small> <br>
+									<small>{{contactNumber}}</small> <br>
+									<small>{{userName}}</small> <br>
+								{{/with}}
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								{{#with invoiceDetails}}
+									<small>Invoice Date: {{date}}</small> <br>
+									<small>Invoice Status: {{inoviceStatus}}</small>
+									<hr>
+									<table class="table table-hover table-condensed">
+										<thead>
+											<tr>
+												<th>Project Title</th>
+												<th>Project Budget</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>{{jobName}}</td>
+												<td>{{projectBudget}}</td>
+											</tr>
+										</tbody>
+									</table>
+								{{/with}}
+							</div>
+						</div>
+					</div>
+				</div>
+			{{/if}}
+			{{#if isInRole 'provider, corporate-provider'}}
+				<div class="panel panel-white">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								{{#with providerAtBuyer}}
+									<strong>From:</strong>
+									<h6>{{name}}</h6>
+									<small>{{title}}</small> <br>
+									<small>{{location}}</small> <br>
+									<small>{{contactNumber}}</small> <br>
+									<small>{{userName}}</small> <br>
+								{{/with}}
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								{{#with buyerDetails}}
+									<strong>To:</strong>
+									<h6>{{name}}</h6>
+									<small>{{title}}</small> <br>
+									<small>{{location}}</small> <br>
+									<small>{{contactNumber}}</small> <br>
+									<small>{{userName}}</small> <br>
+								{{/with}}
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								{{#with invoiceDetails}}
+									<small>Invoice Date: {{date}}</small> <br>
+									<small>Invoice Status: {{inoviceStatus}}</small>
+									<hr>
+									<table class="table table-hover table-condensed">
+										<thead>
+											<tr>
+												<th>Project Title</th>
+												<th>Project Budget</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>{{jobName}}</td>
+												<td>{{projectBudget}}</td>
+											</tr>
+										</tbody>
+									</table>
+								{{/with}}
+							</div>
+						</div>
+					</div>
+				</div>
+			{{/if}}
+		</div>
+	</div>
+</template>

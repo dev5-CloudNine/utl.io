@@ -5,7 +5,7 @@ Template.assignJob.events({
 			if(Router.current().route.getName() != 'assignJob')
 				return;
 			doc.selectedProvider = "";
-			doc.selectedProvider = Profiles.findOne({_id: Router.current().params._id}).userId;
+			doc.selectedProvider = Router.current().params.userId;
 			doc.applications = [];
 			var appDetails = {
 				userId: doc.selectedProvider,
@@ -34,6 +34,6 @@ Template.assignJob.events({
 
 Template.assignJob.helpers({
 	'selectedProvider': function() {
-		return Profiles.findOne({_id: Router.current().params._id});
+		return Profiles.findOne({userId: Router.current().params.userId});
 	}
 })
