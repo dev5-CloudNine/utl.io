@@ -2,94 +2,31 @@
 	<h5>Deposit Funds</h5>
     <div class="panel panel-default">
         <div class="panel-body">
-            Account Balance: $ 0.00
+            Account Balance: $ {{accountBalance}}
             <br><br>
-            <form>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <label>Deposit Amount:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon">$</span>
-                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                            <span class="input-group-addon">.00</span>
-                        </div>  
+            <div id="payeezy-button" style="margin: 10px 0" onclick="document.getElementById('pay_now_form_148f147dea').submit()">
+                <form action="https://demo.globalgatewaye4.firstdata.com/pay" id="pay_now_form_148f147dea" method="post">
+                    <input name="x_login" type="hidden" value="HCO-UTL-D-966" />
+                    <input name="x_show_form" type="hidden" value="PAYMENT_FORM" />
+                    <input name="x_fp_sequence" type="hidden" value="14686623761534527076" />
+                    <input name="x_fp_hash" type="hidden" value="PNB-1.0-9a9d6d4b206fa02637f979843da3959c5e64aa9a" />
+                    <input name="x_amount" type="hidden" value="" />
+                    <input name="x_currency_code" type="hidden" value="USD" />
+                    <input name="x_test_request" type="hidden" value="TRUE" />
+                    <input name="x_relay_response" type="hidden" value="" />
+                    <input name="donation_prompt" type="hidden" value="" />
+                    <input name="button_code" type="hidden" value="Pay Now UTL DEMO0080 Payment Page" />
+                    <div class="cpwrap">
+                        <button type="button">Deposit Funds</button>
                     </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h5>Payment Methods</h5>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Payment Method</th>
-                                    <th>Cost</th>
-                                    <th>Approval</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <label>
-                                        <input type="radio" name="payVia" id="payeezy" value="payeezy" checked>Payeezy
-                                        </label>
-                                </td>
-                                    <td>No Cost</td>
-                                    <td>Instant*</td>
-                                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet atque quasi iusto.</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>
-                                        <input type="radio" name="payVia" id="credit" value="creditcard">Credit Card
-                                        </label>
-                                    </td>
-                                    <td>No Cost</td>
-                                    <td>Instant*</td>
-                                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet atque quasi iusto.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="text-center">
-                            <button class="btn btn-primary btn-sm" type="submit">
-                                Submit
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
             <hr>
             <div class="row">
                 <div class="col-sm-12">
-                    <h5>Previous Transactions (Deposits)</h5>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>S. No</th>
-                                <th>Payment Method</th>
-                                <th>Amout</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Payezee</td>
-                                <td>$ 90.00</td>
-                                <td>Mon May 16 2016 11:09:29 GMT+0530 (IST)</td>
-                                <td>Pending</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Credit Card</td>
-                                <td>$ 90.00</td>
-                                <td>Mon May 28 2016 04:09:29 GMT+0530 (IST)</td>
-                                <td>Success</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h5>Transactions</h5>
+                    <hr>
+                    {{>ReactiveDatatable tableData=previousDeposits options=previousDepositOptions}}
                 </div>
             </div>
         </div>

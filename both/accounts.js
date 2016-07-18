@@ -41,13 +41,7 @@ AccountsTemplates.configureRoute("signIn", {
     },
     redirect: function() {
         var user = Meteor.user();
-
-        if (user && Roles.userIsInRole(user, ['admin'])) {
-          Router.go('/admin');
-        }
-        else {
-          Router.go('/dashboard');
-        }
+        Router.go('/dashboard');
     }
 });
 // AccountsTemplates.configureRoute("signUp", {

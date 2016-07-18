@@ -68,15 +68,23 @@ Router.map(function() {
             Meteor.subscribe('wallet');
             return Meteor.subscribe('allUsers');
         }
-    })
+    });
 
     this.route('allJobs', {
         path: '/allJobs',
         title: 'UTL - All Jobs',
-        subscriptions: function() {
+        waitOn: function() {
             return Meteor.subscribe('adminJobs');
         }
     });
+
+    this.route('allTransactions', {
+        path: '/alltransactions',
+        title: 'UTL - All Transactions',
+        waitOn: function() {
+            return Meteor.subscribe('allTransactions');
+        }
+    })
 
     this.route('myJobs', {
         path: '/myjobs',
@@ -470,12 +478,19 @@ Router.map(function() {
 
     this.route('deposit', {
         path: '/wallet/deposit',
-        title: 'Deposit Funds'
+        title: 'Deposit Funds',
+        waitOn: function() {
+            Meteor.subscribe('userTransactions', Meteor.userId());
+            return Meteor.subscribe('userWallet', Meteor.userId());
+        }
     });
 
     this.route('withdraw', {
         path: 'wallet/withdraw',
-        title: 'Withdraw Funds'
+        title: 'Withdraw Funds',
+        waitOn: function() {
+            return Meteor.subscribe('userWallet', Meteor.userId());
+        }
     });
 
     this.route('invoices', {
@@ -811,14 +826,19 @@ Router.map(function() {
         }
     });
 
-
-
     this.route('paymentStatus', {
         waitOn: function() {
             return Meteor.subscribe("transactions",Meteor.userId());
         }
     });
 
+    this.route('transactionDetails', {
+        path: '/wallet/deposit/transaction/:_id',
+        title: 'UTL - Transaction Details',
+        waitOn: function() {
+            return Meteor.subscribe('transactionDetails', this.params._id);
+        }
+    })
 
     this.route('invoice', {
         path: '/invoices/:invoiceId',

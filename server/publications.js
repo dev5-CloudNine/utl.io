@@ -295,6 +295,11 @@ Meteor.publish('allUsers', function() {
     return Meteor.users.find({});
 })
 
+Meteor.publish('allTransactions', function () {
+    check(arguments, [Match.Any]);
+    return Transactions.find({});
+})
+
 Meteor.publish('buyerPostedJobs', function(buyerId) {
     check(arguments, [Match.Any]);
     var uId = Buyers.findOne({_id: buyerId}).userId;
@@ -550,8 +555,17 @@ Meteor.publish('userWallet', function(userId) {
     return Wallet.find({userId: userId});
 })
 
+Meteor.publish('userTransactions', function(userId) {
+    check(arguments, [Match.Any]);
+    return Transactions.find({userID: userId});
+})
+
 Meteor.publish('transactions', function(userId) {
     check(arguments, [Match.Any]);
     return Transactions.find({userID: userId});
 })
 
+Meteor.publish('transactionDetails', function(transId) {
+    check(arguments, [Match.Any]);
+    return Transactions.find({_id: transId});
+})

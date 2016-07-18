@@ -7,7 +7,7 @@ Template.paymentStatus.onRendered(function(){
 
 Template.paymentStatus.helpers({
 	transaction: function(){
-		var docID = Router.current().params.query.id;	
+		var docID = Router.current().params.query.id;
 		return Transactions.findOne({'_id':docID});
 	}
 })

@@ -710,5 +710,7 @@ Meteor.methods({
     },
     updateTransaction: function(docID,userID) {
         Transactions.update({_id:docID},{$set:{'userID':userID}});
+        var amountDeposited = parseInt(Transactions.findOne({_id: docID}).dollarAmount);
+        Wallet.update({userId: userID}, {$inc: {accountBalance: amountDeposited}});
     }
 });
