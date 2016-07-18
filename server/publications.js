@@ -290,6 +290,11 @@ Meteor.publish('allJobs', function() {
     return Jobs.find({status: 'active'}, {sort: {createdAt: -1}});
 });
 
+Meteor.publish('allUsers', function() {
+    check(arguments, [Match.Any]);
+    return Meteor.users.find({});
+})
+
 Meteor.publish('buyerPostedJobs', function(buyerId) {
     check(arguments, [Match.Any]);
     var uId = Buyers.findOne({_id: buyerId}).userId;
@@ -535,6 +540,10 @@ Meteor.publish('subcategoryProfiles', function(subcategory) {
     check(arguments, [Match.Any]);
     return Profiles.find({industryTypes: {$in: [subcategory]}});
 });
+
+Meteor.publish('wallet', function() {
+    return Wallet.find({});
+})
 
 Meteor.publish('userWallet', function(userId) {
     check(arguments, [Match.Any]);

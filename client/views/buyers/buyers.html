@@ -6,7 +6,7 @@
 					{{>EasySearch.Input index=buyerIndex}}
 				</div>
 			</div>
-			{{#if isInRole 'corporate-admin, provider, admin, corporate-provider'}}
+			{{#if isInRole 'corporate-admin, provider, corporate-provider'}}
 				{{#EasySearch.Each index=buyerIndex}}
 			        {{>buyerSmall}}
 			    {{/EasySearch.Each}}

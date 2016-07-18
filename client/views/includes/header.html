@@ -17,26 +17,8 @@
                         {{#if currentUser}}
                             {{#if isInRole 'admin'}}
                                 <li><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>
-                                <li id="user-drop-down" class="dropdown">
-                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-                                        Users <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{pathFor 'buyers'}}">Buyers</a></li>
-                                        <li><a href="{{pathFor 'profiles'}}">Providers</a></li>
-                                        <li><a href="{{pathFor 'corporates'}}">Corporate Accounts</a></li>
-                                    </ul>
-                                </li>
-                                <li id="user-drop-down" class="dropdown">
-                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-                                        Jobs <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{pathFor 'allJobs'}}">All New Jobs</a></li>
-                                        <li><a href="{{pathFor 'allAssignedJobs'}}">Assigned Jobs</a></li>
-                                        <li><a href="{{pathFor 'allCompletedJobs'}}">Completed Jobs</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="{{pathFor 'allUsers'}}">Users</a></li>
+                                <li><a href="{{pathFor 'allJobs'}}">Jobs</a></li>
                             {{/if}}
                             {{#if isInRole 'buyer, corporate-manager, corporate-admin, provider, corporate-provider, corporate-accountant'}}
                                 <li>
