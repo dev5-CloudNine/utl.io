@@ -7,7 +7,7 @@ var previousDepositOptions = {
 		{
 			title: 'Transaction ID',
 			data: function(transaction) {
-				var transactionLink = '<a href="/wallet/deposit/transaction/' + transaction._id + '">' + transaction._id + '</a>';
+				var transactionLink = '<a href="/wallet/deposit/transaction/' + transaction._id + '">' + transaction.trans_id + '</a>';
 				return transactionLink;
 			}
 		},
@@ -15,6 +15,22 @@ var previousDepositOptions = {
 			title: 'Transaction Amount',
 			data: function(transaction) {
 				return transaction.dollarAmount;
+			}
+		},
+		{
+			title: 'Transaction Status',
+			data: function(transaction) {
+				return transaction.bankMessage;
+			}
+		},
+		{
+			title: 'Date/Time',
+			data: function(transaction) {
+				if(transaction.dateOrTime) {
+					return transaction.dateOrTime;
+				} else {
+					return '';
+				}
 			}
 		}
 	]

@@ -820,7 +820,7 @@ Router.map(function() {
             data.merchantName = res.MerchantName;
             var id = Meteor.call("saveReceipt",data);
             this.response.writeHead(302, {
-                'Location': URL+'/paymentStatus?id='+id
+                'Location': URL + '/paymentStatus?id='+id
             });
             this.response.end();
         }

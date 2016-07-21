@@ -52,6 +52,11 @@
                                 {{>jobExpiredAlert}} {{#if isInRole 'admin'}} {{>jobAdminEditLink}} {{>jobStatusToggle}} {{>jobSuggestedTweet}} {{/if}} {{>jobStatusAlert}}
                                 <div class="row">
                                     <div class="col-sm-12">
+                                        {{#if $eq applicationStatus 'assigned'}}
+                                            {{#if assignedProvider}}
+                                                <span class="pull-right"><button class="btn btn-primary createPdf">PDF</button></span>
+                                            {{/if}}
+                                        {{/if}}
                                         <span class="label label-default label-xs">{{readableID}}</span> {{>jobLabels}}
                                         <h4>{{title}}</h4>
                                         <small>
@@ -164,7 +169,15 @@
                                             <h4>Service Location</h4> {{location}}
                                             <hr>
                                         {{/if}}
-                                        <h4>Service Schedule</h4> {{#if exactdate}} On: {{exactdate}} {{/if}} {{#if startdate}} Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} through {{endtime}} {{/if}} {{#if ratebasis}}
+                                        <h4>Service Schedule</h4>
+                                        {{#if $eq serviceschedule 'exactdate'}}
+                                            On: {{formatDate exactdate}} <br>
+                                            Time: {{exacttime}}
+                                        {{/if}}
+                                        {{#if $eq serviceschedule 'betweendates'}}
+                                            Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} to {{endtime}}
+                                        {{/if}}
+                                        {{#if ratebasis}}
                                         <hr>
                                         <h4>Budget</h4>
                                         Payment Type: {{ratebasis}} <br>
@@ -189,12 +202,14 @@
                                         {{/if}}
                                         {{/if}} 
                                         {{#if assignedProvider}}
-                                            <hr> Confidential Info:
-                                            <br> {{contactperson}}
-                                            <br> {{contactemail}}
-                                            <br> {{contactphone}}
-                                            <br> {{confidentialDescription}}
-                                            <br> {{fullAddress}}
+                                            {{#if confidentialDescription}}
+                                                <hr> Confidential Info:
+                                                <br> {{contactperson}}
+                                                <br> {{contactemail}}
+                                                <br> {{contactphone}}
+                                                <br> {{{htmlConfidentialDesc}}}
+                                                <br> {{fullAddress}}
+                                            {{/if}}
                                         {{/if}} 
                                         {{#if shipment}}
                                         <hr>
