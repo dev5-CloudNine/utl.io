@@ -715,3 +715,14 @@ div#payeezy-button {
 }
 
 /* Pay Now button CSS ENDs*/
+
+/*Dashboard rating stars*/
+span.bigstars span.rateit-range
+{
+  background: url('images/star_unfilled.png');
+}
+span.bigstars span.rateit-selected
+{
+  background: url('images/star_filled.png');
+}
+/*Dashboard rating stars ends*/

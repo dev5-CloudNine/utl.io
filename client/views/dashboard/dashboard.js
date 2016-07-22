@@ -43,16 +43,6 @@ Template.dashboard.helpers({
 		return Jobs.find({_id: {$in:appliedJobIds}},{sort: {createdAt: -1}});
 	},
 	ongoingJobs: function() {
-		// var providerJobs = [];
-		// var confirmedJobs = [];
-		// Profiles.findOne({userId: Meteor.userId()}).ongoingJobs.forEach(function(ongoingJob) {
-		// 	providerJobs.push(ongoingJob);
-		// });
-		// Jobs.find({_id: {$in:providerJobs}},{sort: {createdAt: -1}}).map(function(job){
-		// 	job.display = false;
-		// 	confirmedJobs.push(job);
-		// });
-		// return confirmedJobs;
 		return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
 	},
 	providerRoutedJobs: function() {
@@ -119,5 +109,37 @@ Template.dashboard.helpers({
 	},
 	amountEarned: function() {
 		return Wallet.findOne({userId: Meteor.userId()}).amountEarned;
+	},
+	providerRatingPoints: function() {
+		var totalPoints = 0;
+		var count = 0;
+		var reviews = Reviews.find({$and: [{'providerId': Meteor.userId()}, {'reviewedBy': 'buyer'}]}).fetch();
+		if(reviews) {
+			for(var i = 0; i < reviews.length; i++) {
+				totalPoints += reviews[i].pointsRated;
+				count++;
+			}
+			console.log(totalPoints/count)
+			return totalPoints/count;
+		}
+		return 0;
+	},
+	buyerRatingPoints: function () {
+		var totalPoints = 0;
+		var count = 0;
+		var reviews = Reviews.find({$and: [{'buyerId': Meteor.userId()}, {'reviewedBy': 'provider'}]}).fetch();
+		if(reviews) {
+			for(var i = 0; i < reviews.length; i++) {
+				totalPoints += reviews[i].pointsRated;
+				count++;
+			}
+			console.log(totalPoints/count)
+			return totalPoints/count;
+		}
+		return 0;
 	}
 });
+
+Template.dashboard.rendered = function () {
+	this.$('.rateit').rateit({'readonly': true});
+};
