@@ -663,6 +663,7 @@ Template.job.helpers({
         first_max_hours: provider.first_max_hours,
         next_hours: provider.next_hours,
         next_max_hours: provider.next_max_hours,
+        buyer_cost: provider.buyer_cost,
         freelancer_nets: provider.freelancer_nets,
       }
       providers.push(providerDetails);
@@ -788,6 +789,11 @@ Template.job.helpers({
         return true;
       return false;
     },
+    assignedOrDone: function() {
+      if(this.applicationStatus == 'assigned' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'done')
+        return true;
+      return false;
+    },
     checkInTime: function(){
       var date = TimeSheet.findOne({'jobID':this._id}).checkIn;
       if(!date) return '';
@@ -875,6 +881,77 @@ Template.job.helpers({
     paymentDetails: function() {
       var jobDetails = Jobs.findOne({_id: Router.current().params._id});
       return jobDetails;
+    },
+    assignedProviderDetails: function() {
+      var applicationDetails = {};
+      for(var i = 0; i < this.applications.length; i++) {
+        if(this.applications[i].userId == this.assignedProvider && this.applications[i].app_status == 'accepted') {
+          if(this.applications[i].app_type == 'application') {
+            applicationDetails = {
+              appType: this.applications[i].app_type,
+              appliedAt: this.applications[i].applied_at
+            }
+          }
+          if(this.applications[i].app_type == 'counteroffer') {
+            applicationDetails = {
+              appType: this.applications[i].app_type,
+              appliedAt: this.applications[i].applied_at,
+              counter_type: this.applications[i].counterType,
+              fixed_amount:this.applications[i].fixed_amount,
+              hourly_rate: this.applications[i].hourly_rate,
+              max_hours: this.applications[i].max_hours,
+              device_rate: this.applications[i].device_rate,
+              max_devices: this.applications[i].max_devices,
+              first_hours: this.applications[i].first_hours,
+              first_max_hours: this.applications[i].first_max_hours,
+              next_hours: this.applications[i].next_hours,
+              next_max_hours: this.applications[i].next_max_hours,
+              buyer_cost: this.applications[i].buyer_cost,
+              freelancer_nets: this.applications[i].freelancer_nets,
+            }
+          }
+          console.log(applicationDetails);
+        }
+      }
+      var provider = Profiles.findOne({userId: this.assignedProvider});
+      var providerImg = Users.findOne({_id: this.assignedProvider}).imgURL;
+      if(applicationDetails.appType == 'application') {
+        var providerDetails = {
+          name: provider.name,
+          title: provider.title,
+          imgUrl: providerImg,
+          id: provider._id,
+          appType: applicationDetails.appType,
+          appliedAt: applicationDetails.appliedAt,
+          paymentType: this.ratebasis,
+          gross: this.your_cost,
+          freelancer_nets: this.freelancer_nets
+        }
+      }
+      if(applicationDetails.appType == 'counteroffer') {
+        var providerDetails = {
+          name: provider.name,
+          title: provider.title,
+          imgUrl: providerImg,
+          id: provider._id,
+          appType: applicationDetails.appType,
+          appliedAt: applicationDetails.appliedAt,
+          paymentType: this.ratebasis,
+          counter_type: applicationDetails.counter_type,
+          fixed_amount:applicationDetails.fixed_amount,
+          hourly_rate: applicationDetails.hourly_rate,
+          max_hours: applicationDetails.max_hours,
+          device_rate: applicationDetails.device_rate,
+          max_devices: applicationDetails.max_devices,
+          first_hours: applicationDetails.first_hours,
+          first_max_hours: applicationDetails.first_max_hours,
+          next_hours: applicationDetails.next_hours,
+          next_max_hours: applicationDetails.next_max_hours,
+          buyer_cost: applicationDetails.buyer_cost,
+          freelancer_nets: applicationDetails.freelancer_nets,
+        }
+      }
+      return providerDetails;
     }
 });
 

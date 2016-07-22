@@ -250,6 +250,59 @@
                                 </div>
                             </div>
                         </div>
+                        {{#if jobPostedBuyer}}
+                            {{#if assignedOrDone}}
+                                <div class="panel panel-default panel-white">
+                                    <div class="panel-body">
+                                        <h4>Assigned Provider</h4>
+                                        {{#with assignedProviderDetails}}
+                                            <div class="media">
+                                                {{#if this.imgUrl}}
+                                                    <a class="pull-left" href="/profiles/{{this.userId}}">
+                                                        <img class="media-object" src="{{this.imgUrl}}" width="64px">
+                                                    </a>
+                                                {{else}}
+                                                    {{>avatar size="small"}}
+                                                {{/if}}
+                                                <div class="media-body">
+                                                    <h4 media-heading><a href="/profiles/{{this.id}}">{{this.name}}</a></h4>
+                                                    <h5>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</h5>
+                                                </div>
+                                                <div class="media-body">
+                                                    <span class="label label-success">{{this.appType}}</span>
+                                                    <br>
+                                                    {{#if $eq this.appType 'application'}}
+                                                        Payment Type: {{this.paymentType}} <br>
+                                                        Gross: {{this.gross}} <br>
+                                                        Net: {{this.freelancer_nets}}
+                                                    {{/if}}
+                                                    {{#if $eq appType 'counteroffer'}}
+                                                        {{#if $eq counter_type 'blended'}}
+                                                            Payment Type: Blended <br>
+                                                            Pay {{first_hours}} USD for the first {{first_max_hours}} and then {{next_hours}} USD for the next {{next_max_hours}}. <br>
+                                                        {{/if}}
+                                                        {{#if $eq counter_type 'per_device'}}
+                                                            Payment Type: Per Device <br>
+                                                            Pay {{device_rate}} USD for {{max_devices}} devices. <br>
+                                                        {{/if}}
+                                                        {{#if $eq counter_type 'per_hour'}}
+                                                            Payment Type: Per Hour <br>
+                                                            Pay {{hourly_rate}} USD for {{max_hours}} hours.  <br>
+                                                        {{/if}}
+                                                        {{#if $eq counter_type 'fixed_pay'}}
+                                                            Payment Type: Fixed Pay <br>
+                                                            Pay fixed amount {{fixed_amount}} USD.
+                                                        {{/if}}
+                                                        Gross: {{buyer_cost}} USD. <br>
+                                                        Net: {{freelancer_nets}} USD.
+                                                    {{/if}}
+                                                </div>
+                                            </div>
+                                        {{/with}}
+                                    </div>
+                                </div>
+                            {{/if}}
+                        {{/if}}
                         <div class="panel panel-default panel-white {{#if currentUser.isDeveloper}}{{#if notOpen}} hidden {{/if}}{{/if}}">
                             <div class="panel-body">
                                 <div class="row">

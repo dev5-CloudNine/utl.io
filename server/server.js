@@ -238,7 +238,8 @@ Meteor.methods({
             adminRead: false
         }
         var jobNets = Jobs.findOne({_id: jobId}).freelancer_nets;
-        Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen', proposedBudget: jobNets}});
+        Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen'}});
+        Jobs.update({_id: jobId}, {$set: {proposedBudget: jobNets}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: userId})),
@@ -264,7 +265,8 @@ Meteor.methods({
             side: 'provider',
             adminRead: false
         }
-        Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.freelancer_nets': freenets}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen', proposedBudget: freenets}})
+        Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.freelancer_nets': freenets}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen'}})
+        Jobs.update({_id: jobId}, {$set: {proposedBudget: freenets}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: userId})),
