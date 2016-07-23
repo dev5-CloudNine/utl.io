@@ -1,4 +1,4 @@
-var allTransactions = function() {
+var allDeposits = function() {
 	return Transactions.find().fetch();
 }
 
@@ -32,7 +32,7 @@ var adminOptionsObject = {
 			}
 		},
 		{
-			title: 'Transaction Amount',
+			title: 'Amount',
 			data: function(transaction) {
 				return '$' + transaction.dollarAmount;
 			}
@@ -42,13 +42,16 @@ var adminOptionsObject = {
 			data: function(transaction) {
 				return transaction.bankMessage;
 			}
+		},
+		{
+			title: 'Time'
 		}
 	]
 }
 
-Template.allTransactions.helpers({
-	allTransactions: function() {
-		return allTransactions;
+Template.allDeposits.helpers({
+	allDeposits: function() {
+		return allDeposits;
 	},
 	adminOptionsObject: adminOptionsObject
 })

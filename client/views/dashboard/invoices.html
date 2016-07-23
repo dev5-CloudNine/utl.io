@@ -3,6 +3,6 @@
         {{> ReactiveDatatable tableData=buyerInvoices options=buyerOptionsObject}}
     {{/if}}
     {{#if isInRole 'provider, corporate-provider'}}
-        {{> ReactiveDatatable tableData=buyerInvoices options=providerOptionsObject}}
+        {{> ReactiveDatatable tableData=providerInvoices options=providerOptionsObject}}
     {{/if}}
 </template>

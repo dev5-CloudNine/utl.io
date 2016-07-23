@@ -1,0 +1,7 @@
+<template name="allDeposits">
+	{{#if currentUser}}
+		{{#if isInRole 'admin'}}
+			{{>ReactiveDatatable tableData=allDeposits options=adminOptionsObject}}
+		{{/if}}
+	{{/if}}
+</template>

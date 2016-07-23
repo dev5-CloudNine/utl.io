@@ -18,17 +18,21 @@ Template.invoice.helpers({
 	},
 	providerDetails: function() {
 		var invoices = Wallet.findOne({userId: Meteor.userId()}).invoices;
-		for(var i = 0; i < invoices.length; i++) {
-			if(invoices[i].invoiceId == Router.current().params.invoiceId) {
-				return(Profiles.findOne({userId: invoices[i].providerId}));
+		if(invoices) {
+			for(var i = 0; i < invoices.length; i++) {
+				if(invoices[i].invoiceId == Router.current().params.invoiceId) {
+					return(Profiles.findOne({userId: invoices[i].providerId}));
+				}
 			}
 		}
 	},
 	buyerDetails: function() {
 		var invoices = Wallet.findOne({userId: Meteor.userId()}).invoices;
-		for(var i = 0; i < invoices.length; i++) {
-			if(invoices[i].invoiceId == Router.current().params.invoiceId) {
-				return(Buyers.findOne({userId: invoices[i].buyerId}));
+		if(invoices) {
+			for(var i = 0; i < invoices.length; i++) {
+				if(invoices[i].invoiceId == Router.current().params.invoiceId) {
+					return(Buyers.findOne({userId: invoices[i].buyerId}));
+				}
 			}
 		}
 	},
@@ -40,16 +44,18 @@ Template.invoice.helpers({
 	},
 	invoiceDetails: function() {
 		var invoices = Wallet.findOne({userId: Meteor.userId()}).invoices;
-		for(var i = 0; i < invoices.length; i++) {
-			if(invoices[i].invoiceId == Router.current().params.invoiceId) {
-				var jobDetails = Jobs.findOne({_id: invoices[i].jobId});
-				var iDetails = {
-					date: invoices[i].date,
-					inoviceStatus: invoices[i].invoiceStatus,
-					jobName: jobDetails.title,
-					projectBudget: invoices[i].budget
+		if(invoices) {
+			for(var i = 0; i < invoices.length; i++) {
+				if(invoices[i].invoiceId == Router.current().params.invoiceId) {
+					var jobDetails = Jobs.findOne({_id: invoices[i].jobId});
+					var iDetails = {
+						date: invoices[i].date,
+						inoviceStatus: invoices[i].invoiceStatus,
+						jobName: jobDetails.title,
+						projectBudget: invoices[i].budget
+					}
+					return iDetails;
 				}
-				return iDetails;
 			}
 		}
 	}

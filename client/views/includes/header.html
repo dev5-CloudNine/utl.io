@@ -19,7 +19,16 @@
                                 <li><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>
                                 <li><a href="{{pathFor 'allUsers'}}">Users</a></li>
                                 <li><a href="{{pathFor 'allJobs'}}">Jobs</a></li>
-                                <li><a href="{{pathFor 'allTransactions'}}">Transactions</a></li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
+                                        Transactions <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{pathFor 'allDeposits'}}">Deposits</a></li>
+                                        <li><a href="{{pathFor 'allWithdrawls'}}">Withdrawls</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{{pathFor 'allInvoices'}}">Invoices</a></li>
                             {{/if}}
                             {{#if isInRole 'buyer, corporate-manager, corporate-admin, provider, corporate-provider, corporate-accountant'}}
                                 <li>

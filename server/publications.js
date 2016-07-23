@@ -553,7 +553,7 @@ Meteor.publish('wallet', function() {
 Meteor.publish('userWallet', function(userId) {
     check(arguments, [Match.Any]);
     return Wallet.find({userId: userId});
-})
+});
 
 Meteor.publish('userTransactions', function(userId) {
     check(arguments, [Match.Any]);

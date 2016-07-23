@@ -26,7 +26,7 @@ var buyerOptionsObject = {
 				return providerLink;
 			}
 		},
-		{title: 'Amount', data: 'budget'},
+		{title: 'Amount (USD)', data: 'budget'},
 		{title: 'Date', data: 'date'},
 		{title: 'Status', data: 'invoiceStatus'}
 	]
