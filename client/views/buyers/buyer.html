@@ -29,20 +29,22 @@
 							<i class="fa fa-user"></i>&nbsp;{{userName}}
 							<hr>
 						</small>
-						<small>
-							{{#if eintinNumber}}
-								<i class="fa fa-envelope"></i>&nbsp;EIN/TIN: {{eintinNumber}}
-							{{/if}}
-							<br>
-							{{#if socialSecurityNumber}}
-								<i class="fa fa-envelope"></i>&nbsp;SSN: {{socialSecurityNumber}}
-							{{/if}}
-							<br>
-							{{#if alternateEmail}}
-								<i class="fa fa-envelope"></i>&nbsp;{{alternateEmail}}
-							{{/if}}
-						</small>
-						<hr>
+						{{#if adminOrBuyer}}
+							<small>
+								{{#if eintinNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;EIN/TIN: {{eintinNumber}}
+								{{/if}}
+								<br>
+								{{#if socialSecurityNumber}}
+									<i class="fa fa-envelope"></i>&nbsp;SSN: {{socialSecurityNumber}}
+								{{/if}}
+								<br>
+								{{#if alternateEmail}}
+									<i class="fa fa-envelope"></i>&nbsp;{{alternateEmail}}
+								{{/if}}
+							</small>
+							<hr>
+						{{/if}}
 						<i class="fa fa-calendar"></i> Created on {{formatDate createdAt}}
 					</div>
 					<div class="col-sm-9">
@@ -92,7 +94,7 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						{{#if $eq userId $.Meteor.userId}}
+						{{#if adminOrBuyer}}
 							<div class="pull-right">
 								&nbsp;
 								<a href="{{pathFor 'buyerEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>

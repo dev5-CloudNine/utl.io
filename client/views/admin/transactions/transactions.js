@@ -7,7 +7,7 @@ var adminOptionsObject = {
 		{
 			title: 'Transaction Id',
 			data: function(transaction) {
-				var transactionLink = '<a href="/wallet/deposit/transaction/' + transaction._id + '">' + transaction._id + '</a>';
+				var transactionLink = '<a href="/wallet/deposit/transaction/' + transaction._id + '">' + transaction.trans_id + '</a>';
 				return transactionLink;
 			}
 		},

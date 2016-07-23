@@ -102,3 +102,4 @@ meteorhacks:npm
 npm-container
 ephemer:reactive-datatables
 nilsdannemann:pdfmake
+bigdata:elasticsearch

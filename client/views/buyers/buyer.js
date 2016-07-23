@@ -55,6 +55,11 @@ Template.buyer.helpers({
       });
     }
     return itypes;
+  },
+  adminOrBuyer: function() {
+    if(Roles.userIsInRole(Meteor.userId(), ['admin']) || this.userId == Meteor.userId())
+      return true;
+    return false;
   }
 });
 

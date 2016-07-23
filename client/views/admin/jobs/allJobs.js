@@ -5,6 +5,12 @@ var allJobs = function() {
 var adminOptionsObject = {
 	columns: [
 		{
+			title: 'Readable ID',
+			data: function(jobDetails) {
+				return jobDetails.readableID;
+			}
+		},
+		{
 			title: 'Job Name',
 			data: function(jobDetails) {
 				var jobUrl = '<a href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a>';

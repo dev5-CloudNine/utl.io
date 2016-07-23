@@ -422,7 +422,7 @@ Router.map(function() {
         onBeforeAction: function() {
             var id = this.params._id;
             var userID = Profiles.findOne({_id: id}).userId;
-            if(Meteor.userId()==userID) {
+            if(Meteor.userId()==userID || Roles.userIsInRole(Meteor.userId(), ['admin'])) {
                 this.next();
             } else {
                 Router.go('notFound');
@@ -566,7 +566,7 @@ Router.map(function() {
         onBeforeAction: function() {
             var id = this.params._id;
             var userID = Buyers.findOne({_id: id}).userId;
-            if(Meteor.userId()==userID) {
+            if(Meteor.userId()==userID || Roles.userIsInRole(Meteor.userId(), ['admin'])) {
                 this.next();
             } else {
                 Router.go('notFound');

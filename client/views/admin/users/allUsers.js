@@ -4,6 +4,12 @@ var allUsers = function() {
 var adminOptionsObject = {
 	columns: [
 		{
+			title: 'Readable ID',
+			data: function(user) {
+				return user.readableID;
+			}
+		},
+		{
 			title: 'User Name',
 			data: function(user) {
 				if(user.roles[0] == 'buyer' || user.roles[0] == 'corporate-manager') {

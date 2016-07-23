@@ -119,9 +119,14 @@ Template.dashboard.helpers({
 				totalPoints += reviews[i].pointsRated;
 				count++;
 			}
-			console.log(totalPoints/count)
 			return totalPoints/count;
 		}
+		return 0;
+	},
+	providerReviewCount: function() {
+		var reviews = Reviews.find({$and: [{'providerId': Meteor.userId()}, {'reviewedBy': 'buyer'}]});
+		if(reviews)
+			return reviews.count();
 		return 0;
 	},
 	buyerRatingPoints: function () {
@@ -133,9 +138,14 @@ Template.dashboard.helpers({
 				totalPoints += reviews[i].pointsRated;
 				count++;
 			}
-			console.log(totalPoints/count)
 			return totalPoints/count;
 		}
+		return 0;
+	},
+	buyerReviewCount: function() {
+		var reviews = Reviews.find({$and: [{'buyerId': Meteor.userId()}, {'reviewedBy': 'provider'}]});
+		if(reviews)
+			return reviews.count();
 		return 0;
 	}
 });

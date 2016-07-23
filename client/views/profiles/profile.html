@@ -45,17 +45,19 @@
 								<hr>
 							{{/if}}
 						</small>
-						<small>
-							{{#if eintinNumber}}
-								EIN/TIN: {{eintinNumber}}
-							{{/if}}
-							<br>
-							{{#if socialSecurityNumber}}
-								SSN: {{socialSecurityNumber}}
-							{{/if}}
-							<br>
-							<hr>
-						</small>
+						{{#if adminOrProvider}}
+							<small>
+								{{#if eintinNumber}}
+									EIN/TIN: {{eintinNumber}}
+								{{/if}}
+								<br>
+								{{#if socialSecurityNumber}}
+									SSN: {{socialSecurityNumber}}
+								{{/if}}
+								<br>
+								<hr>
+							</small>
+						{{/if}}
 						<i class="fa fa-calendar"></i> Created on {{formatDate createdAt}}
 					</div>
 					<div class="col-sm-9">
@@ -143,7 +145,7 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						{{#if $eq userId $.Meteor.userId}}
+						{{#if adminOrProvider}}
 							<div class="pull-right">
 								&nbsp;
 								<a href="{{pathFor 'profileEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
