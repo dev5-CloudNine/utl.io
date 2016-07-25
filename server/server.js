@@ -473,16 +473,9 @@ Meteor.methods({
         var providerDetails = Profiles.findOne({userId: Meteor.userId()});
         var jobDetails = Jobs.findOne({_id: jobId});
         var buyerDetails = Buyers.findOne({userId: jobDetails.userId});
-        var buyerInvoiceDetails = {
+        var invoiceObject = {
             jobId: jobId,
-            providerId: providerDetails.userId,
-            budget: jobDetails.projectBudget,
-            date: new Date(),
-            invoiceId: 'INV' + jobDetails.readableID,
-            invoiceStatus: 'Pending'
-        }
-        var providerInvoiceDetails = {
-            jobId: jobId,
+            providerId: Meteor.userId(),
             buyerId: jobDetails.userId,
             budget: jobDetails.projectBudget,
             date: new Date(),
@@ -502,8 +495,7 @@ Meteor.methods({
         Jobs.update({_id: jobId}, {$set: {applicationStatus: 'pending_payment', assignmentStatus: 'pending_payment'}});
         Profiles.update({userId: Meteor.userId()}, {$pull: {assignedJobs: jobId}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {paymentPendingJobs: jobId}});
-        Wallet.update({userId: Meteor.userId()}, {$addToSet: {invoices: providerInvoiceDetails}});
-        Wallet.update({userId: buyerDetails.userId}, {$addToSet: {invoices: buyerInvoiceDetails}});
+        Invoices.insert(invoiceObject);
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: Jobs.findOne({_id: jobId}).userId})),
@@ -536,8 +528,7 @@ Meteor.methods({
         Wallet.update({userId: Meteor.userId()}, {$inc: {amountSpent: projectBudget}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: projectBudget}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: projectBudget}});
-        Wallet.update({$and: [{userId: Meteor.userId()}, {'invoices.jobId': jobId}]}, {$set: {'invoices.$.invoiceStatus': 'Paid'}});
-        Wallet.update({$and: [{userId: jobDetails.assignedProvider}, {'invoices.jobId': jobId}]}, {$set: {'invoices.$.invoiceStatus': 'Paid'}});
+        Invoices.update({$and: [{jobId: jobId}, {buyerId: jobDetails.userId}]}, {$set: {invoiceStatus: 'paid'}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: jobDetails.assignedProvider})),

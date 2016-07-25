@@ -1,14 +1,5 @@
 var invoices = function() {
-	var allInvoices = [];
-	var wallets = Wallet.find().fetch();
-	for(var i = 0; i < wallets.length; i++) {
-		if(wallets[i].invoices) {
-			for(var j = 0; j < wallets[i].invoices.length; j++) {
-				allInvoices.push(wallets[i].invoices[j]);
-			}
-		}
-	}
-	return allInvoices;
+	return Invoices.find().fetch();
 }
 
 var adminOptionsObject = {
@@ -16,7 +7,7 @@ var adminOptionsObject = {
 		{
 			'title': 'Invoice ID',
 			data: function(invoice) {
-				var invoiceLink = '<a href="/invoices/' + invoice.invoiceId + '">' + invoice.invoiceId + '</a>';
+				var invoiceLink = '<a href="/allInvoices/' + invoice.invoiceId + '">' + invoice.invoiceId + '</a>';
 				return invoiceLink;
 			}
 		},

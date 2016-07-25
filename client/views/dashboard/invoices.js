@@ -1,6 +1,9 @@
-invoicesData = function() {
-	return Wallet.findOne({userId: Meteor.userId()}).invoices;
-};
+buyerInvoices = function() {
+	return Invoices.find({buyerId: Meteor.userId()}).fetch();
+}
+providerInvoices = function() {
+	return Invoices.find({providerId: Meteor.userId()}).fetch();
+}
 var buyerOptionsObject = {
 	columns: [
 		{
@@ -63,10 +66,10 @@ var providerOptionsObject = {
 }
 Template.invoices.helpers({
 	buyerInvoices: function() {
-		return invoicesData;
+		return buyerInvoices;
 	},
 	providerInvoices: function() {
-		return invoicesData;
+		return providerInvoices;
 	},
 	buyerOptionsObject: buyerOptionsObject,
 	providerOptionsObject: providerOptionsObject

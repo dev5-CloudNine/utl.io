@@ -99,7 +99,7 @@ Router.map(function() {
         title: 'UTL - All Invoices',
         waitOn: function() {
             Meteor.subscribe('allJobs');
-            return Meteor.subscribe('wallet');
+            return Meteor.subscribe('invoices', Meteor.userId());
         }
     });
 
@@ -514,8 +514,9 @@ Router.map(function() {
         path: 'wallet/invoices',
         title: 'Invoices',
         waitOn: function() {
-            Meteor.subscribe('allJobs');
-            return Meteor.subscribe('userWallet', Meteor.userId());
+            Meteor.subscribe('providerInvoices', Meteor.userId());
+            Meteor.subscribe('buyerInvoices', Meteor.userId());
+            return Meteor.subscribe('allJobs');
         }
     });
 
@@ -861,9 +862,17 @@ Router.map(function() {
         path: '/invoices/:invoiceId',
         title: 'Invoice',
         waitOn: function() {
-            if(Roles.userIsInRole(Meteor.userId(), ['admin']))
-                Meteor.subscribe('wallet');
-            return Meteor.subscribe('userWallet', Meteor.userId());
+            Meteor.subscribe('providerInvoices', Meteor.userId());
+            return Meteor.subscribe('buyerInvoices', Meteor.userId());
+        }
+    })
+
+    this.route('invoiceDetails', {
+        path: '/allInvoices/:invoiceId',
+        title: 'Invoice',
+        waitOn: function() {
+            Meteor.subscribe('allJobs');
+            return Meteor.subscribe('invoices', Meteor.userId());
         }
     })
 });

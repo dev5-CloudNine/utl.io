@@ -1,10 +1,10 @@
-Template.invoice.events({
+Template.invoiceDetails.events({
 	'click .printInvoice': function(event, template){
 		window.print();
 	}
 });
 
-Template.invoice.helpers({
+Template.invoiceDetails.helpers({
 	invoiceId: function () {
 		return Router.current().params.invoiceId;
 	},

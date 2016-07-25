@@ -555,6 +555,21 @@ Meteor.publish('userWallet', function(userId) {
     return Wallet.find({userId: userId});
 });
 
+Meteor.publish('invoices', function(userId) {
+    if(Roles.userIsInRole(userId, ['admin']))
+        return Invoices.find({});
+})
+
+Meteor.publish('providerInvoices', function(userId) {
+    check(arguments, [Match.Any]);
+    return Invoices.find({providerId: userId});
+});
+
+Meteor.publish('buyerInvoices', function(userId) {
+    check(arguments, [Match.Any]);
+    return Invoices.find({buyerId: userId});
+})
+
 Meteor.publish('userTransactions', function(userId) {
     check(arguments, [Match.Any]);
     return Transactions.find({userID: userId});
