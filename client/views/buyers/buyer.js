@@ -93,5 +93,25 @@ Template.buyer.events({
       }
     });
     event.stopPropagation();
+  },
+  'click .deactivateProfile': function(event, template) {
+    event.preventDefault();
+    Meteor.call('deactivateBuyerProfile', this.userId, function(error) {
+      if(error) {
+        toastr.error('Failed to deactivate profile');
+      } else {
+        toastr.success('Deactivated profiles successfully.');
+      }
+    })
+  },
+  'click .activateProfile': function(event, template) {
+    event.preventDefault();
+    Meteor.call('activateBuyerProfile', this.userId, function(error) {
+      if(error) {
+        toastr.error('Failed to deactivate profile');
+      } else {
+        toastr.success('Deactivated profiles successfully.');
+      }
+    })
   }
 })

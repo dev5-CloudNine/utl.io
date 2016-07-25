@@ -1,14 +1,4 @@
 Template.profile.helpers({
-  beforeRemove: function() {
-    return function(collection, id) {
-      var doc = collection.findOne(id);
-      if (confirm('Really delete "' + doc.title + '"?')) {
-        this.remove();
-        analytics.track("Profile Removed");
-        Router.go('profiles');
-      }
-    };
-  },
   splitInterestedIn: function() {
     if (interestedIn)
       return interestedIn.split(",");
@@ -92,5 +82,25 @@ Template.profile.events({
       }
     });
     event.stopPropagation();
+  },
+  'click .deactivateProfile': function(event, template) {
+    event.preventDefault();
+    Meteor.call('deactivateProviderProfile', this.userId, function(error) {
+      if(error) {
+        toastr.error('Failed to deactivate profile');
+      } else {
+        toastr.success('Deactivated profiles successfully.');
+      }
+    })
+  },
+  'click .activateProfile': function(event, template) {
+    event.preventDefault();
+    Meteor.call('activateProviderProfile', this.userId, function(error) {
+      if(error) {
+        toastr.error('Failed to deactivate profile');
+      } else {
+        toastr.success('Deactivated profiles successfully.');
+      }
+    })
   }
 })

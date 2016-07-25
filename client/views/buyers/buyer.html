@@ -14,8 +14,12 @@
 						{{#if isInRole 'provider, corporate-provider'}}
 							{{#if currentUser.isDeveloper}}
 								<br>
-								<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>
-								<span><a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</a></span>
+								{{#if $eq this.status 'active'}}
+									<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>
+									<span><a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</a></span>
+								{{else}}
+									<p class="label label-deactivated">Inactive</p>
+								{{/if}}
 							{{/if}}
 						{{/if}}
 						<hr>
@@ -100,9 +104,7 @@
 								<a href="{{pathFor 'buyerEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
 							</div>
 							<div class="pull-right">
-								{{#quickRemoveButton collection="Buyers" _id=_id class="btn btn-danger" beforeRemove=beforeRemove}}
-									<i class="fa fa-trash-o"></i> Delete
-								{{/quickRemoveButton}}
+								<button class="btn btn-danger {{#if $eq status 'active'}}deactivateProfile{{else}} activateProfile{{/if}}">{{#if $eq status 'active'}}Deactivate{{else}} Activate{{/if}}</button>
 							</div>
 						{{/if}}
 					</div>

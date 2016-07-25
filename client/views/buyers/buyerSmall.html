@@ -1,6 +1,6 @@
 <template name="buyerSmall">
 	<div class="col-md-3">
-        <div class="buyer-grid panel panel-default text-center">
+        <div class="buyer-grid panel panel-default text-center {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
             <div class="panel-body">
                 <a href="{{pathFor 'buyer'}}">
 					{{#if customImageUrl}}
@@ -27,10 +27,14 @@
                 </div>
                 {{#if isInRole 'provider, corporate-provider'}}
                     {{#if currentUser.isDeveloper}}
-                        <div>
-                            <span>{{#with buyer}}<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>{{/with}}</span>
-                            <span><a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</a></span>
-                        </div>
+                        {{#if $eq this.status 'active'}}
+                            <div>
+                                <span>{{#with buyer}}<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>{{/with}}</span>
+                                <span><a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</a></span>
+                            </div>
+                        {{else}}
+                            <p class="label label-deactivated">Inactive</p>
+                        {{/if}}
                     {{/if}}
                 {{/if}}
             </div>

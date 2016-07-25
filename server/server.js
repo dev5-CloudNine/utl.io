@@ -705,5 +705,17 @@ Meteor.methods({
         Transactions.update({_id:docID},{$set:{'userID':userID}});
         var amountDeposited = parseInt(Transactions.findOne({_id: docID}).dollarAmount);
         Wallet.update({userId: userID}, {$inc: {accountBalance: amountDeposited}});
+    },
+    deactivateProviderProfile: function(userId) {
+        Profiles.update({userId: userId}, {$set: {status: 'inactive'}});
+    },
+    activateProviderProfile: function(userId) {
+        Profiles.update({userId: userId}, {$set: {status: 'active'}});
+    },
+    deactivateBuyerProfile: function(userId) {
+        Buyers.update({userId: userId}, {$set: {status: 'inactive'}});
+    },
+    activateBuyerProfile: function(userId) {
+        Buyers.update({userId: userId}, {$set: {status: 'active'}});
     }
 });

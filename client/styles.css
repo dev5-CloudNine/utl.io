@@ -726,3 +726,18 @@ span.bigstars span.rateit-selected
   background: url('images/star_filled.png');
 }
 /*Dashboard rating stars ends*/
+
+.dataTable tr.odd {
+  background-color: #f2f2f2;
+}
+.dataTable tr.even {
+  background-color: #f7f7f7;
+}
+
+.activeProfile {
+  border-top: 2px solid green;
+}
+
+.inactiveProfile {
+  border-top: 2px solid red;
+}

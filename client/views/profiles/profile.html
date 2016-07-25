@@ -15,8 +15,12 @@
 						{{#if isInRole 'buyer, corporate-manager'}}
 							{{#if currentUser.isBuyer}}
 								<br>
-								<a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-xs">Route Job</a>
-								<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</a>
+								{{#if $eq this.status 'active'}}
+									<a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-xs">Route Job</a>
+									<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</a>
+								{{else}}
+									<p class="label label-deactivated">Inactive</p>
+								{{/if}}
 							{{/if}}
 						{{/if}}
 						<hr>
@@ -151,9 +155,7 @@
 								<a href="{{pathFor 'profileEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
 							</div>
 							<div class="pull-right">
-								{{#quickRemoveButton collection="Profiles" _id=_id class="btn btn-danger" beforeRemove=beforeRemove}}
-									<i class="fa fa-trash-o"></i> Delete
-								{{/quickRemoveButton}}
+								<button class="btn btn-danger {{#if $eq status 'active'}}deactivateProfile{{else}} activateProfile{{/if}}">{{#if $eq status 'active'}}Deactivate{{else}} Activate{{/if}}</button>
 							</div>
 						{{/if}}
 					</div>
