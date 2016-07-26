@@ -1,7 +1,7 @@
 <template name="jobNew">
     <div class="row">
         <div class="col-sm-12">
-            <p>Jobs are free to post. Your job post will remain on this portal for 90 days.  After 90 days the post will no longer appear. <br>You can either choose to publish to the portal or to your favorite providers only. <br>Before your job is published, your account will be checked for budget proposed in this job.</p>
+            <p>Your job post will remain on this portal for 90 days.  After 90 days the post will no longer appear. <br>You can either choose to publish to the portal or to your favorite providers only. <br>Upon publish, your account will be debited with proposed budget.</p>
             <br>
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -212,12 +212,12 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="alert alert-info enoughBalance" hidden>
-                <strong>You have enough balance.</strong>
+                <strong>You have enough account balance. Your account will be debited once published.</strong>
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="alert alert-danger notEnoughBalance" hidden>
-                <strong>You don't have enough balance. Click on the button to deposit some funds.</strong>
+                <strong>You don't have enough account balance. Click on the button to deposit funds.</strong>
                 <div>
                     <div id="payeezy-button" style="margin: 10px 0" onclick="document.getElementById('pay_now_form_148f147dea').submit()">
                         <form action="https://demo.globalgatewaye4.firstdata.com/pay" id="pay_now_form_148f147dea" method="post">

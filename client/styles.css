@@ -741,3 +741,15 @@ span.bigstars span.rateit-selected
 .inactiveProfile {
   border-top: 2px solid red;
 }
+
+#apply .list-group-item {
+  line-height: normal !important;
+}
+
+#apply .list-group-item:nth-child(even) {
+  background-color: #f2f2f2 !important;
+}
+
+#apply .list-group-item:nth-child(odd) {
+  background-color: #f8f8f8 !important;
+}

@@ -843,7 +843,6 @@ Template.job.helpers({
               freelancer_nets: this.applications[i].freelancer_nets,
             }
           }
-          console.log(applicationDetails);
         }
       }
       var provider = Profiles.findOne({userId: this.assignedProvider});

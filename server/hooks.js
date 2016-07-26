@@ -68,6 +68,10 @@ Jobs.after.remove(function(userId, doc) {
 
 Jobs.after.insert(function(userId, doc){
   var obj ={};
+  var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+  var buyerCost = doc.your_cost;
+  Wallet.update({userId: userId}, {$inc: {accountBalance: -buyerCost}});
+  Wallet.update({userId: adminId}, {$inc: {accountBalance: buyerCost}});
   if(doc.tasks) doc.tasks.map(function(task){
     obj.taskName = task.taskname;
     obj.taskdescription = task.taskdescription;

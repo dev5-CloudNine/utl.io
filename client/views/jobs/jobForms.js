@@ -5,6 +5,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob'], {
 				console.log("Insert Error:", error);
 			} else {
 				analytics.track("Job Created");
+				toastr.success('The job has been posted and your account has been debited with the proposed budget.');
         		Router.go('job', {_id:result});
 			}
 		},

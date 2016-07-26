@@ -813,7 +813,7 @@ Router.map(function() {
             var code = this.request.query.code;
             Meteor.call("finishAuth",code,userId);
             this.response.writeHead(302, {
-                'Location': URL+'/payment'
+                'Location': URL + '/payment'
             });
             this.response.end();
         }
