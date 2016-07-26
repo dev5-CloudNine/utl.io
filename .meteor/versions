@@ -70,6 +70,7 @@ ddp-common@1.2.5
 ddp-rate-limiter@1.0.4
 ddp-server@1.2.6
 deps@1.0.12
+dfischer:phantomjs@1.0.4
 dfischer:prerenderio@1.0.8
 diff-sequence@1.0.5
 djedi:sanitize-html@1.11.3
@@ -130,6 +131,7 @@ meteorhacks:inject-initial@1.0.4
 meteorhacks:kadira@2.28.5
 meteorhacks:meteorx@1.4.1
 meteorhacks:npm@1.5.0
+meteorhacks:ssr@2.2.0
 meteorhacks:subs-manager@1.6.4
 meteorhacks:unblock@1.1.0
 mfactory:admin-lte@0.0.2
@@ -153,7 +155,6 @@ natestrauser:connection-banner@0.4.3
 natestrauser:font-awesome@4.5.0
 nemo64:bootstrap@3.3.5_2
 nemo64:bootstrap-data@3.3.5
-nilsdannemann:pdfmake@1.0.38
 nimble:restivus@0.8.10
 npm-bcrypt@0.8.5
 npm-container@1.2.0

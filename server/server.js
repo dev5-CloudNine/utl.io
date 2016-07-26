@@ -717,5 +717,63 @@ Meteor.methods({
     },
     activateBuyerProfile: function(userId) {
         Buyers.update({userId: userId}, {$set: {status: 'active'}});
+    },
+    generatePdf: function(jobId) {
+        var webshot = Meteor.npmRequire('webshot');
+        var fs = Npm.require('fs');
+        var Future = Npm.require('fibers/future');
+        var fut = new Future();
+        var fileName = 'jobdetails.pdf';
+        var css = Assets.getText('bootstrap.css');
+        SSR.compileTemplate('layout', Assets.getText('layout.html'));
+        Template.layout.helpers({
+            getDocType: function() {
+                return "<!DOCTYPE html>";
+            }
+        });
+        SSR.compileTemplate('jobReport', Assets.getText('job-report.html'));
+        Template.jobReport.helpers({
+            'equals': function(a, b) {
+                return a === b;
+            },
+            'buyerName': function() {
+                return Buyers.findOne({userId: this.userId}).name;
+            },
+            'providerName': function() {
+                return Profiles.findOne({userId: this.assignedProvider}).name;
+            },
+            'tasks': function() {
+                return Tasks.find({jobID: this._id}).fetch();
+            }
+        })
+        var jobDetials = Jobs.findOne({_id: jobId});
+        var data = {
+            jobDetails: jobDetials
+        }
+        var html_string = SSR.render('layout', {
+            css: css,
+            template: 'jobReport',
+            data: data
+        });
+        var options = {
+            "paperSize": {
+                "format": "Letter",
+                "orientation": "portrait",
+                "margin": "1cm"
+            },
+            siteType: 'html'
+        };
+        webshot(html_string, fileName, options, function(err) {
+            fs.readFile(fileName, function(err, data) {
+                if(err) {
+                    return console.log(err);
+                }
+                fs.unlinkSync(fileName);
+                fut.return(data);
+            });
+        });
+        var pdfData = fut.wait();
+        var base64String = new Buffer(pdfData).toString('base64');
+        return base64String;
     }
 });

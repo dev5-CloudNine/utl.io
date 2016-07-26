@@ -1,0 +1,102 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<h3 class="text-center">Job Details</h3>
+					{{#with jobDetails}}
+						<div class="row">
+							<div class="col-sm-12">
+								<span class="label labe-default label-xs">{{readableID}}</span>
+								<h4>{{title}}</h4>
+								{{#if equals servicelocation 'Remote Job'}}
+                                    {{servicelocation}} <br>
+                                {{else}}
+                                    {{location}} <br>
+                                {{/if}}
+                                Posted By: {{buyerName}} &nbsp;|&nbsp; Assigned To: {{providerName}}
+								<hr>
+								<h4>Skills Required</h4>
+								{{skillsrequired}}
+								<hr>
+								<h4>Description</h4>
+								{{{htmlDescription}}}
+								<hr>
+								<h4>Attached Documents</h4>
+								{{#if files}}
+									<ul>
+										{{#each files}}
+											<li><a href="{{this}}" download>{{this}}</a></li>
+										{{/each}}
+									</ul>
+								{{else}}
+									No files attached
+								{{/if}}
+								<hr>
+								<h4>Service Schedule</h4>
+								{{#if equals serviceschedule 'exactdate'}}
+									On: {{exactdate}} <br>
+									Time: {{exacttime}}
+								{{/if}}
+								{{#if equals serviceschedule 'betweendates'}}
+									Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} to {{endtime}}
+								{{/if}}
+								{{#if ratebasis}}
+                                    <hr>
+                                    <h4>Budget</h4>
+                                    Payment Type: {{ratebasis}} <br>
+                                    {{#if equals ratebasis 'Blended'}}
+                                        {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
+                                        Gross: {{totalfromclient}} USD.
+                                        Net: {{freelancer_nets}} USD.
+                                    {{/if}}
+                                    {{#if equals ratebasis 'Per Device'}}
+                                        {{rateperdevice}} USD for {{maxdevices}} devices. <br>
+                                        Gross: {{totalfromclient}} USD. <br>
+                                        Net: {{freelancer_nets}} USD. 
+                                    {{/if}}
+                                    {{#if equals ratebasis 'Per Hour'}}
+                                        {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
+                                        Gross: {{totalfromclient}} USD. <br>
+                                        Net: {{freelancer_nets}} USD.
+                                    {{/if}}
+                                    {{#if equals ratebasis 'Fixed Pay'}}
+                                        Gross: {{fixedamount}} USD.
+                                        <br>Net: {{freelancer_nets}} USD.
+                                    {{/if}}
+								{{/if}}
+								{{#if confidentialDescription}}
+                                    <hr> Confidential Info:
+                                    <br> {{contactperson}}
+                                    <br> {{contactemail}}
+                                    <br> {{contactphone}}
+                                    <br> {{{htmlConfidentialDesc}}}
+                                    <br> {{fullAddress}}
+                                {{/if}}
+                                {{#if shipment}}
+	                                <hr>
+	                                <h4>Shipments to site</h4>
+	                                <ul>
+	                                    {{#each shipment}}
+	                                    <li>{{itembeingshipped}} via {{#if shipmentcarriername}} {{shipmentcarriername}} {{else}} {{shipmentcarrier}} {{/if}} with tracking ID {{shipmenttracking}}
+	                                    </li>
+	                                    {{/each}}
+	                                </ul>
+	                            {{/if}}
+	                            {{#if tasks}}
+	                                <hr>
+	                                <h4>Tasks</h4>
+	                                <ul>
+	                                    {{#each tasks}}
+	                                        <li>{{this.taskName}}</li>
+	                                    {{/each}}
+	                                </ul>
+	                            {{/if}}
+							</div>
+						</div>
+					{{/with}}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

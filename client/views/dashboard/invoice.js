@@ -25,7 +25,6 @@ Template.invoice.helpers({
 		return Buyers.findOne({userId: invoiceDetails.buyerId});
 	},
 	invoiceDetails: function() {
-		console.log(Invoices.findOne({invoiceId: Router.current().params.invoiceId}));
 		return Invoices.findOne({invoiceId: Router.current().params.invoiceId});
 	}
 });

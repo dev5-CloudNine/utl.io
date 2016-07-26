@@ -496,7 +496,6 @@ Template.job.events({
     var jobId = this._id;
     Meteor.call('deactivateJob', jobId, function(error) {
       if(error) {
-        toastr.error('Failed to deactivate the job. Please try again.');
       } else {
         toastr.success('Deactivated the job successfully.');
       }
@@ -513,79 +512,13 @@ Template.job.events({
     })
   },
   'click button.createPdf': function(event, template) {
-    var jobTasks = [];
-    Tasks.find({jobID: this._id}).forEach(function (task) {
-      jobTasks.push(task.taskName);
-    });
-    var shipmentDetails = [];
-    this.shipment.forEach(function(shipment) {
-      shipmentDetails.push(shipment.itembeingshipped + ' via ' + shipment.shipmentcarrier + ' with tracking ID ' + shipment.shipmenttracking);
-    });
-    var serviceSchedule;
-    if(this.serviceschedule == 'exactdate') {
-      serviceSchedule = 'On: ' + this.exactdate + '\nTime: ' + this.exacttime;
-    }
-    if(this.serviceschedule == 'betweendates') {
-      serviceSchedule = 'Between ' + this.startdate + ' and ' + this.enddate + ' from ' + this.starttime + ' to ' + this.endtime;
-    }
-    var location;
-    if(this.servicelocation == 'Remote Job') {
-      location = 'Remote Job'
-    }
-    if(this.servicelocation == 'Field Job') {
-      location = this.fullAddress + ', ' + this.location;
-    }
-    var docDefinition = {
-      content: [
-        {
-          text: 'Title: \n' + this.title + '\n\n'
-        },
-        {
-          text: 'Posted By: ' + Buyers.findOne({userId: this.userId}).name + '\n\n'
-        },
-        {
-          text: 'Assigned To: ' + Profiles.findOne({userId: this.assignedProvider}).name + '\n\n'
-        },
-        {
-          text: 'Skills Required: \n' + this.skillsrequired + '\n\n'
-        },
-        {
-          text: 'Description: \n' + $(this.htmlDescription).html() + '\n\n'
-        },
-        {
-          text: 'Location: ' + location + '\n\n'
-        },
-        {
-          text: 'Service Schedule: \n' + serviceSchedule + '\n\n'
-        },
-        {
-          text: 'Budget: \nPayment Type: ' + this.ratebasis
-        },
-        {
-          text: 'Gross: ' + this.your_cost + ' USD'
-        },
-        {
-          text: 'Net: ' + this.freelancer_nets + ' USD' + '\n\n'
-        },
-        {
-          text: function() {
-            if(this.confidentialDescription) {
-              return 'Confidential Description: \n' + $(this.htmlConfdentialDesc).html() + '\n\n';
-            }
-          }
-        },
-        {
-          text: 'Files: \n' + this.files + '\n\n'
-        },
-        {
-          text: 'Tasks: \n' + jobTasks + '\n\n'
-        },
-        {
-          text: 'Shipment: \n' + shipmentDetails + '\n\n'
-        }
-      ]
-    }
-    pdfMake.createPdf(docDefinition).open();
+    Meteor.call('generatePdf', this._id, function(err, res) {
+      if(err) {
+        console.log(err);
+      } else {
+        window.open("data:applications/pdf;base64, " + res);
+      }
+    })
   }
 });
 
@@ -952,6 +885,11 @@ Template.job.helpers({
         }
       }
       return providerDetails;
+    },
+    jobAssignedToProvider: function() {
+      if(this.applicationStatus == 'assigned' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'done')
+        return true;
+      return false;
     }
 });
 

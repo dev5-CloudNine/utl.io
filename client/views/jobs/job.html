@@ -52,9 +52,9 @@
                                 {{>jobExpiredAlert}} {{#if isInRole 'admin'}} {{>jobAdminEditLink}} {{>jobStatusToggle}} {{>jobSuggestedTweet}} {{/if}} {{>jobStatusAlert}}
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        {{#if $eq applicationStatus 'assigned'}}
+                                        {{#if jobAssignedToProvider}}
                                             {{#if assignedProvider}}
-                                                <span class="pull-right"><button class="btn btn-primary createPdf">PDF</button></span>
+                                                <span class="pull-right"><button class="btn btn-primary createPdf">Download PDF</button></span>
                                             {{/if}}
                                         {{/if}}
                                         <span class="label label-default label-xs">{{readableID}}</span> {{>jobLabels}}
@@ -155,6 +155,7 @@
                                         <h4>Skills Required</h4> {{skillsrequired}}
                                         <hr>
                                         <h4>Description</h4> {{{htmlDescription}}}
+                                        <hr>
                                         {{#if files}}
                                             <hr>
                                             <h4>Attached Documents</h4>
@@ -200,7 +201,7 @@
                                             Gross: {{fixedamount}} USD.
                                             <br>Net: {{freelancer_nets}} USD.
                                         {{/if}}
-                                        {{/if}} 
+                                        {{/if}}
                                         {{#if assignedProvider}}
                                             {{#if confidentialDescription}}
                                                 <hr> Confidential Info:
@@ -212,23 +213,23 @@
                                             {{/if}}
                                         {{/if}} 
                                         {{#if shipment}}
-                                        <hr>
-                                        <h4>Shipments to site</h4>
-                                        <ul>
-                                            {{#each shipment}}
-                                            <li>{{itembeingshipped}} via {{#if shipmentcarriername}} {{shipmentcarriername}} {{else}} {{shipmentcarrier}} {{/if}} with tracking ID {{shipmenttracking}}
-                                            </li>
-                                            {{/each}}
-                                        </ul>
+                                            <hr>
+                                            <h4>Shipments to site</h4>
+                                            <ul>
+                                                {{#each shipment}}
+                                                <li>{{itembeingshipped}} via {{#if shipmentcarriername}} {{shipmentcarriername}} {{else}} {{shipmentcarrier}} {{/if}} with tracking ID {{shipmenttracking}}
+                                                </li>
+                                                {{/each}}
+                                            </ul>
                                         {{/if}}
                                         {{#if tasks}}
-                                        <hr>
-                                        <h4>Tasks</h4>
-                                        <ul>
-                                            {{#each tasks}}
-                                                <li>{{taskname}}</li>
-                                            {{/each}}
-                                        </ul>
+                                            <hr>
+                                            <h4>Tasks</h4>
+                                            <ul>
+                                                {{#each tasks}}
+                                                    <li>{{taskname}}</li>
+                                                {{/each}}
+                                            </ul>
                                         {{/if}}
                                     </div>
                                 </div>
