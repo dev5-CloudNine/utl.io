@@ -21,11 +21,12 @@
                                 <li><a href="{{pathFor 'allJobs'}}">Jobs</a></li>
                                 <li id="user-drop-down" class="dropdown">
                                     <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-                                        Transactions <span class="caret"></span>
+                                        Wallet <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="{{pathFor 'allDeposits'}}">Deposits</a></li>
                                         <li><a href="{{pathFor 'allWithdrawls'}}">Withdrawls</a></li>
+                                        <li><a href="{{pathFor 'allJobTransactions'}}">Job Transactions</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="{{pathFor 'allInvoices'}}">Invoices</a></li>
@@ -67,6 +68,7 @@
                                         <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
                                         <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
                                         <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
+                                        <li><a href="{{pathFor 'jobTransactions'}}">Job Transactions</a></li>
                                     </ul>
                                 </li>
                                 {{#unless currentUser.isBuyer}}
@@ -105,6 +107,7 @@
                                         <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
                                         <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
                                         <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
+                                        <li><a href="{{pathFor 'jobTransactions'}}">Job Transactions</a></li>
                                     </ul>
                                 </li>
                                 {{#unless currentUser.isDeveloper}}
@@ -155,6 +158,7 @@
                                         <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
                                         <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
                                         <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
+                                        <li><a href="{{pathFor 'jobTransactions'}}">Job Transactions</a></li>
                                     </ul>
                                 </li>
                                 {{#unless currentUser.isDeveloper}}
@@ -194,6 +198,7 @@
                                         <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
                                         <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
                                         <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
+                                        <li><a href="{{pathFor 'jobTransactions'}}">Job Transactions</a></li>
                                     </ul>
                                 </li>
                                 {{#unless currentUser.isBuyer}}

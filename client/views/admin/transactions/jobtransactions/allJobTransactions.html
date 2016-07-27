@@ -1,0 +1,5 @@
+<template name="AllJobTransactions">
+	{{#if isInRole 'admin'}}
+		{{>ReactiveDatatable tableData=allJobTransactions options=adminOptionsObject}}
+	{{/if}}
+</template>

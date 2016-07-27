@@ -503,7 +503,7 @@ Router.map(function() {
     });
 
     this.route('withdraw', {
-        path: 'wallet/withdraw',
+        path: '/wallet/withdraw',
         title: 'Withdraw Funds',
         waitOn: function() {
             return Meteor.subscribe('userWallet', Meteor.userId());
@@ -511,7 +511,7 @@ Router.map(function() {
     });
 
     this.route('invoices', {
-        path: 'wallet/invoices',
+        path: '/wallet/invoices',
         title: 'Invoices',
         waitOn: function() {
             Meteor.subscribe('providerInvoices', Meteor.userId());
@@ -519,6 +519,25 @@ Router.map(function() {
             return Meteor.subscribe('allJobs');
         }
     });
+
+    this.route('jobTransactions', {
+        path: '/jobTransactions',
+        title: 'Job Transactions',
+        waitOn: function() {
+            Meteor.subscribe('my_jobs');
+            Meteor.subscribe('providerCompletedJobs');
+            return Meteor.subscribe('buyerJobTransactions', Meteor.userId());
+        }
+    });
+
+    this.route('allJobTransactions', {
+        path: '/allJobTransactions',
+        title: 'All Job Transactions',
+        waitOn: function() {
+            Meteor.subscribe('allJobs');
+            return Meteor.subscribe('allJobTransactions');
+        }
+    })
 
     this.route('buyers', {
         path: '/buyers',

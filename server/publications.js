@@ -568,7 +568,16 @@ Meteor.publish('providerInvoices', function(userId) {
 Meteor.publish('buyerInvoices', function(userId) {
     check(arguments, [Match.Any]);
     return Invoices.find({buyerId: userId});
+});
+
+Meteor.publish('allJobTransactions', function() {
+    return JobTransactions.find({});
 })
+
+Meteor.publish('buyerJobTransactions', function(userId) {
+    check(arguments, [Match.Any]);
+    return JobTransactions.find({$or: [{debitedAccount: userId}, {creditedAccount: userId}]});
+});
 
 Meteor.publish('userTransactions', function(userId) {
     check(arguments, [Match.Any]);

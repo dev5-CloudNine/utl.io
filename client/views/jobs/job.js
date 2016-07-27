@@ -145,9 +145,10 @@ Template.job.events({
   'click .acceptCounterOffer': function(event, template) {
     var jobId = Router.current().params._id;
     var userId = Profiles.findOne({_id: this.userId}).userId;
+    var buyerCost = this.buyer_cost;
     var applied_at = this.appliedAt;
     var freenets = this.freelancer_nets;
-    Meteor.call('acceptCounterOffer', jobId, userId, applied_at, freenets, function(error) {
+    Meteor.call('acceptCounterOffer', jobId, userId, applied_at, buyerCost, freenets, function(error) {
       if(error) {
         toastr.error('Failed to accept counter offer.');
       }

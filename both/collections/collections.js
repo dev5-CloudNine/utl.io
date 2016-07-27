@@ -9,6 +9,7 @@ Skills = new Meteor.Collection("skills");
 Wallet = new Meteor.Collection("wallet");
 Transactions = new Meteor.Collection("transactions");
 Invoices = new Meteor.Collection("invoices");
+JobTransactions = new Meteor.Collection("jobtransactions");
 
 Categories.attachSchema(
 	new SimpleSchema({

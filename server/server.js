@@ -249,16 +249,15 @@ Meteor.methods({
             text: 'Hello ' + providerName + ', ' + buyerName + 'has accepted you application for the job '+ jobname + '. You may confirm the assignment or reject the assignment by clicking the following link. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
         })
     },
-    "acceptCounterOffer": function(jobId, userId, applied_at, freenets) {
-        var buyerName = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId}).name;
-        var jobname = Jobs.findOne({_id: jobId}).title;
+    "acceptCounterOffer": function(jobId, userId, applied_at, buyerCost, freenets) {
+        var jobDetails = Jobs.findOne({_id: jobId});
+        var buyerName = Buyers.findOne({userId: jobDetails.userId}).name;
         var providerName = Profiles.findOne({userId: userId}).name;
         var providerSmsEmail = Profiles.findOne({userId: userId}).smsAddress;
-        var jobSlug = Jobs.findOne({_id: jobId}).slug();
         var notificationObj = {
             jobId: jobId,
             providerId: userId,
-            buyerId: Jobs.findOne({_id: jobId}).userId,
+            buyerId: jobDetails.userId,
             timeStamp: new Date(),
             notificationType: 'applicationAccepted',
             read: false,
@@ -273,7 +272,7 @@ Meteor.methods({
             Cc: providerSmsEmail,
             from: FROM_EMAIL,
             subject: buyerName + ' has accepted your counter offer for the job ' + jobname,
-            text: 'Hello ' + providerName + ', ' + buyerName + 'has accepted you application for the job '+ jobname + '. You may confirm the assignment or reject the assignment by clicking the following link. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
+            text: 'Hello ' + providerName + ', ' + buyerName + 'has accepted you application for the job '+ jobDetails.title + '. You may confirm the assignment or reject the assignment by clicking the following link. ' + Meteor.absoluteUrl('jobs/' + jobId)
         })
     },
     confirmAssignment: function(jobId, buyerId) {
@@ -298,8 +297,6 @@ Meteor.methods({
         var proBudget = jobDetails.proposedBudget;
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var buyerCost = jobDetails.your_cost;
-        Wallet.update({userId: buyerId}, {$inc: {accountBalance: -buyerCost}});
-        Wallet.update({userId: adminId}, {$inc: {accountBalance: buyerCost}});
         Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned', assignedProvider: Meteor.userId(), projectBudget: proBudget}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {assignedJobs: jobId}});
         Notifications.insert(notificationObj);
@@ -507,6 +504,8 @@ Meteor.methods({
     },
     approvePayment: function(jobId) {
         var jobDetails = Jobs.findOne({_id: jobId});
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        var projectBudget = jobDetails.projectBudget;
         var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
         var providerDetails = Profiles.findOne({userId: jobDetails.assignedProvider});
         var notificationObj = {
@@ -519,15 +518,21 @@ Meteor.methods({
             side: 'provider',
             adminRead: false
         };
+        var jobTransObj = {
+            jobId: jobId,
+            budget: projectBudget,
+            creditedAccount: jobDetails.assignedProvider,
+            debitedAccount: adminId,
+            dateAndTime: new Date()
+        }
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'paid', applicationStatus: 'done'}});
         Profiles.update({userId: jobDetails.assignedProvider}, {$addToSet: {completedJobs: jobId}});
         Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
-        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
-        var projectBudget = jobDetails.projectBudget;
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -projectBudget}});
         Wallet.update({userId: Meteor.userId()}, {$inc: {amountSpent: projectBudget}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: projectBudget}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: projectBudget}});
+        JobTransactions.insert(jobTransObj);
         Invoices.update({$and: [{jobId: jobId}, {buyerId: jobDetails.userId}]}, {$set: {invoiceStatus: 'paid'}});
         Notifications.insert(notificationObj);
         Email.send({

@@ -72,6 +72,13 @@ Jobs.after.insert(function(userId, doc){
   var buyerCost = doc.your_cost;
   Wallet.update({userId: userId}, {$inc: {accountBalance: -buyerCost}});
   Wallet.update({userId: adminId}, {$inc: {accountBalance: buyerCost}});
+  var jobTransObj = {
+    jobId: doc._id,
+    budget: buyerCost,
+    adminId: adminId,
+    buyerId: doc.userId,
+    dateAndTime: doc.createdAt
+  }
   if(doc.tasks) doc.tasks.map(function(task){
     obj.taskName = task.taskname;
     obj.taskdescription = task.taskdescription;
@@ -94,7 +101,7 @@ Jobs.after.insert(function(userId, doc){
     read: false
   }
   Notifications.insert(notificationObj);
-
+  JobTransactions.insert(jobTransObj);
   var admin = Users.findOne({roles:"admin"});
   Email.send({
       to: getUserEmail(admin),
