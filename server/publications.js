@@ -111,6 +111,10 @@ Meteor.publish('notificationsJobs', function(userId) {
     return Jobs.find({_id:{$in:jobIDs}});
 });
 
+Meteor.publish('jobNotifications', function(jobId) {
+    return Notifications.find({jobId: jobId});
+})
+
 Meteor.publish('postedBuyer', function(jobId) {
     var userId = Jobs.findOne({_id: jobId}).userId;
     return Meteor.users.find({_id: userId});

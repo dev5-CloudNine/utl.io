@@ -30,7 +30,7 @@ var buyerOptionsObject = {
 			}
 		},
 		{title: 'Amount (USD)', data: 'budget'},
-		{title: 'Date', data: 'date'},
+		{title: 'Date', data: function(invoice) {return moment(invoice.date).fromNow()}},
 		{title: 'Status', data: 'invoiceStatus'}
 	]
 };
@@ -60,7 +60,7 @@ var providerOptionsObject = {
 			}
 		},
 		{title: 'Amount', data: 'budget'},
-		{title: 'Date', data: 'date'},
+		{title: 'Date', data: function(invoice) {return moment(invoice.date).fromNow()}},
 		{title: 'Status', data: 'invoiceStatus'}
 	]
 }

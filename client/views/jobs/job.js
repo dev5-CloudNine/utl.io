@@ -890,6 +890,43 @@ Template.job.helpers({
       if(this.applicationStatus == 'assigned' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'done')
         return true;
       return false;
+    },
+    buyerOrAssignedProvider: function() {
+      if(this.userId == Meteor.userId() || this.assignedProvider == Meteor.userId()) {
+        return true;
+      }
+      return false;
+    },
+    jobRelatedNotifications: function() {
+      var notifications = Notifications.find({jobId: this._id}, {sort: {timeStamp: -1}});
+      var notificationDetails = [];
+      notifications.forEach(function(notification) {
+        var buyerDetails = Buyers.findOne({userId: notification.buyerId});
+        if(notification.notificationType == 'newJob') {
+          var notif = {
+            jobId: notification.jobId,
+            buyerId: buyerDetails._id,
+            buyerName: buyerDetails.name,
+            notificationType: notification.notificationType,
+            timeStamp: notification.timeStamp
+          }
+        } else {
+          if(notification.providerId) {
+            var providerDetails = Profiles.findOne({userId: notification.providerId});
+            var notif = {
+              jobId: notification.jobId,
+              buyerId: buyerDetails._id,
+              buyerName: buyerDetails.name,
+              providerId: providerDetails._id,
+              providerName: providerDetails.name,
+              notificationType: notification.notificationType,
+              timeStamp: notification.timeStamp
+            }
+          }
+        }
+        notificationDetails.push(notif);
+      });
+      return notificationDetails;
     }
 });
 
