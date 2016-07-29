@@ -38,9 +38,10 @@ var adminOptionsObject = {
 				if(Roles.userIsInRole(creditedUserId, ['admin'])) {
 					return 'Admin'
 				} else {
-					var buyerName = Buyers.findOne({userId: debitedUserId}).name;
-					var buyerLink = '<a href="/buyers/' + debitedUserId + '">' + buyerName + '</a>'
-					return buyerLink;
+					var creditedUserId = transaction.creditedAccount;
+					var providerName = Profiles.findOne({userId: creditedUserId}).name;
+					var providerLink = '<a href="/buyers/' + creditedUserId + '">' + providerName + '</a>'
+					return providerLink;
 				}
 			}
 		},
