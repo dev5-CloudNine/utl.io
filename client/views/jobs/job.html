@@ -50,7 +50,7 @@
                 <div class="tab-content">
                     <div class="tab-pane fade active in" id="jobDesc">
                         <br>
-                        <div class="panel panel-default">
+                        <div class="panel panel-default {{#if $eq applicationStatus 'open'}}openJob{{/if}} {{#if $eq applicationStatus 'frozen'}}frozenJob{{/if}} {{#if $eq applicationStatus 'assigned'}}assignedJob{{/if}} {{#if $eq applicationStatus 'pending_payment'}}paymentPendingJob{{/if}} {{#if $eq applicationStatus 'done'}}completedJob{{/if}}">
                             <div class="panel-body">
                                 {{>jobExpiredAlert}}
                                 {{#if isInRole 'admin'}} 

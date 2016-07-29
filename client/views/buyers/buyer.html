@@ -1,6 +1,6 @@
 <template name="buyer">
 	<div id="buyerProfile">
-		<div class="panel panel-default">
+		<div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-sm-3">

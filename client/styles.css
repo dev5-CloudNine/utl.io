@@ -753,3 +753,15 @@ span.bigstars span.rateit-selected
 #apply .list-group-item:nth-child(odd) {
   background-color: #f8f8f8 !important;
 }
+
+.openJob {
+  border-top: 2px solid #00BA35;
+}
+
+.frozenJob {
+  border-top: 2px solid #0AD561;
+}
+
+.completedJob {
+  border-top: 2px solid #EA2A1B;
+}
