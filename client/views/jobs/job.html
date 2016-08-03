@@ -6,7 +6,7 @@
                     <li class="active">
                         <a href="#jobDesc" data-toggle="tab" aria-expanded="true">
                             <span class="round-tabs one">
-                                <i class="glyphicon glyphicon-briefcase"></i>&nbsp; Job Details
+                                <i class="fa fa-file"></i>&nbsp; Job Details
                             </span>
                         </a>
                     </li>
@@ -15,7 +15,7 @@
                             <li>
                                 <a href="#tasks" data-toggle="tab">
                                     <span class="round-tabs two">
-                                      <i class="glyphicon glyphicon-list"></i>&nbsp; Tasks
+                                      <i class="fa fa-bars"></i>&nbsp; Tasks
                                  </span>
                                 </a>
                             </li>
@@ -24,7 +24,7 @@
                             <li>
                                 <a href="#timesheet" data-toggle="tab">
                                     <span class="round-tabs three timesheet">
-                                      <i class="glyphicon glyphicon-calendar"></i>&nbsp; Timesheet
+                                      <i class="fa fa-calendar"></i>&nbsp; Timesheet
                                  </span>
                                 </a>
                             </li>
@@ -33,18 +33,11 @@
                             <li>
                                 <a href="#disc" data-toggle="tab">
                                     <span class="round-tabs four disc">
-                                        <i class="glyphicon glyphicon-calendar"></i>&nbsp; Discussion
+                                        <i class="fa fa-comments"></i>&nbsp; Discuss
                                     </span>
                                 </a>
                             </li>
                         {{/if}}
-                    {{/if}}
-                    {{#if buyerOrAssignedProvider}}
-                        <li>
-                            <a href="#notif" data-toggle="tab">
-                                <i class="glyphicon glyphicon-bell"></i>&nbsp;Notifications
-                            </a>
-                        </li>
                     {{/if}}
                 </ul>
                 <div class="tab-content">
@@ -63,7 +56,7 @@
                                     <div class="col-sm-12">
                                         {{#if jobAssignedToProvider}}
                                             {{#if assignedProvider}}
-                                                <span class="pull-right"><button class="btn btn-primary createPdf">Download PDF</button></span>
+                                                <span class="pull-right"><button class="btn btn-sm btn-primary createPdf">Download PDF</button></span>
                                             {{/if}}
                                         {{/if}}
                                         <span class="label label-default label-xs">{{readableID}}</span> {{>jobLabels}}
@@ -95,63 +88,25 @@
                                                 <p>This job has been deactivated by the buyer.</p>
                                             {{/if}}
                                         {{/if}}
-                                        {{#if acceptedProvider}}
-                                            {{#if $eq applicationStatus 'frozen'}}
+                                        {{#if jobPostedBuyer}}
+                                            {{#if $eq assignmentStatus 'submitted'}}
                                                 <hr>
                                                 <div class="col-sm-12">
-                                                    <button class="margin-top-5 btn btn-success btn-sm confirmAssignment">Confirm</button>
-                                                    <button class="margin-top-5 btn btn-warning btn-sm declineAssignment">Decline</button>
+                                                    <button class="margin-top-5 btn btn-success btn-sm approveAssignment">Approve Assignment</button>
+                                                    <button class="margin-top-5 btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
                                                 </div>
                                             {{else}}
-                                                {{#if $eq applicationStatus 'assigned'}}
-                                                    {{#if $eq assignmentStatus 'rejected'}}
-                                                        <hr>
-                                                        <div class="col-sm-12">
-                                                            <button class="margin-top-5 btn btn-success btn-sm submitAssignment">Submit Job for Approval.</button>
-                                                        </div>
-                                                    {{else}}
-                                                        {{#if $eq assignmentStatus 'submitted'}}
-                                                            <hr>
-                                                            <div class="col-sm-12">
-                                                                <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
-                                                            </div>
-                                                        {{else}}
-                                                            {{#if $eq assignmentStatus 'approved'}}
-                                                                <hr>
-                                                                <div class="col-sm-12">
-                                                                    <button class=" margin-top-5 btn btn-sm btn-success requestPayment">Request Payment</button>
-                                                                </div>
-                                                            {{/if}}
-                                                        {{/if}}
-                                                    {{/if}}
-                                                {{else}}
-                                                    {{#if $eq applicationStatus 'pending_payment'}}
-                                                        <hr>
-                                                        <small>You have requested the payment. A notification has been sent to the  buyer. You'll be notified when the payment is released.</small>
-                                                    {{/if}}
-                                                {{/if}}
-                                            {{/if}}
-                                        {{else}}
-                                            {{#if jobPostedBuyer}}
-                                                {{#if $eq assignmentStatus 'submitted'}}
+                                                {{#if $eq assignmentStatus 'approved'}}
                                                     <hr>
                                                     <div class="col-sm-12">
-                                                        <button class="margin-top-5 btn btn-success btn-sm approveAssignment">Approve Assignment</button>
-                                                        <button class="margin-top-5 btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
+                                                        <small>You have approved the job submitted. The provider will now be able to request for payment.</small>
                                                     </div>
                                                 {{else}}
-                                                    {{#if $eq assignmentStatus 'approved'}}
+                                                    {{#if $eq assignmentStatus 'pending_payment'}}
                                                         <hr>
                                                         <div class="col-sm-12">
-                                                            <small>You have approved the job submitted. The provider will now be able to request for payment.</small>
+                                                            <button class="btn btn-sm btn-success margin-top-5 approvePayment">Release Payment</button>
                                                         </div>
-                                                    {{else}}
-                                                        {{#if $eq assignmentStatus 'pending_payment'}}
-                                                            <hr>
-                                                            <div class="col-sm-12">
-                                                                <button class="btn btn-sm btn-success margin-top-5 approvePayment">Release Payment</button>
-                                                            </div>
-                                                        {{/if}}
                                                     {{/if}}
                                                 {{/if}}
                                             {{/if}}
@@ -260,463 +215,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel panel-default panel-white {{#if currentUser.isDeveloper}}{{#if notOpen}} hidden {{/if}}{{/if}}">
+                        <div class="panel panel-default panel-light {{#if currentUser.isDeveloper}}{{#if notOpen}} hidden {{/if}}{{/if}}">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <ul class="nav nav-pills">
-                                            <li class="active">
-                                                <a data-toggle="tab" href="#discussion">Post a Query</a>
-                                            </li>
-                                            <li>
-                                                <a data-toggle="tab" href="#apply">
-                                                    {{#if currentUser.isDeveloper}}
-                                                        Apply or Counter Offer
-                                                    {{else}}
-                                                        {{#if jobPostedBuyer}}
-                                                            View Applications and Counter Offers
-                                                        {{else}}
-                                                            Applications
-                                                        {{/if}}
-                                                    {{/if}}
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <div class="tab-content">
-                                            <div id="discussion" class="tab-pane fade in active">
-                                                {{> commentsBox id=_id}}
-                                            </div>
-                                            <!-- <div id="apply" class="tab-pane fade">
-                                                <div class="panel panel-white">
-                                                    <br>
-                                                    {{#if isInRole 'provider, corporate-provider'}}
-                                                        {{#if applied}}
-                                                            {{#with applicationDetails}}
-                                                                {{#if $eq this.app_type 'application'}}
-                                                                    <h4>Budget</h4>
-                                                                    <label class="label label-success">{{this.app_type}}</label><br>
-                                                                    Payment Type: {{../ratebasis}} <br>
-                                                                    {{#if $eq ../ratebasis 'Blended'}}
-                                                                        {{../payforfirsthours}} USD for the first {{../firsthours}} hours, and then {{../payfornexthours}} USD for the next {{../nexthours}} hours. <br>
-                                                                        Gross: {{../totalfromclient}} USD.
-                                                                        Net: {{../freelancer_nets}} USD.
-                                                                    {{/if}}
-                                                                    {{#if $eq ../ratebasis 'Per Device'}}
-                                                                        {{../rateperdevice}} USD for {{../maxdevices}} devices. <br>
-                                                                        Gross: {{../totalfromclient}} USD. <br>
-                                                                        Net: {{../freelancer_nets}} USD. 
-                                                                    {{/if}}
-                                                                    {{#if $eq ../ratebasis 'Per Hour'}}
-                                                                        {{../hourlyrate}} USD per hour for {{../maxhours}} hours. <br>
-                                                                        Gross: {{../totalfromclient}} USD. <br>
-                                                                        Net: {{../freelancer_nets}} USD.
-                                                                    {{/if}}
-                                                                    {{#if $eq ../ratebasis 'Fixed Pay'}}
-                                                                        Gross: {{../fixedamount}} USD.
-                                                                        <br>Net: {{../freelancer_nets}} USD.
-                                                                    {{/if}}
-                                                                    <p>You've applied for this job. You'll be notified when the buyer accepts your application. <br>You may cancel your application by clicking the button below.</p>
-                                                                {{else}}
-                                                                    {{#if $eq this.app_type 'counteroffer'}}
-                                                                        <h4>Budget</h4>
-                                                                        <label class="label label-success">{{this.app_type}}</label><br>
-                                                                        Counter Type: {{this.counterType}}<br>
-                                                                        {{#if this.hourly_rate}}
-                                                                            {{this.hourly_rate}} USD for {{this.max_hours}} hours.
-                                                                            <br>
-                                                                            Net: {{this.freelancer_nets}}
-                                                                        {{else}}
-                                                                            {{#if this.device_rate}}
-                                                                                {{this.device_rate}} USD for {{this.max_devices}} devices.
-                                                                                <br>
-                                                                                Net: {{this.freelancer_nets}}
-                                                                            {{else}}
-                                                                                {{#if this.first_hours}}
-                                                                                    {{this.first_hours}} for the first {{this.first_max_hours}} and then {{this.next_hours}} for the next {{this.next_max_hours}} hours.
-                                                                                    <br>
-                                                                                    Net: {{this.freelancer_nets}}
-                                                                                {{else}}
-                                                                                    {{#if this.fixed_amount}}
-                                                                                        Fixed amount: {{this.fixed_amount}} USD.
-                                                                                        <br>
-                                                                                        Net: {{this.freelancer_nets}}
-                                                                                    {{/if}}
-                                                                                {{/if}}
-                                                                            {{/if}}
-                                                                        {{/if}}
-                                                                        <hr>
-                                                                        <p>You've applied this job. You'll be notified when the buyer accepts your application. <br>You may cancel your application by clicking the button below.</p>
-                                                                    {{/if}}
-                                                                {{/if}}
-                                                            {{/with}}
-                                                            <button class="btn btn-primary applyActive">Cancel Application</button>
-                                                        {{else}}
-                                                            <div class="radio">
-                                                                <label>
-                                                                    <input type="radio" name="app_type" value="application">I accept the proposed budget.
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio">
-                                                                <label>
-                                                                    <input type="radio" name="app_type" value="counteroffer">I wish to counter offer.
-                                                                </label>
-                                                            </div>
-                                                            <div id="app_selected" hidden>
-                                                                {{#if $eq applicationStatus 'open'}}
-                                                                    {{#if currentUser.isDeveloper}}
-                                                                        <button class="btn btn-primary {{#if applied}}applyActive{{else}}applyInactive{{/if}}"><i>{{#if applied}}Cancel Application{{else}}Apply{{/if}}</i></button>
-                                                                    {{else}}
-                                                                        <h6>You must create your profile before you can apply for this job. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your profile.</h6>
-                                                                    {{/if}}
-                                                                {{/if}}
-                                                            </div>
-                                                            <div id="counter_selected" hidden>
-                                                                {{#if $eq applicationStatus 'open'}} 
-                                                                    {{#if currentUser.isDeveloper}}
-                                                                        <div class="panel panel-default panel-white">
-                                                                            <div class="panel-body">
-                                                                                <form id="counter_offer_form">
-                                                                                    <div class="row">
-                                                                                        <div class="col-sm-6">
-                                                                                            <label>Payment Type</label>
-                                                                                            <select class="form-control" name="counter_type" id="counter_type" required>
-                                                                                                <option selected="selected">Select one</option>
-                                                                                                <option value="fixed_pay">Fixed Pay</option>
-                                                                                                <option value="per_hour">Per hour</option>
-                                                                                                <option value="per_device">Per device</option>
-                                                                                                <option value="blended">Blended</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <hr>
-                                                                                    <div id="fixed-pay-counter" hidden>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="fixed_amount">Fixed Amount</label>
-                                                                                                <input type="number" class="form-control" id="fixed_amount" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="fixed_total">Total Amount</label>
-                                                                                                <input type="number" class="form-control" id="fixed_total" name="total_amount" readonly="true" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="utl_fees">UTL Fees</label>
-                                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label>Paid By</label>
-                                                                                                <br>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="provider" checked="checked"> Provider
-                                                                                                </label>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="buyer_fixed_cost">Buyer's Cost</label>
-                                                                                                <input type="number" class="form-control" id="buyer_fixed_cost" name="buyer_cost" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="freelancer_fixed_nets">Freelancer Nets</label>
-                                                                                                <input type="number" id="freelancer_fixed_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div id="hourly-counter" hidden>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="hourly_rate">Hourly Rate (USD)</label>
-                                                                                                <input type="number" class="form-control" id="hourly_rate" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="max_hours">Maximum Hours</label>
-                                                                                                <input type="number" class="form-control" id="max_hours" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="hourly_total">Total Amount</label>
-                                                                                                <input type="number" class="form-control" name="total_amount" id="hourly_total" readonly="true" step="any" min="1">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="utl_fees">UTL Fees</label>
-                                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label>Paid By</label>
-                                                                                                <br>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="provider" checked="checked"> Provider
-                                                                                                </label>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="buyer_cost">Buyer's Cost</label>
-                                                                                                <input type="number" class="form-control" name="buyer_cost" id="buyer_hourly_cost" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="freelancer_hourly_nets">Freelancer Nets</label>
-                                                                                                <input type="number" id="freelancer_hourly_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div id="per-device-counter" hidden>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="device_rate">Device Rate (USD)</label>
-                                                                                                <input type="number" class="form-control" id="device_rate" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="max_devices">Maximum devices</label>
-                                                                                                <input type="number" class="form-control" id="max_devices" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="device_total">Total Amount</label>
-                                                                                                <input type="number" class="form-control" name="total_amount" id="device_total" readonly="true" step="any" min="1">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="utl_fees">UTL Fees</label>
-                                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label>Paid By</label>
-                                                                                                <br>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="provider" checked="checked"> Provider
-                                                                                                </label>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="buyer_device_cost">Buyer's Cost</label>
-                                                                                                <input type="number" class="form-control" name="buyer_cost" id="buyer_device_cost" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="freelancer_device_nets">Freelancer Nets</label>
-                                                                                                <input type="number" id="freelancer_device_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div id="blended-counter" hidden>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-3">
-                                                                                                <label for="first_hours">Pay USD</label>
-                                                                                                <input type="number" class="form-control" id="first_hours" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-3">
-                                                                                                <label for="first_max_hours">total for the first</label>
-                                                                                                <input type="number" class="form-control" id="first_max_hours" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-3">
-                                                                                                <label for="next_hours">hour(s) and then USD</label>
-                                                                                                <input type="number" class="form-control" id="next_hours" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-3">
-                                                                                                <label for="next_max_hours">per hour for upto</label>
-                                                                                                <input type="number" class="form-control" id="next_max_hours" step="any" min="1">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="blended_total">Total Amount</label>
-                                                                                                <input type="number" class="form-control" name="total_amount" id="blended_total" readonly="true" step="any" min="1">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="utl_fees">UTL Fees</label>
-                                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label>Paid By</label>
-                                                                                                <br>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="provider"> Provider
-                                                                                                </label>
-                                                                                                <label class="radio-inline">
-                                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="col-sm-4" hidden="true">
-                                                                                                <label for="buyer_blended_cost">Buyer's Cost</label>
-                                                                                                <input type="number" class="form-control" name="buyer_cost" id="buyer_blended_cost" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                            <div class="col-sm-4">
-                                                                                                <label for="freelancer_blended_nets">Freelancer Nets</label>
-                                                                                                <input type="number" id="freelancer_blended_nets" class="form-control" name="freelancer_nets" step="any" min="1" readonly="true">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <br>
-                                                                                    <div class="row">
-                                                                                        <div class="col-sm-12">
-                                                                                            <div class="button-group">
-                                                                                                <button class="btn btn-primary {{#if applied}}counterActive{{else}}counterInactive{{/if}}"><i>{{#if applied}}Cancel Application{{else}}Apply{{/if}}</i></button>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    {{/if}}
-                                                                {{/if}}
-                                                            </div>
-                                                        {{/if}}
-                                                    {{else}} 
-                                                        {{#if jobPostedBuyer}}
-                                                            <div class="list-group">
-                                                                {{#each appliedProviders}}
-                                                                    <div class="list-group-item">
-                                                                        {{#if $eq this.app_type 'application'}}
-                                                                            <div class="media">
-                                                                                {{#if this.imgUrl}}
-                                                                                    <a class="pull-left" href="/profiles/{{this.userId}}">
-                                                                                        <img class="media-object" src="{{this.imgUrl}}" width="64px">
-                                                                                    </a>
-                                                                                {{else}}
-                                                                                    {{>avatar size="small"}}
-                                                                                {{/if}}
-                                                                                <div class="media-body">
-                                                                                    <h4 media-heading><a href="/profiles/{{this.userId}}">{{this.name}}</a></h4>
-                                                                                    <h5>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</h5>
-                                                                                    Applied {{this.appliedAt}}
-                                                                                </div>
-                                                                                <div class="media-body">
-                                                                                    <span class="label label-success">{{this.app_type}}</span>
-                                                                                    <br>
-                                                                                    {{#with paymentDetails}}
-                                                                                        Payment type: {{ratebasis}} <br>
-                                                                                        {{#if $eq ratebasis 'Blended'}}
-                                                                                            {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
-                                                                                            Gross: {{totalfromclient}} USD. <br>
-                                                                                            Net: {{freelancer_nets}} USD.
-                                                                                        {{/if}}
-                                                                                        {{#if $eq ratebasis 'Per Device'}}
-                                                                                            {{rateperdevice}} USD for {{maxdevices}} devices. <br>
-                                                                                            Gross: {{totalfromclient}} USD.
-                                                                                            <br>Net: {{freelancer_nets}} USD. 
-                                                                                        {{/if}}
-                                                                                        {{#if $eq ratebasis 'Per Hour'}}
-                                                                                            {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
-                                                                                            Gross: {{totalfromclient}} USD. <br>
-                                                                                            Net: {{freelancer_nets}} USD.
-                                                                                        {{/if}}
-                                                                                        {{#if $eq ratebasis 'Fixed Pay'}}
-                                                                                            Gross: {{fixedamount}} USD.
-                                                                                            <br>Net: {{freelancer_nets}} USD.
-                                                                                        {{/if}}
-                                                                                    {{/with}}
-                                                                                </div>
-                                                                            </div>
-                                                                            <br>
-                                                                            {{#if $eq applicationStatus 'frozen'}}
-                                                                                <h5>Awaiting confirmation from provider.</h5>
-                                                                            {{else}}
-                                                                                {{#if $eq applicationStatus 'assigned'}}
-                                                                                    <h5>The job is assigned.</h5>
-                                                                                {{else}}
-                                                                                    {{#if $eq applicationStatus 'done'}}
-                                                                                        <h5>The project is completed.</h5>
-                                                                                    {{else}}
-                                                                                        {{#if $eq applicationStatus 'deactivated'}}
-                                                                                            <h5>You have deactivated the job. Activate it to accept the application.</h5>
-                                                                                        {{else}}
-                                                                                            {{#if $eq applicationStatus 'open'}}
-                                                                                                <button class="btn btn-success btn-sm acceptApplication">Accept</button>
-                                                                                            {{/if}}
-                                                                                        {{/if}}
-                                                                                    {{/if}}
-                                                                                {{/if}}
-                                                                            {{/if}}
-                                                                        {{/if}} 
-                                                                        {{#if $eq this.app_type 'counteroffer'}}
-                                                                            <div class="media">
-                                                                                {{#if this.imgUrl}}
-                                                                                    <a class="pull-left" href="/profiles/{{this.userId}}">
-                                                                                        <img class="media-object" src="{{this.imgUrl}}" width="64px">
-                                                                                    </a>
-                                                                                {{else}}
-                                                                                    {{>avatar size="small"}}
-                                                                                {{/if}}
-                                                                                <div class="media-body">
-                                                                                    <h4 media-heading><a href="/profiles/{{this.userId}}">{{this.name}}</a></h4>
-                                                                                    <h5>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</h5>
-                                                                                    Applied {{this.appliedAt}}
-                                                                                </div>
-                                                                                <div class="media-body">
-                                                                                    <span class="label label-success">{{this.app_type}}</span>
-                                                                                    {{#if first_hours}}
-                                                                                        <p>Payment type: Blended <br>
-                                                                                        Pay {{first_hours}} USD for the first {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours. <br>
-                                                                                        Gross: {{buyer_cost}} USD.
-                                                                                        <br> Net: {{freelancer_nets}} USD</p> 
-                                                                                    {{else}}
-                                                                                        {{#if device_rate}}
-                                                                                            <p>Payment type: Per device <br>{{device_rate}} USD for {{max_devices}} devices. <br>
-                                                                                            Gross: {{buyer_cost}} USD.
-                                                                                            <br> Net: {{freelancer_nets}} USD</p>
-                                                                                        {{else}}
-                                                                                            {{#if hourly_rate}} 
-                                                                                                <p>Payment type: Per hour <br> {{hourly_rate}} USD for {{max_hours}} hours. <br>
-                                                                                                Gross: {{buyer_cost}} USD.
-                                                                                                <br> Net: {{freelancer_nets}} USD</p>
-                                                                                            {{else}}
-                                                                                                {{#if fixed_amount}} 
-                                                                                                    <p>Payment type: Fixed Pay <br>Gross:  {{fixed_amount}} USD.
-                                                                                                    <br> Net: {{freelancer_nets}} USD</p>
-                                                                                                {{/if}}
-                                                                                            {{/if}}
-                                                                                        {{/if}}
-                                                                                    {{/if}}
-                                                                                </div>
-                                                                            </div>
-                                                                            <br>
-                                                                            {{#if $eq applicationStatus 'frozen'}}
-                                                                                <h5>Awaiting confirmation from provider.</h5> 
-                                                                            {{else}}
-                                                                                {{#if $eq applicationStatus 'assigned'}}
-                                                                                    <h5>The job is assigned.</h5>
-                                                                                {{else}}
-                                                                                    {{#if $eq applicationStatus 'done'}}
-                                                                                        <h5>The project is completed.</h5>
-                                                                                    {{else}} 
-                                                                                        {{#if applicationStatus 'open'}}
-                                                                                            <button class="btn btn-success btn-sm acceptCounterOffer">Accept</button>
-                                                                                        {{/if}}
-                                                                                    {{/if}}
-                                                                                {{/if}}
-                                                                            {{/if}}
-                                                                        {{/if}}
-                                                                    </div>
-                                                                {{else}}
-                                                                    <h6>No providers have applied for this job yet.</h6>
-                                                                {{/each}}
-                                                            </div>
-                                                        {{else}}
-                                                            <p>{{applicationsCount}} user(s) have applied for this job so far.</p>
-                                                        {{/if}}
-                                                    {{/if}}
-                                                </div>
-                                            </div> -->
-                                        </div>
+                                        {{> commentsBox id=_id}}
                                     </div>
                                 </div>
                             </div>
@@ -839,8 +342,6 @@
                         <div class="row">
                             {{#if show _id}}
                             {{#unless isBuyer}}
-
-
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -873,8 +374,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             {{/unless}}
                             {{/if}}
                             <div class="col-sm-4">
@@ -923,109 +422,13 @@
                     {{#if show _id}}
                         <div class="tab-pane fade" id="disc">
                             <br>
-                            <div class="panel panel-default">
-                            <div class="panel-body" style="background: #fff;">
+                            <div class="panel panel-light">
+                            <div class="panel-body">
                                 {{> commentsBox id=readableID}}
                             </div>
                             </div>
                         </div>
                     {{/if}}
-                    <div class="tab-pane fade" id="notif">
-                        <br>
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <ul class="list-group">
-                                            {{#if jobPostedBuyer}}
-                                                {{#each jobRelatedNotifications}}
-                                                    {{#if $eq notificationType 'newJob'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has posted this job on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'newJobApplication'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/profiles/{{providerId}}">{{providerName}}</a> has applied for this job on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'applicationAccepted'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has accepted application of the provider <a href="/profiles/{{providerId}}">{{providerName}}</a> on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'confirmAssignment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed assignment on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'submitAssignment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'approveAssignment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a> on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'rejectAssignment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has rejected assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a> on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'requestPayment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'approvePayment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved payment on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                {{/each}}
-                                            {{/if}}
-                                            {{#if assignedProvider}}
-                                                {{#each jobRelatedNotifications}}
-                                                    {{#if $eq notificationType 'confirmAssignment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed assignment on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'submitAssignment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'approveAssignment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a> on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'rejectAssignment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has rejected assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a> on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'requestPayment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                    {{#if $eq notificationType 'approvePayment'}}
-                                                        <li class="list-group-item">
-                                                            <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved payment on {{formatDate timeStamp}}
-                                                        </li>
-                                                    {{/if}}
-                                                {{/each}}
-                                            {{/if}}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -1164,7 +567,7 @@
                                                                             <h5>You have deactivated the job. Activate it to accept the application.</h5>
                                                                         {{else}}
                                                                             {{#if $eq applicationStatus 'open'}}
-                                                                                <button class="btn btn-info btn-sm acceptApplication">Accept</button>
+                                                                                <button class="btn btn-primary btn-sm acceptApplication">Accept Application</button>
                                                                             {{/if}}
                                                                         {{/if}}
                                                                     {{/if}}
@@ -1213,7 +616,7 @@
                                                                         <h5>The project is completed.</h5>
                                                                     {{else}} 
                                                                         {{#if applicationStatus 'open'}}
-                                                                            <button class="btn btn-info btn-sm acceptCounterOffer">Accept</button>
+                                                                            <button class="btn btn-primary btn-sm acceptCounterOffer">Accept Application</button>
                                                                         {{/if}}
                                                                     {{/if}}
                                                                 {{/if}}
@@ -1234,18 +637,402 @@
                             <br>
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    
+                                    {{#each jobRelatedNotifications}}
+                                        {{#if $eq notificationType 'newJob'}}
+                                            <li class="list-group-item">
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has posted this job on {{formatDate timeStamp}}
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'newJobApplication'}}
+                                            <li class="list-group-item">
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has applied for this job on {{formatDate timeStamp}}
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'applicationAccepted'}}
+                                            <li class="list-group-item">
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has accepted application of the provider <a href="/profiles/{{providerId}}">{{providerName}}</a> on {{formatDate timeStamp}}
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'confirmAssignment'}}
+                                            <li class="list-group-item">
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed assignment on {{formatDate timeStamp}}
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'submitAssignment'}}
+                                            <li class="list-group-item">
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment on {{formatDate timeStamp}}
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'approveAssignment'}}
+                                            <li class="list-group-item">
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a> on {{formatDate timeStamp}}
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'rejectAssignment'}}
+                                            <li class="list-group-item">
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has rejected assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a> on {{formatDate timeStamp}}
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'requestPayment'}}
+                                            <li class="list-group-item">
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment on {{formatDate timeStamp}}
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'approvePayment'}}
+                                            <li class="list-group-item">
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved payment on {{formatDate timeStamp}}
+                                            </li>
+                                        {{/if}}
+                                    {{/each}}
                                 </div>
                             </div>
                         </div>
                     </div>
                 {{/if}}
                 {{#if isInRole 'provider, corporate-provider'}}
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#providerActionTab" data-toggle="tab">Actions</a></li>
+                        <li><a href="#providerNotificationsTab" data-toggle="tab">Notifications</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="providerActionTab">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    {{#if $eq applicationStatus 'open'}}
+                                        {{#if applied}}
+                                            {{#if $eq ../applicationStatus 'open'}}
+                                                <p>You've applied this job. You'll be notified when the buyer accepts your application. You may cancel your application by clicking the button below.</p>
+                                                <button class="btn btn-primary applyActive">Cancel Application</button>
+                                            {{/if}}
+                                        {{else}}
+                                            <h4>Apply or Counter Offer</h4>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="app_type" value="application" checked="checked">I accept the proposed budget.
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="app_type" value="counteroffer">I wish to counter offer.
+                                                </label>
+                                            </div>
+                                            <div id="app_selected">
+                                                {{#if $eq applicationStatus 'open'}}
+                                                    {{#if currentUser.isDeveloper}}
+                                                        <button class="btn btn-primary {{#if applied}}applyActive{{else}}applyInactive{{/if}}">{{#if applied}}Cancel Application{{else}}Send Application{{/if}}</button>
+                                                    {{else}}
+                                                        <h6>You must create your profile before you can apply for this job. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your profile.</h6>
+                                                    {{/if}}
+                                                {{/if}}
+                                            </div>
+                                            <div id="counter_selected" hidden>
+                                                {{#if $eq applicationStatus 'open'}}
+                                                    {{#if currentUser.isDeveloper}}
+                                                        <div class="panel panel-default panel-white">
+                                                            <div class="panel-body">
+                                                                <form id="counter_offer_form">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            <label>Payment Type</label>
+                                                                            <select class="form-control" name="counter_type" id="counter_type" required>
+                                                                                <option selected="selected">Select one</option>
+                                                                                <option value="fixed_pay">Fixed Pay</option>
+                                                                                <option value="per_hour">Per hour</option>
+                                                                                <option value="per_device">Per device</option>
+                                                                                <option value="blended">Blended</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div id="fixed-pay-counter" hidden>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
+                                                                                <label for="fixed_amount">Fixed Amount</label>
+                                                                                <input type="number" class="form-control" id="fixed_amount" step="any" min="1">
+                                                                            </div>
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label for="fixed_total">Total Amount</label>
+                                                                                <input type="number" class="form-control" id="fixed_total" name="total_amount" readonly="true" step="any" min="1">
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="utl_fees">UTL Fees</label>
+                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label>Paid By</label>
+                                                                                <br>
+                                                                                <label class="radio-inline">
+                                                                                    <input type="radio" name="paidby" value="provider" checked="checked"> Provider
+                                                                                </label>
+                                                                                <label class="radio-inline">
+                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col-sm-4" hidden="true">
+                                                                                <label for="buyer_fixed_cost">Buyer's Cost</label>
+                                                                                <input type="number" class="form-control" id="buyer_fixed_cost" name="buyer_cost" step="any" min="1" readonly="true">
+                                                                            </div>
+                                                                            <div class="col-sm-4">
+                                                                                <label for="freelancer_fixed_nets">Freelancer Nets</label>
+                                                                                <input type="number" id="freelancer_fixed_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="hourly-counter" hidden>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
+                                                                                <label for="hourly_rate">Hourly Rate (USD)</label>
+                                                                                <input type="number" class="form-control" id="hourly_rate" step="any" min="1">
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="max_hours">Maximum Hours</label>
+                                                                                <input type="number" class="form-control" id="max_hours" step="any" min="1">
+                                                                            </div>
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label for="hourly_total">Total Amount</label>
+                                                                                <input type="number" class="form-control" name="total_amount" id="hourly_total" readonly="true" step="any" min="1">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
+                                                                                <label for="utl_fees">UTL Fees</label>
+                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label>Paid By</label>
+                                                                                <br>
+                                                                                <label class="radio-inline">
+                                                                                    <input type="radio" name="paidby" value="provider" checked="checked"> Provider
+                                                                                </label>
+                                                                                <label class="radio-inline">
+                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label for="buyer_cost">Buyer's Cost</label>
+                                                                                <input type="number" class="form-control" name="buyer_cost" id="buyer_hourly_cost" step="any" min="1" readonly="true">
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="freelancer_hourly_nets">Freelancer Nets</label>
+                                                                                <input type="number" id="freelancer_hourly_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="per-device-counter" hidden>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
+                                                                                <label for="device_rate">Device Rate (USD)</label>
+                                                                                <input type="number" class="form-control" id="device_rate" step="any" min="1">
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="max_devices">Maximum devices</label>
+                                                                                <input type="number" class="form-control" id="max_devices" step="any" min="1">
+                                                                            </div>
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label for="device_total">Total Amount</label>
+                                                                                <input type="number" class="form-control" name="total_amount" id="device_total" readonly="true" step="any" min="1">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
+                                                                                <label for="utl_fees">UTL Fees</label>
+                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label>Paid By</label>
+                                                                                <br>
+                                                                                <label class="radio-inline">
+                                                                                    <input type="radio" name="paidby" value="provider" checked="checked"> Provider
+                                                                                </label>
+                                                                                <label class="radio-inline">
+                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label for="buyer_device_cost">Buyer's Cost</label>
+                                                                                <input type="number" class="form-control" name="buyer_cost" id="buyer_device_cost" step="any" min="1" readonly="true">
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="freelancer_device_nets">Freelancer Nets</label>
+                                                                                <input type="number" id="freelancer_device_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="blended-counter" hidden>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
+                                                                                <label for="first_hours">Pay USD</label>
+                                                                                <input type="number" class="form-control" id="first_hours" step="any" min="1">
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="first_max_hours">total for the first</label>
+                                                                                <input type="number" class="form-control" id="first_max_hours" step="any" min="1">
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="next_hours">hour(s) and then USD</label>
+                                                                                <input type="number" class="form-control" id="next_hours" step="any" min="1">
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="next_max_hours">per hour for upto</label>
+                                                                                <input type="number" class="form-control" id="next_max_hours" step="any" min="1">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label for="blended_total">Total Amount</label>
+                                                                                <input type="number" class="form-control" name="total_amount" id="blended_total" readonly="true" step="any" min="1">
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="utl_fees">UTL Fees</label>
+                                                                                <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label>Paid By</label>
+                                                                                <br>
+                                                                                <label class="radio-inline">
+                                                                                    <input type="radio" name="paidby" value="provider"> Provider
+                                                                                </label>
+                                                                                <label class="radio-inline">
+                                                                                    <input type="radio" name="paidby" value="buyer"> Buyer
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col-sm-12" hidden="true">
+                                                                                <label for="buyer_blended_cost">Buyer's Cost</label>
+                                                                                <input type="number" class="form-control" name="buyer_cost" id="buyer_blended_cost" step="any" min="1" readonly="true">
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="freelancer_blended_nets">Freelancer Nets</label>
+                                                                                <input type="number" id="freelancer_blended_nets" class="form-control" name="freelancer_nets" step="any" min="1" readonly="true">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <div class="button-group">
+                                                                                <button class="btn btn-primary {{#if applied}}counterActive{{else}}counterInactive{{/if}}">{{#if applied}}Cancel Application{{else}}Apply{{/if}}</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    {{/if}}
+                                                {{/if}}
+                                            </div>
+                                        {{/if}}
+                                    {{/if}}
+                                    {{#if $eq applicationStatus 'frozen'}}
+                                        {{#if acceptedProvider}}
+                                            <div class="col-sm-12">
+                                                <p>Your application has been accepted by the buyer. Please confirm to begin the job.</p>
+                                                <button class="margin-top-5 btn btn-primary btn-sm confirmAssignment">Confirm</button>
+                                                <button class="margin-top-5 btn btn-warning btn-sm declineAssignment">Decline</button>
+                                            </div>
+                                        {{/if}}
+                                    {{/if}}
+                                    {{#if $eq applicationStatus 'assigned'}}
+                                        {{#if $eq assignmentStatus 'rejected'}}
+                                            <p>You have confirmed to do the job. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
+                                            <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
+                                        {{else}}
+                                            {{#if $eq assignmentStatus 'submitted'}}
+                                                <p>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</p>
+                                            {{else}}
+                                                {{#if $eq assignmentStatus 'approved'}}
+                                                    <p>The buyer has approved your job. You can now request for payment.</p>
+                                                    <button class=" margin-top-5 btn btn-sm btn-primary requestPayment">Raise Invoice &amp; Request Payment</button>
+                                                {{/if}}
+                                            {{/if}}
+                                        {{/if}}
+                                    {{/if}}
+                                    {{#if $eq applicationStatus 'pending_payment'}}
+                                        <p>You have requested the payment. An invoice has been raised. A notification has been sent to the  buyer. You'll be notified when the payment is released.</p>
+                                    {{/if}}
+                                    {{#if $eq applicationStatus 'done'}}
+                                        <p>The buyer has released the payment. The job is now completed.</p>
+                                        {{#if reviewedBuyer}}
+                                            <hr>
+                                            You've reviewed the buyer for this job.
+                                        {{else}}
+                                            <hr>
+                                            <form id="reviewBuyer">
+                                                <div class="form-group">                                    
+                                                    <label for="writeReview">Write a review</label>
+                                                    <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
+                                                    <label>Rate buyer</label>&nbsp;<span class="rateit"></span>
+                                                </div>
+                                                <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
+                                            </form>
+                                        {{/if}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade in" id="providerNotificationsTab">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <ul class="list-group">
+                                        {{#if assignedOrDone}}
+                                            {{#each jobRelatedNotifications}}
+                                                {{#if $eq notificationType 'confirmAssignment'}}
+                                                    <li class="list-group-item">
+                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed assignment on {{formatDate timeStamp}}
+                                                    </li>
+                                                {{/if}}
+                                                {{#if $eq notificationType 'submitAssignment'}}
+                                                    <li class="list-group-item">
+                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment on {{formatDate timeStamp}}
+                                                    </li>
+                                                {{/if}}
+                                                {{#if $eq notificationType 'approveAssignment'}}
+                                                    <li class="list-group-item">
+                                                        <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a> on {{formatDate timeStamp}}
+                                                    </li>
+                                                {{/if}}
+                                                {{#if $eq notificationType 'rejectAssignment'}}
+                                                    <li class="list-group-item">
+                                                        <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has rejected assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a> on {{formatDate timeStamp}}
+                                                    </li>
+                                                {{/if}}
+                                                {{#if $eq notificationType 'requestPayment'}}
+                                                    <li class="list-group-item">
+                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment on {{formatDate timeStamp}}
+                                                    </li>
+                                                {{/if}}
+                                                {{#if $eq notificationType 'approvePayment'}}
+                                                    <li class="list-group-item">
+                                                        <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved payment on {{formatDate timeStamp}}
+                                                    </li>
+                                                {{/if}}
+                                            {{/each}}
+                                        {{else}}
+                                            <p>You can see notifications only after the job is assigned to you.</p>
+                                        {{/if}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {{#if applied}}
                         <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <small>Application Details</small>
-                            </div>
+                            <div class="panel-heading"><small>Application Details</small></div>
                             <div class="panel-body">
                                 {{#with applicationDetails}}
                                     {{#if $eq this.app_type 'application'}}
@@ -1270,7 +1057,6 @@
                                             Gross: {{../fixedamount}} USD.
                                             <br>Net: {{../freelancer_nets}} USD.
                                         {{/if}}
-                                        <p>You've applied for this job. You'll be notified when the buyer accepts your application. <br>You may cancel your application by clicking the button below.</p>
                                     {{else}}
                                         {{#if $eq this.app_type 'counteroffer'}}
                                             <i>Counter Offer</i><br>
@@ -1292,248 +1078,9 @@
                                             {{/if}}
                                             Gross: {{buyer_cost}} USD.<br>
                                             Net: {{freelancer_nets}} USD.
-                                            <hr>
-                                            <p>You've applied this job. You'll be notified when the buyer accepts your application. <br>You may cancel your application by clicking the button below.</p>
                                         {{/if}}
                                     {{/if}}
                                 {{/with}}
-                                <button class="btn btn-primary applyActive">Cancel Application</button>
-                            </div>
-                        </div>
-                    {{else}}
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <small>Apply or Counter Offer</small>
-                            </div>
-                            <div class="panel-body">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="app_type" value="application">I accept the proposed budget.
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="app_type" value="counteroffer">I wish to counter offer.
-                                    </label>
-                                </div>
-                                <div id="app_selected" hidden>
-                                    {{#if $eq applicationStatus 'open'}}
-                                        {{#if currentUser.isDeveloper}}
-                                            <button class="btn btn-primary {{#if applied}}applyActive{{else}}applyInactive{{/if}}"><i>{{#if applied}}Cancel Application{{else}}Apply{{/if}}</i></button>
-                                        {{else}}
-                                            <h6>You must create your profile before you can apply for this job. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your profile.</h6>
-                                        {{/if}}
-                                    {{/if}}
-                                </div>
-                                <div id="counter_selected" hidden>
-                                    {{#if $eq applicationStatus 'open'}}
-                                        {{#if currentUser.isDeveloper}}
-                                            <div class="panel panel-default panel-white">
-                                                <div class="panel-body">
-                                                    <form id="counter_offer_form">
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <label>Payment Type</label>
-                                                                <select class="form-control" name="counter_type" id="counter_type" required>
-                                                                    <option selected="selected">Select one</option>
-                                                                    <option value="fixed_pay">Fixed Pay</option>
-                                                                    <option value="per_hour">Per hour</option>
-                                                                    <option value="per_device">Per device</option>
-                                                                    <option value="blended">Blended</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <hr>
-                                                        <div id="fixed-pay-counter" hidden>
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <label for="fixed_amount">Fixed Amount</label>
-                                                                    <input type="number" class="form-control" id="fixed_amount" step="any" min="1">
-                                                                </div>
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label for="fixed_total">Total Amount</label>
-                                                                    <input type="number" class="form-control" id="fixed_total" name="total_amount" readonly="true" step="any" min="1">
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <label for="utl_fees">UTL Fees</label>
-                                                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label>Paid By</label>
-                                                                    <br>
-                                                                    <label class="radio-inline">
-                                                                        <input type="radio" name="paidby" value="provider" checked="checked"> Provider
-                                                                    </label>
-                                                                    <label class="radio-inline">
-                                                                        <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                    </label>
-                                                                </div>
-                                                                <div class="col-sm-4" hidden="true">
-                                                                    <label for="buyer_fixed_cost">Buyer's Cost</label>
-                                                                    <input type="number" class="form-control" id="buyer_fixed_cost" name="buyer_cost" step="any" min="1" readonly="true">
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <label for="freelancer_fixed_nets">Freelancer Nets</label>
-                                                                    <input type="number" id="freelancer_fixed_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div id="hourly-counter" hidden>
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <label for="hourly_rate">Hourly Rate (USD)</label>
-                                                                    <input type="number" class="form-control" id="hourly_rate" step="any" min="1">
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <label for="max_hours">Maximum Hours</label>
-                                                                    <input type="number" class="form-control" id="max_hours" step="any" min="1">
-                                                                </div>
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label for="hourly_total">Total Amount</label>
-                                                                    <input type="number" class="form-control" name="total_amount" id="hourly_total" readonly="true" step="any" min="1">
-                                                                </div>
-                                                            </div>
-                                                            <br>
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <label for="utl_fees">UTL Fees</label>
-                                                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                                                                </div>
-                                                            </div>
-                                                            <br>
-                                                            <div class="row">
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label>Paid By</label>
-                                                                    <br>
-                                                                    <label class="radio-inline">
-                                                                        <input type="radio" name="paidby" value="provider" checked="checked"> Provider
-                                                                    </label>
-                                                                    <label class="radio-inline">
-                                                                        <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                    </label>
-                                                                </div>
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label for="buyer_cost">Buyer's Cost</label>
-                                                                    <input type="number" class="form-control" name="buyer_cost" id="buyer_hourly_cost" step="any" min="1" readonly="true">
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <label for="freelancer_hourly_nets">Freelancer Nets</label>
-                                                                    <input type="number" id="freelancer_hourly_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div id="per-device-counter" hidden>
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <label for="device_rate">Device Rate (USD)</label>
-                                                                    <input type="number" class="form-control" id="device_rate" step="any" min="1">
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <label for="max_devices">Maximum devices</label>
-                                                                    <input type="number" class="form-control" id="max_devices" step="any" min="1">
-                                                                </div>
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label for="device_total">Total Amount</label>
-                                                                    <input type="number" class="form-control" name="total_amount" id="device_total" readonly="true" step="any" min="1">
-                                                                </div>
-                                                            </div>
-                                                            <br>
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <label for="utl_fees">UTL Fees</label>
-                                                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                                                                </div>
-                                                            </div>
-                                                            <br>
-                                                            <div class="row">
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label>Paid By</label>
-                                                                    <br>
-                                                                    <label class="radio-inline">
-                                                                        <input type="radio" name="paidby" value="provider" checked="checked"> Provider
-                                                                    </label>
-                                                                    <label class="radio-inline">
-                                                                        <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                    </label>
-                                                                </div>
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label for="buyer_device_cost">Buyer's Cost</label>
-                                                                    <input type="number" class="form-control" name="buyer_cost" id="buyer_device_cost" step="any" min="1" readonly="true">
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <label for="freelancer_device_nets">Freelancer Nets</label>
-                                                                    <input type="number" id="freelancer_device_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div id="blended-counter" hidden>
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <label for="first_hours">Pay USD</label>
-                                                                    <input type="number" class="form-control" id="first_hours" step="any" min="1">
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <label for="first_max_hours">total for the first</label>
-                                                                    <input type="number" class="form-control" id="first_max_hours" step="any" min="1">
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <label for="next_hours">hour(s) and then USD</label>
-                                                                    <input type="number" class="form-control" id="next_hours" step="any" min="1">
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <label for="next_max_hours">per hour for upto</label>
-                                                                    <input type="number" class="form-control" id="next_max_hours" step="any" min="1">
-                                                                </div>
-                                                            </div>
-                                                            <br>
-                                                            <div class="row">
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label for="blended_total">Total Amount</label>
-                                                                    <input type="number" class="form-control" name="total_amount" id="blended_total" readonly="true" step="any" min="1">
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <label for="utl_fees">UTL Fees</label>
-                                                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                                                                </div>
-                                                            </div>
-                                                            <br>
-                                                            <div class="row">
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label>Paid By</label>
-                                                                    <br>
-                                                                    <label class="radio-inline">
-                                                                        <input type="radio" name="paidby" value="provider"> Provider
-                                                                    </label>
-                                                                    <label class="radio-inline">
-                                                                        <input type="radio" name="paidby" value="buyer"> Buyer
-                                                                    </label>
-                                                                </div>
-                                                                <div class="col-sm-12" hidden="true">
-                                                                    <label for="buyer_blended_cost">Buyer's Cost</label>
-                                                                    <input type="number" class="form-control" name="buyer_cost" id="buyer_blended_cost" step="any" min="1" readonly="true">
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <label for="freelancer_blended_nets">Freelancer Nets</label>
-                                                                    <input type="number" id="freelancer_blended_nets" class="form-control" name="freelancer_nets" step="any" min="1" readonly="true">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <br>
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="button-group">
-                                                                    <button class="btn btn-primary {{#if applied}}counterActive{{else}}counterInactive{{/if}}"><i>{{#if applied}}Cancel Application{{else}}Apply{{/if}}</i></button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        {{/if}}
-                                    {{/if}}
-                                </div>
                             </div>
                         </div>
                     {{/if}}

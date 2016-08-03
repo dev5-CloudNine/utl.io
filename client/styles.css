@@ -483,6 +483,10 @@ button.favInactive {
   background-color: white !important;
 }
 
+.panel-light {
+  background-color: #daf5d6 !important;
+}
+
 .form-group .input-group input[type=file] {
     display:none;
 }
@@ -770,6 +774,18 @@ span.bigstars span.rateit-selected
   border-top: 2px solid #0AD561;
 }
 
+.assignedJob {
+  border-top:  2px solid #FF6600;
+}
+
+.paymentPendingJob {
+  border-top:  2px solid #a479e2;
+}
+
 .completedJob {
   border-top: 2px solid #EA2A1B;
+}
+
+.panel-body .list-group-item {
+  line-height: 25px;
 }

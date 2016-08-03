@@ -520,6 +520,25 @@ Template.job.events({
         window.open("data:applications/pdf;base64, " + res);
       }
     })
+  },
+  'submit #reviewBuyer': function(event, template) {
+    event.preventDefault();
+    var providerId = this.assignedProvider;
+    var buyerId = this.userId;
+    var jobId = this._id;
+    var timeReviewed = new Date();
+    var ratedPoints = Template.instance().ratingPoints.get();
+    var reviewMessage = "";
+    $('textarea[name="reviewMessage"]').each(function() {
+      reviewMessage += $(this).val();
+    })
+    Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
+      if(error) {
+        toastr.error('Failed to submit review. Please try again.');
+      } else {
+        toastr.success('Submitted the review successfully.');
+      }
+    })
   }
 });
 
@@ -925,10 +944,20 @@ Template.job.helpers({
         notificationDetails.push(notif);
       });
       return notificationDetails;
+    },
+    openOrFrozen: function() {
+      if(this.applicationStatus == 'open' || this.applicationStatus == 'frozen')
+        return true;
+      return false;
+    },
+    reviewedBuyer: function() {
+      return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]})? true: false;
     }
 });
 
 Template.job.rendered = function() {
+  this.$('.rateit').rateit();
+  this.ratingPoints = new ReactiveVar(null);
   $('#spinner').hide();
   var id = $('.check-in-toggle').data('id');
   var displayTime = TimeSheet.findOne({'jobID':id});

@@ -271,7 +271,7 @@ Meteor.methods({
             to: getUserEmail(Meteor.users.findOne({_id: userId})),
             Cc: providerSmsEmail,
             from: FROM_EMAIL,
-            subject: buyerName + ' has accepted your counter offer for the job ' + jobname,
+            subject: buyerName + ' has accepted your counter offer for the job ' + jobDetails.title,
             text: 'Hello ' + providerName + ', ' + buyerName + 'has accepted you application for the job '+ jobDetails.title + '. You may confirm the assignment or reject the assignment by clicking the following link. ' + Meteor.absoluteUrl('jobs/' + jobId)
         })
     },
