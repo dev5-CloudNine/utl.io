@@ -734,6 +734,14 @@ span.bigstars span.rateit-selected
   background-color: #f7f7f7;
 }
 
+.dataTable > tbody > tr:hover {
+  background-color: #ffffff;
+}
+
+.dataTable > thead {
+  background-color: #ebebeb;
+}
+
 .activeProfile {
   border-top: 2px solid green;
 }

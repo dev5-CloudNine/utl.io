@@ -52,16 +52,10 @@
 					{{>EasySearch.Input index=jobIndex}}
 				</div>
                 {{#if isInRole 'provider, corporate-admin, corporate-provider'}}
-    				{{#EasySearch.Each index=jobIndex}}
-    					{{>jobSmall}}
-    				{{/EasySearch.Each}}
+                    {{#EasySearch.Each index=jobIndex}}
+                        {{>jobSmall}}
+                    {{/EasySearch.Each}}
                 {{/if}}
-                <!-- {{#each jobs}}
-                    {{>jobSmall}}
-                {{/each}}
-                <div class="text-center">
-                    {{> infiniteScroll}}
-                </div> -->
 			{{/if}}
         </div>
     </div>

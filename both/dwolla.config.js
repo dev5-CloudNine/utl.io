@@ -1,6 +1,6 @@
 if (Meteor.isServer) {
     var client = Npm.require('dwolla-node')('kThHGM8bTjG8f7R2213FbLkB4GUyDGWD2ltZEze8luqefB7MOI', 'PIP7hw5WzpuNjUl3klw5i0m6sOAZlB9J7pGvUGPLB6LO5bVcrb');
-    var redirect_uri = 'http://localhost:3000/oauth_return';
+    var redirect_uri = URL + '/oauth_return';
     var Future = Npm.require('fibers/future');    
     function async(cb) {
         client.fullAccountInfo(function(err, data) {

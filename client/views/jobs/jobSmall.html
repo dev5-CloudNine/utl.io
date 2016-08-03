@@ -5,27 +5,25 @@
                 <div class="col-sm-8">
                     <span class="label label-xs label-default">{{readableID}}</span>
                     {{>jobLabels}}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
                     <h4>
                         <a href="{{#if currentUser}}{{pathFor 'job'}}{{else}}/sign-in{{/if}}">{{title}}</a>
+                        <br>
+                        <small>
+                            {{#if $eq servicelocation 'Remote Job'}}
+                                <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}
+                            {{else}}
+                                <i class="fa fa-map-marker"></i>&nbsp;{{location}}
+                            {{/if}}
+                        </small>
                     </h4>
-                    <small>
-                        {{#if $eq servicelocation 'Remote Job'}}
-                            <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
-                        {{else}}
-                            <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
-                        {{/if}}
-                        Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}
-                    </small>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-4">
                     <small>
-                        <i class="fa fa-user fa-fw"></i>Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}                        
+                        Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}
+                    </small>    
+                    <br>
+                    <small>
+                        Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}                        
                     </small>
                     <br>
                     <small>

@@ -25,16 +25,10 @@ Template.jobSmall.helpers({
 	    return Buyers.findOne({userId: this.userId});
 	},
 	applicationsCount: function() {
-		var count = 0;
-		if(!this.applications) {
-			return 0
+		if(this.applications) {
+			return this.applications.length;
 		}
-		else {
-			this.applications.forEach(function(app) {
-				count++
-			});
-			return count;
-		}
+		return 0;
 	},
 	fav : function() {
 		return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteJobs: {$in: [this._id]}}]})?true:false;

@@ -534,11 +534,9 @@ Template.job.helpers({
     return this.jobType || this.featured;
   },
   'applicationsCount': function() {
-    var count = 0;
-    Jobs.findOne(this._id).applications.forEach(function(uId) {
-        count++;
-    });
-    return count;
+    if(this.applications)
+      return this.applications.length;
+    return 0;
   },
   'assignedProfile': function() {
     return Profiles.findOne({userId: this.assignedProvider});
