@@ -6,10 +6,32 @@ Template.providerRoutedJobs.helpers({
 			for(var i = routedJobIds.length-1; i >= 0; i--) {
 				routedJobs.push(Jobs.findOne({_id: routedJobIds[i]}));
 			}
-			console.log(routedJobs);
 			return routedJobs;
 		}
 	},
+	providerAllCount: function() {
+	    var count = 0;
+	    var providerDetails = Profiles.findOne({userId: Meteor.userId()})
+	    var appliedJobs = providerDetails.appliedJobs;
+	    var routedJobs = providerDetails.routedJobs;
+	    var assignedJobs = providerDetails.assignedJobs;
+	    var completedJobs = providerDetails.completedJobs;
+	    var paymentPendingJobs = providerDetails.paymentPendingJobs;
+	    var paidJobs = providerDetails.paidJobs;
+	    if(appliedJobs)
+	      count += appliedJobs.length;
+	    if (routedJobs)
+	      count += routedJobs.length;
+	    if (assignedJobs)
+	      count += assignedJobs.length;
+	    if (completedJobs)
+	      count += completedJobs.length;
+	    if(paymentPendingJobs)
+	      count += paymentPendingJobs.length;
+	    if(paidJobs)
+	      count += paidJobs.length;
+	    return count;
+  	},
 	proPaidJobsCount: function() {
 		var paidJobs = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
 		if(paidJobs) {

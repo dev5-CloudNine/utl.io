@@ -1,13 +1,48 @@
-Template.providerAssignedJobs.helpers({
-	providerAssignedJobs: function() {
-		var assignedJobIds = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
-		var assignedJobs = [];
-		if(assignedJobIds) {
-			for(var i = 0; i < assignedJobIds.length; i++) {
-				assignedJobs.push(Jobs.findOne({_id: assignedJobIds[i]}));
-			}
-			return assignedJobs;
-		}
+Template.providerAllJobs.helpers({
+	providerAllJobs: function() {
+		var allJobIds = [];
+		var allJobs = [];
+		var providerDetails = Profiles.findOne({userId: Meteor.userId()})
+	    var appliedJobs = providerDetails.appliedJobs;
+	    var routedJobs = providerDetails.routedJobs;
+	    var assignedJobs = providerDetails.assignedJobs;
+	    var completedJobs = providerDetails.completedJobs;
+	    var paymentPendingJobs = providerDetails.paymentPendingJobs;
+	    var paidJobs = providerDetails.paidJobs;
+	    if(appliedJobs) {
+	    	for(var i = appliedJobs.length - 1; i >= 0; i--) {
+	    		allJobIds.push(appliedJobs[i]);
+	    	}
+	    }
+	    if (routedJobs) {
+	    	for(var i = routedJobs.length - 1; i >= 0; i--) {
+	    		allJobIds.push(routedJobs[i]);
+	    	}
+	    }
+	    if (assignedJobs) {
+	    	for(var i = assignedJobs.length - 1; i >= 0; i--) {
+	    		allJobIds.push(assignedJobs[i]);
+	    	}
+	    }
+	    if (completedJobs) {
+	    	for(var i = completedJobs.length - 1; i >= 0; i--) {
+	    		allJobIds.push(completedJobs[i]);
+	    	}
+	    }
+	    if(paymentPendingJobs) {
+	    	for(var i = paymentPendingJobs.length - 1; i >= 0; i--) {
+	    		allJobIds.push(paymentPendingJobs[i]);
+	    	}
+	    }
+	    if(paidJobs) {
+	    	for(var i = paidJobs.length - 1; i >= 0; i--) {
+	    		allJobIds.push(paidJobs[i]);
+	    	}
+	    }
+	    allJobIds.forEach(function(jobId) {
+	    	allJobs.push(Jobs.findOne({_id: jobId}));
+	    });
+	    return allJobs;
 	},
 	providerAllCount: function() {
 	    var count = 0;
@@ -32,6 +67,13 @@ Template.providerAssignedJobs.helpers({
 	      count += paidJobs.length;
 	    return count;
   	},
+  	proPaidJobsCount: function() {
+		var paidJobs = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
+		if(paidJobs) {
+			return paidJobs.length;
+		}
+		return 0;
+	},
 	appliedJobsCount: function() {
 		var appliedJobs = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
 		var count = 0;
@@ -53,14 +95,14 @@ Template.providerAssignedJobs.helpers({
 		return count;
 	},
 	assignedJobsCount: function() {
-		var count = 0;
-		var assignedJobs = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
-		if(assignedJobs) {
-			for(var i = 0; i < assignedJobs.length; i++)
-				count++;
-			return count;
-		}
-		return count;
+	    var count = 0;
+	    var assignedJobs = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
+	    if(assignedJobs) {
+	      for(var i = 0; i < assignedJobs.length; i++)
+	        count++;
+	      return count;
+	    }
+	    return count;
 	},
 	completedJobsCount: function() {
 		var count = 0;
@@ -81,12 +123,5 @@ Template.providerAssignedJobs.helpers({
 			return count;
 		}
 		return count;
-	},
-	proPaidJobsCount: function() {
-		var paidJobs = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
-		if(paidJobs) {
-			return paidJobs.length;
-		}
-		return 0;
 	}
 })

@@ -17,6 +17,29 @@ Template.header.helpers({
       companyName: Meteor.user().companyName
     })
   },
+  providerAllCount: function() {
+    var count = 0;
+    var providerDetails = Profiles.findOne({userId: Meteor.userId()})
+    var appliedJobs = providerDetails.appliedJobs;
+    var routedJobs = providerDetails.routedJobs;
+    var assignedJobs = providerDetails.assignedJobs;
+    var completedJobs = providerDetails.completedJobs;
+    var paymentPendingJobs = providerDetails.paymentPendingJobs;
+    var paidJobs = providerDetails.paidJobs;
+    if(appliedJobs)
+      count += appliedJobs.length;
+    if (routedJobs)
+      count += routedJobs.length;
+    if (assignedJobs)
+      count += assignedJobs.length;
+    if (completedJobs)
+      count += completedJobs.length;
+    if(paymentPendingJobs)
+      count += paymentPendingJobs.length;
+    if(paidJobs)
+      count += paidJobs.length;
+    return count;
+  },
   appliedJobsCount: function() {
     var count = 0;
     var appliedJobs = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
@@ -84,10 +107,13 @@ Template.header.helpers({
     return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}]}).count();
   },
   buyerCompletedCount: function() {
-    return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}, {assignmentStatus: 'paid'}]}).count();
+    return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'completed'}]}).count();
   },
   buyerPaymentPendingCount: function() {
     return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'pending_payment'}]}).count();
+  },
+  buyerPaidCount: function() {
+    return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}).count();
   },
   deactivatedCount: function() {
     return Jobs.find({$and: [{userId: Meteor.userId()}, {status: 'deactivated'}]}).count();

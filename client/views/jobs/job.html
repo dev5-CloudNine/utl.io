@@ -730,7 +730,7 @@
                             <br>
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    {{#if $eq applicationStatus 'open'}}
+                                    {{#if openOrFrozen}}
                                         {{#if applied}}
                                             {{#if $eq ../applicationStatus 'open'}}
                                                 <p>You've applied this job. You'll be notified when the buyer accepts your application. You may cancel your application by clicking the button below.</p>

@@ -129,13 +129,22 @@ Router.map(function() {
         waitOn: function() {
             return Meteor.subscribe('my_jobs');
         }
+    });
+
+    this.route('providerAllJobs', {
+        path: '/allProviderJobs',
+        title: 'UTL - All Provider Jobs',
+        waitOn: function() {
+            Meteor.subscribe('reviews');
+            Meteor.subscribe('usersTasks');
+            return Meteor.subscribe('allJobs');
+        }
     })
 
     this.route('appliedJobs', {
         path: '/appliedJobs',
         title: 'UTL - Applied Jobs',
         waitOn: function() {
-            Meteor.subscribe('reviews');
             Meteor.subscribe('usersTasks');
             return Meteor.subscribe('allJobs')
         }
