@@ -1,9 +1,9 @@
-Template.buyerAssignedJobs.helpers({
-	buyerAssignedJobs: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
+Template.buyerOpenJobs.helpers({
+	buyerOpenJobs: function () {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]});
 	},
-	buyerPaymentPendingCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {'applicationStatus': 'pending_payment'}]}).count();
+	buyerOpenCount: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();
 	},
 	postedJobCount: function() {
 		return Jobs.find({userId: Meteor.userId()}).count();
@@ -20,10 +20,10 @@ Template.buyerAssignedJobs.helpers({
 	deactivatedCount: function() {
 	    return Jobs.find({$and: [{userId: Meteor.userId()}, {status: 'deactivated'}]}).count();
 	},
-	buyerOpenCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();
+	buyerPaymentPendingCount: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {'applicationStatus': 'pending_payment'}]}).count();
 	},
 	buyerPaidCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}).count();
 	}
-})
+});

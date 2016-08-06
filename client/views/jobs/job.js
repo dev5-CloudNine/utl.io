@@ -429,8 +429,6 @@ Template.job.events({
     Meteor.call('declineAssignment', jobId, userId, function(error) {
       if(error) {
         toastr.error('Failed to decline the assignment.');
-      } else {
-        toastr.success('Successfully declined the assignment.');
       }
     });
   },
@@ -533,6 +531,25 @@ Template.job.events({
       reviewMessage += $(this).val();
     })
     Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
+      if(error) {
+        toastr.error('Failed to submit review. Please try again.');
+      } else {
+        toastr.success('Submitted the review successfully.');
+      }
+    })
+  },
+  'submit #reviewProvider': function(event, template) {
+    event.preventDefault();
+    var providerId = this.assignedProvider;
+    var buyerId = this.userId;
+    var jobId = this._id;
+    var timeReviewed = new Date();
+    var ratedPoints = Template.instance().ratingPoints.get();
+    var reviewMessage = "";
+    $('textarea[name="reviewMessage"]').each(function() {
+      reviewMessage += $(this).val();
+    })
+    Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
       } else {
@@ -656,7 +673,15 @@ Template.job.helpers({
         return Tasks.find({ 'jobID': this._id }, { sort: { order: 1 } });
     },
     applied: function() {
-        return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { appliedJobs: { $in: [this._id] } }] }) ? true : false;
+      var applications = Jobs.findOne({_id: this._id}).applications;
+      if(applications) {
+        for(var i = 0; i < applications.length; i++) {
+          if(applications[i].userId == Meteor.userId())
+            return true;
+        }
+        // return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { appliedJobs: { $in: [this._id] } }] }) ? true : false;
+      }
+      return false;
     },
     applicationDetails: function() {
       for(var i = 0; i < this.applications.length; i++) {
@@ -809,6 +834,8 @@ Template.job.helpers({
     appStatusLabel: function() {
       if(this.applicationStatus == 'assigned') 
         return 'label-assigned';
+      else if(this.applicationStatus == 'completed')
+        return 'label-completed';
       else if(this.applicationStatus == 'deactivated')
         return 'label-deactivated';
       else if(this.applicationStatus == 'frozen')
@@ -817,6 +844,8 @@ Template.job.helpers({
         return 'label-open';
       else if(this.applicationStatus == 'pending_payment')
         return 'label-pending';
+      else if(this.applicationStatus == 'paid') 
+        return 'label-paid';
       else if(this.applicationStatus == 'done')
         return 'label-done';
     },
@@ -952,7 +981,10 @@ Template.job.helpers({
     },
     reviewedBuyer: function() {
       return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]})? true: false;
-    }
+    },
+    reviewedProvider: function() {
+    return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]})? true : false;
+  }
 });
 
 Template.job.rendered = function() {

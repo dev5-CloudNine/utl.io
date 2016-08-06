@@ -9,6 +9,13 @@ Template.providerPaymentPendingJobs.helpers({
 			return paymentPendingJobs;
 		}
 	},
+	proPaidJobsCount: function() {
+		var paidJobs = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
+		if(paidJobs) {
+			return paidJobs.length;
+		}
+		return 0;
+	},
 	appliedJobsCount: function() {
 		var appliedJobs = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
 		var count = 0;

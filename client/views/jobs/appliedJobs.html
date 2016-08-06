@@ -1,7 +1,7 @@
 <template name="appliedJobs">
 	<div class="row">
 		<div class="col-sm-12">
-			<p>My Jobs: Applied ({{appliedJobsCount}}) &#124; <a href="{{pathFor 'providerRoutedJobs'}}">Routed ({{routedJobsCount}})</a> &#124; <a href="{{pathFor 'providerAssignedJobs'}}">Assigned ({{assignedJobsCount}})</a> &#124; <a href="{{pathFor 'providerPaymentPendingJobs'}}">Payment Pending ({{proPaymentJobsCount}})</a> &#124; <a href="{{pathFor 'providerCompletedJobs'}}">Completed ({{completedJobsCount}})</a></p>
+			<p>My Jobs: Applied ({{appliedJobsCount}}) &#124; <a href="{{pathFor 'providerRoutedJobs'}}">Routed ({{routedJobsCount}})</a> &#124; <a href="{{pathFor 'providerAssignedJobs'}}">Assigned ({{assignedJobsCount}})</a> &#124; <a href="{{pathFor 'providerCompletedJobs'}}">Completed ({{completedJobsCount}})</a> &#124; <a href="{{pathFor 'providerPaymentPendingJobs'}}">Payment Pending ({{proPaymentJobsCount}})</a> &#124; <a href="{{pathFor 'providerPaidJobs'}}">Paid ({{proPaidJobsCount}})</a></p>
 		</div>
 		<div class="col-sm-12">
 			{{#each appliedJobs}}

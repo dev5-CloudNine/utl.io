@@ -1,13 +1,12 @@
-Template.providerRoutedJobs.helpers({
-	providerRoutedJobs: function() {
-		var routedJobIds = Profiles.findOne({userId: Meteor.userId()}).routedJobs;
-		var routedJobs = [];
-		if(routedJobIds) {
-			for(var i = routedJobIds.length-1; i >= 0; i--) {
-				routedJobs.push(Jobs.findOne({_id: routedJobIds[i]}));
+Template.providerPaidJobs.helpers({
+	providerPaidJobs: function() {
+		var paidJobIds = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
+		var paidJobs = [];
+		if(paidJobIds) {
+			for(var i = 0; i < paidJobIds.length; i++) {
+				paidJobs.push(Jobs.findOne({_id: paidJobIds[i]}));
 			}
-			console.log(routedJobs);
-			return routedJobs;
+			return paidJobs;
 		}
 	},
 	proPaidJobsCount: function() {
@@ -38,33 +37,33 @@ Template.providerRoutedJobs.helpers({
 		return count;
 	},
 	assignedJobsCount: function() {
-	    var count = 0;
-	    var assignedJobs = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
-	    if(assignedJobs) {
+		var count = 0;
+		var assignedJobs = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
+		if(assignedJobs) {
 			for(var i = 0; i < assignedJobs.length; i++)
 				count++;
 			return count;
-	    }
-	    return count;
+		}
+		return count;
 	},
 	completedJobsCount: function() {
-	    var count = 0;
-	    var completedJobs = Profiles.findOne({userId: Meteor.userId()}).completedJobs;
-	    if(completedJobs) {
+		var count = 0;
+		var completedJobs = Profiles.findOne({userId: Meteor.userId()}).completedJobs;
+		if(completedJobs) {
 			for(var i = 0; i < completedJobs.length; i++)
 				count++;
 			return count;
-	    }
-	    return count;
+		}
+		return count;
 	},
 	proPaymentJobsCount: function() {
-	    var count = 0;
-	    var paymentPendingJobs = Profiles.findOne({userId: Meteor.userId()}).paymentPendingJobs;
-	    if(paymentPendingJobs) {
-			for(var i = 0; i < paymentPendingJobs.length; i++)
-				count++;
-			return count;
-	    }
-	    return count;
+	var count = 0;
+	var paymentPendingJobs = Profiles.findOne({userId: Meteor.userId()}).paymentPendingJobs;
+	if(paymentPendingJobs) {
+		for(var i = 0; i < paymentPendingJobs.length; i++)
+			count++;
+		return count;
+	}
+	return count;
 	}
 })

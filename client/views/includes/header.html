@@ -45,11 +45,13 @@
                                         <li><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
                                         <li class="divider"></li>
                                         <li class="dropdown-header">My Jobs</li>
-                                        <li><a href="{{pathFor 'myJobs'}}">Posted Jobs <span class="badge pull-right">{{postedJobCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'myJobs'}}">All Jobs <span class="badge pull-right">{{postedJobCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'buyerOpenJobs'}}">Open Jobs <span class="badge pull-right">{{buyerOpenCount}}</span></a></li>
                                         <li><a href="{{pathFor 'buyerRoutedJobs'}}">Routed Jobs <span class="badge pull-right">{{buyerRoutedCount}}</span></a></li>
                                         <li><a href="{{pathFor 'buyerAssignedJobs'}}">Assigned Jobs <span class="badge pull-right">{{buyerAssignedCount}}</span></a></li>
-                                        <li><a href="{{pathFor 'buyerPaymentPendingJobs'}}">Payment Pending Jobs <span class="badge pull-right">{{buyerPaymentPendingCount}}</span></a></li>
                                         <li><a href="{{pathFor 'buyerCompletedJobs'}}">Completed Jobs <span class="badge pull-right">{{buyerCompletedCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'buyerPaymentPendingJobs'}}">Payment Pending Jobs <span class="badge pull-right">{{buyerPaymentPendingCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'buyerPaidJobs'}}">Paid Jobs <span class="badge pull-right">{{buyerPaidCount}}</span></a></li>
                                         <li><a href="{{pathFor 'deactivatedJobs'}}">Deactivated Jobs<span class="badge pull-right">{{deactivatedCount}}</span></a></li>
                                     </ul>
                                 </li>
@@ -87,8 +89,9 @@
                                         <li><a href="{{pathFor 'appliedJobs'}}">Applied Jobs <span class="badge inline pull-right">{{appliedJobsCount}}</span></a></li>
                                         <li><a href="{{pathFor 'providerRoutedJobs'}}">Routed Jobs <span class="badge inline pull-right">{{routedJobsCount}}</span></a></li>
                                         <li><a href="{{pathFor 'providerAssignedJobs'}}">Assigned Jobs <span class="badge inline pull-right">{{assignedJobsCount}}</span></a></li>
-                                        <li><a href="{{pathFor 'providerPaymentPendingJobs'}}">Payment Pending <span class="badge inline pull-right">{{proPaymentJobsCount}}</span></a></li>
                                         <li><a href="{{pathFor 'providerCompletedJobs'}}">Completed Jobs <span class="badge inline pull-right">{{completedJobsCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'providerPaymentPendingJobs'}}">Payment Pending <span class="badge inline pull-right">{{proPaymentJobsCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'providerPaidJobs'}}">Paid <span class="badge inline pull-right">{{proPaidJobsCount}}</span></a></li>
                                     </ul>
                                 </li>
                                 <li id="user-drop-down" class="dropdown">
@@ -177,10 +180,14 @@
                                         <li><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
                                         <li class="divider"></li>
                                         <li class="dropdown-header">My Jobs</li>
-                                        <li><a href="{{pathFor 'myJobs'}}">Posted Jobs <span class="badge pull-right">{{postedJobCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'myJobs'}}">All Jobs <span class="badge pull-right">{{postedJobCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'buyerOpenJobs'}}">Open Jobs <span class="badge pull-right">{{buyerOpenCount}}</span></a></li>
                                         <li><a href="{{pathFor 'buyerRoutedJobs'}}">Routed Jobs <span class="badge pull-right">{{buyerRoutedCount}}</span></a></li>
                                         <li><a href="{{pathFor 'buyerAssignedJobs'}}">Assigned Jobs <span class="badge pull-right">{{buyerAssignedCount}}</span></a></li>
                                         <li><a href="{{pathFor 'buyerCompletedJobs'}}">Completed Jobs <span class="badge pull-right">{{buyerCompletedCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'buyerPaymentPendingJobs'}}">Payment Pending Jobs <span class="badge pull-right">{{buyerPaymentPendingCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'buyerPaidJobs'}}">Paid Jobs <span class="badge pull-right">{{buyerPaidCount}}</span></a></li>
+                                        <li><a href="{{pathFor 'deactivatedJobs'}}">Deactivated Jobs<span class="badge pull-right">{{deactivatedCount}}</span></a></li>
                                     </ul>
                                 </li>
                                 <li id="user-drop-down" class="dropdown">

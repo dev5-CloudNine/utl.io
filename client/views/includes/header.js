@@ -67,6 +67,13 @@ Template.header.helpers({
     }
     return count;
   },
+  proPaidJobsCount: function() {
+    var paidJobs = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
+    if(paidJobs) {
+      return paidJobs.length;
+    }
+    return 0;
+  },
   postedJobCount: function() {
     return Jobs.find({userId: Meteor.userId()}).count();
   },
@@ -84,6 +91,9 @@ Template.header.helpers({
   },
   deactivatedCount: function() {
     return Jobs.find({$and: [{userId: Meteor.userId()}, {status: 'deactivated'}]}).count();
+  },
+  buyerOpenCount: function() {
+    return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();
   },
   dwollaId: function() {
     var dwollaId = Wallet.findOne({userId: Meteor.userId()}) && Wallet.findOne({userId: Meteor.userId()}).dwollaId;

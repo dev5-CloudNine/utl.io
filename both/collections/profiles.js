@@ -322,13 +322,6 @@ Profiles.attachSchema(
       type: [String],
       optional: true
     },
-    assignedJobs: {
-      type: Array,
-      optional: true
-    },
-    'assignedJobs.$': {
-      type: String
-    },
     paymentPendingJobs: {
       type: Array,
       optional: true
@@ -341,6 +334,13 @@ Profiles.attachSchema(
       optional: true
     },
     'completedJobs.$': {
+      type: String
+    },
+    paidJobs: {
+      type: Array,
+      optional: true
+    },
+    'paidJobs.$': {
       type: String
     },
     status: {

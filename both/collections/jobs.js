@@ -31,7 +31,24 @@ Jobs.attachSchema(
       type: String,
       label: "Location",
       max: 128,
-      optional: true
+      optional: true,
+      custom: function() {
+        var shouldBeRequired = this.field('servicelocation').value == 'Field Job';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     jobtype: {
       type: String,
@@ -91,61 +108,214 @@ Jobs.attachSchema(
       type: Number,
       min: 1,
       label: "Fixed Budget",
+      decimal: true,
       optional: true,
-      decimal: true
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'Fixed Pay';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     hourlyrate: {
       type: Number,
       min: 1,
       label: "Hourly Rate (USD)",
       optional: true,
-      decimal: true
+      decimal: true,
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'Per Hour';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     maxhours: {
       type: Number,
       min: 1,
       label: "Maximum Hours",
       optional: true,
-      decimal: true
+      decimal: true,
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'Per Hour';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     rateperdevice: {
       type: Number,
       min: 1,
       label: "Rate per Device (USD)",
       optional: true,
-      decimal: true
+      decimal: true,
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'Per Device';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     maxdevices: {
       type: Number,
       min: 1,
       label: "Maximum Devices",
-      optional: true
+      optional: true,
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'Per Device';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     payforfirsthours: {
       type: Number,
       min: 1,
       label: "Pay (USD)",
       optional: true,
-      decimal: true
+      decimal: true,
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'Blended';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     firsthours: {
       type: Number,
       min: 1,
       label: "total for the first",
-      optional: true
+      optional: true,
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'Blended';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     payfornexthours: {
       type: Number,
       min: 1,
       label: "hour(s) and then USD",
       optional: true,
-      decimal: true
+      decimal: true,
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'Blended';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     nexthours: {
       type: Number,
       min: 1,
       label: "per hour for up to",
-      optional: true
+      optional: true,
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'Blended';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     totalfromclient: {
       type: Number,
@@ -363,9 +533,26 @@ Jobs.attachSchema(
     exactdate: {
       type: Date,
       optional: true,
-      label: "Exactly on date and time",
+      label: "Exactly on date",
       autoform: {
         type: "bootstrap-datepicker"
+      },
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'exactdate';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
       }
     },
     exacttime: {
@@ -382,6 +569,23 @@ Jobs.attachSchema(
       label: "Starting from",
       autoform: {
         type: 'bootstrap-datepicker'
+      },
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'betweendates';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
       }
     },
     enddate: {
@@ -390,6 +594,23 @@ Jobs.attachSchema(
       label: "Ending on",
       autoform: {
         type: 'bootstrap-datepicker'
+      },
+      custom: function() {
+        var shouldBeRequired = this.field('serviceschedule').value == 'betweendates';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
       }
     },
     starttime: {

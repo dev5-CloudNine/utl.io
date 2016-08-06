@@ -123,6 +123,14 @@ Router.map(function() {
         }
     });
 
+    this.route('buyerOpenJobs', {
+        path: '/myJobs/open',
+        title: 'UTL - Open Jobs',
+        waitOn: function() {
+            return Meteor.subscribe('my_jobs');
+        }
+    })
+
     this.route('appliedJobs', {
         path: '/appliedJobs',
         title: 'UTL - Applied Jobs',
@@ -184,8 +192,18 @@ Router.map(function() {
         }
     });
 
+    this.route('buyerPaidJobs', {
+        path: 'myJobs/paid',
+        title: 'UTL - Paid Jobs',
+        waitOn: function() {
+            Meteor.subscribe('reviews');
+            return Meteor.subscribe('my_jobs');
+        }
+    });
+
     this.route('deactivatedJobs', {
         path: 'myJobs/deactivatedJobs',
+        title: 'UTL - Deactivated Jobs',
         waitOn: function() {
             return Meteor.subscribe('my_jobs');
         }
@@ -207,6 +225,15 @@ Router.map(function() {
             return Meteor.subscribe('providerCompletedJobs');
         }
     });
+
+    this.route('providerPaidJobs', {
+        path: '/paidJobs',
+        title: 'UTL - Paid Jobs',
+        waitOn: function() {
+            Meteor.subscribe('reviews');
+            return Meteor.subscribe('providerPaidJobs');
+        }
+    })
 
     this.route('recommendedJobs', {
         path: '/recommendedjobs',
@@ -264,6 +291,7 @@ Router.map(function() {
             return "UTL - " + this.params.category;
         },
         waitOn: function() {
+            Meteor.subscribe('reviews');
             return Meteor.subscribe('jobs');
         }
     });
@@ -274,6 +302,7 @@ Router.map(function() {
             return "UTL - " + this.params.subcategory;
         },
         waitOn: function() {
+            Meteor.subscribe('reviews');
             return Meteor.subscribe('jobs');
         }
     });

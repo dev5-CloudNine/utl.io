@@ -309,11 +309,10 @@ Meteor.methods({
         });
     },
     declineAssignment: function(jobId, userId) {
+        var jobDetails = Jobs.findOne({_id: jobId});
         var providerName = Profiles.findOne({userId: userId}).name;
-        var buyerName = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId}).name;
-        var buyerSmsEmail = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId}).smsAddress;
-        var jobName = Jobs.findOne({_id: jobId}).title;
-        var jobSlug = Jobs.findOne({_id: jobId}).slug();
+        var buyerName = Buyers.findOne({userId: jobDetails.userId}).name;
+        var buyerSmsEmail = Buyers.findOne({userId: jobDetails.userId}).smsAddress;
         var notificationObj = {
             jobId: jobId,
             providerId: userId,
@@ -325,13 +324,18 @@ Meteor.methods({
             adminRead: false
         }
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {applicationStatus: 'open', 'applications.$.app_status': 'declined'}});
+        if(jobDetails.routed) {
+            Profiles.update({userId: userId}, {$pull: {routedJobs: jobId}});
+            Jobs.update({_id: jobId}, {$unset: {routed: '', selectedProvider: ''}});
+            Jobs.update({$and:[{_id:jobId},{'applications.userId':userId}]},{$pull:{"applications":{"userId":userId}}});
+        }
         Notifications.insert(notificationObj);
         Email.send({
-            to: getUserEmail(Meteor.users.findOne({_id: Jobs.findOne({_id: jobId}).userId})),
+            to: getUserEmail(Meteor.users.findOne({_id: jobDetails.userId})),
             Cc: buyerSmsEmail,
             from: FROM_EMAIL,
             subject: 'Provider has declined assignment.',
-            text: 'Hello ' + buyerName + ', ' + providerName + ' has declined the assignment for the job ' + jobName + ' and the job is now Open. Click the following link to choose a different provider. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
+            text: 'Hello ' + buyerName + ', ' + providerName + ' has declined the assignment for the job ' + jobDetails.title + ' and the job is now Open. Click the following link to choose a different provider. ' + Meteor.absoluteUrl('jobs/' + jobDetails._id)
         })
     },
     submitAssignment: function(jobId) {
@@ -361,11 +365,11 @@ Meteor.methods({
         })
     },
     approveAssignment: function(jobId, providerId) {
-        var providerName = Profiles.findOne({userId: providerId}).name;
-        var providerSmsEmail = Profiles.findOne({userId: providerId}).smsAddress;
+        var providerDetails = Profiles.findOne({userId: providerId})
+        var providerName = providerDetails.name;
+        var providerSmsEmail = providerDetails.smsAddress;
         var buyerName = Buyers.findOne({userId: Meteor.userId()}).name;
-        var jobName = Jobs.findOne({_id: jobId}).name;
-        var jobSlug = Jobs.findOne({_id: jobId}).slug();
+        var jobDetails = Jobs.findOne({_id: jobId});
         var notificationObj = {
             jobId: jobId,
             providerId: providerId,
@@ -376,14 +380,16 @@ Meteor.methods({
             side: 'provider',
             adminRead: false
         }
-        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved'}});
+        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'completed'}});
+        Profiles.update({userId: providerId}, {$addToSet: {completedJobs: jobId}});
+        Profiles.update({userId: providerId}, {$pull: {assignedJobs: jobId}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: providerId})),
             Cc: providerSmsEmail,
             from: FROM_EMAIL,
             subject: 'Buyer has approved your assignment.',
-            text: 'Hello ' + providerName + ', ' + buyerName + ' has approved your assignment for the job ' + jobName + '. Click the following link to request for payment. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
+            text: 'Hello ' + providerName + ', ' + buyerName + ' has approved your assignment for the job ' + jobDetails.title + '. Click the following link to request for payment. ' + Meteor.absoluteUrl('jobs/' + jobDetails._id)
         });
     },
     rejectAssignment: function(jobId) {
@@ -490,7 +496,7 @@ Meteor.methods({
             adminRead: false
         };
         Jobs.update({_id: jobId}, {$set: {applicationStatus: 'pending_payment', assignmentStatus: 'pending_payment'}});
-        Profiles.update({userId: Meteor.userId()}, {$pull: {assignedJobs: jobId}});
+        Profiles.update({userId: Meteor.userId()}, {$pull: {completedJobs: jobId}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {paymentPendingJobs: jobId}});
         Invoices.insert(invoiceObject);
         Notifications.insert(notificationObj);
@@ -525,8 +531,8 @@ Meteor.methods({
             debitedAccount: adminId,
             dateAndTime: new Date()
         }
-        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'paid', applicationStatus: 'done'}});
-        Profiles.update({userId: jobDetails.assignedProvider}, {$addToSet: {completedJobs: jobId}});
+        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'paid', applicationStatus: 'paid'}});
+        Profiles.update({userId: jobDetails.assignedProvider}, {$addToSet: {paidJobs: jobId}});
         Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -projectBudget}});
         Wallet.update({userId: Meteor.userId()}, {$inc: {amountSpent: projectBudget}});

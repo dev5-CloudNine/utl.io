@@ -275,9 +275,21 @@ Meteor.publish('providerCompletedJobs', function() {
             Jobs.find({
                 'assignedProvider': this.userId
             }, {
-                'applicationStatus': 'done'
+                'applicationStatus': 'completed'
+            })
+        ];
+        this.ready();
+    }
+});
+
+Meteor.publish('providerPaidJobs', function() {
+    check(arguments, [Match.Any]);
+    if(this.userId) {
+        return [
+            Jobs.find({
+                'assignedProvider': this.userId
             }, {
-                'assignmentStatus': 'approved'
+                'applicationStatus': 'paid'
             })
         ];
         this.ready();

@@ -1,5 +1,5 @@
 <template name="jobSmall">
-    <div class="jobSmall {{#if featured}}featured{{/if}} panel panel-default">
+    <div class="jobSmall panel panel-default {{#if $eq applicationStatus 'open'}}openJob{{/if}} {{#if $eq applicationStatus 'frozen'}}frozenJob{{/if}} {{#if $eq applicationStatus 'assigned'}}assignedJob{{/if}} {{#if $eq applicationStatus 'completed'}}completedJob{{/if}} {{#if $eq applicationStatus 'pending_payment'}}paymentPendingJob{{/if}} {{#if $eq applicationStatus 'paid'}}paidJob{{/if}}">
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-8">
@@ -29,7 +29,7 @@
                     <small>
                         <span class="label label-sm {{appStatusLabel}}">Status: {{applicationStatus}}</span>
                         {{#if assignedProvider}}
-                            &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'done'}}by{{/if}}{{/if}}&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
+                            &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'completed'}}by{{/if}}{{/if}}&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
                         {{/if}}
                         &nbsp;|&nbsp;{{#if selectedProvider}}Routed to {{#with routedProvider}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
                     </small>
@@ -38,34 +38,40 @@
                     {{#if $eq applicationStatus 'frozen'}}
                         <div class="col-sm-12">
                             <hr>
-                            <button class="margin-top-5 btn btn-success btn-sm confirmAssignment">Confirm</button>
+                            {{#if routed}}
+                                <p>This job has been routed to you. Please confirm to begin the job or decline.</p>
+                            {{else}}
+                                <p>Your application has been accepted by the buyer. Please confirm to begin the job.</p>
+                            {{/if}}
+                            <button class="margin-top-5 btn btn-primary btn-sm confirmAssignment">Confirm</button>
                             <button class="margin-top-5 btn btn-warning btn-sm declineAssignment">Decline</button>
                         </div>
-                    {{else}}
-                        {{#if $eq applicationStatus 'assigned'}}
-                            {{#if $eq assignmentStatus 'rejected'}}
-                                <div class="col-sm-12">
-                                    <hr>
-                                    <button class="margin-top-5 btn btn-success btn-sm submitAssignment">Submit Job for Approval.</button>
-                                </div>
-                            {{else}}
-                                {{#if $eq assignmentStatus 'submitted'}}
-                                    <div class="col-sm-12">
-                                        <hr>
-                                        <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
-                                    </div>
-                                {{else}}
-                                    {{#if $eq assignmentStatus 'approved'}}
-                                        <div class="col-sm-12">
-                                            <hr>
-                                            <button class=" margin-top-5 btn btn-sm btn-success requestPayment">Request Payment</button>
-                                        </div>
-                                    {{/if}}
-                                {{/if}}
-                            {{/if}}
+                    {{/if}}
+                    {{#if $eq applicationStatus 'assigned'}}
+                        {{#if $eq assignmentStatus 'rejected'}}
+                            <div class="col-sm-12">
+                                <hr>
+                                <p>You have confirmed to do the job. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
+                                <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
+                            </div>
+                        {{/if}}
+                        {{#if $eq assignmentStatus 'submitted'}}
+                            <div class="col-sm-12">
+                                <hr>
+                                <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
+                            </div>
                         {{/if}}
                     {{/if}}
-                    {{#if $eq applicationStatus 'done'}}
+                    {{#if $eq applicationStatus 'completed'}}
+                        {{#if $eq assignmentStatus 'approved'}}
+                            <div class="col-sm-12">
+                                <hr>
+                                <p>The buyer has approved your job. You can now raise an invoice and request for payment.</p>
+                                <button class=" margin-top-5 btn btn-sm btn-primary requestPayment">Raise Invoice &amp; Request Payment</button>
+                            </div>
+                        {{/if}}
+                    {{/if}}
+                    {{#if $eq applicationStatus 'paid'}}
                         <div class="col-sm-12">
                             {{#if reviewedBuyer}}
                                 <hr>
@@ -76,9 +82,9 @@
                                     <div class="form-group">                                    
                                         <label for="writeReview">Write a review</label>
                                         <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
-                                        <label>Rate buyer</label>&nbsp;<span class="rateit"></span>
+                                        <label>Rate buyer</label><br><span class="rateit"></span>
                                     </div>
-                                    <button class="margin-top-5 btn btn-success" type="submit">Submit</button>
+                                    <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
                                 </form>
                             {{/if}}
                         </div>
@@ -88,18 +94,19 @@
                         {{#if $eq assignmentStatus 'submitted'}}
                             <div class="col-sm-12">
                                 <hr>
-                                <button class="margin-top-5 btn btn-success btn-sm approveAssignment">Approve Assignment</button>
-                                <button class="margin-top-5 btn btn-success btn-sm rejectAssignment">Reject Assignment</button>
+                                <p>The provider has submitted the job for your perusal. Please check the job done and take action.</p>
+                                <button class="margin-top-5 btn btn-primary btn-sm approveAssignment">Approve Assignment</button>
+                                <button class="margin-top-5 btn btn-primary btn-sm rejectAssignment">Reject Assignment</button>
                             </div>
                         {{else}}
                             {{#if $eq assignmentStatus 'pending_payment'}}
                                 <div class="col-sm-12">
                                     <hr>
-                                    <button class="btn btn-sm btn-success margin-top-5 approvePayment">Approve Payment</button>
+                                    <button class="btn btn-sm btn-primary margin-top-5 approvePayment">Approve Payment</button>
                                 </div>
                             {{/if}}
                         {{/if}}
-                        {{#if $eq applicationStatus 'done'}}
+                        {{#if $eq applicationStatus 'paid'}}
                             <div class="col-sm-12">
                                 {{#if reviewedProvider}}
                                     <hr>
@@ -110,9 +117,9 @@
                                         <div class="form-group">                                 
                                             <label for="writeReview">Write a review</label>
                                             <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
-                                            <label>Rate provider</label>&nbsp;<span class="rateit"></span>
+                                            <label>Rate provider</label><br><span class="rateit"></span>
                                         </div>
-                                        <button class="margin-top-5 btn btn-success" type="submit">Submit</button>
+                                        <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
                                     </form>
                                 {{/if}}
                             </div>

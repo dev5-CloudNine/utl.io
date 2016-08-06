@@ -7,6 +7,13 @@ Template.appliedJobs.helpers({
 		});
 		return Jobs.find({_id: {$in:appliedJobIds}},{sort: {createdAt: -1}});
 	},
+	proPaidJobsCount: function() {
+		var paidJobs = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
+		if(paidJobs) {
+			return paidJobs.length;
+		}
+		return 0;
+	},
 	appliedJobsCount: function() {
 		var appliedJobs = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
 		var count = 0;

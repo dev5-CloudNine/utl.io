@@ -183,7 +183,7 @@ SUMMERNOTE_OPTIONS = {
 
 STATUSES = ["draft", "pending", "active", "flagged", "inactive", "deactivated"];
 
-APPLICATION_STATUSES = ["open", "frozen", "assigned", 'pending_payment', "done", "deactivated"];
+APPLICATION_STATUSES = ["open", "frozen", "assigned", "completed", 'pending_payment', "paid", "deactivated"];
 
 RATE_BASIS = ['Fixed Pay', 'Per Hour', 'Per Device', 'Blended'];
 

@@ -57,8 +57,10 @@ Template.jobSmall.helpers({
 			return 'label-open';
 		else if(this.applicationStatus == 'pending_payment')
 			return 'label-pending';
-		else if(this.applicationStatus == 'done')
-			return 'label-done';
+		else if(this.applicationStatus == 'completed') 
+			return 'label-completed';
+		else if(this.applicationStatus == 'paid')
+			return 'label-paid';
 	},
 	postedTime: function() {
 		return moment(this.createdAt).fromNow();

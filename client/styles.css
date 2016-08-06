@@ -549,14 +549,14 @@ footer {
 .label-frozen {
   background-color: #0AD561;
 }
-.label-done {
+.label-completed {
   background-color: #EA2A1B;
+}
+.label-paid {
+  background-color: #1A99DE;
 }
 .label-pending {
   background-color: #a479e2;
-}
-.label-paid {
-  background-color: #589636;
 }
 .dropdown {
   display:inline-block;
@@ -784,6 +784,10 @@ span.bigstars span.rateit-selected
 
 .completedJob {
   border-top: 2px solid #EA2A1B;
+}
+
+.paidJob {
+  border-top: 2px solid #1A99DE;
 }
 
 .panel-body .list-group-item {
