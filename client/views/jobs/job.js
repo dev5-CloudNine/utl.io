@@ -761,12 +761,12 @@ Template.job.helpers({
       return flag?true:false;
     },
     notOpen: function() {
-      if(this.applicationStatus == 'frozen' || this.applicationStatus == 'assigned' || this.applicationStatus == 'done')
+      if(this.applicationStatus == 'frozen' || this.applicationStatus == 'assigned' || this.applicationStatus == 'paid')
         return true;
       return false;
     },
     assignedOrDone: function() {
-      if(this.applicationStatus == 'assigned' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'done')
+      if(this.applicationStatus == 'assigned' || this.applicationStatus == 'completed' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'paid')
         return true;
       return false;
     },
@@ -846,11 +846,9 @@ Template.job.helpers({
         return 'label-pending';
       else if(this.applicationStatus == 'paid') 
         return 'label-paid';
-      else if(this.applicationStatus == 'done')
-        return 'label-done';
     },
     showTabs: function(id) {
-        return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned','pending_payment','done']}}]}) ? true : false;      
+        return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned', 'completed', 'pending_payment','paid']}}]}) ? true : false;      
     },
     jobNotAssigned: function() {
       if(this.applicationStatus == 'open' && this.status == 'active') {
@@ -933,7 +931,7 @@ Template.job.helpers({
       return providerDetails;
     },
     jobAssignedToProvider: function() {
-      if(this.applicationStatus == 'assigned' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'done')
+      if(this.applicationStatus == 'assigned' || this.applicationStatus == 'completed' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'paid')
         return true;
       return false;
     },
@@ -984,6 +982,51 @@ Template.job.helpers({
     },
     reviewedProvider: function() {
     return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]})? true : false;
+  },
+  applicationTime: function() {
+    var applications = Jobs.findOne(this._id).applications;
+    if(applications) {
+      for(var i = 0; i < applications.length; i++) {
+        if(applications[i].userId == Meteor.userId()) {
+          return moment(applications[i].applied_at).fromNow();
+        }
+      }
+    }
+  },
+  applicationAcceptedTime: function() {
+    var acceptedTime = Notifications.findOne({$and: [{jobId: this._id}, {providerId: Meteor.userId()}, {notificationType: 'applicationAccepted'}]}).timeStamp;
+    return moment(acceptedTime).fromNow();
+  },
+  assignmentTime: function() {
+    var assignedTime = Notifications.findOne({$and: [{jobId: this._id}, {providerId: Meteor.userId()}, {notificationType: 'confirmAssignment'}]}).timeStamp;
+    return moment(assignedTime).fromNow();
+  },
+  submittedTime: function() {
+    var submittedArray = Notifications.find({$and: [{jobId: this._id}, {notificationType: 'submitAssignment'}]}).fetch();
+    var submittedTime;
+    if(submittedArray.length == 1) {
+      submittedTime = submittedArray[0].timeStamp;
+    } else {
+      for(var i = 0; i < submittedArray.length - 1; i++) {
+        for (var j = i + 1; j < submittedArray.length; j++) {
+          if(submittedArray[j].timeStamp > submittedArray[i].timeStamp)
+            submittedTime = submittedArray[j].timeStamp;
+        }
+      }
+    }
+    return moment(submittedTime).fromNow();
+  },
+  approvedTime: function() {
+    var approvedTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'approveAssignment'}]}).timeStamp;
+    return moment(approvedTime).fromNow();
+  },
+  paymentRequestTime: function() {
+    var paymentRequestTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'requestPayment'}]}).timeStamp;
+    return moment(paymentRequestTime).fromNow();
+  },
+  approvePaymentTime: function() {
+    var approvePaymentTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'approvePayment'}]}).timeStamp;
+    return moment(approvePaymentTime).fromNow();
   }
 });
 
