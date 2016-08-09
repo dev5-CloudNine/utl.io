@@ -643,24 +643,51 @@
                                                                 {{/if}}
                                                             {{/with}}
                                                             <br>
+                                                            {{#if $eq applicationStatus 'open'}}
+                                                                <button class="btn btn-primary acceptApplication">Accept Application</button>
+                                                            {{/if}}
                                                             {{#if $eq applicationStatus 'frozen'}}
-                                                                <h5>Awaiting confirmation from provider.</h5>
-                                                            {{else}}
-                                                                {{#if $eq applicationStatus 'assigned'}}
+                                                                {{#if selectedProvider}}
+                                                                    <h5>Awaiting confirmation from provider.</h5>
+                                                                {{else}}
+                                                                    <br>
+                                                                    <button class="btn btn-primary acceptApplication" disabled="disabled">Accept Application</button>
+                                                                {{/if}}
+                                                            {{/if}}
+                                                            {{#if $eq applicationStatus 'assigned'}}
+                                                                {{#if assignedApplicant}}
                                                                     <h5>The job is assigned.</h5>
                                                                 {{else}}
-                                                                    {{#if $eq applicationStatus 'completed'}}
-                                                                        <h5>The project is completed.</h5>
-                                                                    {{else}}
-                                                                        {{#if $eq applicationStatus 'deactivated'}}
-                                                                            <h5>You have deactivated the job. Activate it to accept the application.</h5>
-                                                                        {{else}}
-                                                                            {{#if $eq applicationStatus 'open'}}
-                                                                                <button class="btn btn-primary btn-sm acceptApplication">Accept Application</button>
-                                                                            {{/if}}
-                                                                        {{/if}}
-                                                                    {{/if}}
+                                                                    <br>
+                                                                    <button class="btn btn-primary acceptApplication" disabled="disabled">Accept Application</button>
                                                                 {{/if}}
+                                                            {{/if}}
+                                                            {{#if $eq applicationStatus 'completed'}}
+                                                                {{#if assignedApplicant}}
+                                                                    <h5>The project is completed.</h5>
+                                                                {{else}}
+                                                                    <br>
+                                                                    <button class="btn btn-primary acceptApplication" disabled="disabled">Accept Application</button>
+                                                                {{/if}}
+                                                            {{/if}}
+                                                            {{#if $eq applicationStatus 'pending_payment'}}
+                                                                {{#if assignedApplicant}}
+                                                                    <h5>The provider has raised an invoice and requested for the payment.</h5>
+                                                                {{else}}
+                                                                    <br>
+                                                                    <button class="btn btn-primary acceptApplication" disabled="disabled">Accept Application</button>
+                                                                {{/if}}
+                                                            {{/if}}
+                                                            {{#if $eq applicationStatus 'paid'}}
+                                                                {{#if assignedApplicant}}
+                                                                    <h5>You have paid the provider.</h5>
+                                                                {{else}}
+                                                                    <br>
+                                                                    <button class="btn btn-primary acceptApplication" disabled="disabled">Accept Application</button>
+                                                                {{/if}}
+                                                            {{/if}}
+                                                            {{#if $eq applicationStatus 'deactivated'}}
+                                                                <h5>You have deactivated the job. Activate it to accept the application.</h5>
                                                             {{/if}}
                                                         </div>
                                                     </div>
@@ -1039,14 +1066,30 @@
                                     <ul class="list-group">
                                         {{#if assignedOrDone}}
                                             {{#each jobRelatedNotifications}}
+                                                {{#if $eq notificationType 'newJobApplication'}}
+                                                    {{#if thisProvider}}
+                                                        <li class="list-group-item">
+                                                            You have applied for this job on {{formatDate timeStamp}}
+                                                        </li>
+                                                    {{/if}}
+                                                {{/if}}
+                                                {{#if $eq notificationType 'applicationAccepted'}}
+                                                    {{#if thisProvider}}
+                                                        <li class="list-group-item">
+                                                            <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has accepted your application.
+                                                        </li>
+                                                    {{/if}}
+                                                {{/if}}
                                                 {{#if $eq notificationType 'confirmAssignment'}}
-                                                    <li class="list-group-item">
-                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed assignment on {{formatDate timeStamp}}
-                                                    </li>
+                                                    {{#if thisProvider}}
+                                                        <li class="list-group-item">
+                                                            You have confirmed the assignment on {{formatDate timeStamp}}
+                                                        </li>
+                                                    {{/if}}
                                                 {{/if}}
                                                 {{#if $eq notificationType 'submitAssignment'}}
                                                     <li class="list-group-item">
-                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment on {{formatDate timeStamp}}
+                                                        You have submitted assignment on {{formatDate timeStamp}}
                                                     </li>
                                                 {{/if}}
                                                 {{#if $eq notificationType 'approveAssignment'}}
@@ -1061,7 +1104,7 @@
                                                 {{/if}}
                                                 {{#if $eq notificationType 'requestPayment'}}
                                                     <li class="list-group-item">
-                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment on {{formatDate timeStamp}}
+                                                        You have requested for payment on {{formatDate timeStamp}}
                                                     </li>
                                                 {{/if}}
                                                 {{#if $eq notificationType 'approvePayment'}}

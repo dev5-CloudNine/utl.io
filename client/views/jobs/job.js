@@ -666,6 +666,13 @@ Template.job.helpers({
       return false;
     }
   },
+  assignedApplicant: function() {
+    var providerId = Profiles.findOne({_id: this.userId}).userId;
+    var assignedProvider = Jobs.findOne({_id: Router.current().params._id}).assignedProvider;
+    if(providerId == assignedProvider)
+      return true;
+    return false;
+  },
   'providerAssigned': function() {
     return this.assignedProvider;
   },
@@ -828,6 +835,9 @@ Template.job.helpers({
       }
       return false;
     },
+    aHelper: function() {
+      console.log(this);
+    },
     routedProvider: function() {
       return Profiles.findOne({userId: this.selectedProvider});
     },
@@ -971,6 +981,12 @@ Template.job.helpers({
         notificationDetails.push(notif);
       });
       return notificationDetails;
+    },
+    thisProvider: function() {
+      var providerId = Profiles.findOne({_id: this.providerId}).userId;
+      if(providerId == Meteor.userId())
+        return true;
+      return false;
     },
     openOrFrozen: function() {
       if(this.applicationStatus == 'open' || this.applicationStatus == 'frozen')
