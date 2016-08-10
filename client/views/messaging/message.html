@@ -1,79 +1,74 @@
-<template name="message">
-	
-<div class="row m-t-md">
-                        <div class="col-md-12">
-                            <div class="row mailbox-header">
-                                <div class="col-md-2">
-                                    <a href="{{pathFor 'mailBox' tab='new' }}"  class="btn btn-success btn-block">Compose</a>
-                                </div>
-                                <div class="col-md-6">
-                                    <h2>View Message</h2>
-                                </div>
-                                <div class="col-md-4">
-                                    <div data-id="{{parentID}}" class="message-options pull-right">
-                                       <a href="compose.html" class="btn btn-default reply"><i class="fa fa-reply m-r-xs"></i>Reply</a> 
-                                       <a href="#" class="btn btn-default forward"><i class="fa fa-arrow-right m-r-xs"></i>Forward</a> 
-                                       <a href="#" class="btn btn-danger delete-msg"><i class="fa fa-trash m-r-xs"></i>Delete</a> 
-                                    </div>
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            {{>msgSideMenu}}
-                        </div>
-                        <div class="col-md-10">
-                            {{#each message}}
-                            <div class="mailbox-content">
-                                {{#if $eq parentID _id}}
-                                        <div class="message-header" style="background-color: aliceblue;padding: 10px;">
-                                            <h3>{{subject}}</h3>
-                                            <p class="message-date">{{date}}</p>
-                                        </div>
-                                        <div class="message-sender" style="background-color: aliceblue;">
-                                            <p>from: {{username}}</p>
-                                        </div>
-                                {{else}}
-
-                                        <div class="message-header" style="background-color: aliceblue;padding: 10px;">
-                                            <p style="float: left;">from: {{username}}</p>
-                                            <p class="message-date">{{date}}</p>
-                                        </div>
-                                {{/if}}
-                                <div class="message-content">
-                                    {{{content}}}
-                                </div>
-                                {{#if attachment}}
-                                <div class="message-attachments">
-                                    <p><i class="fa fa-paperclip m-r-xs"></i>2 Attachments - <a href="#">View all</a> | <a href="#">Download all</a></p>
-                                    <div class="message-attachment">
-                                        <a href="#">
-                                            <div class="attachment-content">
-                                                <img src="assets/images/attachment1.jpg" alt="">
-                                            </div>
-                                            <div class="attachment-info">
-                                                <p>Attachment1.jpg</p>
-                                                <span>444 KB</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="message-attachment">
-                                        <a href="#">
-                                            <div class="attachment-content">
-                                                <img src="assets/images/attachment2.jpg" alt="">
-                                            </div>
-                                            <div class="attachment-info">
-                                                <p>Attachment2.jpg</p>
-                                                <span>548 KB</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                {{/if}}
-                            </div>
-                            {{/each}}
-
-                        </div>
+<template name="message">	
+    <div class="row m-t-md">
+        <div class="col-md-12">
+            <div class="row mailbox-header">
+                <div class="col-md-2">
+                    <a href="{{pathFor 'mailBox' tab='new' }}"  class="btn btn-success btn-block">Compose</a>
+                </div>
+                <div class="col-md-6">
+                    <h2>View Message</h2>
+                </div>
+                <div class="col-md-4">
+                    <div data-id="{{parentID}}" class="message-options pull-right">
+                       <a href="compose.html" class="btn btn-default reply"><i class="fa fa-reply m-r-xs"></i>Reply</a> 
+                       <a href="#" class="btn btn-default forward"><i class="fa fa-arrow-right m-r-xs"></i>Forward</a> 
+                       <a href="#" class="btn btn-danger delete-msg"><i class="fa fa-trash m-r-xs"></i>Delete</a> 
                     </div>
-
-
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            {{>msgSideMenu}}
+        </div>
+        <div class="col-md-10">
+            {{#each message}}
+                <div class="mailbox-content">
+                    {{#if $eq parentID _id}}
+                        <div class="message-header" style="background-color: aliceblue;padding: 10px;">
+                            <h3>{{subject}}</h3>
+                            <p class="message-date">{{date}}</p>
+                        </div>
+                        <div class="message-sender" style="background-color: aliceblue;">
+                            <p>from: {{username}}</p>
+                        </div>
+                    {{else}}
+                        <div class="message-header" style="background-color: aliceblue;padding: 10px;">
+                            <p style="float: left;">from: {{username}}</p>
+                            <p class="message-date">{{date}}</p>
+                        </div>
+                    {{/if}}
+                    <div class="message-content">
+                        {{{content}}}
+                    </div>
+                    {{#if attachment}}
+                        <div class="message-attachments">
+                            <p><i class="fa fa-paperclip m-r-xs"></i>2 Attachments - <a href="#">View all</a> | <a href="#">Download all</a></p>
+                            <div class="message-attachment">
+                                <a href="#">
+                                    <div class="attachment-content">
+                                        <img src="assets/images/attachment1.jpg" alt="">
+                                    </div>
+                                    <div class="attachment-info">
+                                        <p>Attachment1.jpg</p>
+                                        <span>444 KB</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="message-attachment">
+                                <a href="#">
+                                    <div class="attachment-content">
+                                        <img src="assets/images/attachment2.jpg" alt="">
+                                    </div>
+                                    <div class="attachment-info">
+                                        <p>Attachment2.jpg</p>
+                                        <span>548 KB</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+            {{/each}}
+        </div>
+    </div>
 </template>

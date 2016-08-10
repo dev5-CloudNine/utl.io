@@ -11,8 +11,6 @@
                 <div class="col-md-4">
                     <div class="compose-options">
                         <div class="pull-right">
-                            <!-- 
-                                            <a href="inbox.html" class="btn btn-default"><i class="fa fa-file-text-o m-r-xs"></i>Draft</a> -->
                             <a href="{{pathFor 'mailBox' tab='mails'}}" class="btn btn-danger"><i class="fa fa-trash m-r-xs"></i>Discard</a>
                             <button class="btn btn-success" id="sendMail"><i class="fa fa-send m-r-xs"></i>Send</button>
                         </div>
@@ -30,57 +28,53 @@
                         <div class="form-group">
                             <label for="subject" class="col-sm-2 control-label">Project</label>
                             <div class="col-sm-10">
-
-
                                 {{#if $eq type 'newfwd'}}                                
                                     <select class="form-control" id="project">
                                         <option value="">Select project</option>
                                         {{#each projectList}}
-                                        <option value="{{id}}">{{title}}</option>
+                                            <option value="{{id}}">{{title}}</option>
                                         {{/each}} 
                                     </select> 
                                 {{/if}}
                                 {{#if $eq type 'newrep'}}
-                                    <input type="text" disabled class="form-control" id="project" value="{{parentSub}}"> 
+                                    <input type="text" disabled class="form-control" id="project" value="{{parentSub}}">
                                 {{/if}}
                                 {{#if $eq type 'new'}}
                                     <select class="form-control" id="project">
                                         <option value="">Select project</option>
                                         {{#each projectList}}
-                                        <option value="{{id}}">{{title}}</option>
+                                            <option value="{{id}}">{{title}}</option>
                                         {{/each}} 
                                     </select> 
                                 {{/if}}
-                               
-
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="to" class="col-sm-2 pull-left control-label">Recipient</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="recipient">
-                                        {{#each userList}}
-                                        <option value="{{id}}">{{email}}</option>
-                                        {{/each}}
-                                </select>
-                            </div>
-                        </div>
-                        <!--
-                        <div class="form-group">
-                            <label for="subject" class="col-sm-2 control-label">Subject</label>
-                            <div class="col-sm-10">
-                                {{#if $eq type 'newfwd'}}
-                                	<input type="text" class="form-control" id="subject" value="Fwd: {{parentSub}}"> 
-                                {{/if}}
                                 {{#if $eq type 'newrep'}}
-                                	<input type="text" disabled class="form-control" id="subject" value="{{parentSub}}"> 
+                                    <select disabled id="recipient" class="form-control">
+                                        {{#with parentUser}}
+                                            <option value="{{parentUserId}}">{{email}}</option>
+                                        {{/with}}
+                                    </select>
                                 {{/if}}
                                 {{#if $eq type 'new'}}
-                                	<input type="text" class="form-control" id="subject" value=""> 
+                                    <select class="form-control" id="recipient">
+                                        {{#each userList}}
+                                            <option value="{{id}}">{{email}}</option>
+                                        {{/each}}
+                                    </select>
+                                {{/if}}
+                                {{#if $eq type 'newfwd'}}
+                                    <select class="form-control" id="recipient">
+                                        {{#each userList}}
+                                            <option value="{{id}}">{{email}}</option>
+                                        {{/each}}
+                                    </select>
                                 {{/if}}
                             </div>
                         </div>
-                        -->
                     </form>
                 </div>
                 <div class="compose-message">
@@ -89,10 +83,6 @@
                             {{{parentMsg}}}
                         {{/if}}
                     </div>
-<!-- 
-                    <textarea rows="10" style="width: 100%" id="edit" name="content">
-
-                    </textarea> -->
                 </div>
                 {{#if thread}} 
                 	<br>

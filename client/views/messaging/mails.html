@@ -13,8 +13,8 @@
                         <div class="input-group">
                             <input type="text" name="search" class="form-control input-search" placeholder="Search...">
                             <span class="input-group-btn">
-                                                <button class="btn btn-success" type="button"><i class="fa fa-search"></i></button>
-                                            </span>
+                                <button class="btn btn-success" type="button"><i class="fa fa-search"></i></button>
+                            </span>
                         </div>
                         <!-- Input Group -->
                     </form>
@@ -31,54 +31,29 @@
                 {{/if}}
                 <table class="table">
                     <thead>
-<!--                         <tr>
-                            <th colspan="1" class="hidden-xs">
-                                <span><div class="checker"><span><input type="checkbox" class="check-mail-all"></span></div>
-			            </span>
-			            </th>
-
-
-            <th class="text-right" colspan="5">
-                <span class="text-muted m-r-sm">Showing 20 of 346 </span>
-                <div class="btn-group m-r-sm mail-hidden-options" style="display: none;">
-                    <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash"></i></a>
-                </div>
-                <div class="btn-group">
-                    <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
-                    <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
-                </div>
-            </th> 
-            </tr>-->
-            </thead>
-            <tbody>
-            {{#each msgList}}
-		    <tr class="{{#if $eq read false}}read{{else}}unread{{/if}} msg" data-id="{{_id}}">
-<!-- 		        <td class="hidden-xs">
-		            <span><div class="checker"><span><input type="checkbox" class="checkbox-mail"></span></div>
-		            </span>
-		        </td> 
-		        <td class="hidden-xs">
-		            <i class="fa fa-star"></i>
-		        </td>-->
-		        <td class="hidden-xs">
-		            {{username}}
-		        </td>
-		        <td style="text-align: left;">
-		            {{subject}}
-		        </td>
-		        <td>
-		        	{{#if attachment}}
-		            <i class="fa fa-paperclip"></i>
-		            {{/if}}
-		        </td>
-		        <td>
-		            {{date}}
-		        </td>
-		    </tr>
-    {{/each}}
-    </tbody>
-    </table>
-    </div>
-    </div>
+                    </thead>
+                    <tbody>
+                        {{#each msgList}}
+                		    <tr class="{{#if $eq read false}}read{{else}}unread{{/if}} msg" data-id="{{_id}}">
+                		        <td class="hidden-xs">
+                		            {{username}}
+                		        </td>
+                		        <td style="text-align: left;">
+                		            {{subject}}
+                		        </td>
+                		        <td>
+                		        	{{#if attachment}}
+                		            <i class="fa fa-paperclip"></i>
+                		            {{/if}}
+                		        </td>
+                		        <td>
+                		            {{date}}
+                		        </td>
+                		    </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </template>

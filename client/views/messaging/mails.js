@@ -6,7 +6,7 @@ Template.mails.events({
             var obj = $(event.currentTarget);
             var id = obj.data('id');
             Meteor.call("markRead",id);
-            Router.go("/dashboard/msg" + id);
+            Router.go("/mailbox/msg" + id);
         }
         event.stopPropagation();
     }
@@ -15,7 +15,6 @@ Template.mails.events({
 
 Template.mails.helpers({
     msgList: function() {
-
         var msgList = [];
         var type = Router.current().params.tab.substr(6);
         if (type == 'sent') {
@@ -30,12 +29,7 @@ Template.mails.helpers({
                 msgList.push(ele);
             });
         } else {
-            Messages.find({
-            	$and:[{recipient: Meteor.userId()}]
-            }, 
-            {
-              sort: { date: -1 }
-            }).map(function(ele) {
+            Messages.find({$and:[{recipient: Meteor.userId()}]}, {sort: { date: -1 }}).map(function(ele) {
                 ele.username = Meteor.users.findOne({ '_id': ele.sender }).emails[0].address;
                 ele.date = moment(new Date(ele.date)).format('LLLL');
                 msgList.push(ele);

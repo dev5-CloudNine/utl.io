@@ -13,13 +13,13 @@ Template.message.events({
   'click a.reply': function(event, template) {
     event.preventDefault();
     var id = $(event.target).parent().closest('.message-options').data("id");
-    Router.go("/dashboard/newrep" + id);
+    Router.go("/mailbox/newrep" + id);
     event.stopPropagation();
   },
   'click a.forward': function(event, template) {
     event.preventDefault();
     var id = $(event.target).parent().closest('.message-options').data("id");
-    Router.go("/dashboard/newfwd" + id);
+    Router.go("/mailbox/newfwd" + id);
     event.stopPropagation();
   }
 });

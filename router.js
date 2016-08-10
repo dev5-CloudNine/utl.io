@@ -530,6 +530,9 @@ Router.map(function() {
                   active: 'messaging'
                 };
             }
+        },
+        waitOn: function() {
+            return Meteor.subscribe('messages', Meteor.userId());
         }
     });
 
