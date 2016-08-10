@@ -1032,6 +1032,21 @@ Template.job.helpers({
     }
     return moment(submittedTime).fromNow();
   },
+  rejectedTime: function() {
+    var rejectedArray = Notifications.find({$and: [{jobId: this._id}, {notificationType: 'rejectAssignment'}]}).fetch();
+    var rejectedTime;
+    if(rejectedArray.length == 1) {
+      rejectedTime = rejectedArray[0].timeStamp;
+    } else {
+      for(var i = 0; i < rejectedArray.length - 1; i++) {
+        for(var j = i + 1; j < rejectedArray.length; j++) {
+          if(rejectedArray[j].timeStamp > rejectedArray[i].timeStamp)
+            rejectedTime = rejectedArray[j].timeStamp;
+        }
+      }
+    }
+    return moment(rejectedTime).fromNow();
+  },
   approvedTime: function() {
     var approvedTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'approveAssignment'}]}).timeStamp;
     return moment(approvedTime).fromNow();

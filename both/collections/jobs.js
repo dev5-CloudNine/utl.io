@@ -805,13 +805,13 @@ Jobs.attachSchema(
     },
     assignmentStatus: {
       type: String,
-      allowedValues: ['submitted', 'approved', 'rejected', 'pending_payment', 'paid'],
+      allowedValues: ['not_submitted', 'submitted', 'approved', 'rejected', 'pending_payment', 'paid'],
       autoValue: function() {
         if(this.isInsert) {
-          return 'rejected';
+          return 'not_submitted';
         } else if(this.isUpsert) {
           return {
-            $setOnInsert: 'rejected'
+            $setOnInsert: 'not_submitted'
           };
         }
       }

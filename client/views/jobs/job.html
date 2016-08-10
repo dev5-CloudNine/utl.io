@@ -423,9 +423,10 @@
                                         <p>No actions to perform now.</p>
                                     {{/if}}
                                     {{#if $eq applicationStatus 'assigned'}}
-                                        {{#unless $eq assignmentStatus 'submitted'}}
-                                            <p>No actions to perform.</p>
-                                        {{/unless}}
+                                        {{#if $eq assignmentStatus 'rejected'}}
+                                            <p><i>{{rejectedTime}}</i></p>
+                                            <p>You have rejected the assignment. Please discuss with the provider and sort it out.</p>
+                                        {{/if}}
                                         {{#if $eq assignmentStatus 'submitted'}}
                                             <p><i>{{submittedTime}}</i></p>
                                             <p>The provider has submitted the job for your perusal. Please check the job done and take action.</p>
@@ -644,6 +645,7 @@
                                                             {{/with}}
                                                             <br>
                                                             {{#if $eq applicationStatus 'open'}}
+                                                                <br>
                                                                 <button class="btn btn-primary acceptApplication">Accept Application</button>
                                                             {{/if}}
                                                             {{#if $eq applicationStatus 'frozen'}}
@@ -1011,10 +1013,17 @@
                                         {{/if}}
                                     {{/if}}
                                     {{#if $eq applicationStatus 'assigned'}}
-                                        {{#if $eq assignmentStatus 'rejected'}}
+                                        {{#if $eq assignmentStatus 'not_submitted'}}
                                             <div class="col-sm-12">
                                                 <p><i>{{assignmentTime}}</i></p>
                                                 <p>You have confirmed to do the job. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
+                                                <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
+                                            </div>
+                                        {{/if}}
+                                        {{#if $eq assignmentStatus 'rejected'}}
+                                            <div class="col-sm-12">
+                                                <p><i>{{rejectedTime}}</i></p>
+                                                <p>The buyer has rejected your assignment. Please discuss with the buyer for futher details and submit the job for buyer approval.</p>
                                                 <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
                                             </div>
                                         {{/if}}
