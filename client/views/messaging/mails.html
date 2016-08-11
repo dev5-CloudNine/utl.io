@@ -8,17 +8,6 @@
                 <div class="col-md-6">
                     <h2 style="margin-top: 0px;font-weight: 100;margin-left: 10px;">Messages</h2>
                 </div>
-                <div class="col-md-4">
-                    <form action="#" method="GET">
-                        <div class="input-group">
-                            <input type="text" name="search" class="form-control input-search" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-success" type="button"><i class="fa fa-search"></i></button>
-                            </span>
-                        </div>
-                        <!-- Input Group -->
-                    </form>
-                </div>
             </div>
         </div>
         <div class="col-md-2">
@@ -26,10 +15,7 @@
         </div>
         <div class="col-md-10">
             <div class="mailbox-content">
-                {{#if $eq type 'sent'}}
-                    <div class="pull-right"><i class="fa fa-stop" style="color: #EEEAFF;font-size: 25px;"></i> Unread Message</div>
-                {{/if}}
-                <table class="table">
+                <!-- <table class="table">
                     <thead>
                     </thead>
                     <tbody>
@@ -52,7 +38,8 @@
                 		    </tr>
                         {{/each}}
                     </tbody>
-                </table>
+                </table> -->
+                {{>ReactiveDatatable tableData=msgList options=msgListOptionsObject}}
             </div>
         </div>
     </div>

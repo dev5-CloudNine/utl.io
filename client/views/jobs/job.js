@@ -556,6 +556,13 @@ Template.job.events({
         toastr.success('Submitted the review successfully.');
       }
     })
+  },
+  'click a.sendMessage': function(event, template) {
+    event.preventDefault();
+    var userId = Profiles.findOne({_id: this.id}).userId;
+    var jobId = Router.current().params._id;
+    Router.go('/mailbox/newapm?proId=' + userId + '&jobId=' + jobId);
+    event.stopPropagation();
   }
 });
 
@@ -912,7 +919,9 @@ Template.job.helpers({
           appliedAt: applicationDetails.appliedAt,
           paymentType: this.ratebasis,
           gross: this.your_cost,
-          freelancer_nets: this.freelancer_nets
+          freelancer_nets: this.freelancer_nets,
+          email: provider.userName,
+          tel: provider.contactNumber
         }
       }
       if(applicationDetails.appType == 'counteroffer') {
@@ -936,6 +945,8 @@ Template.job.helpers({
           next_max_hours: applicationDetails.next_max_hours,
           buyer_cost: applicationDetails.buyer_cost,
           freelancer_nets: applicationDetails.freelancer_nets,
+          email: provider.userName,
+          tel: provider.contactNumber
         }
       }
       return providerDetails;

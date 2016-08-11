@@ -9,7 +9,7 @@ Template.dashboard.helpers({
 		});
 	},
 	buyerCompletedJobsCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}]}).count();
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}).count();
 	},
 	ongoingBuyerJobs: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
@@ -99,7 +99,10 @@ Template.dashboard.helpers({
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}]}).fetch();
 	},
 	providerCompletedJobsCount: function() {
-		return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'done'}]}).count();
+		var paidJobs = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
+		if(paidJobs)
+			return paidJobs.length;
+		return 0;
 	},
 	accountBalance: function() {
 		return Wallet.findOne({userId: Meteor.userId()}).accountBalance;

@@ -532,21 +532,24 @@
                             <div class="tab-pane active fade in" id="jobAssignedProvider">
                                 <br>
                                 {{#with assignedProviderDetails}}
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="thumbnail">
-                                                        <a href="/profiles/{{this.id}}"><img src="{{this.imgUrl}}" alt="{{this.name}}"></a>
-                                                        <div class="caption text-center">
-                                                            <a href="/profiles/{{this.id}}">{{this.name}}</a>
-                                                            <h5>{{this.title}}{{#if this.company}} - {{this.company}}{{/if}}</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                    <div class="box box-widget widget-user-2">
+                                        <div class="widget-user-header bg-assigned">
+                                            <div class="widget-user-image">
+                                                <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
                                             </div>
+                                            <h3 class="widget-user-username">{{this.name}}</h3>
+                                            <h5 class="widget-user-desc">{{this.title}}</h5>
+                                        </div>
+                                        <div class="box-footer no-padding">
+                                            <ul class="nav nav-stacked">
+                                                <li><a href="#">Email: {{this.email}}<span class="pull-right fa fa-envelope"></span></a></li>
+                                                <li><a href="#">Tel: {{this.tel}}<span class="pull-right fa fa-phone"></span></a></li>
+                                                <li><a href class="sendMessage">Send Message<span class="pull-right fa fa-envelope"></span></a></li>
+                                                <li><a href="/profiles/{{this.id}}">View Profile<span class="pull-right fa fa-chain"></span></a></li>
+                                            </ul>
                                         </div>
                                     </div>
+                                    <hr>
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <small>Accepted Budget</small>

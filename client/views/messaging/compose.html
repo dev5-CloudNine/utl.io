@@ -47,6 +47,9 @@
                                         {{/each}} 
                                     </select> 
                                 {{/if}}
+                                {{#if $eq type 'newapm'}}
+                                    <input type="text" disabled class="form-control" id="project" value="{{messageJobId}}">
+                                {{/if}}
                             </div>
                         </div>
                         <div class="form-group">
@@ -71,6 +74,13 @@
                                         {{#each userList}}
                                             <option value="{{id}}">{{email}}</option>
                                         {{/each}}
+                                    </select>
+                                {{/if}}
+                                {{#if $eq type 'newapm'}}
+                                    <select disabled id="recipient" class="form-control">
+                                        {{#with assignedProvider}}
+                                            <option value="{{userId}}">{{userEmail}}</option>
+                                        {{/with}}
                                     </select>
                                 {{/if}}
                             </div>

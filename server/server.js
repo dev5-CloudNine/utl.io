@@ -53,7 +53,7 @@ Meteor.methods({
         Messages.remove({parent:id});
         Messages.remove({_id:id});
     },
-    "markRead": function(id){
+    "markMessageRead": function(id){
         Messages.update({'_id':id},{$set:{'read':true}});
     },
     "createInvite": function(obj) {

@@ -40,6 +40,9 @@ Template.compose.events({
     		message.chain = chain;
             message.subject = $('#project').val();
     	}
+        if(param.substr(0, 6) == 'newapm') {
+            message.subject = $('#project').val();
+        }
 
     	message.chain = chain;
         Meteor.call("postMessage", message, function(err, res) {
@@ -116,7 +119,9 @@ Template.compose.helpers({
     	if(param == 'new')
     		return 'new';
     	else if(param.substr(0,6) == 'newrep')
-    		return 'newrep'; 
+    		return 'newrep';
+        else if(param.substr(0,6) == 'newapm')
+            return 'newapm'
     	else 
     		return 'newfwd'; 
     },
@@ -206,6 +211,18 @@ Template.compose.helpers({
 
 	    });
 	    return row[0].innerHTML;
+    },
+    messageJobId: function() {
+        var jobDetails = Jobs.findOne({_id: Router.current().params.query.jobId});
+        return jobDetails.title;
+    },
+    assignedProvider: function() {
+        var providerDetails = Profiles.findOne({userId: Router.current().params.query.proId});
+        var provider = {
+            userId: providerDetails.userId,
+            userEmail: getUserEmail(Meteor.users.findOne({_id: providerDetails.userId}))
+        }
+        return provider;
     }
 
     // },
