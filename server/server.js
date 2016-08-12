@@ -661,6 +661,12 @@ Meteor.methods({
     addJobFile: function(file,id) {
         Jobs.update(id, {$addToSet: {files: file}});
     },
+    addMessageFile: function(file, msgId) {
+        Messages.update(id, {$addToSet: {files: file}});
+    },
+    deleteMessageFile: function(file, msgId) {
+        Messages.update(id, {$pull: {files: file}});
+    },
     deleteJobFile: function(file,id) {
         Jobs.update(id, {$pull: {files: file}});
     },

@@ -249,7 +249,6 @@ Array.prototype.pushArray = function(files) {
 };
 
 removeFile = function(url) {
-	console.log(url);
 	var index = url.indexOf(S3_FILEUPLOADS)-1;
 	var path = url.substr(index);
 	S3.delete(path, function(err, res) {

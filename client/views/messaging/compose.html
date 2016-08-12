@@ -50,6 +50,12 @@
                                 {{#if $eq type 'newapm'}}
                                     <input type="text" disabled class="form-control" id="project" value="{{messageJobId}}">
                                 {{/if}}
+                                {{#if $eq type 'newpbm'}}
+                                    <input type="text" disabled class="form-control" id="project" value="{{messageJobId}}">
+                                {{/if}}
+                                {{#if $eq type 'newcsm'}}
+                                    <input type="text" disabled class="form-control" id="project" value="{{messageJobId}}">
+                                {{/if}}
                             </div>
                         </div>
                         <div class="form-group">
@@ -79,6 +85,20 @@
                                 {{#if $eq type 'newapm'}}
                                     <select disabled id="recipient" class="form-control">
                                         {{#with assignedProvider}}
+                                            <option value="{{userId}}">{{userEmail}}</option>
+                                        {{/with}}
+                                    </select>
+                                {{/if}}
+                                {{#if $eq type 'newpbm'}}
+                                    <select disabled id="recipient" class="form-control">
+                                        {{#with postedBuyer}}
+                                            <option value="{{userId}}">{{userEmail}}</option>
+                                        {{/with}}
+                                    </select>
+                                {{/if}}
+                                {{#if $eq type 'newcsm'}}
+                                    <select disabled id="recipient" class="form-control">
+                                        {{#with adminDetails}}
                                             <option value="{{userId}}">{{userEmail}}</option>
                                         {{/with}}
                                     </select>
@@ -130,6 +150,25 @@
 	                {{/each}} 
                 {{/if}}
             </div>
+        </div>
+        <div class="col-md-12 pull-right">
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="btn btn-success">
+                        <input type="file" class="file_bag" multiple=true> Upload Documents
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">  
+            <div id="spinner">
+                {{> spinner}}
+            </div>              
+            <ul class="fileList" style="list-style-type: none;">            
+                {{#each files}}
+                    <li><i class="fa fa-times-circle remove-msg-file" data-url="{{this}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this}}" target="_blank">{{this}}</a></li>
+                {{/each}}
+            </ul>
         </div>
     </div>
 </template>

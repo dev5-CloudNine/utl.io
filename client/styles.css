@@ -861,3 +861,7 @@ span.bigstars span.rateit-selected
 .bg-assigned {
   background-color: #F0F8FF;
 }
+
+.box .border-right {
+  border-right: 1px solid #f4f4f4;
+}

@@ -1,9 +1,26 @@
 var selectionChange = new Deps.Dependency;
 
 Template.compose.onRendered(function() {
+    $('#spinner').hide();
 	$('#summernote').summernote();
 	$('.note-editor .note-toolbar .note-insert').remove();
 });
+
+var messageFiles = [];
+var attachFiles = function(files) {
+    messageFiles = [];
+    files.forEach(function(file) {
+        messageFiles.push(file);
+    })
+}
+
+var removeMessageFile = function(file) {
+    var index = messageFiles.indexOf(file);
+    if(index > -1) {
+        messageFiles.splice(index, 1);
+    }
+    console.log(messageFiles);
+}
 
 Template.compose.events({
     'click #sendMail': function(event, template) {
@@ -16,11 +33,15 @@ Template.compose.events({
         if (!projectID) {
         	toastr.error('Please select a project');
         	return;
-        } 
+        }
         var content = $('#summernote').summernote('code');
         $('#summernote').summernote('destroy');
         var sender = Meteor.userId();
         var message = {};
+        message.files = [];
+        messageFiles.forEach(function(msgFile) {
+            message.files.push(msgFile);
+        })
         message.recipient = recipient;
         message.subject = $( "#project option:selected" ).text();
         message.projectID = projectID;
@@ -43,6 +64,12 @@ Template.compose.events({
         if(param.substr(0, 6) == 'newapm') {
             message.subject = $('#project').val();
         }
+        if(param.substr(0, 6) == 'newpbm') {
+            message.subject = $('#project').val();
+        }
+        if(param.substr(0,6) == 'newcsm') {
+            message.subject = $('#project').val();
+        }
 
     	message.chain = chain;
         Meteor.call("postMessage", message, function(err, res) {
@@ -57,8 +84,79 @@ Template.compose.events({
     },
     'change #project' : function(event,template){
     	selectionChange.changed();
+    },
+    'change .file_bag': function(event, template){
+        event.preventDefault();
+        $('#spinner').show();
+        var files = $(event.currentTarget)[0].files;
+        if(!files)
+            return;
+        S3.upload({
+            files: files,
+            path: S3_FILEUPLOADS
+        }, function(error, result) {
+            $('#spinner').hide();
+            if(error) {
+                toastr.error('Failed to upload documents.');
+            }
+            else {
+                var messageId = Router.current().params.tab.substr(6);
+                if(messageId) {
+                    var files = [];
+                    var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeMsgFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.secure_url+'</a></li>'
+                    $('.fileList').append(fileListItem);
+                    $('ul.fileList li').each(function(li) {
+                        files.push($(this).data('url'));
+                    });
+                    attachFiles(files);
+                } else {
+                    var files = [];
+                    var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeMsgFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.secure_url+'</a></li>'
+                    $('.fileList').append(fileListItem);
+                    $('ul.fileList li').each(function(li) {
+                        files.push($(this).data('url'));
+                    });
+                    attachFiles(files);
+                    toastr.success('File uploaded successssfully');
+                }
+            }
+        })        
+    },
+    'click .remove-msg-file' : function(event, template) {
+        event.preventDefault();
+        $('#spinner').show();
+        var messageId = Router.current().params.tab.substr(6);
+        var url = $(event.currentTarget).data('url');
+        var index = url.indexOf(S3_FILEUPLOADS)-1;
+        var path = url.substr(index);
+        S3.delete(path, function(err, res) {
+            $('#spinner').hide();
+            if (err) {
+                toastr.error("Operation failed");
+            } else {
+                Meteor.call('deleteMessageFile', url, messageId,function (error, result) {
+                    if(!error)
+                      toastr.success("Deleted");
+                });
+            }
+        });
+        event.stopPropagation();
     }
 });
+
+removeMsgFile = function(file) {
+    removeMessageFile(file);
+    var index = file.indexOf(S3_FILEUPLOADS)-1;
+    var path = file.substr(index);
+    S3.delete(path, function(err, res) {
+      if (err) {
+        toastr.error("Operation failed");
+      } else {
+        $("ul.fileList").find("[data-url='"+file+"']").remove();
+        toastr.success('Document is deleted successfully');
+      }
+    });
+}
 
 var SelectedProject;
 var SelectedRecipient;
@@ -121,7 +219,11 @@ Template.compose.helpers({
     	else if(param.substr(0,6) == 'newrep')
     		return 'newrep';
         else if(param.substr(0,6) == 'newapm')
-            return 'newapm'
+            return 'newapm';
+        else if(param.substr(0,6) == 'newpbm')
+            return 'newpbm';
+        else if(param.substr(0,6) == 'newcsm')
+            return 'newcsm';
     	else 
     		return 'newfwd'; 
     },
@@ -223,16 +325,20 @@ Template.compose.helpers({
             userEmail: getUserEmail(Meteor.users.findOne({_id: providerDetails.userId}))
         }
         return provider;
+    },
+    postedBuyer: function() {
+        var buyerDetails = Buyers.findOne({userId: Router.current().params.query.buyId});
+        var buyer = {
+            userId: buyerDetails.userId,
+            userEmail: getUserEmail(Meteor.users.findOne({_id: buyerDetails.userId}))
+        }
+        return buyer;
+    },
+    adminDetails: function() {
+        var adminDetails = {
+            userId: Router.current().params.query.admId,
+            userEmail: getUserEmail(Meteor.users.findOne({_id: Router.current().params.query.admId}))
+        }
+        return adminDetails;
     }
-
-    // },
-    // content: function() {
-    // 	var param = Router.current().params.tab;
-    // 	if(param.substr(0,6) == 'newrep') {
-
-    // 	} else if(param.substr(0,6) == 'newfwd') {
-
-    // 	} 
-    // }
-
 });

@@ -557,11 +557,25 @@ Template.job.events({
       }
     })
   },
-  'click a.sendMessage': function(event, template) {
+  'click a.sendProviderMessage': function(event, template) {
     event.preventDefault();
     var userId = Profiles.findOne({_id: this.id}).userId;
     var jobId = Router.current().params._id;
     Router.go('/mailbox/newapm?proId=' + userId + '&jobId=' + jobId);
+    event.stopPropagation();
+  },
+  'click a.sendBuyerMessage': function(event, template) {
+    event.preventDefault();
+    var userId = Buyers.findOne({_id: this.id}).userId;
+    var jobId = Router.current().params._id;
+    Router.go('/mailbox/newpbm?buyId=' + userId + '&jobId=' + jobId);
+    event.stopPropagation();
+  },
+  'click button.contactSupport': function(event, template) {
+    event.preventDefault();
+    var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+    var jobId = Router.current().params._id;
+    Router.go('/mailbox/newcsm?admId=' + adminId + '&jobId=' + jobId);
     event.stopPropagation();
   }
 });
@@ -571,7 +585,20 @@ Template.job.helpers({
     return moment(this.createdAt).fromNow();
   },
   'buyerData': function() {
-    return Buyers.findOne({userId: this.userId});
+    var buyerData = Buyers.findOne({userId: this.userId});
+    var imgUrl;
+    var imgURL = Meteor.users.findOne({_id: buyerData.userId}).imgURL;
+    if(imgURL)
+      imgUrl = imgURL
+    else 
+      imgUrl = '';
+    var buyer = {
+      id: buyerData._id,
+      name: buyerData.name,
+      title: buyerData.title,
+      imgUrl: imgUrl
+    }
+    return buyer;
   },
   'hasLabel': function() {
     return this.jobType || this.featured;
@@ -919,9 +946,7 @@ Template.job.helpers({
           appliedAt: applicationDetails.appliedAt,
           paymentType: this.ratebasis,
           gross: this.your_cost,
-          freelancer_nets: this.freelancer_nets,
-          email: provider.userName,
-          tel: provider.contactNumber
+          freelancer_nets: this.freelancer_nets
         }
       }
       if(applicationDetails.appType == 'counteroffer') {
@@ -944,9 +969,7 @@ Template.job.helpers({
           next_hours: applicationDetails.next_hours,
           next_max_hours: applicationDetails.next_max_hours,
           buyer_cost: applicationDetails.buyer_cost,
-          freelancer_nets: applicationDetails.freelancer_nets,
-          email: provider.userName,
-          tel: provider.contactNumber
+          freelancer_nets: applicationDetails.freelancer_nets
         }
       }
       return providerDetails;

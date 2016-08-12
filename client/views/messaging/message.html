@@ -39,34 +39,14 @@
                     {{/if}}
                     <div class="message-content">
                         {{{content}}}
+                        {{#if files}}
+                            <hr>
+                            <h4>Attachments</h4>
+                            {{#each files}}
+                                <a href="{{this}}" download>{{this}}</a><br>
+                            {{/each}}
+                        {{/if}}
                     </div>
-                    {{#if attachment}}
-                        <div class="message-attachments">
-                            <p><i class="fa fa-paperclip m-r-xs"></i>2 Attachments - <a href="#">View all</a> | <a href="#">Download all</a></p>
-                            <div class="message-attachment">
-                                <a href="#">
-                                    <div class="attachment-content">
-                                        <img src="assets/images/attachment1.jpg" alt="">
-                                    </div>
-                                    <div class="attachment-info">
-                                        <p>Attachment1.jpg</p>
-                                        <span>444 KB</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="message-attachment">
-                                <a href="#">
-                                    <div class="attachment-content">
-                                        <img src="assets/images/attachment2.jpg" alt="">
-                                    </div>
-                                    <div class="attachment-info">
-                                        <p>Attachment2.jpg</p>
-                                        <span>548 KB</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    {{/if}}
                 </div>
             {{/each}}
         </div>

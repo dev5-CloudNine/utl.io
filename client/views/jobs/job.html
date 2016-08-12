@@ -74,7 +74,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <small>
-                                            <i class="fa fa-user fa-fw"></i>Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
+                                            <i class="fa fa-user fa-fw"></i>Posted {{#with buyerData}}by <a href="/buyers/{{this.id}}">{{this.name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
                                             <br>
                                         </small>
                                         <small>
@@ -532,7 +532,7 @@
                             <div class="tab-pane active fade in" id="jobAssignedProvider">
                                 <br>
                                 {{#with assignedProviderDetails}}
-                                    <div class="box box-widget widget-user-2">
+                                    <!-- <div class="box box-widget widget-user-2">
                                         <div class="widget-user-header bg-assigned">
                                             <div class="widget-user-image">
                                                 <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
@@ -542,17 +542,50 @@
                                         </div>
                                         <div class="box-footer no-padding">
                                             <ul class="nav nav-stacked">
-                                                <li><a href="#">Email: {{this.email}}<span class="pull-right fa fa-envelope"></span></a></li>
-                                                <li><a href="#">Tel: {{this.tel}}<span class="pull-right fa fa-phone"></span></a></li>
                                                 <li><a href class="sendMessage">Send Message<span class="pull-right fa fa-envelope"></span></a></li>
                                                 <li><a href="/profiles/{{this.id}}">View Profile<span class="pull-right fa fa-chain"></span></a></li>
                                             </ul>
+                                        </div>
+                                    </div> -->
+                                    <div class="box box-widget widget-user">
+                                        <div class="widget-user-header bg-assigned">
+                                            <h3 class="widget-user-username">{{this.name}}</h3>
+                                            <h5 class="widget-user-desc">{{this.title}}</h5>
+                                        </div>
+                                        <div class="widget-user-image">
+                                            <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
+                                        </div>
+                                        <div class="box-footer">
+                                            <div class="row">
+                                                <div class="col-sm-4 border-right">
+                                                    <div class="description-block text-center">
+                                                        <a href class="sendProviderMessage">
+                                                            <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                                            <span class="description-text">Send Message</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 border-right">
+                                                    <div class="description-block">
+                                                        <h5 class="description-header"></h5>
+                                                        <span class="description-text"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="description-block text-center">
+                                                        <a href="/profiles/{{this.id}}">
+                                                            <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                                            <span class="description-text">View Profile</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <small>Accepted Budget</small>
+                                            <h5>Accepted Budget</h5>
                                         </div>
                                         <div class="panel-body">
                                             <div class="row">
@@ -1187,6 +1220,57 @@
                             </div>
                         </div>
                     {{/if}}
+                    {{#if assignedOrDone}}
+                        {{#with buyerData}}
+                            <div class="box box-widget widget-user">
+                                <div class="widget-user-header bg-assigned">
+                                    <h3 class="widget-user-username">{{this.name}}</h3>
+                                    <h5 class="widget-user-desc">{{this.title}}</h5>
+                                </div>
+                                <div class="widget-user-image">
+                                    <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
+                                </div>
+                                <div class="box-footer">
+                                    <div class="row">
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block text-center">
+                                                <a href class="sendBuyerMessage">
+                                                    <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                                    <span class="description-text">Send Message</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block text-center">
+                                                <a href="/buyers/{{this.id}}">
+                                                    <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                                    <span class="description-text">View Profile</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="description-block">
+                                                <h5 class="description-header"></h5>
+                                                <span class="description-text"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/with}}
+                        <hr>
+                    {{/if}}
+                {{/if}}
+                {{#if assignedOrDone}}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5>Customer Support</h5>
+                        </div>
+                        <div class="panel-body">
+                            <p>You can contact customer support during the course of this project. Click the button below to send message.</p>
+                            <button class="btn btn-primary contactSupport"><i class="fa fa-support"></i>&nbsp;&nbsp;Contact Customer Support</button>
+                        </div>
+                    </div>
                 {{/if}}
             </div>
         </div>
