@@ -6,7 +6,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}" href>
 							<div class="media">
-								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/profiles/{{this.providerId}}" class="item-info">{{this.pname}}</a> has applied for your job.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -20,7 +20,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has confirmed assignment. The job is now assigned.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -34,7 +34,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has declined assignment. Your job status is now open again. You can choose a different provider from posted applications.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -48,7 +48,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has submitted assigned job for approval.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -62,7 +62,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has requested for payment.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -76,7 +76,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has added you to his/her favorites. <br>
 									<small>{{this.notificationTime}}</small>
@@ -89,7 +89,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has removed you from his/her favorites. <br>
 									<small>{{this.notificationTime}}</small>
@@ -106,7 +106,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has accepted your application. You may confirm/decline the job.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -120,7 +120,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has invited you to apply for a job.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -134,7 +134,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has directly routed to you a job. You may confirm/decline the job.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -148,7 +148,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has approved the job submitted by you. You can now request for the payment.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -162,7 +162,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has rejected the job submitted by you. Please contact {{this.bname}} for further information. You may then resubmit the job.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -176,7 +176,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has approved your payment request. The payment will be released shortly. The job is now completed. You may rate and review the job experience with {{this.bname}}.
 									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
@@ -190,7 +190,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has added you as a favorite. <br>
 									<small>{{this.notificationTime}}</small>
@@ -203,7 +203,7 @@
 					{{#with this}}
 						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}">
 							<div class="media">
-								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image" width='64px'></a></div>
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
 								<div class="media-body">
 									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has removed you as a favorite. <br>
 									<small>{{this.notificationTime}}</small>
@@ -218,94 +218,110 @@
 			{{#if isInRole 'admin'}}
 				{{#each adminNotifications}}
 					{{#if $eq this.notificationType 'userSignUp'}}
-						<a class=" markRead">
-							<div class="notification-item markRead {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
-								<small class="pull-right">{{this.notificationTime}}</small>
-								<h4 class="item-title">A user has signed up for UTL.</h4>
+						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}" href>
+							<div class="media">
+								<div class="media-body">
+									<p>A new user has signed up for the portal.</p>
+									<small>{{this.notificationTime}}</small>
+								</div>
 							</div>
-						</a>
+						</div>
 					{{/if}}
 					{{#if $eq this.notificationType 'newJob'}}
-						{{#with this}}
-							<a href="/jobs/{{this.jobId}}" class="markRead">
-								<div class="notification-item markRead {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
-									<h4 class="item-title">{{this.bname}} has posted a new job.</h4>
-									<small class="pull-right">{{this.notificationTime}}</small>
-									<p class="item-info">{{jobName}}</p>
+						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}" href>
+							<div class="media">
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
+								<div class="media-body">
+									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has posted a new job.
+									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<small>{{this.notificationTime}}</small>
 								</div>
-							</a>
-						{{/with}}
+							</div>
+						</div>
 					{{/if}}
 					{{#if $eq this.notificationType 'newJobApplication'}}
-						{{#with this}}
-							<a href="/jobs/{{this.jobId}}" class="markRead">
-								<div class="notification-item markRead {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
-									<h4 class="item-title">{{this.pname}} has applied for a job.</h4>
-									<small class="pull-right">{{this.notificationTime}}</small>
-									<p class="item-info">{{jobName}}</p>
+						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}" href>
+							<div class="media">
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
+								<div class="media-body">
+									<a href="/profiles/{{this.providerId}}" class="item-info">{{this.pname}}</a> has applied for a job posted by <a href="/buyers/{{this.buyerId}}">{{this.bname}}</a>.
+									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<small>{{this.notificationTime}}</small>
 								</div>
-							</a>
-						{{/with}}
+							</div>
+						</div>
 					{{/if}}
 					{{#if $eq this.notificationType 'confirmAssignment'}}
-						{{#with this}}
-							<a href="/jobs/{{this.jobId}}" class="markRead">
-								<div class="notification-item markRead {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
-									<h4 class="item-title">{{this.pname}} has confirmed assignment.</h4>
-									<small class="pull-right">{{this.notificationTime}}</small>
-									<p class="item-info">{{jobName}}</p>
+						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}" href>
+							<div class="media">
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
+								<div class="media-body">
+									<a href="/profiles/{{this.providerId}}" class="item-info">{{this.pname}}</a> has confirmed assignment for a job posted by <a href="/buyers/{{this.buyerId}}">{{this.bname}}</a>.
+									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<small>{{this.notificationTime}}</small>
 								</div>
-							</a>
-						{{/with}}
+							</div>
+						</div>
 					{{/if}}
 					{{#if $eq this.notificationType 'declineAssignment'}}
-						<li>
-							{{#with this}}<a href="/jobs/{{this.jobId}}" class="markRead">{{this.pname}} has declined assignment - {{jobName}} ({{this.notificationTime}})</a>{{/with}}
-						</li>
+						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}" href>
+							<div class="media">
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
+								<div class="media-body">
+									<a href="/profiles/{{this.providerId}}" class="item-info">{{this.pname}}</a> has declined assignment for a job posted by <a href="/buyers/{{this.buyerId}}">{{this.bname}}</a>.
+									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<small>{{this.notificationTime}}</small>
+								</div>
+							</div>
+						</div>
 					{{/if}}
 					{{#if $eq this.notificationType 'submitAssignment'}}
-						{{#with this}}
-							<a href="/jobs/{{this.jobId}}" class="markRead">
-								<div class="notification-item markRead {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
-									<h4 class="item-title">{{this.pname}} has declined assignment.</h4>
-									<small class="pull-right">{{this.notificationTime}}</small>
-									<p class="item-info">{{jobName}}</p>
+						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}" href>
+							<div class="media">
+								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
+								<div class="media-body">
+									<a href="/profiles/{{this.providerId}}" class="item-info">{{this.pname}}</a> has submitted assignment for a job posted by <a href="/buyers/{{this.buyerId}}">{{this.bname}}</a>.
+									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<small>{{this.notificationTime}}</small>
 								</div>
-							</a>
-						{{/with}}
+							</div>
+						</div>
 					{{/if}}
 					{{#if $eq this.notificationType 'applicationAccepted'}}
-						{{#with this}}
-							<a href="/jobs/{{this.jobId}}" class="markRead">
-								<div class="notification-item markRead {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
-									<h4 class="item-title">{{this.bname}} has accpeted application.</h4>
-									<small class="pull-right">{{this.notificationTime}}</small>
-									<p class="item-info">{{jobName}}</p>
+						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}" href>
+							<div class="media">
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
+								<div class="media-body">
+									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has accepted application for <a href="/profies/{{this.providerId}}">{{this.pname}}</a>.
+									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<small>{{this.notificationTime}}</small>
 								</div>
-							</a>
-						{{/with}}
+							</div>
+						</div>
 					{{/if}}
 					{{#if $eq this.notificationType 'approveAssignment'}}
-						{{#with this}}
-							<a href="/jobs/{{this.jobId}}" class="markRead">
-								<div class="notification-item markRead {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
-									<h4 class="item-title">{{this.pname}} has approved assignment.</h4>
-									<small class="pull-right">{{this.notificationTime}}</small>
-									<p class="item-info">{{jobName}}</p>
+						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}" href>
+							<div class="media">
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
+								<div class="media-body">
+									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has approved assignment submitted by <a href="/profies/{{this.providerId}}">{{this.pname}}</a>.
+									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<small>{{this.notificationTime}}</small>
 								</div>
-							</a>
-						{{/with}}
+							</div>
+						</div>
 					{{/if}}
 					{{#if $eq this.notificationType 'rejectAssignment'}}
-						{{#with this}}
-							<a href="/jobs/{{this.jobId}}" class="markRead">
-								<div class="notification-item markRead {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
-									<h4 class="item-title">{{this.pname}} has rejected assignment.</h4>
-									<small class="pull-right">{{this.notificationTime}}</small>
-									<p class="item-info">{{jobName}}</p>
+						<div class="notification-item markRead {{#if $eq this.read false}} isNotRead {{else}} isRead {{/if}}" href>
+							<div class="media">
+								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='64px'></a></div>
+								<div class="media-body">
+									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has rejected assignment submitted by <a href="/profies/{{this.providerId}}">{{this.pname}}</a>.
+									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<small>{{this.notificationTime}}</small>
 								</div>
-							</a>
-						{{/with}}
+							</div>
+						</div>
 					{{/if}}
 				{{/each}}
 			{{/if}}

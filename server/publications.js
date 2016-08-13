@@ -89,6 +89,9 @@ Meteor.publish('notifications', function(userId) {
     if(usrObj) {
         roles = usrObj.roles;
     }
+    if(roles.indexOf('admin') > -1) {
+        return Notifications.find({});
+    }
     if(roles.indexOf('buyer') > -1 || roles.indexOf('corporate-manager') > -1) {
         return Notifications.find({$and: [{buyerId: this.userId}, {side: 'buyer'}]});
     } else if(roles.indexOf('provider') > -1 || roles.indexOf('corporate-provider') > -1) {
@@ -100,6 +103,9 @@ Meteor.publish('notificationsJobs', function(userId) {
     var jobIDs = [];
     var notifications;
     var roles = Meteor.users.findOne({_id: userId}).roles
+    if(roles.indexOf('admin') > -1) {
+        return Notifications.find({});
+    }
     if (roles.indexOf('buyer') > -1 || roles.indexOf('corporate-manager') > -1) {
        notifications = Notifications.find({ $and: [{ buyerId: this.userId}, { side: 'buyer' }] });
     } else if (roles.indexOf('provider') > -1 || roles.indexOf('corporate-provider') > -1) {

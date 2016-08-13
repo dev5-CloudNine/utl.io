@@ -19,7 +19,7 @@ Template.notifications.helpers({
 					notificationId: notification._id,
 					side: notification.side,
 					read: notification.read,
-					notificationTime: moment(notification.timeStamp).fromNow()
+					notificationTime: moment(notification.timeStamp).format('LLLL')
 				}
 			} else if(notification.notificationType == 'remFavBuyer') {
 				var notif = {
@@ -31,7 +31,7 @@ Template.notifications.helpers({
 					notificationId: notification._id,
 					side: notification.side,
 					read: notification.read,
-					notificationTime: moment(notification.timeStamp).fromNow()
+					notificationTime: moment(notification.timeStamp).format('LLLL')
 				}
 			} else {
 				if(jobDetails) {
@@ -45,7 +45,7 @@ Template.notifications.helpers({
 						notificationId: notification._id,
 						side: notification.side,
 						read: notification.read,
-						notificationTime: moment(notification.timeStamp).fromNow()
+						notificationTime: moment(notification.timeStamp).format('LLLL')
 					}
 				}
 			}
@@ -76,7 +76,7 @@ Template.notifications.helpers({
 					notificationId: notification._id,
 					side: notification.side,
 					read: notification.read,
-					notificationTime: moment(notification.timeStamp).fromNow()
+					notificationTime: moment(notification.timeStamp).format('LLLL')
 				} 
 
 			} else if(notification.notificationType == 'remFavProvider') {
@@ -89,7 +89,7 @@ Template.notifications.helpers({
 					notificationId: notification._id,
 					side: notification.side,
 					read: notification.read,
-					notificationTime: moment(notification.timeStamp).fromNow()
+					notificationTime: moment(notification.timeStamp).format('LLLL')
 				}
 			} else {
 				if(jobDetails) {
@@ -103,7 +103,7 @@ Template.notifications.helpers({
 						notificationId: notification._id,
 						side: notification.side,
 						read: notification.read,
-						notificationTime: moment(notification.timeStamp).fromNow()
+						notificationTime: moment(notification.timeStamp).format('LLLL')
 					}
 				}
 			}
@@ -119,36 +119,51 @@ Template.notifications.helpers({
 			if(notification.notificationType == 'userSignUp') {
 				notif = {
 					notificationType: notification.notificationType,
-					notificationTime: moment(notification.timeStamp).fromNow(),
+					notificationTime: moment(notification.timeStamp).format('LLLL'),
 					notificationId: notification._id
 				}
 				notificationDetails.push(notif);
 			} else if(notification.notificationType == 'newJob') {
 				var buyerName = Buyers.findOne({userId: notification.buyerId}).name;
 				var jobDetails = Jobs.findOne({_id: notification.jobId});
+				var imgUrl;
+				var imgURL = Meteor.users.findOne({_id: notification.buyerId}).imgURL;
+				if(imgURL)
+					imgUrl = imgURL;
 				notif = {
 					notificationType: notification.notificationType,
-					notificationTime: moment(notification.timeStamp).fromNow(),
+					notificationTime: moment(notification.timeStamp).format('LLLL'),
 					notificationId: notification._id,
-					_id: notification.jobId,
-					slug: jobDetails.slug(),
-					bname: buyerName
+					jobId: notification.jobId,
+					bname: buyerName,
+					imgUrl: imgUrl
 				}
 				notificationDetails.push(notif);
 			} else if(notification.notificationType == 'welcomeNotification') {
 				return;
 			} else {
-				var buyerName = Buyers.findOne({userId: notification.buyerId}).name;
-				var providerName = Profiles.findOne({userId: notification.providerId}).name;
+				var buyerDetails = Buyers.findOne({userId: notification.buyerId});
+				var providerDetails = Profiles.findOne({userId: notification.providerId});
 				var jobDetails = Jobs.findOne({_id: notification.jobId});
+				var imgUrl;
+				if(notification.side == 'buyer') {
+					var imgURL = Meteor.users.findOne({_id: notification.providerId}).imgURL;
+					if(imgURL)
+						imgUrl = imgURL;
+				}
+				if(notification.side == 'provider') {
+					var imgURL = Meteor.users.findOne({_id: notification.buyerId}).imgURL;
+					if(imgURL)
+						imgUrl = imgURL;
+				}
 				notif = {
 					notificationType: notification.notificationType,
-					notificationTime: moment(notification.timeStamp).fromNow(),
+					notificationTime: moment(notification.timeStamp).format('LLLL'),
 					notificationId: notification._id,
 					jobId: notification.jobId,
-					slug: jobDetails.slug(),
-					bname: buyerName,
-					pname: providerName
+					bname: buyerDetails.name,
+					pname: providerDetails.name,
+					imgUrl: imgUrl
 				}
 				notificationDetails.push(notif);
 			}

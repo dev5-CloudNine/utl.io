@@ -19,7 +19,7 @@ Template.buyerNotifications.helpers({
 					notificationId: notification._id,
 					side: notification.side,
 					read: notification.read,
-					notificationTime: moment(notification.timeStamp).fromNow()
+					notificationTime: moment(notification.timeStamp).format('LLLL')
 				}
 			} else if(notification.notificationType == 'remFavBuyer') {
 				var notif = {
@@ -31,7 +31,7 @@ Template.buyerNotifications.helpers({
 					notificationId: notification._id,
 					side: notification.side,
 					read: notification.read,
-					notificationTime: moment(notification.timeStamp).fromNow()
+					notificationTime: moment(notification.timeStamp).format('LLLL')
 				}
 			} else {
 				if(jobDetails) {
@@ -45,7 +45,7 @@ Template.buyerNotifications.helpers({
 						notificationId: notification._id,
 						side: notification.side,
 						read: notification.read,
-						notificationTime: moment(notification.timeStamp).fromNow()
+						notificationTime: moment(notification.timeStamp).format('LLLL')
 					}
 				}
 			}

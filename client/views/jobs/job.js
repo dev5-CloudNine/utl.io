@@ -577,12 +577,36 @@ Template.job.events({
     var jobId = Router.current().params._id;
     Router.go('/mailbox/newcsm?admId=' + adminId + '&jobId=' + jobId);
     event.stopPropagation();
+  },
+  'click button.rejectCounterOffer': function(event, template) {
+    var jobId = Router.current().params._id;
+    var userId = Profiles.findOne({_id: this.userId}).userId;
+    var applied_at = this.appliedAt;
+    Meteor.call('rejectCounterOffer', jobId, userId, applied_at, function(error) {
+      if(error) {
+        toastr.error('Failed to reject the counter offer. Please try again');
+      } else {
+        toastr.success('Rejected the counter offer. Please choose another provider.');
+      }
+    })
+  },
+  'click button.rejectApplication': function(event, template) {
+    var jobId = Router.current().params._id;
+    var userId = Profiles.findOne({_id: this.userId}).userId;
+    var applied_at = this.appliedAt;
+    Meteor.call('rejectApplication', jobId, userId, applied_at, function(error) {
+      if(error) {
+        toastr.error('Failed to reject the counter offer. Please try again');
+      } else {
+        toastr.success('Rejected the counter offer. Please choose another provider.');
+      }
+    })
   }
 });
 
 Template.job.helpers({
   'postedTime': function() {
-    return moment(this.createdAt).fromNow();
+    return moment(this.createdAt).format('LLLL');
   },
   'buyerData': function() {
     var buyerData = Buyers.findOne({userId: this.userId});
@@ -654,7 +678,7 @@ Template.job.helpers({
         title: pDetails.title,
         company: pDetails.companyName,
         app_type: provider.app_type,
-        appliedAt: moment(provider.applied_at).fromNow(),
+        appliedAt: provider.applied_at,
         counter_type: provider.counterType,
         fixed_amount:provider.fixed_amount,
         hourly_rate: provider.hourly_rate,
@@ -678,6 +702,7 @@ Template.job.helpers({
     for(var i =0; i < applicants.length; i++) {
       if(applicants[i].userId == uId && applicants[i].app_status == 'accepted') {
         return true;
+        break;
       }
     }
     return false;
@@ -996,7 +1021,7 @@ Template.job.helpers({
             buyerId: buyerDetails._id,
             buyerName: buyerDetails.name,
             notificationType: notification.notificationType,
-            timeStamp: notification.timeStamp
+            timeStamp: moment(notification.timeStamp).format('LLLL')
           }
         } else {
           if(notification.providerId) {
@@ -1008,7 +1033,7 @@ Template.job.helpers({
               providerId: providerDetails._id,
               providerName: providerDetails.name,
               notificationType: notification.notificationType,
-              timeStamp: notification.timeStamp
+              timeStamp: moment(notification.timeStamp).format('LLLL')
             }
           }
         }
@@ -1038,18 +1063,18 @@ Template.job.helpers({
     if(applications) {
       for(var i = 0; i < applications.length; i++) {
         if(applications[i].userId == Meteor.userId()) {
-          return moment(applications[i].applied_at).fromNow();
+          return moment(applications[i].applied_at).format('LLLL');
         }
       }
     }
   },
   applicationAcceptedTime: function() {
     var acceptedTime = Notifications.findOne({$and: [{jobId: this._id}, {providerId: Meteor.userId()}, {notificationType: 'applicationAccepted'}]}).timeStamp;
-    return moment(acceptedTime).fromNow();
+    return moment(acceptedTime).format('LLLL');
   },
   assignmentTime: function() {
     var assignedTime = Notifications.findOne({$and: [{jobId: this._id}, {providerId: Meteor.userId()}, {notificationType: 'confirmAssignment'}]}).timeStamp;
-    return moment(assignedTime).fromNow();
+    return moment(assignedTime).format('LLLL');
   },
   submittedTime: function() {
     var submittedArray = Notifications.find({$and: [{jobId: this._id}, {notificationType: 'submitAssignment'}]}).fetch();
@@ -1064,7 +1089,7 @@ Template.job.helpers({
         }
       }
     }
-    return moment(submittedTime).fromNow();
+    return moment(submittedTime).format('LLLL');
   },
   rejectedTime: function() {
     var rejectedArray = Notifications.find({$and: [{jobId: this._id}, {notificationType: 'rejectAssignment'}]}).fetch();
@@ -1079,19 +1104,19 @@ Template.job.helpers({
         }
       }
     }
-    return moment(rejectedTime).fromNow();
+    return moment(rejectedTime).format('LLLL');
   },
   approvedTime: function() {
     var approvedTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'approveAssignment'}]}).timeStamp;
-    return moment(approvedTime).fromNow();
+    return moment(approvedTime).format('LLLL');
   },
   paymentRequestTime: function() {
     var paymentRequestTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'requestPayment'}]}).timeStamp;
-    return moment(paymentRequestTime).fromNow();
+    return moment(paymentRequestTime).format('LLLL');
   },
   approvePaymentTime: function() {
     var approvePaymentTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'approvePayment'}]}).timeStamp;
-    return moment(approvePaymentTime).fromNow();
+    return moment(approvePaymentTime).format('LLLL');
   }
 });
 

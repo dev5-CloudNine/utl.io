@@ -23,7 +23,7 @@ var msgList = function() {
           sort: { date: -1 }
         }).map(function(ele) {
             ele.username = Meteor.users.findOne({ '_id': ele.recipient }).emails[0].address;
-            ele.date = moment(new Date(ele.date)).format('LL');
+            ele.date = moment(new Date(ele.date)).format('LLLL');
             msgList.push(ele);
         });
     } else {

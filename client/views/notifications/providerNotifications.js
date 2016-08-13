@@ -19,7 +19,7 @@ Template.providerNotifications.helpers({
 					notificationId: notification._id,
 					side: notification.side,
 					read: notification.read,
-					notificationTime: moment(notification.timeStamp).fromNow()
+					notificationTime: moment(notification.timeStamp).format('LLLL')
 				} 
 
 			} else if(notification.notificationType == 'remFavProvider') {
@@ -32,7 +32,7 @@ Template.providerNotifications.helpers({
 					notificationId: notification._id,
 					side: notification.side,
 					read: notification.read,
-					notificationTime: moment(notification.timeStamp).fromNow()
+					notificationTime: moment(notification.timeStamp).format('LLLL')
 				}
 			} else {
 				if(jobDetails) {
@@ -46,7 +46,7 @@ Template.providerNotifications.helpers({
 						notificationId: notification._id,
 						side: notification.side,
 						read: notification.read,
-						notificationTime: moment(notification.timeStamp).fromNow()
+						notificationTime: moment(notification.timeStamp).format('LLLL')
 					}
 				}
 			}

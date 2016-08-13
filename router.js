@@ -45,6 +45,9 @@ Router.map(function() {
             };
         },
         waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+                Meteor.subscribe('allJobs');
+            }
             return Meteor.subscribe('jobs');
         }
     });
@@ -683,7 +686,16 @@ Router.map(function() {
             Meteor.subscribe('providerRoutedJobs');
             return Meteor.subscribe('providerCompletedJobs');
         }
-    })
+    });
+
+    this.route('adminNotifications', {
+        path: '/admin/notifications',
+        title: 'UTL - Notifications',
+        waitOn: function() {
+            Meteor.subscribe('userList');
+            return Meteor.subscribe('allJobs');
+        }
+    });
 
     this.route('corporates', {
         path: '/corporates',

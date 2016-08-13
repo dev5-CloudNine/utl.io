@@ -346,6 +346,9 @@
                         <a href="{{pathFor 'buyerNotifications'}}">View All Notifications</a>
                     {{/with}}
                 {{/if}}
+                {{#if isInRole 'admin'}}
+                    <a href="{{pathFor 'adminNotifications'}}">View All Notifications</a>
+                {{/if}}
             </div>
         </ul>
     </li>    

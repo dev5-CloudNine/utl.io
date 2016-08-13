@@ -425,7 +425,7 @@ Jobs.attachSchema(
     },
     'applications.$.app_status': {
       type: String,
-      allowedValues: ['accepted', 'declined'],
+      allowedValues: ['accepted', 'declined', 'rejected'],
       optional: true
     },
     'applications.$.counterType': {

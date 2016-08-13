@@ -1,4 +1,5 @@
 Template.buyers.onCreated(function() {
+    console.log(this);
     this.infiniteScroll({
         perPage: 40,
         subManager: subs,

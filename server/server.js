@@ -275,6 +275,12 @@ Meteor.methods({
             text: 'Hello ' + providerName + ', ' + buyerName + 'has accepted you application for the job '+ jobDetails.title + '. You may confirm the assignment or reject the assignment by clicking the following link. ' + Meteor.absoluteUrl('jobs/' + jobId)
         })
     },
+    rejectApplication: function(jobId, userId, applied_at) {
+        Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'rejected', applicationStatus: 'open'}})
+    },
+    rejectCounterOffer: function(jobId, userId, applied_at) {
+        Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'rejected', applicationStatus: 'open'}})
+    },
     confirmAssignment: function(jobId, buyerId) {
         var jobDetails = Jobs.findOne({_id: jobId});
         var jobName = jobDetails.title;
