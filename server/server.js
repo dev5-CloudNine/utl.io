@@ -674,7 +674,8 @@ Meteor.methods({
         Messages.update(id, {$pull: {files: file}});
     },
     deleteJobFile: function(file,id) {
-        Jobs.update(id, {$pull: {files: file}});
+        console.log(file);
+        Jobs.update(id, {$pull: {"files": {file_url: file}}});
     },
     deleteFile: function(file,id) {
         Tasks.update(id, {$pull: {files: file}});

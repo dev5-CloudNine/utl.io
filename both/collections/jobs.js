@@ -401,7 +401,13 @@ Jobs.attachSchema(
       optional: true
     },
     'files.$': {
+      type: Object,
+    },
+    'files.$.file_url': {
       type: String,
+    },
+    'files.$.file_name': {
+      type: String
     },
     applications: {
       type: Array,

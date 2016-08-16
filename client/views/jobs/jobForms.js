@@ -190,32 +190,42 @@ Template.jobFields.events({
 				var jobID = Router.current().params._id;
 				if(Router.current().params.userId) {
 					var files = [];
-					var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.secure_url+'</a></li>'
+					var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.file.original_name+'</a></li>'
 					$('.fileList').append(fileListItem);
 					$('ul.fileList li').each(function(li) {
-						files.push($(this).data('url'));
+						var fileDetails = {
+							file_url: $(this).data('url'),
+							file_name: result.file.original_name
+						}
+						files.push(fileDetails);
 					})
 					Jobs.before.insert(function(userId, doc) {
 						doc.files = files;
 					});
-					console.log(files);
 					toastr.success('File uploaded successssfully');
 				} else if(jobID) {
-		            Meteor.call('addJobFile', result.secure_url, jobID,function (error, result) {
+					var fileDetails = {
+						file_url: result.secure_url,
+						file_name: result.file.original_name
+					}
+		            Meteor.call('addJobFile', fileDetails, jobID,function (error, result) {
 		              if(!error)
 		                toastr.success("File uploaded successssfully");
 		            });
 				} else {
 					var files = [];
-					var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.secure_url+'</a></li>'
+					var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.file.original_name+'</a></li>'
 					$('.fileList').append(fileListItem);
 					$('ul.fileList li').each(function(li) {
-						files.push($(this).data('url'));
+						var fileDetails = {
+							file_url: $(this).data('url'),
+							file_name: result.file.original_name
+						}
+						files.push(fileDetails);
 					})
 					Jobs.before.insert(function(userId, doc) {
 						doc.files = files;
 					});
-					console.log(files);
 					toastr.success('File uploaded successssfully');
 				}
 			}

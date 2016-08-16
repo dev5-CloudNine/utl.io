@@ -78,7 +78,7 @@
             </div>              
             <ul class="fileList" style="list-style-type: none;">            
                 {{#each files}}
-                    <li><i class="fa fa-times-circle remove-job-file" data-url="{{this}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this}}" target="_blank">{{this}}</a></li>
+                    <li><i class="fa fa-times-circle remove-job-file" data-url="{{this.file_url}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this.file_url}}" target="_blank">{{this.file_name}}</a></li>
                 {{/each}}
             </ul>
         </div>

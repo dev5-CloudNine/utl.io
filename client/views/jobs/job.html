@@ -98,11 +98,10 @@
                                         <h4>Description</h4> {{{htmlDescription}}}
                                         <hr>
                                         {{#if files}}
-                                            <hr>
                                             <h4>Attached Documents</h4>
                                             <ul style="list-style: none;">
                                                 {{#each files}}
-                                                    <li><a href="{{this}}" download>{{this}}</a></li>
+                                                    <li><a href="{{this.file_url}}" download>{{this.file_name}}</a></li>
                                                 {{/each}}
                                             </ul>
                                             <hr>
@@ -556,17 +555,17 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-4 border-right">
-                                                    <div class="description-block">
-                                                        <h5 class="description-header"></h5>
-                                                        <span class="description-text"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4">
                                                     <div class="description-block text-center">
                                                         <a href="/profiles/{{this.id}}">
                                                             <h5 class="description-header"><i class="fa fa-chain"></i></h5>
                                                             <span class="description-text">View Profile</span>
                                                         </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="description-block">
+                                                        <h5 class="description-header"></h5>
+                                                        <span class="description-text"></span>
                                                     </div>
                                                 </div>
                                             </div>
