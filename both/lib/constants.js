@@ -13,7 +13,7 @@ INDUSTRY_TYPES = function() {
       ]
     },
     {
-      optgroup: "Softwre Variations",
+      optgroup: "Software Variations",
       options: [
         {label: "Apps", value: "Apps"},
         {label: "Program Installation", value: "Program Installation"},
