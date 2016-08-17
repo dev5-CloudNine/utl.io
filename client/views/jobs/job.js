@@ -601,6 +601,47 @@ Template.job.events({
         toastr.success('Rejected the counter offer. Please choose another provider.');
       }
     })
+  },
+  'click .addFav': function(event, template) {
+    event.preventDefault();
+    var userId;
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'corporate-manager'])) {
+      userId = Profiles.findOne({_id: this.id}).userId;
+    }
+    if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {
+      userId = Buyers.findOne({_id: this.id}).userId;
+    }
+    Meteor.call('addToFav', userId, Meteor.user().roles[0], function(error) {
+      if(error) {
+        console.log('Failed to add to favorites');
+      }
+      else {
+        $(event.currentTarget).removeClass('addFav');
+        $(event.currentTarget).addClass('remFav');
+      }
+    });
+    event.stopPropagation();
+  },
+  'click .remFav': function(event, template) {
+    event.preventDefault();
+    var userId;
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'corporate-manager'])) {
+      userId = Profiles.findOne({_id: this.id}).userId;
+    }
+    if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {
+      userId = Buyers.findOne({_id: this.id}).userId;
+    }
+    Meteor.call('removeFromFav', userId, Meteor.user().roles[0], function(error) {
+      if(error) {
+        console.log('Failed to add to favorites');
+      }
+      else {
+        $(event.currentTarget).removeClass('remFav');
+        $(event.currentTarget).addClass('addFav');
+        console.log('Added to favorites');
+      }
+    });
+    event.stopPropagation();
   }
 });
 
@@ -1117,6 +1158,16 @@ Template.job.helpers({
   approvePaymentTime: function() {
     var approvePaymentTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'approvePayment'}]}).timeStamp;
     return moment(approvePaymentTime).format('LLLL');
+  },
+  fav : function() {
+    var userId;
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'corporate-manager'])) {
+      userId = Profiles.findOne({_id: this.id}).userId;
+    }
+    if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {
+      userId = Buyers.findOne({_id: this.id}).userId;
+    }
+    return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [userId]}}]})?true:false;
   }
 });
 

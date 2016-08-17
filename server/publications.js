@@ -152,7 +152,6 @@ Meteor.publish('jobCount', function() {
 Meteor.publishComposite('providers', {
     find: function() {
         return Profiles.find({
-            status: "active"
         }, {
             sort: {
                 createdAt: 1
@@ -330,7 +329,7 @@ Meteor.publish('buyerPostedJobs', function(buyerId) {
 
 Meteor.publish("favorite_users", function() {
     check(arguments,[Match.Any]);
-    return Profiles.find({status: "active"}, {
+    return Profiles.find({}, {
         fields: {
             name: true,
             type: true,
@@ -352,14 +351,15 @@ Meteor.publish("favorite_users", function() {
             languages: true,
             url: true,
             resumeUrl: true,
-            customImageUrl: true
+            customImageUrl: true,
+            status: true
         }
     })
 });
 
 Meteor.publish("favorite_buyers", function() {
     check(arguments, [Match.Any]);
-    return Buyers.find({status: 'active'}, {
+    return Buyers.find({}, {
         fields: {
             customImageUrl: true,
             name: true,
@@ -375,53 +375,11 @@ Meteor.publish("favorite_buyers", function() {
             contactNumber: true,
             mobileCarrier: true,
             userId: true,
-            userName: true
+            userName: true,
+            status: true
         }
     })
 })
-
-Meteor.publish("applied_profiles", function() {
-    check(arguments, [Match.Any]);
-    return Profiles.find({status: "active"}, {
-        fields: {
-            userId: true,
-            name: true,
-            type: true,
-            freelancerSkills: true,
-            title: true,
-            einTinNumber: true,
-            socialSecurityNumber: true,
-            insuranceNumber: true,
-            location: true,
-            htmlDescription: true,
-            availableForHire: true,
-            industryTypes: true,
-            contactNumber: true,
-            contactEmail: true,
-            avgRatesPerHour: true,
-            preferredWorkLocation: true,
-            educationDetails: true,
-            certifications: true,
-            languages: true,
-            url: true,
-            resumeUrl: true,
-            customImageUrl: true,
-            mobileCarrier: true
-        }
-    })
-})
-
-// Meteor.publish("my_jobs", function() {
-//     check(arguments, [Match.Any]);
-//     if (this.userId) {
-//         return [
-//             Jobs.find({
-//                 userId: this.userId
-//             })
-//         ];
-//     }
-//     this.ready();
-// });
 
 Meteor.publish("job", function(jobId) {
     check(arguments, [Match.Any]);
@@ -504,7 +462,7 @@ Meteor.publishComposite('buyer', function(buyerId) {
 Meteor.publish("developerUsers", function() {
     check(arguments, [Match.Any]);
     return [
-        Users.find({ //this may publish users for not active status profiles
+        Users.find({
             isDeveloper: true
         }, {
             fields: {
@@ -517,11 +475,12 @@ Meteor.publish("developerUsers", function() {
 Meteor.publish("buyerUsers", function() {
     check(arguments, [Match.Any]);
     return [
-        Users.find({ //this may publish users for not active status profiles
+        Users.find({
             isBuyer: true
         }, {
             fields: {
                 "emailHash": true,
+                "status": true
             }
         })
     ];
@@ -556,10 +515,7 @@ Meteor.publish('buyers', function(limit) {
     var selector = {};
     check(limit, Number);
     return Buyers.find(selector, {
-        limit: limit,
-        sort: {
-            randomSorter: 1
-        }
+        limit: limit
     });
 });
 

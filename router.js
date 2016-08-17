@@ -415,12 +415,18 @@ Router.map(function() {
 
     this.route('favoriteProfiles', {
         path: 'profiles/favorites',
-        title: "UTL - My Favorite Providers"
+        title: "UTL - My Favorite Providers",
+        waitOn: function() {
+            return Meteor.subscribe('favorite_users');
+        }
     });
 
     this.route('favoriteBuyers', {
         path: 'buyers/favorites',
-        title: "UTL - My Favorite Buyers"
+        title: "UTL - My Favorite Buyers",
+        waitOn: function() {
+            return Meteor.subscribe('favorite_buyers');
+        }
     });
 
     this.route('profile', {
@@ -587,7 +593,10 @@ Router.map(function() {
 
     this.route('buyers', {
         path: '/buyers',
-        title: "UTL - All Buyers"
+        title: "UTL - All Buyers",
+        waitOn: function() {
+            return Meteor.subscribe('buyerUsers');
+        }
     });
 
     this.route('buyer', {
