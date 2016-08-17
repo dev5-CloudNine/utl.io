@@ -107,8 +107,17 @@ UserSchema = new SimpleSchema({
     optional: true
   },
   resumeURL: {
-    type: String,
+    type: Array,
     optional: true
+  },
+  'resumeURL.$': {
+    type: Object
+  },
+  'resumeURL.$.file_url': {
+    type: String
+  },
+  'resumeURL.$.file_name': {
+    type: String
   },
   'favoriteUsers.$': {
     type: String

@@ -66,7 +66,11 @@ Template.profileFields.events({
       $('.profileImgProgress').hide();
       if(err) toastr.error("Failed to upload resume");
       else {
-        Meteor.call('updateResumeURL', Meteor.userId(), res.secure_url, function(error, result) {
+        var fileDetails = {
+          file_url: res.secure_url,
+          file_name: res.file.original_name
+        }
+        Meteor.call('updateResumeURL', Meteor.userId(), fileDetails, function(error, result) {
           if(error) {
             toastr.error('Failed to update');
           }
@@ -118,7 +122,7 @@ Template.profileFields.events({
   "click .remove-resume" : function(event) {
     event.preventDefault();
     $('#spinner').show();
-    var url = Meteor.users.findOne({_id: Meteor.userId()}).resumeURL;
+    var url = $(event.currentTarget).data('url');
     var index = url.indexOf(S3_FILEUPLOADS)-1;
     var path = url.substr(index);
     S3.delete(path, function(err, res) {
@@ -126,7 +130,7 @@ Template.profileFields.events({
       if (err) {
           toastr.error("Operation failed");
       } else {
-        Meteor.call('updateResumeURL', Meteor.userId(), function (error, result) {
+        Meteor.call('removeResumeURL', Meteor.userId(), url, function (error, result) {
           if(error){
             toastr.error('Failed to update');
           }

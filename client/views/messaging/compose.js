@@ -15,11 +15,12 @@ var attachFiles = function(files) {
 }
 
 var removeMessageFile = function(file) {
-    var index = messageFiles.indexOf(file);
-    if(index > -1) {
-        messageFiles.splice(index, 1);
+    for(var i = 0; i < messageFiles.length; i++) {
+        if(messageFiles[i].file_url == file) {
+            messageFiles.splice(i, 1);
+            return;
+        }
     }
-    console.log(messageFiles);
 }
 
 Template.compose.events({
@@ -103,18 +104,26 @@ Template.compose.events({
                 var messageId = Router.current().params.tab.substr(6);
                 if(messageId) {
                     var files = [];
-                    var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeMsgFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.secure_url+'</a></li>'
+                    var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeMsgFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.file.original_name+'</a></li>'
                     $('.fileList').append(fileListItem);
                     $('ul.fileList li').each(function(li) {
-                        files.push($(this).data('url'));
+                        var fileDetails = {
+                            file_url: $(this).data('url'),
+                            file_name: result.file.original_name
+                        }
+                        files.push(fileDetails);
                     });
                     attachFiles(files);
                 } else {
                     var files = [];
-                    var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeMsgFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.secure_url+'</a></li>'
+                    var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeMsgFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.file.original_name+'</a></li>'
                     $('.fileList').append(fileListItem);
                     $('ul.fileList li').each(function(li) {
-                        files.push($(this).data('url'));
+                        var fileDetails = {
+                            file_url: $(this).data('url'),
+                            file_name: result.file.original_name
+                        }
+                        files.push(fileDetails);
                     });
                     attachFiles(files);
                     toastr.success('File uploaded successssfully');

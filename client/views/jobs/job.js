@@ -282,7 +282,11 @@ Template.job.events({
         $('.progress').remove();
         if (err) toastr.error("Failed to upload file");
         else {
-            Meteor.call('addFile', res.secure_url, id,function (error, result) {
+            var fileDetails = {
+              file_url: res.secure_url,
+              file_name: res.file.original_name
+            }
+            Meteor.call('addFile', fileDetails, id,function (error, result) {
               if(!error)
                 toastr.success("File uploaded successssfully");
             });
@@ -646,6 +650,16 @@ Template.job.events({
 });
 
 Template.job.helpers({
+  favCount: function() {
+    var userId;
+    if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {
+      userId = Buyers.findOne({_id: this.id}).userId;
+    }
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'corporate-manager'])) {
+      userId = Profiles.findOne({_id: this.id}).userId;
+    }
+    return (Users.findOne({_id: userId}).favCount);
+  },
   'postedTime': function() {
     return moment(this.createdAt).format('LLLL');
   },

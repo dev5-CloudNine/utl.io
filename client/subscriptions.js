@@ -2,6 +2,7 @@ Meteor.subscribe("userData");
 Meteor.subscribe('corporates');
 Meteor.subscribe("jobCount");
 Meteor.subscribe('providers');
+Meteor.subscribe('buyers');
 Meteor.subscribe("developerCount");
 Meteor.subscribe("userList");
 Meteor.subscribe('categories');

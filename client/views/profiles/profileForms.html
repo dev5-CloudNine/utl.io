@@ -129,11 +129,11 @@
             {{/each}}
         </div>
         <div class="col-sm-12">
-            {{#if resumeUrl}}
+            {{#each resumeUrl}}
                 <ul class="list-unstyled">
-                    <li><a href="{{resumeUrl}}">{{resumeUrl}}</a>&nbsp;(<a href class="remove-resume">Remove</a>)</li>
+                    <li><a href="{{this.file_url}}">{{this.file_name}}</a>&nbsp;(<a href class="remove-resume" data-url="{{this.file_url}}">Remove</a>)</li>
                 </ul>
-            {{/if}}
+            {{/each}}
         </div>
     </div>
     <hr>

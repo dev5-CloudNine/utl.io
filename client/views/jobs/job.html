@@ -249,12 +249,12 @@
                                                             {{#each fileList _id}}
                                                                 <div class="col-xs-6 col-md-3">
                                                                     <div class="thumbnail" style="position: relative;">
-                                                                    <span title="Remove" data-id="{{../_id}}" data-path={{this}} class="close-preview remove-file" style="cursor: pointer;">&times;</span>
-                                                                    <a href="{{this}}" target="_blank">
+                                                                    <span title="Remove" data-id="{{../_id}}" data-path={{this.file_url}} class="close-preview remove-file" style="cursor: pointer;">&times;</span>
+                                                                    <a href="{{this.file_path}}" target="_blank">
                                                                       <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
                                                                     </a>
                                                                     <div class="caption" style="overflow: hidden;word-wrap: break-word;">
-                                                                        <a href="{{this}}" target="_blank">{{this}}</a>
+                                                                        <a href="{{this.file_path}}" target="_blank">{{this.file_name}}</a>
                                                                     </div>
                                                                     </div>
                                                                 </div>
@@ -566,7 +566,7 @@
                                                     <div class="description-block text-center">
                                                         <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
                                                             <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
-                                                            <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}</span>
+                                                            <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -1241,7 +1241,7 @@
                                             <div class="description-block text-center">
                                                 <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
                                                     <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
-                                                    <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}</span>
+                                                    <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
                                                 </a>
                                             </div>
                                         </div>

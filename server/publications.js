@@ -154,7 +154,7 @@ Meteor.publishComposite('providers', {
         return Profiles.find({
         }, {
             sort: {
-                createdAt: 1
+                createdAt: -1
             },
             limit: 8,
             fields: {
@@ -162,7 +162,6 @@ Meteor.publishComposite('providers', {
                 title: true,
                 location: true,
                 availableForHire: true,
-                randomSorter: true,
                 type: true,
                 name: true,
                 userName: true,
@@ -189,6 +188,28 @@ Meteor.publishComposite('providers', {
         }
     }]
 });
+
+Meteor.publishComposite('buyers', {
+    find: function() {
+        return Buyers.find({
+        }, {
+            sort: {
+                createdAt: -1
+            },
+            limit: 8,
+            fields: {
+                userId: true,
+                title: true,
+                location: true,
+                name: true,
+                userName: true,
+                status: true,
+                customImageUrl: true,
+                companyName: true
+            }
+        });
+    }
+})
 
 Meteor.publish('adminJobs', function() {
     check(arguments, [Match.Any]);
@@ -508,14 +529,6 @@ Meteor.publish('profiles', function(limit) {
         sort: {
             createdAt: 1
         }
-    });
-});
-
-Meteor.publish('buyers', function(limit) {
-    var selector = {};
-    check(limit, Number);
-    return Buyers.find(selector, {
-        limit: limit
     });
 });
 

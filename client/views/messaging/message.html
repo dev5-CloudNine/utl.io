@@ -43,7 +43,7 @@
                             <hr>
                             <h4>Attachments</h4>
                             {{#each files}}
-                                <a href="{{this}}" download>{{this}}</a><br>
+                                <a href="{{this.file_url}}" download>{{this.file_name}}</a><br>
                             {{/each}}
                         {{/if}}
                     </div>

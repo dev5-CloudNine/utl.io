@@ -674,11 +674,10 @@ Meteor.methods({
         Messages.update(id, {$pull: {files: file}});
     },
     deleteJobFile: function(file,id) {
-        console.log(file);
         Jobs.update(id, {$pull: {"files": {file_url: file}}});
     },
     deleteFile: function(file,id) {
-        Tasks.update(id, {$pull: {files: file}});
+        Tasks.update(id, {$pull: {files: {file_url: file}}});
     },
     recordTime:function(id,data,isCheckIn){
         if(isCheckIn){
@@ -714,11 +713,10 @@ Meteor.methods({
         }
     },
     updateResumeURL: function(id, url) {
-        if(url) {
-            Meteor.users.update({_id: id}, {$set: {'resumeURL': url}});
-        } else {
-            Meteor.users.update({_id: id}, {$set: {'resumeURL': ''}});
-        }
+        Meteor.users.update({_id: id}, {$addToSet: {resumeURL: url}});
+    },
+    removeResumeURL: function(id, url) {
+        Meteor.users.update({_id: id}, {$pull: {resumeURL: {file_url: url}}});
     },
     deactivateJob: function(jobId) {
         Jobs.update({_id: jobId}, {$set: {status: 'deactivated', applicationStatus: 'deactivated'}});
