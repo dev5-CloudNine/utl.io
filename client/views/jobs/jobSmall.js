@@ -64,10 +64,15 @@ Template.jobSmall.helpers({
 	},
 	postedTime: function() {
 		return moment(this.createdAt).fromNow();
+	},
+	approvePaymentTime: function() {
+		var approvePaymentTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'approvePayment'}]}).timeStamp;
+		return moment(approvePaymentTime).format('LLLL');
 	}
 });
 
 Template.jobSmall.rendered = function() {
+	Meteor.subscribe('jobNotifications', this.data._id);
 	this.$('.rateit').rateit();
 	this.ratingPoints = new ReactiveVar(null);
 }

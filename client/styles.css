@@ -537,6 +537,10 @@ footer {
     padding: 20px 0px 20px 0px;
 }
 
+.label {
+  border-radius:  5px !important;
+}
+
 .label-assigned {
   background-color: #FF6600;
 }
@@ -553,7 +557,7 @@ footer {
   background-color: #EA2A1B;
 }
 .label-paid {
-  background-color: #1A99DE;
+  background-color: #00008B;
 }
 .label-pending {
   background-color: #a479e2;
@@ -787,7 +791,7 @@ span.bigstars span.rateit-selected
 }
 
 .paidJob {
-  border-top: 2px solid #1A99DE;
+  border-top: 2px solid #00008B;
 }
 
 .panel-body .list-group-item {

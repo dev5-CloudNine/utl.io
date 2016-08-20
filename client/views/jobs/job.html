@@ -49,7 +49,6 @@
                                 {{#if isInRole 'admin'}} 
                                     {{>jobAdminEditLink}}
                                     {{>jobStatusToggle}}
-                                    {{>jobSuggestedTweet}} 
                                 {{/if}}
                                 {{>jobStatusAlert}}
                                 <div class="row">
@@ -58,6 +57,9 @@
                                             {{#if assignedProvider}}
                                                 <span class="pull-right"><button class="btn btn-sm btn-primary createPdf">Download PDF</button></span>
                                             {{/if}}
+                                        {{/if}}
+                                        {{#if jobPostedBuyer}}
+                                            <span class="pull-right"><button class="btn btn-sm btn-primary duplicateJob">Duplicate Job</button></span>
                                         {{/if}}
                                         <span class="label label-default label-xs">{{readableID}}</span> {{>jobLabels}}
                                         <h4>{{title}}</h4>
@@ -455,15 +457,20 @@
                                             <hr>
                                             You've reviewed the provider for this job.
                                         {{else}}
-                                            <hr>
-                                            <form id="reviewProvider">
-                                                <div class="form-group">
-                                                    <label for="writeReview">Write a review</label>
-                                                    <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
-                                                    <label>Rate provider</label><br><span class="rateit"></span>
+                                            <hr>                                            
+                                            <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewProvider">Review Provider</button>
+                                            <div id="reviewProvider" class="panel panel-white panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <form id="reviewProvider">
+                                                        <div class="form-group">
+                                                            <label for="writeReview">Write a review</label>
+                                                            <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
+                                                            <label>Rate provider</label><br><span class="rateit"></span>
+                                                        </div>
+                                                        <button class="margin-top-5 btn btn-sm btn-primary" type="submit">Submit</button>
+                                                    </form>          
                                                 </div>
-                                                <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
-                                            </form>
+                                            </div>
                                         {{/if}}
                                     {{/if}}
                                 </div>
@@ -476,52 +483,52 @@
                                     {{#each jobRelatedNotifications}}
                                         {{#if $eq notificationType 'newJob'}}
                                             <li class="list-group-item">
-                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has posted this job. <br>{{timeStamp}}
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has posted this job. <br><small><i>{{timeStamp}}</i></small>
                                             </li>
                                         {{/if}}
                                         {{#if $eq notificationType 'newJobApplication'}}
                                             <li class="list-group-item">
-                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has applied for this job. <br>{{timeStamp}}
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has applied for this job. <br><small><i>{{timeStamp}}</i></small>
                                             </li>
                                         {{/if}}
                                         {{#if $eq notificationType 'applicationAccepted'}}
                                             <li class="list-group-item">
-                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has accepted application of the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> {{timeStamp}}
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has accepted application of the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> <small><i>{{timeStamp}}</i></small>
                                             </li>
                                         {{/if}}
                                         {{#if $eq notificationType 'confirmAssignment'}}
                                             <li class="list-group-item">
-                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed assignment. <br> {{timeStamp}}
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed assignment. <br> <small><i>{{timeStamp}}</i></small>
                                             </li>
                                         {{/if}}
                                         {{#if $eq notificationType 'declineAssignment'}}
                                             <li class="list-group-item">
-                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has declined assignment. <br> {{timeStamp}}
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has declined assignment. <br> <small><i>{{timeStamp}}</i></small>
                                             </li>
                                         {{/if}}
                                         {{#if $eq notificationType 'submitAssignment'}}
                                             <li class="list-group-item">
-                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment. <br> {{timeStamp}}
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment. <br> <small><i>{{timeStamp}}</i></small>
                                             </li>
                                         {{/if}}
                                         {{#if $eq notificationType 'approveAssignment'}}
                                             <li class="list-group-item">
-                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> {{timeStamp}}
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> <small><i>{{timeStamp}}</i></small>
                                             </li>
                                         {{/if}}
                                         {{#if $eq notificationType 'rejectAssignment'}}
                                             <li class="list-group-item">
-                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has rejected assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> {{timeStamp}}
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has rejected assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> <small><i>{{timeStamp}}</i></small>
                                             </li>
                                         {{/if}}
                                         {{#if $eq notificationType 'requestPayment'}}
                                             <li class="list-group-item">
-                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment. <br> {{timeStamp}}
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment. <br> <small><i>{{timeStamp}}</i></small>
                                             </li>
                                         {{/if}}
                                         {{#if $eq notificationType 'approvePayment'}}
                                             <li class="list-group-item">
-                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved payment. <br> {{timeStamp}}
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved payment. <br> <small><i>{{timeStamp}}</i></small>
                                             </li>
                                         {{/if}}
                                     {{/each}}
@@ -1097,15 +1104,20 @@
                                                 <hr>
                                                 You've reviewed the buyer for this job.
                                             {{else}}
-                                                <hr>
-                                                <form id="reviewBuyer">
-                                                    <div class="form-group">                                    
-                                                        <label for="writeReview">Write a review</label>
-                                                        <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
-                                                        <label>Rate buyer</label>&nbsp;<span class="rateit"></span>
+                                                <hr>                                            
+                                                <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewBuyer">Review Buyer</button>
+                                                <div id="reviewBuyer" class="panel panel-white panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <form id="reviewBuyer">
+                                                            <div class="form-group">                                    
+                                                                <label for="writeReview">Write a review</label>
+                                                                <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
+                                                                <label>Rate buyer</label>&nbsp;<span class="rateit"></span>
+                                                            </div>
+                                                            <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
+                                                        </form>         
                                                     </div>
-                                                    <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
-                                                </form>
+                                                </div>
                                             {{/if}}
                                         {{else}}
                                             <div class="col-sm-12">
@@ -1125,49 +1137,49 @@
                                             {{#if $eq notificationType 'newJobApplication'}}
                                                 {{#if thisProvider}}
                                                     <li class="list-group-item">
-                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has applied for this job. <br> {{timeStamp}}
+                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has applied for this job. <br> <small><i>{{timeStamp}}</i></small>
                                                     </li>
                                                 {{/if}}
                                             {{/if}}
                                             {{#if $eq notificationType 'applicationAccepted'}}
                                                 {{#if thisProvider}}
                                                     <li class="list-group-item">
-                                                        <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has accepted your application. <br> {{timeStamp}}
+                                                        <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has accepted your application. <br> <small><i>{{timeStamp}}</i></small>
                                                     </li>
                                                 {{/if}}
                                             {{/if}}
                                             {{#if $eq notificationType 'confirmAssignment'}}
                                                 {{#if thisProvider}}
                                                     <li class="list-group-item">
-                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed the assignment. <br> {{timeStamp}}
+                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed the assignment. <br> <small><i>{{timeStamp}}</i></small>
                                                     </li>
                                                 {{/if}}
                                             {{/if}}
                                             {{#if $eq notificationType 'submitAssignment'}}
                                                 <li class="list-group-item">
-                                                    <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment. <br> {{timeStamp}}
+                                                    <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment. <br> <small><i>{{timeStamp}}</i></small>
                                                 </li>
                                             {{/if}}
                                             {{#if $eq notificationType 'approveAssignment'}}
                                                 <li class="list-group-item">
-                                                    <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> {{timeStamp}}
+                                                    <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> <small><i>{{timeStamp}}</i></small>
                                                 </li>
                                             {{/if}}
                                             {{#if $eq notificationType 'rejectAssignment'}}
                                                 <li class="list-group-item">
-                                                    <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has rejected assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> {{timeStamp}}
+                                                    <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has rejected assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> <small><i>{{timeStamp}}</i></small>
                                                 </li>
                                             {{/if}}
                                             {{#if $eq notificationType 'requestPayment'}}
                                                 {{#if thisProvider}}
                                                     <li class="list-group-item">
-                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment. <br> {{timeStamp}}
+                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment. <br> <small><i>{{timeStamp}}</i></small>
                                                     </li>
                                                 {{/if}}
                                             {{/if}}
                                             {{#if $eq notificationType 'approvePayment'}}
                                                 <li class="list-group-item">
-                                                    <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved payment. <br> {{timeStamp}}
+                                                    <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved payment. <br> <small><i>{{timeStamp}}</i></small>
                                                 </li>
                                             {{/if}}
                                         {{/each}}

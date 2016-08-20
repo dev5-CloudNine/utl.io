@@ -114,4 +114,16 @@ Template.buyer.events({
       }
     })
   }
-})
+});
+
+Template.buyer.rendered = function() {
+  var points = 0;
+  var reviews = Reviews.find({$and: [{buyerId: this.data.userId}, {reviewedBy: 'provider'}]}).fetch();
+  if(reviews) {
+    for(var i = 0; i < reviews.length; i++) {
+      points += reviews[i].pointsRated;
+    }
+  }
+  var ratingPoints = points/reviews.length;
+  this.$('.rateit').rateit({readonly: true, value: ratingPoints});
+}
