@@ -167,6 +167,9 @@ Template.headerUserMenu.helpers({
   },
   customImageUrl: function(){
     return Meteor.users.findOne({_id: Meteor.userId()}).imgURL;
+  },
+  unreadMessageCount: function() {
+    return Messages.find({recepient: Meteor.userId()}).count();
   }
 });
 

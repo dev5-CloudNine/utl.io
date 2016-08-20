@@ -445,15 +445,15 @@ i.favInactive {
   color: #999999;
 }
 
-a.favActive {
+/* a.favActive {
     background-color: #139AEC;
     color: #fff;
-}
+} */
 
-a.favInactive {
+/* a.favInactive {
     background-color: #999999;
     color: #fff;
-}
+} */
 
 button.favActive {
     background-color: #139AEC;
@@ -806,7 +806,7 @@ span.bigstars span.rateit-selected
 }
 .widget-user .widget-user-header {
   padding: 20px;
-  height: 120px;
+  height: 180px;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
@@ -822,11 +822,11 @@ span.bigstars span.rateit-selected
 }
 .widget-user .widget-user-image {
   position: absolute;
-  top: 65px;
+  top: 120px;
   left: 50%;
   margin-left: -45px;
 }
-.widget-user .widget-user-image > img {
+.widget-user .widget-user-image  img {
   width: 90px;
   height: auto;
   border: 3px solid #fff;
@@ -1047,4 +1047,8 @@ ul.timeline > li > .timeline-panel:after {
   left: -14px;
   right: auto;
 }
+}
+
+.img-circle {
+  border-radius: 8% !important;
 }

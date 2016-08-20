@@ -318,17 +318,18 @@
     </li>
     <li id="user-drop-down" class="dropdown">
         <a class="dropdown-toggle box-user-option" style="margin-top: 8px;" data-toggle="dropdown" href="#">
-            <i class="fa fa-bell fa-fw"></i>({{#if currentUser.isBuyer}}
-                    {{bNotificationCount}}
+            <i class="fa fa-bell fa-fw"></i>
+            ({{#if isInRole 'buyer, corporate-manager'}}
+                {{bNotificationCount}}
+            {{else}}
+                {{#if isInRole 'provider, corporate-provider'}}
+                    {{pNotificationCount}}
                 {{else}}
-                    {{#if currentUser.isDeveloper}}
-                        {{pNotificationCount}}
-                    {{else}}
-                        {{#if isInRole 'admin'}}
-                            {{adminNotificationCount}}
-                        {{/if}}
+                    {{#if isInRole 'admin'}}
+                        {{adminNotificationCount}}
                     {{/if}}
-                {{/if}})<span class="caret"></span>
+                {{/if}}
+            {{/if}})<span class="caret"></span>
         </a>
         <ul class="dropdown-menu notifications" role="menu" id="notifications">
             <div class="notification-heading">
@@ -351,5 +352,8 @@
                 {{/if}}
             </div>
         </ul>
-    </li>    
+    </li>
+    <li>
+        <a href="{{pathFor 'mailBox' tab="mails"}}" style="margin-top: 8px;"><i class="fa fa-envelope"></i>&nbsp;({{unreadMessageCount}})</a>
+    </li>
 </template>

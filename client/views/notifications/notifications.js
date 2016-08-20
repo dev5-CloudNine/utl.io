@@ -57,7 +57,7 @@ Template.notifications.helpers({
 		return Jobs.findOne({_id: this.jobId}).title || "";
 	},
 	'providerNotifications': function() {
-		var notifications = Notifications.find({$and: [{providerId: Meteor.userId()}, {side: 'provider'}]}, {sort: {timeStamp: -1}});
+		var notifications = Notifications.find({$and: [{providerId: Meteor.userId()}, {side: 'provider'}]}, {sort: {timeStamp: -1}, limit: 10});
 		var notificationDetails = [];
 		notifications.forEach(function (notification) {
 			buyerDetails = Buyers.findOne({userId: notification.buyerId});
@@ -112,7 +112,7 @@ Template.notifications.helpers({
 		return notificationDetails;
 	},
 	'adminNotifications': function() {
-		var notifications = Notifications.find({}, {sort: {timeStamp: -1}}).fetch();
+		var notifications = Notifications.find({}, {sort: {timeStamp: -1}, limit: 10}).fetch();
 		var notificationDetails = [];
 		notifications.forEach(function(notification) {
 			var notif = {};

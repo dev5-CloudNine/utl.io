@@ -422,6 +422,10 @@
                                         <p>No actions to perform now.</p>
                                     {{/if}}
                                     {{#if $eq applicationStatus 'assigned'}}
+                                        {{#if $eq assignmentStatus 'not_submitted'}}
+                                            <p><i>{{assignmentTime}}</i></p>
+                                            <p>The provider has confirmed the assignment. Please wait for the provider to submit the job.</p>
+                                        {{/if}}
                                         {{#if $eq assignmentStatus 'rejected'}}
                                             <p><i>{{rejectedTime}}</i></p>
                                             <p>You have rejected the assignment. Please discuss with the provider and sort it out.</p>
@@ -538,6 +542,7 @@
                                 {{#with assignedProviderDetails}}
                                     <div class="box box-widget widget-user">
                                         <div class="widget-user-header bg-assigned">
+                                            <small>{{readableID}}</small>
                                             <h3 class="widget-user-username">{{this.name}}</h3>
                                             <h5 class="widget-user-desc">{{this.title}}</h5>
                                         </div>
@@ -1042,34 +1047,42 @@
                                         {{/if}}
                                     {{/if}}
                                     {{#if $eq applicationStatus 'assigned'}}
-                                        {{#if $eq assignmentStatus 'not_submitted'}}
+                                        {{#if assignedProvider}}
+                                            {{#if $eq assignmentStatus 'not_submitted'}}
+                                                <div class="col-sm-12">
+                                                    <p><i>{{assignmentTime}}</i></p>
+                                                    <p>You have confirmed to do the job. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
+                                                    <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
+                                                </div>
+                                            {{/if}}
+                                            {{#if $eq assignmentStatus 'rejected'}}
+                                                <div class="col-sm-12">
+                                                    <p><i>{{rejectedTime}}</i></p>
+                                                    <p>The buyer has rejected your assignment. Please discuss with the buyer for futher details and submit the job for buyer approval.</p>
+                                                    <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
+                                                </div>
+                                            {{/if}}
+                                            {{#if $eq assignmentStatus 'submitted'}}
+                                                <div class="col-sm-12">
+                                                    <p><i>{{submittedTime}}</i></p>
+                                                    <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
+                                                </div>
+                                            {{/if}}
+                                        {{else}}
                                             <div class="col-sm-12">
-                                                <p><i>{{assignmentTime}}</i></p>
-                                                <p>You have confirmed to do the job. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
-                                                <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
-                                            </div>
-                                        {{/if}}
-                                        {{#if $eq assignmentStatus 'rejected'}}
-                                            <div class="col-sm-12">
-                                                <p><i>{{rejectedTime}}</i></p>
-                                                <p>The buyer has rejected your assignment. Please discuss with the buyer for futher details and submit the job for buyer approval.</p>
-                                                <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
-                                            </div>
-                                        {{/if}}
-                                        {{#if $eq assignmentStatus 'submitted'}}
-                                            <div class="col-sm-12">
-                                                <p><i>{{submittedTime}}</i></p>
-                                                <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
+                                                <small>This job has been assigned.</small>
                                             </div>
                                         {{/if}}
                                     {{/if}}
                                     {{#if $eq applicationStatus 'completed'}}
-                                        {{#if $eq assignmentStatus 'approved'}}
-                                            <div class="col-sm-12">
-                                                <p><i>{{approvedTime}}</i></p>
-                                                <p>The buyer has approved your job. You can now raise an invoice and request for payment.</p>
-                                                <button class=" margin-top-5 btn btn-sm btn-primary requestPayment">Raise Invoice &amp; Request Payment</button>
-                                            </div>
+                                        {{#if assignedProvider}}
+                                            {{#if $eq assignmentStatus 'approved'}}
+                                                <div class="col-sm-12">
+                                                    <p><i>{{approvedTime}}</i></p>
+                                                    <p>The buyer has approved your job. You can now raise an invoice and request for payment.</p>
+                                                    <button class=" margin-top-5 btn btn-sm btn-primary requestPayment">Raise Invoice &amp; Request Payment</button>
+                                                </div>
+                                            {{/if}}
                                         {{/if}}
                                     {{/if}}
                                     {{#if $eq applicationStatus 'pending_payment'}}
@@ -1077,21 +1090,27 @@
                                         <p>You have requested the payment. An invoice has been raised. A notification has been sent to the  buyer. You'll be notified when the payment is released.</p>
                                     {{/if}}
                                     {{#if $eq applicationStatus 'paid'}}
-                                        <p><i>{{approvePaymentTime}}</i></p>
-                                        <p>The buyer has released the payment. The job is now completed.</p>
-                                        {{#if reviewedBuyer}}
-                                            <hr>
-                                            You've reviewed the buyer for this job.
+                                        {{#if assignedProvider}}
+                                            <p><i>{{approvePaymentTime}}</i></p>
+                                            <p>The buyer has released the payment. The job is now completed.</p>
+                                            {{#if reviewedBuyer}}
+                                                <hr>
+                                                You've reviewed the buyer for this job.
+                                            {{else}}
+                                                <hr>
+                                                <form id="reviewBuyer">
+                                                    <div class="form-group">                                    
+                                                        <label for="writeReview">Write a review</label>
+                                                        <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
+                                                        <label>Rate buyer</label>&nbsp;<span class="rateit"></span>
+                                                    </div>
+                                                    <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
+                                                </form>
+                                            {{/if}}
                                         {{else}}
-                                            <hr>
-                                            <form id="reviewBuyer">
-                                                <div class="form-group">                                    
-                                                    <label for="writeReview">Write a review</label>
-                                                    <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
-                                                    <label>Rate buyer</label>&nbsp;<span class="rateit"></span>
-                                                </div>
-                                                <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
-                                            </form>
+                                            <div class="col-sm-12">
+                                                <small>The job is now complete.</small>
+                                            </div>
                                         {{/if}}
                                     {{/if}}
                                 </div>
@@ -1106,7 +1125,7 @@
                                             {{#if $eq notificationType 'newJobApplication'}}
                                                 {{#if thisProvider}}
                                                     <li class="list-group-item">
-                                                        You have applied for this job. <br> {{timeStamp}}
+                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has applied for this job. <br> {{timeStamp}}
                                                     </li>
                                                 {{/if}}
                                             {{/if}}
@@ -1120,13 +1139,13 @@
                                             {{#if $eq notificationType 'confirmAssignment'}}
                                                 {{#if thisProvider}}
                                                     <li class="list-group-item">
-                                                        You have confirmed the assignment. <br> {{timeStamp}}
+                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed the assignment. <br> {{timeStamp}}
                                                     </li>
                                                 {{/if}}
                                             {{/if}}
                                             {{#if $eq notificationType 'submitAssignment'}}
                                                 <li class="list-group-item">
-                                                    You have submitted assignment. <br> {{timeStamp}}
+                                                    <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment. <br> {{timeStamp}}
                                                 </li>
                                             {{/if}}
                                             {{#if $eq notificationType 'approveAssignment'}}
@@ -1140,9 +1159,11 @@
                                                 </li>
                                             {{/if}}
                                             {{#if $eq notificationType 'requestPayment'}}
-                                                <li class="list-group-item">
-                                                    You have requested for payment. <br> {{timeStamp}}
-                                                </li>
+                                                {{#if thisProvider}}
+                                                    <li class="list-group-item">
+                                                        <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment. <br> {{timeStamp}}
+                                                    </li>
+                                                {{/if}}
                                             {{/if}}
                                             {{#if $eq notificationType 'approvePayment'}}
                                                 <li class="list-group-item">
@@ -1210,58 +1231,63 @@
                         </div>
                     {{/if}}
                     {{#if assignedOrDone}}
-                        {{#with buyerData}}
-                            <div class="box box-widget widget-user">
-                                <div class="widget-user-header bg-assigned">
-                                    <h3 class="widget-user-username">{{this.name}}</h3>
-                                    <h5 class="widget-user-desc">{{this.title}}</h5>
-                                </div>
-                                <div class="widget-user-image">
-                                    <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
-                                </div>
-                                <div class="box-footer">
-                                    <div class="row">
-                                        <div class="col-sm-4 border-right">
-                                            <div class="description-block text-center">
-                                                <a href class="sendBuyerMessage">
-                                                    <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
-                                                    <span class="description-text">Send Message</span>
-                                                </a>
+                        {{#if assignedProvider}}
+                            {{#with buyerData}}
+                                <div class="box box-widget widget-user">
+                                    <div class="widget-user-header bg-assigned">
+                                        <small>{{readableID}}</small>
+                                        <h3 class="widget-user-username">{{this.name}}</h3>
+                                        <h5 class="widget-user-desc">{{this.title}}</h5>
+                                    </div>
+                                    <div class="widget-user-image">
+                                        <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
+                                    </div>
+                                    <div class="box-footer">
+                                        <div class="row">
+                                            <div class="col-sm-4 border-right">
+                                                <div class="description-block text-center">
+                                                    <a href class="sendBuyerMessage">
+                                                        <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                                        <span class="description-text">Send Message</span>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-4 border-right">
-                                            <div class="description-block text-center">
-                                                <a href="/buyers/{{this.id}}">
-                                                    <h5 class="description-header"><i class="fa fa-chain"></i></h5>
-                                                    <span class="description-text">View Profile</span>
-                                                </a>
+                                            <div class="col-sm-4 border-right">
+                                                <div class="description-block text-center">
+                                                    <a href="/buyers/{{this.id}}">
+                                                        <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                                        <span class="description-text">View Profile</span>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="description-block text-center">
-                                                <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
-                                                    <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
-                                                    <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
-                                                </a>
+                                            <div class="col-sm-4">
+                                                <div class="description-block text-center">
+                                                    <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
+                                                        <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
+                                                        <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        {{/with}}
+                            {{/with}}
+                        {{/if}}
                         <hr>
                     {{/if}}
                 {{/if}}
                 {{#if assignedOrDone}}
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h5>Customer Support</h5>
+                    {{#if assignedProvider}}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5>Customer Support</h5>
+                            </div>
+                            <div class="panel-body">
+                                <p>You can contact customer support during the course of this project. Click the button below to send message.</p>
+                                <button class="btn btn-primary contactSupport"><i class="fa fa-support"></i>&nbsp;&nbsp;Contact Customer Support</button>
+                            </div>
                         </div>
-                        <div class="panel-body">
-                            <p>You can contact customer support during the course of this project. Click the button below to send message.</p>
-                            <button class="btn btn-primary contactSupport"><i class="fa fa-support"></i>&nbsp;&nbsp;Contact Customer Support</button>
-                        </div>
-                    </div>
+                    {{/if}}
                 {{/if}}
             </div>
         </div>

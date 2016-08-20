@@ -68,6 +68,9 @@ Router.map(function() {
     this.route('allUsers', {
         path: '/allusers',
         waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+                Meteor.subscribe('allJobs');
+            }
             Meteor.subscribe('wallet');
             return Meteor.subscribe('allUsers');
         }
@@ -85,6 +88,9 @@ Router.map(function() {
         path: '/allDeposits',
         title: 'UTL - All Deposits',
         waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+                Meteor.subscribe('allJobs');
+            }
             return Meteor.subscribe('allTransactions');
         }
     });
@@ -93,6 +99,9 @@ Router.map(function() {
         path: '/allWithdrawls',
         title: 'UTL - All Withdrawls',
         waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+                Meteor.subscribe('allJobs');
+            }
             return Meteor.subscribe('allTransactions');
         }
     });
@@ -409,6 +418,7 @@ Router.map(function() {
         path: '/profiles',
         title: "UTL - All Service Providers",
         subscriptions: function() {
+            Meteor.subscribe('reviews');
             return subs.subscribe('developerUsers');
         }
     });
@@ -541,6 +551,9 @@ Router.map(function() {
             }
         },
         waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+                Meteor.subscribe('allJobs');
+            }
             return Meteor.subscribe('messages', Meteor.userId());
         }
     });
@@ -595,6 +608,7 @@ Router.map(function() {
         path: '/buyers',
         title: "UTL - All Buyers",
         waitOn: function() {
+            Meteor.subscribe('reviews');
             return Meteor.subscribe('buyerUsers');
         }
     });

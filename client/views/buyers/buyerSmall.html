@@ -1,42 +1,55 @@
 <template name="buyerSmall">
-	<div class="col-md-3">
-        <div class="buyer-grid panel panel-default text-center {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
-            <div class="panel-body">
-                <a href="{{pathFor 'buyer'}}">
-					{{#if customImageUrl}}
-						<div class="avatar center-block">
-							<img class="img-thumbnail img-circle" src="{{customImageUrl}}"/>
-						</div>
-					{{else}}
-						{{> avatar userId=userId size="medium" class="center-block"}}
-					{{/if}}
-				</a>
-                <h4><a href="{{pathFor 'buyer'}}">
-					{{#if name}}{{name}}{{else}}{{userName}}{{/if}}
-				</a></h4>
-                <div>
-                    <label class="btn btn-default btn-xs">{{readableId}}</label>
+	<div class="col-md-4">
+        <div class="panel panel-white {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+            <div class="box box-widget widget-user">
+                <div class="widget-user-header bg-assigned">
+                    <span class="pull-right rateit"></span>
+                    <small>{{readableId}}</small>
+                    <h3 class="widget-user-username">{{name}}</h3>
+                    <h5 class="widget-user-desc">{{title}}</h5>
+                    <small><i class="fa fa-map-marker"></i>&nbsp;{{location}}</small>
                 </div>
-                <div>
-                    <small>{{title}} {{#if companyName}}- <b>{{companyName}}</b>{{/if}}</small>
-                </div>
-                <div>
-                    {{#if location}}
-                        <small><i class="fa fa-map-marker"></i>&nbsp;{{location}}</small>
-                    {{/if}}
-                </div>
-                {{#if isInRole 'provider, corporate-provider'}}
-                    {{#if currentUser.isDeveloper}}
-                        {{#if $eq this.status 'active'}}
-                            <div>
-                                <span>{{#with buyer}}<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>{{/with}}</span>
-                                <span><a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</a></span>
+                <div class="widget-user-image">
+                    <a href="{{pathFor 'buyer'}}">
+                        {{#if customImageUrl}}
+                            <div class="avatar center-block">
+                                <img class="img-circle" src="{{customImageUrl}}"/>
                             </div>
                         {{else}}
-                            <p class="label label-deactivated">Inactive</p>
+                            {{> avatar userId=userId size="medium" class="center-block"}}
                         {{/if}}
-                    {{/if}}
-                {{/if}}
+                    </a>
+                </div>
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block text-center">
+                                {{#with buyer}}
+                                    <a href="{{pathFor 'buyerJobs'}}">
+                                        <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                        <span class="description-text">View Jobs</span>
+                                    </a>
+                                {{/with}}
+                            </div>
+                        </div>
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block text-center">
+                                <a href="{{pathFor 'buyer'}}">
+                                    <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                    <span class="description-text">View Profile</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="description-block text-center">
+                                <a href="" class="{{#if fav}}favActive{{else}}favInactive{{/if}}">
+                                    <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
+                                    <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

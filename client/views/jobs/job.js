@@ -675,7 +675,8 @@ Template.job.helpers({
       id: buyerData._id,
       name: buyerData.name,
       title: buyerData.title,
-      imgUrl: imgUrl
+      imgUrl: imgUrl,
+      readableID: Meteor.users.findOne({_id: buyerData.userId}).readableID
     }
     return buyer;
   },
@@ -1022,6 +1023,7 @@ Template.job.helpers({
           title: provider.title,
           imgUrl: providerImg,
           id: provider._id,
+          readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
           appType: applicationDetails.appType,
           appliedAt: applicationDetails.appliedAt,
           paymentType: this.ratebasis,
@@ -1035,6 +1037,7 @@ Template.job.helpers({
           title: provider.title,
           imgUrl: providerImg,
           id: provider._id,
+          readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
           appType: applicationDetails.appType,
           appliedAt: applicationDetails.appliedAt,
           paymentType: this.ratebasis,
@@ -1128,7 +1131,13 @@ Template.job.helpers({
     return moment(acceptedTime).format('LLLL');
   },
   assignmentTime: function() {
-    var assignedTime = Notifications.findOne({$and: [{jobId: this._id}, {providerId: Meteor.userId()}, {notificationType: 'confirmAssignment'}]}).timeStamp;
+    var assignedTime;
+    if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {
+      assignedTime = Notifications.findOne({$and: [{jobId: this._id}, {providerId: Meteor.userId()}, {notificationType: 'confirmAssignment'}]}).timeStamp;
+    }
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'corporate-manager'])) {
+      assignedTime = Notifications.findOne({$and: [{jobId: this._id}, {buyerId: Meteor.userId()}, {notificationType: 'confirmAssignment'}]}).timeStamp;
+    }
     return moment(assignedTime).format('LLLL');
   },
   submittedTime: function() {

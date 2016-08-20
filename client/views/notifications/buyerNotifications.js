@@ -1,6 +1,6 @@
 Template.buyerNotifications.helpers({
 	'buyerNotifications': function() {
-		var notifications = Notifications.find({$and: [{buyerId: Meteor.userId()}, {side: 'buyer'}]}, {sort: {timeStamp: -1}, limit: 10});
+		var notifications = Notifications.find({$and: [{buyerId: Meteor.userId()}, {side: 'buyer'}]}, {sort: {timeStamp: -1}});
 		var notificationDetails = [];
 		notifications.forEach(function(notification) {
 			providerDetails = Profiles.findOne({userId: notification.providerId});

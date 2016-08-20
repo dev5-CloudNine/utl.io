@@ -1,9 +1,10 @@
 Template.adminNotifications.rendered = function () {
+	console.log(this);
 	this.infiniteScroll({
-		perPage: 5,
-		collection: Notifications,
-		subsManager: subs,
-		publication: 'notifications'
+		perPage: 20,
+		query: {},
+		collection: 'Notifications',
+		publication: 'allNotifications'
 	});
 };
 Template.adminNotifications.helpers({
@@ -54,6 +55,8 @@ Template.adminNotifications.helpers({
 						imgUrl = imgURL;
 				}
 				notif = {
+					buyerId: buyerDetails._id,
+					providerId: providerDetails._id,
 					notificationType: notification.notificationType,
 					notificationTime: moment(notification.timeStamp).format('LLLL'),
 					notificationId: notification._id,
