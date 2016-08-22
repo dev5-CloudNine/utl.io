@@ -46,7 +46,7 @@
                         <div class="panel panel-default {{#if $eq applicationStatus 'open'}}openJob{{/if}} {{#if $eq applicationStatus 'frozen'}}frozenJob{{/if}} {{#if $eq applicationStatus 'assigned'}}assignedJob{{/if}} {{#if $eq applicationStatus 'completed'}}completedJob{{/if}} {{#if $eq applicationStatus 'pending_payment'}}paymentPendingJob{{/if}} {{#if $eq applicationStatus 'paid'}}paidJob{{/if}}">
                             <div class="panel-body">
                                 {{>jobExpiredAlert}}
-                                {{#if isInRole 'admin'}} 
+                                {{#if isInRole 'admin'}}
                                     {{>jobAdminEditLink}}
                                     {{>jobStatusToggle}}
                                 {{/if}}
@@ -59,7 +59,9 @@
                                             {{/if}}
                                         {{/if}}
                                         {{#if jobPostedBuyer}}
-                                            <span class="pull-right"><button class="btn btn-sm btn-primary duplicateJob">Duplicate Job</button></span>
+                                            <span class="pull-right">
+                                                <a href="{{pathFor 'duplicateJob'}}" class="btn btn-primary">Duplicate Job</a>
+                                            </span>
                                         {{/if}}
                                         <span class="label label-default label-xs">{{readableID}}</span> {{>jobLabels}}
                                         <h4>{{title}}</h4>
@@ -132,7 +134,7 @@
                                         {{#if $eq ratebasis 'Per Device'}}
                                             {{rateperdevice}} USD for {{maxdevices}} devices. <br>
                                             Gross: {{totalfromclient}} USD. <br>
-                                            Net: {{freelancer_nets}} USD. 
+                                            Net: {{freelancer_nets}} USD.
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Hour'}}
                                             {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
@@ -153,7 +155,7 @@
                                                 <br> {{{htmlConfidentialDesc}}}
                                                 <br> {{fullAddress}}
                                             {{/if}}
-                                        {{/if}} 
+                                        {{/if}}
                                         {{#if shipment}}
                                             <hr>
                                             <h4>Shipments to site</h4>
@@ -246,7 +248,7 @@
                                                 {{#if uploadFile _id}}
                                                 <div class="form-group">
                                                     <label class="control-label col-sm-2" for="comments">Uploaded files</label>
-                                                    <div class="col-sm-10">                                   
+                                                    <div class="col-sm-10">
                                                         <div class="row">
                                                             {{#each fileList _id}}
                                                                 <div class="col-xs-6 col-md-3">
@@ -265,7 +267,7 @@
                                                             {{/each}}
                                                         </div>
                                                         <div class="row utl-progress-bar">
-                                                            <div class="col-md-12"> 
+                                                            <div class="col-md-12">
                                                             {{#each uploadedFiles}}
                                                                 <div class="progress">
                                                                   <div class="progress-bar progress-bar-striped active" role="progressbar"
@@ -346,9 +348,9 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12" style="text-align: center;" data-logid="new">   
-                                        <button class="btn btn-primary submit-log" type="button">Save</button>   
-                                        <button class="btn btn-info clear-log" type="button">Clear</button> 
+                                    <div class="col-sm-12" style="text-align: center;" data-logid="new">
+                                        <button class="btn btn-primary submit-log" type="button">Save</button>
+                                        <button class="btn btn-info clear-log" type="button">Clear</button>
                                     </div>
                                 </div>
                             </div>
@@ -356,9 +358,9 @@
                             {{/if}}
                             <div class="col-sm-4">
                                 <div class="alert alert-success" style="padding:26px;">
-                                  <strong>Total [{{totalHours}}]</strong> 
+                                  <strong>Total [{{totalHours}}]</strong>
                                 </div>
-                            </div>                                
+                            </div>
                         </div>
                         <hr>
                         {{#if timeLogs _id}}
@@ -457,8 +459,8 @@
                                             <hr>
                                             You've reviewed the provider for this job.
                                         {{else}}
-                                            <hr>                                            
-                                            <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewProvider">Review Provider</button>
+                                            <hr>
+                                            <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewProvider">Rate &amp; Review Provider</button>
                                             <div id="reviewProvider" class="panel panel-white panel-collapse collapse">
                                                 <div class="panel-body">
                                                     <form id="reviewProvider">
@@ -468,7 +470,7 @@
                                                             <label>Rate provider</label><br><span class="rateit"></span>
                                                         </div>
                                                         <button class="margin-top-5 btn btn-sm btn-primary" type="submit">Submit</button>
-                                                    </form>          
+                                                    </form>
                                                 </div>
                                             </div>
                                         {{/if}}
@@ -547,39 +549,42 @@
                             <div class="tab-pane active fade in" id="jobAssignedProvider">
                                 <br>
                                 {{#with assignedProviderDetails}}
-                                    <div class="box box-widget widget-user">
-                                        <div class="widget-user-header bg-assigned">
-                                            <small>{{readableID}}</small>
-                                            <h3 class="widget-user-username">{{this.name}}</h3>
-                                            <h5 class="widget-user-desc">{{this.title}}</h5>
-                                        </div>
-                                        <div class="widget-user-image">
-                                            <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
-                                        </div>
-                                        <div class="box-footer">
-                                            <div class="row">
-                                                <div class="col-sm-4 border-right">
-                                                    <div class="description-block text-center">
-                                                        <a href class="sendProviderMessage">
-                                                            <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
-                                                            <span class="description-text">Send Message</span>
-                                                        </a>
+                                    <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+                                        <div class="box box-widget widget-user">
+                                            <div class="widget-user-header bg-assigned">
+                                                <span class="pull-right providerRatings" data-rateit-value="{{rateItValue}}"></span>
+                                                <small>{{readableID}}</small>
+                                                <h3 class="widget-user-username">{{this.name}}</h3>
+                                                <h5 class="widget-user-desc">{{this.title}}</h5>
+                                            </div>
+                                            <div class="widget-user-image">
+                                                <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
+                                            </div>
+                                            <div class="box-footer">
+                                                <div class="row">
+                                                    <div class="col-sm-4 border-right">
+                                                        <div class="description-block text-center">
+                                                            <a href class="sendProviderMessage">
+                                                                <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                                                <span class="description-text">Send Message</span>
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-sm-4 border-right">
-                                                    <div class="description-block text-center">
-                                                        <a href="/profiles/{{this.id}}">
-                                                            <h5 class="description-header"><i class="fa fa-chain"></i></h5>
-                                                            <span class="description-text">View Profile</span>
-                                                        </a>
+                                                    <div class="col-sm-4 border-right">
+                                                        <div class="description-block text-center">
+                                                            <a href="/profiles/{{this.id}}">
+                                                                <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                                                <span class="description-text">View Profile</span>
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <div class="description-block text-center">
-                                                        <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
-                                                            <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
-                                                            <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
-                                                        </a>
+                                                    <div class="col-sm-4">
+                                                        <div class="description-block text-center">
+                                                            <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
+                                                                <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
+                                                                <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -605,7 +610,7 @@
                                                         {{#if $eq ../ratebasis 'Per Device'}}
                                                             {{../rateperdevice}} USD for {{../maxdevices}} devices. <br>
                                                             Gross: {{../totalfromclient}} USD. <br>
-                                                            Net: {{../freelancer_nets}} USD. 
+                                                            Net: {{../freelancer_nets}} USD.
                                                         {{/if}}
                                                         {{#if $eq ../ratebasis 'Per Hour'}}
                                                             {{../hourlyrate}} USD per hour for {{../maxhours}} hours. <br>
@@ -670,7 +675,7 @@
                                                                 {{#if $eq ratebasis 'Per Device'}}
                                                                     {{rateperdevice}} USD for {{maxdevices}} devices. <br>
                                                                     Gross: {{totalfromclient}} USD.
-                                                                    <br>Net: {{freelancer_nets}} USD. 
+                                                                    <br>Net: {{freelancer_nets}} USD.
                                                                 {{/if}}
                                                                 {{#if $eq ratebasis 'Per Hour'}}
                                                                     {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
@@ -734,7 +739,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        {{/if}} 
+                                        {{/if}}
                                         {{#if $eq this.app_type 'counteroffer'}}
                                             <div class="panel-group" id="accordion">
                                                 <div class="panel panel-white">
@@ -772,7 +777,7 @@
                                                                 {{else}}
                                                                     {{#if $eq applicationStatus 'completed'}}
                                                                         <h5>The project is completed.</h5>
-                                                                    {{else}} 
+                                                                    {{else}}
                                                                         {{#if applicationStatus 'open'}}
                                                                             <br>
                                                                             <button class="btn btn-primary acceptCounterOffer">Accept Application</button>
@@ -785,7 +790,7 @@
                                                 </div>
                                             </div>
                                             <br>
-                                        {{/if}}                                        
+                                        {{/if}}
                                     {{else}}
                                         <h6>No providers have applied for this job yet.</h6>
                                     {{/each}}
@@ -1049,7 +1054,7 @@
                                                 <p><i>{{applicationAcceptedTime}}</i></p>
                                                 <p>Your application has been accepted by the buyer. Please confirm to begin the job.</p>
                                                 <button class="margin-top-5 btn btn-primary btn-sm confirmAssignment">Confirm</button>
-                                                <button class="margin-top-5 btn btn-warning btn-sm declineAssignment">Decline</button>
+                                                <button class="margin-top-5 btn btn-primary btn-sm declineAssignment">Decline</button>
                                             </div>
                                         {{/if}}
                                     {{/if}}
@@ -1104,18 +1109,18 @@
                                                 <hr>
                                                 You've reviewed the buyer for this job.
                                             {{else}}
-                                                <hr>                                            
-                                                <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewBuyer">Review Buyer</button>
+                                                <hr>
+                                                <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewBuyer">Rate &amp; Review Buyer</button>
                                                 <div id="reviewBuyer" class="panel panel-white panel-collapse collapse">
                                                     <div class="panel-body">
                                                         <form id="reviewBuyer">
-                                                            <div class="form-group">                                    
+                                                            <div class="form-group">
                                                                 <label for="writeReview">Write a review</label>
                                                                 <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
                                                                 <label>Rate buyer</label>&nbsp;<span class="rateit"></span>
                                                             </div>
                                                             <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
-                                                        </form>         
+                                                        </form>
                                                     </div>
                                                 </div>
                                             {{/if}}
@@ -1204,7 +1209,7 @@
                                         {{#if $eq ../ratebasis 'Per Device'}}
                                             {{../rateperdevice}} USD for {{../maxdevices}} devices. <br>
                                             Gross: {{../totalfromclient}} USD. <br>
-                                            Net: {{../freelancer_nets}} USD. 
+                                            Net: {{../freelancer_nets}} USD.
                                         {{/if}}
                                         {{#if $eq ../ratebasis 'Per Hour'}}
                                             {{../hourlyrate}} USD per hour for {{../maxhours}} hours. <br>
@@ -1245,39 +1250,42 @@
                     {{#if assignedOrDone}}
                         {{#if assignedProvider}}
                             {{#with buyerData}}
-                                <div class="box box-widget widget-user">
-                                    <div class="widget-user-header bg-assigned">
-                                        <small>{{readableID}}</small>
-                                        <h3 class="widget-user-username">{{this.name}}</h3>
-                                        <h5 class="widget-user-desc">{{this.title}}</h5>
-                                    </div>
-                                    <div class="widget-user-image">
-                                        <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
-                                    </div>
-                                    <div class="box-footer">
-                                        <div class="row">
-                                            <div class="col-sm-4 border-right">
-                                                <div class="description-block text-center">
-                                                    <a href class="sendBuyerMessage">
-                                                        <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
-                                                        <span class="description-text">Send Message</span>
-                                                    </a>
+                                <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+                                    <div class="box box-widget widget-user">
+                                        <div class="widget-user-header bg-assigned">
+                                            <span class="pull-right buyerRatings"></span>
+                                            <small>{{readableID}}</small>
+                                            <h3 class="widget-user-username">{{this.name}}</h3>
+                                            <h5 class="widget-user-desc">{{this.title}}</h5>
+                                        </div>
+                                        <div class="widget-user-image">
+                                            <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
+                                        </div>
+                                        <div class="box-footer">
+                                            <div class="row">
+                                                <div class="col-sm-4 border-right">
+                                                    <div class="description-block text-center">
+                                                        <a href class="sendBuyerMessage">
+                                                            <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                                            <span class="description-text">Send Message</span>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-4 border-right">
-                                                <div class="description-block text-center">
-                                                    <a href="/buyers/{{this.id}}">
-                                                        <h5 class="description-header"><i class="fa fa-chain"></i></h5>
-                                                        <span class="description-text">View Profile</span>
-                                                    </a>
+                                                <div class="col-sm-4 border-right">
+                                                    <div class="description-block text-center">
+                                                        <a href="/buyers/{{this.id}}">
+                                                            <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                                            <span class="description-text">View Profile</span>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="description-block text-center">
-                                                    <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
-                                                        <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
-                                                        <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
-                                                    </a>
+                                                <div class="col-sm-4">
+                                                    <div class="description-block text-center">
+                                                        <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
+                                                            <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
+                                                            <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

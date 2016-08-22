@@ -1,11 +1,11 @@
 <template name="profileSmall">
     <div class="col-md-4">
-        <div class="panel panel-white {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+        <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
             <div class="box box-widget widget-user">
                 <div class="widget-user-header bg-assigned">
-                    <span class="pull-right rateit" data-rateit-value="{{rateItValue}}"></span>
-                    <small>{{readableID}}</small>
-                    <h3 class="widget-user-username">{{name}}</h3>
+                    <span class="pull-right rateit"></span>
+                    <small>{{readableId}}</small>
+                    <h3 class="widget-user-username"><a href="{{pathFor 'profile'}}">{{name}}</a></h3>
                     <h5 class="widget-user-desc">{{title}}</h5>
                     <small><i class="fa fa-map-marker"></i>&nbsp;{{location}}</small>
                 </div>

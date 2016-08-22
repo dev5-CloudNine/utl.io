@@ -68,7 +68,7 @@ Template.job.events({
       $('#blended-counter').hide();
     }
   },
-  //fixed rate 
+  //fixed rate
   'change #fixed_amount, keyup #fixed_amount': function(event, template) {
     event.preventDefault();
     var fixedamount = $('#fixed_amount').val();
@@ -313,7 +313,7 @@ Template.job.events({
     });
   },
   "change .check-in-toggle" : function(event) {
-    var id = $(event.currentTarget).data('id'); 
+    var id = $(event.currentTarget).data('id');
     if($(event.currentTarget).is(":checked")){
       //Checked Out
       Meteor.call('recordTime',id,false,function (error, result) {});
@@ -333,7 +333,7 @@ Template.job.events({
   },
   "click button.edit-log" : function(event) {
     $('button.submit-log').html('Update');
-    var logID = $(event.currentTarget).parent().data('id');  
+    var logID = $(event.currentTarget).parent().data('id');
     var jobID = Router.current().params._id;
     $("div[data-logid]").attr('data-logid',logID);
     var obj = TimeSheet.findOne({'jobID':jobID}).logs;
@@ -399,7 +399,7 @@ Template.job.events({
     $("#datetimepicker2").find("input").val('');
     $('button.submit-log').html('Save');
   },
-  "click div.date" : function(event) {    
+  "click div.date" : function(event) {
     $('#datetimepicker1').datetimepicker();
     $('#datetimepicker2').datetimepicker();
   },
@@ -669,14 +669,15 @@ Template.job.helpers({
     var imgURL = Meteor.users.findOne({_id: buyerData.userId}).imgURL;
     if(imgURL)
       imgUrl = imgURL
-    else 
+    else
       imgUrl = '';
     var buyer = {
       id: buyerData._id,
       name: buyerData.name,
       title: buyerData.title,
       imgUrl: imgUrl,
-      readableID: Meteor.users.findOne({_id: buyerData.userId}).readableID
+      readableID: Meteor.users.findOne({_id: buyerData.userId}).readableID,
+      status: buyerData.status
     }
     return buyer;
   },
@@ -843,7 +844,7 @@ Template.job.helpers({
         if(!keepSession){
           delete Session.keys.totalHours;
         }
-        
+
         if (Meteor.user() &&
             Meteor.user().roles &&
             (Meteor.user().roles.indexOf("buyer")) != -1) {
@@ -869,7 +870,7 @@ Template.job.helpers({
             return "image/*";
         else
             return "*";
-      
+
     },
     completed: function(taskID) {
         var taskObj = Tasks.findOne({ _id: taskID });
@@ -957,7 +958,7 @@ Template.job.helpers({
       return Profiles.findOne({userId: this.selectedProvider});
     },
     appStatusLabel: function() {
-      if(this.applicationStatus == 'assigned') 
+      if(this.applicationStatus == 'assigned')
         return 'label-assigned';
       else if(this.applicationStatus == 'completed')
         return 'label-completed';
@@ -969,11 +970,11 @@ Template.job.helpers({
         return 'label-open';
       else if(this.applicationStatus == 'pending_payment')
         return 'label-pending';
-      else if(this.applicationStatus == 'paid') 
+      else if(this.applicationStatus == 'paid')
         return 'label-paid';
     },
     showTabs: function(id) {
-        return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned', 'completed', 'pending_payment','paid']}}]}) ? true : false;      
+        return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned', 'completed', 'pending_payment','paid']}}]}) ? true : false;
     },
     jobNotAssigned: function() {
       if(this.applicationStatus == 'open' && this.status == 'active') {
@@ -1021,6 +1022,7 @@ Template.job.helpers({
         var providerDetails = {
           name: provider.name,
           title: provider.title,
+          status: provider.status,
           imgUrl: providerImg,
           id: provider._id,
           readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
@@ -1035,6 +1037,7 @@ Template.job.helpers({
         var providerDetails = {
           name: provider.name,
           title: provider.title,
+          status: provider.status,
           imgUrl: providerImg,
           id: provider._id,
           readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
@@ -1195,6 +1198,25 @@ Template.job.helpers({
 });
 
 Template.job.rendered = function() {
+    var providerRatingPoints = 0;
+    var providerReviews = Reviews.find({$and: [{providerId: this.data.assignedProvider}, {reviewedBy: 'buyer'}]}).fetch();
+    if(providerReviews) {
+		for(var i = 0; i < providerReviews.length; i++) {
+			providerRatingPoints += providerReviews[i].pointsRated;
+		}
+	}
+	var providerReviewPoints = providerRatingPoints/providerReviews.length;
+	this.$('.providerRatings').rateit({'readonly': true, value: providerReviewPoints});
+    var buyerRatingPoints = 0;
+    var buyerReviews = Reviews.find({$and: [{buyerId: this.data.userId}, {reviewedBy: 'provider'}]}).fetch();
+    if(buyerReviews) {
+        for(var i = 0; i < buyerReviews.length; i++) {
+            buyerRatingPoints += buyerReviews[i].pointsRated;
+        }
+    }
+    var buyerReviewPoints = buyerRatingPoints/buyerReviews.length;
+    console.log(buyerReviewPoints);
+    this.$('.buyerRatings').rateit({'readonly': true, value: buyerReviewPoints});
   this.$('.rateit').rateit();
   this.ratingPoints = new ReactiveVar(null);
   $('#spinner').hide();

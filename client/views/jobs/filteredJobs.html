@@ -3,6 +3,8 @@
         <div class="col-sm-12">
             {{#each filteredJobs}}
                 {{>jobSmall}}
+            {{else}}
+                <p>No jobs have been found under this category.</p>
             {{/each}}
         </div>
     </div>

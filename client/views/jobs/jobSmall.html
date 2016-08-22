@@ -20,10 +20,10 @@
                 <div class="col-sm-4">
                     <small>
                         Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}
-                    </small>    
+                    </small>
                     <br>
                     <small>
-                        Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}                        
+                        Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
                     </small>
                     <br>
                     <small>
@@ -48,12 +48,13 @@
                         </div>
                     {{/if}}
                     {{#if $eq applicationStatus 'assigned'}}
+                        {{#if $eq assignmentStatus 'not_submitted'}}
+                            <p><i>{{assignmentTime}}</i></p>
+                            <p>The provider has confirmed the assignment. Please wait for the provider to submit the job.</p>
+                        {{/if}}
                         {{#if $eq assignmentStatus 'rejected'}}
-                            <div class="col-sm-12">
-                                <hr>
-                                <p>You have confirmed to do the job. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
-                                <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
-                            </div>
+                            <p><i>{{rejectedTime}}</i></p>
+                            <p>You have rejected the assignment. Please discuss with the provider and sort it out.</p>
                         {{/if}}
                         {{#if $eq assignmentStatus 'submitted'}}
                             <div class="col-sm-12">
@@ -77,18 +78,18 @@
                             <p>The buyer has released the payment. The job is now completed.</p>
                             {{#if reviewedBuyer}}
                                 You've reviewed the buyer for this job.
-                            {{else}}                                           
+                            {{else}}
                                 <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewBuyer">Rate &amp; Review Buyer</button>
                                 <div id="reviewBuyer" class="panel panel-white panel-collapse collapse">
                                     <div class="panel-body">
                                         <form id="reviewBuyer">
-                                            <div class="form-group">                                    
+                                            <div class="form-group">
                                                 <label for="writeReview">Write a review</label>
                                                 <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
                                                 <label>Rate buyer</label>&nbsp;<span class="rateit"></span>
                                             </div>
                                             <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
-                                        </form>         
+                                        </form>
                                     </div>
                                 </div>
                             {{/if}}
@@ -118,7 +119,7 @@
                                 <p>Payment has been released successfully for the job completed. The provider is now paid.</p>
                                 {{#if reviewedProvider}}
                                     <p>You've reviewed the provider for this job.</p>
-                                {{else}}                                           
+                                {{else}}
                                     <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewProvider">Rate &amp; Review Provider</button>
                                     <div id="reviewProvider" class="panel panel-white panel-collapse collapse">
                                         <div class="panel-body">
@@ -129,7 +130,7 @@
                                                     <label>Rate provider</label><br><span class="rateit"></span>
                                                 </div>
                                                 <button class="btn btn-sm btn-primary" type="submit">Submit</button>
-                                            </form>          
+                                            </form>
                                         </div>
                                     </div>
                                 {{/if}}

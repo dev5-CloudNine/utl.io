@@ -27,7 +27,7 @@ Meteor.publish("messages", function (id) {
 Meteor.publish('categories', function() {
     if(this.userId) {
         var user = Meteor.users.findOne({_id: this.userId});
-        if(user) 
+        if(user)
             return Categories.find();
     }
 });
@@ -43,7 +43,7 @@ Meteor.publish('skills', function() {
 Meteor.publish('subcategories', function() {
     if(this.userId) {
         var user = Meteor.users.findOne({_id: this.userId});
-        if(user) 
+        if(user)
             return SubCategories.find();
     }
 })
@@ -231,6 +231,14 @@ Meteor.publish('usersCount', function() {
 Meteor.publish("jobs", function() {
     check(arguments, [Match.Any]);
     return Jobs.find({$and: [{status: "active", applicationStatus: 'open', invited: false}]}, {sort: {createdAt: -1}})
+});
+
+Meteor.publish('categoryJobs', function(category) {
+    return Jobs.find({$and: [{type: {$in: [category]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
+});
+
+Meteor.publish('subCategoryJobs', function(subCategory) {
+    return Jobs.find({$and: [{jobSubCategory: {$in: [subCategory]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
 });
 
 Meteor.publish('invitedJobs', function() {

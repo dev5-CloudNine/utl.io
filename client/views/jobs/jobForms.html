@@ -44,6 +44,29 @@
     </div>
 </template>
 
+<template name="duplicateJob">
+    <div class="row">
+        <div class="col-sm-12">
+            <p>Your job post will remain on this portal for 90 days.  After 90 days the post will no longer appear. <br>You can either choose to publish to the portal or to your favorite providers only. <br>Upon publish, your account will be debited with proposed budget.</p>
+            <br>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Create Your Job Post</h4>
+                </div>
+                <div class="panel-body">
+                    {{#autoForm id="jobNew" collection="Jobs" doc=job type="insert"}}
+                        {{>jobFields}}
+                        <div>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> Publish</button>
+                            <button type="submit" class="btn btn-primary publishToFavs" value="favs">Publish to Fav's</button>
+                        </div>
+                    {{/autoForm}}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
 <template name="jobFields">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

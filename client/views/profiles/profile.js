@@ -14,9 +14,9 @@ Template.profile.helpers({
   },
   providerCompletedJobs: function() {
     var completedJobs = [];
-    if(this.completedJobs) {
-      for(var i = 0; i < this.completedJobs.length; i++) {
-        completedJobs.push(Jobs.findOne({_id: this.completedJobs[i]}));
+    if(this.paidJobs) {
+      for(var i = 0; i < this.paidJobs.length; i++) {
+        completedJobs.push(Jobs.findOne({_id: this.paidJobs[i]}));
       }
       return completedJobs;
     }
@@ -30,7 +30,7 @@ Template.profile.helpers({
   "customImageUrl": function() {
     return Meteor.users.findOne({_id: this.userId}).imgURL;
   },
-  resumeUrl: function() {
+  resumeURL: function() {
     return Meteor.users.findOne({_id: this.userId}).resumeURL;
   },
   itypes: function() {
@@ -45,7 +45,7 @@ Template.profile.helpers({
     return itypes;
   },
   adminOrProvider: function() {
-    if(Roles.userIsInRole(Meteor.userId(), ['admin']) || this.userId == Meteor.userId()) 
+    if(Roles.userIsInRole(Meteor.userId(), ['admin']) || this.userId == Meteor.userId())
       return true;
     return false;
   }
@@ -114,6 +114,5 @@ Template.profile.rendered = function() {
     }
   }
   var ratingPoints = points/reviews.length;
-  console.log(ratingPoints)
   this.$('.rateit').rateit({readonly: true, value: ratingPoints})
 }

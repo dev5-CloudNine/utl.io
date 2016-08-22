@@ -3,6 +3,8 @@
 		{{#if isInRole 'buyer, corporate-provider'}}
 			{{#each subcategoryProfiles}}
 				{{>profileSmall}}
+			{{else}}
+				<p>No providers have been found under this category.</p>
 			{{/each}}
 		{{/if}}
 	</div>

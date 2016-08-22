@@ -313,7 +313,7 @@ Router.map(function() {
         },
         waitOn: function() {
             Meteor.subscribe('reviews');
-            return Meteor.subscribe('jobs');
+            return Meteor.subscribe('categoryJobs', this.params.category);
         }
     });
 
@@ -324,7 +324,7 @@ Router.map(function() {
         },
         waitOn: function() {
             Meteor.subscribe('reviews');
-            return Meteor.subscribe('jobs');
+            return Meteor.subscribe('subCategoryJobs', this.params.subcategory);
         }
     });
 
@@ -413,6 +413,29 @@ Router.map(function() {
             }
         }
     });
+
+    this.route('duplicateJob', {
+        path: '/jobs/:_id/:slug/duplicate',
+        title: 'UTL - Duplicate Job',
+        data: function() {
+            return {
+                job: Jobs.findOne({_id: this.params._id})
+            };
+        },
+        waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            return Meteor.subscribe('job', this.params._id);
+        },
+        onBeforeAction: function() {
+            var id = this.params._id;
+            var userID = Jobs.findOne({_id: id}).userId;
+            if(Meteor.userId()==userID) {
+                this.next();
+            } else {
+                Router.go('notFound');
+            }
+        }
+    })
 
     this.route('profiles', {
         path: '/profiles',
@@ -526,7 +549,7 @@ Router.map(function() {
         //             active: 'piggyBank'
         //         };
         //     }
-        // } 
+        // }
     });
 
     this.route('mailBox', {
