@@ -233,6 +233,10 @@ Meteor.publish("jobs", function() {
     return Jobs.find({$and: [{status: "active", applicationStatus: 'open', invited: false}]}, {sort: {createdAt: -1}})
 });
 
+Meteor.publish('recommendedJobs', function(categories) {
+    return Jobs.find({$and: [{applicationStatus: 'open'}, {jobSubCategory: {$in: categories}}]}, {sort: {createdAt: -1}});
+})
+
 Meteor.publish('categoryJobs', function(category) {
     return Jobs.find({$and: [{type: {$in: [category]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
 });

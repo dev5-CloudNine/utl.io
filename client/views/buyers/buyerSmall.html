@@ -1,6 +1,6 @@
 <template name="buyerSmall">
 	<div class="col-md-4">
-        <div class="panel panel-white {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+        <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
             <div class="box box-widget widget-user">
                 <div class="widget-user-header bg-assigned">
                     <span class="pull-right rateit"></span>
@@ -44,7 +44,7 @@
                             <div class="description-block text-center">
                                 <a href="" class="{{#if fav}}favActive{{else}}favInactive{{/if}}">
                                     <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
-                                    <span class="description-text">{{#if fav}}Remove Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
+                                    <span class="description-text">{{#if fav}}Del Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
                                 </a>
                             </div>
                         </div>

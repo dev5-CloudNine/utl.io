@@ -30,7 +30,7 @@ PackageSearch = new SearchSource('openJobs', fields, options);
 
 Template.searchResult.helpers({
     openJobs: function() {
-        return PackageSearch.getData({
+        return PackageSearch.getData({$and: [{invited: false}, {routed: false}]}, {
             sort: {createdAt: -1}
         });
     }

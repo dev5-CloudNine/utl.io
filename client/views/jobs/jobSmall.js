@@ -72,7 +72,6 @@ Template.jobSmall.helpers({
 });
 
 Template.jobSmall.rendered = function() {
-	Meteor.subscribe('jobNotifications', this.data._id);
 	this.$('.rateit').rateit();
 	this.ratingPoints = new ReactiveVar(null);
 }

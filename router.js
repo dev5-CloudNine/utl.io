@@ -57,11 +57,6 @@ Router.map(function() {
         title: "UTL - All Jobs",
         waitOn: function() {
             return Meteor.subscribe('jobs');
-        },
-        data: function() {
-            return {
-                jobs: Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'open'}, {invited: false}]}).fetch()
-            }
         }
     });
 
@@ -258,10 +253,7 @@ Router.map(function() {
 
     this.route('recommendedJobs', {
         path: '/recommendedjobs',
-        title: 'UTL - Recommended Jobs',
-        waitOn: function() {
-            return Meteor.subscribe('jobs');
-        }
+        title: 'UTL - Recommended Jobs'
     });
 
     this.route('invitedJobs', {

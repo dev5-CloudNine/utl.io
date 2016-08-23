@@ -88,67 +88,68 @@ Corporates.attachSchema(
   	}
   },
 	industryTypes: {
-		type: [String],
-		label: "Interested Industries",
-		optional: true,
-		autoform: {
-			type: "selectize",
-			options: INDUSTRY_TYPES,
+    type: [String],
+    label: "Select Job Categories *",
+    autoform: {
+      type: "selectize",
+      options: function() {
+        return SubCategories.find().fetch()
+      },
       multiple: true
-		}
-    },
-    contactNumber: {
-      type: String,
-      label: "Mobile Number",
-      max: 128,
-    },
-    mobileCarrier: {
-      type: String,
-      label: "Mobile Provider",
-      max: 128,
-      autoform: {
-        type: "select",
-        options: MOBILE_CARRIERS
+    }
+  },
+  contactNumber: {
+    type: String,
+    label: "Mobile Number",
+    max: 128,
+  },
+  mobileCarrier: {
+    type: String,
+    label: "Mobile Provider",
+    max: 128,
+    autoform: {
+      type: "select",
+      options: MOBILE_CARRIERS
+    }
+  },
+  smsAddress: {
+    type: String, 
+    label: "SMS Address",
+    max: 256,
+    optional: true
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date();
+      } else if (this.isUpsert) {
+        return {
+          $setOnInsert: new Date()
+        };
+      } else {
+        this.unset();
       }
     },
-    smsAddress: {
-      type: String, 
-      label: "SMS Address",
-      max: 256,
-      optional: true
+    denyUpdate: true
+  },
+  status: {
+    type: String,
+    allowedValues: STATUSES,
+    defaultValue: "active"
+  },
+  // Force value to be current date (on server) upon update
+  // and don't allow it to be set upon insert.
+  updatedAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isUpdate) {
+        return new Date();
+      }
     },
-    createdAt: {
-      type: Date,
-      autoValue: function() {
-        if (this.isInsert) {
-          return new Date();
-        } else if (this.isUpsert) {
-          return {
-            $setOnInsert: new Date()
-          };
-        } else {
-          this.unset();
-        }
-      },
-      denyUpdate: true
-    },
-    status: {
-      type: String,
-      allowedValues: STATUSES,
-      defaultValue: "active"
-    },
-    // Force value to be current date (on server) upon update
-    // and don't allow it to be set upon insert.
-    updatedAt: {
-      type: Date,
-      autoValue: function() {
-        if (this.isUpdate) {
-          return new Date();
-        }
-      },
-      denyInsert: true,
-      optional: true
-    }
+    denyInsert: true,
+    optional: true
+  }
 }));
 
 Corporates.allow({

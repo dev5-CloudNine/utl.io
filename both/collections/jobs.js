@@ -19,18 +19,15 @@ Jobs.attachSchema(
   new SimpleSchema({
     title: {
       type: String,
-      label: "Job Title *",
-      max: 128
+      label: "Job Title *"
     },
     skillsrequired: {
       type: String,
-      label: "Required Skills *",
-      max: 128,
+      label: "Required Skills *"
     },
     location: {
       type: String,
       label: "Location",
-      max: 128,
       optional: true,
       custom: function() {
         var shouldBeRequired = this.field('servicelocation').value == 'Field Job';

@@ -3,9 +3,9 @@ Template.invitedJobs.helpers({
 		var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
 		var invitedJobs = [];
 		if(invJobIds) {
-			invJobIds.forEach(function(jobId) {
-				invitedJobs.push(Jobs.findOne({_id: jobId}));
-			});
+			for(var i = invJobIds.length - 1; i>=0; i++ ) {
+				invitedJobs.push(Jobs.findOne({_id: invJobIds[i]}));
+			}
 		}
 		return invitedJobs;
 	}
