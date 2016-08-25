@@ -15,30 +15,6 @@
         </div>
         <div class="col-md-10">
             <div class="mailbox-content">
-                <!-- <table class="table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                        {{#each msgList}}
-                		    <tr class="{{#if $eq read false}}read{{else}}unread{{/if}} msg" data-id="{{_id}}">
-                		        <td class="hidden-xs">
-                		            {{username}}
-                		        </td>
-                		        <td style="text-align: left;">
-                		            {{subject}}
-                		        </td>
-                		        <td>
-                		        	{{#if attachment}}
-                		            <i class="fa fa-paperclip"></i>
-                		            {{/if}}
-                		        </td>
-                		        <td>
-                		            {{date}}
-                		        </td>
-                		    </tr>
-                        {{/each}}
-                    </tbody>
-                </table> -->
                 {{>ReactiveDatatable tableData=msgList options=msgListOptionsObject}}
             </div>
         </div>

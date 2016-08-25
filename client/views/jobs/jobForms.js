@@ -26,7 +26,12 @@ Template.jobFields.rendered = function() {
 	$('.note-editor .note-toolbar .note-insert').remove();
 }
 
+Template.providerList.rendered = function() {
+	Meteor.typeahead.inject('.proTypeahead');
+}
+
 var locLoaded=false;
+var proLoaded = false;
 
 Template.jobFields.events({
 	'change input[name="fixedamount"], keyup input[name="fixedamount"]': function(event, template) {
@@ -148,7 +153,7 @@ Template.jobFields.events({
 		event.preventDefault();
 		var totalamount = parseFloat(template.find('input[name="totalfromclient"]').value);
 		var freenet = totalamount - totalamount * 5/100;
-		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		template.find('input[name="your_cost"]').value = totalamount;
 		template.find('input[name="freelancer_nets"]').value = freenet;
 		if($('input[name="your_cost"]').val() > buyerAccBalance) {
@@ -162,7 +167,7 @@ Template.jobFields.events({
 		}
 	},
 	'change input[name="servicelocation"]': function(event, template) {
-		if(event.target.value == 'Field Job') {var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		if(event.target.value == 'Field Job') {
 			$('div.loc').show();
 		} else {
 			$('div.loc').hide();
@@ -230,7 +235,7 @@ Template.jobFields.events({
 				}
 			}
 		})
-		
+
 	},
 	'click .remove-job-file' : function(event, template) {
 	    event.preventDefault();
@@ -284,17 +289,22 @@ Template.jobFields.helpers({
 		locLoaded = true;
 		return this.job.location;
 	},
+	providerData: function() {
+		proLoaded = true;
+		return this.job.individualprovider;
+	},
 	location: function (query, sync, callback) {
 		if(!locLoaded) $('.typeahead').addClass('loadinggif');
 		Meteor.call('location', query, {}, function(err, res) {
 			if (err) {
-			console.log(err);
-			return;
-		}
-		callback(res.map(function(v) {
-			locLoaded = true;
-			$('.typeahead').removeClass('loadinggif');
-			return { value: v.city + ", " + v.state + ", " + v.zip}; }));
+				console.log(err);
+				return;
+			}
+			callback(res.map(function(v) {
+				locLoaded = true;
+				$('.typeahead').removeClass('loadinggif');
+				return { value: v.city + ", " + v.state + ", " + v.zip}; 
+			}));
 		});
 	},
 	parentCategories: function() {
@@ -309,6 +319,27 @@ Template.jobFields.helpers({
 		return Jobs.findOne({_id:this.job._id}).files;
 	}
 });
+
+Template.providerList.helpers({
+	individualprovider: function(query, sync, callback) {
+		if(!proLoaded)
+			$('.proTypeahead').addClass('loadinggif');
+		Meteor.call('individualprovider', query, {}, function(err, res) {
+			if(err) {
+				console.log(err);
+				return;
+			}
+			callback(res.map(function(v) {
+				proLoaded = true;
+				$('.proTypeahead').removeClass('loadinggif');
+				return {value: v.name, id: v.userId, readableId: Meteor.users.findOne({_id: v.userId}).readableID, title: v.title};
+			}))
+		})
+	},
+	select: function(e, suggestion, dataset) {
+		$(e.currentTarget).prop('id', suggestion.id);
+	}
+})
 
 Template.jobNew.events({
 	'click .publishToFavs': function(event, template) {
@@ -337,6 +368,32 @@ Template.jobNew.events({
 				}
 			})
 		});
+	},
+	'click .publishInd': function(event, template) {
+		event.preventDefault();
+	},
+	'click .inviteIndividual': function(event, template) {
+		var individualProvider = $('input[name="individualprovider"]')[0].id;
+		Session.set('publishToIndividual', true);
+		Jobs.before.insert(function(userId, doc) {
+			$(event.target).prop('disabled', true);
+			if(!Session.get('publishToIndividual'))
+				return;
+			doc.invited = true;
+			doc.individualprovider = individualProvider;
+		});
+		Jobs.after.insert(function(userId, doc) {
+			if(!Session.get('publishToIndividual'))
+				return;
+			Meteor.call('publishToIndividualUpdate', doc, function(error) {
+				if(error) {
+					toastr.error('Failed to publish to the individual. Please try again.');
+				} else {
+					delete Session.keys['publishToIndividual'];
+					toastr.success('An invitation has been sent to the individual to apply for this job.');
+				}
+			})
+		})
 	},
 	'click .saveAsDraft': function(event, template) {
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;

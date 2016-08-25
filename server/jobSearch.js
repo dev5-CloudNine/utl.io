@@ -7,11 +7,12 @@ SearchSource.defineSource('openJobs', function(searchText, options) {
 			{location: regExp},
 			{jobtype: regExp},
 			{jobSubCategory: regExp},
-			{servicelocation: regExp}
+			{servicelocation: regExp},
+			{readableID: regExp}
 		]};
-		return Jobs.find({$and: [{$and: [{status: 'active'}, {applicationStatus: 'open'}]}, selector]}, options).fetch();
+		return Jobs.find({$and: [{$and: [{status: 'active'}, {applicationStatus: 'open'}, {invited: false}]}, selector]}, options).fetch();
 	} else {
-		return Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'open'}]}, options).fetch();
+		return Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'open'}, {invited: false}]}, options).fetch();
 	}
 });
 

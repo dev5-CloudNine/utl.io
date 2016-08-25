@@ -47,18 +47,25 @@
                             <button class="margin-top-5 btn btn-warning btn-sm declineAssignment">Decline</button>
                         </div>
                     {{/if}}
-                    {{#if $eq applicationStatus 'assigned'}}
+                    {{#if $eq applicationStatus 'assigned'}}                        
+                        <hr>
                         {{#if $eq assignmentStatus 'not_submitted'}}
-                            <p><i>{{assignmentTime}}</i></p>
-                            <p>The provider has confirmed the assignment. Please wait for the provider to submit the job.</p>
+                            <div class="col-sm-12">
+                                <p><i>{{assignmentTime}}</i></p>
+                                <p>You have confirmed to do the job. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
+                                <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
+                            </div>
                         {{/if}}
                         {{#if $eq assignmentStatus 'rejected'}}
-                            <p><i>{{rejectedTime}}</i></p>
-                            <p>You have rejected the assignment. Please discuss with the provider and sort it out.</p>
+                            <div class="col-sm-12">
+                                <p><i>{{rejectedTime}}</i></p>
+                                <p>The buyer has rejected your assignment. Please discuss with the buyer for futher details and submit the job for buyer approval.</p>
+                                <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
+                            </div>
                         {{/if}}
                         {{#if $eq assignmentStatus 'submitted'}}
                             <div class="col-sm-12">
-                                <hr>
+                                <p><i>{{submittedTime}}</i></p>
                                 <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
                             </div>
                         {{/if}}

@@ -1,6 +1,6 @@
 Template.buyerOpenJobs.helpers({
 	buyerOpenJobs: function () {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]});
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
 	},
 	buyerOpenCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();

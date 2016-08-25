@@ -1056,3 +1056,9 @@ ul.timeline > li > .timeline-panel:after {
 .img-circle {
   border-radius: 8% !important;
 }
+
+
+/*custom typeahead*/
+.tt-menu {
+  width: 450px;
+}

@@ -85,6 +85,17 @@ Meteor.methods({
         var regex = new RegExp("^" + query,'gi');
         return Cities.find({city: {$regex:  regex}}, options).fetch();
     },
+    'individualprovider': function(query, options) {
+        if(!query) return [];
+        options = options || {}
+        if(options.limit) {
+            options.limit = Math.min(50, Math.abs(options.limit));
+        } else {
+            options.limit = 50;
+        }
+        var regex = new RegExp("^" + query,'gi');
+        return Profiles.find({name: {$regex: regex}}, options).fetch();
+    },
     "deleteFile": function(id) {
         Images.remove({_id:id});
     },
@@ -453,9 +464,33 @@ Meteor.methods({
                 cc: providerSmsEmail,
                 from: FROM_EMAIL,
                 subject: 'A buyer has invited to bid on his job.',
-                text: 'Hello' + providerName + ', '+ buyerName + ' has invited you to bid on one of his jobs ' + jobName + '. Click on the following link to apply or counter offer the job. ' + Meteor.absoluteUrl('jobs/' + job._id + '/' + jobSlug)
+                text: 'Hello' + providerName + ', '+ buyerName + ' has invited you to bid on one of his jobs ' + jobName + '. Click on the following link to apply or counter offer the job. ' + Meteor.absoluteUrl('jobs/' + job._id)
             })
         }
+    },
+    publishToIndividualUpdate: function(job) {
+        Jobs.update({_id: job._id}, {$set: {invited: true}});
+        Profiles.update({userId: job.individualprovider}, {$addToSet: {invitedJobs: job._id}});
+        var providerDetails = Profiles.findOne({userId: job.individualprovider});
+        var buyerDetails = Buyers.findOne({userId: job.userId});
+        var notificationObj = {
+            jobId: job._id,
+            providerId: job.individualprovider,
+            buyerId: Meteor.userId(),
+            timeStamp: new Date(),
+            notificationType: 'jobInvitation',
+            read: false,
+            side: 'provider',
+            adminRead: false
+        };
+        Notifications.insert(notificationObj);
+        Email.send({
+            to: getUserEmail(Meteor.users.findOne({_id: job.individualprovider})),
+            cc: providerDetails.smsAddress,
+            from: FROM_EMAIL,
+            subject: 'A buyer has invited to bid on his job.',
+            text: 'Hello' + providerDetails.name + ', '+ buyerDetails.name + ' has invited you to bid on one of his jobs ' + job.title + '. Click on the following link to apply or counter offer the job. ' + Meteor.absoluteUrl('jobs/' + job._id)
+        });
     },
     routeNotification: function(buyerId, doc) {
         Profiles.update({userId: doc.selectedProvider}, {$addToSet: {routedJobs: doc._id}});

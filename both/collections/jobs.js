@@ -47,6 +47,10 @@ Jobs.attachSchema(
         }
       }
     },
+    individualprovider: {
+      type: String,
+      optional: true
+    },
     jobtype: {
       type: String,
       label: "Select Job Category *"

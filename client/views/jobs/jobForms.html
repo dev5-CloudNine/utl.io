@@ -14,11 +14,31 @@
                             <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> Publish</button>
                             <button type="submit" class="btn btn-primary publishToFavs" value="favs">Publish to Fav's</button>
                             <!-- <button type="submit" class="btn btn-primary saveAsDraft" value="favs">Save as draft</button> -->
+                            <button class="btn btn-primary publishInd" data-toggle="collapse" data-target="#publishIndividual">Publish to Individual</button>
+                            <div id="publishIndividual" class="panel panel-white panel-collapse collapse">
+                                <div class="panel-body">
+                                    {{>providerList}}
+                                    <button type="submit" class="btn btn-primary inviteIndividual">Publish to Individual</button>
+                                </div>
+                            </div>
                         </div>
                     {{/autoForm}}
                 </div>
             </div>
         </div>
+    </div>
+</template>
+<template name="providerList">
+    <div class="form-group">
+        <input type="text" data-schema-key="individualprovider" class="form-control proTypeahead" placeholder="Choose Provider" name="individualprovider" autocomplete="off" spellcheck="off" value="{{providerData}}" data-source="individualprovider" data-select="select" data-template="providerTemplate">
+        <span class="help-block"></span>
+    </div>
+</template>
+<template name="providerTemplate">
+    <div class="form-group example-twitter oss">
+        <p>{{readableId}}</p>
+        <p>{{value}}</p>
+        <p>{{title}}</p>
     </div>
 </template>
 <template name="jobEdit">
@@ -80,7 +100,7 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <br>
-            {{> afQuickField name='skillsrequired' placeholder="e.g. Cable Operator, DB Admin, Hardware.."}}            
+            {{> afQuickField name='skillsrequired' placeholder="e.g. Cable Operator, DB Admin, Hardware.."}}
         </div>
     </div>
     {{> afQuickField name='description' rows=12 placeholder="Tell prospective service providers about this job in detail."}}
@@ -95,11 +115,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">  
+        <div class="col-sm-12">
             <div id="spinner">
                 {{> spinner}}
-            </div>              
-            <ul class="fileList" style="list-style-type: none;">            
+            </div>
+            <ul class="fileList" style="list-style-type: none;">
                 {{#each files}}
                     <li><i class="fa fa-times-circle remove-job-file" data-url="{{this.file_url}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this.file_url}}" target="_blank">{{this.file_name}}</a></li>
                 {{/each}}
@@ -168,7 +188,7 @@
         </div>
     </div>
     <hr>
-    <div class="row">        
+    <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
             {{> afQuickField name="ratebasis"}}
         </div>
@@ -186,7 +206,7 @@
                     {{>afQuickField name="freelancer_nets" readonly="true"}}
                 </div>
             {{/if}}
-            
+
             {{#if afFieldValueIs name="ratebasis" value="Per Hour"}}
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     {{> afQuickField name="hourlyrate" placeholder="Enter amount per hour"}}
