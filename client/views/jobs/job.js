@@ -793,330 +793,352 @@ Template.job.helpers({
     return this.assignedProvider;
   },
   taskList: function() {
-        return Tasks.find({ 'jobID': this._id }, { sort: { order: 1 } });
-    },
-    applied: function() {
-      var applications = Jobs.findOne({_id: this._id}).applications;
-      if(applications) {
-        for(var i = 0; i < applications.length; i++) {
-          if(applications[i].userId == Meteor.userId())
-            return true;
-        }
-        // return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { appliedJobs: { $in: [this._id] } }] }) ? true : false;
+    return Tasks.find({ 'jobID': this._id }, { sort: { order: 1 } });
+  },
+  applied: function() {
+    var applications = Jobs.findOne({_id: this._id}).applications;
+    if(applications) {
+      for(var i = 0; i < applications.length; i++) {
+        if(applications[i].userId == Meteor.userId())
+          return true;
       }
-      return false;
-    },
-    applicationDetails: function() {
-      for(var i = 0; i < this.applications.length; i++) {
-        if(this.applications[i].userId == Meteor.userId()) {
-          return this.applications[i];
-        }
+      // return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { appliedJobs: { $in: [this._id] } }] }) ? true : false;
+    }
+    return false;
+  },
+  applicationDetails: function() {
+    for(var i = 0; i < this.applications.length; i++) {
+      if(this.applications[i].userId == Meteor.userId()) {
+        return this.applications[i];
       }
-    },
-    states: function(taskID) {
-        var staticStates = ['Open', 'On Hold', 'Working', 'Completed'];
-        var stateObjArr = [];
-        var selectedState = Tasks.findOne({ _id: taskID }).state;
-        for (var i = 0; i < staticStates.length; i++) {
-            var obj = {};
-            if (selectedState == staticStates[i]) {
-                obj.value = staticStates[i];
-                obj.selected = 'Selected';
-            } else {
-                obj.value = staticStates[i];
-            }
-            stateObjArr.push(obj);
+    }
+  },
+  states: function(taskID) {
+      var staticStates = ['Open', 'On Hold', 'Working', 'Completed'];
+      var stateObjArr = [];
+      var selectedState = Tasks.findOne({ _id: taskID }).state;
+      for (var i = 0; i < staticStates.length; i++) {
+          var obj = {};
+          if (selectedState == staticStates[i]) {
+              obj.value = staticStates[i];
+              obj.selected = 'Selected';
+          } else {
+              obj.value = staticStates[i];
+          }
+          stateObjArr.push(obj);
+      }
+      return stateObjArr;
+  },
+  uploadFile: function(taskID) {
+      var taskObj = Tasks.findOne({ _id: taskID });
+      if (taskObj && taskObj.taskName.toLowerCase().indexOf('upload') > -1) {
+          return true;
+      } else
+          return false;
+  },
+  "fileList": function(taskID) {
+      return Tasks.findOne({ _id: taskID }).files;
+  },
+  show: function(jobID,keepSession) {
+    if(!keepSession){
+      delete Session.keys.totalHours;
+    }
+    if (Meteor.user() &&
+      Meteor.user().roles &&
+      (Meteor.user().roles.indexOf("buyer")) != -1) {
+      return true;
+    }
+    return Jobs.findOne({
+      $and: [
+        { _id: jobID },
+        { assignedProvider: Meteor.userId() }
+      ]
+    }) ? true : false;
+  },
+  isBuyer: function() {
+    if (Meteor.user() &&
+      Meteor.user().roles &&
+      (Meteor.user().roles.indexOf("buyer")) != -1) {
+      return true;
+    }
+  },
+  fileType: function(taskID) {
+      var taskObj = Tasks.findOne({ _id: taskID });
+      if (taskObj && taskObj.taskName.toLowerCase().indexOf('picture') > -1)
+          return "image/*";
+      else
+          return "*";
+  },
+  completed: function(taskID) {
+      var taskObj = Tasks.findOne({ _id: taskID });
+      return taskObj.time?true:false;
+  },
+  momentjs:function(time) {
+    return moment(time).format('LLLL');
+  },
+  tasksCompleted:function(){
+    var flag = Tasks.findOne({$and:[{ 'jobID': this._id},{'taskName':'Check Out'}]}).time;
+    return flag?true:false;
+  },
+  notOpen: function() {
+    if(this.applicationStatus == 'frozen' || this.applicationStatus == 'assigned' || this.applicationStatus == 'paid')
+      return true;
+    return false;
+  },
+  submittedOrDone: function(jobId) {
+    if(jobId) {
+      var jobDetails = Jobs.findOne({_id: jobId});
+      if(jobDetails.applicationStatus == 'assigned') {
+        if(jobDetails.assignmentStatus == 'submitted' || jobDetails.assignmentStatus == 'approved') {
+          return true;
         }
-        return stateObjArr;
-    },
-    uploadFile: function(taskID) {
-        var taskObj = Tasks.findOne({ _id: taskID });
-        if (taskObj && taskObj.taskName.toLowerCase().indexOf('upload') > -1) {
-            return true;
-        } else
-            return false;
-    },
-    "fileList": function(taskID) {
-        return Tasks.findOne({ _id: taskID }).files;
-    },
-
-    show: function(jobID,keepSession) {
-        if(!keepSession){
-          delete Session.keys.totalHours;
-        }
-
-        if (Meteor.user() &&
-            Meteor.user().roles &&
-            (Meteor.user().roles.indexOf("buyer")) != -1) {
-            return true;
-        }
-        return Jobs.findOne({
-            $and: [
-                { _id: jobID },
-                { assignedProvider: Meteor.userId() }
-            ]
-        }) ? true : false;
-    },
-    isBuyer: function() {
-        if (Meteor.user() &&
-            Meteor.user().roles &&
-            (Meteor.user().roles.indexOf("buyer")) != -1) {
-            return true;
-        }
-    },
-    fileType: function(taskID) {
-        var taskObj = Tasks.findOne({ _id: taskID });
-        if (taskObj && taskObj.taskName.toLowerCase().indexOf('picture') > -1)
-            return "image/*";
-        else
-            return "*";
-
-    },
-    completed: function(taskID) {
-        var taskObj = Tasks.findOne({ _id: taskID });
-        return taskObj.time?true:false;
-    },
-    momentjs:function(time) {
-      return moment(time).format('LLLL');
-    },
-    tasksCompleted:function(){
-      var flag = Tasks.findOne({$and:[{ 'jobID': this._id},{'taskName':'Check Out'}]}).time;
-      return flag?true:false;
-    },
-    notOpen: function() {
-      if(this.applicationStatus == 'frozen' || this.applicationStatus == 'assigned' || this.applicationStatus == 'paid')
+        return false;
+      }
+      if(jobDetails.applicationStatus == 'pending_payment' || jobDetails.applicationStatus == 'completed' || this.applicationStatus == 'paid') {
         return true;
-      return false;
-    },
-    assignedOrDone: function() {
-      if(this.applicationStatus == 'assigned' || this.applicationStatus == 'completed' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'paid')
+      }
+    } else {
+      if(this.applicationStatus == 'assigned') {
+        if(this.assignmentStatus == 'submitted' || this.assignmentStatus == 'approved') {
+          return true;
+        }
+        return false;
+      }
+      if(this.applicationStatus == 'pending_payment' || this.applicationStatus == 'completed' || this.applicationStatus == 'paid') {
         return true;
-      return false;
-    },
-    checkInTime: function(){
-      var date = TimeSheet.findOne({'jobID':this._id}).checkIn;
-      if(!date) return '';
-      return moment(date).format('MM/DD/YYYY h:mm A');
-    },
-    timeLogs:function(id){
-      var logList = [];
-      var totalHours = 0;
-      var logs = TimeSheet.findOne({'jobID':id}, { sort: { 'logs.checkOut': -1 } }).logs;
-      if(!logs) return;
-      logs.map(function(log){
-        var obj = {};
-        obj.id = log.id;
-        obj.in = moment(log.checkIn).format('llll');
-        obj.out = moment(log.checkOut).format('llll');
-        var inT = moment(new Date(obj.in));
-        var ouT = moment(new Date(obj.out));
-        var diff = ouT.diff(inT);
-        var duration = moment.duration(diff,'milliseconds');
-        var days = Math.floor(duration.asDays());
-        var hours = Math.floor(duration.asHours()) - days * 24;
-        var hrs = days*24+hours;
-        var mins = Math.floor(duration.asMinutes()) - hrs * 60;
-        var total = "Days : " + days+", Hours : "+hours+", Mins : "+mins;
-        obj.total = total;
-        totalHours+=diff;
-        logList.push(obj);
-      });
-
-      var duration = moment.duration(totalHours,'milliseconds');
+      }
+    }
+    return false;
+  },
+  assignedOrDone: function() {
+    if(this.applicationStatus == 'assigned' || this.applicationStatus == 'completed' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'paid')
+      return true;
+    return false;
+  },
+  checkInTime: function(){
+    var date = TimeSheet.findOne({'jobID':this._id}).checkIn;
+    if(!date) return '';
+    return moment(date).format('MM/DD/YYYY h:mm A');
+  },
+  timeLogs:function(id){
+    var logList = [];
+    var totalHours = 0;
+    var logs = TimeSheet.findOne({'jobID':id}, { sort: { 'logs.checkOut': -1 } }).logs;
+    if(!logs) return;
+    logs.map(function(log){
+      var obj = {};
+      obj.id = log.id;
+      obj.in = moment(log.checkIn).format('llll');
+      obj.out = moment(log.checkOut).format('llll');
+      var inT = moment(new Date(obj.in));
+      var ouT = moment(new Date(obj.out));
+      var diff = ouT.diff(inT);
+      var duration = moment.duration(diff,'milliseconds');
       var days = Math.floor(duration.asDays());
       var hours = Math.floor(duration.asHours()) - days * 24;
       var hrs = days*24+hours;
       var mins = Math.floor(duration.asMinutes()) - hrs * 60;
       var total = "Days : " + days+", Hours : "+hours+", Mins : "+mins;
-      if(duration==0) {
-        Session.set('totalHours','No activities are done so far');
+      obj.total = total;
+      totalHours+=diff;
+      logList.push(obj);
+    });
+
+    var duration = moment.duration(totalHours,'milliseconds');
+    var days = Math.floor(duration.asDays());
+    var hours = Math.floor(duration.asHours()) - days * 24;
+    var hrs = days*24+hours;
+    var mins = Math.floor(duration.asMinutes()) - hrs * 60;
+    var total = "Days : " + days+", Hours : "+hours+", Mins : "+mins;
+    if(duration==0) {
+      Session.set('totalHours','No activities are done so far');
+    } else {
+      Session.set('totalHours',total);
+    }
+    return logList;
+  },
+  totalHours : function(){
+    return Session.get('totalHours');
+  },
+  "uploadedFiles": function(){
+      return S3.collection.find();
+  },
+  'acceptedProvider': function() {
+    var uId = Meteor.userId();
+    var jobs=Jobs.findOne({_id: this._id}).applications;
+    for(var i=0;i<jobs.length;i++){
+      if(jobs[i].userId == uId && jobs[i].app_status == 'accepted') {
+        return true;
+      }
+    }
+    return false;
+  },
+  aHelper: function() {
+    console.log(this);
+  },
+  routedProvider: function() {
+    return Profiles.findOne({userId: this.selectedProvider});
+  },
+  appStatusLabel: function() {
+    if(this.applicationStatus == 'assigned')
+      return 'label-assigned';
+    else if(this.applicationStatus == 'completed')
+      return 'label-completed';
+    else if(this.applicationStatus == 'deactivated')
+      return 'label-deactivated';
+    else if(this.applicationStatus == 'frozen')
+      return 'label-frozen';
+    else if(this.applicationStatus == 'open')
+      return 'label-open';
+    else if(this.applicationStatus == 'pending_payment')
+      return 'label-pending';
+    else if(this.applicationStatus == 'paid')
+      return 'label-paid';
+  },
+  showTabs: function(id) {
+      return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned', 'completed', 'pending_payment','paid']}}]}) ? true : false;
+  },
+  jobNotAssigned: function() {
+    if(this.applicationStatus == 'open' && this.status == 'active') {
+      return true;
+    }
+    return false;
+  },
+  paymentDetails: function() {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    return jobDetails;
+  },
+  assignedProviderDetails: function() {
+    var applicationDetails = {};
+    for(var i = 0; i < this.applications.length; i++) {
+      if(this.applications[i].userId == this.assignedProvider && this.applications[i].app_status == 'accepted') {
+        if(this.applications[i].app_type == 'application') {
+          applicationDetails = {
+            appType: this.applications[i].app_type,
+            appliedAt: this.applications[i].applied_at
+          }
+        }
+        if(this.applications[i].app_type == 'counteroffer') {
+          applicationDetails = {
+            appType: this.applications[i].app_type,
+            appliedAt: this.applications[i].applied_at,
+            counter_type: this.applications[i].counterType,
+            fixed_amount:this.applications[i].fixed_amount,
+            hourly_rate: this.applications[i].hourly_rate,
+            max_hours: this.applications[i].max_hours,
+            device_rate: this.applications[i].device_rate,
+            max_devices: this.applications[i].max_devices,
+            first_hours: this.applications[i].first_hours,
+            first_max_hours: this.applications[i].first_max_hours,
+            next_hours: this.applications[i].next_hours,
+            next_max_hours: this.applications[i].next_max_hours,
+            buyer_cost: this.applications[i].buyer_cost,
+            freelancer_nets: this.applications[i].freelancer_nets,
+          }
+        }
+      }
+    }
+    var provider = Profiles.findOne({userId: this.assignedProvider});
+    var providerImg = Users.findOne({_id: this.assignedProvider}).imgURL;
+    if(applicationDetails.appType == 'application') {
+      var providerDetails = {
+        name: provider.name,
+        title: provider.title,
+        status: provider.status,
+        imgUrl: providerImg,
+        id: provider._id,
+        readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
+        appType: applicationDetails.appType,
+        appliedAt: applicationDetails.appliedAt,
+        paymentType: this.ratebasis,
+        gross: this.your_cost,
+        freelancer_nets: this.freelancer_nets
+      }
+    }
+    if(applicationDetails.appType == 'counteroffer') {
+      var providerDetails = {
+        name: provider.name,
+        title: provider.title,
+        status: provider.status,
+        imgUrl: providerImg,
+        id: provider._id,
+        readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
+        appType: applicationDetails.appType,
+        appliedAt: applicationDetails.appliedAt,
+        paymentType: this.ratebasis,
+        counter_type: applicationDetails.counter_type,
+        fixed_amount:applicationDetails.fixed_amount,
+        hourly_rate: applicationDetails.hourly_rate,
+        max_hours: applicationDetails.max_hours,
+        device_rate: applicationDetails.device_rate,
+        max_devices: applicationDetails.max_devices,
+        first_hours: applicationDetails.first_hours,
+        first_max_hours: applicationDetails.first_max_hours,
+        next_hours: applicationDetails.next_hours,
+        next_max_hours: applicationDetails.next_max_hours,
+        buyer_cost: applicationDetails.buyer_cost,
+        freelancer_nets: applicationDetails.freelancer_nets
+      }
+    }
+    return providerDetails;
+  },
+  jobAssignedToProvider: function() {
+    if(this.applicationStatus == 'assigned' || this.applicationStatus == 'completed' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'paid')
+      return true;
+    return false;
+  },
+  buyerOrAssignedProvider: function() {
+    if(this.userId == Meteor.userId() || this.assignedProvider == Meteor.userId()) {
+      return true;
+    }
+    return false;
+  },
+  jobRelatedNotifications: function() {
+    var notifications = Notifications.find({jobId: this._id}, {sort: {timeStamp: -1}});
+    var notificationDetails = [];
+    notifications.forEach(function(notification) {
+      var buyerDetails = Buyers.findOne({userId: notification.buyerId});
+      if(notification.notificationType == 'newJob') {
+        var notif = {
+          jobId: notification.jobId,
+          buyerId: buyerDetails._id,
+          buyerName: buyerDetails.name,
+          notificationType: notification.notificationType,
+          timeStamp: moment(notification.timeStamp).format('LLLL')
+        }
       } else {
-        Session.set('totalHours',total);
-      }
-      return logList;
-    },
-    totalHours : function(){
-      return Session.get('totalHours');
-    },
-    "uploadedFiles": function(){
-        return S3.collection.find();
-    },
-    'acceptedProvider': function() {
-      var uId = Meteor.userId();
-      var jobs=Jobs.findOne({_id: this._id}).applications;
-      for(var i=0;i<jobs.length;i++){
-        if(jobs[i].userId == uId && jobs[i].app_status == 'accepted') {
-          return true;
-        }
-      }
-      return false;
-    },
-    aHelper: function() {
-      console.log(this);
-    },
-    routedProvider: function() {
-      return Profiles.findOne({userId: this.selectedProvider});
-    },
-    appStatusLabel: function() {
-      if(this.applicationStatus == 'assigned')
-        return 'label-assigned';
-      else if(this.applicationStatus == 'completed')
-        return 'label-completed';
-      else if(this.applicationStatus == 'deactivated')
-        return 'label-deactivated';
-      else if(this.applicationStatus == 'frozen')
-        return 'label-frozen';
-      else if(this.applicationStatus == 'open')
-        return 'label-open';
-      else if(this.applicationStatus == 'pending_payment')
-        return 'label-pending';
-      else if(this.applicationStatus == 'paid')
-        return 'label-paid';
-    },
-    showTabs: function(id) {
-        return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned', 'completed', 'pending_payment','paid']}}]}) ? true : false;
-    },
-    jobNotAssigned: function() {
-      if(this.applicationStatus == 'open' && this.status == 'active') {
-        return true;
-      }
-      return false;
-    },
-    paymentDetails: function() {
-      var jobDetails = Jobs.findOne({_id: Router.current().params._id});
-      return jobDetails;
-    },
-    assignedProviderDetails: function() {
-      var applicationDetails = {};
-      for(var i = 0; i < this.applications.length; i++) {
-        if(this.applications[i].userId == this.assignedProvider && this.applications[i].app_status == 'accepted') {
-          if(this.applications[i].app_type == 'application') {
-            applicationDetails = {
-              appType: this.applications[i].app_type,
-              appliedAt: this.applications[i].applied_at
-            }
-          }
-          if(this.applications[i].app_type == 'counteroffer') {
-            applicationDetails = {
-              appType: this.applications[i].app_type,
-              appliedAt: this.applications[i].applied_at,
-              counter_type: this.applications[i].counterType,
-              fixed_amount:this.applications[i].fixed_amount,
-              hourly_rate: this.applications[i].hourly_rate,
-              max_hours: this.applications[i].max_hours,
-              device_rate: this.applications[i].device_rate,
-              max_devices: this.applications[i].max_devices,
-              first_hours: this.applications[i].first_hours,
-              first_max_hours: this.applications[i].first_max_hours,
-              next_hours: this.applications[i].next_hours,
-              next_max_hours: this.applications[i].next_max_hours,
-              buyer_cost: this.applications[i].buyer_cost,
-              freelancer_nets: this.applications[i].freelancer_nets,
-            }
-          }
-        }
-      }
-      var provider = Profiles.findOne({userId: this.assignedProvider});
-      var providerImg = Users.findOne({_id: this.assignedProvider}).imgURL;
-      if(applicationDetails.appType == 'application') {
-        var providerDetails = {
-          name: provider.name,
-          title: provider.title,
-          status: provider.status,
-          imgUrl: providerImg,
-          id: provider._id,
-          readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
-          appType: applicationDetails.appType,
-          appliedAt: applicationDetails.appliedAt,
-          paymentType: this.ratebasis,
-          gross: this.your_cost,
-          freelancer_nets: this.freelancer_nets
-        }
-      }
-      if(applicationDetails.appType == 'counteroffer') {
-        var providerDetails = {
-          name: provider.name,
-          title: provider.title,
-          status: provider.status,
-          imgUrl: providerImg,
-          id: provider._id,
-          readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
-          appType: applicationDetails.appType,
-          appliedAt: applicationDetails.appliedAt,
-          paymentType: this.ratebasis,
-          counter_type: applicationDetails.counter_type,
-          fixed_amount:applicationDetails.fixed_amount,
-          hourly_rate: applicationDetails.hourly_rate,
-          max_hours: applicationDetails.max_hours,
-          device_rate: applicationDetails.device_rate,
-          max_devices: applicationDetails.max_devices,
-          first_hours: applicationDetails.first_hours,
-          first_max_hours: applicationDetails.first_max_hours,
-          next_hours: applicationDetails.next_hours,
-          next_max_hours: applicationDetails.next_max_hours,
-          buyer_cost: applicationDetails.buyer_cost,
-          freelancer_nets: applicationDetails.freelancer_nets
-        }
-      }
-      return providerDetails;
-    },
-    jobAssignedToProvider: function() {
-      if(this.applicationStatus == 'assigned' || this.applicationStatus == 'completed' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'paid')
-        return true;
-      return false;
-    },
-    buyerOrAssignedProvider: function() {
-      if(this.userId == Meteor.userId() || this.assignedProvider == Meteor.userId()) {
-        return true;
-      }
-      return false;
-    },
-    jobRelatedNotifications: function() {
-      var notifications = Notifications.find({jobId: this._id}, {sort: {timeStamp: -1}});
-      var notificationDetails = [];
-      notifications.forEach(function(notification) {
-        var buyerDetails = Buyers.findOne({userId: notification.buyerId});
-        if(notification.notificationType == 'newJob') {
+        if(notification.providerId) {
+          var providerDetails = Profiles.findOne({userId: notification.providerId});
           var notif = {
             jobId: notification.jobId,
             buyerId: buyerDetails._id,
             buyerName: buyerDetails.name,
+            providerId: providerDetails._id,
+            providerName: providerDetails.name,
             notificationType: notification.notificationType,
             timeStamp: moment(notification.timeStamp).format('LLLL')
           }
-        } else {
-          if(notification.providerId) {
-            var providerDetails = Profiles.findOne({userId: notification.providerId});
-            var notif = {
-              jobId: notification.jobId,
-              buyerId: buyerDetails._id,
-              buyerName: buyerDetails.name,
-              providerId: providerDetails._id,
-              providerName: providerDetails.name,
-              notificationType: notification.notificationType,
-              timeStamp: moment(notification.timeStamp).format('LLLL')
-            }
-          }
         }
-        notificationDetails.push(notif);
-      });
-      return notificationDetails;
-    },
-    thisProvider: function() {
-      var providerId = Profiles.findOne({_id: this.providerId}).userId;
-      if(providerId == Meteor.userId())
-        return true;
-      return false;
-    },
-    openOrFrozen: function() {
-      if(this.applicationStatus == 'open' || this.applicationStatus == 'frozen')
-        return true;
-      return false;
-    },
-    reviewedBuyer: function() {
-      return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]})? true: false;
-    },
-    reviewedProvider: function() {
+      }
+      notificationDetails.push(notif);
+    });
+    return notificationDetails;
+  },
+  thisProvider: function() {
+    var providerId = Profiles.findOne({_id: this.providerId}).userId;
+    if(providerId == Meteor.userId())
+      return true;
+    return false;
+  },
+  openOrFrozen: function() {
+    if(this.applicationStatus == 'open' || this.applicationStatus == 'frozen')
+      return true;
+    return false;
+  },
+  reviewedBuyer: function() {
+    return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]})? true: false;
+  },
+  reviewedProvider: function() {
     return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]})? true : false;
   },
   applicationTime: function() {
@@ -1198,25 +1220,24 @@ Template.job.helpers({
 });
 
 Template.job.rendered = function() {
-    var providerRatingPoints = 0;
-    var providerReviews = Reviews.find({$and: [{providerId: this.data.assignedProvider}, {reviewedBy: 'buyer'}]}).fetch();
-    if(providerReviews) {
-		for(var i = 0; i < providerReviews.length; i++) {
-			providerRatingPoints += providerReviews[i].pointsRated;
-		}
-	}
+  var providerRatingPoints = 0;
+  var providerReviews = Reviews.find({$and: [{providerId: this.data.assignedProvider}, {reviewedBy: 'buyer'}]}).fetch();
+  if(providerReviews) {
+  	for(var i = 0; i < providerReviews.length; i++) {
+  		providerRatingPoints += providerReviews[i].pointsRated;
+  	}
+  }
 	var providerReviewPoints = providerRatingPoints/providerReviews.length;
 	this.$('.providerRatings').rateit({'readonly': true, value: providerReviewPoints});
-    var buyerRatingPoints = 0;
-    var buyerReviews = Reviews.find({$and: [{buyerId: this.data.userId}, {reviewedBy: 'provider'}]}).fetch();
-    if(buyerReviews) {
-        for(var i = 0; i < buyerReviews.length; i++) {
-            buyerRatingPoints += buyerReviews[i].pointsRated;
-        }
-    }
-    var buyerReviewPoints = buyerRatingPoints/buyerReviews.length;
-    console.log(buyerReviewPoints);
-    this.$('.buyerRatings').rateit({'readonly': true, value: buyerReviewPoints});
+  var buyerRatingPoints = 0;
+  var buyerReviews = Reviews.find({$and: [{buyerId: this.data.userId}, {reviewedBy: 'provider'}]}).fetch();
+  if(buyerReviews) {
+      for(var i = 0; i < buyerReviews.length; i++) {
+          buyerRatingPoints += buyerReviews[i].pointsRated;
+      }
+  }
+  var buyerReviewPoints = buyerRatingPoints/buyerReviews.length;
+  this.$('.buyerRatings').rateit({'readonly': true, value: buyerReviewPoints});
   this.$('.rateit').rateit();
   this.ratingPoints = new ReactiveVar(null);
   $('#spinner').hide();
