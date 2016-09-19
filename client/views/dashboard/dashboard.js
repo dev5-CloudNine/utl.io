@@ -156,3 +156,21 @@ Template.dashboard.helpers({
 Template.dashboard.rendered = function () {
 	this.$('.rateit').rateit({'readonly': true});
 };
+
+Template.myGoogleMap.onRendered(function() {
+	this.autorun(() => {
+		if(GoogleMaps.loaded()) {
+			$('#place1').geocomplete({
+				map: $('#myMap'),
+				mapOptions: {
+					center: {lat: 0, lng: 0},
+					scrollwheel: true,
+					zoom: 2
+				},
+				markerOptions: {
+					draggable: true
+				}
+			})
+		}
+	})
+})

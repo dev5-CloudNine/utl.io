@@ -105,5 +105,15 @@
                 {{/if}}
             {{/if}}
         </div>
+        <div class="col-sm-12">
+            {{>myGoogleMap}}
+        </div>
+    </div>
+</template>
+
+<template name="myGoogleMap">
+    <div class="map-container">
+        <input type="text" id="place1" class="form-control">
+        <div id="myMap"></div>
     </div>
 </template>

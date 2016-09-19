@@ -142,3 +142,20 @@ Template.buyerFields.helpers({
       return S3.collection.find();
   }
 });
+
+Template.buyerLocationMap.onRendered(function() {
+  this.autorun(() => {
+    if(GoogleMaps.loaded()) {
+      $('#loc').geocomplete().bind('geocode:result', function(event, result) {
+        console.log(result)
+      })
+    }
+  })
+});
+
+Template.buyerLocationMap.helpers({
+  locationData : function(){
+    locLoaded = true;
+    return this.buyerProfile.location;
+  }
+})

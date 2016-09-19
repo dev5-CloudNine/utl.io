@@ -104,8 +104,9 @@
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 			<div class="form-group">
 	            <label for="loc" class="control-label">Location</label>
-	            <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="City, State, Zip" autocomplete="off"  value="{{locationData}}" spellcheck="off" data-source="location" maxlength="128" />
-	            <span class="help-block"></span>
+	            <!-- <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="City, State, Zip" autocomplete="off"  value="{{locationData}}" spellcheck="off" data-source="location" maxlength="128" />
+	            <span class="help-block"></span> -->
+	            {{>buyerLocationMap}}
             </div>
 		</div>
 	</div>
@@ -129,4 +130,10 @@
 	<hr>
 	{{>afQuickField name='description' rows=8  placeholder="Tell us about your professional self, how long you've been programming, things like that"}}
 	<hr>
+</template>
+
+<template name="buyerLocationMap">
+    <div class="map-container">
+        <input type="text" id="loc" data-schema-key="location" name="location" class="form-control" value="{{locationData}}" data-source="location" placeholder="City, State, Zip" required>
+    </div>
 </template>

@@ -1,4 +1,20 @@
 Template.job.events({
+  'click #loadMap': function(event, template) {
+    if(GoogleMaps.loaded()) {
+      $('#locationDet').geocomplete({
+        map: $('#loadMapHere'),
+        mapOptions: {
+          center: new google.maps.LatLng(this.fullLocation.latitude, this.fullLocation.longitude),
+          scrollwheel: true,
+          zoom: 20
+        },
+        markerOptions: {
+          visible: true,
+          position: new google.maps.LatLng(this.fullLocation.latitude, this.fullLocation.longitude)
+        }
+      })
+    }
+  },
   'change input[name="app_type"]': function(event, template) {
     if(event.target.value == 'application') {
       $('div#app_selected').show();

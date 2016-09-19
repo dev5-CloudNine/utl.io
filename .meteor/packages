@@ -105,3 +105,4 @@ bigdata:elasticsearch
 dfischer:phantomjs
 meteorhacks:ssr
 meteorhacks:search-source
+jeremy:geocomplete

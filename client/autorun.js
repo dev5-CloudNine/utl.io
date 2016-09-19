@@ -27,6 +27,10 @@ Tracker.autorun(function() {
 }
 });
 
+Meteor.startup(function() {
+	GoogleMaps.load({key: 'AIzaSyCYOFS20R2pwj_iypwsOloV5ctxzClT4GM', libraries: 'places'});
+})
+
 
 if (Meteor.isServer) {
 Cities._ensureIndex({

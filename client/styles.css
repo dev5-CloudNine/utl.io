@@ -1062,3 +1062,14 @@ ul.timeline > li > .timeline-panel:after {
 .tt-menu {
   width: 450px;
 }
+
+#myMap, #providerLocMap {
+  width: 100%;
+  height: 600px;
+  background: #666;
+  margin-bottom: 30px;
+}
+
+#loadMapHere {
+  height: 500px;
+}

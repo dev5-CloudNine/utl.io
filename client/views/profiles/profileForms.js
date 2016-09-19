@@ -223,3 +223,20 @@ Template.profileFields.helpers({
     return S3.collection.find();
   }
 });
+
+Template.providerLocationMap.onRendered(function() {
+  this.autorun(() => {
+    if(GoogleMaps.loaded()) {
+      $('#loc').geocomplete().bind('geocode:result', function(event, result) {
+        console.log(result)
+      })
+    }
+  })
+});
+
+Template.providerLocationMap.helpers({
+  locationData : function(){
+    locLoaded = true;
+    return this.profile.location;
+  }
+})

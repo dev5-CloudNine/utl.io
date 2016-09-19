@@ -69,7 +69,11 @@
                                             {{#if $eq servicelocation 'Remote Job'}}
                                                 <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
                                             {{else}}
-                                                <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
+                                                {{#if assignedProvider}}
+                                                    <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
+                                                {{else}}
+                                                    <i class="fa fa-map-marker"></i>&nbsp;{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}&nbsp;|&nbsp;
+                                                {{/if}}
                                             {{/if}}
                                             Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;
                                         </small>
@@ -108,10 +112,6 @@
                                                     <li><a href="{{this.file_url}}" download>{{this.file_name}}</a></li>
                                                 {{/each}}
                                             </ul>
-                                            <hr>
-                                        {{/if}}
-                                        {{#if location}}
-                                            <h4>Service Location</h4> {{location}}
                                             <hr>
                                         {{/if}}
                                         <h4>Service Schedule</h4>
@@ -1192,7 +1192,7 @@
                     </div>
                     {{#if applied}}
                         <div class="panel panel-default">
-                            <div class="panel-heading"><small>Application Details</small></div>
+                            <div class="panel-heading">Application Details</div>
                             <div class="panel-body">
                                 {{#with applicationDetails}}
                                     {{#if $eq this.app_type 'application'}}
@@ -1243,6 +1243,50 @@
                                 {{/with}}
                             </div>
                         </div>
+                    {{/if}}
+                    {{#if assignedProvider}}
+                        {{#if $eq servicelocation 'Field Job'}}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Service Location</div>
+                                <div class="panel-body">
+                                    {{#if fullLocation.street}}
+                                        {{fullLocation.street}} <br>
+                                    {{/if}}
+                                    {{#if fullLocation.sublocality}}
+                                        {{fullLocation.sublocality}},&nbsp;
+                                    {{/if}}
+                                    {{#if fullLocation.locality}}
+                                        {{fullLocation.locality}},&nbsp;
+                                    {{/if}}
+                                    {{#if fullLocation.state}}
+                                        {{fullLocation.state}},&nbsp;
+                                    {{/if}}
+                                    {{#if fullLocation.zip}}
+                                        {{fullLocation.zip}},&nbsp;
+                                    {{/if}}
+                                    {{#if fullLocation.country}}
+                                        {{fullLocation.country}} <br>
+                                    {{/if}}
+                                    {{#if fullLocation.mapLink}}
+                                        <br>
+                                        <button class="btn btn-primary btn-sm" id="loadMap" data-toggle="modal" data-target=".bs-example-modal-lg">View Map</button>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="modal fade bs-example-modal-lg" id="mapModal" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="text" id="locationDet" value="{{location}}" hidden>
+                                            <div id="loadMapHere"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/if}}
                     {{/if}}
                     {{#if assignedOrDone}}
                         {{#if assignedProvider}}

@@ -166,13 +166,6 @@ Template.jobFields.events({
 			$('button[type="submit"]').prop('disabled', false);
 		}
 	},
-	'change input[name="servicelocation"]': function(event, template) {
-		if(event.target.value == 'Field Job') {
-			$('div.loc').show();
-		} else {
-			$('div.loc').hide();
-		}
-	},
 	'change select[name="jobtype"]': function(event, instance) {
 		var parentId = $(event.target).val();
 		instance.selParent.set(parentId);
@@ -406,3 +399,22 @@ Template.jobNew.events({
 		})
 	}
 });
+
+Template.jobLocationMap.onRendered(function() {
+  this.autorun(() => {
+    if(GoogleMaps.loaded()) {
+      $('#loc').geocomplete({
+      	details: '#locationDetails'
+      })
+    }
+  })
+});
+
+Template.jobLocationMap.helpers({
+  locationData : function(){
+    locLoaded = true;
+    if(this.job)
+    	return this.job.location;
+    return;
+  }
+})

@@ -15,6 +15,47 @@ JobsIndex = new EasySearch.Index({
     }
   })
 });
+AddressSchema = new SimpleSchema({
+  street: {
+    type: String,
+    optional: true
+  },
+  locality: {
+    type: String,
+    optional: true
+  },
+  sublocality: {
+    type: String,
+    optional: true
+  },
+  state: {
+    type: String,
+    optional: true
+  },
+  zip: {
+    type: String,
+    regEx: /^[0-9]{5}$/,
+    optional: true
+  },
+  country: {
+    type: String,
+    optional: true
+  },
+  mapLink: {
+    type: String,
+    optional: true
+  },
+  latitude: {
+    type: Number,
+    optional: true,
+    decimal: true
+  },
+  longitude: {
+    type: Number,
+    optional: true,
+    decimal: true
+  }
+})
 Jobs.attachSchema(
   new SimpleSchema({
     title: {
@@ -24,6 +65,27 @@ Jobs.attachSchema(
     skillsrequired: {
       type: String,
       label: "Required Skills *"
+    },
+    fullLocation: {
+      type: AddressSchema,
+      optional: true,
+      custom: function() {
+        var shouldBeRequired = this.field('servicelocation').value == 'Field Job';
+        if(shouldBeRequired) {
+          if(!this.operator) {
+            if(!this.isSet || this.value === null || this.value === '')
+              return 'required';
+          }
+          else if(this.isSet) {
+            if(this.operator === '$set' && this.value === null || this.value === '')
+              return 'required';
+            if(this.operator === '$unset')
+              return 'required';
+            if(this.operator === '$rename')
+              return 'required';
+          }
+        }
+      }
     },
     location: {
       type: String,
@@ -530,11 +592,6 @@ Jobs.attachSchema(
       type: String,
       label: "Phone",
       max: 128,
-      optional: true
-    },
-    fullAddress: {
-      type: String,
-      label: "Full Address",
       optional: true
     },
     exactdate: {
