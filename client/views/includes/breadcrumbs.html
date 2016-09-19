@@ -3,10 +3,29 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="well well-sm">
-					<span>
-						<a href="{{pathFor 'home'}}">Home</a>
-					</span>
-					<span class="pull-right">
+					{{#if isInRole 'buyer, corporate-manager'}}
+						{{#unless currentUser.isBuyer}}
+							<span><a href="{{pathFor 'buyerNew'}}">Create Buyer Profile</a></span>
+						{{else}}
+							<span><a href="{{pathFor 'jobNew'}}">Post a Job</a></span>&nbsp;&#124;&nbsp;
+							{{#with buyer}}<span><a href="{{pathFor 'buyer'}}">My Profile</a></span>{{/with}}&nbsp;&#124;&nbsp;
+							<span><a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a></span>
+						{{/unless}}
+					{{/if}}
+					{{#if isInRole 'provider, corporate-provider'}}
+						{{#unless currentUser.isDeveloper}}
+							<span><a href="{{pathFor 'profileNew'}}">Create Provider Profile</a></span>
+						{{else}}
+							<span><a href="{{pathFor 'jobs'}}">View Jobs</a></span>&nbsp;&#124;&nbsp;
+							{{#with profile}}<span><a href="{{pathFor 'profile'}}">My Profile</a></span>{{/with}}&nbsp;&#124;&nbsp;
+							<span><a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a></span>
+						{{/unless}}
+					{{/if}}
+					{{#if isInRole 'admin'}}
+						<span><a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a></span>
+					{{/if}}
+					<span class='pull-right'>
+						<a href="{{pathFor 'home'}}">Home</a>&nbsp;&#124;&nbsp;
 						<a href="javascript: history.go(-1)">Back</a>
 					</span>
 				</div>

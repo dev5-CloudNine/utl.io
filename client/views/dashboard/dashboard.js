@@ -161,11 +161,12 @@ Template.myGoogleMap.onRendered(function() {
 	this.autorun(() => {
 		if(GoogleMaps.loaded()) {
 			$('#place1').geocomplete({
+				country: 'us',
 				map: $('#myMap'),
 				mapOptions: {
-					center: {lat: 0, lng: 0},
+					center: {lat: 40.7128, lng: -100.0059}, 
 					scrollwheel: true,
-					zoom: 2
+					zoom: 4
 				},
 				markerOptions: {
 					draggable: true

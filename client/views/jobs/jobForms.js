@@ -404,6 +404,7 @@ Template.jobLocationMap.onRendered(function() {
   this.autorun(() => {
     if(GoogleMaps.loaded()) {
       $('#loc').geocomplete({
+      	country: 'us',
       	details: '#locationDetails'
       })
     }
