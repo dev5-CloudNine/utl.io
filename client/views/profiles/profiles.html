@@ -2,14 +2,13 @@
 	<div class="row">
 		{{#if currentUser}}
 			<div class="col-sm-12">
-				<div class="well">
-					{{>EasySearch.Input index=profileIndex}}
-				</div>
+				<input type="text" class="form-control" id="search-box" placeholder="search providers here">
+				<hr>
 			</div>
 			{{#if isInRole 'buyer, admin, corporate-admin, corporate-manager'}}
-				{{#EasySearch.Each index=profileIndex}}
-			        {{>profileSmall}}
-			    {{/EasySearch.Each}}
+				{{#each profilesList}}
+					{{>profileSmall}}
+				{{/each}}
 			{{/if}}
 		{{/if}}
 	</div>

@@ -1,27 +1,19 @@
 <template name="jobs">
 	<div class="row">
         <div class="col-sm-12">
-            {{>searchBox}}
+            <input type="text" class="form-control" id="search-box" placeholder="search jobs here" />
             <hr>
         </div>
         <div class="col-sm-12">
             <p>All Open Jobs: New &#124; <a href="{{pathFor 'recommendedJobs'}}">Recommended</a> &#124; <a href="{{pathFor 'invitedJobs'}}">Invited</a></p>
         </div>
         <div class="col-sm-12">
-            {{>searchResult}}
+            {{#each openJobs}}
+                {{>jobSmall}}
+            {{/each}}
         </div>
     </div>
     <div class="text-center">
         {{>infiniteScroll}}
     </div>
-</template>
-
-<template name="searchBox">
-    <input type="text" class="form-control" id="search-box" placeholder="search jobs here" />
-</template>
-
-<template name="searchResult">
-    {{#each openJobs}}
-        {{>jobSmall}}
-    {{/each}}
 </template>

@@ -7,15 +7,27 @@ Template.buyers.onCreated(function() {
     });
 });
 
+var options = {
+    keepHistory: 1000 * 60 * 5,
+    localSearch: true
+};
+var fields = ['title', 'name', 'location'];
+
+BuyerSearch = new SearchSource('buyersList', fields, options);
+
 Template.buyers.helpers({
-    "buyers": function() {
-        return Buyers.find({}, {
-            sort: {
-                createdAt: -1
-            }
-        });
-    },
-    buyerIndex: function() {
-        return BuyersIndex;
+    buyersList: function() {
+        return BuyerSearch.getData({}, {sort: {createdAt: -1}});
     }
 });
+
+Template.buyers.rendered = function() {
+    BuyerSearch.search('');
+}
+
+Template.buyers.events({
+    'keyup #search-box': _.throttle(function(e) {
+        var text = $(e.target).val().trim();
+        BuyerSearch.search(text);
+    }, 200)
+})

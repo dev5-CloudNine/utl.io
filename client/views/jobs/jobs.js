@@ -1,48 +1,35 @@
-// Template.jobs.onCreated(function() {
-//     this.infiniteScroll({
-//         perPage: 30,
-//         subManager: subs,
-//         collection: Jobs,
-//         publication: 'jobs'
-//     });
-// });
-
-// Template.jobs.helpers({
-//     "jobs": function() {
-//         return Jobs.find({}, {
-//             sort: {
-//                 createdAt: -1
-//             }
-//         });
-//     },
-//     jobIndex: function() {
-//         return JobsIndex;
-//     }
-// })
+Template.jobs.onCreated(function() {
+    this.infiniteScroll({
+        perPage: 30,
+        subManager: subs,
+        collection: Jobs,
+        publication: 'jobs'
+    });
+});
 
 var options = {
     keepHistory: 1000 * 60 * 5,
     localSearch: true
 };
-var fields = ['title', 'location', 'jobtype', 'jobSubCategory', 'servicelocation'];
+var fields = ['title', 'location', 'jobtype', 'jobSubCategory', 'servicelocation', 'readableID'];
 
-PackageSearch = new SearchSource('openJobs', fields, options);
+JobSearch = new SearchSource('openJobs', fields, options);
 
-Template.searchResult.helpers({
+Template.jobs.helpers({
     openJobs: function() {
-        return PackageSearch.getData({$and: [{invited: false}, {routed: false}]}, {
+        return JobSearch.getData({$and: [{invited: false}, {routed: false}]}, {
             sort: {createdAt: -1}
         });
     }
 });
 
-Template.searchResult.rendered = function() {
-    PackageSearch.search('');
+Template.jobs.rendered = function() {
+    JobSearch.search('');
 };
 
-Template.searchBox.events({
+Template.jobs.events({
     'keyup #search-box': _.throttle(function(e) {
         var text = $(e.target).val().trim();
-        PackageSearch.search(text);
+        JobSearch.search(text);
     }, 200)
 })
