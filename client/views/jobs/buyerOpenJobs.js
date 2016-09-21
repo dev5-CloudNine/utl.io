@@ -1,6 +1,25 @@
+var options = {
+    keepHistory: 1000 * 60 * 5,
+    localSearch: true
+};
+var fields = ['title', 'location', 'jobtype', 'jobSubCategory', 'servicelocation', 'readableID'];
+
+BuyerOpenJobsSearch = new SearchSource('buyerOpenJobs', fields, options);
+
+Template.buyerOpenJobs.events({
+	'keyup #search-box': _.throttle(function(e) {
+		var text = $('#search-box').val().trim();
+		BuyerOpenJobsSearch.search(text);
+	}, 200)
+})
+
+Template.buyerOpenJobs.rendered = function() {
+	BuyerOpenJobsSearch.search('');
+}
+
 Template.buyerOpenJobs.helpers({
 	buyerOpenJobs: function () {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
+		return BuyerOpenJobsSearch.getData({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}, {$sort: {createdAt: -1}});
 	},
 	buyerOpenCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();

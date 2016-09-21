@@ -1,6 +1,25 @@
+var options = {
+    keepHistory: 1000 * 60 * 5,
+    localSearch: true
+};
+var fields = ['title', 'location', 'jobtype', 'jobSubCategory', 'servicelocation', 'readableID'];
+
+BuyerCompletedJobsSearch = new SearchSource('buyerCompletedJobs', fields, options);
+
+Template.buyerCompletedJobs.events({
+	'keyup #search-box': _.throttle(function(e) {
+		var text = $('#search-box').val().trim();
+		BuyerCompletedJobsSearch.search(text);
+	}, 200)
+})
+
+Template.buyerCompletedJobs.rendered = function() {
+	BuyerCompletedJobsSearch.search('');
+}
+
 Template.buyerCompletedJobs.helpers({
 	buyerCompletedJobs: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'completed'}]}).fetch();
+		return BuyerCompletedJobsSearch.getData({$and: [{userId: Meteor.userId()}, {applicationStatus: 'completed'}]});
 	},
 	postedJobCount: function() {
 		return Jobs.find({userId: Meteor.userId()}).count();
