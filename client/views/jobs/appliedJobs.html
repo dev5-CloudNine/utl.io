@@ -2,13 +2,12 @@
 	<div class="row">
 		<div class="col-sm-12">
 			<p>My Jobs: <a href="{{pathFor 'providerAllJobs'}}">All - {{providerAllCount}}</a> &#124; Applied - {{appliedJobsCount}} &#124; <a href="{{pathFor 'providerRoutedJobs'}}">Routed - {{routedJobsCount}}</a> &#124; <a href="{{pathFor 'providerAssignedJobs'}}">Assigned - {{assignedJobsCount}}</a> &#124; <a href="{{pathFor 'providerCompletedJobs'}}">Completed - {{completedJobsCount}}</a> &#124; <a href="{{pathFor 'providerPaymentPendingJobs'}}">Payment Pending - {{proPaymentJobsCount}}</a> &#124; <a href="{{pathFor 'providerPaidJobs'}}">Paid - {{proPaidJobsCount}}</a></p>
-			<hr>
 		</div>
 		<div class="col-sm-12">
+			<hr>
 			{{#each appliedJobs}}
 				{{>jobSmall}}
 			{{else}}
-				<hr>
 				<p>You haven't applied for any jobs yet. <a href="{{pathFor 'jobs'}}">Find jobs</a> to apply.</p>
 			{{/each}}
 		</div>
