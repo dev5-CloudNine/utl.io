@@ -94,7 +94,7 @@ Meteor.methods({
             options.limit = 50;
         }
         var regex = new RegExp("^" + query,'gi');
-        return Profiles.find({name: {$regex: regex}}, options).fetch();
+        return Profiles.find({$or: [{name: {$regex: regex}}, {readableID: {$regex: regex}}]}, options).fetch();
     },
     "deleteFile": function(id) {
         Images.remove({_id:id});

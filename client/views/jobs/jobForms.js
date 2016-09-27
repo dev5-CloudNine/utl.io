@@ -22,6 +22,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob', 'duplicateJob'], {
 
 Template.jobFields.rendered = function() {
   	$('#spinner').hide();
+  	$('.fileUploadProgress').hide();
 	Meteor.typeahead.inject('.typeahead');
 	$('.note-editor .note-toolbar .note-insert').remove();
 }
@@ -172,7 +173,7 @@ Template.jobFields.events({
 	},
 	'change .file_bag': function(event, template){
 		event.preventDefault();
-		$('#spinner').show();
+		$('.fileUploadProgress').show();
 		var files = $(event.currentTarget)[0].files;
 		if(!files)
 			return;
@@ -180,7 +181,7 @@ Template.jobFields.events({
 			files: files,
 			path: S3_FILEUPLOADS
 		}, function(error, result) {
-			$('#spinner').hide();
+			$('.fileUploadProgress').hide();
 			if(error) {
 				toastr.error('Failed to upload documents.');
 			}
@@ -188,9 +189,9 @@ Template.jobFields.events({
 				var jobID = Router.current().params._id;
 				if(Router.current().params.userId) {
 					var files = [];
-					var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.file.original_name+'</a></li>'
+					var fileListItem = '<div class="thumbnail" data-url=' + result.secure_url + '><span title="Remove" class="close-preview" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')">&times;</span><a href=' + result.secure_url + ' target="_blank">' + result.file.original_name + '</a><div class="caption" style="overflow: hidden; word-wrap: break-word"><a href=' + result.secure_url + ' + target="_blank">' + result.file.original_name + '</a></div></div>'
 					$('.fileList').append(fileListItem);
-					$('ul.fileList li').each(function(li) {
+					$('div.fileList div.thumbnail').each(function(li) {
 						var fileDetails = {
 							file_url: $(this).data('url'),
 							file_name: result.file.original_name
@@ -212,9 +213,10 @@ Template.jobFields.events({
 		            });
 				} else {
 					var files = [];
-					var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.file.original_name+'</a></li>'
+					// var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.file.original_name+'</a></li>';
+					var fileListItem = '<div class="col-md-2"><div class="thumbnail" data-url=' + result.secure_url + ' style="position:relative;"><span title="Remove" class="close-preview" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')">&times;</span><a href=' + result.secure_url + ' target="_blank"><img src=' + result.secure_url + ' style="height: 100px" onerror=this.src="/images/genericFile.jpg"></a><div class="caption" style="overflow: hidden; word-wrap: break-word"><a href=' + result.secure_url + ' + target="_blank">' + result.file.original_name + '</a></div></div></div>'
 					$('.fileList').append(fileListItem);
-					$('ul.fileList li').each(function(li) {
+					$('div.fileList div.thumbnail').each(function(li) {
 						var fileDetails = {
 							file_url: $(this).data('url'),
 							file_name: result.file.original_name
@@ -257,15 +259,17 @@ Array.prototype.pushArray = function(files) {
 };
 
 removeFile = function(url) {
+	$('#spinner').show();
 	var index = url.indexOf(S3_FILEUPLOADS)-1;
 	var path = url.substr(index);
 	S3.delete(path, function(err, res) {
-	  if (err) {
-	    toastr.error("Operation failed");
-	  } else {
-	  	$("ul.fileList").find("[data-url='"+url+"']").remove();
-	  	toastr.success('Document is deleted successfully');
-	  }
+		$('#spinner').hide();
+		if (err) {
+			toastr.error("Operation failed");
+		} else {
+			$("div.fileList").find("[data-url='"+url+"']").remove();
+			toastr.success('Document is deleted successfully');
+		}
 	});
 }
 
@@ -310,6 +314,9 @@ Template.jobFields.helpers({
 	files: function() {
 		if(!this.job) return [];
 		return Jobs.findOne({_id:this.job._id}).files;
+	},
+	uploadedFiles: function() {
+		return S3.collection.find();
 	}
 });
 

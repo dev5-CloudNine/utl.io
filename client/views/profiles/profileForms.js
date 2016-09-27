@@ -121,12 +121,12 @@ Template.profileFields.events({
   },
   "click .remove-resume" : function(event) {
     event.preventDefault();
-    $('#spinner').show();
+    $('#resumespinner').show();
     var url = $(event.currentTarget).data('url');
     var index = url.indexOf(S3_FILEUPLOADS)-1;
     var path = url.substr(index);
     S3.delete(path, function(err, res) {
-      $('#spinner').hide();
+      $('#resumespinner').hide();
       if (err) {
           toastr.error("Operation failed");
       } else {
@@ -170,7 +170,8 @@ Template.profileEdit.events({
 });
 
 Template.profileFields.rendered = function() {
-  $('#spinner').hide();
+  $('#resumespinner').hide();
+  $('#imgspinner').hide();
   $('.profileImgProgress').hide();
   $('.resumeProgress').hide();
   Meteor.typeahead.inject('.typeahead');

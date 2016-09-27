@@ -10,7 +10,7 @@
                         </a>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                        <a href="{{pathFor 'buyerCompletedJobs'}}">
+                        <a href="{{pathFor 'buyerPaidJobs'}}">
                             <span class="count_top"><i class="fa fa-clock-o"></i> Jobs Completed</span>
                             <div class="count">{{buyerCompletedJobsCount}}</div>
                         </a>
@@ -113,9 +113,9 @@
                 {{/if}}
             {{/if}}
         </div>
-        <div class="col-sm-12">
+        <!-- <div class="col-sm-12">
             {{>myGoogleMap}}
-        </div>
+        </div> -->
     </div>
 </template>
 

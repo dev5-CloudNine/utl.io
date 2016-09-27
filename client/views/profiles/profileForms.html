@@ -59,7 +59,7 @@
         </div>
     </div>
     <div class="row">
-        <div id="spinner" style="position: relative;">
+        <div id="imgspinner" style="position: relative;">
             {{> spinner}}
         </div>
     </div>
@@ -119,12 +119,15 @@
                 <label class="control-label"></label>
                 <div class="input-group">
                     <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px">
-                        <input type="file" class="resume_bag" accept="application/pdf,application/msword"> Upload Resume
+                        <input type="file" class="resume_bag" accept=".doc, .docx, .pdf"> Upload Resume
                     </label>
                 </div>
             </div>
         </div>
         <div class="col-sm-12">
+            <div id="resumespinner">
+                {{> spinner}}
+            </div>
             {{#each uploadedFiles}}
                 <div class="resumeProgress">
                     <div class="progress-bar progress-bar-striped" role="progressbar"
@@ -132,13 +135,21 @@
                 </div>
             {{/each}}
         </div>
-        <div class="col-sm-12">
-            {{#each resumeUrl}}
-                <ul class="list-unstyled">
-                    <li><a href="{{this.file_url}}">{{this.file_name}}</a>&nbsp;(<a href class="remove-resume" data-url="{{this.file_url}}">Remove</a>)</li>
-                </ul>
-            {{/each}}
-        </div>
+    </div>
+    <div class="row">
+        {{#each resumeUrl}}
+            <div class="col-sm-2">
+                <div class="thumbnail" style="position: relative;">
+                    <span title="Remove" class="close-preview remove-resume" data-url={{this.file_url}} style="cursor: pointer;">&times;</span>
+                    <a href="{{this.file_path}}" target="_blank">
+                      <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
+                    </a>
+                    <div class="caption" style="overflow: hidden;word-wrap: break-word;">
+                        <a href="{{this.file_path}}" target="_blank">{{this.file_name}}</a>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
     </div>
     <hr>
     <div class="row">

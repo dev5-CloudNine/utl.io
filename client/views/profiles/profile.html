@@ -46,7 +46,9 @@
 								<i class="fa fa-envelope"></i>&nbsp;{{contact}}
 							{{/if}}
 							{{#if resumeURL}}
-								<i class="fa fa-file-text"></i>&nbsp;&nbsp;<a href="{{this.file_url}}" target="_blank" download>{{this.file_name}}</a>
+								{{#with resumeURL}}
+								<i class="fa fa-file-text"></i>&nbsp;&nbsp;<a href="{{file_url}}" target="_blank" download>{{file_name}}</a>
+								{{/with}}
 								<hr>
 							{{/if}}
 						</small>

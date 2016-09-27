@@ -31,7 +31,7 @@ Template.profile.helpers({
     return Meteor.users.findOne({_id: this.userId}).imgURL;
   },
   resumeURL: function() {
-    return Meteor.users.findOne({_id: this.userId}).resumeURL;
+    return Meteor.users.findOne({_id: this.userId}).resumeURL[0];
   },
   itypes: function() {
     var itypes = [];

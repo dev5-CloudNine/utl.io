@@ -4,6 +4,9 @@
 			<p>All Open Jobs: <a href="{{pathFor 'jobs'}}">New </a> &#124; <a href="{{pathFor 'recommendedJobs'}}">Recommended</a> &#124; Invited</p>
 		</div>
 		<div class="col-sm-12">
+			<hr>
+		</div>
+		<div class="col-sm-12">
 			{{#if currentUser}}
 				{{#each invitedJobs}}
 					{{>jobSmall}}

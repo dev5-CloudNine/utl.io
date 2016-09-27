@@ -105,16 +105,33 @@
                                         <hr>
                                         <h4>Description</h4> {{{htmlDescription}}}
                                         <hr>
-                                        {{#if files}}
+                                    </div>
+                                </div>
+                                {{#if files}}
+                                    <div class="row">                                    
+                                        <div class="col-sm-12">
                                             <h4>Attached Documents</h4>
-                                            <ul style="list-style: none;">
-                                                {{#each files}}
-                                                    <li><a href="{{this.file_url}}" download>{{this.file_name}}</a></li>
-                                                {{/each}}
-                                            </ul>
+                                        </div>                                        
+                                        {{#each files}}
+                                            <div class="col-md-3">
+                                                <div class="thumbnail" data-url={{this.file_url}} style="position: relative;">
+                                                    <a href="{{this.file_url}}" target="_blank" download>
+                                                      <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
+                                                    </a>
+                                                    <div class="caption text-center" style="overflow: hidden;word-wrap: break-word;">
+                                                        <a href="{{this.file_url}}" target="_blank" download>{{this.file_name}}</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {{/each}}
+                                        <div class="col-sm-12">
                                             <hr>
-                                        {{/if}}
-                                        <h4>Service Schedule</h4>
+                                        </div>
+                                    </div>
+                                {{/if}}
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                       <h4>Service Schedule</h4>
                                         {{#if $eq serviceschedule 'exactdate'}}
                                             On: {{formatDate exactdate}} <br>
                                             Time: {{exacttime}}
@@ -253,13 +270,13 @@
                                                             {{#each fileList _id}}
                                                                 <div class="col-xs-6 col-md-3">
                                                                     <div class="thumbnail" style="position: relative;">
-                                                                    <span title="Remove" data-id="{{../_id}}" data-path={{this.file_url}} class="close-preview remove-file" style="cursor: pointer;">&times;</span>
-                                                                    <a href="{{this.file_path}}" target="_blank">
-                                                                      <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
-                                                                    </a>
-                                                                    <div class="caption" style="overflow: hidden;word-wrap: break-word;">
-                                                                        <a href="{{this.file_path}}" target="_blank">{{this.file_name}}</a>
-                                                                    </div>
+                                                                        <span title="Remove" data-id="{{../_id}}" data-path={{this.file_url}} class="close-preview remove-file" style="cursor: pointer;">&times;</span>
+                                                                        <a href="{{this.file_path}}" target="_blank">
+                                                                          <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
+                                                                        </a>
+                                                                        <div class="caption" style="overflow: hidden;word-wrap: break-word;">
+                                                                            <a href="{{this.file_path}}" target="_blank">{{this.file_name}}</a>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             {{else}}

@@ -105,7 +105,7 @@
     </div>
     {{> afQuickField name='description' rows=12 placeholder="Tell prospective service providers about this job in detail."}}
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <div class="col-xs-12">
             <div class="form-group">
                 <label class="control-label"></label>
                 <div class="input-group">
@@ -119,12 +119,33 @@
             <div id="spinner">
                 {{> spinner}}
             </div>
-            <ul class="fileList" style="list-style-type: none;">
+            {{#each uploadedFiles}}
+                <div class="fileUploadProgress">
+                    <div class="progress-bar progress-bar-striped" role="progressbar"
+                    aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">{{percent_uploaded}}%</div>
+                </div>
+            {{/each}}
+        </div>
+            <!-- <ul class="fileList" style="list-style-type: none;">
                 {{#each files}}
                     <li><i class="fa fa-times-circle remove-job-file" data-url="{{this.file_url}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this.file_url}}" target="_blank">{{this.file_name}}</a></li>
                 {{/each}}
-            </ul>
-        </div>
+            </ul> -->
+        <div class="fileList">
+            {{#each files}}
+                <div class="col-md-2">
+                    <div class="thumbnail" style="position: relative;">
+                        <span title="Remove" class="close-preview remove-job-file" data-url={{this.file_url}} style="cursor: pointer;">&times;</span>
+                        <a href="{{this.file_path}}" target="_blank">
+                          <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
+                        </a>
+                        <div class="caption" style="overflow: hidden;word-wrap: break-word;">
+                            <a href="{{this.file_path}}" target="_blank">{{this.file_name}}</a>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div> 
     </div>
     <hr>
     <div class="row">
