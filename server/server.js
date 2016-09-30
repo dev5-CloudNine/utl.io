@@ -205,12 +205,11 @@ Meteor.methods({
         var providerName = Profiles.findOne({userId: applicationDetails.userId}).name;
         var buyerName = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId}).name;
         var buyerSmsEmail = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId}).smsAddress;
-        var jobName = Jobs.findOne({_id: jobId}).title;
-        var jobSlug = Jobs.findOne({_id: jobId}).slug();
+        var jobDetails = Jobs.findOne({_id: jobId});
         var notificationObj = {
             jobId: jobId,
             providerId: applicationDetails.userId,
-            buyerId: Jobs.findOne({_id: jobId}).userId,
+            buyerId: jobDetails.userId,
             timeStamp: applicationDetails.applied_at,
             notificationType: 'newJobApplication',
             read: false,
@@ -221,11 +220,11 @@ Meteor.methods({
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {appliedJobs: jobId}});
         Notifications.insert(notificationObj);
         Email.send({
-            to: getUserEmail(Meteor.users.findOne({_id: Jobs.findOne({_id: jobId}).userId})),
+            to: getUserEmail(Meteor.users.findOne({_id: jobDetails.userId})),
             cc: buyerSmsEmail,
             from: FROM_EMAIL,
             subject: 'A provider has applied for the job you posted.',
-            text: 'Hello ' + buyerName + ', ' + providerName + ' has applied for you job ' + jobName + '. Click on the following link to see the list of applications. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
+            html: 'Hello ' + buyerName + ',<br> ' + providerName + ' has applied for your job posted. <br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to see the list of applications.'
         });
     },
     removeFromAppliedJobs: function(jobId, userId) {
@@ -234,21 +233,20 @@ Meteor.methods({
     },
     acceptApplication: function(jobId, userId, applicationTime) {
         var buyerName = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId}).name;
-        var jobname = Jobs.findOne({_id: jobId}).title;
+        var jobDetails = Jobs.findOne({_id: jobId});
         var providerName = Profiles.findOne({userId: userId}).name;
         var providerSmsEmail = Profiles.findOne({userId: userId}).smsAddress;
-        var jobSlug = Jobs.findOne({_id: jobId}).slug();
         var notificationObj = {
             jobId: jobId,
             providerId: userId,
-            buyerId: Jobs.findOne({_id: jobId}).userId,
+            buyerId: jobDetails.userId,
             timeStamp: new Date(),
             notificationType: 'applicationAccepted',
             read: false,
             side: 'provider',
             adminRead: false
         }
-        var jobNets = Jobs.findOne({_id: jobId}).freelancer_nets;
+        var jobNets = jobDetails.freelancer_nets;
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen'}});
         Jobs.update({_id: jobId}, {$set: {proposedBudget: jobNets}});
         Notifications.insert(notificationObj);
@@ -256,8 +254,8 @@ Meteor.methods({
             to: getUserEmail(Meteor.users.findOne({_id: userId})),
             cc: providerSmsEmail,
             from: FROM_EMAIL,
-            subject: buyerName + ' has accepted your application for the job ' + jobname,
-            text: 'Hello ' + providerName + ', ' + buyerName + 'has accepted you application for the job '+ jobname + '. You may confirm the assignment or reject the assignment by clicking the following link. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
+            subject: buyerName + ' has accepted your application for the job ' + jobDetails.title,
+            html: 'Hello ' + providerName + ', <br>' + buyerName + ' has accepted you application for the job you applied. <br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>You may confirm the assignment or reject the assignment by <a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">clicking here</a>'
         })
     },
     "acceptCounterOffer": function(jobId, userId, applied_at, buyerCost, freenets) {
@@ -283,7 +281,7 @@ Meteor.methods({
             cc: providerSmsEmail,
             from: FROM_EMAIL,
             subject: buyerName + ' has accepted your counter offer for the job ' + jobDetails.title,
-            text: 'Hello ' + providerName + ', ' + buyerName + 'has accepted you application for the job '+ jobDetails.title + '. You may confirm the assignment or reject the assignment by clicking the following link. ' + Meteor.absoluteUrl('jobs/' + jobId)
+            html: 'Hello ' + providerName + ', <br>' + buyerName + ' has accepted you application for the job you applied. <br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>You may confirm the assignment or reject the assignment by <a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">clicking here</a>'
         })
     },
     rejectApplication: function(jobId, userId, applied_at) {
@@ -326,7 +324,7 @@ Meteor.methods({
             cc: buyerSmsEmail,
             from: FROM_EMAIL,
             subject: 'Provider has confirmed assignment.',
-            text: 'Hello ' + buyerName + ', ' + providerName + ' has confirmed the assignment for the job ' + jobName + ' and the job is now assigned. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
+            html: 'Hello ' + buyerName + ', <br>' + providerName + ' has confirmed the assignment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId + '/') + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>The job is now assigned.'
         });
     },
     declineAssignment: function(jobId, userId) {
@@ -356,19 +354,18 @@ Meteor.methods({
             cc: buyerSmsEmail,
             from: FROM_EMAIL,
             subject: 'Provider has declined assignment.',
-            text: 'Hello ' + buyerName + ', ' + providerName + ' has declined the assignment for the job ' + jobDetails.title + ' and the job is now Open. Click the following link to choose a different provider. ' + Meteor.absoluteUrl('jobs/' + jobDetails._id)
+            html: 'Hello ' + buyerName + ',<br>' + providerName + ' has declined the assignment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableId + ' - ' + jobDetails.title + '</a><br>The job is now open. <a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to choose a different provider.'
         })
     },
     submitAssignment: function(jobId) {
         var providerName = Profiles.findOne({userId: Meteor.userId()}).name;
         var buyerName = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId}).name;
         var buyerSmsEmail = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId}).smsAddress;
-        var jobName = Jobs.findOne({_id: jobId}).title;
-        var jobSlug = Jobs.findOne({_id: jobId}).slug();
+        var jobDetails = Jobs.findOne({_id: jobId});
         var notificationObj = {
             jobId: jobId,
             providerId: Meteor.userId(),
-            buyerId: Jobs.findOne({_id: jobId}).userId,
+            buyerId: jobDetails.userId,
             timeStamp: new Date(),
             notificationType: 'submitAssignment',
             read: false,
@@ -381,8 +378,8 @@ Meteor.methods({
             to: getUserEmail(Meteor.users.findOne({_id: Jobs.findOne({_id: jobId}).userId})),
             cc: buyerSmsEmail,
             from: FROM_EMAIL,
-            subject: 'Provider has submitted assignment for your job.',
-            text: 'Hello ' + buyerName + ', ' + providerName + ' has submitted assignment for your job ' + jobName + '. Click the following link to either approve or reject the assignment. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
+            subject: 'Provider has job for approval.',
+            html: 'Hello ' + buyerName + ',<br>' + providerName + ' has submitted job for approval. <br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to either approve or reject the job done.'
         })
     },
     approveAssignment: function(jobId, providerId) {
@@ -410,7 +407,7 @@ Meteor.methods({
             cc: providerSmsEmail,
             from: FROM_EMAIL,
             subject: 'Buyer has approved your assignment.',
-            text: 'Hello ' + providerName + ', ' + buyerName + ' has approved your assignment for the job ' + jobDetails.title + '. Click the following link to request for payment. ' + Meteor.absoluteUrl('jobs/' + jobDetails._id)
+            html: 'Hello ' + providerName + ',<br>' + buyerName + ' has approved the job you submitted.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableId + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to raise an invoice and request for payment.'
         });
     },
     rejectAssignment: function(jobId) {
@@ -436,7 +433,7 @@ Meteor.methods({
             cc: providerSmsEmail,
             from: FROM_EMAIL,
             subject: 'Buyer has rejected your assignment.',
-            text: 'Hello ' + providerName + ', ' + buyerName + ' has rejected your assignment for the job ' + jobName + '. Click the following link to submit the assignment. ' + Meteor.absoluteUrl('jobs/' + jobId + '/' + jobSlug)
+            html: 'Hello ' + providerName + ',<br>' + buyerName + ' has rejected the job you submitted for approval.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableId + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to view details and discuss the matter with the buyer.'
         })
     },
     publishToFavsUpdate: function(job) {
@@ -445,8 +442,6 @@ Meteor.methods({
             var providerName = Profiles.findOne({userId: job.favoriteProviders[i]}).name;
             var providerSmsEmail = Profiles.findOne({userId: job.favoriteProviders[i]}).smsAddress;
             var buyerName = Buyers.findOne({userId: Meteor.userId()}).name;
-            var jobName = job.title;
-            var jobSlug = Jobs.findOne({_id: job._id}).slug();
             Profiles.update({userId: job.favoriteProviders[i]}, {$addToSet: {invitedJobs: job._id}});
             var notificationObj = {
                 jobId: job._id,
@@ -464,7 +459,7 @@ Meteor.methods({
                 cc: providerSmsEmail,
                 from: FROM_EMAIL,
                 subject: 'A buyer has invited to bid on his job.',
-                text: 'Hello' + providerName + ', '+ buyerName + ' has invited you to bid on one of his jobs ' + jobName + '. Click on the following link to apply or counter offer the job. ' + Meteor.absoluteUrl('jobs/' + job._id)
+                html: 'Hello ' + providerName + ',<br>' + buyerName + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">' + job.readableId + ' - ' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
             })
         }
     },
@@ -489,7 +484,7 @@ Meteor.methods({
             cc: providerDetails.smsAddress,
             from: FROM_EMAIL,
             subject: 'A buyer has invited to bid on his job.',
-            text: 'Hello' + providerDetails.name + ', '+ buyerDetails.name + ' has invited you to bid on one of his jobs ' + job.title + '. Click on the following link to apply or counter offer the job. ' + Meteor.absoluteUrl('jobs/' + job._id)
+            html: 'Hello ' + providerDetails.name + ',<br>' + buyerDetails.name + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">' + job.readableId + ' - ' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
         });
     },
     routeNotification: function(buyerId, doc) {
@@ -514,7 +509,7 @@ Meteor.methods({
             cc: providerSmsEmail,
             from: FROM_EMAIL,
             subject: 'A buyer has directly routed a job to you.',
-            text: 'Hello ' + providerName + ', ' + buyerName + ' has directly routed a job ' + jobName + ' to you. You may confirm the assignment or reject the assignment by clicking the following link. ' + Meteor.absoluteUrl('jobs/' + doc._id)
+            html: 'Hello ' + providerName + ',<br>' + buyerName + ' has directly routed a job to you.<br><a href="' + Meteor.absoluteUrl('jobs/' + doc._id) + '">' + doc.readableID + ' - ' + doc.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + doc._id) + '">Click here</a> to confirm or reject the job offer.'
         })
     },
     requestPayment: function(jobId) {
@@ -532,7 +527,7 @@ Meteor.methods({
         }
         var notificationObj = {
             providerId: Meteor.userId(),
-            buyerId: Jobs.findOne({_id: jobId}).userId,
+            buyerId: jobDetails.userId,
             jobId: jobId,
             timeStamp: new Date(),
             notificationType: 'requestPayment',
@@ -546,11 +541,11 @@ Meteor.methods({
         Invoices.insert(invoiceObject);
         Notifications.insert(notificationObj);
         Email.send({
-            to: getUserEmail(Meteor.users.findOne({_id: Jobs.findOne({_id: jobId}).userId})),
+            to: getUserEmail(Meteor.users.findOne({_id: jobDetails.userId})),
             cc: buyerDetails.smsAddress,
             from: FROM_EMAIL,
             subject: 'A provider has requested payment for your job.',
-            text: 'Hello ' + buyerDetails.name + ', ' + providerDetails.name + ' has requested payment for the job ' + jobDetails.title + '. Click on the following link to approve the payment. ' + Meteor.absoluteUrl('jobs/' + jobId)
+            html: 'Hello ' + buyerDetails.name + ',<br>' + providerDetails.name + ' has requested payment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '<br>Click here</a> to approve the payment.'
         });
     },
     approvePayment: function(jobId) {
@@ -591,7 +586,7 @@ Meteor.methods({
             cc: providerDetails.smsAddress,
             from: FROM_EMAIL,
             subject: 'Buyer has approved payment for your job.',
-            text: 'Hello ' + providerDetails.name + ', ' + buyerDetails.name + ' has approved payment for the job ' + jobDetails.title + '. Now the job is complete and you may rate the buyer.'
+            html: 'Hello ' + providerDetails.name + ',<br>' + buyerDetails.name + ' has approved payment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>Now the job is complete and you may rate the buyer by <a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">clicking here</a>.'
         })
     },
     reviewProvider: function(providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage) {

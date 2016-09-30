@@ -15,7 +15,7 @@ Template.payment.events({
 		});
 	},
 	'click .authUrl' : function(){
-		Meteor.call('authUrl', 1, function (error, result) {
+		Meteor.call('authUrl', Meteor.userId(), function (error, result) {
 			if(error){
 				console.log(error);
 				return;
@@ -24,7 +24,7 @@ Template.payment.events({
 		});
 	},
 	'click .dwolla-balance' : function(){
-		Meteor.call('getBalance', function (error, result) {
+		Meteor.call('getBalance', Meteor.userId(), function(error, result) {
 			if(error){
 				console.log(error);
 				return;
