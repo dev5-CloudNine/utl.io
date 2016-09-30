@@ -2,7 +2,11 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="well well-sm">
+				<div class="well well-sm pull-right">
+					<a href="{{pathFor 'home'}}">Home</a>&nbsp;&#124;&nbsp;
+					<a href="javascript: history.go(-1)">Back</a>
+				</div>
+				<div class="well well-sm pull-left">
 					{{#if isInRole 'buyer, corporate-manager'}}
 						{{#unless currentUser.isBuyer}}
 							<span><a href="{{pathFor 'buyerNew'}}">Create Buyer Profile</a></span>
@@ -24,10 +28,6 @@
 					{{#if isInRole 'admin'}}
 						<span><a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a></span>
 					{{/if}}
-					<span class='pull-right'>
-						<a href="{{pathFor 'home'}}">Home</a>&nbsp;&#124;&nbsp;
-						<a href="javascript: history.go(-1)">Back</a>
-					</span>
 				</div>
 			</div>
 		</div>

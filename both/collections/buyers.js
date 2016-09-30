@@ -16,17 +16,29 @@ Buyers.attachSchema(
 		type: String,
 		autoValue: function() {
 			if (this.isInsert) {
-			return Meteor.userId();
-		} else if (this.isUpsert) {
-			return {
-			 $setOnInsert: Meteor.userId()
-			};
-		} else {
-			this.unset();
-			}
-		},
-		denyUpdate: true
-    },
+  			return Meteor.userId();
+  		} else if (this.isUpsert) {
+  			return {
+  			 $setOnInsert: Meteor.userId()
+  			};
+  		} else {
+  			this.unset();
+  		}
+  	},
+	denyUpdate: true
+  },
+  readableID: {
+    type: String,
+    autoValue: function() {
+      if(this.isInsert) {
+        return Meteor.user().readableID;
+      } else if(this.isUpsert) {
+        return {
+          $setOnInsert: Meteor.user().readableID
+        }
+      }
+    }
+  },
   userName: {
 		type: String,
 		label: "User Name",

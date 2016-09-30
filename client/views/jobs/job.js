@@ -616,9 +616,9 @@ Template.job.events({
     var applied_at = this.appliedAt;
     Meteor.call('rejectApplication', jobId, userId, applied_at, function(error) {
       if(error) {
-        toastr.error('Failed to reject the counter offer. Please try again');
+        toastr.error('Failed to reject the application. Please try again');
       } else {
-        toastr.success('Rejected the counter offer. Please choose another provider.');
+        toastr.success('Rejected the application. Please choose another provider.');
       }
     })
   },

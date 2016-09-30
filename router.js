@@ -934,7 +934,7 @@ Router.map(function() {
     this.route('receipt',{
         where: 'server',
         onBeforeAction: function () {
-            console.log(this.request.body);// Comment this later
+            // console.log(this.request.body.exact_ctr);
             var data = {};
             var res = this.request.body;
             data.trans_id = res.x_trans_id;
@@ -948,9 +948,11 @@ Router.map(function() {
             data.retrievalRefNo = res.Retrieval_Ref_No;
             data.transactionCardType = res.TransactionCardType;
             data.merchantName = res.MerchantName;
+            data.exact_ctr = res.exact_ctr;
             var id = Meteor.call("saveReceipt",data);
+            console.log(id);
             this.response.writeHead(302, {
-                'Location': URL + '/paymentStatus?id='+id
+                'Location': 'http://localhost:3000/paymentStatus?id='+id
             });
             this.response.end();
         }

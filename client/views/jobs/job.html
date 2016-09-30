@@ -709,6 +709,7 @@
                                                             {{#if $eq applicationStatus 'frozen'}}
                                                                 {{#if selectedProvider}}
                                                                     <h5>Awaiting confirmation from provider.</h5>
+                                                                    <button class="btn btn-primary rejectApplication">Reject Application</button>
                                                                 {{else}}
                                                                     <br>
                                                                     <button class="btn btn-primary acceptApplication" disabled="disabled">Accept Application</button>
