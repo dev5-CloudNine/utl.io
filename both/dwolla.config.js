@@ -61,14 +61,13 @@ if (Meteor.isServer) {
                 throw 'User\'s Dwolla account is not connected';
                 return;
             }
-            var accountToken = new client.Token({
+            new client.Token({
                 access_token: obj.access_token,
                 refresh_token: obj.refresh_token,
                 expires_in: obj.expires_in,
                 account_id: obj.account_id,
                 scope: obj.scope
-            });
-            client.get('customers').then(function(res) {
+            }).get('/', function(res) {
                 console.log(res);
             })
             // client.setToken(obj.access_token);

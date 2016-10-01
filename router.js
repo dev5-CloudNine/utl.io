@@ -921,7 +921,6 @@ Router.map(function() {
     this.route('oauth_return',{
         where: 'server',
         onBeforeAction: function () {
-            console.log(this.request);
             var userId = this.request.query.id;
             var code = this.request.query.code;
             Meteor.call("finishAuth", code, userId);
@@ -952,7 +951,7 @@ Router.map(function() {
             data.exact_ctr = res.exact_ctr;
             var id = Meteor.call("saveReceipt",data);
             this.response.writeHead(302, {
-                'Location': 'http://localhost:3000/paymentStatus?id='+id
+                'Location': URL + '/paymentStatus?id='+id
             });
             this.response.end();
         }

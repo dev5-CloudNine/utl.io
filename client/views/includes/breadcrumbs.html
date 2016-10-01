@@ -6,8 +6,8 @@
 					<a href="{{pathFor 'home'}}">Home</a>&nbsp;&#124;&nbsp;
 					<a href="javascript: history.go(-1)">Back</a>
 				</div>
-				<div class="well well-sm pull-left">
-					{{#if isInRole 'buyer, corporate-manager'}}
+				{{#if isInRole 'buyer, corporate-manager'}}
+					<div class="well well-sm pull-left">
 						{{#unless currentUser.isBuyer}}
 							<span><a href="{{pathFor 'buyerNew'}}">Create Buyer Profile</a></span>
 						{{else}}
@@ -15,8 +15,10 @@
 							{{#with buyer}}<span><a href="{{pathFor 'buyer'}}">My Profile</a></span>{{/with}}&nbsp;&#124;&nbsp;
 							<span><a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a></span>
 						{{/unless}}
-					{{/if}}
-					{{#if isInRole 'provider, corporate-provider'}}
+					</div>
+				{{/if}}
+				{{#if isInRole 'provider, corporate-provider'}}
+					<div class="well well-sm pull-left">
 						{{#unless currentUser.isDeveloper}}
 							<span><a href="{{pathFor 'profileNew'}}">Create Provider Profile</a></span>
 						{{else}}
@@ -24,11 +26,13 @@
 							{{#with profile}}<span><a href="{{pathFor 'profile'}}">My Profile</a></span>{{/with}}&nbsp;&#124;&nbsp;
 							<span><a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a></span>
 						{{/unless}}
-					{{/if}}
-					{{#if isInRole 'admin'}}
+					</div>
+				{{/if}}
+				{{#if isInRole 'admin'}}
+					<div class="well well-sm pull-left">
 						<span><a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a></span>
-					{{/if}}
-				</div>
+					</div>
+				{{/if}}
 			</div>
 		</div>
 	</div>
