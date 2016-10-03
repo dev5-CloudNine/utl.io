@@ -61,27 +61,17 @@ if (Meteor.isServer) {
                 throw 'User\'s Dwolla account is not connected';
                 return;
             }
-            new client.Token({
-                access_token: obj.access_token,
-                refresh_token: obj.refresh_token,
-                expires_in: obj.expires_in,
-                account_id: obj.account_id,
-                scope: obj.scope
-            }).get('/', function(res) {
-                console.log(res);
-            })
-            // client.setToken(obj.access_token);
-            // var fut = new Future();
-            // var bound_callback = Meteor.bindEnvironment(function(err, res) {
-            //     if (err) {
-            //         fut.throw(err);
-            //     } else {
-            //         fut.return(res)
-            //     }
-            // });
-            // async(bound_callback);
-            // fut.wait();
-            // return fut.value;
+            var accountToken = new client.Token({access_token: obj.access_token});
+
+            var requestBody = {
+                firstName: "Alex",
+                lastName: "Balder",
+                email: "email@mail.com"
+            };
+
+            accountToken.post("customers", requestBody).then(function(res) {
+                console.log(res)
+            }, function(err) {console.log(err)});
         },
         'getBalance': function() {
             var obj = Wallet.findOne({'_id':this.userId});

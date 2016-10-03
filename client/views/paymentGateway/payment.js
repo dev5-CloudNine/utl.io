@@ -5,7 +5,7 @@ Template.payment.onRendered(function(){
 
 Template.payment.events({
 	'click .dwolla' : function(){
-		Meteor.call('getUserInfo', function (error, result) {
+		Meteor.call('getUserInfo', Meteor.userId(), function (error, result) {
 			if(error){
 				console.log(error);
 				return;
