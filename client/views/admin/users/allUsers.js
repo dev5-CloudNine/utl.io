@@ -15,7 +15,7 @@ var adminOptionsObject = {
 				if(user.roles[0] == 'buyer' || user.roles[0] == 'corporate-manager') {
 					var buyerDetails = Buyers.findOne({userId: user._id});
 					if(buyerDetails) {
-						var buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.name + '</a>';
+						var buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
 						return buyerLink;
 					} else {
 						return getUserEmail(user);
@@ -24,7 +24,7 @@ var adminOptionsObject = {
 				if(user.roles[0] == 'provider' || user.roles[0] == 'corporate-provider') {
 					var providerDetails = Profiles.findOne({userId: user._id});
 					if(providerDetails) {
-						var providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.name + '</a>';
+						var providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a>';
 						return providerLink;
 					} else {
 						return getUserEmail(user);

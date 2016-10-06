@@ -165,7 +165,8 @@ SearchSource.defineSource('buyersList', function(searchText, options) {
 	if(searchText) {
 		var regExp = buildRegExp(searchText);
 		var selector = {$or: [
-			{name: regExp},
+			{firstName: regExp},
+			{lastName: regExp},
 			{location: regExp},
 			{title: regExp}
 		]};
@@ -180,7 +181,8 @@ SearchSource.defineSource('providerList', function(searchText, options) {
 	if(searchText) {
 		var regExp = buildRegExp(searchText);
 		var selector = {$or: [
-			{name: regExp},
+			{firstName: regExp},
+			{lastName: regExp},
 			{title: regExp},
 			{location: regExp}
 		]};

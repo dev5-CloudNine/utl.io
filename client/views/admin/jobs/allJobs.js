@@ -21,7 +21,7 @@ var adminOptionsObject = {
 			title: 'Posted By',
 			data: function(jobDetails) {
 				var buyerDetails = Buyers.findOne({userId: jobDetails.userId});
-				var buyerUrl = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.name + '</a>';
+				var buyerUrl = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
 				return buyerUrl;
 			}
 		},

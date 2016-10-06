@@ -64,56 +64,83 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{>afQuickField name='name' placeholder="Your Full Name"}}
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name='firstName' placeholder="Your First Name"}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name='lastName' placeholder="Your Last Name"}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name='title' placeholder="Let us know about your professional role"}}
         </div>
         {{#if isInRole 'corporate-provider'}}
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name='companyName' value=companyInvited readOnly=true}}
         </div>
         {{else}}
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name='companyName' placeholder="Company name"}}
         </div>
         {{/if}}
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name='dateOfBirth' placeholder="Date of Birth"}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name="socialSecurityNumber" placeholder="Last four digits of your Social Security Number."}}
+        </div>
     </div>
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-            {{>afQuickField name="eintinNumber" placeholder="99-9999999"}}
+        <div class="col-sm-12">
+            <div class="panel panel-white">
+                <div class="panel-heading">
+                    <h4>Bank Account Details</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                {{>afQuickField name="bankDetails.accountNumber"}}
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                {{>afQuickField name="bankDetails.routingNumber"}}
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                {{>afQuickField name="bankDetails.bankAccountType"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-            {{>afQuickField name="socialSecurityNumber" placeholder="999-99-9999"}}
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             <div class="form-group">
-                <label for="loc" class="control-label">Location</label>
+                <label for="loc" class="control-label">Location *</label>
                 <!-- <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="City, State, Zip" autocomplete="off" spellcheck="off" value="{{locationData}}" data-source="location" maxlength="128" />
                 <span class="help-block"></span> -->
                 {{>providerLocationMap}}
             </div>
         </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name='url' placeholder="ex: http://www.example.com"}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name="avgRatesPerHour" placeholder="Mention your hourly rates like 20 USD"}}
+        </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name='contactNumber' placeholder="Mobile Number"}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name='mobileCarrier'}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name="smsAddress" placeholder="johndoe@example.com" readonly=true}}
         </div>
     </div>
-    <div class="row">
-        
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{>afQuickField name='url' placeholder="URL your personal website/blog"}}
-        </div>
+    <div class="row">        
         <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
             <div class="form-group">
                 <label class="control-label"></label>
@@ -166,12 +193,6 @@
     {{>afQuickField name='description' rows=8 placeholder="Tell us about your professional self, how long you've been programming, things like that"}}
     <hr>
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            {{>afQuickField name="avgRatesPerHour" placeholder="Mention your hourly rates like 20 USD"}}
-        </div>
-    </div>
-    <hr>
-    <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {{>afQuickField name="educationDetails" rows=8 placeholder="Enter your education details."}}
         </div>
@@ -189,5 +210,16 @@
 <template name="providerLocationMap">
     <div class="map-container">
         <input type="text" id="loc" data-schema-key="location" name="location" class="form-control" value="{{locationData}}" data-source="location" placeholder="City, State, Zip" required>
+    </div>
+    <div id="locationDetails" hidden>
+        <input type="text" name="name" data-schema-key="fullLocation.street" class="form-control">
+        <input type="text" name="sublocality" class="form-control" data-schema-key="fullLocation.sublocality">
+        <input name="locality" type="text" value="" class="form-control" data-schema-key="fullLocation.locality">
+        <input type="text" class="form-control" name="administrative_area_level_1_short" data-schema-key="fullLocation.state">
+        <input type="text" class="form-control" name="country" data-schema-key="fullLocation.country">
+        <input type="text" class="form-control" name="postal_code" data-schema-key="fullLocation.zip">
+        <input type="text" name="url" data-schema-key="fullLocation.mapLink" class="form-control">
+        <input type="text" name="lat" data-schema-key="fullLocation.latitude" class="form-control">
+        <input type="text" name="lng" data-schema-key="fullLocation.longitude" class="form-control">
     </div>
 </template>

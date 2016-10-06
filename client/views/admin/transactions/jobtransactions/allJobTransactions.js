@@ -21,12 +21,11 @@ var adminOptionsObject = {
 		{
 			title: 'Debited from',
 			data: function(transaction) {
-				var debitedUserId = transaction.debitedAccount;
 				if(Roles.userIsInRole(debitedUserId, ['admin'])) {
 					return 'Admin'
 				} else {
-					var buyerName = Buyers.findOne({userId: debitedUserId}).name;
-					var buyerLink = '<a href="/buyers/' + debitedUserId + '">' + buyerName + '</a>'
+					var buyerDetails = Buyers.findOne({userId: transaction.buyerId});
+					var buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>'
 					return buyerLink;
 				}
 			}
@@ -34,13 +33,12 @@ var adminOptionsObject = {
 		{
 			title: 'Credited to',
 			data: function(transaction) {
-				var creditedUserId = transaction.creditedAccount;
+				var creditedUserId = transaction.providerId || transaction.adminId
 				if(Roles.userIsInRole(creditedUserId, ['admin'])) {
 					return 'Admin'
 				} else {
-					var creditedUserId = transaction.creditedAccount;
-					var providerName = Profiles.findOne({userId: creditedUserId}).name;
-					var providerLink = '<a href="/buyers/' + creditedUserId + '">' + providerName + '</a>'
+					var providerDetails = Profiles.findOne({userId: creditedUserId});
+					var providerLink = '<a href="/buyers/' + creditedUserId + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a>'
 					return providerLink;
 				}
 			}

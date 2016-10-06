@@ -12,6 +12,72 @@ ProfilesIndex = new EasySearch.Index({
   })
 })
 
+AddressSchema = new SimpleSchema({
+  street: {
+    type: String
+  },
+  locality: {
+    type: String
+  },
+  sublocality: {
+    type: String,
+    optional: true
+  },
+  state: {
+    type: String,
+    optional: true
+  },
+  zip: {
+    type: String,
+    regEx: /^[0-9]{5}$/
+  },
+  country: {
+    type: String,
+    optional: true
+  },
+  mapLink: {
+    type: String,
+    optional: true
+  },
+  latitude: {
+    type: Number,
+    optional: true,
+    decimal: true
+  },
+  longitude: {
+    type: Number,
+    optional: true,
+    decimal: true
+  }
+});
+
+BankAccountSchema = new SimpleSchema({
+  accountNumber: {
+    type: String,
+    label: 'Account Number *'
+  },
+  routingNumber: {
+    type: String,
+    label: 'Routing Number *'
+  },
+  bankAccountType: {
+    type: String,
+    label: 'Bank Account Type *',
+    autoform: {
+      type: 'select-radio-inline',
+      options: function() {
+        return [{
+          label: 'Checking',
+          value: 'checking'
+        }, {
+          label: 'Savings',
+          value: 'savings'
+        }];
+      }
+    }
+  }
+});
+
 Profiles.attachSchema(
   new SimpleSchema({
     userId: {
@@ -46,10 +112,10 @@ Profiles.attachSchema(
       label: "User Name",
       autoValue: function() {
         if (this.isInsert) {
-          return getUserName(Meteor.user());
+          return getUserEmail(Meteor.user());
         } else if (this.isUpsert) {
           return {
-            $setOnInsert: getUserName(Meteor.user())
+            $setOnInsert: getUserEmail(Meteor.user())
           };
         } else {
           this.unset();
@@ -60,10 +126,13 @@ Profiles.attachSchema(
       type: String,
       optional: true
     },
-    name: {
+    firstName: {
       type: String,
-      label: "Name *",
-      max: 128
+      label: "First Name *",
+    },
+    lastName: {
+      type: String,
+      label: 'Last Name *'
     },
     companyName: {
       type: String,
@@ -90,22 +159,19 @@ Profiles.attachSchema(
       label: "Designation *",
       max: 128
     },
-    eintinNumber: {
-      type: String,
-      label: "EIN/TIN Number",
-      max: 128,
-      optional: true
-    },
     socialSecurityNumber: {
       type: String,
-      label: "Social Security Number",
-      max: 128,
-      optional: true
+      label: "Social Security Number"
     },
     location: {
-      type: String,
-      label: "Location *",
-      max: 256
+      type: String
+    },
+    fullLocation: {
+      type: AddressSchema,
+      optional: true
+    },
+    bankDetails: {
+      type: BankAccountSchema
     },
     description: {
       type: String,
@@ -147,6 +213,13 @@ Profiles.attachSchema(
       autoform: {
         type: "select",
         options: MOBILE_CARRIERS
+      }
+    },
+    dateOfBirth: {
+      type: Date,
+      label: 'Date of Birth *',
+      autoform: {
+        type: 'bootstrap-datepicker'
       }
     },
     avgRatesPerHour: {
@@ -285,7 +358,7 @@ Profiles.attachSchema(
     },
     url: {
       type: String,
-      label: "Personal URL",
+      label: "Personal URL (Website/Blog)",
       max: 1024,
       optional: true,
       regEx: SimpleSchema.RegEx.Url
@@ -378,7 +451,7 @@ Profiles.attachSchema(
 
 Profiles.helpers({
   displayName: function() {
-    return this.name || this.userName;
+    return this.firstName + ' ' + this.lastName || this.userName;
   },
   path: function() {
     return 'profiles/' + this._id + '/' + this.slug();

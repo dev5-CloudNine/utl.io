@@ -16,12 +16,12 @@ var adminOptionsObject = {
 			data: function(transaction) {
 				if(Roles.userIsInRole(transaction.userID, ['buyer', 'corporate-manager'])) {
 					var buyerDetails = Buyers.findOne({userId: transaction.userID});
-					var buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.name + '</a>';
+					var buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
 					return buyerLink;
 				}
 				if(Roles.userIsInRole(transaction.userID, ['provider', 'corporate-provider'])) {
 					var providerDetails = Profiles.findOne({userId: transaction.userID});
-					var providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.name + '</a>';
+					var providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a>';
 					return providerLink;
 				}
 				if(Roles.userIsInRole(transaction.userID, ['corporate-admin'])) {

@@ -31,7 +31,7 @@ if (Meteor.isServer) {
         'authUrl': function(userId) {
             auth = new client.Auth({
                 redirect_uri: redirect_uri + '?id=' + userId,
-                scope: 'ManageCustomers'
+                scope: 'ManageCustomers|Funding'
             });
             return auth.url;
         },
@@ -55,23 +55,46 @@ if (Meteor.isServer) {
                 }).run();
             })
         },
-        'getUserInfo': function(userId) {
-            var obj = Wallet.findOne({userId:userId});
+        'createCustomer': function(userId, provider) {
+            console.log(userId);
+            console.log(provider);
+            var dob = moment(provider.dateOfBirth).format('YYYY-MM-DD');
+            console.log(dob);
+            var obj = Wallet.findOne({userId: userId});
             if(!obj) {
                 throw 'User\'s Dwolla account is not connected';
                 return;
             }
             var accountToken = new client.Token({access_token: obj.access_token});
-
-            var requestBody = {
-                firstName: "Alex",
-                lastName: "Balder",
-                email: "email@mail.com"
+            var customerDetails = {
+                firstName: provider.firstName,
+                lastName: provider.lastName,
+                email: 'shibin@batra.com',
+                type: 'personal',
+                address1: provider.fullLocation.street,
+                city: provider.fullLocation.locality,
+                state: provider.fullLocation.state,
+                postalCode: provider.fullLocation.zip,
+                dateOfBirth: dob,
+                ssn: provider.socialSecurityNumber,
+                phone: provider.contactNumber
             };
-
-            accountToken.post("customers", requestBody).then(function(res) {
-                console.log(res)
-            }, function(err) {console.log(err)});
+            var customerUrl;
+            accountToken.post('customers', customerDetails).then(function(res) {
+                console.log('Create customer result');
+                console.log(res);
+                customerUrl = res.headers._headers.location[0];
+                var fundObj = {
+                    'routingNumber': provider.bankDetails.routingNumber,
+                    'accountNumber': provider.bankDetails.accountNumber,
+                    'type': provider.bankDetails.bankAccountType,
+                    'name': provider.firstName + ' FSRC'
+                };
+                accountToken.post(customerUrl + '/funding-sources', fundObj).then(function(res) {console.log(res)}, function(err) {console.log(err)});
+            }, function(err) {
+                console.log('Create Customer error');
+                console.log(err.body._embedded.errors);
+            })
         },
         'getBalance': function() {
             var obj = Wallet.findOne({'_id':this.userId});

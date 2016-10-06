@@ -150,6 +150,14 @@ Template.dashboard.helpers({
 		if(reviews)
 			return reviews.count();
 		return 0;
+	},
+	myProfile: function() {
+		if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'corporate-manager'])) {
+			return Buyers.findOne({userId: Meteor.userId()});
+		}
+		if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {
+			return Profiles.findOne({userId: Meteor.userId()});
+		}
 	}
 });
 

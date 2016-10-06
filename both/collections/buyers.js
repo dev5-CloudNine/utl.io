@@ -58,11 +58,14 @@ Buyers.attachSchema(
     type: String,
     optional: true
   },
-  name: {
+  firstName: {
 		type: String,
-		label: "Name *",
-		max: 128
-    },
+		label: "First Name *"
+  },
+  lastName: {
+    type: String,
+    label: 'Last Name *'
+  },
 	title: {
 		type: String,
 		label: "Designation *",
@@ -206,7 +209,7 @@ Buyers.deny({
 
 Buyers.helpers({
   displayName: function() {
-    return this.name || this.userName;
+    return this.firstName + ' ' + this.lastName || this.userName;
   },
   path: function() {
     return 'buyers/' + this._id + '/' + this.slug();

@@ -6,6 +6,8 @@ Profiles.after.insert(function(userId, doc) {
       isDeveloper: true
     }
   });
+  var adminId = Users.findOne({roles: {$in: ['admin']}})._id;
+  Meteor.call('createCustomer', adminId, doc)
 });
 
 Profiles.after.remove(function(userId, doc) {
