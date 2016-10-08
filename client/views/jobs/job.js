@@ -461,6 +461,17 @@ Template.job.events({
       toastr.error('Please close all the tasks before submitting the assignment');
       return;
     }
+    var timeSheetsLogs = TimeSheet.findOne({jobID: jobId});
+    if(!timeSheetsLogs.logs) {
+      toastr.error('Please enter your time sheets before submitting the assignment.');
+      return;
+    }
+    if(timeSheetsLogs.logs) {
+      if(timeSheetsLogs.logs.length <= 0) {
+        toastr.error('Please enter your time sheets before submitting the assignment.');
+        return;
+      }
+    }
     Meteor.call('submitAssignment', jobId, function(error) {
       if(error) {
         toastr.error('Failed to submit assignment. Please try again.');
