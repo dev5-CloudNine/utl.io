@@ -20,6 +20,10 @@ Meteor.publish('corporates', function() {
     return Corporates.find({});
 })
 
+Meteor.publish('userFiles', function(userId) {
+    return FileManager.find({userId: userId});
+})
+
 Meteor.publish("messages", function (id) {
     return Messages.find({$or:[{recipient:id},{sender:id},{chain:id}]});
 });

@@ -10,6 +10,7 @@ Wallet = new Meteor.Collection("wallet");
 Transactions = new Meteor.Collection("transactions");
 Invoices = new Meteor.Collection("invoices");
 JobTransactions = new Meteor.Collection("jobtransactions");
+FileManager = new Meteor.Collection('fileManager');
 
 Categories.attachSchema(
 	new SimpleSchema({

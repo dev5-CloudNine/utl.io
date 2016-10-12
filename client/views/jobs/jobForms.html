@@ -106,12 +106,59 @@
     {{> afQuickField name='description' rows=12 placeholder="Tell prospective service providers about this job in detail."}}
     <div class="row">
         <div class="col-xs-12">
-            <div class="form-group">
-                <label class="control-label"></label>
-                <div class="input-group">
-                    <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px">
-                        <input type="file" class="file_bag" multiple=true> Upload Documents
-                    </label>
+            <button class="btn btn-success" data-toggle="modal" id="uploadDocs" data-target="#uploadJobDocs">Attach Documents</button>
+        </div>
+        <div class="col-xs-12">
+            <div id="uploadJobDocs" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal" aria-label="close" type="button"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Select/Upload Documents</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px;">
+                                                <input type="file" class="file_bag" multiple=true> Select from Computer
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label class="control-label">Select from the documents</label>
+                                    <br>
+                                    <div class="row">
+                                        {{#each userDocuments}}
+                                            <div class="col-md-3">
+                                                <div class="thumbnail" style="position: relative;">
+                                                    <span title="Remove" class="close-preview removeUserFile" data-url="{{file_url}}" style="cursor: pointer;">&times;</span>
+                                                    <input type="checkbox" name="select_files" value="{{file_url}}" data-url="{{file_url}}" data-file-name="{{file_name}}">
+                                                    <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
+                                                    <div class="caption" style="overflow: hidden;word-wrap: break-word;">
+                                                        <a href="{{file_url}}" target="_blank">{{this.file_name}}</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {{/each}}
+                                        {{#if userDocuments}}
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <button type="button" class="btn btn-success attachSelected">Attach</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {{else}}
+                                            <p>No files found. Please select from computer.</p>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

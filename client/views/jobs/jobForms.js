@@ -35,6 +35,9 @@ var locLoaded=false;
 var proLoaded = false;
 
 Template.jobFields.events({
+	'click button#uploadDocs': function(event, template) {
+		event.preventDefault();
+	},
 	'change input[name="fixedamount"], keyup input[name="fixedamount"]': function(event, template) {
 		var fixedamount = parseFloat($('input[name="fixedamount"]').val());
 		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
@@ -201,19 +204,18 @@ Template.jobFields.events({
 					Jobs.before.insert(function(userId, doc) {
 						doc.files = files;
 					});
-					toastr.success('File uploaded successssfully');
+					$('#uploadJobDocs').modal('hide');
 				} else if(jobID) {
 					var fileDetails = {
 						file_url: result.secure_url,
 						file_name: result.file.original_name
 					}
 		            Meteor.call('addJobFile', fileDetails, jobID,function (error, result) {
-		              if(!error)
-		                toastr.success("File uploaded successssfully");
+		            	if(!error)
+		            		$('#uploadJobDocs').modal('hide');
 		            });
 				} else {
 					var files = [];
-					// var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.file.original_name+'</a></li>';
 					var fileListItem = '<div class="col-md-2"><div class="thumbnail" data-url=' + result.secure_url + ' style="position:relative;"><span title="Remove" class="close-preview" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')">&times;</span><a href=' + result.secure_url + ' target="_blank"><img src=' + result.secure_url + ' style="height: 100px" onerror=this.src="/images/genericFile.jpg"></a><div class="caption" style="overflow: hidden; word-wrap: break-word"><a href=' + result.secure_url + ' + target="_blank">' + result.file.original_name + '</a></div></div></div>'
 					$('.fileList').append(fileListItem);
 					$('div.fileList div.thumbnail').each(function(li) {
@@ -222,35 +224,113 @@ Template.jobFields.events({
 							file_name: result.file.original_name
 						}
 						files.push(fileDetails);
-					})
+					});
 					Jobs.before.insert(function(userId, doc) {
 						doc.files = files;
 					});
-					toastr.success('File uploaded successssfully');
+					$('#uploadJobDocs').modal('hide');
 				}
 			}
+			var fileDetails = {
+				file_url: result.secure_url,
+				file_name: result.file.original_name
+			}
+			Meteor.call('addFileToUserFM', fileDetails, Meteor.userId());
 		})
-
 	},
 	'click .remove-job-file' : function(event, template) {
 	    event.preventDefault();
 	    $('#spinner').show();
 		var jobID = Router.current().params._id;
 	    var url = $(event.currentTarget).data('url');
-	    var index = url.indexOf(S3_FILEUPLOADS)-1;
-	    var path = url.substr(index);
-	    S3.delete(path, function(err, res) {
-	        $('#spinner').hide();
-	        if (err) {
-	            toastr.error("Operation failed");
-	        } else {
-	            Meteor.call('deleteJobFile', url, jobID,function (error, result) {
-	                if(!error)
-	                  toastr.success("Deleted");
-	            });
-	        }
-	    });
-	    event.stopPropagation();
+	 //    var index = url.indexOf(S3_FILEUPLOADS)-1;
+	 //    var path = url.substr(index);
+	 //    S3.delete(path, function(err, res) {
+	 //        $('#spinner').hide();
+	 //        if (err) {
+	 //            toastr.error("Operation failed");
+	 //        } else {
+	 //            Meteor.call('deleteJobFile', url, jobID, Meteor.userId(), function (error, result) {
+	 //                if(!error)
+	 //                  toastr.success("Deleted");
+	 //            });
+	 //        }
+	 //    });
+	 //    event.stopPropagation();
+	 	Meteor.call('deleteJobFile', url, jobID, Meteor.userId(), function(error, result) {
+	 		if(!error) {
+	 			$('#spinner').hide();
+	 		}
+	 	});
+	 	event.stopPropagation();
+	},
+	'click .removeUserFile': function(event, template) {
+		event.preventDefault();
+		var url = $(event.currentTarget).data('url');
+		var index = url.indexOf(S3_FILEUPLOADS)-1;
+		var path = url.substr(index);
+		S3.delete(path, function(err, res) {
+			if(err) {
+				toastr.error('Operation failed');
+			} else {
+				Meteor.call('removeUserFile', url, Meteor.userId(), function(error, result) {
+					if(!error)
+						toastr.success('Removed file from your file manager');
+				})
+			}
+		})
+	},
+	'click .attachSelected': function(event, template) {
+		var selected = $('input[name="select_files"]:checked');
+		if(selected.length <= 0)
+			toastr.error('Please select file(s) to attach.');
+		else {
+			for(var i = 0; i < selected.length; i++) {
+				var fileUrl = $(selected[i]).data('url');
+				var fileName = $(selected[i]).data('file-name');
+				var jobId = Router.current().params._id;
+				if(Router.current().params.userId) {
+					var files = [];
+					var fileListItem = '<div class="thumbnail" data-url=' + fileUrl + '><span title="Remove" class="close-preview" style="cursor: pointer;" onclick="removeFile(\''+fileUrl+'\')">&times;</span><a href=' + fileUrl + ' target="_blank">' + fileName + '</a><div class="caption" style="overflow: hidden; word-wrap: break-word"><a href=' + fileUrl + ' + target="_blank">' + fileName + '</a></div></div>'
+					$('.fileList').append(fileListItem);
+					$('div.fileList div.thumbnail').each(function(li) {
+						var fileDetails = {
+							file_url: fileUrl,
+							file_name: fileName
+						}
+						files.push(fileDetails);
+					})
+					Jobs.before.insert(function(userId, doc) {
+						doc.files = files;
+					});
+					$('#uploadJobDocs').modal('hide');
+				} else if(jobId) {
+					var fileDetails = {
+						file_url: fileUrl,
+						file_name: fileName
+					}
+					Meteor.call('addJobFile', fileDetails, jobId,function (error, result) {
+						if(!error)
+							$('#uploadJobDocs').modal('hide')
+		            });		            
+				} else {
+					var files = [];
+					var fileListItem = '<div class="col-md-2"><div class="thumbnail" data-url=' + fileUrl + ' style="position:relative;"><span title="Remove" class="close-preview" style="cursor: pointer;" onclick="removeFile(\''+fileUrl+'\')">&times;</span><a href=' + fileUrl + ' target="_blank"><img src=' + fileUrl + ' style="height: 100px" onerror=this.src="/images/genericFile.jpg"></a><div class="caption" style="overflow: hidden; word-wrap: break-word"><a href=' + fileUrl + ' + target="_blank">' + fileName + '</a></div></div></div>'
+					$('.fileList').append(fileListItem);
+					$('div.fileList div.thumbnail').each(function(li) {
+						var fileDetails = {
+							file_url: fileUrl,
+							file_name: fileName
+						}
+						files.push(fileDetails);
+					});
+					Jobs.before.insert(function(userId, doc) {
+						doc.files = files;
+					});
+					$('#uploadJobDocs').modal('hide');
+				}
+			}
+		}
 	}
 });
 
@@ -260,17 +340,20 @@ Array.prototype.pushArray = function(files) {
 
 removeFile = function(url) {
 	$('#spinner').show();
-	var index = url.indexOf(S3_FILEUPLOADS)-1;
-	var path = url.substr(index);
-	S3.delete(path, function(err, res) {
-		$('#spinner').hide();
-		if (err) {
-			toastr.error("Operation failed");
-		} else {
-			$("div.fileList").find("[data-url='"+url+"']").remove();
-			toastr.success('Document is deleted successfully');
-		}
-	});
+	// var index = url.indexOf(S3_FILEUPLOADS)-1;
+	// var path = url.substr(index);
+	// S3.delete(path, function(err, res) {
+	// 	$('#spinner').hide();
+	// 	if (err) {
+	// 		toastr.error("Operation failed");
+	// 	} else {
+	// 		$("div.fileList").find("[data-url='"+url+"']").remove();
+	// 		toastr.success('Document is deleted successfully');
+	// 	}
+	// });
+	$("div.fileList").find("[data-url='"+url+"']").remove();
+	toastr.success('Document is deleted successfully');
+	$('#spinner').hide();
 }
 
 Template.jobFields.created = function() {
@@ -282,6 +365,12 @@ Template.jobFields.created = function() {
 }
 
 Template.jobFields.helpers({
+	userDocuments: function() {
+		var fileManager = FileManager.findOne({userId: Meteor.userId()});
+		if(fileManager.files) {
+			return fileManager.files;
+		}
+	},
 	locationData : function(){
 		locLoaded = true;
 		return this.job.location;

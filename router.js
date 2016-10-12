@@ -344,6 +344,7 @@ Router.map(function() {
             }
         },
         waitOn: function() {
+            Meteor.subscribe('userFiles', Meteor.userId());
             return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
@@ -392,6 +393,7 @@ Router.map(function() {
             };
         },
         waitOn: function() {
+            Meteor.subscribe('userFiles', Meteor.userId());
             Meteor.subscribe("userWallet", Meteor.userId());
             return Meteor.subscribe("job", this.params._id);
         },

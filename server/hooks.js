@@ -116,19 +116,18 @@ Jobs.after.insert(function(userId, doc){
     Jobs.update(doc._id, {$set: {applicationStatus: 'frozen'}});
     Profiles.update({_id: doc.selectedProvider}, {$addToSet: {appliedJobs: doc._id}});
   }
-
 });
 
 
 Jobs.after.update(function(userId, doc){
   var obj ={};
   if(doc.tasks) doc.tasks.map(function(task){
-      obj.taskName = task.taskname;
-      obj.taskdescription = task.taskdescription;
-      obj.jobID = doc._id;
-      var exists = Tasks.findOne({$and:[{jobID:obj.jobID},{taskName:obj.taskName}]});
-      if(!exists)
-        Tasks.insert(obj);
+    obj.taskName = task.taskname;
+    obj.taskdescription = task.taskdescription;
+    obj.jobID = doc._id;
+    var exists = Tasks.findOne({$and:[{jobID:obj.jobID},{taskName:obj.taskName}]});
+    if(!exists)
+      Tasks.insert(obj);
   });
 });
 
@@ -157,4 +156,5 @@ Meteor.users.before.insert(function(userId,doc){
 
 Meteor.users.after.insert(function(userId, doc) {
   Wallet.insert({userId: doc._id, dwollaId: null, accountBalance: 0.0});
+  FileManager.insert({userId: doc._id});
 });

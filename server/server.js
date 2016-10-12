@@ -697,17 +697,23 @@ Meteor.methods({
     addJobFile: function(file,id) {
         Jobs.update(id, {$addToSet: {files: file}});
     },
+    addFileToUserFM: function(fileDetails, userId) {
+        FileManager.update({userId: userId}, {$addToSet: {files: fileDetails}});
+    },
     addMessageFile: function(file, msgId) {
         Messages.update(id, {$addToSet: {files: file}});
     },
     deleteMessageFile: function(file, msgId) {
         Messages.update(id, {$pull: {files: file}});
     },
-    deleteJobFile: function(file,id) {
+    deleteJobFile: function(file, id, buyerId) {
         Jobs.update(id, {$pull: {"files": {file_url: file}}});
     },
     deleteFile: function(file,id) {
         Tasks.update(id, {$pull: {files: {file_url: file}}});
+    },
+    removeUserFile: function(file, id) {
+        FileManager.update({userId: id}, {$pull: {files: {file_url: file}}})
     },
     recordTime:function(id,data,isCheckIn){
         if(isCheckIn){
