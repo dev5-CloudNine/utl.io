@@ -700,7 +700,7 @@ Template.job.helpers({
       imgUrl = '';
     var buyer = {
       id: buyerData._id,
-      name: buyerData.name,
+      name: buyerData.firstName + ' ' + buyerData.lastName,
       title: buyerData.title,
       imgUrl: imgUrl,
       readableID: Meteor.users.findOne({_id: buyerData.userId}).readableID,
@@ -758,7 +758,7 @@ Template.job.helpers({
       providerDetails = {
         imgUrl: imgURL,
         userId: pDetails._id,
-        name: pDetails.name,
+        name: pDetails.firstName + ' ' + pDetails.lastName,
         title: pDetails.title,
         company: pDetails.companyName,
         app_type: provider.app_type,
@@ -1069,7 +1069,7 @@ Template.job.helpers({
     var providerImg = Users.findOne({_id: this.assignedProvider}).imgURL;
     if(applicationDetails.appType == 'application') {
       var providerDetails = {
-        name: provider.name,
+        name: provider.firstName + ' ' + provider.lastName,
         title: provider.title,
         status: provider.status,
         imgUrl: providerImg,
@@ -1084,7 +1084,7 @@ Template.job.helpers({
     }
     if(applicationDetails.appType == 'counteroffer') {
       var providerDetails = {
-        name: provider.name,
+        name: provider.firstName + ' ' + providerDetails.lastName,
         title: provider.title,
         status: provider.status,
         imgUrl: providerImg,
@@ -1129,7 +1129,7 @@ Template.job.helpers({
         var notif = {
           jobId: notification.jobId,
           buyerId: buyerDetails._id,
-          buyerName: buyerDetails.name,
+          buyerName: buyerDetails.firstName + ' ' + buyerDetails.lastName,
           notificationType: notification.notificationType,
           timeStamp: moment(notification.timeStamp).format('LLLL')
         }
@@ -1139,9 +1139,9 @@ Template.job.helpers({
           var notif = {
             jobId: notification.jobId,
             buyerId: buyerDetails._id,
-            buyerName: buyerDetails.name,
+            buyerName: buyerDetails.firstName + ' ' + buyerDetails.lastName,
             providerId: providerDetails._id,
-            providerName: providerDetails.name,
+            providerName: providerDetails.firstName + ' ' + providerDetails.lastName,
             notificationType: notification.notificationType,
             timeStamp: moment(notification.timeStamp).format('LLLL')
           }

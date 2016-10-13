@@ -31,7 +31,7 @@ if (Meteor.isServer) {
         'authUrl': function(userId) {
             auth = new client.Auth({
                 redirect_uri: redirect_uri + '?id=' + userId,
-                scope: 'ManageCustomers|Funding'
+                scope: 'ManageCustomers|Funding|Transactions|Send'
             });
             return auth.url;
         },
@@ -56,10 +56,7 @@ if (Meteor.isServer) {
             })
         },
         'createCustomer': function(userId, provider) {
-            console.log(userId);
-            console.log(provider);
             var dob = moment(provider.dateOfBirth).format('YYYY-MM-DD');
-            console.log(dob);
             var obj = Wallet.findOne({userId: userId});
             if(!obj) {
                 throw 'User\'s Dwolla account is not connected';
@@ -95,6 +92,24 @@ if (Meteor.isServer) {
                 console.log('Create Customer error');
                 console.log(err.body._embedded.errors);
             })
+        },
+        'showCustomers': function(userId) {
+            var obj = Wallet.findOne({userId: userId});
+            if(!obj) {
+                throw 'User\'s Dwolla account is not connected';
+                return;
+            }
+            var resultObject = [];
+            var accountToken = new client.Token({access_token: obj.access_token});
+            var fut = new Future();
+            accountToken.get('customers').then(function(result) {
+                fut.return(result.body._embedded.customers);
+            }, function(error) {
+                console.log(error);
+            });
+            fut.wait();
+            console.log(fut.value)
+            return fut.value;
         },
         'getBalance': function() {
             var obj = Wallet.findOne({'_id':this.userId});

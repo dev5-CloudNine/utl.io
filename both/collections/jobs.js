@@ -41,6 +41,10 @@ AddressSchema = new SimpleSchema({
     type: String,
     optional: true
   },
+  formatted_address: {
+    type: String,
+    optional: true
+  },
   mapLink: {
     type: String,
     optional: true

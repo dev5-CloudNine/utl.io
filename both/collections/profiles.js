@@ -24,14 +24,16 @@ AddressSchema = new SimpleSchema({
     optional: true
   },
   state: {
-    type: String,
-    optional: true
+    type: String
   },
   zip: {
     type: String,
     regEx: /^[0-9]{5}$/
   },
   country: {
+    type: String
+  },
+  formatted_address: {
     type: String,
     optional: true
   },

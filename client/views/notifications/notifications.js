@@ -13,7 +13,7 @@ Template.notifications.helpers({
 				var notif = {
 					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
-					pname: providerDetails.name,
+					pname: providerDetails.firstName + ' ' + providerDetails.lastName,
 					providerId: providerDetails._id,
 					slug: providerDetails.slug(),
 					notificationId: notification._id,
@@ -25,7 +25,7 @@ Template.notifications.helpers({
 				var notif = {
 					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
-					pname: providerDetails.name,
+					pname: providerDetails.firstName + ' ' + providerDetails.lastName,
 					providerId: providerDetails._id,
 					slug: providerDetails.slug(),
 					notificationId: notification._id,
@@ -39,7 +39,7 @@ Template.notifications.helpers({
 						imgUrl: imgUrl,
 						notificationType: notification.notificationType,
 						providerId: providerDetails._id,
-						pname: providerDetails.name,
+						pname: providerDetails.firstName + ' ' + providerDetails.lastName,
 						jobId: notification.jobId,
 						slug: jobDetails.slug(),
 						notificationId: notification._id,
@@ -70,7 +70,7 @@ Template.notifications.helpers({
 				var notif = {
 					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
-					bname: buyerDetails.name,
+					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 					buyerId: buyerDetails._id,
 					slug: buyerDetails.slug(),
 					notificationId: notification._id,
@@ -83,7 +83,7 @@ Template.notifications.helpers({
 				var notif = {
 					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
-					bname: buyerDetails.name,
+					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 					buyerId: buyerDetails._id,
 					slug: buyerDetails.slug(),
 					notificationId: notification._id,
@@ -96,7 +96,7 @@ Template.notifications.helpers({
 					var notif = {
 						imgUrl: imgUrl,
 						notificationType: notification.notificationType,
-						bname: buyerDetails.name,
+						bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 						buyerId: buyerDetails._id,
 						jobId: notification.jobId,
 						slug: jobDetails.slug(),
@@ -124,7 +124,7 @@ Template.notifications.helpers({
 				}
 				notificationDetails.push(notif);
 			} else if(notification.notificationType == 'newJob') {
-				var buyerName = Buyers.findOne({userId: notification.buyerId}).name;
+				var buyerDetails = Buyers.findOne({userId: notification.buyerId});
 				var jobDetails = Jobs.findOne({_id: notification.jobId});
 				var imgUrl;
 				var imgURL = Meteor.users.findOne({_id: notification.buyerId}).imgURL;
@@ -135,7 +135,7 @@ Template.notifications.helpers({
 					notificationTime: moment(notification.timeStamp).format('LLLL'),
 					notificationId: notification._id,
 					jobId: notification.jobId,
-					bname: buyerName,
+					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 					imgUrl: imgUrl
 				}
 				notificationDetails.push(notif);
@@ -161,8 +161,8 @@ Template.notifications.helpers({
 					notificationTime: moment(notification.timeStamp).format('LLLL'),
 					notificationId: notification._id,
 					jobId: notification.jobId,
-					bname: buyerDetails.name,
-					pname: providerDetails.name,
+					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
+					pname: providerDetails.firstName + ' ' + providerDetails.lastName,
 					imgUrl: imgUrl
 				}
 				notificationDetails.push(notif);

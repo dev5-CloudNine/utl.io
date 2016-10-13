@@ -32,7 +32,7 @@ Template.adminNotifications.helpers({
 					notificationTime: moment(notification.timeStamp).format('LLLL'),
 					notificationId: notification._id,
 					jobId: notification.jobId,
-					bname: buyerDetails.name,
+					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 					buyerId: buyerDetails._id,
 					imgUrl: imgUrl
 				}
@@ -61,8 +61,8 @@ Template.adminNotifications.helpers({
 					notificationTime: moment(notification.timeStamp).format('LLLL'),
 					notificationId: notification._id,
 					jobId: notification.jobId,
-					bname: buyerDetails.name,
-					pname: providerDetails.name,
+					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
+					pname: providerDetails.firstName + ' ' + providerDetails.lastName,
 					imgUrl: imgUrl
 				}
 				notificationDetails.push(notif);

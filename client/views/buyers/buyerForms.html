@@ -139,4 +139,16 @@
     <div class="map-container">
         <input type="text" id="loc" data-schema-key="location" name="location" class="form-control" value="{{locationData}}" data-source="location" placeholder="City, State, Zip" required>
     </div>
+    <div id="locationDetails" hidden>
+        <input type="text" name="name" data-schema-key="fullLocation.street" class="form-control">
+        <input type="text" name="sublocality" class="form-control" data-schema-key="fullLocation.sublocality">
+        <input name="locality" type="text" value="" class="form-control" data-schema-key="fullLocation.locality">
+        <input type="text" class="form-control" name="administrative_area_level_1_short" data-schema-key="fullLocation.state">
+        <input type="text" class="form-control" name="formatted_address" data-schema-key="fullLocation.formatted_address">
+        <input type="text" class="form-control" name="country" data-schema-key="fullLocation.country">
+        <input type="text" class="form-control" name="postal_code" data-schema-key="fullLocation.zip">
+        <input type="text" name="url" data-schema-key="fullLocation.mapLink" class="form-control">
+        <input type="text" name="lat" data-schema-key="fullLocation.latitude" class="form-control">
+        <input type="text" name="lng" data-schema-key="fullLocation.longitude" class="form-control">
+    </div>
 </template>

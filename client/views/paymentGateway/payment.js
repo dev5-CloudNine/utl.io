@@ -23,12 +23,13 @@ Template.payment.events({
 			window.location = result;
 		});
 	},
-	'click .dwolla-balance' : function(){
-		Meteor.call('getBalance', Meteor.userId(), function(error, result) {
+	'click .dwolla-customers' : function(){
+		Meteor.call('showCustomers', Meteor.userId(), function(error, result) {
 			if(error){
 				console.log(error);
 				return;
 			}
+			console.log(result);
 			$('.show-info').text(JSON.stringify(result));
 			$('.show-info').show();
 		});

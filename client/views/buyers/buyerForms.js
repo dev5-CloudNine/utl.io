@@ -146,9 +146,7 @@ Template.buyerFields.helpers({
 Template.buyerLocationMap.onRendered(function() {
   this.autorun(() => {
     if(GoogleMaps.loaded()) {
-      $('#loc').geocomplete({country: 'us'}).bind('geocode:result', function(event, result) {
-        console.log(result)
-      })
+      $('#loc').geocomplete({country: 'us', details: '#locationDetails'})
     }
   })
 });

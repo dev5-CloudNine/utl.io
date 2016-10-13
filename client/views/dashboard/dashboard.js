@@ -163,7 +163,83 @@ Template.dashboard.helpers({
 
 Template.dashboard.rendered = function () {
 	this.$('.rateit').rateit({'readonly': true});
+	
 };
+
+Template.providerCalendar.onRendered(function() {
+	$('#provider-jobs-calendar').fullCalendar({
+		events(start, end, timezone, callback) {
+			var jobsData = Jobs.find({$and: [{assignedProvider: Meteor.userId(), applicationStatus: 'assigned'}]}).fetch();
+			jobsData.map(function(job) {
+				if(job.serviceschedule == 'exactdate') {
+					job.start = job.exactdate
+				} else if(job.serviceschedule == 'betweendates') {
+					job.start = job.startdate;
+					job.end = job.enddate + 1;
+				}
+			})
+			if(jobsData) {
+				callback(jobsData)
+			}
+		},
+		displayEventTime: false,
+		eventRender(event, element) {
+			if(event.serviceschedule == 'exactdate') {
+				element.find('.fc-content').html(
+					'<p>' + event.readableID + '</p>' + '<h4><a href="/jobs/' + event._id + '">'  + event.title + '</a></h4>' + '<p>' + event.exacttime + '</p>'
+				)
+			} else if(event.serviceschedule == 'betweendates') {
+				element.find('.fc-content').html(
+					'<p>' + event.readableID + '</p>' + '<h4><a href="/jobs/' + event._id + '">'  + event.title + '</a></h4>' + '<p>' + event.starttime + ' to ' + event.endtime + '</p>'
+				)
+			}
+		}
+	});
+	Tracker.autorun(function() {
+		Jobs.find({$and: [{assignedProvider: Meteor.userId(), applicationStatus: 'assigned'}]}).fetch();
+		$('#provider-jobs-calendar').fullCalendar('refetchEvents');
+	})
+})
+
+Template.buyerCalendar.onRendered(function() {
+	$('#buyer-jobs-calendar').fullCalendar({
+		events(start, end, timezone, callback) {
+			var jobsData = Jobs.find({$and: [{userId: Meteor.userId(), applicationStatus: 'assigned'}]}).fetch();
+			jobsData.map(function(job) {
+				if(job.serviceschedule == 'exactdate') {
+					job.start = job.exactdate
+				} else if(job.serviceschedule == 'betweendates') {
+					job.start = job.startdate;
+					job.end = job.enddate + 1;
+				}
+			})
+			if(jobsData) {
+				callback(jobsData)
+			}
+		},
+		displayEventTime: false,
+		eventRender(event, element) {
+			if(event.serviceschedule == 'exactdate') {
+				element.find('.fc-content').html(
+					'<p>' + event.readableID + '</p>' + '<h4><a href="/jobs/' + event._id + '">'  + event.title + '</a></h4>' + '<p>' + event.exacttime + '</p>'
+				)
+			} else if(event.serviceschedule == 'betweendates') {
+				element.find('.fc-content').html(
+					'<p>' + event.readableID + '</p>' + '<h4><a href="/jobs/' + event._id + '">'  + event.title + '</a></h4>' + '<p>' + event.starttime + ' to ' + event.endtime + '</p>'
+				)
+			}
+		}
+	});
+	Tracker.autorun(function() {
+		Jobs.find({$and: [{userId: Meteor.userId(), applicationStatus: 'assigned'}]}).fetch();
+		$('#buyer-jobs-calendar').fullCalendar('refetchEvents');
+	})
+})
+
+var isPast = function(date) {
+	var today = moment().format();
+	return moment(today).isAfter(date);
+}
 
 Template.myGoogleMap.onRendered(function() {
 	this.autorun(() => {

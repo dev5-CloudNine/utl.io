@@ -13,7 +13,7 @@ Template.providerNotifications.helpers({
 				var notif = {
 					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
-					bname: buyerDetails.name,
+					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 					buyerId: buyerDetails._id,
 					slug: buyerDetails.slug(),
 					notificationId: notification._id,
@@ -26,7 +26,7 @@ Template.providerNotifications.helpers({
 				var notif = {
 					imgUrl: imgUrl,
 					notificationType: notification.notificationType,
-					bname: buyerDetails.name,
+					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 					buyerId: buyerDetails._id,
 					slug: buyerDetails.slug(),
 					notificationId: notification._id,
@@ -39,7 +39,7 @@ Template.providerNotifications.helpers({
 					var notif = {
 						imgUrl: imgUrl,
 						notificationType: notification.notificationType,
-						bname: buyerDetails.name,
+						bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 						buyerId: buyerDetails._id,
 						jobId: notification.jobId,
 						slug: jobDetails.slug(),

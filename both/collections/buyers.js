@@ -10,6 +10,48 @@ BuyersIndex = new EasySearch.Index({
     }
   })
 });
+
+AddressSchema = new SimpleSchema({
+  street: {
+    type: String
+  },
+  locality: {
+    type: String
+  },
+  sublocality: {
+    type: String,
+    optional: true
+  },
+  state: {
+    type: String
+  },
+  zip: {
+    type: String,
+    regEx: /^[0-9]{5}$/
+  },
+  country: {
+    type: String
+  },
+  formatted_address: {
+    type: String,
+    optional: true
+  },
+  mapLink: {
+    type: String,
+    optional: true
+  },
+  latitude: {
+    type: Number,
+    optional: true,
+    decimal: true
+  },
+  longitude: {
+    type: Number,
+    optional: true,
+    decimal: true
+  }
+});
+
 Buyers.attachSchema(
   new SimpleSchema({
 	userId: {
@@ -93,6 +135,10 @@ Buyers.attachSchema(
   	type: String,
   	label: "Location",
   	max: 256
+  },
+  fullLocation: {
+    type: AddressSchema,
+    optional: true
   },
   description: {
   	type: String,

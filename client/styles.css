@@ -1073,3 +1073,7 @@ ul.timeline > li > .timeline-panel:after {
 #loadMapHere {
   height: 500px;
 }
+
+.fc-content a {
+  color: #fff;
+}

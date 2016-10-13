@@ -34,6 +34,22 @@
                         {{/with}}
                     </div>
                 </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <a href="{{pathFor 'profiles'}}">New Providers: {{newJobsCount}}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        {{#with buyerDetails}}<a href="{{pathFor 'buyerNotifications'}}">New Notifications: {{newNotificationsCount}}</a>{{/with}}<br>
+                        <a href="{{pathFor 'mailBox' tab="mails"}}">New Messages: {{newMessagesCount}}</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{>buyerCalendar}}
+                    </div>
+                </div>
             {{else}}
                 {{#if isInRole 'provider, corporate-provider'}}
                     <div class="row tile_count">
@@ -66,6 +82,24 @@
                                     </div>
                                 </a>
                             {{/with}}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <a href="{{pathFor 'jobs'}}">New Jobs: {{newJobsCount}}</a><br>
+                            <a href="{{pathFor 'recommendedJobs'}}">Recommended Jobs: {{recommendedJobsCount}}</a><br>
+                            <a href="{{pathFor 'invitedJobs'}}">Invited Jobs: {{invitedJobsCount}}</a><br>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            {{#with providerProfile}}<a href="{{pathFor 'providerNotifications'}}">New Notifications: {{newNotificationsCount}}</a>{{/with}}<br>
+                            <a href="{{pathFor 'mailBox' tab="mails"}}">New Messages: {{newMessagesCount}}</a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {{>providerCalendar}}
                         </div>
                     </div>
                 {{else}}
@@ -132,4 +166,11 @@
         <input type="text" id="place1" class="form-control">
         <div id="myMap"></div>
     </div>
+</template>
+
+<template name="providerCalendar">
+    <div id="provider-jobs-calendar"></div>
+</template>
+<template name="buyerCalendar">
+    <div id="buyer-jobs-calendar"></div>
 </template>
