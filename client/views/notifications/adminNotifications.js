@@ -1,5 +1,4 @@
 Template.adminNotifications.rendered = function () {
-	console.log(this);
 	this.infiniteScroll({
 		perPage: 20,
 		query: {},

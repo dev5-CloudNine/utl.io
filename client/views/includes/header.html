@@ -258,6 +258,7 @@
         <ul class="dropdown-menu" role="menu">
             {{#if isInRole 'admin'}}
                 <li><a href="/admin"><i class="fa fa-cogs fa-fw"></i> Admin</a></li>
+                <li><a href="{{pathFor 'jobCategories'}}"><i class="fa fa-bars fa-fw"></i> Job Categories</a></li>
                 <li class="divider"></li>
                 <li>
                     <a href="{{pathFor 'mailBox' tab="mails"}}"><i class="fa fa-envelope fa-fw"></i> Messages</a>

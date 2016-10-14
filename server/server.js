@@ -69,6 +69,19 @@ Meteor.methods({
     "deleteInvite": function(id) {
         TempInvitation.remove({_id:id});
     },
+    'addJobCategory': function(category) {
+        Categories.insert({label: category, value: category});
+    },
+    "addJobSubCategory": function(parent, subCategory) {
+        SubCategories.insert({label: subCategory, value: subCategory, parentId: parent});
+    },
+    'updateJobSubCategory': function(parent, subCategory, subCatId) {
+        SubCategories.update({_id: subCatId}, {$set: {parentId: parent, label: subCategory, value: subCategory}});
+    },
+    'updateJobCategory': function(prevName, categoryId, categoryName) {
+        SubCategories.update({parentId: prevName}, {$set: {parentId: categoryName}}, {multi: true});
+        Categories.update({_id: categoryId}, {$set: {label: categoryName, value: categoryName}});
+    },
     "location": function(query, options) {
         if (!query) return [];
 

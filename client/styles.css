@@ -657,7 +657,7 @@ footer {
 }
 
 .media-body a {
-  font-size: 16px !important;
+  font-size: 14px !important;
 }
 
 .profileLabel {
@@ -882,7 +882,7 @@ span.bigstars span.rateit-selected
   content: " ";
   width: 3px;
   background-color: #eeeeee;
-  left: 50%;
+  left: 570px;
   margin-left: -1.5px;
 }
 
@@ -1076,4 +1076,8 @@ ul.timeline > li > .timeline-panel:after {
 
 .fc-content a {
   color: #fff;
+}
+
+.fc-left h2 {
+  font-size: 14px !important;
 }

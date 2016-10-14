@@ -110,6 +110,11 @@ Router.map(function() {
         }
     });
 
+    this.route('jobCategories', {
+        path: '/allJobCategories',
+        title: 'UTL - All Job Categories'
+    })
+
     this.route('myJobs', {
         path: '/myjobs',
         title: "UTL - Posted Jobs",
@@ -527,23 +532,13 @@ Router.map(function() {
         path: '/dashboard',
         title: "UTL - Dashboard",
         waitOn: function() {
+            Meteor.subscribe('jobCount');
             Meteor.subscribe("contacts",Meteor.userId());
             Meteor.subscribe('allJobs');
             Meteor.subscribe('reviews');
             Meteor.subscribe('userWallet', Meteor.userId());
             return Meteor.subscribe("messages",Meteor.userId());
-        },
-        // data: function() {
-        //     else if(this.params.tab=='dashboard') {
-        //         return {
-        //           active: 'dashboard',
-        //         };
-        //     } else if(this.params.tab == 'deposits') {
-        //         return {
-        //             active: 'piggyBank'
-        //         };
-        //     }
-        // }
+        }
     });
 
     this.route('mailBox', {

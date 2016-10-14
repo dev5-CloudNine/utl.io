@@ -8,6 +8,11 @@ Template.dashboard.helpers({
 			}
 		});
 	},
+	// recommendedJobsCount: function() {
+	// 	var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
+	// 	Meteor.subscribe('recommendedJobs', jobCategories);
+	// 	return Jobs.find({$and: [{applicationStatus: 'open'}, {jobSubCategory: {$in: jobCategories}}]}).count()
+	// },
 	buyerCompletedJobsCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}).count();
 	},
@@ -186,11 +191,11 @@ Template.providerCalendar.onRendered(function() {
 		eventRender(event, element) {
 			if(event.serviceschedule == 'exactdate') {
 				element.find('.fc-content').html(
-					'<p>' + event.readableID + '</p>' + '<h4><a href="/jobs/' + event._id + '">'  + event.title + '</a></h4>' + '<p>' + event.exacttime + '</p>'
+					'<p>' + event.readableID + '</p>' + '<strong><a href="/jobs/' + event._id + '">'  + event.title + '</a></strong>' + '<p>' + event.exacttime + '</p>'
 				)
 			} else if(event.serviceschedule == 'betweendates') {
 				element.find('.fc-content').html(
-					'<p>' + event.readableID + '</p>' + '<h4><a href="/jobs/' + event._id + '">'  + event.title + '</a></h4>' + '<p>' + event.starttime + ' to ' + event.endtime + '</p>'
+					'<p>' + event.readableID + '</p>' + '<strong><a href="/jobs/' + event._id + '">'  + event.title + '</a></strong>' + '<p>' + event.starttime + ' to ' + event.endtime + '</p>'
 				)
 			}
 		}
@@ -221,11 +226,11 @@ Template.buyerCalendar.onRendered(function() {
 		eventRender(event, element) {
 			if(event.serviceschedule == 'exactdate') {
 				element.find('.fc-content').html(
-					'<p>' + event.readableID + '</p>' + '<h4><a href="/jobs/' + event._id + '">'  + event.title + '</a></h4>' + '<p>' + event.exacttime + '</p>'
+					'<p>' + event.readableID + '</p>' + '<strong><a href="/jobs/' + event._id + '">'  + event.title + '</a></strong>' + '<p>' + event.exacttime + '</p>'
 				)
 			} else if(event.serviceschedule == 'betweendates') {
 				element.find('.fc-content').html(
-					'<p>' + event.readableID + '</p>' + '<h4><a href="/jobs/' + event._id + '">'  + event.title + '</a></h4>' + '<p>' + event.starttime + ' to ' + event.endtime + '</p>'
+					'<p>' + event.readableID + '</p>' + '<strong><a href="/jobs/' + event._id + '">'  + event.title + '</a></strong>' + '<p>' + event.starttime + ' to ' + event.endtime + '</p>'
 				)
 			}
 		}

@@ -1,0 +1,90 @@
+<template name="jobCategories">
+	{{#if currentUser}}
+		{{#if isInRole 'admin'}}
+			{{>ReactiveDatatable tableData=jobCategories options=adminOptionsObject}}
+		{{/if}}
+	{{/if}}
+	<div class="row">
+		<div class="col-xs-12 col-md-6">
+			{{>addCategory}}
+		</div>
+		<div class="col-xs-12 col-md-6">
+			{{>addSubCategory}}
+		</div>
+	</div>
+	<div class="modal fade" id="editSubCategoryModal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        			<h4 class="modal-title">Edit Job Sub Category</h4>
+				</div>
+				<div class="modal-body">
+					<form id="editSubCategory">
+						<div class="form-group">
+							<label for="editCatDetail">Category</label>
+							<select name="editparentcategory" id="editCatDetail" class="form-control" required>
+								<option selected="selected" disabled="disabled">Select One</option>
+								{{#each parentCategory}}
+									<option value="{{this.value}}">{{this.label}}</option>
+								{{/each}}
+							</select>
+							<label for="editSubCatDetail">Sub Category</label>
+							<input type="text" id="editSubCatDetail" class="form-control" name="editSubCatDetail" required>
+							<input type="text" name="subCatId" hidden readonly="readonly">
+						</div>
+						<button class="btn btn-default" type="submit">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="editCategoryModal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        			<h4 class="modal-title">Edit Job Category</h4>
+				</div>
+				<div class="modal-body">
+					<form id="editCategory">
+						<div class="form-group">
+							<label for="catEdit">Category</label>
+							<input type="text" id="previousName" hidden readonly="readonly">
+							<input type="text" id="catEdit" class="form-control" name="catEdit" required>
+							<input type="text" name="categoryId" hidden readonly="readonly">
+						</div>
+						<button class="btn btn-default" type="submit">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="addCategory">
+	<form id="addJobCategory">
+		<div class="form-group">
+			<label for="categoryDetail">Category</label>
+			<input type="text" id="categoryDetail" class="form-control" name="categoryDetail" required>
+		</div>
+		<button type="submit" class="btn btn-default">Submit</button>
+	</form>
+</template>
+
+<template name="addSubCategory">
+	<form id="addSubCategory">
+		<div class="form-group">
+			<label for="catDetail">Category</label>
+			<select name="parentcategory" id="catDetail" class="form-control" required>
+				<option selected="selected" disabled="disabled">Select One</option>
+				{{#each parentCategory}}
+					<option value="{{this.value}}">{{this.label}}</option>
+				{{/each}}
+			</select>
+			<label for="subCatDetail">Sub Category</label>
+			<input type="text" id="subCatDetail" class="form-control" name="subCatDetail" required>
+		</div>
+		<button class="btn btn-default" type="submit">Submit</button>
+	</form>
+</template>
