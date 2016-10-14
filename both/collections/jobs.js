@@ -744,10 +744,6 @@ Jobs.attachSchema(
               value: "Enter shipment tracking"
             },
             {
-              label: "Collect a signature",
-              value: "Collect a signature"
-            },
-            {
               label: "Send an email",
               value: "Send an email"
             },
@@ -758,10 +754,6 @@ Jobs.attachSchema(
             {
               label: "Upload/take a picture",
               value: "Upload/take a picture"
-            },
-            {
-              label: "Upload a file",
-              value: "Upload a file"
             },
             {
               label: "Unique task",

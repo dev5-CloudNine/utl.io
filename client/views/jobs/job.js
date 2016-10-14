@@ -1023,6 +1023,8 @@ Template.job.helpers({
       return 'label-paid';
   },
   showTabs: function(id) {
+      if(Jobs.findOne({_id: id}).userId == Meteor.userId())
+        return true;
       return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned', 'completed', 'pending_payment','paid']}}]}) ? true : false;
   },
   jobNotAssigned: function() {

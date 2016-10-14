@@ -93,6 +93,16 @@ Jobs.after.insert(function(userId, doc){
   obj.jobID = doc._id;
   Tasks.insert(obj);
 
+  obj.taskName = 'Collect a signature';
+  obj.taskdescription = 'Please collect a signature from respective authority.';
+  obj.jobID = doc._id;
+  Tasks.insert(obj);
+
+  obj.taskName = 'Upload a file';
+  obj.taskdescription = 'Please upload relevent files.';
+  obj.jobID = doc._id;
+  Tasks.insert(obj);
+
   TimeSheet.insert({jobID:doc._id,"checkIn" : ""});
 
   var notificationObj = {
