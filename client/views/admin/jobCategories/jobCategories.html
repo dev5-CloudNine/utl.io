@@ -4,6 +4,7 @@
 			{{>ReactiveDatatable tableData=jobCategories options=adminOptionsObject}}
 		{{/if}}
 	{{/if}}
+	<hr>
 	<div class="row">
 		<div class="col-xs-12 col-md-6">
 			{{>addCategory}}
@@ -65,8 +66,8 @@
 <template name="addCategory">
 	<form id="addJobCategory">
 		<div class="form-group">
-			<label for="categoryDetail">Category</label>
-			<input type="text" id="categoryDetail" class="form-control" name="categoryDetail" required>
+			<label for="categoryDetail">Add Category</label>
+			<input type="text" id="categoryDetail" class="form-control" name="categoryDetail" placeholder="Enter Category Name" required>
 		</div>
 		<button type="submit" class="btn btn-default">Submit</button>
 	</form>
@@ -75,15 +76,15 @@
 <template name="addSubCategory">
 	<form id="addSubCategory">
 		<div class="form-group">
-			<label for="catDetail">Category</label>
+			<label for="catDetail">Add Sub Category</label>
 			<select name="parentcategory" id="catDetail" class="form-control" required>
-				<option selected="selected" disabled="disabled">Select One</option>
+				<option selected="selected" disabled="disabled">Select Parent Category</option>
 				{{#each parentCategory}}
 					<option value="{{this.value}}">{{this.label}}</option>
 				{{/each}}
 			</select>
-			<label for="subCatDetail">Sub Category</label>
-			<input type="text" id="subCatDetail" class="form-control" name="subCatDetail" required>
+			<br>
+			<input type="text" id="subCatDetail" class="form-control" name="subCatDetail" placeholder="Enter Sub Category Name" required>
 		</div>
 		<button class="btn btn-default" type="submit">Submit</button>
 	</form>
