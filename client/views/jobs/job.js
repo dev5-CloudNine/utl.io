@@ -569,6 +569,10 @@ Template.job.events({
       }
     })
   },
+  'rated .rateit': function(event, instance) {
+    var rating = $(event.target).rateit('value');
+    instance.ratingPoints.set(rating);
+  },
   'submit #reviewProvider': function(event, template) {
     event.preventDefault();
     var providerId = this.assignedProvider;
@@ -1245,10 +1249,18 @@ Template.job.helpers({
       userId = Buyers.findOne({_id: this.id}).userId;
     }
     return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [userId]}}]})?true:false;
+  },
+  buyerReviewDetails: function() {
+    return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]});
+  },
+  providerReviewDetails: function() {
+    return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]});
   }
 });
 
 Template.job.rendered = function() {
+  this.$('.rateit').rateit();
+  this.ratingPoints = new ReactiveVar(null);
   var providerRatingPoints = 0;
   var providerReviews = Reviews.find({$and: [{providerId: this.data.assignedProvider}, {reviewedBy: 'buyer'}]}).fetch();
   if(providerReviews) {

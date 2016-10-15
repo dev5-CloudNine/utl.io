@@ -68,6 +68,12 @@ Template.jobSmall.helpers({
 	approvePaymentTime: function() {
 		var approvePaymentTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'approvePayment'}]}).timeStamp;
 		return moment(approvePaymentTime).format('LLLL');
+	},
+	providerReviewDetails: function() {		
+    	return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]});
+	},
+	buyerReviewDetails: function() {
+		return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]});
 	}
 });
 

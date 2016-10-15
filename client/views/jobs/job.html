@@ -471,11 +471,15 @@
                                         <p>Payment has been released successfully for the job completed. The provider is now paid.</p>
                                         {{#if reviewedProvider}}
                                             <hr>
-                                            You've reviewed the provider for this job.
+                                            <strong>Review Details</strong>
+                                            {{#with providerReviewDetails}}
+                                                <p>{{this.reviewMessage}}</p>
+                                                <span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
+                                            {{/with}}
                                         {{else}}
                                             <hr>
-                                            <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewProvider">Rate &amp; Review Provider</button>
-                                            <div id="reviewProvider" class="panel panel-white panel-collapse collapse">
+                                            <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewExpert">Rate &amp; Review Provider</button>
+                                            <div id="reviewExpert" class="panel panel-white panel-collapse collapse">
                                                 <div class="panel-body">
                                                     <form id="reviewProvider">
                                                         <div class="form-group">
@@ -1122,11 +1126,15 @@
                                             <p>The buyer has released the payment. The job is now completed.</p>
                                             {{#if reviewedBuyer}}
                                                 <hr>
-                                                You've reviewed the buyer for this job.
+                                                <strong>Review Details</strong>
+                                                {{#with buyerReviewDetails}}
+                                                    <p>{{this.reviewMessage}}</p>
+                                                    <span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
+                                                {{/with}}
                                             {{else}}
                                                 <hr>
-                                                <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewBuyer">Rate &amp; Review Buyer</button>
-                                                <div id="reviewBuyer" class="panel panel-white panel-collapse collapse">
+                                                <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewClient">Rate &amp; Review Buyer</button>
+                                                <div id="reviewClient" class="panel panel-white panel-collapse collapse">
                                                     <div class="panel-body">
                                                         <form id="reviewBuyer">
                                                             <div class="form-group">
