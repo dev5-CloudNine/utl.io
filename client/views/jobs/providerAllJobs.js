@@ -9,6 +9,7 @@ Template.providerAllJobs.helpers({
 	    var completedJobs = providerDetails.completedJobs;
 	    var paymentPendingJobs = providerDetails.paymentPendingJobs;
 	    var paidJobs = providerDetails.paidJobs;
+	    var archivedJobs = providerDetails.archivedJobs;
 	    if(appliedJobs) {
 	    	for(var i = appliedJobs.length - 1; i >= 0; i--) {
 	    		allJobIds.push(appliedJobs[i]);
@@ -39,6 +40,11 @@ Template.providerAllJobs.helpers({
 	    		allJobIds.push(paidJobs[i]);
 	    	}
 	    }
+	    if(archivedJobs) {
+	    	for(var i = archivedJobs.length - 1; i >= 0; i--) {
+	    		allJobIds.push(archivedJobs[i]);
+	    	}
+	    }
 	    allJobIds.forEach(function(jobId) {
 	    	allJobs.push(Jobs.findOne({_id: jobId}));
 	    });
@@ -53,18 +59,21 @@ Template.providerAllJobs.helpers({
 	    var completedJobs = providerDetails.completedJobs;
 	    var paymentPendingJobs = providerDetails.paymentPendingJobs;
 	    var paidJobs = providerDetails.paidJobs;
+	    var archivedJobs = providerDetails.archivedJobs;
 	    if(appliedJobs)
-	      count += appliedJobs.length;
+	    	count += appliedJobs.length;
 	    if (routedJobs)
-	      count += routedJobs.length;
+	    	count += routedJobs.length;
 	    if (assignedJobs)
-	      count += assignedJobs.length;
+	    	count += assignedJobs.length;
 	    if (completedJobs)
-	      count += completedJobs.length;
+	    	count += completedJobs.length;
 	    if(paymentPendingJobs)
-	      count += paymentPendingJobs.length;
+	    	count += paymentPendingJobs.length;
 	    if(paidJobs)
-	      count += paidJobs.length;
+	    	count += paidJobs.length;
+	  	if(archivedJobs)
+	  		count += archivedJobs.length;
 	    return count;
   	},
   	proPaidJobsCount: function() {

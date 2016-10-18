@@ -863,6 +863,16 @@ Jobs.attachSchema(
       //   }
       // }
     },
+    buyerArchived: {
+      type: Boolean,
+      defaultValue: false,
+      optional: true
+    },
+    providerArchived: {
+      type: Boolean,
+      defaultValue: false,
+      optional: true
+    },
     assignmentStatus: {
       type: String,
       allowedValues: ['not_submitted', 'submitted', 'approved', 'rejected', 'pending_payment', 'paid'],

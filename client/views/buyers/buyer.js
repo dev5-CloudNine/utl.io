@@ -40,7 +40,7 @@ Template.buyer.helpers({
     return Meteor.users.findOne({_id: this.userId}).roles[0];
   },
   buyerCompletedJobs: function() {
-    return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'done'}, {assignmentStatus: 'paid'}]});
+    return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'paid'}, {assignmentStatus: 'paid'}]});
   },
   reviews: function() {
     return Reviews.findOne({$and: [{buyerId: this.userId}, {reviewedBy: 'provider'}, {reviewedJobId: this._id}]});

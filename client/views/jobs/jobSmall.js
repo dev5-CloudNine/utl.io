@@ -191,6 +191,16 @@ Template.jobSmall.events({
 			}
 		})
 	},
+	'click button.archiveJob': function(event, template) {
+		var jobId = this._id;
+		Meteor.call('archiveJob', jobId, Meteor.userId(), function(error) {
+			if(error) {
+				toastr.error('Failed to archive the job. Please try again.');
+			} else {
+				toastr.success('Successfully archived the job.');
+			}
+		});
+	},
 	'rated .rateit': function(event, instance) {
 		var rating = $(event.target).rateit('value');
 		instance.ratingPoints.set(rating);

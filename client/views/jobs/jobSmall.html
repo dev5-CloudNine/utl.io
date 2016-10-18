@@ -82,6 +82,11 @@
                     {{#if $eq applicationStatus 'paid'}}
                         <div class="col-sm-12">
                             <hr>
+                            {{#unless $eq providerArchived true}}
+                                <div class="pull-right">
+                                    <button class="btn btn-sm btn-primary archiveJob">Archive</button>
+                                </div>
+                            {{/unless}}
                             <p>The buyer has released the payment. The job is now completed.</p>
                             {{#if reviewedBuyer}}
                                 <strong>Review Details</strong>
@@ -127,6 +132,11 @@
                         {{#if $eq applicationStatus 'paid'}}
                             <div class="col-sm-12">
                                 <hr>
+                                {{#unless $eq buyerArchived true}}
+                                    <div class="pull-right">
+                                        <button class="btn btn-sm btn-primary archiveJob">Archive</button>
+                                    </div>
+                                {{/unless}}
                                 <p>Payment has been released successfully for the job completed. The provider is now paid.</p>
                                 {{#if reviewedProvider}}
                                     <strong>Review Details</strong>

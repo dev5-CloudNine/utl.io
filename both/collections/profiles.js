@@ -418,6 +418,13 @@ Profiles.attachSchema(
     'paidJobs.$': {
       type: String
     },
+    archivedJobs: {
+      type: Array,
+      optional: true
+    },
+    'archivedJobs.$': {
+      type: String
+    },
     status: {
       type: String,
       allowedValues: STATUSES,

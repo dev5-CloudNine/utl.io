@@ -136,9 +136,9 @@ SearchSource.defineSource('buyerPaidJobs', function(searchText, options) {
 			{servicelocation: regExp},
 			{readableID: regExp}
 		]};
-		return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'paid'}, selector]}, options).fetch();
+		return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'paid'}, {buyerArchived: false}, selector]}, options).fetch();
 	} else {
-		return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'paid'}]}, options).fetch();
+		return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'paid'}, {buyerArchived: false}]}, options).fetch();
 	}
 })
 

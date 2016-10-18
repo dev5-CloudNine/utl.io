@@ -18,10 +18,10 @@ Template.buyerPaidJobs.rendered = function() {
 }
 Template.buyerPaidJobs.helpers({
 	buyerPaidJobs: function() {
-		return BuyerPaidJobsSearch.getData({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}, {sort: {createdAt: -1}});
+		return BuyerPaidJobsSearch.getData({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}, {buyerArchived: false}]}, {sort: {createdAt: -1}});
 	},
 	buyerPaidCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}).count();
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}, {buyerArchived: false}]}).count();
 	},
 	postedJobCount: function() {
 		return Jobs.find({userId: Meteor.userId()}).count();

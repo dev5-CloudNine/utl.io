@@ -43,6 +43,6 @@ Template.buyerCompletedJobs.helpers({
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();
 	},
 	buyerPaidCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}).count();
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}, {buyerArchived: false}]}).count();
 	}
 })
