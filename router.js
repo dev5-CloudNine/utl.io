@@ -281,6 +281,7 @@ Router.map(function() {
             });
         },
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
             Meteor.subscribe('jobNotifications', this.params._id);
             Meteor.subscribe("tasksOfaJob",this.params._id);
             Meteor.subscribe("timeSheet",this.params._id);

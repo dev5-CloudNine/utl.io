@@ -265,6 +265,11 @@ Meteor.methods({
             html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ', <br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has accepted you application for the job you applied. <br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>You may confirm the assignment or reject the assignment by <a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">clicking here</a>'
         })
     },
+    acceptHighBudgetCO: function(difference, buyerId) {
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        Wallet.update({userId: buyerId}, {$inc: {accountBalance: -difference}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: difference}});
+    },
     "acceptCounterOffer": function(jobId, userId, applied_at, buyerCost, freenets) {
         var jobDetails = Jobs.findOne({_id: jobId});
         var buyerDetails = Buyers.findOne({userId: jobDetails.userId});
@@ -293,8 +298,12 @@ Meteor.methods({
     rejectApplication: function(jobId, userId, applied_at) {
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'rejected', applicationStatus: 'open'}})
     },
-    rejectCounterOffer: function(jobId, userId, applied_at) {
+    rejectCounterOffer: function(jobId, userId, applied_at, difference) {
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        var jobDetails = Jobs.findOne({_id: jobId});
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'rejected', applicationStatus: 'open'}})
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: -difference}});
+        Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: difference}});
     },
     confirmAssignment: function(jobId, buyerId) {
         var jobDetails = Jobs.findOne({_id: jobId});

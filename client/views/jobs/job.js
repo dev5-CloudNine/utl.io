@@ -164,6 +164,17 @@ Template.job.events({
     var buyerCost = this.buyer_cost;
     var applied_at = this.appliedAt;
     var freenets = this.freelancer_nets;
+    var jobDetails = Jobs.findOne({_id: jobId});
+    var buyerWallet = Wallet.findOne({userId: jobDetails.userId});
+    if(buyerCost > jobDetails.your_cost) {
+      var diff = buyerCost - jobDetails.your_cost;
+      if(diff > buyerWallet.accountBalance) {
+        toastr.error('Your wallet balance is low. Please depositi sufficient funds to accept this counter offer.');
+        return;
+      } else {
+        Meteor.call('acceptHighBudgetCO', diff, jobDetails.userId);
+      }
+    }
     Meteor.call('acceptCounterOffer', jobId, userId, applied_at, buyerCost, freenets, function(error) {
       if(error) {
         toastr.error('Failed to accept counter offer.');
@@ -617,7 +628,12 @@ Template.job.events({
     var jobId = Router.current().params._id;
     var userId = Profiles.findOne({_id: this.userId}).userId;
     var applied_at = this.appliedAt;
-    Meteor.call('rejectCounterOffer', jobId, userId, applied_at, function(error) {
+    var jobDetails = Jobs.findOne({_id: jobId});
+    var diff;
+    if(this.buyer_cost > jobDetails.your_cost) {
+      diff = this.buyer_cost - jobDetails.your_cost;
+    }
+    Meteor.call('rejectCounterOffer', jobId, userId, applied_at, diff, function(error) {
       if(error) {
         toastr.error('Failed to reject the counter offer. Please try again');
       } else {
@@ -628,7 +644,7 @@ Template.job.events({
   'click button.rejectApplication': function(event, template) {
     var jobId = Router.current().params._id;
     var userId = Profiles.findOne({_id: this.userId}).userId;
-    var applied_at = this.appliedAt;
+    var applied_at = this.appliedAt;    
     Meteor.call('rejectApplication', jobId, userId, applied_at, function(error) {
       if(error) {
         toastr.error('Failed to reject the application. Please try again');

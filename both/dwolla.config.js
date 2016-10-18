@@ -55,6 +55,30 @@ if (Meteor.isServer) {
                 }).run();
             })
         },
+        'refreshAuthorization': function(userId) {
+            var obj = Wallet.findOne({userId: userId});
+            if(!obj) {
+                throw 'User\'s Dwolla account is not connected';
+                return
+            }
+            var tokenRequest = {
+                uri: client.tokenUrl,
+                method: 'POST',
+                json: {
+                    'client_id': client.id,
+                    'client_secret': client.secret,
+                    'refresh_token': obj.refresh_token,
+                    'grant_type': 'refresh_token'
+                }
+            }
+            request(tokenRequest, function(err, res, body) {
+                Fiber = Npm.require('fibers');
+                Fiber(function() {
+                    body['updated_on'] = new Date();
+                    Wallet.upsert({userId: userId}, {$set: body});
+                }).run();
+            })
+        },
         'createCustomer': function(userId, provider) {
             var dob = moment(provider.dateOfBirth).format('YYYY-MM-DD');
             var obj = Wallet.findOne({userId: userId});
@@ -108,7 +132,6 @@ if (Meteor.isServer) {
                 console.log(error);
             });
             fut.wait();
-            console.log(fut.value)
             return fut.value;
         },
         'getBalance': function() {
