@@ -163,7 +163,7 @@ Profiles.attachSchema(
     },
     socialSecurityNumber: {
       type: String,
-      label: "Social Security Number"
+      label: "Social Security Number *"
     },
     location: {
       type: String

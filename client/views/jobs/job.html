@@ -787,22 +787,53 @@
                                                             {{/if}}
                                                             Gross: {{buyer_cost}} USD. <br>
                                                             Net: {{freelancer_nets}} USD. <br>
+                                                            {{#if $eq applicationStatus 'open'}}
+                                                                <br>
+                                                                <button class="btn btn-primary acceptCounterOffer">Accept Application</button>
+                                                            {{/if}}
                                                             {{#if $eq applicationStatus 'frozen'}}
-                                                                <h5>Awaiting confirmation from provider.</h5>
-                                                                <button class="btn btn-primary rejectCounterOffer">Reject Application</button>
-                                                            {{else}}
-                                                                {{#if $eq applicationStatus 'assigned'}}
+                                                                {{#if selectedProvider}}
+                                                                    <h5>Awaiting confirmation from provider.</h5>
+                                                                    <button class="btn btn-primary rejectCounterOffer">Reject Application</button>
+                                                                {{else}}
+                                                                    <br>
+                                                                    <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept Application</button>
+                                                                {{/if}}
+                                                            {{/if}}
+                                                            {{#if $eq applicationStatus 'assigned'}}
+                                                                {{#if assignedApplicant}}
                                                                     <h5>The job is assigned.</h5>
                                                                 {{else}}
-                                                                    {{#if $eq applicationStatus 'completed'}}
-                                                                        <h5>The project is completed.</h5>
-                                                                    {{else}}
-                                                                        {{#if applicationStatus 'open'}}
-                                                                            <br>
-                                                                            <button class="btn btn-primary acceptCounterOffer">Accept Application</button>
-                                                                        {{/if}}
-                                                                    {{/if}}
+                                                                    <br>
+                                                                    <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept Application</button>
                                                                 {{/if}}
+                                                            {{/if}}
+                                                            {{#if $eq applicationStatus 'completed'}}
+                                                                {{#if assignedApplicant}}
+                                                                    <h5>The project is completed.</h5>
+                                                                {{else}}
+                                                                    <br>
+                                                                    <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept Application</button>
+                                                                {{/if}}
+                                                            {{/if}}
+                                                            {{#if $eq applicationStatus 'pending_payment'}}
+                                                                {{#if assignedApplicant}}
+                                                                    <h5>The provider has raised an invoice and requested for the payment.</h5>
+                                                                {{else}}
+                                                                    <br>
+                                                                    <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept Application</button>
+                                                                {{/if}}
+                                                            {{/if}}
+                                                            {{#if $eq applicationStatus 'paid'}}
+                                                                {{#if assignedApplicant}}
+                                                                    <h5>You have paid the provider.</h5>
+                                                                {{else}}
+                                                                    <br>
+                                                                    <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept Application</button>
+                                                                {{/if}}
+                                                            {{/if}}
+                                                            {{#if $eq applicationStatus 'deactivated'}}
+                                                                <h5>You have deactivated the job. Activate it to accept the application.</h5>
                                                             {{/if}}
                                                         </div>
                                                     </div>
@@ -1362,6 +1393,279 @@
                         {{/if}}
                         <hr>
                     {{/if}}
+                {{/if}}
+                {{#if isInRole 'admin'}}
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#jobNotificationsTab" data-toggle="tab">Notifications</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="jobNotificationsTab">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    {{#each jobRelatedNotifications}}
+                                        {{#if $eq notificationType 'newJob'}}
+                                            <li class="list-group-item">
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has posted this job. <br><small><i>{{timeStamp}}</i></small>
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'newJobApplication'}}
+                                            <li class="list-group-item">
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has applied for this job. <br><small><i>{{timeStamp}}</i></small>
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'applicationAccepted'}}
+                                            <li class="list-group-item">
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has accepted application of the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> <small><i>{{timeStamp}}</i></small>
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'confirmAssignment'}}
+                                            <li class="list-group-item">
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has confirmed assignment. <br> <small><i>{{timeStamp}}</i></small>
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'declineAssignment'}}
+                                            <li class="list-group-item">
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has declined assignment. <br> <small><i>{{timeStamp}}</i></small>
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'submitAssignment'}}
+                                            <li class="list-group-item">
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has submitted assignment. <br> <small><i>{{timeStamp}}</i></small>
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'approveAssignment'}}
+                                            <li class="list-group-item">
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> <small><i>{{timeStamp}}</i></small>
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'rejectAssignment'}}
+                                            <li class="list-group-item">
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has rejected assignment submitted by the provider <a href="/profiles/{{providerId}}">{{providerName}}</a>. <br> <small><i>{{timeStamp}}</i></small>
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'requestPayment'}}
+                                            <li class="list-group-item">
+                                                <a href="/profiles/{{providerId}}">{{providerName}}</a> has requested for payment. <br> <small><i>{{timeStamp}}</i></small>
+                                            </li>
+                                        {{/if}}
+                                        {{#if $eq notificationType 'approvePayment'}}
+                                            <li class="list-group-item">
+                                                <a href="/buyers/{{buyerId}}">{{buyerName}}</a> has approved payment. <br> <small><i>{{timeStamp}}</i></small>
+                                            </li>
+                                        {{/if}}
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        {{#if assignedOrDone}}
+                            <li class="active"><a href="#jobAssignedProvider" data-toggle="tab" aria-expanded="true">Assigned Provider</a></li>
+                        {{/if}}
+                        <li class="{{#unless assignedOrDone}}active{{/unless}}"><a href="#buyerJobApplications" data-toggle="tab">Applications</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        {{#if assignedOrDone}}
+                            <div class="tab-pane active fade in" id="jobAssignedProvider">
+                                <br>
+                                {{#with assignedProviderDetails}}
+                                    <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+                                        <div class="box box-widget widget-user">
+                                            <div class="widget-user-header bg-assigned">
+                                                <span class="pull-right providerRatings" data-rateit-value="{{rateItValue}}"></span>
+                                                <small>{{readableID}}</small>
+                                                <h3 class="widget-user-username">{{this.name}}</h3>
+                                                <h5 class="widget-user-desc">{{this.title}}</h5>
+                                            </div>
+                                            <div class="widget-user-image">
+                                                <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
+                                            </div>
+                                            <div class="box-footer">
+                                                <div class="row">
+                                                    <div class="col-xs-4 border-right">
+                                                        <div class="description-block text-center">
+                                                            <a href class="sendProviderMessage">
+                                                                <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                                                <span class="description-text">Send Message</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-4 border-right">
+                                                        <div class="description-block text-center">
+                                                            <a href="/profiles/{{this.id}}">
+                                                                <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                                                <span class="description-text">View Profile</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <div class="description-block text-center">
+                                                            <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
+                                                                <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
+                                                                <span class="description-text">{{#if fav}}Del Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h5>Accepted Budget</h5>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <span>Type: {{this.appType}}</span>
+                                                    <br>
+                                                    {{#if $eq this.appType 'application'}}
+                                                        Payment Type: {{this.paymentType}} <br>
+                                                        {{#if $eq ../ratebasis 'Blended'}}
+                                                            {{../payforfirsthours}} USD for the first {{../firsthours}} hours, and then {{../payfornexthours}} USD for the next {{../nexthours}} hours. <br>
+                                                            Gross: {{../totalfromclient}} USD.
+                                                            Net: {{../freelancer_nets}} USD.
+                                                        {{/if}}
+                                                        {{#if $eq ../ratebasis 'Per Device'}}
+                                                            {{../rateperdevice}} USD for {{../maxdevices}} devices. <br>
+                                                            Gross: {{../totalfromclient}} USD. <br>
+                                                            Net: {{../freelancer_nets}} USD.
+                                                        {{/if}}
+                                                        {{#if $eq ../ratebasis 'Per Hour'}}
+                                                            {{../hourlyrate}} USD per hour for {{../maxhours}} hours. <br>
+                                                            Gross: {{../totalfromclient}} USD. <br>
+                                                            Net: {{../freelancer_nets}} USD.
+                                                        {{/if}}
+                                                        {{#if $eq ../ratebasis 'Fixed Pay'}}
+                                                            Gross: {{../fixedamount}} USD.
+                                                            <br>Net: {{../freelancer_nets}} USD.
+                                                        {{/if}}
+                                                    {{/if}}
+                                                    {{#if $eq appType 'counteroffer'}}
+                                                        {{#if $eq counter_type 'blended'}}
+                                                            Payment Type: Blended <br>
+                                                            Pay {{first_hours}} USD for the first {{first_max_hours}} and then {{next_hours}} USD for the next {{next_max_hours}}. <br>
+                                                        {{/if}}
+                                                        {{#if $eq counter_type 'per_device'}}
+                                                            Payment Type: Per Device <br>
+                                                            Pay {{device_rate}} USD for {{max_devices}} devices. <br>
+                                                        {{/if}}
+                                                        {{#if $eq counter_type 'per_hour'}}
+                                                            Payment Type: Per Hour <br>
+                                                            Pay {{hourly_rate}} USD for {{max_hours}} hours.  <br>
+                                                        {{/if}}
+                                                        {{#if $eq counter_type 'fixed_pay'}}
+                                                            Payment Type: Fixed Pay <br>
+                                                            Pay fixed amount {{fixed_amount}} USD. <br>
+                                                        {{/if}}
+                                                        Gross: {{buyer_cost}} USD. <br>
+                                                        Net: {{freelancer_nets}} USD.
+                                                    {{/if}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/with}}
+                            </div>
+                        {{/if}}
+                        <div class="tab-pane fade in {{#unless assignedOrDone}}active{{/unless}}" id="buyerJobApplications">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    {{#each appliedProviders}}
+                                        {{#if $eq this.app_type 'application'}}
+                                            <div class="panel-group" id="accordion">
+                                                <div class="panel panel-white">
+                                                    <div class="panel-heading">
+                                                        <a href="#user{{this.userId}}" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">{{this.name}}</a>
+                                                        <a href="/profiles/{{this.userId}}" class="pull-right"><i class="fa fa-link"></i></a>
+                                                    </div>
+                                                    <div id="user{{this.userId}}" class="panel-collapse collapse">
+                                                        <div class="panel-body">
+                                                            <small><i>Application</i></small>
+                                                            <br>
+                                                            {{#with paymentDetails}}
+                                                                Payment type: {{ratebasis}} <br>
+                                                                {{#if $eq ratebasis 'Blended'}}
+                                                                    {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
+                                                                    Gross: {{totalfromclient}} USD. <br>
+                                                                    Net: {{freelancer_nets}} USD.
+                                                                {{/if}}
+                                                                {{#if $eq ratebasis 'Per Device'}}
+                                                                    {{rateperdevice}} USD for {{maxdevices}} devices. <br>
+                                                                    Gross: {{totalfromclient}} USD.
+                                                                    <br>Net: {{freelancer_nets}} USD.
+                                                                {{/if}}
+                                                                {{#if $eq ratebasis 'Per Hour'}}
+                                                                    {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
+                                                                    Gross: {{totalfromclient}} USD. <br>
+                                                                    Net: {{freelancer_nets}} USD.
+                                                                {{/if}}
+                                                                {{#if $eq ratebasis 'Fixed Pay'}}
+                                                                    Gross: {{fixedamount}} USD.
+                                                                    <br>Net: {{freelancer_nets}} USD.
+                                                                {{/if}}
+                                                            {{/with}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {{/if}}
+                                        {{#if $eq this.app_type 'counteroffer'}}
+                                            <div class="panel-group" id="accordion">
+                                                <div class="panel panel-white">
+                                                    <div class="panel-heading">
+                                                        <a href="#user{{this.userId}}" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">{{this.name}}</a>
+                                                        <a href="/profiles/{{this.userId}}" class="pull-right"><i class="fa fa-link"></i></a>
+                                                    </div>
+                                                    <div id="user{{this.userId}}" class="panel-collapse collapse">
+                                                        <div class="panel-body">
+                                                            <small><i>Counter Offer</i></small><br>
+                                                            {{#if $eq counter_type 'blended'}}
+                                                                Payment Type: Blended <br>
+                                                                Pay {{first_hours}} USD for the first {{first_max_hours}} and then {{next_hours}} USD for the next {{next_max_hours}}. <br>
+                                                            {{/if}}
+                                                            {{#if $eq counter_type 'per_device'}}
+                                                                Payment Type: Per Device <br>
+                                                                Pay {{device_rate}} USD for {{max_devices}} devices. <br>
+                                                            {{/if}}
+                                                            {{#if $eq counter_type 'per_hour'}}
+                                                                Payment Type: Per Hour <br>
+                                                                Pay {{hourly_rate}} USD for {{max_hours}} hours.  <br>
+                                                            {{/if}}
+                                                            {{#if $eq counter_type 'fixed_pay'}}
+                                                                Payment Type: Fixed Pay <br>
+                                                                Pay fixed amount {{fixed_amount}} USD. <br>
+                                                            {{/if}}
+                                                            Gross: {{buyer_cost}} USD. <br>
+                                                            Net: {{freelancer_nets}} USD. <br>
+                                                            {{#if $eq applicationStatus 'frozen'}}
+                                                                <h5>Awaiting confirmation from provider.</h5>
+                                                                <button class="btn btn-primary rejectCounterOffer">Reject Application</button>
+                                                            {{else}}
+                                                                {{#if $eq applicationStatus 'assigned'}}
+                                                                    <h5>The job is assigned.</h5>
+                                                                {{else}}
+                                                                    {{#if $eq applicationStatus 'completed'}}
+                                                                        <h5>The project is completed.</h5>
+                                                                    {{/if}}
+                                                                {{/if}}
+                                                            {{/if}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        {{/if}}
+                                    {{else}}
+                                        <h6>No providers have applied for this job yet.</h6>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {{/if}}
                 {{#if assignedOrDone}}
                     {{#if assignedProvider}}

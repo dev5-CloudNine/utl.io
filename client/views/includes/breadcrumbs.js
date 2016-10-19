@@ -4,5 +4,8 @@ Template.breadcrumbs.helpers({
 	},
 	profile: function() {
 		return Profiles.findOne({userId: Meteor.userId()});
+	},
+	userAccountBalance: function() {
+		return Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 	}
 })

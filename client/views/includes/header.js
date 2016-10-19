@@ -26,6 +26,7 @@ Template.header.helpers({
     var completedJobs = providerDetails.completedJobs;
     var paymentPendingJobs = providerDetails.paymentPendingJobs;
     var paidJobs = providerDetails.paidJobs;
+    var archivedJobs = providerDetails.archivedJobs;
     if(appliedJobs)
       count += appliedJobs.length;
     if (routedJobs)
@@ -38,6 +39,8 @@ Template.header.helpers({
       count += paymentPendingJobs.length;
     if(paidJobs)
       count += paidJobs.length;
+    if(archivedJobs)
+      count += archivedJobs.length;
     return count;
   },
   appliedJobsCount: function() {

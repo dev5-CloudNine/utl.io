@@ -281,7 +281,6 @@ Router.map(function() {
             });
         },
         waitOn: function() {
-            Meteor.subscribe('userWallet', Meteor.userId());
             Meteor.subscribe('jobNotifications', this.params._id);
             Meteor.subscribe("tasksOfaJob",this.params._id);
             Meteor.subscribe("timeSheet",this.params._id);
@@ -350,8 +349,7 @@ Router.map(function() {
             }
         },
         waitOn: function() {
-            Meteor.subscribe('userFiles', Meteor.userId());
-            return Meteor.subscribe('userWallet', Meteor.userId());
+            return Meteor.subscribe('userFiles', Meteor.userId());
         }
     });
 
@@ -367,9 +365,6 @@ Router.map(function() {
             } else {
                 this.render('notFound');
             }
-        },
-        waitOn: function() {
-            return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
 
@@ -400,7 +395,6 @@ Router.map(function() {
         },
         waitOn: function() {
             Meteor.subscribe('userFiles', Meteor.userId());
-            Meteor.subscribe("userWallet", Meteor.userId());
             return Meteor.subscribe("job", this.params._id);
         },
         onBeforeAction: function() {
@@ -423,7 +417,6 @@ Router.map(function() {
             };
         },
         waitOn: function() {
-            Meteor.subscribe('userWallet', Meteor.userId());
             return Meteor.subscribe('job', this.params._id);
         },
         onBeforeAction: function() {
@@ -537,7 +530,6 @@ Router.map(function() {
             Meteor.subscribe("contacts",Meteor.userId());
             Meteor.subscribe('allJobs');
             Meteor.subscribe('reviews');
-            Meteor.subscribe('userWallet', Meteor.userId());
             return Meteor.subscribe("messages",Meteor.userId());
         }
     });
@@ -575,17 +567,13 @@ Router.map(function() {
         path: '/wallet/deposit',
         title: 'Deposit Funds',
         waitOn: function() {
-            Meteor.subscribe('userTransactions', Meteor.userId());
-            return Meteor.subscribe('userWallet', Meteor.userId());
+            return Meteor.subscribe('userTransactions', Meteor.userId());
         }
     });
 
     this.route('withdraw', {
         path: '/wallet/withdraw',
-        title: 'Withdraw Funds',
-        waitOn: function() {
-            return Meteor.subscribe('userWallet', Meteor.userId());
-        }
+        title: 'Withdraw Funds'
     });
 
     this.route('invoices', {

@@ -11,3 +11,4 @@ Meteor.subscribe('skills');
 Meteor.subscribe('adminJobCount');
 Meteor.subscribe('allCompletedJobs');
 Meteor.subscribe('usersCount');
+Meteor.subscribe('userWallet', Meteor.userId())

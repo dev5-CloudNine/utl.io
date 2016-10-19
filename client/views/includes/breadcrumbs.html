@@ -2,12 +2,13 @@
 	<div class="container">
 		<div class="well well-sm">
 			<div class="row">
-				<div class="col-sm-12">
+				<div class="col-sm-12">		
 					<span class="pull-right">
-						<a href="{{pathFor 'home'}}">Home</a>&nbsp;&#124;&nbsp;
-						<a href="javascript: history.go(-1)">Back</a>
-					</span>
+						Account Balance: $ {{userAccountBalance}} USD
+					</span>			
 					<span class="pull-left">
+						<a href="{{pathFor 'home'}}">Home</a>&nbsp;&#124;&nbsp;
+						<a href="javascript: history.go(-1)">Back</a>&nbsp;&#124;&nbsp;
 						{{#if isInRole 'buyer, corporate-manager'}}
 							{{#unless currentUser.isBuyer}}
 								<a href="{{pathFor 'buyerNew'}}">Create Buyer Profile</a>

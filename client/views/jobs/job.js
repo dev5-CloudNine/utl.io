@@ -1106,7 +1106,7 @@ Template.job.helpers({
     }
     if(applicationDetails.appType == 'counteroffer') {
       var providerDetails = {
-        name: provider.firstName + ' ' + providerDetails.lastName,
+        name: provider.firstName + ' ' + provider.lastName,
         title: provider.title,
         status: provider.status,
         imgUrl: providerImg,

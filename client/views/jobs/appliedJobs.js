@@ -35,27 +35,30 @@ Template.appliedJobs.helpers({
 		return count;
 	},
 	providerAllCount: function() {
-	    var count = 0;
-	    var providerDetails = Profiles.findOne({userId: Meteor.userId()})
-	    var appliedJobs = providerDetails.appliedJobs;
-	    var routedJobs = providerDetails.routedJobs;
-	    var assignedJobs = providerDetails.assignedJobs;
-	    var completedJobs = providerDetails.completedJobs;
-	    var paymentPendingJobs = providerDetails.paymentPendingJobs;
-	    var paidJobs = providerDetails.paidJobs;
-	    if(appliedJobs)
-	      count += appliedJobs.length;
-	    if (routedJobs)
-	      count += routedJobs.length;
-	    if (assignedJobs)
-	      count += assignedJobs.length;
-	    if (completedJobs)
-	      count += completedJobs.length;
-	    if(paymentPendingJobs)
-	      count += paymentPendingJobs.length;
-	    if(paidJobs)
-	      count += paidJobs.length;
-	    return count;
+		var count = 0;
+		var providerDetails = Profiles.findOne({userId: Meteor.userId()})
+		var appliedJobs = providerDetails.appliedJobs;
+		var routedJobs = providerDetails.routedJobs;
+		var assignedJobs = providerDetails.assignedJobs;
+		var completedJobs = providerDetails.completedJobs;
+		var paymentPendingJobs = providerDetails.paymentPendingJobs;
+		var paidJobs = providerDetails.paidJobs;
+		var archivedJobs = providerDetails.archivedJobs;
+		if(appliedJobs)
+			count += appliedJobs.length;
+		if (routedJobs)
+			count += routedJobs.length;
+		if (assignedJobs)
+			count += assignedJobs.length;
+		if (completedJobs)
+			count += completedJobs.length;
+		if(paymentPendingJobs)
+			count += paymentPendingJobs.length;
+		if(paidJobs)
+			count += paidJobs.length;
+		if(archivedJobs)
+			count += archivedJobs.length;
+		return count;
   	},
 	assignedJobsCount: function() {
 		var count = 0;
