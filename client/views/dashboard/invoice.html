@@ -14,7 +14,7 @@
 						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 							{{#with providerDetails}}
 								<strong>From:</strong>
-								<h6>{{name}}</h6>
+								<h6>{{firstName}} {{lastName}}</h6>
 								<small>{{title}}</small> <br>
 								<small>{{location}}</small> <br>
 								<small>{{contactNumber}}</small> <br>
@@ -24,7 +24,7 @@
 						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 							{{#with buyerDetails}}
 								<strong>To:</strong>
-								<h6>{{name}}</h6>
+								<h6>{{firstName}} {{lastName}}</h6>
 								<small>{{title}}</small> <br>
 								<small>{{location}}</small> <br>
 								<small>{{contactNumber}}</small> <br>
@@ -43,13 +43,30 @@
 									<thead>
 										<tr>
 											<th>Project Title</th>
-											<th>Project Budget</th>
+											<th>Budget Details</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<td>{{jobName}}</td>
-											<td>$ {{projectBudget}}</td>
+											{{#with jobDetails}}
+												<td>{{title}}</td>
+												{{#with budgetDetails _id}}
+													<td>
+														{{#if $eq this.app_type 'application'}}
+															Application Type: Application <br>
+															Total From Client: $ {{../your_cost}} USD <br>
+															UTL Comission: $ {{utlComission ../your_cost}} USD <br>
+															Provider Net: $ {{../projectBudget}} USD
+														{{/if}}
+														{{#if $eq this.app_type 'counteroffer'}}
+															Application Type: Counter Offer <br>
+															Total From Client: $ {{this.buyer_cost}} USD <br>
+															UTL Comission: $ {{utlComission this.buyer_cost}} USD <br>
+															Provider Net: $ {{this.freelancer_nets}} USD
+														{{/if}}
+													</td>
+												{{/with}}
+											{{/with}}
 										</tr>
 									</tbody>
 								</table>

@@ -25,7 +25,7 @@ var buyerOptionsObject = {
 			title: 'Provider Name',
 			data: function(invoice) {
 				var providerDetails = Profiles.findOne({userId: invoice.providerId});
-				var providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.name + '</a>';
+				var providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a>';
 				return providerLink;
 			}
 		},
@@ -55,7 +55,7 @@ var providerOptionsObject = {
 			title: 'Buyer Name',
 			data: function(invoice) {
 				var buyerDetails = Buyers.findOne({userId: invoice.buyerId});
-				var buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.name + '</a>';
+				var buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
 				return buyerLink;
 			}
 		},

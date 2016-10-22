@@ -8,9 +8,25 @@ Template.invoice.helpers({
 	invoiceId: function () {
 		return Router.current().params.invoiceId;
 	},
-	jobName: function() {
+	jobDetails: function() {
 		var invoiceDetails = Invoices.findOne({invoiceId: Router.current().params.invoiceId});
-		return Jobs.findOne({_id: invoiceDetails.jobId}).title;
+		return Jobs.findOne({_id: invoiceDetails.jobId});
+	},
+	budgetDetails: function(jobId) {
+		var applicationObj;
+		var jobDetails = Jobs.findOne({_id: jobId});
+		if(jobDetails.applications) {
+			for(var i = 0; i < jobDetails.applications.length; i++) {
+				if(jobDetails.applications[i].app_status == 'accepted') {
+					applicationObj = jobDetails.applications[i];
+					break;
+				}
+			}
+		}
+		return applicationObj;
+	},
+	utlComission: function(buyerCost) {
+		return buyerCost * 5/100;
 	},
 	projectBudget: function() {
 		var invoiceDetails = Invoices.findOne({invoiceId: Router.current().params.invoiceId});
