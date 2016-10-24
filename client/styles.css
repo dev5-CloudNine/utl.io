@@ -1081,3 +1081,7 @@ ul.timeline > li > .timeline-panel:after {
 .fc-left h2 {
   font-size: 14px !important;
 }
+
+.btn-primary > a {
+  color: #fff;
+}

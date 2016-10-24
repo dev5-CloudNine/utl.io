@@ -1327,6 +1327,9 @@
                                     {{#if fullLocation.mapLink}}
                                         <br>
                                         <button class="btn btn-primary btn-sm" id="loadMap" data-toggle="modal" data-target=".bs-example-modal-lg">View Map</button>
+                                        <button class="btn btn-primary btn-sm">
+                                            <a href="https://maps.google.com/maps?saddr={{providerLocation}}&daddr={{fullLocation.formatted_address}}" target="_blank">Get Directions</a>
+                                        </button>
                                     {{/if}}
                                 </div>
                             </div>

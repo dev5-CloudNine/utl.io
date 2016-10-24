@@ -800,6 +800,9 @@ Template.job.helpers({
     });
     return _.sortBy(providers, function(provider) {return -provider.appliedAt});
   },
+  providerLocation: function() {
+    return Profiles.findOne({userId: Meteor.userId()}).location;
+  },
   'selectedProvider': function() {
     var uId = Profiles.findOne({_id: this.userId}).userId;
     var applicants = Jobs.findOne({_id: Router.current().params._id}).applications;
