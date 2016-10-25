@@ -30,6 +30,12 @@
                                     </ul>
                                 </li>
                                 <li><a href="{{pathFor 'allInvoices'}}">Invoices</a></li>
+                                <li id="user-drop-down" class="dropdown">
+                                    <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Dwolla <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{pathFor 'dwollaCustomers'}}">Customers</a></li>
+                                    </ul>
+                                </li>
                             {{/if}}
                             {{#if isInRole 'buyer, corporate-manager, corporate-admin, provider, corporate-provider, corporate-accountant'}}
                                 <li>

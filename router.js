@@ -903,7 +903,6 @@ Router.map(function() {
     this.route('payment',{
     });
 
-
     this.route('oauth_return',{
         where: 'server',
         onBeforeAction: function () {
@@ -914,6 +913,13 @@ Router.map(function() {
                 'Location': '/payment'
             });
             this.response.end();
+        }
+    });
+
+    this.route('dwollaCustomers', {
+        path: '/admin/dwolla-customers',
+        waitOn: function() {
+            return Meteor.subscribe('allJobs');
         }
     });
 

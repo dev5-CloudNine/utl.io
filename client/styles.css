@@ -1085,3 +1085,8 @@ ul.timeline > li > .timeline-panel:after {
 .btn-primary > a {
   color: #fff;
 }
+
+ul.customers {
+  height: 490px;
+  overflow: scroll;
+}

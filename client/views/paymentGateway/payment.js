@@ -35,13 +35,6 @@ Template.payment.events({
 		});
 	},
 	'click .dwolla-trans' : function(){
-		Meteor.call('getBusinessClassifications', Meteor.userId(), function (error, result) {
-			if(error){
-				console.log(error);
-				return;
-			}
-			$('.show-info').text(JSON.stringify(result));
-			$('.show-info').show();
-		});
+		Meteor.call('listTransactions');
 	}
 })

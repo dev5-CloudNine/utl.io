@@ -1,43 +1,22 @@
 <template name="withdraw">
 	<h5>Withdraw Funds</h5>
 	<div class="panel panel-default">
-        <div class="panel-body">
-            Account Balance: $ {{accountBalance}}
-            <br><br>
-            <a href="https://www.dwolla.com/login" class="btn btn-primary">Withdraw from Dwolla</a>
-            <!-- <hr>
-            <div class="row">
-                <div class="col-sm-12">
-                    <h5>Previous Transactions (Withdrawls)</h5>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>S. No</th>
-                                <th>Payment Method</th>
-                                <th>Amout</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Payezee</td>
-                                <td>$ 90.00</td>
-                                <td>Mon May 16 2016 11:09:29 GMT+0530 (IST)</td>
-                                <td>Pending</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Credit Card</td>
-                                <td>$ 90.00</td>
-                                <td>Mon May 28 2016 04:09:29 GMT+0530 (IST)</td>
-                                <td>Success</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div> -->
-        </div>
-    </div>
+		<div class="panel-body">
+			<form id="requestDwollaPay">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						<div class="form-group">
+							<input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" class="form-control" step="0.01" id="requestAmount" placeholder="Enter Amount To Withdraw" min="1"><br>
+							<button type="submit" class="btn btn-primary btn-sm submitWithdrawReq" disabled="true">Submit</button>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	            <div class="alert alert-info enoughBalance" hidden>
+	                <strong>You don't have sufficient account balance to make this request.</strong>
+	            </div>
+	        </div>
+		</div>
+	</div>
 </template>

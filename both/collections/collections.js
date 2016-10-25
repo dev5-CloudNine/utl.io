@@ -97,7 +97,7 @@ SubCategories.allow({
 
 Wallet.allow({
 	insert: function(userId, doc) {
-		return true;
+		return false;
 	},
 	update: function(userId, doc, fields, modifier) {
 		return false;
