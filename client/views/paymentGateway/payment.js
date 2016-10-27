@@ -36,5 +36,8 @@ Template.payment.events({
 	},
 	'click .dwolla-trans' : function(){
 		Meteor.call('listTransactions');
+	},
+	'click .genIavToken': function() {
+		Meteor.call('genIavToken');
 	}
 })

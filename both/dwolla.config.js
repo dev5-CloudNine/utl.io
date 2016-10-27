@@ -9,24 +9,6 @@ if (Meteor.isServer) {
     var auth;
     var redirect_uri = 'http://localhost:3000/oauth_return';
     var Future = Npm.require('fibers/future');
-    function async(cb) {
-        client.fullAccountInfo(function(err, data) {
-            if (err) { console.log(err); }
-            cb(err, data);
-        });
-    }
-    function asyncGetBalance(cb) {
-        client.balance(function(err, data){
-           if (err) { console.log(err); }
-            cb(err, data);
-        });
-    }
-    function asyncGetTrans(cb) {
-        client.transactions(function(err, data) {
-          if (err) { console.log(err); }
-          cb(err, data);
-        });
-    }
     Meteor.methods({
         'authUrl': function(userId) {
             auth = new client.Auth({
@@ -227,6 +209,21 @@ if (Meteor.isServer) {
             });
             payReqFut.wait();
             return payReqFut.value;
+        },
+        'genIavToken': function() {
+            var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+            var obj = Wallet.findOne({userId: adminId});
+            if(!obj) {
+                throw 'User\'s Dwolla account is not connected';
+                return;
+            }
+            var accountToken = new client.Token({access_token: obj.access_token});
+            var fut = new Future();
+            accountToken.post('https://api-uat.dwolla.com/customers/069bdfad-a192-4998-9502-7524bd5cf539/iav-token').then(function(res) {
+                console.log(res);
+            }, function(err) {
+                console.log(err);
+            })
         }
     })
 }

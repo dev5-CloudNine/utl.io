@@ -37,7 +37,7 @@
                                     </ul>
                                 </li>
                             {{/if}}
-                            {{#if isInRole 'buyer, corporate-manager, corporate-admin, provider, corporate-provider, corporate-accountant'}}
+                            {{#if isInRole 'buyer, provider'}}
                                 <li>
                                     <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
                                 </li>
@@ -124,7 +124,7 @@
                                     </li>
                                 {{/unless}}
                             {{/if}}
-                            {{#if isInRole 'corporate-admin'}}
+                            <!-- {{#if isInRole 'corporate-admin'}}
                                 {{#with corpProfile}}<li><a href="{{pathFor 'corpTeam' tab='corp-providers'}}">View Team</a></li>{{/with}}
                                 <li><a href="{{pathFor 'addTeam'}}">Add Your Team</a></li>
                                 {{#unless currentUser.isCorporate}}
@@ -219,7 +219,7 @@
                             {{#if isInRole 'corporate-accountant'}}
                                 <li><a href="#">Approve Payments</a></li>
                                 {{#with corpProfile}}<li><a href="{{pathFor 'corpTeam'}}">View Team</a></li>{{/with}}
-                            {{/if}}
+                            {{/if}} -->
                         {{else}}
                             <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
                             <li id="user-drop-down" class="dropdown">
@@ -270,7 +270,7 @@
                     <a href="{{pathFor 'mailBox' tab="mails"}}"><i class="fa fa-envelope fa-fw"></i> Messages</a>
                 </li>
             {{/if}}
-            {{#if isInRole 'provider, corporate-provider'}}
+            {{#if isInRole 'provider'}}
                 {{#if currentUser.isDeveloper}}
                     <li>
                         {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
@@ -285,7 +285,7 @@
                     </li>
                 {{/if}}
             {{/if}}
-            {{#if isInRole 'corporate-admin'}}
+            <!-- {{#if isInRole 'corporate-admin'}}
                 {{#if currentUser.isCorporate}}
                     <li>
                         {{#with corporate}}<a href="{{pathFor 'corporate'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
@@ -299,8 +299,8 @@
                         <a href="{{pathFor 'corporateNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
                     </li>
                 {{/if}}
-            {{/if}}
-            {{#if isInRole 'buyer, corporate-manager'}}
+            {{/if}} -->
+            {{#if isInRole 'buyer'}}
                 {{#if currentUser.isBuyer}}
                     <li>
                         {{#with buyer}}<a href="{{pathFor 'buyer'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
@@ -322,10 +322,10 @@
     <li id="user-drop-down" class="dropdown">
         <a class="dropdown-toggle box-user-option" style="margin-top: 8px;" data-toggle="dropdown" href="#">
             <i class="fa fa-bell fa-fw"></i>
-            ({{#if isInRole 'buyer, corporate-manager'}}
+            ({{#if isInRole 'buyer'}}
                 {{bNotificationCount}}
             {{else}}
-                {{#if isInRole 'provider, corporate-provider'}}
+                {{#if isInRole 'provider'}}
                     {{pNotificationCount}}
                 {{else}}
                     {{#if isInRole 'admin'}}

@@ -16,4 +16,27 @@
     </button>
     <div class="alert alert-success show-info">
     </div>
+    <button class="btn btn-primary genIavToken">
+        Generate IAV Token
+    </button>
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="iavContainer"></div>
+            <script src="https://cdn.dwolla.com/1/dwolla.js"></script>
+            <button id="start">Start IAV</button>
+            <script>
+                $('#start').click(function() {
+                    var iavToken = 'qDkoqXKjHTOQoosM2YkIBt5DAXO5RDQrujvlZWHZQ2O6uuqqBS';
+                    dwolla.config.dwollaUrl = 'https://uat.dwolla.com';
+                    dwolla.iav.start('iavContainer', iavToken, function(err, res) {
+                        if(err) {
+                            console.log(err);
+                        } else {
+                            console.log(res);
+                        }
+                    })
+                })
+            </script>
+        </div>
+    </div>
 </template>

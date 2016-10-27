@@ -1,12 +1,8 @@
 <template name="breadcrumbs">
 	<div class="container">
-		<div class="well well-sm">
-			<div class="row">
-				<div class="col-sm-12">		
-					<span class="pull-right">
-						Account Balance: $ {{userAccountBalance}} USD
-					</span>			
-					<span class="pull-left">
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="well well-sm">			
 						<a href="{{pathFor 'home'}}">Home</a>&nbsp;&#124;&nbsp;
 						<a href="javascript: history.go(-1)">Back</a>&nbsp;&#124;&nbsp;
 						{{#if isInRole 'buyer, corporate-manager'}}
@@ -30,7 +26,11 @@
 						{{#if isInRole 'admin'}}
 							<a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a>
 						{{/if}}
-					</span>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="well well-sm well-balance">
+					Account Balance: $ {{userAccountBalance}} USD
 				</div>
 			</div>
 		</div>

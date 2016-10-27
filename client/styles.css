@@ -1090,3 +1090,7 @@ ul.customers {
   height: 490px;
   overflow: scroll;
 }
+.well-balance {
+  background-color: #097500 !important;
+  color: #fff !important;
+}

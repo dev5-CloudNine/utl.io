@@ -721,109 +721,109 @@ Router.map(function() {
         }
     });
 
-    this.route('corporates', {
-        path: '/corporates',
-        title: 'UTL - All Corporates'
-    });
+    // this.route('corporates', {
+    //     path: '/corporates',
+    //     title: 'UTL - All Corporates'
+    // });
 
-    this.route('corporate', {
-        path: '/corporates/:_id/:slug?',
-        title: function() {
-            if(this.data())
-                return "UTL - " + this.data().displayName() + " - " + this.data().title;
-        },
-        data: function() {
-            return Corporates.findOne({
-                _id: this.params._id
-            });
-        },
-        waitOn: function() {
-            return subs.subscribe('corporate', this.params._id);
-        },
-        onBeforeAction: function() {
-            var expectedSlug = this.data().slug();
-            if(this.params.slug !== expectedSlug) {
-                this.redirect("corporate", {
-                    _id: this.params._id,
-                    slug: expectedSlug
-                },{replaceState: true});
-            } else {
-                this.next();
-            }
-        }
-    });
+    // this.route('corporate', {
+    //     path: '/corporates/:_id/:slug?',
+    //     title: function() {
+    //         if(this.data())
+    //             return "UTL - " + this.data().displayName() + " - " + this.data().title;
+    //     },
+    //     data: function() {
+    //         return Corporates.findOne({
+    //             _id: this.params._id
+    //         });
+    //     },
+    //     waitOn: function() {
+    //         return subs.subscribe('corporate', this.params._id);
+    //     },
+    //     onBeforeAction: function() {
+    //         var expectedSlug = this.data().slug();
+    //         if(this.params.slug !== expectedSlug) {
+    //             this.redirect("corporate", {
+    //                 _id: this.params._id,
+    //                 slug: expectedSlug
+    //             },{replaceState: true});
+    //         } else {
+    //             this.next();
+    //         }
+    //     }
+    // });
 
-    this.route('corporateNew', {
-        path: '/corporateNew',
-        title: 'UTL - Create Corporate Profile',
-        onBeforeAction: function() {
-            if(Meteor.user().isCorporate) {
-                Router.go('corporate', Corporates.findOne({
-                    userId: Meteor.userId()
-                }));
-            } else {
-                this.next();
-            }
-        }
-    });
+    // this.route('corporateNew', {
+    //     path: '/corporateNew',
+    //     title: 'UTL - Create Corporate Profile',
+    //     onBeforeAction: function() {
+    //         if(Meteor.user().isCorporate) {
+    //             Router.go('corporate', Corporates.findOne({
+    //                 userId: Meteor.userId()
+    //             }));
+    //         } else {
+    //             this.next();
+    //         }
+    //     }
+    // });
 
-    this.route('corporateEdit', {
-        path: 'corporates/:_id/:slug/edit',
-        title: "UTL - Edit My Corporate Profile",
-        data: function() {
-            return {
-                corporateProfile: Corporates.findOne({
-                    _id: this.params._id
-                })
-            };
-        },
-        waitOn: function() {
-            return subs.subscribe('corporate', this.params._id);
-        },
-        onBeforeAction: function() {
-            var id = this.params._id;
-            var userID = Corporates.findOne({_id: id}).userId;
-            if(Meteor.userId()==userID) {
-                this.next();
-            } else {
-                Router.go('notFound');
-            }
-        }
-    });
+    // this.route('corporateEdit', {
+    //     path: 'corporates/:_id/:slug/edit',
+    //     title: "UTL - Edit My Corporate Profile",
+    //     data: function() {
+    //         return {
+    //             corporateProfile: Corporates.findOne({
+    //                 _id: this.params._id
+    //             })
+    //         };
+    //     },
+    //     waitOn: function() {
+    //         return subs.subscribe('corporate', this.params._id);
+    //     },
+    //     onBeforeAction: function() {
+    //         var id = this.params._id;
+    //         var userID = Corporates.findOne({_id: id}).userId;
+    //         if(Meteor.userId()==userID) {
+    //             this.next();
+    //         } else {
+    //             Router.go('notFound');
+    //         }
+    //     }
+    // });
 
-    this.route('addTeam', {
-        path: '/addTeam',
-        title: "UTL - Invite Your Team Members",
-        waitOn: function() {
-            Meteor.subscribe("userList");
-            return Meteor.subscribe("tempInvitation");
-        }
-    });
+    // this.route('addTeam', {
+    //     path: '/addTeam',
+    //     title: "UTL - Invite Your Team Members",
+    //     waitOn: function() {
+    //         Meteor.subscribe("userList");
+    //         return Meteor.subscribe("tempInvitation");
+    //     }
+    // });
 
-    this.route('corpTeam', {
-        path: '/corporates/:_id/:slug/team/:tab',
-        title: function() {
-            return "UTL - In house team"
-        },
-        data: function() {
-            return Corporates.findOne({
-                _id: this.params._id
-            });
-        },
-        waitOn: function() {
-            return subs.subscribe('corporate', this.params._id);
-        },
-        onBeforeAction: function() {
-            var expectedSlug = this.data().slug();
-            if(this.params.slug !== expectedSlug) {
-                this.redirect("corporate", {
-                    _id: this.params._id,
-                    slug: expectedSlug
-                });
-            }
-            this.next();
-        }
-    });
+    // this.route('corpTeam', {
+    //     path: '/corporates/:_id/:slug/team/:tab',
+    //     title: function() {
+    //         return "UTL - In house team"
+    //     },
+    //     data: function() {
+    //         return Corporates.findOne({
+    //             _id: this.params._id
+    //         });
+    //     },
+    //     waitOn: function() {
+    //         return subs.subscribe('corporate', this.params._id);
+    //     },
+    //     onBeforeAction: function() {
+    //         var expectedSlug = this.data().slug();
+    //         if(this.params.slug !== expectedSlug) {
+    //             this.redirect("corporate", {
+    //                 _id: this.params._id,
+    //                 slug: expectedSlug
+    //             });
+    //         }
+    //         this.next();
+    //     }
+    // });
 
     this.route('aboutUs', {
         path: '/about'
@@ -876,17 +876,17 @@ Router.map(function() {
     });
 
 
-    this.route('inviteeSignUp', {
-        path: '/inviteeSignUp/:id',
-        title: "SignUp",
-        waitOn: function() {
-            Meteor.logout();
-            return Meteor.subscribe("tempInvitation");
-        },
-        data: function() {
-            return TempInvitation.findOne({'_id':this.params.id});
-        }
-    });
+    // this.route('inviteeSignUp', {
+    //     path: '/inviteeSignUp/:id',
+    //     title: "SignUp",
+    //     waitOn: function() {
+    //         Meteor.logout();
+    //         return Meteor.subscribe("tempInvitation");
+    //     },
+    //     data: function() {
+    //         return TempInvitation.findOne({'_id':this.params.id});
+    //     }
+    // });
 
     this.route('task', {
         path: '/task/:jobID/:taskID',
