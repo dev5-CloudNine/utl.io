@@ -65,6 +65,9 @@
                                         {{/if}}
                                         <span class="label label-default label-xs">{{readableID}}</span> {{>jobLabels}}
                                         <h4>{{title}}</h4>
+                                        <h4>
+                                            Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;
+                                        </h4>
                                         <small>
                                             {{#if $eq servicelocation 'Remote Job'}}
                                                 <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
@@ -72,10 +75,9 @@
                                                 {{#if assignedProvider}}
                                                     <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
                                                 {{else}}
-                                                    <i class="fa fa-map-marker"></i>&nbsp;{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}&nbsp;|&nbsp;
+                                                    <i class="fa fa-map-marker"></i>&nbsp;{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
                                                 {{/if}}
                                             {{/if}}
-                                            Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;
                                         </small>
                                     </div>
                                 </div>
