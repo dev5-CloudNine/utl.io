@@ -966,7 +966,7 @@
                                                                         </div>
                                                                         <br>
                                                                         <div class="row">
-                                                                            <div class="col-sm-12" hidden="true">
+                                                                            <!-- <div class="col-sm-12" hidden="true">
                                                                                 <label>Paid By</label>
                                                                                 <br>
                                                                                 <label class="radio-inline">
@@ -975,7 +975,7 @@
                                                                                 <label class="radio-inline">
                                                                                     <input type="radio" name="paidby" value="buyer"> Buyer
                                                                                 </label>
-                                                                            </div>
+                                                                            </div> -->
                                                                             <div class="col-sm-12" hidden="true">
                                                                                 <label for="buyer_cost">Buyer's Cost</label>
                                                                                 <input type="number" class="form-control" name="buyer_cost" id="buyer_hourly_cost" step="any" min="1" readonly="true">
@@ -1277,7 +1277,7 @@
                                     {{else}}
                                         {{#if $eq this.app_type 'counteroffer'}}
                                             <i>Counter Offer</i><br>
-                                            {{#if $eq this.counnterType 'blended'}}
+                                            {{#if $eq this.counterType 'blended'}}
                                                 Payment Type: Blended<br>
                                                 Pay {{first_hours}} USD for the first {{first_max_hours}} and then {{next_hours}} USD for the next {{next_max_hours}}.<br>
                                             {{/if}}

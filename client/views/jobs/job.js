@@ -87,63 +87,68 @@ Template.job.events({
   //fixed rate
   'change #fixed_amount, keyup #fixed_amount': function(event, template) {
     event.preventDefault();
-    var fixedamount = $('#fixed_amount').val();
+    var fixedamount = parseFloat($('#fixed_amount').val());
     $('input[name="total_amount"]').val(fixedamount);
-    $('input[name="buyer_cost"]').val(fixedamount);
-    var freenet = fixedamount - (fixedamount * 5/100);
+    var buyerCost = parseFloat(fixedamount + (fixedamount * 5/100));
+    $('input[name="buyer_cost"]').val(buyerCost);
+    var freenet = fixedamount;
     $('input[name="freelancer_nets"]').val(freenet);
   },
   //hourly rate
   'change #hourly_rate, keyup #hourly_rate, change #max_hours, keyup #max_hours': function(event, template) {
     event.preventDefault();
-    var hourlyrate = $('#hourly_rate').val();
-    var maxhours = $('#max_hours').val();
+    var hourlyrate = parseFloat($('#hourly_rate').val());
+    var maxhours = parseFloat($('#max_hours').val());
     var totalamount = hourlyrate * maxhours;
     $('input[name="total_amount"]').val(totalamount);
-    $('input[name="buyer_cost"]').val(totalamount)
-    var freenet = totalamount - (totalamount * 5/100);
+    var buyerCost = totalamount + (totalamount * 5/100);
+    $('input[name="buyer_cost"]').val(buyerCost);
+    var freenet = totalamount;
     $('input[name="freelancer_nets"]').val(freenet);
   },
   //device rate
   'change #device_rate, keyup #device_rate, change #max_devices, keyup #max_devices': function(event, template) {
     event.preventDefault();
-    var devicerate = $('#device_rate').val();
-    var maxdevices = $('#max_devices').val();
+    var devicerate = parseFloat($('#device_rate').val());
+    var maxdevices = parseFloat($('#max_devices').val());
     var totalamount = devicerate * maxdevices;
     $('input[name="total_amount"]').val(totalamount);
-    $('input[name="buyer_cost"]').val(totalamount)
-    var freenet = totalamount - (totalamount * 5/100);
+    var buyerCost = totalamount + (totalamount * 5/100);
+    $('input[name="buyer_cost"]').val(buyerCost);
+    var freenet = totalamount;
     $('input[name="freelancer_nets"]').val(freenet);
   },
   //blended rate
   'change #first_hours, keyup #first_hours, change #first_max_hours, keyup #first_max_hours, change #next_hours, keyup #next_hours, change #next_max_hours, keyup #next_max_hours': function(event, template) {
     event.preventDefault();
-    var payforfirsthours = $('#first_hours').val();
-    var firsthours = $('#first_max_hours').val();
-    var payfornexthours = $('#next_hours').val();
-    var nexthours = $('#next_max_hours').val();
+    var payforfirsthours = parseFloat($('#first_hours').val());
+    var firsthours = parseFloat($('#first_max_hours').val());
+    var payfornexthours = parseFloat($('#next_hours').val());
+    var nexthours = parseFloat($('#next_max_hours').val());
     var totalforfirsthours = parseFloat(payforfirsthours);
     var totalfornexthours = payfornexthours * nexthours;
     var totalamount = parseFloat(totalforfirsthours + totalfornexthours);
     $('input[name="total_amount"]').val(totalamount);
-    $('input[name="buyer_cost"]').val(totalamount)
-    var freenet = totalamount - (totalamount * 5/100);
+    var buyerCost = totalamount + (totalamount * 5/100);
+    $('input[name="buyer_cost"]').val(buyerCost)
+    var freenet = totalamount;
     $('input[name="freelancer_nets"]').val(freenet);
   },
-  'change input[value="provider"]': function(event, template) {
-    event.preventDefault();
-    var totalamount = parseFloat($('input[name="total_amount"]').val());
-    $('input[name="buyer_cost"]').val(totalamount);
-    var freenet = totalamount - totalamount * 5/100;
-    $('input[name="freelancer_nets"]').val(freenet);
-  },
-  'change input[value="buyer"]': function(event, template) {
-    event.preventDefault();
-    var totalamount = parseFloat($('input[name="total_amount"]').val());
-    var clientCost = totalamount + totalamount * 5/100;
-    $('input[name="buyer_cost"]').val(clientCost);
-    $('input[name="freelancer_nets"]').val(totalamount);
-  },
+  // 'change input[value="provider"]': function(event, template) {
+  //   event.preventDefault();
+  //   var totalamount = parseFloat($('input[name="total_amount"]').val());
+  //   var buyerCost = totalamount - totalamount * 5/100;
+  //   $('input[name="buyer_cost"]').val(buyerCost);
+  //   var freenet = totalamount;
+  //   $('input[name="freelancer_nets"]').val(freenet);
+  // },
+  // 'change input[value="buyer"]': function(event, template) {
+  //   event.preventDefault();
+  //   var totalamount = parseFloat($('input[name="total_amount"]').val());
+  //   var clientCost = totalamount + totalamount * 5/100;
+  //   $('input[name="buyer_cost"]').val(clientCost);
+  //   $('input[name="freelancer_nets"]').val(totalamount);
+  // },
   'click .acceptApplication': function(event, template) {
     event.preventDefault();
     var jobId = Router.current().params._id;
