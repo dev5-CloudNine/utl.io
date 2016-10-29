@@ -1,38 +1,40 @@
 <template name="breadcrumbs">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-8">
-				<div class="well well-sm">			
-						<a href="{{pathFor 'home'}}">Home</a>&nbsp;&#124;&nbsp;
-						<a href="javascript: history.go(-1)">Back</a>&nbsp;&#124;&nbsp;
-						{{#if isInRole 'buyer, corporate-manager'}}
-							{{#unless currentUser.isBuyer}}
-								<a href="{{pathFor 'buyerNew'}}">Create Buyer Profile</a>
-							{{else}}
-								<a href="{{pathFor 'jobNew'}}">Post a Job</a>&nbsp;&#124;&nbsp;
-								{{#with buyer}}<a href="{{pathFor 'buyer'}}">My Profile</a>{{/with}}&nbsp;&#124;&nbsp;
+	{{#if currentUser}}
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="well well-sm">			
+							<a href="{{pathFor 'home'}}">Home</a>&nbsp;&#124;&nbsp;
+							<a href="javascript: history.go(-1)">Back</a>&nbsp;&#124;&nbsp;
+							{{#if isInRole 'buyer, corporate-manager'}}
+								{{#unless currentUser.isBuyer}}
+									<a href="{{pathFor 'buyerNew'}}">Create Buyer Profile</a>
+								{{else}}
+									<a href="{{pathFor 'jobNew'}}">Post a Job</a>&nbsp;&#124;&nbsp;
+									{{#with buyer}}<a href="{{pathFor 'buyer'}}">My Profile</a>{{/with}}&nbsp;&#124;&nbsp;
+									<a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a>
+								{{/unless}}
+							{{/if}}
+							{{#if isInRole 'provider, corporate-provider'}}
+								{{#unless currentUser.isDeveloper}}
+									<a href="{{pathFor 'profileNew'}}">Create Provider Profile</a>
+								{{else}}
+									<a href="{{pathFor 'jobs'}}">View Jobs</a>&nbsp;&#124;&nbsp;
+									{{#with profile}}<a href="{{pathFor 'profile'}}">My Profile</a>{{/with}}&nbsp;&#124;&nbsp;
+									<a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a>
+								{{/unless}}
+							{{/if}}
+							{{#if isInRole 'admin'}}
 								<a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a>
-							{{/unless}}
-						{{/if}}
-						{{#if isInRole 'provider, corporate-provider'}}
-							{{#unless currentUser.isDeveloper}}
-								<a href="{{pathFor 'profileNew'}}">Create Provider Profile</a>
-							{{else}}
-								<a href="{{pathFor 'jobs'}}">View Jobs</a>&nbsp;&#124;&nbsp;
-								{{#with profile}}<a href="{{pathFor 'profile'}}">My Profile</a>{{/with}}&nbsp;&#124;&nbsp;
-								<a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a>
-							{{/unless}}
-						{{/if}}
-						{{#if isInRole 'admin'}}
-							<a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a>
-						{{/if}}
+							{{/if}}
+					</div>
 				</div>
-			</div>
-			<div class="col-sm-4">
-				<div class="well well-sm well-balance">
-					Account Balance: $ {{userAccountBalance}} USD
+				<div class="col-sm-4">
+					<div class="well well-sm well-balance">
+						Account Balance: $ {{userAccountBalance}} USD
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	{{/if}}
 </template>

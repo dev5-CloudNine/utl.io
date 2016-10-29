@@ -35,9 +35,15 @@ Template.payment.events({
 		});
 	},
 	'click .dwolla-trans' : function(){
-		Meteor.call('listTransactions');
+		Meteor.call('listTransfers', function(err, res) {
+			if(err) {
+				console.log(err)
+			} else {
+				console.log(res);
+			}
+		});
 	},
-	'click .genIavToken': function() {
-		Meteor.call('genIavToken');
+	'click .getFundingSource': function() {
+		Meteor.call('getFundingSource');
 	}
 })

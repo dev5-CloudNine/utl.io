@@ -187,10 +187,18 @@ if (Meteor.isServer) {
             })
             adminFut.wait();
             var adminFS = adminFut.value;
+            var adminFSUrl = new Future();
+            accountToken.get(adminFS).then(function(res) {
+                adminFSUrl.return(res.body._embedded['funding-sources'][0]._links.self.href);
+            }, function(err) {
+                console.log(err);
+            })
+            adminFSUrl.wait();
+            var afsUrl = adminFSUrl.value;
             var requestBody = {
                 _links: {
                     source: {
-                        href: adminFS
+                        href: afsUrl
                     },
                     destination: {
                         href: customerFSUrl
@@ -203,6 +211,7 @@ if (Meteor.isServer) {
             };
             var payReqFut = new Future();
             accountToken.post('transfers', requestBody).then(function(res) {
+                console.log(res);
                 payReqFut.return(res.body);
             }, function(err) {
                 console.log(err);
@@ -224,6 +233,38 @@ if (Meteor.isServer) {
             }, function(err) {
                 console.log(err);
             })
+        },
+        'getFundingSource': function() {
+            var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+            var obj = Wallet.findOne({userId: adminId});
+            if(!obj) {
+                throw 'User\'s Dwolla account is not connected';
+                return;
+            }
+            var accountToken = new client.Token({access_token: obj.access_token});
+            var fut = new Future()
+            accountToken.get('https://api-uat.dwolla.com/funding-sources/91a68bf0-7c18-4832-9e35-8c8841a3d074').then(function(result) {
+                console.log(result.body._links['initiate-micro-deposits']);
+            }, function(error) {
+                console.log(error);
+            })
+        },
+        'listTransfers': function() {
+            var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+            var obj = Wallet.findOne({userId: adminId});
+            if(!obj) {
+                throw 'User\'s Dwolla account is not connected';
+                return;
+            }
+            var accountToken = new client.Token({access_token: obj.access_token});
+            var fut = new Future();
+            accountToken.get(obj._links.account.href + '/transfers').then(function(res) {
+                fut.return(res.body._embedded.transfers);
+            }, function(err) {
+                console.log(err);
+            });
+            fut.wait();
+            return fut.value;
         }
     })
 }

@@ -370,7 +370,7 @@ Meteor.methods({
     },
     submitAssignment: function(jobId) {
         var providerDetails = Profiles.findOne({userId: Meteor.userId()});
-        var buyerDetails = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId}).name;
+        var buyerDetails = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId});
         var jobDetails = Jobs.findOne({_id: jobId});
         var notificationObj = {
             jobId: jobId,

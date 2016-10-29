@@ -923,6 +923,13 @@ Router.map(function() {
         }
     });
 
+    this.route('dwollaTransfers', {
+        path: '/admin/dwolla-transfers',
+        waitOn: function() {
+            return Meteor.subscribe('allJobs');
+        }
+    });
+
     this.route('receipt',{
         where: 'server',
         onBeforeAction: function () {
