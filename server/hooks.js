@@ -6,19 +6,7 @@ Profiles.after.insert(function(userId, doc) {
       isDeveloper: true
     }
   });
-  var adminId = Users.findOne({roles: {$in: ['admin']}})._id;
-  Meteor.call('createCustomer', adminId, doc)
 });
-
-Profiles.after.update(function(userId, doc) {
-  if(userId == doc.userId) {
-    var adminId = Users.findOne({roles: {$in: ['admin']}})._id;
-    var dwollaCustomer = Wallet.findOne({userId: userId}).dwollaCustomer;
-    if(!dwollaCustomer) {
-      Meteor.call('createCustomer', adminId, doc);
-    }
-  }
-})
 
 Profiles.after.remove(function(userId, doc) {
   Users.update({

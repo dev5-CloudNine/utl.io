@@ -1,13 +1,13 @@
 if (Meteor.isServer) {
     var dwolla = Npm.require('dwolla-v2');
     var client = new dwolla.Client({
-        id: 'ZmpgXecJaqy6SvIyNGXRKbK9nu2Z8nuygdXISYAecyfr86ugBb',
-        secret: 'tIMzVgt95AyXhFf2RHZnoIunQQHN8RWVBvvSHKKaY8kF5ZqzAd',
+        id: 'Ljykx8wFK86txAIl6fFys7IP0G6YeH7S7HLqaDSXq66TUWqEC3',
+        secret: '3pBbbQRTbe7UkJ62VjYkmzGEW5fIB7O5aCz8LAWTHf1PJNMpeb',
         environment: 'sandbox'
     });
     var request = Npm.require('request');
     var auth;
-    var redirect_uri = 'https://utl-59972.onmodulus.net/oauth_return';
+    var redirect_uri = 'http://localhost:3000/oauth_return';
     var Future = Npm.require('fibers/future');
     Meteor.methods({
         'authUrl': function(userId) {
@@ -69,26 +69,26 @@ if (Meteor.isServer) {
                 }, body.expires_in * 1000);
             })
         },
-        'createCustomer': function(userId, provider) {
-            var dob = moment(provider.dateOfBirth).format('YYYY-MM-DD');
-            var obj = Wallet.findOne({userId: userId});
+        'createCustomer': function(dwolla_req_object, reqdUserId) {
+            var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+            var obj = Wallet.findOne({userId: adminId});
             if(!obj) {
                 throw 'User\'s Dwolla account is not connected';
                 return;
             }
             var accountToken = new client.Token({access_token: obj.access_token});
             var customerDetails = {
-                firstName: provider.firstName,
-                lastName: provider.lastName,
-                email: provider.userName,
+                firstName: dwolla_req_object.firstName,
+                lastName: dwolla_req_object.lastName,
+                email: dwolla_req_object.email,
                 type: 'personal',
-                address1: provider.fullLocation.street,
-                city: provider.fullLocation.locality,
-                state: provider.fullLocation.state,
-                postalCode: provider.fullLocation.zip,
-                dateOfBirth: dob,
-                ssn: provider.socialSecurityNumber,
-                phone: provider.contactNumber
+                address1: dwolla_req_object.address1,
+                city: dwolla_req_object.city,
+                state: dwolla_req_object.state,
+                postalCode: dwolla_req_object.postalCode,
+                dateOfBirth: dwolla_req_object.dateOfBirth,
+                ssn: dwolla_req_object.ssn,
+                phone: dwolla_req_object.mobile_number
             };
             var customerUrl;
             accountToken.post('customers', customerDetails).then(function(res) {
@@ -96,28 +96,28 @@ if (Meteor.isServer) {
                 Fiber(function() {
                     var dwollaCustomer = res.headers._headers;
                     dwollaCustomer['updated_on'] = new Date();
-                    Wallet.upsert({userId: provider.userId}, {$set: {dwollaCustomer: dwollaCustomer}});
+                    Wallet.upsert({userId: reqdUserId}, {$set: {dwollaCustomer: dwollaCustomer}});
                 }).run();
                 customerUrl = res.headers._headers.location[0];
                 var fundObj = {
-                    'routingNumber': provider.bankDetails.routingNumber,
-                    'accountNumber': provider.bankDetails.accountNumber,
-                    'type': provider.bankDetails.bankAccountType,
-                    'name': provider.firstName + ' FSRC'
+                    'routingNumber': dwolla_req_object.routing_no,
+                    'accountNumber': dwolla_req_object.account_no,
+                    'type': dwolla_req_object.account_type,
+                    'name': dwolla_req_object.firstName + ' FSRC'
                 };
                 accountToken.post(customerUrl + '/funding-sources', fundObj).then(function(res) {
                     var Fiber = Npm.require('fibers');
                     Fiber(function() {
                         var dwollaFundingSource = res.headers._headers;
                         dwollaFundingSource['updated_on'] = new Date();
-                        Wallet.upsert({userId: provider.userId}, {$set: {dwollaFundingSource: dwollaFundingSource}});
+                        Wallet.upsert({userId: reqdUserId}, {$set: {dwollaFundingSource: dwollaFundingSource, banc_account_number: dwolla_req_object.account_no, routing_number: dwolla_req_object.routing_no, account_type: dwolla_req_object.account_type}});
                     }).run();
                 }, function(err) {
                     console.log(err)
                 });
             }, function(err) {
                 console.log('Create Customer error');
-                console.log(err.body);
+                console.log(err.body._embedded);
             })
         },
         'showCustomers': function(userId) {
@@ -171,7 +171,7 @@ if (Meteor.isServer) {
             fut.wait();
             return fut.value;
         },
-        'initiatePayment': function(customerFSUrl, amount) {
+        'initiatePayment': function(customerFSUrl, reqdUserId, amount) {
             var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
             var obj = Wallet.findOne({userId: adminId});
             if(!obj) {
@@ -195,20 +195,39 @@ if (Meteor.isServer) {
             })
             adminFSUrl.wait();
             var afsUrl = adminFSUrl.value;
-            var requestBody = {
-                _links: {
-                    source: {
-                        href: afsUrl
+            var requestBody;
+            if(Roles.userIsInRole(reqdUserId, ['provider', 'corporate-provider'])) {
+                requestBody = {
+                    _links: {
+                        source: {
+                            href: afsUrl
+                        },
+                        destination: {
+                            href: customerFSUrl
+                        }
                     },
-                    destination: {
-                        href: customerFSUrl
+                    amount: {
+                        currency: 'USD',
+                        value: amount
                     }
-                },
-                amount: {
-                    currency: 'USD',
-                    value: amount
-                }
-            };
+                };
+            }
+            if(Roles.userIsInRole(reqdUserId, ['buyer', 'corporate-manager'])) {
+                requestBody = {
+                    _links: {
+                        source: {
+                            href: customerFSUrl
+                        },
+                        destination: {
+                            href: afsUrl
+                        }
+                    },
+                    amount: {
+                        currency: 'USD',
+                        value: amount
+                    }
+                };
+            }
             var payReqFut = new Future();
             accountToken.post('transfers', requestBody).then(function(res) {
                 console.log(res);

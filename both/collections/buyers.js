@@ -87,10 +87,10 @@ Buyers.attachSchema(
 		label: "User Name",
 		autoValue: function() {
 			if (this.isInsert) {
-			return getUserName(Meteor.user());
+			return getUserEmail(Meteor.user());
 		} else if (this.isUpsert) {
 			return {
-			$setOnInsert: getUserName(Meteor.user())
+			$setOnInsert: getUserEmail(Meteor.user())
 			};
 		} else {
 			this.unset();

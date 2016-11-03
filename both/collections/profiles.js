@@ -53,33 +53,6 @@ AddressSchema = new SimpleSchema({
   }
 });
 
-BankAccountSchema = new SimpleSchema({
-  accountNumber: {
-    type: String,
-    label: 'Account Number *'
-  },
-  routingNumber: {
-    type: String,
-    label: 'Routing Number *'
-  },
-  bankAccountType: {
-    type: String,
-    label: 'Bank Account Type *',
-    autoform: {
-      type: 'select-radio-inline',
-      options: function() {
-        return [{
-          label: 'Checking',
-          value: 'checking'
-        }, {
-          label: 'Savings',
-          value: 'savings'
-        }];
-      }
-    }
-  }
-});
-
 Profiles.attachSchema(
   new SimpleSchema({
     userId: {
@@ -160,9 +133,6 @@ Profiles.attachSchema(
     fullLocation: {
       type: AddressSchema,
       optional: true
-    },
-    bankDetails: {
-      type: BankAccountSchema
     },
     description: {
       type: String,

@@ -1,8 +1,8 @@
-AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob', 'duplicateJob'], {
+AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob'], {
 	after: {
 		insert: function(error, result) {
 			if (error) {
-				toastr.error("Insert Error:", error);
+				toastr.error(error);
 				Session.set('insertError', true);
 			} else {
 				analytics.track("Job Created");
@@ -32,8 +32,12 @@ Template.duplicateJob.events({
 			$(event.target).prop('disabled', true);
 			if(!Session.get('publishToIndividual'))
 				return;
-			if(Session.get('insertError'))
+			if(Session.get('insertError')) {
+				$(event.target).prop('disabled', false);
+				$('button.duplicate').prop('disabled', false);
+				$('button.duplicateToFavs').prop('disabled', false);
 				return;
+			}
 			doc.invited = true;
 			doc.individualprovider = individualProvider;
 		});
@@ -535,12 +539,17 @@ Template.jobNew.events({
 		var individualProvider = $('input[name="individualprovider"]')[0].id;
 		Session.set('publishToIndividual', true);
 		Jobs.before.insert(function(userId, doc) {
-			console.log(userId);
 			$(event.target).prop('disabled', true);
+			$('button.publish').prop('disabled', true);
+ 			$('button.publishToFavs').prop('disabled', true);
 			if(!Session.get('publishToIndividual'))
 				return;
-			if(Session.get('insertError'))
+			if(Session.get('insertError')) {
+				$('button.publish').prop('disabled', false);
+ 				$('button.publishToFavs').prop('disabled', false);
+ 				$(event.currentTarget).prop('disabled', false);
 				return;
+			}
 			doc.invited = true;
 			doc.individualprovider = individualProvider;
 		});

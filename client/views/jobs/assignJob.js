@@ -1,6 +1,7 @@
 Template.assignJob.events({
 	'click button.assign': function(event, template) {
 		Session.set('routingJob', true);
+		$(event.currentTarget).prop('disabled', true);
 		Jobs.before.insert(function(userId, doc) {
 			if(Router.current().route.getName() != 'assignJob')
 				return;
