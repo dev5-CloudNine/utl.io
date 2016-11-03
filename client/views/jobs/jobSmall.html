@@ -1,5 +1,5 @@
 <template name="jobSmall">
-    <div class="jobSmall panel panel-default {{#if $eq applicationStatus 'open'}}openJob{{/if}} {{#if $eq applicationStatus 'frozen'}}frozenJob{{/if}} {{#if $eq applicationStatus 'assigned'}}assignedJob{{/if}} {{#if $eq applicationStatus 'completed'}}completedJob{{/if}} {{#if $eq applicationStatus 'pending_payment'}}paymentPendingJob{{/if}} {{#if $eq applicationStatus 'paid'}}paidJob{{/if}}">
+    <div class="jobSmall panel panel-default {{#if $eq applicationStatus 'open'}}openJob{{/if}} {{#if $eq applicationStatus 'frozen'}}frozenJob{{/if}} {{#if $eq applicationStatus 'assigned'}}assignedJob{{/if}} {{#if $eq applicationStatus 'completed'}}completedJob{{/if}} {{#if $eq applicationStatus 'pending_payment'}}paymentPendingJob{{/if}} {{#if $eq applicationStatus 'paid'}}paidJob{{/if}} {{#if $eq applicationStatus 'deactivated'}}deactivatedJob{{/if}}">
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-8">
@@ -94,8 +94,8 @@
                                     <span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
                                 {{/with}}
                             {{else}}
-                                <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewClient">Rate &amp; Review Buyer</button>
-                                <div id="reviewClient" class="panel panel-white panel-collapse collapse">
+                                <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewClient{{_id}}">Rate &amp; Review Buyer</button>
+                                <div id="reviewClient{{_id}}" class="panel panel-white panel-collapse collapse">
                                     <div class="panel-body">
                                         <form id="reviewBuyer">
                                             <div class="form-group">
@@ -144,8 +144,8 @@
                                         <span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
                                     {{/with}}
                                 {{else}}
-                                    <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewExpert">Rate &amp; Review Provider</button>
-                                    <div id="reviewExpert" class="panel panel-white panel-collapse collapse">
+                                    <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewExpert{{_id}}">Rate &amp; Review Provider</button>
+                                    <div id="reviewExpert{{_id}}" class="panel panel-white panel-collapse collapse">
                                         <div class="panel-body">
                                             <form id="reviewProvider">
                                                 <div class="form-group">

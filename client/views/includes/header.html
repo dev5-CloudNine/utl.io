@@ -26,7 +26,6 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="{{pathFor 'allDeposits'}}">Deposits</a></li>
                                         <li><a href="{{pathFor 'allWithdrawls'}}">Withdrawls</a></li>
-                                        <li><a href="{{pathFor 'allJobTransactions'}}">Job Transactions</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="{{pathFor 'allInvoices'}}">Invoices</a></li>
@@ -76,7 +75,6 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
                                         <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
-                                        <li><a href="{{pathFor 'jobTransactions'}}">Job Transactions</a></li>
                                     </ul>
                                 </li>
                                 {{#unless currentUser.isBuyer}}
@@ -116,7 +114,6 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
                                         <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
-                                        <li><a href="{{pathFor 'jobTransactions'}}">Job Transactions</a></li>
                                     </ul>
                                 </li>
                                 {{#unless currentUser.isDeveloper}}

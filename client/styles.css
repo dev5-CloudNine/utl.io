@@ -781,6 +781,10 @@ span.bigstars span.rateit-selected
   border-top:  2px solid #FF6600;
 }
 
+.deactivatedJob {
+  border-top: 2px solid #CC181E;
+}
+
 .paymentPendingJob {
   border-top:  2px solid #a479e2;
 }

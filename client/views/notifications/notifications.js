@@ -9,6 +9,8 @@ Template.notifications.helpers({
 			var img = Users.findOne({_id: notification.providerId}).imgURL;
 			if(img)
 				imgUrl = img;
+			else
+				imgUrl = '/images/avatar.png';
 			if(notification.notificationType == 'addFavBuyer') {
 				var notif = {
 					imgUrl: imgUrl,
@@ -66,6 +68,8 @@ Template.notifications.helpers({
 			var img = Users.findOne({_id: notification.buyerId}).imgURL;
 			if(img)
 				imgUrl = img;
+			else
+				imgUrl = '/images/avatar.png';
 			if(notification.notificationType == 'addFavProvider') {
 				var notif = {
 					imgUrl: imgUrl,

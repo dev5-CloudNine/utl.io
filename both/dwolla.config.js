@@ -1,13 +1,13 @@
 if (Meteor.isServer) {
     var dwolla = Npm.require('dwolla-v2');
     var client = new dwolla.Client({
-        id: 'Ljykx8wFK86txAIl6fFys7IP0G6YeH7S7HLqaDSXq66TUWqEC3',
-        secret: '3pBbbQRTbe7UkJ62VjYkmzGEW5fIB7O5aCz8LAWTHf1PJNMpeb',
+        id: 'ZmpgXecJaqy6SvIyNGXRKbK9nu2Z8nuygdXISYAecyfr86ugBb',
+        secret: 'tIMzVgt95AyXhFf2RHZnoIunQQHN8RWVBvvSHKKaY8kF5ZqzAd',
         environment: 'sandbox'
     });
     var request = Npm.require('request');
     var auth;
-    var redirect_uri = 'http://localhost:3000/oauth_return';
+    var redirect_uri = 'https://utl-59972.onmodulus.net/oauth_return';
     var Future = Npm.require('fibers/future');
     Meteor.methods({
         'authUrl': function(userId) {
@@ -117,7 +117,7 @@ if (Meteor.isServer) {
                 });
             }, function(err) {
                 console.log('Create Customer error');
-                console.log(err.body._embedded.errors);
+                console.log(err.body);
             })
         },
         'showCustomers': function(userId) {
@@ -212,7 +212,7 @@ if (Meteor.isServer) {
             var payReqFut = new Future();
             accountToken.post('transfers', requestBody).then(function(res) {
                 console.log(res);
-                payReqFut.return(res.body);
+                payReqFut.return(res.headers);
             }, function(err) {
                 console.log(err);
             });
@@ -265,6 +265,53 @@ if (Meteor.isServer) {
             });
             fut.wait();
             return fut.value;
+        },
+        'getTransferDetails': function(transferId) {
+            var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+            var obj = Wallet.findOne({userId: adminId});
+            if(!obj) {
+                throw 'User\'s Dwoll account is not connected';
+                return;
+            }
+            var accountToken = new client.Token({access_token: obj.access_token});
+            var fut = new Future();
+            accountToken.get('https://api-uat.dwolla.com/transfers/' + transferId).then(function(res) {
+                fut.return(res.body);
+            }, function(err) {
+                console.log(err)
+            });
+            fut.wait();
+            return fut.value;
+        },
+        'updateCustomer': function() {
+            var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+            var obj = Wallet.findOne({userId: adminId});
+            if(!obj) {
+                throw 'User\'s Dwoll account is not connected';
+                return;
+            }
+            var accountToken = new client.Token({access_token: obj.access_token});
+            var fut = new Future();
+            var reqBody = {
+                email: 'provider@norm.com'
+            }
+            accountToken.get("customers").then(function(res) {
+                fut.return(res.body._embedded.customers);
+            }, function(err) {
+                console.log(err);
+            })
+            fut.wait();
+            var customerArray = fut.value;
+            customerArray.forEach(function(customer) {
+                var reqBody = {
+                    email: customer.lastName + 'cst@' + customer.firstName + '.com'
+                }
+                accountToken.post('https://api-uat.dwolla.com/customers/' + customer.id, reqBody).then(function(result) {
+                    console.log(result);
+                }, function(error) {
+                    console.log(error);
+                })
+            })
         }
     })
 }

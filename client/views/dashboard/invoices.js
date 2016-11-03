@@ -59,7 +59,7 @@ var providerOptionsObject = {
 				return buyerLink;
 			}
 		},
-		{title: 'Amount', data: 'budget'},
+		{title: 'Amount (USD)', data: 'budget'},
 		{title: 'Date', data: function(invoice) {return moment(invoice.date).fromNow()}},
 		{title: 'Status', data: 'invoiceStatus'}
 	]

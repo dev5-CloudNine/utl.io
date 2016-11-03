@@ -1,3 +1,7 @@
+Template.breadcrumbs.onCreated(function() {
+	Blaze._allowJavascriptUrls();
+});
+
 Template.breadcrumbs.helpers({
 	buyer: function() {
 		return Buyers.findOne({userId: Meteor.userId()});

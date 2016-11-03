@@ -9,6 +9,8 @@ Template.buyerNotifications.helpers({
 			var img = Users.findOne({_id: notification.providerId}).imgURL;
 			if(img)
 				imgUrl = img;
+			else
+				imgUrl = '/images/avatar.png';
 			if(notification.notificationType == 'addFavBuyer') {
 				var notif = {
 					imgUrl: imgUrl,

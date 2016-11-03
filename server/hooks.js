@@ -10,6 +10,16 @@ Profiles.after.insert(function(userId, doc) {
   Meteor.call('createCustomer', adminId, doc)
 });
 
+Profiles.after.update(function(userId, doc) {
+  if(userId == doc.userId) {
+    var adminId = Users.findOne({roles: {$in: ['admin']}})._id;
+    var dwollaCustomer = Wallet.findOne({userId: userId}).dwollaCustomer;
+    if(!dwollaCustomer) {
+      Meteor.call('createCustomer', adminId, doc);
+    }
+  }
+})
+
 Profiles.after.remove(function(userId, doc) {
   Users.update({
     _id: doc.userId
@@ -141,7 +151,7 @@ Jobs.after.update(function(userId, doc){
   });
 });
 
-Jobs.before.insert(function(userId, doc){
+Jobs.before.insert(function(userId, doc) {
   doc.invited = false;
   var id = Jobs.findOne({},{limit:1,sort:{'createdAt':-1}});
   if(id) {

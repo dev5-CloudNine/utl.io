@@ -9,6 +9,8 @@ Template.providerNotifications.helpers({
 			var img = Users.findOne({_id: notification.buyerId}).imgURL;
 			if(img)
 				imgUrl = img;
+			else
+				imgUrl = '/images/avatar.png';
 			if(notification.notificationType == 'addFavProvider') {
 				var notif = {
 					imgUrl: imgUrl,

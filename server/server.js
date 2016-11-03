@@ -107,7 +107,7 @@ Meteor.methods({
             options.limit = 50;
         }
         var regex = new RegExp("^" + query,'gi');
-        return Profiles.find({$or: [{name: {$regex: regex}}, {readableID: {$regex: regex}}]}, options).fetch();
+        return Profiles.find({$or: [{firstName: {$regex: regex}}, {lastName: {$regex: regex}}, {readableID: {$regex: regex}}, {title: {$regex: regex}}]}, options).fetch();
     },
     "deleteFile": function(id) {
         Images.remove({_id:id});
@@ -365,7 +365,7 @@ Meteor.methods({
             cc: buyerDetails.smsAddress,
             from: FROM_EMAIL,
             subject: 'Provider has declined assignment.',
-            html: 'Hello ' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ',<br>' + providerDetails.firstName + ' ' + providerDetails.lastName + ' has declined the assignment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableId + ' - ' + jobDetails.title + '</a><br>The job is now open. <a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to choose a different provider.'
+            html: 'Hello ' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ',<br>' + providerDetails.firstName + ' ' + providerDetails.lastName + ' has declined the assignment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>The job is now open. <a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to choose a different provider.'
         })
     },
     submitAssignment: function(jobId) {
@@ -415,7 +415,7 @@ Meteor.methods({
             cc: providerDetails.smsAddress,
             from: FROM_EMAIL,
             subject: 'Buyer has approved your assignment.',
-            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has approved the job you submitted.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableId + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to raise an invoice and request for payment.'
+            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has approved the job you submitted.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to raise an invoice and request for payment.'
         });
     },
     rejectAssignment: function(jobId) {
@@ -439,10 +439,11 @@ Meteor.methods({
             cc: providerDetails.smsAddress,
             from: FROM_EMAIL,
             subject: 'Buyer has rejected your assignment.',
-            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has rejected the job you submitted for approval.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableId + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to view details and discuss the matter with the buyer.'
+            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has rejected the job you submitted for approval.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to view details and discuss the matter with the buyer.'
         })
     },
     publishToFavsUpdate: function(job) {
+        console.log(job);
         Jobs.update({_id: job._id}, {$set: {invited: true}});
         for(var i = 0; i < job.favoriteProviders.length; i++) {
             var providerDetails = Profiles.findOne({userId: job.favoriteProviders[i]});
@@ -464,11 +465,12 @@ Meteor.methods({
                 cc: providerDetails.smsAddress,
                 from: FROM_EMAIL,
                 subject: 'A buyer has invited to bid on his job.',
-                html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">' + job.readableId + ' - ' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
+                html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">' + job.readableID + ' - ' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
             })
         }
     },
     publishToIndividualUpdate: function(job) {
+        console.log(job);
         Jobs.update({_id: job._id}, {$set: {invited: true}});
         Profiles.update({userId: job.individualprovider}, {$addToSet: {invitedJobs: job._id}});
         var providerDetails = Profiles.findOne({userId: job.individualprovider});
@@ -489,7 +491,7 @@ Meteor.methods({
             cc: providerDetails.smsAddress,
             from: FROM_EMAIL,
             subject: 'A buyer has invited to bid on his job.',
-            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">' + job.readableId + ' - ' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
+            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">' + job.readableID + ' - ' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
         });
     },
     routeNotification: function(buyerId, doc) {
@@ -849,5 +851,8 @@ Meteor.methods({
         var pdfData = fut.wait();
         var base64String = new Buffer(pdfData).toString('base64');
         return base64String;
+    },
+    'updateWalletAfterTransfer': function(reqAmount, providerId) {
+        Wallet.update({userId: providerId}, {$inc: {accountBalance: -reqAmount}});
     }
 });

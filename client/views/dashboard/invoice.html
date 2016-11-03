@@ -39,7 +39,29 @@
 								<small>Invoice Date: {{this.date}}</small> <br>
 								<small>Invoice Status: {{this.invoiceStatus}}</small>
 								<hr>
-								<table class="table table-hover table-condensed">
+								{{#with jobDetails}}
+									<div class="col-xs-12">
+										<h4>Project Title</h4>
+										{{title}}
+										<br>
+										<h4>Budget Details</h4>
+										{{#with budgetDetails _id}}
+											{{#if $eq this.app_type 'application'}}
+												Application Type: Application <br>
+												Buyer: $ {{../your_cost}} USD <br>
+												Comm. (5%): $ {{utlComission ../your_cost}} USD <br>
+												Provider: $ {{../projectBudget}} USD
+											{{/if}}
+											{{#if $eq this.app_type 'counteroffer'}}
+												Application Type: Counter Offer <br>
+												Buyer: $ {{this.buyer_cost}} USD <br>
+												Comm. (5%): $ {{utlComission this.buyer_cost}} USD <br>
+												Provider: $ {{this.freelancer_nets}} USD
+											{{/if}}
+										{{/with}}
+									</div>
+								{{/with}}
+								<!-- <table class="table table-hover table-condensed">
 									<thead>
 										<tr>
 											<th>Project Title</th>
@@ -69,7 +91,7 @@
 											{{/with}}
 										</tr>
 									</tbody>
-								</table>
+								</table> -->
 							{{/with}}
 						</div>
 					</div>

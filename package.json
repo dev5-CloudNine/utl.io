@@ -16,6 +16,7 @@
   "dependencies": {
     "dwolla-v2": "^1.2.0",
     "request": "^2.75.0",
-    "fibers": "~1.0.15"
+    "fibers": "~1.0.15",
+    "fs": "~0.0.1"
   }
 }

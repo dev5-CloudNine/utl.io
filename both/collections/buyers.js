@@ -27,6 +27,7 @@ AddressSchema = new SimpleSchema({
   },
   zip: {
     type: String,
+    optional: true,
     regEx: /^[0-9]{5}$/
   },
   country: {

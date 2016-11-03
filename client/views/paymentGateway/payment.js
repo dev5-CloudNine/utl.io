@@ -44,6 +44,6 @@ Template.payment.events({
 		});
 	},
 	'click .getFundingSource': function() {
-		Meteor.call('getFundingSource');
+		Meteor.call('updateCustomer');
 	}
 })

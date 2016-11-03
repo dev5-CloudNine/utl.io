@@ -18,9 +18,26 @@
 	            </div>
 	        </div>
 	        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	        	<div class="customerFST">
-	        		
-	        	</div>
+	        	<table class="table table-striped table-hover">
+	        		<thead>
+	        			<tr>
+							<th>Transfer ID</th>
+							<th>Date</th>
+							<th>Amount</th>
+							<th>Status</th>
+						</tr>
+	        		</thead>
+	        		<tbody>
+	        			{{#each customerTransfers}}
+							<tr>
+								<td>{{this.id}}</td>
+								<td>{{this.created}}</td>
+								<td>{{this.amount.value}} USD</td>
+								<td>{{this.status}}</td>
+							</tr>
+						{{/each}}
+	        		</tbody>
+	        	</table>
 	        </div>
 		</div>
 	</div>

@@ -1,0 +1,15 @@
+<template name="transferDetails">	
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">Transfer Details</h3>
+		</div>
+		<div class="panel-body">
+			{{#with ctDetails}}
+				<p>Transfer ID: {{this.id}}</p>
+				<p>Withdrawn on: {{this.created}}</p>
+				<p>Amount: {{this.amount.value}}</p>
+				<p>Status: {{this.status}}</p>
+			{{/with}}
+		</div>
+	</div>	
+</template>

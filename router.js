@@ -968,6 +968,11 @@ Router.map(function() {
         waitOn: function() {
             return Meteor.subscribe('transactionDetails', this.params._id);
         }
+    });
+
+    this.route('transferDetails', {
+        path: '/withdraw/transfer/:id',
+        title: 'UTL - Transfer Details'
     })
 
     this.route('invoice', {

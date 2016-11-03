@@ -26,6 +26,8 @@ Template.adminNotifications.helpers({
 				var imgUrl
 				if(imgURL)
 					imgUrl = imgURL
+				else
+					imgUrl = '/images/avatar.png';
 				notif = {
 					notificationType: notification.notificationType,
 					notificationTime: moment(notification.timeStamp).format('LLLL'),
@@ -47,11 +49,15 @@ Template.adminNotifications.helpers({
 					var imgURL = Meteor.users.findOne({_id: notification.providerId}).imgURL;
 					if(imgURL)
 						imgUrl = imgURL;
+					else
+						imgUrl = '/images/avatar.png';
 				}
 				if(notification.side == 'provider') {
 					var imgURL = Meteor.users.findOne({_id: notification.buyerId}).imgURL;
 					if(imgURL)
 						imgUrl = imgURL;
+					else
+						imgUrl = '/images/avatar.png';
 				}
 				notif = {
 					buyerId: buyerDetails._id,

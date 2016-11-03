@@ -142,19 +142,8 @@ Profiles.attachSchema(
       optional: true
     },
     freelancerSkills: {
-      type: [String],
+      type: String,
       label: "Select a Skill *",
-      autoform: {
-        type: "selectize",
-        options: function() {
-          return Skills.find().fetch()
-        },
-        selectizeOptions: {
-          hideSelected: true
-        },
-        isReactiveOptions:true,
-        multiple: true
-      }
     },
     title: {
       type: String,
@@ -163,7 +152,7 @@ Profiles.attachSchema(
     },
     socialSecurityNumber: {
       type: String,
-      label: "Social Security Number *"
+      label: "Social Security Number (Last 4 digits only) *"
     },
     location: {
       type: String
@@ -238,65 +227,11 @@ Profiles.attachSchema(
       optional: true,
       label: "Educational Qualification"
     },
-    // 'educationDetails.$': {
-    //   type: Object,
-    //   optional: true
-    // },
-    // 'educationDetails.$.qualification': {
-    //   type: String,
-    //   label: "Qualification",
-    //   optional: true,
-    //   max: 128
-    // },
-    // 'educationDetails.$.university': {
-    //   type: String,
-    //   label: "College or University",
-    //   optional: true,
-    //   max: 128
-    // },
-    // 'educationDetails.$.yearOfPassing': {
-    //   type: String,
-    //   label: "Year of Passing",
-    //   optional: true,
-    //   max: 128
-    // },
     certifications: {
       type: String,
       optional: true,
       label: "Professional Certifications"
     },
-    // 'certifications.$': {
-    //   type: Object,
-    //   optional: true
-    // },
-    // 'certifications.$.certificationName': {
-    //   type: String,
-    //   label: "Certification Name",
-    //   optional: true,
-    //   max: 128
-    // },
-    // 'certifications.$.certificationAuthority': {
-    //   type: String,
-    //   label: "Certification Authority",
-    //   optional: true,
-    //   max: 128
-    // },
-    // 'certifications.$.certificationStartDate': {
-    //   type: Date,
-    //   label: "Start Date",
-    //   optional: true,
-    //   autoform: {
-    //     type: "bootstrap-datepicker"
-    //   }
-    // },
-    // 'certifications.$.certificationEndDate': {
-    //   type: Date,
-    //   label: "End Date",
-    //   optional: true,
-    //   autoform: {
-    //     type: "bootstrap-datepicker"
-    //   }
-    // },
     languages: {
       type: Array,
       optional: true

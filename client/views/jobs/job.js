@@ -520,21 +520,18 @@ Template.job.events({
   },
   'click button.requestPayment': function(event, template) {
     var jobId = this._id;
-    Meteor.call('requestPayment', jobId, function(error) {
+    $(event.currentTarget).prop('disabled', true);
+    Meteor.call('requestPayment', jobId, function(error, result) {
       if(error) {
         toastr.error('Failed to request paymet. Pleast try again.');
-      } else {
-        toastr.success('Payment requested successfully. An invoice has been generated and a notification has been sent to the buyer.');
       }
     })
   },
   'click button.approvePayment': function(event, template) {
     var jobId = this._id;
-    Meteor.call('approvePayment', jobId, function(error) {
+    Meteor.call('approvePayment', jobId, function(error, result) {
       if(error) {
         toastr.error('Failed to approve payment. Please try again.');
-      } else {
-        toastr.success('Payment approved successfully.');
       }
     })
   },
@@ -542,8 +539,7 @@ Template.job.events({
     var jobId = this._id;
     Meteor.call('deactivateJob', jobId, function(error) {
       if(error) {
-      } else {
-        toastr.success('Deactivated the job successfully.');
+        toastr.error('Failed to deactivate job Please try again.');
       }
     })
   },
@@ -552,15 +548,13 @@ Template.job.events({
     Meteor.call('activateJob', jobId, function(error) {
       if(error) {
         toastr.error('Failed to activate the job. Please try again.');
-      } else {
-        toastr.success('Activated the job successfully.');
       }
     })
   },
   'click button.createPdf': function(event, template) {
     Meteor.call('generatePdf', this._id, function(err, res) {
       if(err) {
-        console.log(err);
+        toastr.error('Failed to create PDF. Please try again.');
       } else {
         window.open("data:applications/pdf;base64, " + res);
       }
@@ -581,7 +575,7 @@ Template.job.events({
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
       } else {
-        toastr.success('Submitted the review successfully.');
+        window.location.reload();
       }
     })
   },
@@ -604,7 +598,7 @@ Template.job.events({
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
       } else {
-        toastr.success('Submitted the review successfully.');
+        window.location.reload();
       }
     })
   },
@@ -722,7 +716,7 @@ Template.job.helpers({
     if(imgURL)
       imgUrl = imgURL
     else
-      imgUrl = '';
+      imgUrl = '/images/avatar.png';
     var buyer = {
       id: buyerData._id,
       name: buyerData.firstName + ' ' + buyerData.lastName,
@@ -1097,12 +1091,18 @@ Template.job.helpers({
     }
     var provider = Profiles.findOne({userId: this.assignedProvider});
     var providerImg = Users.findOne({_id: this.assignedProvider}).imgURL;
+    var imgURL;
+    if(providerImg) {
+      imgURL = providerImg
+    } else {
+      imgURL = '/images/avatar.png'
+    }
     if(applicationDetails.appType == 'application') {
       var providerDetails = {
         name: provider.firstName + ' ' + provider.lastName,
         title: provider.title,
         status: provider.status,
-        imgUrl: providerImg,
+        imgUrl: imgURL,
         id: provider._id,
         readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
         appType: applicationDetails.appType,
@@ -1117,7 +1117,7 @@ Template.job.helpers({
         name: provider.firstName + ' ' + provider.lastName,
         title: provider.title,
         status: provider.status,
-        imgUrl: providerImg,
+        imgUrl: imgURL,
         id: provider._id,
         readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
         appType: applicationDetails.appType,

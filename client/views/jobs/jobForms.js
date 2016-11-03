@@ -2,7 +2,8 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob', 'duplicateJob'], {
 	after: {
 		insert: function(error, result) {
 			if (error) {
-				console.log("Insert Error:", error);
+				toastr.error("Insert Error:", error);
+				Session.set('insertError', true);
 			} else {
 				analytics.track("Job Created");
 				toastr.success('The job has been posted and your account has been debited with the proposed budget.');
@@ -11,7 +12,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob', 'duplicateJob'], {
 		},
 		update: function(error, result) {
 			if (error) {
-				console.log("Update Error:", error);
+				toastr.error("Update Error:", error);
 			} else {
 				analytics.track("Job Edited");
         		Router.go('job', {_id: Router.current().params._id});
@@ -19,6 +20,66 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'assignJob', 'duplicateJob'], {
 		}
 	}
 });
+
+Template.duplicateJob.events({
+	'click .dupPublishInd': function(event, template) {
+		event.preventDefault();
+	},
+	'click .dupInviteIndividual': function(event, template) {
+		var individualProvider = $('input[name="individualprovider"]')[0].id;
+		Session.set('publishToIndividual', true);
+		Jobs.before.insert(function(userId, doc) {
+			$(event.target).prop('disabled', true);
+			if(!Session.get('publishToIndividual'))
+				return;
+			if(Session.get('insertError'))
+				return;
+			doc.invited = true;
+			doc.individualprovider = individualProvider;
+		});
+		Jobs.after.insert(function(userId, doc) {
+			if(!Session.get('publishToIndividual'))
+				return;
+			if(Session.get('insertError'))
+				return;
+			Meteor.call('publishToIndividualUpdate', doc, function(error) {
+				if(error) {
+					toastr.error('Failed to publish to the individual. Please try again.');
+				} else {
+					delete Session.keys['publishToIndividual'];
+					toastr.success('An invitation has been sent to the individual to apply for this job.');
+				}
+			})
+		})
+	},
+	'click .duplicateToFavs': function(event, template) {
+		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
+ 		Session.set('duplicateToFav', true);
+ 		Jobs.before.insert(function(userId, doc) {
+ 			console.log(doc);
+			$(event.currentTarget).prop('disabled', true);
+ 			if(!Session.get('duplicateToFav'))
+ 				return;
+ 			doc.invited = true;
+ 			doc.favoriteProviders = [];
+ 			for(var i = 0; i < favProviders.length; i++) {
+ 				doc.favoriteProviders.push(favProviders[i]);
+ 			}
+		});
+		Jobs.after.insert(function(userId, doc) {
+ 			if(!Session.get('duplicateToFav'))
+ 				return;
+ 			doc.invited = true;
+ 			Meteor.call('publishToFavsUpdate', doc, function(error) {
+ 				if(error) {
+ 					toastr.error('Failed to publish job to favorites. Please try again');
+ 				} else {
+ 					delete Session.keys['duplicateToFav'];
+ 				}
+ 			})
+		});
+	}
+})
 
 Template.jobFields.rendered = function() {
   	$('#spinner').hide();
@@ -421,7 +482,7 @@ Template.providerList.helpers({
 			callback(res.map(function(v) {
 				proLoaded = true;
 				$('.proTypeahead').removeClass('loadinggif');
-				return {value: v.name, id: v.userId, readableId: Meteor.users.findOne({_id: v.userId}).readableID, title: v.title};
+				return {value: v.firstName + v.lastName, id: v.userId, readableId: Meteor.users.findOne({_id: v.userId}).readableID, title: v.title};
 			}))
 		})
 	},
@@ -433,29 +494,38 @@ Template.providerList.helpers({
 Template.jobNew.events({
 	'click .publishToFavs': function(event, template) {
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
-		Session.set('publishToFav', true);
-		Jobs.before.insert(function(userId, doc) {
-			$(event.target).prop('disabled', true);
-			if(!Session.get('publishToFav'))
-				return;
-			doc.invited = true;
-			doc.favoriteProviders = [];
-			for(var i = 0; i < favProviders.length; i++) {
-				doc.favoriteProviders.push(favProviders[i]);
-			}
+ 		Session.set('publishToFav', true);
+ 		Jobs.before.insert(function(userId, doc) {
+ 			$('button.publish').prop('disabled', true);
+ 			$('button.publishInd').prop('disabled', true);
+			$(event.currentTarget).prop('disabled', true);
+ 			if(!Session.get('publishToFav'))
+ 				return;
+ 			if(Session.get('insertError')) {
+ 				$('button.publish').prop('disabled', false);
+ 				$('button.publishInd').prop('disabled', false);
+ 				$(event.currentTarget).prop('disabled', false);
+ 				return;
+ 			}
+ 			doc.invited = true;
+ 			doc.favoriteProviders = [];
+ 			for(var i = 0; i < favProviders.length; i++) {
+ 				doc.favoriteProviders.push(favProviders[i]);
+ 			}
 		});
-		Jobs.after.insert(function(userId, doc) {
-			if(!Session.get('publishToFav'))
-				return;
-			doc.invited = true;
-			Meteor.call('publishToFavsUpdate', doc, function(error) {
-				if(error) {
-					toastr.error('Failed to publish job to favorites. Please try again');
-				} else {
-					delete Session.keys['publishToFav'];
-					toastr.success('An invitation has been sent to your favorite providers to apply for this job.');
-				}
-			})
+		Jobs.after.insert(function(userId, doc, res) {
+ 			if(!Session.get('publishToFav'))
+ 				return;
+ 			if(Session.get('insertError'))
+ 				return;
+ 			doc.invited = true;
+ 			Meteor.call('publishToFavsUpdate', doc, function(error) {
+ 				if(error) {
+ 					toastr.error('Failed to publish job to favorites. Please try again');
+ 				} else {
+ 					delete Session.keys['publishToFav'];
+ 				}
+ 			})
 		});
 	},
 	'click .publishInd': function(event, template) {
@@ -465,14 +535,19 @@ Template.jobNew.events({
 		var individualProvider = $('input[name="individualprovider"]')[0].id;
 		Session.set('publishToIndividual', true);
 		Jobs.before.insert(function(userId, doc) {
+			console.log(userId);
 			$(event.target).prop('disabled', true);
 			if(!Session.get('publishToIndividual'))
+				return;
+			if(Session.get('insertError'))
 				return;
 			doc.invited = true;
 			doc.individualprovider = individualProvider;
 		});
 		Jobs.after.insert(function(userId, doc) {
 			if(!Session.get('publishToIndividual'))
+				return;
+			if(Session.get('insertError'))
 				return;
 			Meteor.call('publishToIndividualUpdate', doc, function(error) {
 				if(error) {
@@ -508,10 +583,10 @@ Template.jobLocationMap.onRendered(function() {
 });
 
 Template.jobLocationMap.helpers({
-  locationData : function(){
-    locLoaded = true;
-    if(this.job)
-    	return this.job.location;
-    return;
-  }
+	locationData : function(){
+		locLoaded = true;
+		if(this.job)
+		return this.job.location;
+		return;
+	}
 })
