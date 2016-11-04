@@ -21,6 +21,21 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob'], {
 	}
 });
 
+Template.duplicateJob.rendered = function() {
+	var accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+	if(this.data.job.your_cost > accountBalance) {
+		$('.notEnoughBalance').show();
+		$('.publish').prop('disabled', true);
+		$('.duplicateToFavs').prop('disabled', true);
+		$('.dupInviteIndividual').prop('disabled', true);
+	} else {
+		$('enoughBalance').show();
+		$('.publish').prop('disabled', false);
+		$('.duplicateToFavs').prop('disabled', false);
+		$('.dupInviteIndividual').prop('disabled', false);
+	}
+}
+
 Template.duplicateJob.events({
 	'click .dupPublishInd': function(event, template) {
 		event.preventDefault();
@@ -60,8 +75,9 @@ Template.duplicateJob.events({
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
  		Session.set('duplicateToFav', true);
  		Jobs.before.insert(function(userId, doc) {
- 			console.log(doc);
 			$(event.currentTarget).prop('disabled', true);
+			$('.dupPublishInd').prop('disabled', true);
+			$('.duplicate').prop('disabled', true);
  			if(!Session.get('duplicateToFav'))
  				return;
  			doc.invited = true;
@@ -486,7 +502,7 @@ Template.providerList.helpers({
 			callback(res.map(function(v) {
 				proLoaded = true;
 				$('.proTypeahead').removeClass('loadinggif');
-				return {value: v.firstName + v.lastName, id: v.userId, readableId: Meteor.users.findOne({_id: v.userId}).readableID, title: v.title};
+				return {value: v.firstName + ' ' + v.lastName, id: v.userId, readableId: Meteor.users.findOne({_id: v.userId}).readableID, title: v.title};
 			}))
 		})
 	},
@@ -563,7 +579,6 @@ Template.jobNew.events({
 					toastr.error('Failed to publish to the individual. Please try again.');
 				} else {
 					delete Session.keys['publishToIndividual'];
-					toastr.success('An invitation has been sent to the individual to apply for this job.');
 				}
 			})
 		})

@@ -48,6 +48,13 @@ Template.profile.helpers({
     if(Roles.userIsInRole(Meteor.userId(), ['admin']) || this.userId == Meteor.userId())
       return true;
     return false;
+  },
+  dwollaFundingSource: function() {
+    var userWallet = Wallet.findOne({userId: Meteor.userId()});
+    if(userWallet.dwollaCustomer && userWallet.dwollaFundingSource) {
+      return userWallet;
+    }
+    return false;
   }
 });
 

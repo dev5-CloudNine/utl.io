@@ -191,11 +191,22 @@ Template.compose.helpers({
     	}
     	emailIDs.push(defaultOpt);
 		Meteor.users.find({$and:[{_id:{$ne:Meteor.userId()}},{contacts:{$regex: SelectedProject}}]}).map(function(ele){
-			emailIDs.push({id:ele._id,email:ele.emails[0].address});
+            var fName, lName;
+            if(Roles.userIsInRole(ele._id, ['provider', 'corporate-provider'])) {
+                var profile = Profiles.findOne({userId: ele._id});
+                fName = profile.firstName;
+                lName = profile.lastName;
+            }
+            if(Roles.userIsInRole(ele._id, ['buyer', 'corporate-manager'])) {
+                var profile = Buyers.findOne({userId: ele._id});
+                fName = profile.firstName;
+                lName = profile.lastName;
+            }
+			emailIDs.push({id:ele._id,email:ele.emails[0].address, firstName: fName, lastName: lName});
 		});
         if(!Roles.userIsInRole(Meteor.userId(), ['admin'])) {
             Meteor.users.find({roles: {$in: ['admin']}}).map(function(ele) {
-                emailIDs.push({id: ele._id, email: ele.emails[0].address});
+                emailIDs.push({id: ele._id, email: ele.emails[0].address, firstName: 'Support', lastName: 'desk'});
             })
         }
     	return emailIDs;
@@ -270,9 +281,22 @@ Template.compose.helpers({
     parentUser: function() {
         var id = Router.current().params.tab.substr(6);
         var msgDetails = Messages.findOne({_id: id});
+        var fName, lName;
+        if(Roles.userIsInRole(msgDetails.sender, ['provider', 'corporata-provider'])) {
+            var profile = Profiles.findOne({userId: msgDetails.sender});
+            fName = profile.firstName;
+            lName = profile.lastName;
+        }
+        if(Roles.userIsInRole(msgDetails.sender, ['buyer', 'corporata-manager'])) {
+            var profile = Buyers.findOne({userId: msgDetails.sender});
+            fName = profile.firstName;
+            lName = profile.lastName;
+        }
         var parentUser = {
             parentUserId: msgDetails.sender,
-            email: Meteor.users.findOne({_id: msgDetails.sender}).emails[0].address
+            email: Meteor.users.findOne({_id: msgDetails.sender}).emails[0].address,
+            firstName: fName,
+            lastName: lName
         }
         return parentUser;
     },
@@ -331,7 +355,9 @@ Template.compose.helpers({
         var providerDetails = Profiles.findOne({userId: Router.current().params.query.proId});
         var provider = {
             userId: providerDetails.userId,
-            userEmail: getUserEmail(Meteor.users.findOne({_id: providerDetails.userId}))
+            userEmail: getUserEmail(Meteor.users.findOne({_id: providerDetails.userId})),
+            firstName: providerDetails.firstName,
+            lastName: providerDetails.lastName
         }
         return provider;
     },
@@ -339,14 +365,18 @@ Template.compose.helpers({
         var buyerDetails = Buyers.findOne({userId: Router.current().params.query.buyId});
         var buyer = {
             userId: buyerDetails.userId,
-            userEmail: getUserEmail(Meteor.users.findOne({_id: buyerDetails.userId}))
+            userEmail: getUserEmail(Meteor.users.findOne({_id: buyerDetails.userId})),
+            firstName: buyerDetails.firstName,
+            lastName: buyerDetails.lastName
         }
         return buyer;
     },
     adminDetails: function() {
         var adminDetails = {
             userId: Router.current().params.query.admId,
-            userEmail: getUserEmail(Meteor.users.findOne({_id: Router.current().params.query.admId}))
+            userEmail: getUserEmail(Meteor.users.findOne({_id: Router.current().params.query.admId})),
+            firstName: 'Support',
+            lastName: 'desk'
         }
         return adminDetails;
     }

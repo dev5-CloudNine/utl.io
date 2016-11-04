@@ -362,6 +362,10 @@ h3, h4 {
   margin: 0;
 }
 
+.tt-dataset-individualprovider {
+  border-bottom: thin #999 ridge !important;
+}
+
 .loadinggif
 {
    background:

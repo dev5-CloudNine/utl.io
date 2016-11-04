@@ -54,6 +54,26 @@ Template.deposit.helpers({
 			return true;
 		}
 		return false;
+	},
+	customerTransfers: function() {
+		var customerUrl = Wallet.findOne({userId: Meteor.userId()}).dwollaCustomer.location[0];
+		var customerTransfersUrl = customerUrl + '/transfers'
+		Meteor.call('getCustomerTransfers', customerTransfersUrl, function(error, result) {
+			if(error)
+				console.log(error);
+			else {
+				Session.set('customerTransfers', result._embedded.transfers);
+			}
+		});
+		return Session.get('customerTransfers').map(function(transfer) {
+			var obj = {
+				id: transfer.id,
+				status: transfer.status,
+				created: moment.utc(transfer.created).format('MM/DD/YYYY, hh:mm:ss A'),
+				amount: transfer.amount
+			}
+			return obj;
+		})
 	}
 });
 

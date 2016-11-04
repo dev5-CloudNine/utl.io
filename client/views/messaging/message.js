@@ -43,12 +43,28 @@ Template.message.helpers({
     {
       sort: { date: -1 }
     }).map(function(ele){
-       ele.username = Meteor.users.findOne({'_id':ele.sender}).emails[0].address;
-       ele.date = moment(new Date(ele.date)).format('LLLL');
-       msgList.push(ele);
+      var fName, lName
+      if(Roles.userIsInRole(ele.sender, ['provider', 'corporate-provider'])) {
+        var profile = Profiles.findOne({userId: ele.sender});
+        fName = profile.firstName;
+        lName = profile.lastName;
+      }
+      if(Roles.userIsInRole(ele.sender, ['buyer', 'corporate-manager'])) {
+        var profile = Buyers.findOne({userId: ele.sender});
+        fName = profile.firstName;
+        lName = profile.lastName;      
+      }
+      if(Roles.userIsInRole(ele.sender, ['admin'])) {
+        fName = 'Support';
+        lName = 'desk';      
+      }
+      ele.firstName = fName;
+      ele.lastName = lName
+      ele.username = Meteor.users.findOne({'_id':ele.sender}).emails[0].address;
+      ele.date = moment(new Date(ele.date)).format('LLLL');
+      msgList.push(ele);
     });
     return msgList;
-
   },
   parentID: function() {
     return Router.current().params.tab.substr(3);

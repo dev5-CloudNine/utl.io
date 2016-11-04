@@ -41,13 +41,31 @@ var msgListOptionsObject = {
         {
             title: 'From',
             data: function(mail) {
-                return Meteor.users.findOne({_id: mail.sender}).emails[0].address;
+                var userName;
+                if(Roles.userIsInRole(mail.sender, ['provider', 'corporate-provider'])) {
+                    var profile = Profiles.findOne({userId: mail.sender});
+                    var userName = profile.firstName + ' ' + profile.lastName;
+                }
+                if(Roles.userIsInRole(mail.sender, ['buyer', 'corporate-manager'])) {
+                    var profile = Buyers.findOne({userId: mail.sender});
+                    var userName = profile.firstName + ' ' + profile.lastName;
+                }
+                return userName;
             }
         },
         {
             title: 'To',
             data: function(mail) {
-                return Meteor.users.findOne({_id: mail.recipient}).emails[0].address;
+                var userName;
+                if(Roles.userIsInRole(mail.recipient, ['provider', 'corporate-provider'])) {
+                    var profile = Profiles.findOne({userId: mail.recipient});
+                    var userName = profile.firstName + ' ' + profile.lastName;
+                }
+                if(Roles.userIsInRole(mail.recipient, ['buyer', 'corporate-manager'])) {
+                    var profile = Buyers.findOne({userId: mail.recipient});
+                    var userName = profile.firstName + ' ' + profile.lastName;
+                }
+                return userName;
             }
         },
         {

@@ -29,11 +29,11 @@
                             <p class="message-date">{{date}}</p>
                         </div>
                         <div class="message-sender">
-                            <p>from: {{username}}</p>
+                            <p>from: {{firstName}} {{lastName}}</p>
                         </div>
                     {{else}}
                         <div class="message-header" style="background-color: aliceblue;padding: 10px;">
-                            <p style="float: left;">from: {{username}}</p>
+                            <p style="float: left;">from: {{firstName}} {{lastName}}</p>
                             <p class="message-date">{{date}}</p>
                         </div>
                     {{/if}}

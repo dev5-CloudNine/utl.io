@@ -1,9 +1,7 @@
 <template name="deposit">
-	<h5>Deposit Funds</h5>
+	<h5>Account Balance: $ {{accountBalance}}</h5>
     <div class="panel panel-default">
         <div class="panel-body">
-            Account Balance: $ {{accountBalance}}
-            <br><br>
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <h4>Pay using Payeezy (Via Credit Card)</h4>
@@ -80,9 +78,36 @@
             <hr>
             <div class="row">
                 <div class="col-sm-12">
-                    <h5>Transactions</h5>
-                    <hr>
+                    <h5>Payezee Transactions</h5>
                     {{>ReactiveDatatable tableData=previousDeposits options=previousDepositOptions}}
+                    <hr>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h5>Dwolla Transactions</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Transfer ID</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each customerTransfers}}
+                                <tr>
+                                    <td>{{this.id}}</td>
+                                    <td>{{this.created}}</td>
+                                    <td>{{this.amount.value}} USD</td>
+                                    <td>{{this.status}}</td>
+                                </tr>
+                            {{else}}
+                                <tr class="text-center">
+                                    <td colspan="4">No data available in table</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

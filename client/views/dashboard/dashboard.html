@@ -28,6 +28,7 @@
                             <a href="{{pathFor 'buyer'}}">
                                 <span class="count_top"><i class="fa fa-user"></i> Reviews ({{buyerReviewCount}})</span>
                                 <div class="count">
+                                    <!-- {{>starsRating rating=buyerRatingPoints size="lg"}} -->
                                     <span class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-value="{{buyerRatingPoints}}"></span>
                                 </div>
                             </a>
@@ -80,6 +81,7 @@
                                 <a href="{{pathFor 'profile'}}">
                                     <span class="count_top"><i class="fa fa-user"></i> Reviews ({{providerReviewCount}})</span>
                                     <div class="count">
+                                        <!-- {{>starsRating rating=providerRatingPoints size="lg"}} -->
                                         <span class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-value="{{providerRatingPoints}}"></span>
                                     </div>
                                 </a>

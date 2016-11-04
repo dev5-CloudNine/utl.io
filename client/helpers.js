@@ -16,3 +16,7 @@ UI.registerHelper("resizeImageUrl", function(imageUrl, height, width) {
 	if(imageUrl)
       return imageUrl + "-/resize/" + height + "x" + width + "/";
 });
+
+UI.registerHelper('toUpperCase', function(stringToConvert) {
+	return stringToConvert.toUpperCase();
+})

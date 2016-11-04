@@ -36,8 +36,7 @@
 <template name="providerTemplate">
     <div class="form-group example-twitter oss">
         <p>{{readableId}}</p>
-        <p>{{value}}</p>
-        <p>{{title}}</p>
+        <p>{{value}} - {{title}}</p>
     </div>
 </template>
 <template name="jobEdit">
@@ -332,23 +331,7 @@
             <div class="alert alert-danger notEnoughBalance" hidden>
                 <strong>You don't have enough account balance. Click on the button to deposit funds.</strong>
                 <div>
-                    <div id="payeezy-button" style="margin: 10px 0" onclick="document.getElementById('pay_now_form_148f147dea').submit()">
-                        <form action="https://demo.globalgatewaye4.firstdata.com/pay" id="pay_now_form_148f147dea" method="post">
-                            <input name="x_login" type="hidden" value="HCO-UTL-D-966" />
-                            <input name="x_show_form" type="hidden" value="PAYMENT_FORM" />
-                            <input name="x_fp_sequence" type="hidden" value="14686623761534527076" />
-                            <input name="x_fp_hash" type="hidden" value="PNB-1.0-9a9d6d4b206fa02637f979843da3959c5e64aa9a" />
-                            <input name="x_amount" type="hidden" value="" />
-                            <input name="x_currency_code" type="hidden" value="USD" />
-                            <input name="x_test_request" type="hidden" value="TRUE" />
-                            <input name="x_relay_response" type="hidden" value="" />
-                            <input name="donation_prompt" type="hidden" value="" />
-                            <input name="button_code" type="hidden" value="Pay Now UTL DEMO0080 Payment Page" />
-                            <div class="cpwrap">
-                                <button type="button">Deposit funds</button>
-                            </div>
-                        </form>
-                    </div>
+                    <a href="{{pathFor 'deposit'}}" class="btn btn-primary btn-sm">Deposit Funds</a>
                 </div>
             </div>
         </div>

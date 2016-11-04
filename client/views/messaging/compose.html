@@ -64,42 +64,42 @@
                                 {{#if $eq type 'newrep'}}
                                     <select disabled id="recipient" class="form-control">
                                         {{#with parentUser}}
-                                            <option value="{{parentUserId}}">{{email}}</option>
+                                            <option value="{{parentUserId}}">{{firstName}} {{lastName}}</option>
                                         {{/with}}
                                     </select>
                                 {{/if}}
                                 {{#if $eq type 'new'}}
                                     <select class="form-control" id="recipient">
                                         {{#each userList}}
-                                            <option value="{{id}}">{{email}}</option>
+                                            <option value="{{id}}">{{firstName}} {{lastName}}</option>
                                         {{/each}}
                                     </select>
                                 {{/if}}
                                 {{#if $eq type 'newfwd'}}
                                     <select class="form-control" id="recipient">
                                         {{#each userList}}
-                                            <option value="{{id}}">{{email}}</option>
+                                            <option value="{{id}}">{{firstName}} {{lastName}}</option>
                                         {{/each}}
                                     </select>
                                 {{/if}}
                                 {{#if $eq type 'newapm'}}
                                     <select disabled id="recipient" class="form-control">
                                         {{#with assignedProvider}}
-                                            <option value="{{userId}}">{{userEmail}}</option>
+                                            <option value="{{userId}}">{{firstName}} {{lastName}}</option>
                                         {{/with}}
                                     </select>
                                 {{/if}}
                                 {{#if $eq type 'newpbm'}}
                                     <select disabled id="recipient" class="form-control">
                                         {{#with postedBuyer}}
-                                            <option value="{{userId}}">{{userEmail}}</option>
+                                            <option value="{{userId}}">{{firstName}} {{lastName}}</option>
                                         {{/with}}
                                     </select>
                                 {{/if}}
                                 {{#if $eq type 'newcsm'}}
                                     <select disabled id="recipient" class="form-control">
                                         {{#with adminDetails}}
-                                            <option value="{{userId}}">{{userEmail}}</option>
+                                            <option value="{{userId}}">{{firstName}} {{lastName}}</option>
                                         {{/with}}
                                     </select>
                                 {{/if}}

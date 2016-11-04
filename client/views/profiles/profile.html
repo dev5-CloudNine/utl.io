@@ -24,49 +24,25 @@
 							{{/if}}
 						{{/if}}
 						<hr>
-						<small>
-							{{#if fullLocation}}
-								<i class="fa fa-map-marker"></i>&nbsp;{{fullLocation.formatted_address}}
-							{{/if}}
-							{{#if contactNumber}}
-								<br>
-								<i class="fa fa-mobile">&nbsp;{{contactNumber}}</i>
-							{{/if}}
-							{{#if smsAddress}}
-								<br>
-								<i class="fa fa-envelope">&nbsp;{{smsAddress}}</i>
-							{{/if}}
-							<hr>
-							{{#if url}}
-								<i class="fa fa-external-link"></i>&nbsp;<a href="{{url}}" target="_blank">Website</a>
-								<br>
-							{{/if}}
-							{{#if contact}}
-								<br>
-								<i class="fa fa-envelope"></i>&nbsp;{{contact}}
-							{{/if}}
-							{{#if resumeURL}}
-								{{#with resumeURL}}
-								<i class="fa fa-file-text"></i>&nbsp;&nbsp;<a href="{{file_url}}" target="_blank" download>{{file_name}}</a>
-								{{/with}}
-								<hr>
-							{{/if}}
-						</small>
-						{{#if adminOrProvider}}
-							<small>
-								{{#if eintinNumber}}
-									EIN/TIN: {{eintinNumber}}
-								{{/if}}
-								<br>
-								{{#if socialSecurityNumber}}
-									SSN: {{socialSecurityNumber}}
-								{{/if}}
-								<br>
-								<hr>
-							</small>
+						{{#if fullLocation}}
+							<i class="fa fa-map-marker"></i> {{fullLocation.formatted_address}}
+							<br>
 						{{/if}}
 						<i class="fa fa-calendar"></i> Member since {{formatDate createdAt}}
 						<hr>
+						{{#if adminOrProvider}}
+							<i class="fa fa-envelope"></i> {{userName}}
+							<br>
+							<i class="fa fa-mobile"></i> {{contactNumber}}
+							<br>
+							<i class="fa fa-mobile"></i> {{smsAddress}}
+							<hr>
+							{{#with dwollaFundingSource}}
+								<i class="fa fa-credit-card"></i> Account No: {{this.accountNumber}} <br>
+								<i class="fa fa-university"></i> Routing No: {{this.routingNumber}} <br>
+								<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.bankAccountType}}
+							{{/with}}
+						{{/if}}
 					</div>
 					<div class="col-sm-9">
 						<div class="row">

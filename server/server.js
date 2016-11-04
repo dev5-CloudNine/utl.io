@@ -443,7 +443,6 @@ Meteor.methods({
         })
     },
     publishToFavsUpdate: function(job) {
-        console.log(job);
         Jobs.update({_id: job._id}, {$set: {invited: true}});
         for(var i = 0; i < job.favoriteProviders.length; i++) {
             var providerDetails = Profiles.findOne({userId: job.favoriteProviders[i]});
@@ -470,7 +469,6 @@ Meteor.methods({
         }
     },
     publishToIndividualUpdate: function(job) {
-        console.log(job);
         Jobs.update({_id: job._id}, {$set: {invited: true}});
         Profiles.update({userId: job.individualprovider}, {$addToSet: {invitedJobs: job._id}});
         var providerDetails = Profiles.findOne({userId: job.individualprovider});
