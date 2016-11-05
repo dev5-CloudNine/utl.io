@@ -91,5 +91,12 @@ Template.providerAssignedJobs.helpers({
 			return paidJobs.length;
 		}
 		return 0;
+	},
+	invitedJobsCount: function() {
+		var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
+		if(invJobIds) {
+			return invJobIds.length;
+		}
+		return 0;
 	}
 })

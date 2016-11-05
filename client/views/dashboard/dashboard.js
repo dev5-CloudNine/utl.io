@@ -167,8 +167,7 @@ Template.dashboard.helpers({
 });
 
 Template.dashboard.rendered = function () {
-	this.$('.rateit').rateit({'readonly': true});
-	
+	this.$('.rateit').rateit({'readonly': true});	
 };
 
 Template.providerCalendar.onRendered(function() {

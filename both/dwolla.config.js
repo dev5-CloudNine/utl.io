@@ -1,13 +1,13 @@
 if (Meteor.isServer) {
     var dwolla = Npm.require('dwolla-v2');
     var client = new dwolla.Client({
-        id: 'Ljykx8wFK86txAIl6fFys7IP0G6YeH7S7HLqaDSXq66TUWqEC3',
-        secret: '3pBbbQRTbe7UkJ62VjYkmzGEW5fIB7O5aCz8LAWTHf1PJNMpeb',
+        id: 'ZmpgXecJaqy6SvIyNGXRKbK9nu2Z8nuygdXISYAecyfr86ugBb',
+        secret: 'tIMzVgt95AyXhFf2RHZnoIunQQHN8RWVBvvSHKKaY8kF5ZqzAd',
         environment: 'sandbox'
     });
     var request = Npm.require('request');
     var auth;
-    var redirect_uri = 'http://localhost:3000/oauth_return';
+    var redirect_uri = 'https://utl-59972.onmodulus.net/oauth_return';
     var Future = Npm.require('fibers/future');
     Meteor.methods({
         'authUrl': function(userId) {

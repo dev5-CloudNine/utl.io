@@ -15,6 +15,8 @@ JobsIndex = new EasySearch.Index({
     }
   })
 });
+
+SimpleSchema.debug = true;
 AddressSchema = new SimpleSchema({
   street: {
     type: String,

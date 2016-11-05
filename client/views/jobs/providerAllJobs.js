@@ -132,5 +132,12 @@ Template.providerAllJobs.helpers({
 			return count;
 		}
 		return count;
+	},
+	invitedJobsCount: function() {
+		var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
+		if(invJobIds) {
+			return invJobIds.length;
+		}
+		return 0;
 	}
 })

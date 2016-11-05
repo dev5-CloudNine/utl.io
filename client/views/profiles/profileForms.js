@@ -226,9 +226,12 @@ Template.profileFields.helpers({
 });
 
 Template.providerLocationMap.onRendered(function() {
+  console.log(this);
   this.autorun(() => {
     if(GoogleMaps.loaded()) {
-      $('#loc').geocomplete({country: 'us', details: '#locationDetails'});
+      $('#loc').geocomplete({country: 'us', details: '#locationDetails'}).bind('geocode:result', function(event, result) {
+        $('#locationDetails').show();
+      });
     }
   })
 });

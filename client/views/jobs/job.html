@@ -378,7 +378,6 @@
                                             <tr>
                                                 <th>Check In</th>
                                                 <th>Check Out</th>
-                                                <th>Total (Days : Hours : Minutes)</th>
                                                 {{#if show ../_id true}}
                                                     {{#unless isBuyer}}
                                                         {{#unless submittedOrDone}}
@@ -393,7 +392,6 @@
                                                 <tr>
                                                     <td>{{in}}</td>
                                                     <td>{{out}}</td>
-                                                    <td>{{total}}</td>
                                                     {{#if show ../_id true}}
                                                         {{#unless isBuyer}}
                                                             {{#unless submittedOrDone ../_id}}
@@ -444,7 +442,8 @@
                                     {{#if $eq applicationStatus 'assigned'}}
                                         {{#if $eq assignmentStatus 'not_submitted'}}
                                             <p><i>{{assignmentTime}}</i></p>
-                                            <p>The provider has confirmed the assignment. Please wait for the provider to submit the job.</p>
+                                            <p>The provider has confirmed the assignment. The job is assigned on date {{exactorbetween}}. 
+                                            Wait for the provider to complete all assigned tasks and fill up timesheets.</p>
                                         {{/if}}
                                         {{#if $eq assignmentStatus 'rejected'}}
                                             <p><i>{{rejectedTime}}</i></p>
@@ -1112,8 +1111,12 @@
                                             {{#if $eq assignmentStatus 'not_submitted'}}
                                                 <div class="col-sm-12">
                                                     <p><i>{{assignmentTime}}</i></p>
-                                                    <p>You have confirmed to do the job. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
-                                                    <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
+                                                    <p>You have confirmed to do the job. The job is assigned on dates {{exactorbetween}}. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
+                                                    <button class="margin-top-5 btn btn-primary btn-sm submitAssignment" data-toggle="tooltip" data-placement="bottom" title="some tooltip text">Submit Job for Approval.</button>
+                                                    <div class="tooltip bottom" role="tooltip">
+                                                        <div class="tooltip-arrow"></div>
+                                                        <div class="tooltip-inner">Submit Job for Approval.</div>
+                                                    </div>
                                                 </div>
                                             {{/if}}
                                             {{#if $eq assignmentStatus 'rejected'}}

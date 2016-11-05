@@ -129,6 +129,13 @@ Template.header.helpers({
     if(dwollaId)
       return true;
     return false;
+  },
+  invitedJobsCount: function() {
+    var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
+    if(invJobIds) {
+      return invJobIds.length;
+    }
+    return 0;
   }
 });
 

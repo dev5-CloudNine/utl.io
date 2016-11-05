@@ -17,7 +17,8 @@
                             <div id="publishIndividual" class="panel panel-white panel-collapse collapse">
                                 <div class="panel-body">
                                     {{>providerList}}
-                                    <button type="submit" class="btn btn-primary inviteIndividual">Publish to Individual</button>
+                                    <!-- {{> afQuickField name="individualprovider"}} -->
+                                    <button type="submit" class="btn btn-primary inviteIndividual">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -37,6 +38,7 @@
     <div class="form-group example-twitter oss">
         <p>{{readableId}}</p>
         <p>{{value}} - {{title}}</p>
+        <hr>
     </div>
 </template>
 <template name="jobEdit">
@@ -81,7 +83,7 @@
                             <div id="dupPublishInvididual" class="panel panel-white panel-collapse collapse">
                                 <div class="panel-body">
                                     {{>providerList}}
-                                    <button type="submit" class="btn btn-primary dupInviteIndividual">Publish to Individual</button>
+                                    <button type="submit" class="btn btn-primary dupInviteIndividual">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -368,16 +370,68 @@
     <div class="map-container">    
         <input type="text" id="loc" data-schema-key="location" name="location" class="form-control" value="{{locationData}}" data-source="location">
     </div>
-    <div id="locationDetails" hidden>
-        <input type="text" name="name" data-schema-key="fullLocation.street" class="form-control" value="{{this.job.fullLocation.street}}">
-        <input type="text" name="sublocality" class="form-control" data-schema-key="fullLocation.sublocality" value="{{this.job.fullLocation.sublocality}}">
-        <input name="locality" type="text" class="form-control" data-schema-key="fullLocation.locality" value="{{this.job.fullLocation.locality}}">
-        <input type="text" class="form-control" name="administrative_area_level_1" data-schema-key="fullLocation.state" value="{{this.job.fullLocation.state}}">
-        <input type="text" class="form-control" name="formatted_address" data-schema-key="fullLocation.formatted_address" value="{{this.job.fullLocation.formatted_address}}">
-        <input type="text" class="form-control" name="country" data-schema-key="fullLocation.country" value="{{this.job.fullLocation.country}}">
-        <input type="text" class="form-control" name="postal_code" data-schema-key="fullLocation.zip" value="{{this.job.fullLocation.zip}}">
-        <input type="text" name="url" data-schema-key="fullLocation.mapLink" class="form-control" value="{{this.job.fullLocation.mapLink}}">
-        <input type="text" name="lat" data-schema-key="fullLocation.latitude" class="form-control" value="{{this.job.fullLocation.latitude}}">
-        <input type="text" name="lng" data-schema-key="fullLocation.longitude" class="form-control" value="{{this.job.fullLocation.longitude}}">
+    <div id="locationDetails">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Street</label>
+                    <input type="text" name="name" data-schema-key="fullLocation.street" class="form-control" value="{{this.job.fullLocation.street}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Sub Locality</label>
+                    <input type="text" name="sublocality" class="form-control" data-schema-key="fullLocation.sublocality" value="{{this.job.fullLocation.sublocality}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Locality</label>
+                    <input name="locality" type="text" class="form-control" data-schema-key="fullLocation.locality" value="{{this.job.fullLocation.locality}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>State</label>
+                    <input type="text" class="form-control" name="administrative_area_level_1_short" data-schema-key="fullLocation.state" value="{{this.job.fullLocation.state}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" class="form-control" name="country" data-schema-key="fullLocation.country" value="{{this.job.fullLocation.country}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Formatted Address</label>
+                    <input type="text" class="form-control" name="formatted_address" data-schema-key="fullLocation.formatted_address" value="{{this.job.fullLocation.formatted_address}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Zip</label>
+                    <input type="text" class="form-control" name="postal_code" data-schema-key="fullLocation.zip" value="{{this.job.fullLocation.zip}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Map Link</label>
+                    <input type="text" name="url" data-schema-key="fullLocation.mapLink" class="form-control" value="{{this.job.fullLocation.mapLink}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Latitude</label>
+                    <input type="text" name="lat" data-schema-key="fullLocation.latitude" class="form-control" value="{{this.job.fullLocation.latitude}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Longitude</label>
+                    <input type="text" name="lng" data-schema-key="fullLocation.longitude" class="form-control" value="{{this.job.fullLocation.longitude}}">
+                </div>
+            </div>
+        </div>
     </div>
 </template>

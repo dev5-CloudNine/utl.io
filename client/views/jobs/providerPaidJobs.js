@@ -83,13 +83,20 @@ Template.providerPaidJobs.helpers({
 		return count;
 	},
 	proPaymentJobsCount: function() {
-	var count = 0;
-	var paymentPendingJobs = Profiles.findOne({userId: Meteor.userId()}).paymentPendingJobs;
-	if(paymentPendingJobs) {
-		for(var i = 0; i < paymentPendingJobs.length; i++)
-			count++;
+		var count = 0;
+		var paymentPendingJobs = Profiles.findOne({userId: Meteor.userId()}).paymentPendingJobs;
+		if(paymentPendingJobs) {
+			for(var i = 0; i < paymentPendingJobs.length; i++)
+				count++;
+			return count;
+		}
 		return count;
-	}
-	return count;
+	},
+	invitedJobsCount: function() {
+		var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
+		if(invJobIds) {
+			return invJobIds.length;
+		}
+		return 0;
 	}
 })

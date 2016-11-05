@@ -526,6 +526,7 @@ Router.map(function() {
         path: '/dashboard',
         title: "UTL - Dashboard",
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
             Meteor.subscribe('jobCount');
             Meteor.subscribe("contacts",Meteor.userId());
             Meteor.subscribe('allJobs');

@@ -39,7 +39,6 @@ Template.job.events({
   		else {
   			$(event.currentTarget).removeClass('applyInactive');
         $(event.currentTarget).addClass('applyActive');
-        toastr.success('An Email has been sent to the buyer.');
   		}
   	})
   },
@@ -158,9 +157,6 @@ Template.job.events({
       if(error) {
         toastr.error("Failed to accept the application");
       }
-      else {
-        toastr.success("An invitation has been sent to the provider to confirm assigmnemt.");
-      }
     });
   },
   'click .acceptCounterOffer': function(event, template) {
@@ -183,9 +179,6 @@ Template.job.events({
     Meteor.call('acceptCounterOffer', jobId, userId, applied_at, buyerCost, freenets, function(error) {
       if(error) {
         toastr.error('Failed to accept counter offer.');
-      }
-      else {
-        toastr.success('An invitation has been sent to the provider to confirm assignment.');
       }
     })
   },
@@ -293,11 +286,9 @@ Template.job.events({
     obj.jobID = Router.current().params.jobID;
 
     Meteor.call('updateTask',id,obj,function(err,res){
-     if(err) {
+      if(err) {
        toastr.error('Operation failed');
-     } else {
-       toastr.success('Task has been updated');
-     }
+      }
     });
     event.preventDefault();
   },
@@ -319,8 +310,8 @@ Template.job.events({
               file_name: res.file.original_name
             }
             Meteor.call('addFile', fileDetails, id,function (error, result) {
-              if(!error)
-                toastr.success("File uploaded successssfully");
+              if(error)
+                toastr.error("Failed to upload file. Try again.");
             });
         }
     });
@@ -338,8 +329,8 @@ Template.job.events({
             toastr.error("Operation failed");
         } else {
             Meteor.call('deleteFile', url, id,function (error, result) {
-                if(!error)
-                  toastr.success("Deleted");
+                if(error)
+                  toastr.error("Failed to delete file. Try again.");
             });
         }
     });
@@ -454,9 +445,6 @@ Template.job.events({
       if(error) {
         toastr.error('Failed to confirm assignment.');
       }
-      else {
-        toastr.success('The assignment has been confirmed.');
-      }
     })
   },
   'click button.declineAssignment': function(event, template) {
@@ -474,25 +462,23 @@ Template.job.events({
     //check for task status
     var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
     if(tasksClosed) {
-      toastr.error('Please close all the tasks before submitting the assignment');
+      toastr.error('Complete assigned tasks to submit the job for approval.');
       return;
     }
     var timeSheetsLogs = TimeSheet.findOne({jobID: jobId});
     if(!timeSheetsLogs.logs) {
-      toastr.error('Please enter your time sheets before submitting the assignment.');
+      toastr.error('Enter your time sheets to submit the job for approval.');
       return;
     }
     if(timeSheetsLogs.logs) {
       if(timeSheetsLogs.logs.length <= 0) {
-        toastr.error('Please enter your time sheets before submitting the assignment.');
+        toastr.error('Enter your time sheets to submit the job for approval.');
         return;
       }
     }
     Meteor.call('submitAssignment', jobId, function(error) {
       if(error) {
-        toastr.error('Failed to submit assignment. Please try again.');
-      } else {
-        toastr.success('Successfully submitted the assignment.');
+        toastr.error('Failed to submit job. Please try again.');
       }
     });
   },
@@ -503,8 +489,6 @@ Template.job.events({
     Meteor.call('approveAssignment', jobId, providerId, function(error) {
       if(error) {
         toastr.error('Failed to approve assignment. Please try again.');
-      } else {
-        toastr.success('Approved assignment Successfully');
       }
     });
   },
@@ -513,8 +497,6 @@ Template.job.events({
     Meteor.call('rejectAssignment', jobId, function(error) {
       if(error) {
         toastr.error('Failed to reject assignment. Please try again.');
-      } else {
-        toastr.success('Rejected assignment successfully');
       }
     });
   },
@@ -635,8 +617,6 @@ Template.job.events({
     Meteor.call('rejectCounterOffer', jobId, userId, applied_at, diff, function(error) {
       if(error) {
         toastr.error('Failed to reject the counter offer. Please try again');
-      } else {
-        toastr.success('Rejected the counter offer. Please choose another provider.');
       }
     })
   },
@@ -647,8 +627,6 @@ Template.job.events({
     Meteor.call('rejectApplication', jobId, userId, applied_at, function(error) {
       if(error) {
         toastr.error('Failed to reject the application. Please try again');
-      } else {
-        toastr.success('Rejected the application. Please choose another provider.');
       }
     })
   },

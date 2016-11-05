@@ -120,16 +120,6 @@
         </div>
     </div> -->
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12">
-            <div class="form-group">
-                <label for="loc" class="control-label">Location *</label>
-                <!-- <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="City, State, Zip" autocomplete="off" spellcheck="off" value="{{locationData}}" data-source="location" maxlength="128" />
-                <span class="help-block"></span> -->
-                {{>providerLocationMap}}
-            </div>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name='contactNumber' placeholder="10 Digit Phone Number (Do not separate with hyphens)"}}
         </div>
@@ -138,6 +128,16 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name="smsAddress" placeholder="johndoe@example.com" readonly=true}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12">
+            <div class="form-group">
+                <label for="loc" class="control-label">Location *</label>
+                <!-- <input id="loc" data-schema-key="location" class="form-control typeahead" name="location" type="text" placeholder="City, State, Zip" autocomplete="off" spellcheck="off" value="{{locationData}}" data-source="location" maxlength="128" />
+                <span class="help-block"></span> -->
+                {{>providerLocationMap}}
+            </div>
         </div>
     </div>
     <div class="row">        
@@ -211,16 +211,68 @@
     <div class="map-container">
         <input type="text" id="loc" data-schema-key="location" name="location" class="form-control" value="{{locationData}}" data-source="location" placeholder="Enter full address with zip code" required>
     </div>
-    <div id="locationDetails" hidden>
-        <input type="text" name="name" data-schema-key="fullLocation.street" class="form-control">
-        <input type="text" name="sublocality" class="form-control" data-schema-key="fullLocation.sublocality">
-        <input name="locality" type="text" value="" class="form-control" data-schema-key="fullLocation.locality">
-        <input type="text" class="form-control" name="administrative_area_level_1_short" data-schema-key="fullLocation.state">
-        <input type="text" class="form-control" name="formatted_address" data-schema-key="fullLocation.formatted_address">
-        <input type="text" class="form-control" name="country" data-schema-key="fullLocation.country">
-        <input type="text" class="form-control" name="postal_code" data-schema-key="fullLocation.zip">
-        <input type="text" name="url" data-schema-key="fullLocation.mapLink" class="form-control">
-        <input type="text" name="lat" data-schema-key="fullLocation.latitude" class="form-control">
-        <input type="text" name="lng" data-schema-key="fullLocation.longitude" class="form-control">
+    <div id="locationDetails">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Street</label>
+                    <input type="text" name="name" data-schema-key="fullLocation.street" class="form-control" value="{{this.profile.fullLocation.street}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Sub Locality</label>
+                    <input type="text" name="sublocality" class="form-control" data-schema-key="fullLocation.sublocality" value="{{this.profile.fullLocation.sublocality}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Locality</label>
+                    <input name="locality" type="text" class="form-control" data-schema-key="fullLocation.locality" value="{{this.profile.fullLocation.locality}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>State</label>
+                    <input type="text" class="form-control" name="administrative_area_level_1_short" data-schema-key="fullLocation.state" value="{{this.profile.fullLocation.state}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" class="form-control" name="country" data-schema-key="fullLocation.country" value="{{this.profile.fullLocation.country}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Formatted Address</label>
+                    <input type="text" class="form-control" name="formatted_address" data-schema-key="fullLocation.formatted_address" value="{{this.profile.fullLocation.formatted_address}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Zip</label>
+                    <input type="text" class="form-control" name="postal_code" data-schema-key="fullLocation.zip" value="{{this.profile.fullLocation.zip}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Map Link</label>
+                    <input type="text" name="url" data-schema-key="fullLocation.mapLink" class="form-control" value="{{this.profile.fullLocation.mapLink}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Latitude</label>
+                    <input type="text" name="lat" data-schema-key="fullLocation.latitude" class="form-control" value="{{this.profile.fullLocation.latitude}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Longitude</label>
+                    <input type="text" name="lng" data-schema-key="fullLocation.longitude" class="form-control" value="{{this.profile.fullLocation.longitude}}">
+                </div>
+            </div>
+        </div>
     </div>
 </template>

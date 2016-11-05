@@ -1,4 +1,4 @@
-AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob'], {
+AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 	after: {
 		insert: function(error, result) {
 			if (error) {
