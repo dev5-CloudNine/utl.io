@@ -133,7 +133,19 @@
                                 {{/if}}
                                 <div class="row">
                                     <div class="col-sm-12">
-                                       <h4>Service Schedule</h4>
+                                        {{#if assignedProvider}}
+                                            <h4>Service Location</h4>
+                                            {{fullLocation.street}}, <br>
+                                            {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
+                                            <hr>
+                                        {{/if}}
+                                        {{#if jobPostedBuyer}}
+                                            <h4>Service Location</h4>
+                                            {{fullLocation.street}}, <br>
+                                            {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
+                                            <hr>
+                                        {{/if}}
+                                        <h4>Service Schedule</h4>
                                         {{#if $eq serviceschedule 'exactdate'}}
                                             On: {{formatDate exactdate}} <br>
                                             Time: {{exacttime}}
@@ -147,32 +159,50 @@
                                         Payment Type: {{ratebasis}} <br>
                                         {{#if $eq ratebasis 'Blended'}}
                                             {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
-                                            Gross: {{totalfromclient}} USD.
+                                            {{#if jobPostedBuyer}}
+                                                Gross: {{totalfromclient}} USD. <br>
+                                            {{/if}}
                                             Net: {{freelancer_nets}} USD.
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Device'}}
                                             {{rateperdevice}} USD for {{maxdevices}} devices. <br>
-                                            Gross: {{totalfromclient}} USD. <br>
+                                            {{#if jobPostedBuyer}}
+                                                Gross: {{totalfromclient}} USD. <br>
+                                            {{/if}}
                                             Net: {{freelancer_nets}} USD.
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Hour'}}
                                             {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
-                                            Gross: {{totalfromclient}} USD. <br>
+                                            {{#if jobPostedBuyer}}
+                                                Gross: {{totalfromclient}} USD. <br>
+                                            {{/if}}
                                             Net: {{freelancer_nets}} USD.
                                         {{/if}}
                                         {{#if $eq ratebasis 'Fixed Pay'}}
-                                            Gross: {{fixedamount}} USD.
-                                            <br>Net: {{freelancer_nets}} USD.
+                                            {{#if jobPostedBuyer}}
+                                                Gross: {{fixedamount}} USD. <br>
+                                            {{/if}}
+                                            Net: {{freelancer_nets}} USD.
                                         {{/if}}
                                         {{/if}}
                                         {{#if assignedProvider}}
                                             {{#if confidentialDescription}}
-                                                <hr> Confidential Info:
-                                                <br> {{contactperson}}
-                                                <br> {{contactemail}}
-                                                <br> {{contactphone}}
-                                                <br> {{{htmlConfidentialDesc}}}
-                                                <br> {{fullAddress}}
+                                                <hr> 
+                                                <h4>Confidential Info</h4>
+                                                Name: {{contactperson}}
+                                                <br>Email: {{contactemail}}
+                                                <br>Phone: {{contactphone}}
+                                                <br>Message: {{{htmlConfdentialDesc}}}
+                                            {{/if}}
+                                        {{/if}}
+                                        {{#if jobPostedBuyer}}
+                                            {{#if confidentialDescription}}
+                                                <hr> 
+                                                <h4>Confidential Info</h4>
+                                                Name: {{contactperson}}
+                                                <br> Email: {{contactemail}}
+                                                <br> Phone: {{contactphone}}
+                                                <br> Message: {{{htmlConfdentialDesc}}}
                                             {{/if}}
                                         {{/if}}
                                         {{#if shipment}}
@@ -1259,21 +1289,29 @@
                                         Payment Type: {{../ratebasis}} <br>
                                         {{#if $eq ../ratebasis 'Blended'}}
                                             {{../payforfirsthours}} USD for the first {{../firsthours}} hours, and then {{../payfornexthours}} USD for the next {{../nexthours}} hours. <br>
-                                            Gross: {{../totalfromclient}} USD.
+                                            {{#if jobPostedBuyer}}
+                                                Gross: {{../totalfromclient}} USD.
+                                            {{/if}}
                                             Net: {{../freelancer_nets}} USD.
                                         {{/if}}
                                         {{#if $eq ../ratebasis 'Per Device'}}
                                             {{../rateperdevice}} USD for {{../maxdevices}} devices. <br>
-                                            Gross: {{../totalfromclient}} USD. <br>
+                                            {{#if jobPostedBuyer}}
+                                                Gross: {{../totalfromclient}} USD.
+                                            {{/if}}
                                             Net: {{../freelancer_nets}} USD.
                                         {{/if}}
                                         {{#if $eq ../ratebasis 'Per Hour'}}
                                             {{../hourlyrate}} USD per hour for {{../maxhours}} hours. <br>
-                                            Gross: {{../totalfromclient}} USD. <br>
+                                            {{#if jobPostedBuyer}}
+                                                Gross: {{../totalfromclient}} USD.
+                                            {{/if}}
                                             Net: {{../freelancer_nets}} USD.
                                         {{/if}}
                                         {{#if $eq ../ratebasis 'Fixed Pay'}}
-                                            Gross: {{../fixedamount}} USD.
+                                            {{#if jobPostedBuyer}}
+                                                Gross: {{../fixedamount}} USD.
+                                            {{/if}}
                                             <br>Net: {{../freelancer_nets}} USD.
                                         {{/if}}
                                     {{else}}
@@ -1295,7 +1333,9 @@
                                                 Payment Type: Fixed Pay<br>
                                                 Pay fixed amount {{fixed_amount}} USD. <br>
                                             {{/if}}
-                                            Gross: {{buyer_cost}} USD.<br>
+                                            {{#if jobPostedBuyer}}
+                                                Gross: {{buyer_cost}} USD.<br>
+                                            {{/if}}
                                             Net: {{freelancer_nets}} USD.
                                         {{/if}}
                                     {{/if}}

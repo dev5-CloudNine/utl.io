@@ -12,7 +12,7 @@
                             {{#if $eq servicelocation 'Remote Job'}}
                                 <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}
                             {{else}}
-                                <i class="fa fa-map-marker"></i>&nbsp;{{location}}
+                                <i class="fa fa-map-marker"></i>&nbsp;{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
                             {{/if}}
                         </small>
                     </h4>

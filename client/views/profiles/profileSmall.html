@@ -7,7 +7,7 @@
                     <small>{{readableId}}</small>
                     <h3 class="widget-user-username"><a href="{{pathFor 'profile'}}">{{firstName}} {{lastName}}</a></h3>
                     <h5 class="widget-user-desc">{{title}}</h5>
-                    <small><i class="fa fa-map-marker"></i>&nbsp;{{location}}</small>
+                    <small><i class="fa fa-map-marker"></i>&nbsp;{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}</small>
                 </div>
                 <div class="widget-user-image">
                     <a href="{{pathFor 'profile'}}">

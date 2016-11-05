@@ -24,11 +24,20 @@
 							{{/if}}
 						{{/if}}
 						<hr>
-						{{#if fullLocation}}
-							<i class="fa fa-map-marker"></i> {{fullLocation.formatted_address}}
-							<br>
+						{{#if adminOrProvider}}
+							{{#if fullLocation}}
+								{{fullLocation.street}}
+								<br>
+								{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+								<br>{{fullLocation.country}}
+							{{/if}}
+						{{else}}
+							{{#if fullLocation}}
+								{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+							{{/if}}
 						{{/if}}
-						<i class="fa fa-calendar"></i> Member since {{formatDate createdAt}}
+						<hr>
+						Member since {{formatDate createdAt}}
 						<hr>
 						{{#if adminOrProvider}}
 							<i class="fa fa-envelope"></i> {{userName}}

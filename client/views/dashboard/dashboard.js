@@ -163,6 +163,131 @@ Template.dashboard.helpers({
 		if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {
 			return Profiles.findOne({userId: Meteor.userId()});
 		}
+	},
+	buyersCount: function() {
+		return Buyers.find().count();
+	},
+	providersCount: function() {
+		return Profiles.find().count();
+	},
+	createChart: function() {
+		var highCharts = require('highcharts/highstock');
+		console.log(highCharts);
+		var providers = Profiles.find().count();
+		var buyers = Buyers.find().count();
+		var usersData = [{
+			y: buyers,
+			name: "Buyers"
+		}, {
+			y: providers,
+			name: "Providers"
+		}]
+		Meteor.defer(function() {
+			highCharts.chart('adminChart', {
+				chart: {
+					type: 'column'
+				},
+				title: {
+		            text: 'Monthly Activity Report'
+		        },
+				xAxis: {
+					categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+					crosshair: true
+				},
+				plotOptions: {
+					column: {
+						pointPadding: 0.2,
+						borderWidth: 0
+					}
+				},
+				tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		                '<td style="padding:0"><b>{point.y} </b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+				series: [{
+					name: 'Buyers',
+					data: [25, 15, 32, 24, 56, 12, 18, 62, 15, 25, 46, 38]
+				}, {
+					name: 'Providers',
+					data: [32, 89, 26, 84, 27, 58, 92, 128, 82, 98, 57, 64]
+				}, {
+					name: 'Jobs Posted',
+					data: [58, 25, 68, 24, 84, 18, 52, 68, 32, 84, 59, 81]
+				}, {
+					name: 'Jobs Completed',
+					data: [54, 21, 65, 20, 80, 18, 50, 65, 30, 80, 55, 80]
+				}]
+			})
+		})
+	},
+	sampleChart: function() {
+		var highCharts = require('highcharts/highstock');
+		Meteor.defer(function() {
+			highCharts.chart('sampleChart', {
+		        chart: {
+		            type: 'area',
+		            inverted: true
+		        },
+		        title: {
+		            text: 'Average user registration during this week.'
+		        },
+		        subtitle: {
+		            style: {
+		                position: 'absolute',
+		                right: '0px',
+		                bottom: '10px'
+		            }
+		        },
+		        legend: {
+		            layout: 'vertical',
+		            align: 'right',
+		            verticalAlign: 'top',
+		            x: -150,
+		            y: 100,
+		            floating: true,
+		            borderWidth: 1,
+		            backgroundColor: (highCharts.theme && highCharts.theme.legendBackgroundColor) || '#FFFFFF'
+		        },
+		        xAxis: {
+		            categories: [
+		                'Monday',
+		                'Tuesday',
+		                'Wednesday',
+		                'Thursday',
+		                'Friday',
+		                'Saturday',
+		                'Sunday'
+		            ]
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Number of users'
+		            },
+		            labels: {
+		                formatter: function () {
+		                    return this.value;
+		                }
+		            },
+		            min: 0
+		        },
+		        plotOptions: {
+		            area: {
+		                fillOpacity: 0.5
+		            }
+		        },
+		        series: [{
+		            name: 'Buyers',
+		            data: [3, 4, 3, 5, 4, 10, 12]
+		        }, {
+		            name: 'Providers',
+		            data: [1, 3, 4, 3, 3, 5, 4]
+		        }]
+		    });
+		})
 	}
 });
 
