@@ -410,6 +410,16 @@ Meteor.methods({
             side: 'provider',
             adminRead: false
         }
+        var invoiceObject = {
+            jobId: jobId,
+            providerId: providerDetails.userId,
+            buyerId: jobDetails.userId,
+            budget: jobDetails.projectBudget,
+            date: new Date(),
+            invoiceId: 'INV' + jobDetails.readableID,
+            invoiceStatus: 'paid'
+        }
+        Invoices.insert(invoiceObject);
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'paid'}});
         Profiles.update({userId: providerId}, {$addToSet: {paidJobs: jobId}});
         Profiles.update({userId: providerId}, {$pull: {assignedJobs: jobId}});

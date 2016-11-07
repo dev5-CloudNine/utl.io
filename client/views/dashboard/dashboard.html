@@ -1,5 +1,85 @@
 <template name="dashboard">
     <div class="row">
+                        <div class="col-md-3">
+                            
+                            <!-- START WIDGET SLIDER -->
+                            <div class="widget widget-default widget-carousel">
+                                <div class="owl-carousel owl-theme" id="owl-example" style="opacity: 1; display: block;">
+                                    <div class="owl-wrapper-outer"><div class="owl-wrapper" style="width: 1458px; left: 0px; display: block; transition: all 1000ms ease; transform: translate3d(0px, 0px, 0px);"><div class="owl-item" style="width: 243px;"><div>                                    
+                                        <div class="widget-title">Total Visitors</div>                                                                        
+                                        <div class="widget-subtitle">27/08/2014 15:23</div>
+                                        <div class="widget-int">3,548</div>
+                                    </div></div><div class="owl-item" style="width: 243px;"><div>                                    
+                                        <div class="widget-title">Returned</div>
+                                        <div class="widget-subtitle">Visitors</div>
+                                        <div class="widget-int">1,695</div>
+                                    </div></div><div class="owl-item" style="width: 243px;"><div>                                    
+                                        <div class="widget-title">New</div>
+                                        <div class="widget-subtitle">Visitors</div>
+                                        <div class="widget-int">1,977</div>
+                                    </div></div></div></div>
+                                    
+                                    
+                                <div class="owl-controls clickable"><div class="owl-pagination"><div class="owl-page active"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div></div></div></div> 
+                            </div>         
+                            <!-- END WIDGET SLIDER -->
+                            
+                        </div>
+                        <div class="col-md-3">
+                            
+                            <!-- START WIDGET MESSAGES -->
+                            <div class="widget widget-default widget-item-icon" onclick="location.href='pages-messages.html';">
+                                <div class="widget-item-left">
+                                    <span class="fa fa-envelope"></span>
+                                </div>                             
+                                <div class="widget-data">
+                                    <div class="widget-int num-count">48</div>
+                                    <div class="widget-title">New messages</div>
+                                    <div class="widget-subtitle">In your mailbox</div>
+                                </div>
+                            </div>                            
+                            <!-- END WIDGET MESSAGES -->
+                            
+                        </div>
+                        <div class="col-md-3">
+                            
+                            <!-- START WIDGET REGISTRED -->
+                            <div class="widget widget-default widget-item-icon" onclick="location.href='pages-address-book.html';">
+                                <div class="widget-item-left">
+                                    <span class="fa fa-user"></span>
+                                </div>
+                                <div class="widget-data">
+                                    <div class="widget-int num-count">375</div>
+                                    <div class="widget-title">Registred users</div>
+                                    <div class="widget-subtitle">On your website</div>
+                                </div>                            
+                            </div>                            
+                            <!-- END WIDGET REGISTRED -->
+                            
+                        </div>
+                        <div class="col-md-3">
+                            
+                            <!-- START WIDGET CLOCK -->
+                            <div class="widget widget-info widget-padding-sm">
+                                <div class="widget-big-int plugin-clock">03<span>:</span>12</div>                            
+                                <div class="widget-subtitle plugin-date">Tuesday, November 8, 2016</div>                         
+                                <div class="widget-buttons widget-c3">
+                                    <div class="col">
+                                        <a href="#"><span class="fa fa-clock-o"></span></a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="#"><span class="fa fa-bell"></span></a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="#"><span class="fa fa-calendar"></span></a>
+                                    </div>
+                                </div>                            
+                            </div>                        
+                            <!-- END WIDGET CLOCK -->
+                            
+                        </div>
+                    </div>
+    <div class="row">
         <div class="col-sm-12">
             {{#if isInRole 'buyer, corporate-manager'}}
                 <div class="row tile_count">
@@ -156,6 +236,14 @@
                                     <div class="count">{{getPublishedCount 'allCompletedJobs'}}</div>
                                 </div>
                             </div>
+                            <!-- <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h6>Number of Users Registered Today: {{todayUserCount}}</h6>
+                                    <h6>Number of Buyer Profiles Created Today: {{todayBuyerCount}}</h6>
+                                    <h6>Number of Provider Profiles Created Today: {{todayProviderCount}}</h6>
+                                </div>
+                            </div> -->
                             <hr>
                             <div class="row">
                                 <div class="col-sm-12">
@@ -166,6 +254,9 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div id="sampleChart">{{sampleChart}}</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div id="weekJobs">{{lastWeekJobs}}</div>
                                 </div>
                             </div>
                         {{/if}}

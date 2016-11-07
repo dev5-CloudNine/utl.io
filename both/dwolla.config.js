@@ -96,7 +96,7 @@ if (Meteor.isServer) {
                 Fiber(function() {
                     var dwollaCustomer = res.headers._headers;
                     dwollaCustomer['updated_on'] = new Date();
-                    Wallet.upsert({userId: reqdUserId}, {$set: {dwollaCustomer: dwollaCustomer}});
+                    Wallet.upsert({userId: reqdUserId}, {$set: {dwollaCustomer: dwollaCustomer, socialSecurityNo: dwolla_req_object.ssn}});
                 }).run();
                 customerUrl = res.headers._headers.location[0];
                 var fundObj = {

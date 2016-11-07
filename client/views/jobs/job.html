@@ -133,17 +133,19 @@
                                 {{/if}}
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        {{#if assignedProvider}}
-                                            <h4>Service Location</h4>
-                                            {{fullLocation.street}}, <br>
-                                            {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
-                                            <hr>
-                                        {{/if}}
-                                        {{#if jobPostedBuyer}}
-                                            <h4>Service Location</h4>
-                                            {{fullLocation.street}}, <br>
-                                            {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
-                                            <hr>
+                                        {{#if $eq servicelocation 'Field Job'}}
+                                            {{#if assignedProvider}}
+                                                <h4>Service Location</h4>
+                                                {{fullLocation.street}}, <br>
+                                                {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
+                                                <hr>
+                                            {{/if}}
+                                            {{#if jobPostedBuyer}}
+                                                <h4>Service Location</h4>
+                                                {{fullLocation.street}}, <br>
+                                                {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
+                                                <hr>
+                                            {{/if}}
                                         {{/if}}
                                         <h4>Service Schedule</h4>
                                         {{#if $eq serviceschedule 'exactdate'}}
@@ -231,9 +233,9 @@
                                         {{#if $eq userId $.Meteor.userId}}
                                             <div class="pull-right">
                                                 &nbsp;
-                                                <a href="{{pathFor 'jobEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
                                                 {{#if jobNotAssigned}}
-                                                    <button class="btn btn-primary deactivateJob">Deactivate Job</button>
+                                                    <a href="{{pathFor 'jobEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                                                    <!-- <button class="btn btn-primary deactivateJob">Deactivate Job</button> -->
                                                 {{/if}}
                                                 {{#if $eq status 'deactivated'}}
                                                     <button class="btn btn-primary activateJob">Activate Job</button>

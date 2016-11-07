@@ -1,4 +1,4 @@
-subs.subscribe('userWallet', Meteor.userId());
+Meteor.subscribe('userWallet', Meteor.userId());
 Meteor.subscribe("userData");
 Meteor.subscribe('corporates');
 Meteor.subscribe("jobCount");

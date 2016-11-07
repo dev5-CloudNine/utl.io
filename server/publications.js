@@ -170,7 +170,8 @@ Meteor.publishComposite('providers', {
                 userName: true,
                 status: true,
                 customImageUrl: true,
-                companyName: true
+                companyName: true,
+                createdAt: true,
             }
         });
     },
@@ -209,7 +210,8 @@ Meteor.publishComposite('buyers', {
                 userName: true,
                 status: true,
                 customImageUrl: true,
-                companyName: true
+                companyName: true,
+                createdAt: true
             }
         });
     }

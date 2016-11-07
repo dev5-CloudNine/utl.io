@@ -170,18 +170,157 @@ Template.dashboard.helpers({
 	providersCount: function() {
 		return Profiles.find().count();
 	},
+	todayUserCount: function() {
+		var count = 0;
+		var today = new Date().getUTCDate();
+		var allUsers = Meteor.users.find().fetch();
+		allUsers.forEach(function(user) {
+			if(user.createdAt.getUTCDate() == today) {
+				count++;
+			}
+		});
+		if(count == 0)
+			return 0;
+		else
+			return count;
+	},
+	todayBuyerCount: function() {
+		var count = 0;
+		var today = new Date().getUTCDate();
+		var allBuyers = Buyers.find().fetch();
+		allBuyers.forEach(function(buyer) {
+			if(buyer.createdAt.getUTCDate() == today) {
+				count ++;
+			}
+		});
+		if(count == 0)
+			return 0;
+		else
+			return count;
+	},
+	todayProviderCount: function() {
+		var count = 0;
+		var today = new Date().getUTCDate();
+		var allProviders = Profiles.find().fetch();
+		allProviders.forEach(function(provider) {
+			if(provider.createdAt.getUTCDate() == today) {
+				count ++;
+			}
+		});
+		if(count == 0)
+			return 0;
+		else
+			return count;
+	},
 	createChart: function() {
 		var highCharts = require('highcharts/highstock');
-		console.log(highCharts);
-		var providers = Profiles.find().count();
-		var buyers = Buyers.find().count();
-		var usersData = [{
-			y: buyers,
-			name: "Buyers"
-		}, {
-			y: providers,
-			name: "Providers"
-		}]
+		var aDay = new Date().getUTCMonth();
+		var lastYear = new Date();
+		var monthsArray = [];
+		lastYear.setUTCMonth(lastYear.getUTCMonth() - 12);
+		var buyersLastYear = Buyers.find({createdAt: {$gte: lastYear}}).fetch();
+		var providersLastYear = Profiles.find({createdAt: {$gte: lastYear}}).fetch();
+		var jobsLastYear = Jobs.find({createdAt: {$gte: lastYear}}).fetch();
+		var paidJobsLastYear = Jobs.find({$and: [{createdAt: {$gte: lastYear}}, {applicationStatus: 'paid'}]}).fetch();
+		var monthsBuyerCount = function(diff) {
+			var count = 0;
+			var today = new Date().getUTCMonth();
+			buyersLastYear.forEach(function(buyer) {
+				if(buyer.createdAt.getUTCMonth() == today - diff) {
+					count++;
+				}
+			});
+			if(count == 0)
+				return 0;
+			else
+				return count;
+		}
+		var monthsProviderCount = function(diff) {
+			var count = 0;
+			var today = new Date().getUTCMonth();
+			providersLastYear.forEach(function(provider) {
+				if(provider.createdAt.getUTCMonth() == today - diff) {
+					count ++;
+				}
+			});
+			if(count == 0)
+				return 0;
+			else
+				return count;
+		}
+		var monthsPostedCount = function(diff) {
+			var count = 0;
+			var today = new Date().getUTCMonth();
+			jobsLastYear.forEach(function(job) {
+				if(job.createdAt.getUTCMonth() == today - diff) {
+					count ++
+				}
+			});
+			if(count == 0)
+				return 0;
+			else
+				return count;
+		}
+		var monthsPaidCount = function(diff) {
+			var count = 0;
+			var today = new Date().getUTCMonth();
+			paidJobsLastYear.forEach(function(paidJob) {
+				var paidNotification = Notifications.findOne({$and: [{jobId: paidJob._id}, {notificationType: 'approveAssignment'}]});
+				if(paidNotification.timeStamp.getUTCMonth() == today - diff) {
+					count ++;
+				}
+			});
+			if(count == 0)
+				return 0;
+			else
+				return count;
+		}
+		var yearPostedCountArray = [];
+		var yearBuyerCountArray = [];
+		var yearProviderCountArray = [];
+		var yearPaidCountArray = [];
+		for(var i = 11; i >=0; i--) {
+			yearPostedCountArray.push(monthsPostedCount(i));
+			yearBuyerCountArray.push(monthsBuyerCount(i));
+			yearPaidCountArray.push(monthsPaidCount(i));
+			yearProviderCountArray.push(monthsProviderCount(i));
+		}
+		if(aDay == 0) {
+			monthsArray = ['February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January'];
+		}
+		if(aDay == 1) {
+			monthsArray = ['March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February'];
+		}
+		if(aDay == 2) {
+			monthsArray = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March'];
+		}
+		if(aDay == 3) {
+			monthsArray = ['May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April'];
+		}
+		if(aDay == 4) {
+			monthsArray = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
+		}
+		if(aDay == 5) {
+			monthsArray = ['July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June'];
+		}
+		if(aDay == 6) {
+			monthsArray = ['August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June', 'July'];
+		}
+		if(aDay == 7) {
+			monthsArray = ['September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'];
+		}
+		if(aDay == 8) {
+			monthsArray = ['October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September'];
+		}
+		if(aDay == 9) {
+			monthsArray = ['November', 'December', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October'];
+		}
+		if(aDay == 10) {
+			monthsArray = ['December', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
+		}
+		if(aDay == 11) {
+			monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		}
 		Meteor.defer(function() {
 			highCharts.chart('adminChart', {
 				chart: {
@@ -191,7 +330,7 @@ Template.dashboard.helpers({
 		            text: 'Monthly Activity Report'
 		        },
 				xAxis: {
-					categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+					categories: monthsArray,
 					crosshair: true
 				},
 				plotOptions: {
@@ -210,30 +349,84 @@ Template.dashboard.helpers({
 		        },
 				series: [{
 					name: 'Buyers',
-					data: [25, 15, 32, 24, 56, 12, 18, 62, 15, 25, 46, 38]
+					data: yearBuyerCountArray
 				}, {
 					name: 'Providers',
-					data: [32, 89, 26, 84, 27, 58, 92, 128, 82, 98, 57, 64]
+					data: yearProviderCountArray
 				}, {
 					name: 'Jobs Posted',
-					data: [58, 25, 68, 24, 84, 18, 52, 68, 32, 84, 59, 81]
+					data: yearPostedCountArray
 				}, {
 					name: 'Jobs Completed',
-					data: [54, 21, 65, 20, 80, 18, 50, 65, 30, 80, 55, 80]
+					data: yearPaidCountArray
 				}]
 			})
 		})
 	},
 	sampleChart: function() {
-		var highCharts = require('highcharts/highstock');
+		var buyersAndProviders = require('highcharts/highstock');
+		var daysArray = [];
+		var aDay = new Date();
+		var lastWeek = new Date();
+		lastWeek.setUTCDate(lastWeek.getUTCDate() - 7);
+		var buyersLastWeek = Buyers.find({createdAt: {$gte: lastWeek}}).fetch();
+		var providersLastWeek = Profiles.find({createdAt: {$gte: lastWeek}}).fetch();
+		var todaysBuyersCount = function(diff) {
+			var count = 0;
+			var today = new Date().getUTCDate();
+			buyersLastWeek.forEach(function(buyer) {
+				if(buyer.createdAt.getUTCDate() == today - diff) {
+					count ++;
+				}
+			});
+			if(count == 0)
+				return 0;
+			else
+				return count;
+		}
+		var todaysProviderCount = function(diff) {
+			var count = 0;
+			var today = new Date().getUTCDate();
+			providersLastWeek.forEach(function(provider) {
+				if(provider.createdAt.getUTCDate() == today - diff) {
+					count ++;
+				}
+			});
+			if(count == 0)
+				return 0;
+			else
+				return count;
+		}
+		buyersCountArray = [todaysBuyersCount(6), todaysBuyersCount(5), todaysBuyersCount(4), todaysBuyersCount(3), todaysBuyersCount(2), todaysBuyersCount(1), todaysBuyersCount(0)];
+		providersCountArray = [todaysProviderCount(6), todaysProviderCount(5), todaysProviderCount(4), todaysProviderCount(3), todaysProviderCount(2), todaysProviderCount(1), todaysProviderCount(0)];
+		if(aDay.getUTCDay() == 0) {
+			daysArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday (Today)'];
+		}
+		if(aDay.getUTCDay() == 1) {
+			daysArray = ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday (Today)'];
+		}
+		if(aDay.getUTCDay() == 2) {
+			daysArray = ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday (Today)'];
+		}
+		if(aDay.getUTCDay() == 3) {
+			daysArray = ['Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday (Today)'];
+		}
+		if(aDay.getUTCDay() == 4) {
+			daysArray = ['Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday (Today)'];
+		}
+		if(aDay.getUTCDay() == 5) {
+			daysArray = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday (Today)'];
+		}
+		if(aDay.getUTCDay() == 6) {
+			daysArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday (Today)'];
+		}
 		Meteor.defer(function() {
-			highCharts.chart('sampleChart', {
+			buyersAndProviders.chart('sampleChart', {
 		        chart: {
-		            type: 'area',
-		            inverted: true
+		            type: 'column',
 		        },
 		        title: {
-		            text: 'Average user registration during this week.'
+		            text: 'New user profiles (Weekly).'
 		        },
 		        subtitle: {
 		            style: {
@@ -242,37 +435,14 @@ Template.dashboard.helpers({
 		                bottom: '10px'
 		            }
 		        },
-		        legend: {
-		            layout: 'vertical',
-		            align: 'right',
-		            verticalAlign: 'top',
-		            x: -150,
-		            y: 100,
-		            floating: true,
-		            borderWidth: 1,
-		            backgroundColor: (highCharts.theme && highCharts.theme.legendBackgroundColor) || '#FFFFFF'
-		        },
 		        xAxis: {
-		            categories: [
-		                'Monday',
-		                'Tuesday',
-		                'Wednesday',
-		                'Thursday',
-		                'Friday',
-		                'Saturday',
-		                'Sunday'
-		            ]
+		            categories: daysArray
 		        },
 		        yAxis: {
 		            title: {
 		                text: 'Number of users'
 		            },
-		            labels: {
-		                formatter: function () {
-		                    return this.value;
-		                }
-		            },
-		            min: 0
+		            allowDecimals: false
 		        },
 		        plotOptions: {
 		            area: {
@@ -281,15 +451,155 @@ Template.dashboard.helpers({
 		        },
 		        series: [{
 		            name: 'Buyers',
-		            data: [3, 4, 3, 5, 4, 10, 12]
+		            data: buyersCountArray
 		        }, {
 		            name: 'Providers',
-		            data: [1, 3, 4, 3, 3, 5, 4]
+		            data: providersCountArray
+		        }]
+		    });
+		})
+	},
+	lastWeekJobs: function() {
+		var jobChart = require('highcharts/highstock');
+		var daysArray = [];
+		var aDay = new Date();
+		var lastWeek = new Date();
+		lastWeek.setUTCDate(lastWeek.getUTCDate() - 7);
+		var jobsLastWeek = Jobs.find({createdAt: {$gte: lastWeek}}).fetch();
+		var todaysPostedJobCount = function(diff) {
+			var count = 0;
+			var today = new Date().getUTCDate();
+			jobsLastWeek.forEach(function(job) {
+				if(job.createdAt.getUTCDate() == today - diff) {
+					count ++;
+				}
+			});
+			if(count == 0)
+				return 0;
+			else
+				return count;
+		}
+		var todaysOpenJobCount = function(diff) {
+			var count = 0;
+			var today = new Date().getUTCDate();
+			jobsLastWeek.forEach(function(job) {
+				if(job.createdAt.getUTCDate() == today - diff && job.applicationStatus == 'open') {
+					count ++;
+				}
+			});
+			if(count == 0)
+				return 0;
+			else
+				return count;
+		}
+		var todaysAssignedJobCount = function(diff) {
+			var count = 0;
+			var today = new Date().getUTCDate();
+			Notifications.find({notificationType: 'confirmAssignment'}).fetch().forEach(function(assignedJobNot) {
+				if(assignedJobNot.timeStamp.getUTCDate() == today - diff) {
+					count ++;
+				}
+			})
+			if(count == 0)
+				return 0;
+			else
+				return count;
+		}
+		var todayCompletedJobCount = function(diff) {
+			var count = 0;
+			var today = new Date().getUTCDate();
+			Notifications.find({notificationType: 'approveAssignment'}).fetch().forEach(function(approvedJobNot) {
+				if(approvedJobNot.timeStamp.getUTCDate() == today - diff) {
+					count ++;
+				}
+			})
+			if(count == 0)
+				return 0;
+			else
+				return count;
+		}
+		var postedJobsCount = [];
+		var openJobsCount = [];
+		var assignedJobsCount = [];
+		var completedJobsCount = [];
+		for(var i = 6; i >=0; i--) {
+			postedJobsCount.push(todaysPostedJobCount(i));
+			openJobsCount.push(todaysOpenJobCount(i));
+			assignedJobsCount.push(todaysAssignedJobCount(i));
+			completedJobsCount.push(todayCompletedJobCount(i));
+		}
+		if(aDay.getUTCDay() == 0) {
+			daysArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday (Today)'];
+		}
+		if(aDay.getUTCDay() == 1) {
+			daysArray = ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday (Today)'];
+		}
+		if(aDay.getUTCDay() == 2) {
+			daysArray = ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday (Today)'];
+		}
+		if(aDay.getUTCDay() == 3) {
+			daysArray = ['Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday (Today)'];
+		}
+		if(aDay.getUTCDay() == 4) {
+			daysArray = ['Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday (Today)'];
+		}
+		if(aDay.getUTCDay() == 5) {
+			daysArray = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday (Today)'];
+		}
+		if(aDay.getUTCDay() == 6) {
+			daysArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday (Today)'];
+		}
+		Meteor.defer(function() {
+			console.log(postedJobsCount);
+			jobChart.chart('weekJobs', {
+		        chart: {
+		            type: 'areaspline',
+		        },
+		        title: {
+		            text: 'Job activity report (Weekly).'
+		        },
+		        subtitle: {
+		            style: {
+		                position: 'absolute',
+		                right: '0px',
+		                bottom: '10px'
+		            }
+		        },
+		        xAxis: {
+		            categories: daysArray
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Number of Jobs'
+		            },
+		            allowDecimals: false
+		        },
+		        plotOptions: {
+		            area: {
+		                fillOpacity: 0.5
+		            }
+		        },
+		        series: [{
+		        	name: 'Posted',
+		        	data: postedJobsCount
+		        }, {
+		            name: 'Open',
+		            data: openJobsCount
+		        }, {
+		            name: 'Assigned',
+		            data: assignedJobsCount
+		        }, {
+		        	name: 'Completed',
+		        	data: completedJobsCount
 		        }]
 		    });
 		})
 	}
 });
+
+Template.dashboard.onRendered(function() {
+	$('.highcharts-credits').remove();
+})
 
 Template.dashboard.rendered = function () {
 	this.$('.rateit').rateit({'readonly': true});	
