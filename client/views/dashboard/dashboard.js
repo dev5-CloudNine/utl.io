@@ -8,11 +8,21 @@ Template.dashboard.helpers({
 			}
 		});
 	},
-	// recommendedJobsCount: function() {
-	// 	var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
-	// 	Meteor.subscribe('recommendedJobs', jobCategories);
-	// 	return Jobs.find({$and: [{applicationStatus: 'open'}, {jobSubCategory: {$in: jobCategories}}]}).count()
-	// },
+	openJobsCount: function() {
+		return Jobs.find({$and: [{applicationStatus: 'open'}, {invited: false}]}).count();
+	},
+	recommendedJobsCount: function() {
+		var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
+		Meteor.subscribe('recommendedJobs', jobCategories);
+		return Jobs.find({$and: [{applicationStatus: 'open'}, {jobSubCategory: {$in: jobCategories}}]}).count()
+	},
+	assignedJobsCount: function() {
+		var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+		if(providerDetails && providerDetails.assignedJobs) {
+			return providerDetails.assignedJobs.length;
+		}
+		return 0;
+	},
 	buyerCompletedJobsCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}).count();
 	},
@@ -97,11 +107,14 @@ Template.dashboard.helpers({
 		}
 		return count;
 	},
-	providerCompletedJobs: function() {
-		return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'done'}, {assignmentStatus: 'approved'}]}).fetch();
+	buyerOpenJobsCount: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();
+	},
+	buyerAssignedJobsCount: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}]}).count();
 	},
 	buyerCompletedJobs: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'done'}]}).fetch();
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}).fetch();
 	},
 	providerCompletedJobsCount: function() {
 		var paidJobs = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
@@ -429,6 +442,7 @@ Template.dashboard.helpers({
 		            text: 'New user profiles (Weekly).'
 		        },
 		        subtitle: {
+		        	text: 'Total profiles created today: ' + parseInt(todaysProviderCount(0) + todaysBuyersCount(0)),
 		            style: {
 		                position: 'absolute',
 		                right: '0px',

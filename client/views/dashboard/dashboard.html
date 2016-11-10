@@ -1,273 +1,502 @@
 <template name="dashboard">
-    <div class="row">
-                        <div class="col-md-3">
-                            
-                            <!-- START WIDGET SLIDER -->
-                            <div class="widget widget-default widget-carousel">
-                                <div class="owl-carousel owl-theme" id="owl-example" style="opacity: 1; display: block;">
-                                    <div class="owl-wrapper-outer"><div class="owl-wrapper" style="width: 1458px; left: 0px; display: block; transition: all 1000ms ease; transform: translate3d(0px, 0px, 0px);"><div class="owl-item" style="width: 243px;"><div>                                    
-                                        <div class="widget-title">Total Visitors</div>                                                                        
-                                        <div class="widget-subtitle">27/08/2014 15:23</div>
-                                        <div class="widget-int">3,548</div>
-                                    </div></div><div class="owl-item" style="width: 243px;"><div>                                    
-                                        <div class="widget-title">Returned</div>
-                                        <div class="widget-subtitle">Visitors</div>
-                                        <div class="widget-int">1,695</div>
-                                    </div></div><div class="owl-item" style="width: 243px;"><div>                                    
-                                        <div class="widget-title">New</div>
-                                        <div class="widget-subtitle">Visitors</div>
-                                        <div class="widget-int">1,977</div>
-                                    </div></div></div></div>
-                                    
-                                    
-                                <div class="owl-controls clickable"><div class="owl-pagination"><div class="owl-page active"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div></div></div></div> 
-                            </div>         
-                            <!-- END WIDGET SLIDER -->
-                            
+    {{#if isInRole 'buyer, corporate-manager'}}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="item active"> 
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="caption">
+                                                <div class="widget widget-default widget-item-icon">
+                                                    <a href="/myJobs/open">
+                                                        <div class="widget-item-left">
+                                                            <span class="fa fa-user"></span>
+                                                        </div>
+                                                        <div class="widget-data">
+                                                            <div class="widget-int num-count">{{buyerOpenJobsCount}}</div>
+                                                            <div class="widget-title">Open Jobs</div>
+                                                            <div class="widget-subtitle">Jobs open for applications.</div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div>
+                                <div class="item"> 
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="caption">
+                                                <div class="widget widget-default widget-item-icon">
+                                                    <a href="/myJobs/assigned">
+                                                        <div class="widget-item-left">
+                                                            <span class="fa fa-user"></span>
+                                                        </div>
+                                                        <div class="widget-data">
+                                                            <div class="widget-int num-count">{{buyerAssignedJobsCount}}</div>
+                                                            <div class="widget-title">Assigned Jobs</div>
+                                                            <div class="widget-subtitle">Jobs in progress</div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div>
+                                <div class="item"> 
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="caption">
+                                                <div class="widget widget-default widget-item-icon">
+                                                    <a href="/myJobs/paid">
+                                                        <div class="widget-item-left">
+                                                            <span class="fa fa-user"></span>
+                                                        </div>
+                                                        <div class="widget-data">
+                                                            <div class="widget-int num-count">{{buyerCompletedJobsCount}}</div>
+                                                            <div class="widget-title">Completed Jobs</div>
+                                                            <div class="widget-subtitle">Jobs that are paid.</div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            
-                            <!-- START WIDGET MESSAGES -->
-                            <div class="widget widget-default widget-item-icon" onclick="location.href='pages-messages.html';">
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon" onclick="location.href='pages-messages.html';">
+                            <a href="/myjobs">
                                 <div class="widget-item-left">
                                     <span class="fa fa-envelope"></span>
                                 </div>                             
                                 <div class="widget-data">
-                                    <div class="widget-int num-count">48</div>
-                                    <div class="widget-title">New messages</div>
-                                    <div class="widget-subtitle">In your mailbox</div>
-                                </div>
-                            </div>                            
-                            <!-- END WIDGET MESSAGES -->
-                            
-                        </div>
-                        <div class="col-md-3">
-                            
-                            <!-- START WIDGET REGISTRED -->
-                            <div class="widget widget-default widget-item-icon" onclick="location.href='pages-address-book.html';">
-                                <div class="widget-item-left">
-                                    <span class="fa fa-user"></span>
-                                </div>
-                                <div class="widget-data">
-                                    <div class="widget-int num-count">375</div>
-                                    <div class="widget-title">Registred users</div>
-                                    <div class="widget-subtitle">On your website</div>
-                                </div>                            
-                            </div>                            
-                            <!-- END WIDGET REGISTRED -->
-                            
-                        </div>
-                        <div class="col-md-3">
-                            
-                            <!-- START WIDGET CLOCK -->
-                            <div class="widget widget-info widget-padding-sm">
-                                <div class="widget-big-int plugin-clock">03<span>:</span>12</div>                            
-                                <div class="widget-subtitle plugin-date">Tuesday, November 8, 2016</div>                         
-                                <div class="widget-buttons widget-c3">
-                                    <div class="col">
-                                        <a href="#"><span class="fa fa-clock-o"></span></a>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#"><span class="fa fa-bell"></span></a>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#"><span class="fa fa-calendar"></span></a>
-                                    </div>
-                                </div>                            
-                            </div>                        
-                            <!-- END WIDGET CLOCK -->
-                            
-                        </div>
-                    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            {{#if isInRole 'buyer, corporate-manager'}}
-                <div class="row tile_count">
-                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                        <a href="{{pathFor 'myJobs'}}">
-                            <span class="count_top"><i class="fa fa-user"></i> Jobs Posted</span>
-                            <div class="count">{{buyerJobsCount}}</div>
-                        </a>
-                    </div>
-                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                        <a href="{{pathFor 'buyerPaidJobs'}}">
-                            <span class="count_top"><i class="fa fa-clock-o"></i> Jobs Completed</span>
-                            <div class="count">{{buyerCompletedJobsCount}}</div>
-                        </a>
-                    </div>
-                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                        <span class="count_top"><i class="fa fa-user"></i> Amount Spent</span>
-                        <div class="count green">$ {{amountSpent}}</div>
-                    </div>
-                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                        <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
-                        <div class="count">$ {{accountBalance}}</div>
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
-                        {{#with myProfile}}
-                            <a href="{{pathFor 'buyer'}}">
-                                <span class="count_top"><i class="fa fa-user"></i> Reviews ({{buyerReviewCount}})</span>
-                                <div class="count">
-                                    <!-- {{>starsRating rating=buyerRatingPoints size="lg"}} -->
-                                    <span class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-value="{{buyerRatingPoints}}"></span>
+                                    <div class="widget-int num-count">{{buyerJobsCount}}</div>
+                                    <div class="widget-title">Jobs Posted</div>
+                                    <div class="widget-subtitle">All jobs you have published.</div>
                                 </div>
                             </a>
-                        {{/with}}
+                        </div>     
                     </div>
-                </div>
-                <hr>
-                <!-- <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        <a href="{{pathFor 'profiles'}}">Providers: </a><br>
-                        <a href="{{pathFor 'buyerAssignedJobs'}}">Jobs in progress: {{buyerAssignedJobsCount}}</a>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <div class="widget-item-left">
+                                <span class="fa fa-user"></span>
+                            </div>
+                            <div class="widget-data">
+                                <div class="widget-int num-count">$ {{amountSpent}}</div>
+                                <div class="widget-title">Amount Spent</div>
+                                <div class="widget-subtitle">Amont spent on this platform.</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        {{#with buyerDetails}}<a href="{{pathFor 'buyerNotifications'}}">New Notifications: {{newNotificationsCount}}</a>{{/with}}<br>
-                        <a href="{{pathFor 'mailBox' tab="mails"}}">New Messages: {{newMessagesCount}}</a>
-                    </div>
-                </div>
-                <hr> -->
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h4>Scheduled Dates of Assigned Jobs</h4>
-                        {{>buyerCalendar}}
-                    </div>
-                </div>
-            {{else}}
-                {{#if isInRole 'provider, corporate-provider'}}
-                    <div class="row tile_count">
-                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                            <a href="{{pathFor 'appliedJobs'}}">
-                                <span class="count_top"><i class="fa fa-user"></i> Jobs Applied</span>
-                                <div class="count">{{providerJobsCount}}</div>
-                            </a>
-                        </div>
-                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                            <a href="{{pathFor 'providerCompletedJobs'}}">
-                                <span class="count_top"><i class="fa fa-user"></i> Jobs Completed</span>
-                                <div class="count">{{providerCompletedJobsCount}}</div>
-                            </a>
-                        </div>
-                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                            <span class="count_top"><i class="fa fa-clock-o"></i> Amount Earned</span>
-                            <div class="count">$ {{amountEarned}}</div>
-                        </div>
-                        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                            <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
-                            <div class="count">$ {{accountBalance}}</div>
-                        </div>
-                        <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-padding-sm">
                             {{#with myProfile}}
-                                <a href="{{pathFor 'profile'}}">
-                                    <span class="count_top"><i class="fa fa-user"></i> Reviews ({{providerReviewCount}})</span>
-                                    <div class="count">
-                                        <!-- {{>starsRating rating=providerRatingPoints size="lg"}} -->
-                                        <span class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-value="{{providerRatingPoints}}"></span>
+                                <a href="{{pathFor 'buyer'}}">
+                                    <div class="widget-big-int">
+                                        <div class="count">
+                                            <span class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-value="{{buyerRatingPoints}}"></span>
+                                        </div>
                                     </div>
+                                    <div class="widget-subtitle plugin-date">Reviews ({{buyerReviewCount}})</div>
                                 </a>
                             {{/with}}
                         </div>
                     </div>
-                    <!-- <hr>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <a href="{{pathFor 'jobs'}}">Open Jobs: {{getPublishedCount 'jobs'}}</a><br>
-                            <a href="{{pathFor 'recommendedJobs'}}">Recommended Jobs: {{recommendedJobsCount}}</a><br>
-                            <a href="{{pathFor 'invitedJobs'}}">Invited Jobs: {{invitedJobsCount}}</a><br>
-                            <a href="{{pathFor 'providerAssignedJobs'}}">Jobs in progress: {{providerAssignedJobsCount}}</a>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            {{#with providerProfile}}<a href="{{pathFor 'providerNotifications'}}">New Notifications: {{newNotificationsCount}}</a>{{/with}}<br>
-                            <a href="{{pathFor 'mailBox' tab="mails"}}">New Messages: {{newMessagesCount}}</a>
-                        </div>
-                    </div> -->
-                    <hr>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <h4>Scheduled Dates of Assigned Jobs</h4>
-                            {{>providerCalendar}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>Scheduled Dates of Assigned Jobs</h4>
+                {{>buyerCalendar}}
+            </div>
+        </div>
+        <div class="row">
+            {{#with myProfile}}
+                {{>buyerSmall}}
+            {{/with}}
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading ui-draggable-handle">
+                        <div class="panel-title-box">
+                            <h3>Projects</h3>
+                            <span>Projects activity</span>
                         </div>
                     </div>
-                {{else}}
-                    {{#if isInRole 'corporate-admin'}}
-                        <div class="row tile_count">
-                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                <span class="count_top"><i class="fa fa-user"></i> Jobs Posted</span>
-                                <div class="count">0</div>
-                            </div>
-                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                <span class="count_top"><i class="fa fa-user"></i> Jobs Complted</span>
-                                <div class="count">0</div>
-                            </div>
-                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                <span class="count_top"><i class="fa fa-user"></i> Amount Spent</span>
-                                <div class="count">$ 0</div>
-                            </div>
-                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                <span class="count_top"><i class="fa fa-clock-o"></i> Amount Earned</span>
-                                <div class="count">$ 0</div>
-                            </div>
-                            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                <span class="count_top"><i class="fa fa-user"></i> Account Balance</span>
-                                <div class="count">$ {{accountBalance}}</div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="50%">Project</th>
+                                        <th width="20%">Status</th>
+                                        <th width="30%">Activity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Joli Admin</strong></td>
+                                        <td><span class="label label-danger">Developing</span></td>
+                                        <td>
+                                            <div class="progress progress-small progress-striped active">
+                                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 85%;">85%</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Gemini</strong></td>
+                                        <td><span class="label label-warning">Updating</span></td>
+                                        <td>
+                                            <div class="progress progress-small progress-striped active">
+                                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">40%</div>
+                                            </div>
+                                        </td>
+                                    </tr>                                                
+                                    <tr>
+                                        <td><strong>Taurus</strong></td>
+                                        <td><span class="label label-warning">Updating</span></td>
+                                        <td>
+                                            <div class="progress progress-small progress-striped active">
+                                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 72%;">72%</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Leo</strong></td>
+                                        <td><span class="label label-success">Support</span></td>
+                                        <td>
+                                            <div class="progress progress-small progress-striped active">
+                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">100%</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Virgo</strong></td>
+                                        <td><span class="label label-success">Support</span></td>
+                                        <td>
+                                            <div class="progress progress-small progress-striped active">
+                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">100%</div>
+                                            </div>
+                                        </td>
+                                    </tr>                                                
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+    {{#if isInRole 'provider, corporate-provider'}}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <a href="/jobs">
+                                <div class="widget-item-left">
+                                    <span class="fa fa-user"></span>
+                                </div>
+                                <div class="widget-data">
+                                    <div class="widget-int num-count">{{openJobsCount}}</div>
+                                    <div class="widget-title">Open Jobs</div>
+                                    <div class="widget-subtitle">On your website</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <a href="/recommendedjobs">
+                                <div class="widget-item-left">
+                                    <span class="fa fa-user"></span>
+                                </div>
+                                <div class="widget-data">
+                                    <div class="widget-int num-count">{{recommendedJobsCount}}</div>
+                                    <div class="widget-title">Recommended Jobs</div>
+                                    <div class="widget-subtitle">Jobs that suit your category.</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <a href="/assignedJobs">
+                                <div class="widget-item-left">
+                                    <span class="fa fa-user"></span>
+                                </div>
+                                <div class="widget-data">
+                                    <div class="widget-int num-count">{{assignedJobsCount}}</div>
+                                    <div class="widget-title">Assigned Jobs</div>
+                                    <div class="widget-subtitle">Work orders in progress.</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-padding-sm">
+                            {{#with myProfile}}
+                                <a href="{{pathFor 'profile'}}">
+                                    <div class="widget-big-int">
+                                        <div class="count">
+                                            <span class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-value="{{providerRatingPoints}}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="widget-subtitle plugin-date">Reviews ({{providerReviewCount}})</div>
+                                </a>
+                            {{/with}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>Scheduled Dates of Assigned Jobs</h4>
+                {{>providerCalendar}}
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            {{#with myProfile}}
+                {{>profileSmall}}
+            {{/with}}
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading ui-draggable-handle">
+                        <div class="panel-title-box">
+                            <h3>Projects</h3>
+                            <span>Projects activity</span>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="50%">Project</th>
+                                        <th width="20%">Status</th>
+                                        <th width="30%">Activity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Joli Admin</strong></td>
+                                        <td><span class="label label-danger">Developing</span></td>
+                                        <td>
+                                            <div class="progress progress-small progress-striped active">
+                                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 85%;">85%</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Gemini</strong></td>
+                                        <td><span class="label label-warning">Updating</span></td>
+                                        <td>
+                                            <div class="progress progress-small progress-striped active">
+                                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">40%</div>
+                                            </div>
+                                        </td>
+                                    </tr>                                                
+                                    <tr>
+                                        <td><strong>Taurus</strong></td>
+                                        <td><span class="label label-warning">Updating</span></td>
+                                        <td>
+                                            <div class="progress progress-small progress-striped active">
+                                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 72%;">72%</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Leo</strong></td>
+                                        <td><span class="label label-success">Support</span></td>
+                                        <td>
+                                            <div class="progress progress-small progress-striped active">
+                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">100%</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Virgo</strong></td>
+                                        <td><span class="label label-success">Support</span></td>
+                                        <td>
+                                            <div class="progress progress-small progress-striped active">
+                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">100%</div>
+                                            </div>
+                                        </td>
+                                    </tr>                                                
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+    {{#if isInRole 'admin'}}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="item active"> 
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="caption">
+                                                <div class="widget widget-default widget-item-icon">
+                                                    <a href="/allUsers">
+                                                        <div class="widget-item-left">
+                                                            <span class="fa fa-user"></span>
+                                                        </div>
+                                                        <div class="widget-data">
+                                                            <div class="widget-int num-count">{{getPublishedCount 'userCount'}}</div>
+                                                            <div class="widget-title">Profiles</div>
+                                                            <div class="widget-subtitle">On your website</div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div>
+                                <div class="item"> 
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="caption">
+                                                <div class="widget widget-default widget-item-icon">
+                                                    <a href="/allUsers">
+                                                        <div class="widget-item-left">
+                                                            <span class="fa fa-user"></span>
+                                                        </div>
+                                                        <div class="widget-data">
+                                                            <div class="widget-int num-count">{{buyersCount}}</div>
+                                                            <div class="widget-title">Buyer Profiles</div>
+                                                            <div class="widget-subtitle">On your website</div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div>
+                                <div class="item"> 
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="caption">
+                                                <div class="widget widget-default widget-item-icon">
+                                                    <a href="/allUsers">
+                                                        <div class="widget-item-left">
+                                                            <span class="fa fa-user"></span>
+                                                        </div>
+                                                        <div class="widget-data">
+                                                            <div class="widget-int num-count">{{providersCount}}</div>
+                                                            <div class="widget-title">Provider Profiles</div>
+                                                            <div class="widget-subtitle">On your website</div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div>
                             </div>
                         </div>
-                    {{else}}
-                        {{#if isInRole 'admin'}}
-                            <div class="row tile_count">
-                                <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-user"></i> No. of Users</span>
-                                    <div class="count green">{{getPublishedCount 'userCount'}}</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon" onclick="location.href='pages-messages.html';">
+                            <a href="/allJobs">
+                                <div class="widget-item-left">
+                                    <span class="fa fa-envelope"></span>
+                                </div>                             
+                                <div class="widget-data">
+                                    <div class="widget-int num-count">{{getPublishedCount 'adminJobs'}}</div>
+                                    <div class="widget-title">Jobs Posted</div>
+                                    <div class="widget-subtitle">On your website</div>
                                 </div>
-                                <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-user"></i> No. of Buyers</span>
-                                    <div class="count green">{{buyersCount}}</div>
+                            </a>
+                        </div>     
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <a href="/allJobs">
+                                <div class="widget-item-left">
+                                    <span class="fa fa-user"></span>
                                 </div>
-                                <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-user"></i> No. of Providers</span>
-                                    <div class="count green">{{providersCount}}</div>
+                                <div class="widget-data">
+                                    <div class="widget-int num-count">{{getPublishedCount 'allCompletedJobs'}}</div>
+                                    <div class="widget-title">Jobs Completed</div>
+                                    <div class="widget-subtitle">On your website</div>
                                 </div>
-                                <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-user"></i> Jobs Posted</span>
-                                    <div class="count">{{getPublishedCount 'adminJobs'}}</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-info widget-padding-sm">
+                            <div class="widget-big-int plugin-clock">03<span>:</span>12</div>
+                            <div class="widget-subtitle plugin-date">Tuesday, November 8, 2016</div>
+                            <div class="widget-buttons widget-c3">
+                                <div class="col">
+                                    <a href="#"><span class="fa fa-clock-o"></span></a>
                                 </div>
-                                <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-clock-o"></i> Jobs Completed</span>
-                                    <div class="count">{{getPublishedCount 'allCompletedJobs'}}</div>
+                                <div class="col">
+                                    <a href="#"><span class="fa fa-bell"></span></a>
                                 </div>
-                            </div>
-                            <!-- <hr>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <h6>Number of Users Registered Today: {{todayUserCount}}</h6>
-                                    <h6>Number of Buyer Profiles Created Today: {{todayBuyerCount}}</h6>
-                                    <h6>Number of Provider Profiles Created Today: {{todayProviderCount}}</h6>
+                                <div class="col">
+                                    <a href="#"><span class="fa fa-calendar"></span></a>
                                 </div>
-                            </div> -->
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div id="adminChart">{{createChart}}</div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div id="sampleChart">{{sampleChart}}</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div id="weekJobs">{{lastWeekJobs}}</div>
-                                </div>
-                            </div>
-                        {{/if}}
-                    {{/if}}
-                {{/if}}
-            {{/if}}
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- <div class="col-sm-12">
-            {{>myGoogleMap}}
-        </div> -->
-    </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="adminChart">{{createChart}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="panel panel-light">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div id="sampleChart">{{sampleChart}}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div id="weekJobs">{{lastWeekJobs}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/if}}
 </template>
 
 <template name="myGoogleMap">
