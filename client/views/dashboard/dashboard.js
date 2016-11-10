@@ -34,6 +34,9 @@ Template.dashboard.helpers({
 			userId: Meteor.userId()
 		});
 	},
+	allDeactivatedCount: function() {
+		return Jobs.find({status: 'deactivated'}).count();
+	},
 	providerProfile: function() {
 		return Profiles.findOne({userId: Meteor.userId()});
 	},
@@ -564,7 +567,6 @@ Template.dashboard.helpers({
 			daysArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday (Today)'];
 		}
 		Meteor.defer(function() {
-			console.log(postedJobsCount);
 			jobChart.chart('weekJobs', {
 		        chart: {
 		            type: 'areaspline',
@@ -608,6 +610,53 @@ Template.dashboard.helpers({
 		        }]
 		    });
 		})
+	},
+	tryoutchart: function() {
+		var tryout = require('highcharts/highstock');
+		Meteor.defer(function() {
+			tryout.StockChart({
+				chart: {
+					renderTo: 'tryOut',
+				},
+				rangeSelector: {
+					selected: 4
+				},
+				plotOptions: {
+					series: {
+						compare: 'percent',
+						showInNavigator: true
+					}
+				},
+				series: [{
+					name: 'Open Jobs',
+					data: (function() {
+						var data = [], time = new Date().getTime(), i;
+						for(i = -999; i <=0; i++) {
+							data.push([time + i*1000, Jobs.find().count()]);
+						}
+						return data;
+					}())
+				}, {
+					name: 'Assigned Jobs',
+					data: (function() {
+						var data = [], time = new Date().getTime(), i;
+						for(i = -999; i <=0; i++) {
+							data.push([time + i*1000, Jobs.find({applicationStatus: 'assigned'}).count()]);
+						}
+						return data;
+					}())
+				}, {
+					name: 'Completed Jobs',
+					data: (function() {
+						var data = [], time = new Date().getTime(), i;
+						for(i = -999; i <=0; i++) {
+							data.push([time + i*1000, Jobs.find({applicationStatus: 'paid'}).count()]);
+						}
+						return data;
+					}())
+				}]
+			})
+		});
 	}
 });
 
@@ -616,7 +665,8 @@ Template.dashboard.onRendered(function() {
 })
 
 Template.dashboard.rendered = function () {
-	this.$('.rateit').rateit({'readonly': true});	
+	this.$('.rateit').rateit({'readonly': true});
+	this.$('.highcharts-range-selector').datepicker();
 };
 
 Template.providerCalendar.onRendered(function() {

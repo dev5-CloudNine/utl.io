@@ -1,5 +1,8 @@
 <template name="home">
-	<div id="homePageIntro" class="jumbotron container-fluid gradient-blue-orange-h">
+	<div id="homePageIntro" class="container-fluid gradient-blue-orange-h">
+		
+	</div>
+	<div class="jumbotron jumbotron-bg">
 		<div class="container">
 			<div class="row">
 				<h1 class="white">Connect &amp; Collaborate.</h1>
@@ -23,8 +26,16 @@
 						{{/if}}
 					{{/if}}
 				{{else}}
-					<a href="{{pathFor 'jobNew'}}" class="text-center btn btn-primary btn-md">Post A Job</a>
-					<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'profileNew'}}">Create a Profile</a>
+					<div class="col-sm-3">
+						<h2 class="white">
+							The best way to <br> find a professional
+						</h2>
+						<a href="{{pathFor 'jobNew'}}" class="text-center btn btn-primary btn-md">Post A Job</a>
+					</div>
+					<div class="col-sm-3">
+						<h2 class="white">Need a job?<br> Tell us your skills</h2>
+						<a class="text-center btn btn-primary btn-md" role="button" href="{{pathFor 'profileNew'}}">Create a Profile</a>
+					</div>
 				{{/if}}
 			</div>
 		</div>

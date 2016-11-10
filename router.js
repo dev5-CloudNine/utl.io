@@ -851,7 +851,11 @@ Router.map(function() {
 
     this.route('faq', {
         path: '/faq'
-    })
+    });
+
+    this.route('contactUs', {
+        path: '/contact-us'
+    });
 
     //legacy url redirects
     this.route('experts', function() {

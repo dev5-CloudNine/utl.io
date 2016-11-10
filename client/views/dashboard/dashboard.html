@@ -4,90 +4,22 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="item active"> 
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="caption">
-                                                <div class="widget widget-default widget-item-icon">
-                                                    <a href="/myJobs/open">
-                                                        <div class="widget-item-left">
-                                                            <span class="fa fa-user"></span>
-                                                        </div>
-                                                        <div class="widget-data">
-                                                            <div class="widget-int num-count">{{buyerOpenJobsCount}}</div>
-                                                            <div class="widget-title">Open Jobs</div>
-                                                            <div class="widget-subtitle">Jobs open for applications.</div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div> 
-                                </div>
-                                <div class="item"> 
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="caption">
-                                                <div class="widget widget-default widget-item-icon">
-                                                    <a href="/myJobs/assigned">
-                                                        <div class="widget-item-left">
-                                                            <span class="fa fa-user"></span>
-                                                        </div>
-                                                        <div class="widget-data">
-                                                            <div class="widget-int num-count">{{buyerAssignedJobsCount}}</div>
-                                                            <div class="widget-title">Assigned Jobs</div>
-                                                            <div class="widget-subtitle">Jobs in progress</div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div> 
-                                </div>
-                                <div class="item"> 
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="caption">
-                                                <div class="widget widget-default widget-item-icon">
-                                                    <a href="/myJobs/paid">
-                                                        <div class="widget-item-left">
-                                                            <span class="fa fa-user"></span>
-                                                        </div>
-                                                        <div class="widget-data">
-                                                            <div class="widget-int num-count">{{buyerCompletedJobsCount}}</div>
-                                                            <div class="widget-title">Completed Jobs</div>
-                                                            <div class="widget-subtitle">Jobs that are paid.</div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div> 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon" onclick="location.href='pages-messages.html';">
-                            <a href="/myjobs">
-                                <div class="widget-item-left">
-                                    <span class="fa fa-envelope"></span>
-                                </div>                             
+                        <div class="widget widget-default widget-item-icon">
+                            <a href="/myjobs">                          
                                 <div class="widget-data">
                                     <div class="widget-int num-count">{{buyerJobsCount}}</div>
                                     <div class="widget-title">Jobs Posted</div>
-                                    <div class="widget-subtitle">All jobs you have published.</div>
+                                    <div class="widget-subtitle">
+                                        <a href="/myJobs/open">{{buyerOpenJobsCount}} Open</a> &#124; 
+                                        <a href="/myJobs/assigned">{{buyerAssignedJobsCount}} Assigned</a> &#124; 
+                                        <a href="/myJobs/paid">{{buyerCompletedJobsCount}} Completed</a>
+                                    </div>
                                 </div>
                             </a>
-                        </div>     
-                    </div>
+                        </div>
+                    </div>                    
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon">
-                            <div class="widget-item-left">
-                                <span class="fa fa-user"></span>
-                            </div>
                             <div class="widget-data">
                                 <div class="widget-int num-count">$ {{amountSpent}}</div>
                                 <div class="widget-title">Amount Spent</div>
@@ -209,13 +141,10 @@
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon">
                             <a href="/jobs">
-                                <div class="widget-item-left">
-                                    <span class="fa fa-user"></span>
-                                </div>
                                 <div class="widget-data">
                                     <div class="widget-int num-count">{{openJobsCount}}</div>
                                     <div class="widget-title">Open Jobs</div>
-                                    <div class="widget-subtitle">On your website</div>
+                                    <div class="widget-subtitle">On this platform</div>
                                 </div>
                             </a>
                         </div>
@@ -223,9 +152,6 @@
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon">
                             <a href="/recommendedjobs">
-                                <div class="widget-item-left">
-                                    <span class="fa fa-user"></span>
-                                </div>
                                 <div class="widget-data">
                                     <div class="widget-int num-count">{{recommendedJobsCount}}</div>
                                     <div class="widget-title">Recommended Jobs</div>
@@ -237,9 +163,6 @@
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon">
                             <a href="/assignedJobs">
-                                <div class="widget-item-left">
-                                    <span class="fa fa-user"></span>
-                                </div>
                                 <div class="widget-data">
                                     <div class="widget-int num-count">{{assignedJobsCount}}</div>
                                     <div class="widget-title">Assigned Jobs</div>
@@ -361,81 +284,23 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="item active"> 
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="caption">
-                                                <div class="widget widget-default widget-item-icon">
-                                                    <a href="/allUsers">
-                                                        <div class="widget-item-left">
-                                                            <span class="fa fa-user"></span>
-                                                        </div>
-                                                        <div class="widget-data">
-                                                            <div class="widget-int num-count">{{getPublishedCount 'userCount'}}</div>
-                                                            <div class="widget-title">Profiles</div>
-                                                            <div class="widget-subtitle">On your website</div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div> 
+                        <div class="widget widget-default widget-item-icon">
+                            <a href="/allUsers">
+                                <div class="widget-data">
+                                    <div class="widget-int num-count">{{getPublishedCount 'userCount'}}</div>
+                                    <div class="widget-title">Profiles</div>
+                                    <div class="widget-subtitle">{{buyersCount}} Buyers &#124; {{providersCount}} Providers</div>
                                 </div>
-                                <div class="item"> 
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="caption">
-                                                <div class="widget widget-default widget-item-icon">
-                                                    <a href="/allUsers">
-                                                        <div class="widget-item-left">
-                                                            <span class="fa fa-user"></span>
-                                                        </div>
-                                                        <div class="widget-data">
-                                                            <div class="widget-int num-count">{{buyersCount}}</div>
-                                                            <div class="widget-title">Buyer Profiles</div>
-                                                            <div class="widget-subtitle">On your website</div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div> 
-                                </div>
-                                <div class="item"> 
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="caption">
-                                                <div class="widget widget-default widget-item-icon">
-                                                    <a href="/allUsers">
-                                                        <div class="widget-item-left">
-                                                            <span class="fa fa-user"></span>
-                                                        </div>
-                                                        <div class="widget-data">
-                                                            <div class="widget-int num-count">{{providersCount}}</div>
-                                                            <div class="widget-title">Provider Profiles</div>
-                                                            <div class="widget-subtitle">On your website</div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div> 
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon" onclick="location.href='pages-messages.html';">
-                            <a href="/allJobs">
-                                <div class="widget-item-left">
-                                    <span class="fa fa-envelope"></span>
-                                </div>                             
+                            <a href="/allJobs">                            
                                 <div class="widget-data">
                                     <div class="widget-int num-count">{{getPublishedCount 'adminJobs'}}</div>
                                     <div class="widget-title">Jobs Posted</div>
-                                    <div class="widget-subtitle">On your website</div>
+                                    <div class="widget-subtitle">{{getPublishedCount 'allCompletedJobs'}} Completed &#124; {{allDeactivatedCount}} Deactivated</div>
                                 </div>
                             </a>
                         </div>     
@@ -443,13 +308,10 @@
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon">
                             <a href="/allJobs">
-                                <div class="widget-item-left">
-                                    <span class="fa fa-user"></span>
-                                </div>
                                 <div class="widget-data">
-                                    <div class="widget-int num-count">{{getPublishedCount 'allCompletedJobs'}}</div>
-                                    <div class="widget-title">Jobs Completed</div>
-                                    <div class="widget-subtitle">On your website</div>
+                                    <div class="widget-int num-count">20</div>
+                                    <div class="widget-title">Bank Transactions</div>
+                                    <div class="widget-subtitle">8 Withdrawls &#124; 12 Deposits</div>
                                 </div>
                             </a>
                         </div>
@@ -474,6 +336,19 @@
                 </div>
             </div>
         </div>
+        <div class="panel panel-light">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div id="sampleChart">{{sampleChart}}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div id="weekJobs">{{lastWeekJobs}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
@@ -483,15 +358,11 @@
                 </div>
             </div>
         </div>
-        <hr>
-        <div class="panel panel-light">
+        <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-sm-6">
-                        <div id="sampleChart">{{sampleChart}}</div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div id="weekJobs">{{lastWeekJobs}}</div>
+                    <div class="col-sm-12">
+                        <div id="tryOut">{{tryoutchart}}</div>
                     </div>
                 </div>
             </div>

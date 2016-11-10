@@ -870,5 +870,13 @@ Meteor.methods({
     },
     'updateWalletAfterTransfer': function(reqAmount, providerId) {
         Wallet.update({userId: providerId}, {$inc: {accountBalance: -reqAmount}});
+    },
+    'sendQueryRequest': function(queryObject) {
+        Email.send({
+            to: 'administrator@ustechland.com',
+            from: queryObject.email,
+            subject: queryObject.firstName + ' has sent you a message.',
+            html: 'Hello admin, <br>' + queryObject.query
+        });
     }
 });
