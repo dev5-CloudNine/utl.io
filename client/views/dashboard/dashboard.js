@@ -614,48 +614,79 @@ Template.dashboard.helpers({
 	tryoutchart: function() {
 		var tryout = require('highcharts/highstock');
 		Meteor.defer(function() {
-			tryout.StockChart({
-				chart: {
-					renderTo: 'tryOut',
-				},
-				rangeSelector: {
-					selected: 4
-				},
-				plotOptions: {
-					series: {
-						compare: 'percent',
-						showInNavigator: true
-					}
-				},
-				series: [{
-					name: 'Open Jobs',
-					data: (function() {
-						var data = [], time = new Date().getTime(), i;
-						for(i = -999; i <=0; i++) {
-							data.push([time + i*1000, Jobs.find().count()]);
-						}
-						return data;
-					}())
-				}, {
-					name: 'Assigned Jobs',
-					data: (function() {
-						var data = [], time = new Date().getTime(), i;
-						for(i = -999; i <=0; i++) {
-							data.push([time + i*1000, Jobs.find({applicationStatus: 'assigned'}).count()]);
-						}
-						return data;
-					}())
-				}, {
-					name: 'Completed Jobs',
-					data: (function() {
-						var data = [], time = new Date().getTime(), i;
-						for(i = -999; i <=0; i++) {
-							data.push([time + i*1000, Jobs.find({applicationStatus: 'paid'}).count()]);
-						}
-						return data;
-					}())
-				}]
-			})
+			var seriesOptions = [],
+		        seriesCounter = 0,
+		        names = ['open', 'assigned', 'completed'];
+
+		    /**
+		     * Create the chart when all data is loaded
+		     * @returns {undefined}
+		     */
+		    function createChart() {
+
+		        tryout.stockChart('tryOut', {
+
+		            rangeSelector: {
+		                selected: 2,
+		                allButtonsEnabled: true,
+		                inputDateFormat: '%d-%m-%y',
+		                inputEditDateFormat: '%d-%m-%y',
+		                inputEnabled: true
+		            },
+
+		            yAxis: {
+		                labels: {
+		                    formatter: function () {
+		                        return (this.value > 0 ? ' + ' : '') + this.value;
+		                    }
+		                },
+		                plotLines: [{
+		                    value: 0,
+		                    width: 2,
+		                    color: 'silver'
+		                }]
+		            },
+
+		            plotOptions: {
+		                series: {
+		                    showInNavigator: true
+		                }
+		            },
+
+		            tooltip: {
+		                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
+		                split: true
+		            },
+
+		            series: seriesOptions
+		        }, function(chart) {
+		        	setTimeout(function() {
+		        		$('input.highcharts-range-selector').datepicker();
+		        	}, 0);
+		        });
+		    }
+
+		    $.each(names, function (i, name) {
+	            seriesOptions[i] = {
+	                name: name,
+	                data: (function() {
+	                	var time = new Date().getTime();
+	                	var data = [];
+	                	for(var i = 0; i < 999; i++) {
+	                		data.push([time + i * 1000, Jobs.find({applicationStatus: name}).count()])
+	                	}
+	                	return data;
+	                }())
+	            };
+
+	            // As we're loading the data asynchronously, we don't know what order it will arrive. So
+	            // we keep a counter and create the chart when all the data is loaded.
+	            seriesCounter += 1;
+
+	            if (seriesCounter === names.length) {
+	                createChart();
+	            }
+		    });
 		});
 	}
 });

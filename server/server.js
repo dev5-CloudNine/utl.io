@@ -42,8 +42,9 @@ Meteor.methods({
         Accounts.sendVerificationEmail(userId);
         return;
     },  
-    "verifyEmailTrue": function(userId) {
-        Meteor.users.update({_id:userId,"emails.verified":false},{$set:{'emails.$.verified':true}});
+    "verifyEmailTrue": function(userId, invitedBuyer) {
+        Buyers.update({userId: invitedBuyer}, {$addToSet: {invitees: userId}});
+        Meteor.users.update({_id:userId,"emails.verified":false},{$set:{'emails.$.verified':true, invitedBy: invitedBuyer}});
         return;
     },
     "postMessage" : function(obj) {
@@ -61,8 +62,8 @@ Meteor.methods({
         Email.send({
           to: obj.email,
           from: FROM_EMAIL,
-          subject: "You are invited to join "+obj.companyName ,
-          text: "Please click on the following link to join " + obj.companyName + ". "
+          subject: "You are invited to join "+obj.buyerName ,
+          text: "Please click on the following link to join " + obj.buyerName + ". "
                 + Meteor.absoluteUrl("inviteeSignUp/"+id)
         });
     },
@@ -793,8 +794,8 @@ Meteor.methods({
     saveReceipt : function(data) {
         return Transactions.insert(data);
     },
-    updateTransaction: function(docID,userID) {
-        Transactions.update({_id:docID},{$set:{'userID':userID}});
+    updateTransaction: function(docID, userID, depositedBy) {
+        Transactions.update({_id: docID}, {$set: {userID: userID, depositedBy: depositedBy}})
         var amountDeposited = parseInt(Transactions.findOne({_id: docID}).dollarAmount);
         Wallet.update({userId: userID}, {$inc: {accountBalance: amountDeposited}});
     },
@@ -809,6 +810,12 @@ Meteor.methods({
     },
     activateBuyerProfile: function(userId) {
         Buyers.update({userId: userId}, {$set: {status: 'active'}});
+    },
+    deactivateDispatcherProfile: function(userId) {
+        Dispatchers.update({userId: userId}, {$set: {status: 'inactive'}});
+    },
+    activateDispatcherProfile: function(userId) {
+        Dispatchers.update({userId: userId}, {$set: {status: 'active'}});
     },
     generatePdf: function(jobId) {
         var webshot = Meteor.npmRequire('webshot');

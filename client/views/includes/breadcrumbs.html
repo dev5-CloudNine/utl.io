@@ -5,7 +5,7 @@
 				<div class="col-sm-8">
 					<div class="well well-sm">
 							<a href="javascript: history.go(-1)">Back</a>&nbsp;&#124;&nbsp;
-							{{#if isInRole 'buyer, corporate-manager'}}
+							{{#if isInRole 'buyer'}}
 								{{#unless currentUser.isBuyer}}
 									<a href="{{pathFor 'buyerNew'}}">Create Buyer Profile</a>
 								{{else}}
@@ -14,7 +14,7 @@
 									<a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a>
 								{{/unless}}
 							{{/if}}
-							{{#if isInRole 'provider, corporate-provider'}}
+							{{#if isInRole 'provider'}}
 								{{#unless currentUser.isDeveloper}}
 									<a href="{{pathFor 'profileNew'}}">Create Provider Profile</a>
 								{{else}}

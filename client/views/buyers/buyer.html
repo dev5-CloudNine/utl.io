@@ -23,39 +23,41 @@
 							{{/if}}
 						{{/if}}
 						<hr>
-						<small>
-							<i class="fa fa-map-marker"></i>&nbsp;{{location}}
-							<br>
-							<i class="fa fa-mobile"></i>&nbsp;{{contactNumber}}
-							<br>
-							<i class="fa fa-mobile"></i>&nbsp; {{smsAddress}}
-							<br>
-							<i class="fa fa-user"></i>&nbsp;{{userName}}
-							<hr>
-						</small>
 						{{#if adminOrBuyer}}
-							<small>
-								{{#if eintinNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;EIN/TIN: {{eintinNumber}}
-								{{/if}}
+							{{#if fullLocation}}
+								{{fullLocation.street}}
 								<br>
-								{{#if socialSecurityNumber}}
-									<i class="fa fa-envelope"></i>&nbsp;SSN: {{socialSecurityNumber}}
-								{{/if}}
-								<br>
-								{{#if alternateEmail}}
-									<i class="fa fa-envelope"></i>&nbsp;{{alternateEmail}}
-								{{/if}}
-							</small>
-							<hr>
+								{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+								<br>{{fullLocation.country}}
+							{{/if}}
+						{{else}}
+							{{#if fullLocation}}
+								{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+							{{/if}}
 						{{/if}}
-						<i class="fa fa-calendar"></i> Member since {{formatDate createdAt}}
 						<hr>
+						Member since {{formatDate createdAt}}
+						<hr>
+						{{#if adminOrBuyer}}
+							<i class="fa fa-envelope"></i> {{userName}}
+							<br>
+							<i class="fa fa-mobile"></i> {{contactNumber}}
+							<br>
+							<i class="fa fa-mobile"></i> {{smsAddress}}
+							<hr>
+							{{#with dwollaFundingSource}}
+								<i class="fa fa-credit-card"></i> Account No: {{this.accountNumber}} <br>
+								<i class="fa fa-university"></i> Routing No: {{this.routingNumber}} <br>
+								<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.bankAccountType}}
+								<hr>
+							{{/with}}
+							<a href="{{companyUrl}}">{{companyUrl}}</a>
+						{{/if}}
 					</div>
 					<div class="col-sm-9">
 						<div class="row">
 							<div class="col-sm-12">
-								<label class="label label-default">{{readableId}}</label>
+								<label class="label label-default">ID: {{readableId}}</label>
 								<label class="label label-default">{{userRole}}</label>
 							</div>
 						</div>

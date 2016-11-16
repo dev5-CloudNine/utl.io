@@ -166,7 +166,12 @@ Template.job.events({
     var applied_at = this.appliedAt;
     var freenets = this.freelancer_nets;
     var jobDetails = Jobs.findOne({_id: jobId});
-    var buyerWallet = Wallet.findOne({userId: jobDetails.userId});
+    var buyerWallet;
+    if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+      buyerWallet = Wallet.findOne({userId: Meteor.user().invitedBy});
+    } else {
+      buyerWallet = Wallet.findOne({userId: jobDetails.userId});
+    }
     if(buyerCost > jobDetails.your_cost) {
       var diff = buyerCost - jobDetails.your_cost;
       if(diff > buyerWallet.accountBalance) {

@@ -48,6 +48,9 @@ Router.map(function() {
             if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
                 Meteor.subscribe('allJobs');
             }
+            if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            }
             return Meteor.subscribe('jobs');
         }
     });
@@ -56,6 +59,9 @@ Router.map(function() {
         path: '/jobs',
         title: "UTL - All Jobs",
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             return Meteor.subscribe('jobs');
         }
     });
@@ -130,6 +136,9 @@ Router.map(function() {
             };
         },
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             Meteor.subscribe('reviews');
             return subs.subscribe('my_jobs');
         }
@@ -139,6 +148,9 @@ Router.map(function() {
         path: '/myJobs/open',
         title: 'UTL - Open Jobs',
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             return Meteor.subscribe('my_jobs');
         }
     });
@@ -166,6 +178,9 @@ Router.map(function() {
         path: '/myJobs/routed',
         title: 'UTL - Routed Jobs',
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             Meteor.subscribe('reviews');
             return Meteor.subscribe('my_jobs');
         }
@@ -183,6 +198,9 @@ Router.map(function() {
         path: '/myJobs/assigned',
         title: 'UTL - Assigned Jobs',
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             return Meteor.subscribe('my_jobs');
         }
     });
@@ -191,6 +209,9 @@ Router.map(function() {
         path: '/myJobs/paymentPending',
         title: 'UTL - Payment Pending Jobs',
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             return Meteor.subscribe('my_jobs');
         }
     });
@@ -208,6 +229,9 @@ Router.map(function() {
         path: 'myJobs/completed',
         title: 'UTL - Completed Jobs',
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             Meteor.subscribe('reviews');
             return Meteor.subscribe('my_jobs');
         }
@@ -217,6 +241,9 @@ Router.map(function() {
         path: 'myJobs/paid',
         title: 'UTL - Paid Jobs',
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             Meteor.subscribe('reviews');
             return Meteor.subscribe('my_jobs');
         }
@@ -226,6 +253,9 @@ Router.map(function() {
         path: 'myJobs/deactivatedJobs',
         title: 'UTL - Deactivated Jobs',
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             return Meteor.subscribe('my_jobs');
         }
     })
@@ -281,6 +311,9 @@ Router.map(function() {
             });
         },
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             Meteor.subscribe('jobNotifications', this.params._id);
             Meteor.subscribe("tasksOfaJob",this.params._id);
             Meteor.subscribe("timeSheet",this.params._id);
@@ -341,7 +374,7 @@ Router.map(function() {
         onBeforeAction: function () {
             if (Meteor.user() &&
                 Meteor.user().roles &&
-                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 || (Meteor.user().roles.indexOf("corporate-manager")) != -1 )
+                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("dispatcher")) != -1 )
                 ) {
                 this.next();
             } else {
@@ -349,6 +382,9 @@ Router.map(function() {
             }
         },
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             return Meteor.subscribe('userFiles', Meteor.userId());
         }
     });
@@ -359,12 +395,17 @@ Router.map(function() {
         onBeforeAction: function () {
             if (Meteor.user() &&
                 Meteor.user().roles &&
-                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 || (Meteor.user().roles.indexOf("corporate-manager")) != -1 )
+                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 || (Meteor.user().roles.indexOf("dispatcher")) != -1 )
                 ) {
                 this.next();
             } else {
                 this.render('notFound');
             }
+        },
+        waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
         }
     });
 
@@ -374,12 +415,17 @@ Router.map(function() {
         onBeforeAction: function () {
             if (Meteor.user() &&
                 Meteor.user().roles &&
-                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 || (Meteor.user().roles.indexOf("corporate-manager")) != -1 )
+                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 || (Meteor.user().roles.indexOf("dispatcher")) != -1 )
                 ) {
                 this.next();
             } else {
                 this.render('notFound');
             }
+        },
+        waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
         }
     })
 
@@ -394,6 +440,9 @@ Router.map(function() {
             };
         },
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             Meteor.subscribe('userFiles', Meteor.userId());
             return Meteor.subscribe("job", this.params._id);
         },
@@ -417,6 +466,9 @@ Router.map(function() {
             };
         },
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             return Meteor.subscribe('job', this.params._id);
         },
         onBeforeAction: function() {
@@ -433,7 +485,12 @@ Router.map(function() {
     this.route('profiles', {
         path: '/profiles',
         title: "UTL - All Service Providers",
-        subscriptions: function() {
+        waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+                Meteor.subscribe('providers')
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            }
             Meteor.subscribe('reviews');
             return subs.subscribe('developerUsers');
         }
@@ -443,6 +500,11 @@ Router.map(function() {
         path: 'profiles/favorites',
         title: "UTL - My Favorite Providers",
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+                Meteor.subscribe('favorite_users');
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            }
             return Meteor.subscribe('favorite_users');
         }
     });
@@ -495,6 +557,9 @@ Router.map(function() {
             } else {
                 this.next();
             }
+        },
+        waitOn: function() {
+            Meteor.subscribe('userWalet', Meteor.userId());
         }
     });
 
@@ -527,6 +592,11 @@ Router.map(function() {
         title: "UTL - Dashboard",
         waitOn: function() {
             Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+                var dispatcher = Dispatchers.findOne({userId: Meteor.userId()})._id
+                Meteor.subscribe('dispatcher', dispatcher)
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            }
             Meteor.subscribe('jobCount');
             Meteor.subscribe("contacts",Meteor.userId());
             Meteor.subscribe('allJobs');
@@ -557,8 +627,21 @@ Router.map(function() {
             }
         },
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+                Meteor.subscribe('dispatchers', Meteor.user().invitedBy)
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            }
+            if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+                Meteor.subscribe('accountants', Meteor.user().invitedBy);
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            }
             if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
                 Meteor.subscribe('allJobs');
+            }
+            if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+                Meteor.subscribe('accountants', Meteor.userId());
+                Meteor.subscribe('dispatchers', Meteor.userId());
             }
             return Meteor.subscribe('messages', Meteor.userId());
         }
@@ -567,7 +650,24 @@ Router.map(function() {
     this.route('deposit', {
         path: '/wallet/deposit',
         title: 'Deposit Funds',
+        onBeforeAction: function () {
+            if (Meteor.user() &&
+                Meteor.user().roles &&
+                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("accountant")) != -1 )
+                ) {
+                this.next();
+            } else {
+                this.render('notFound');
+            }
+        },
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+                Meteor.subscribe('accountants', Meteor.user().invitedBy);
+                Meteor.subscribe('userTransactions', Meteor.user().invitedBy);
+                return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            }
+            Meteor.subscribe('accountants', Meteor.userId());
             return Meteor.subscribe('userTransactions', Meteor.userId());
         }
     });
@@ -627,6 +727,12 @@ Router.map(function() {
             });
         },
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+                return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            }
             Meteor.subscribe('reviews');
             Meteor.subscribe('buyerPostedJobs', this.params._id);
             return subs.subscribe('buyer', this.params._id);
@@ -669,11 +775,191 @@ Router.map(function() {
             }
         },
         waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             return subs.subscribe('buyer', this.params._id);
         },
         onBeforeAction: function() {
             var id = this.params._id;
             var userID = Buyers.findOne({_id: id}).userId;
+            if(Meteor.userId()==userID || Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+                this.next();
+            } else {
+                Router.go('notFound');
+            }
+        }
+    });
+
+    this.route('accountants', {
+        path: '/accountants',
+        title: 'UTL - Accountants',
+        waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['accountant', 'dispatcher'])) {
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+                Meteor.subscribe('accountants', Meteor.user().invitedBy);
+            }
+            if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+                Meteor.subscribe('userWallet', Meteor.userId());
+                Meteor.subscribe('accountants', Meteor.userId());
+            }
+        }
+    });
+
+    this.route('accountant', {
+        path: '/accountants/:_id/:slug?',
+        title: function() {
+            if(this.data())
+                return "UTL - " + this.data().displayName() + " - " + this.data().title;
+        },
+        data: function() {
+            return Accountants.findOne({
+                _id: this.params._id
+            });
+        },
+        waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+                Meteor.subscribe('userWallet', Meteor.userId());
+            Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            return subs.subscribe('accountant', this.params._id);
+        },
+        onBeforeAction: function() {
+            var expectedSlug = this.data().slug();
+            if(this.params.slug !== expectedSlug) {
+                this.redirect("accountant", {
+                    _id: this.params._id,
+                    slug: expectedSlug
+                },{replaceState: true});
+            } else {
+                this.next();
+            }
+        }
+    });
+
+    this.route('accountantNew', {
+        path: '/accountantNew',
+        title: 'UTL - Create Accountant Profile',
+        onBeforeAction: function() {
+            if(Meteor.user().isDispatcher) {
+                Router.go('accountant', Dispatchers.findOne({
+                    userId: Meteor.userId()
+                }));
+            } else {
+                this.next();
+            }
+        },
+        waitOn: function() {
+            return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+        }
+    });
+
+    this.route('accountantEdit', {
+        path: 'accountants/:_id/:slug/edit',
+        title: "UTL - Edit My Accountant Profile",
+        data: function() {
+            return {
+                accountantProfile: Accountants.findOne({
+                    _id: this.params._id
+                })
+            }
+        },
+        waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            return subs.subscribe('accountant', this.params._id);
+        },
+        onBeforeAction: function() {
+            var userID = Accountants.findOne({_id: this.params._id}).userId;
+            if(Meteor.userId()==userID || Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+                this.next();
+            } else {
+                Router.go('notFound');
+            }
+        }
+    });
+
+    this.route('dispatchers', {
+        path: '/dispatchers',
+        title: "UTL - Dispatchers",
+        waitOn: function() {
+            Meteor.subscribe('reviews');
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+                Meteor.subscribe('dispatchers', Meteor.userId());
+            }
+            if(Roles.userIsInRole(Meteor.userId(), ['accountant', 'dispatcher'])) {
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy)
+                Meteor.subscribe('dispatchers', Meteor.user().invitedBy);
+                Meteor.subscribe('accountants', Meteor.user().invitedBy);
+            }
+            return Meteor.subscribe('dispatcherUsers');
+        }
+    });
+
+    this.route('dispatcher', {
+        path: '/dispatchers/:_id/:slug?',
+        title: function() {
+            if(this.data())
+                return "UTL - " + this.data().displayName() + " - " + this.data().title;
+        },
+        data: function() {
+            return Dispatchers.findOne({
+                _id: this.params._id
+            });
+        },
+        waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+                Meteor.subscribe('userWallet', Meteor.userId());
+            Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            Meteor.subscribe('reviews');
+            Meteor.subscribe('dispatcherPotedJobs', this.params._id);
+            return subs.subscribe('dispatcher', this.params._id);
+        },
+        onBeforeAction: function() {
+            var expectedSlug = this.data().slug();
+            if(this.params.slug !== expectedSlug) {
+                this.redirect("dispatcher", {
+                    _id: this.params._id,
+                    slug: expectedSlug
+                },{replaceState: true});
+            } else {
+                this.next();
+            }
+        }
+    });
+    
+    this.route('dispatcherNew', {
+        path: '/dispatcherNew',
+        title: 'UTL - Create Dispatcher Profile',
+        onBeforeAction: function() {
+            if(Meteor.user().isDispatcher) {
+                Router.go('dispatcher', Dispatchers.findOne({
+                    userId: Meteor.userId()
+                }));
+            } else {
+                this.next();
+            }
+        },
+        waitOn: function() {
+            return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+        }
+    });
+
+    this.route('dispatcherEdit', {
+        path: 'dispatchers/:_id/:slug/edit',
+        title: "UTL - Edit My Buyer Profile",
+        data: function() {
+            return {
+                dispatcherProfile: Dispatchers.findOne({
+                    _id: this.params._id
+                })
+            }
+        },
+        waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            return subs.subscribe('dispatcher', this.params._id);
+        },
+        onBeforeAction: function() {
+            var userID = Dispatchers.findOne({_id: this.params._id}).userId;
             if(Meteor.userId()==userID || Roles.userIsInRole(Meteor.userId(), ['admin'])) {
                 this.next();
             } else {
@@ -691,6 +977,16 @@ Router.map(function() {
             return Meteor.subscribe('buyerPostedJobs', this.params._id);
         }
     });
+
+    this.route('dispatcherJobs', {
+        path: '/dispatchers/:_id/:slug/jobs',
+        title: 'UTL - Dispatcher Jobs',
+        waitOn: function() {
+            Meteor.subscribe('dispatcher', this.params._id);
+            Meteor.subscribe('reviews');
+            return Meteor.subscribe('dispatcherPostedJobs', this.params._id);
+        }
+    })
 
     this.route('buyerNotifications', {
         path: '/buyers/:_id/:slug/notifications',
@@ -792,14 +1088,14 @@ Router.map(function() {
     //     }
     // });
 
-    // this.route('addTeam', {
-    //     path: '/addTeam',
-    //     title: "UTL - Invite Your Team Members",
-    //     waitOn: function() {
-    //         Meteor.subscribe("userList");
-    //         return Meteor.subscribe("tempInvitation");
-    //     }
-    // });
+    this.route('addTeam', {
+        path: '/addTeam',
+        title: "UTL - Invite Your Team Members",
+        waitOn: function() {
+            Meteor.subscribe("userList");
+            return Meteor.subscribe("tempInvitation");
+        }
+    });
 
     // this.route('corpTeam', {
     //     path: '/corporates/:_id/:slug/team/:tab',
@@ -881,17 +1177,17 @@ Router.map(function() {
     });
 
 
-    // this.route('inviteeSignUp', {
-    //     path: '/inviteeSignUp/:id',
-    //     title: "SignUp",
-    //     waitOn: function() {
-    //         Meteor.logout();
-    //         return Meteor.subscribe("tempInvitation");
-    //     },
-    //     data: function() {
-    //         return TempInvitation.findOne({'_id':this.params.id});
-    //     }
-    // });
+    this.route('inviteeSignUp', {
+        path: '/inviteeSignUp/:id',
+        title: "SignUp",
+        waitOn: function() {
+            Meteor.logout();
+            return Meteor.subscribe("tempInvitation");
+        },
+        data: function() {
+            return TempInvitation.findOne({'_id':this.params.id});
+        }
+    });
 
     this.route('task', {
         path: '/task/:jobID/:taskID',
@@ -963,6 +1259,10 @@ Router.map(function() {
 
     this.route('paymentStatus', {
         waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+                return Meteor.subscribe('transactions', Meteor.user().invitedBy);
+            }
             return Meteor.subscribe("transactions",Meteor.userId());
         }
     });
@@ -971,6 +1271,10 @@ Router.map(function() {
         path: '/wallet/deposit/transaction/:_id',
         title: 'UTL - Transaction Details',
         waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+                Meteor.subscribe('transactionDetails', this.params._id)
+                return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            }
             return Meteor.subscribe('transactionDetails', this.params._id);
         }
     });

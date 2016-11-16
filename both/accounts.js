@@ -41,7 +41,18 @@ AccountsTemplates.configureRoute("signIn", {
     },
     redirect: function() {
         var user = Meteor.user();
-        Router.go('/dashboard');
+        if(user.isDeveloper || user.isBuyer || user.isDispatcher)
+            Router.go('/dashboard');
+        else {
+            if(Roles.userIsInRole(Meteor.userId(), ['provider']))
+                Router.go('/profile')
+            if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+                Router.go('/buyerNew')
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Router.go('/dispatcherNew');
+        }
+        if(Roles.userIsInRole(Meteor.userId(), ['admin']))
+            Router.go('/dashboard');
     }
 });
 // AccountsTemplates.configureRoute("signUp", {

@@ -176,6 +176,38 @@ SearchSource.defineSource('buyersList', function(searchText, options) {
 	}
 });
 
+SearchSource.defineSource('dispatchersList', function(searchText, options) {
+	var options = {sort: {createdAt: -1}, limit: 10};
+	if(searchText) {
+		var regExp = buildRegExp(searchText);
+		var selector = {$or: [
+			{firstName: regExp},
+			{lastName: regExp},
+			{location: regExp},
+			{title: regExp}
+		]};
+		return Dispatchers.find(selector, options).fetch();
+	} else {
+		return Dispatchers.find({}, options).fetch();
+	}
+});
+
+SearchSource.defineSource('accountantsList', function(searchText, options) {
+	var options = {sort: {createdAt: -1}, limit: 10};
+	if(searchText) {
+		var regExp = buildRegExp(searchText);
+		var selector = {$or: [
+			{firstName: regExp},
+			{lastName: regExp},
+			{location: regExp},
+			{title: regExp}
+		]};
+		return Accountants.find(selector, options).fetch();
+	} else {
+		return Accountants.find({}, options).fetch();
+	}
+});
+
 SearchSource.defineSource('providerList', function(searchText, options) {
 	var options = {sort: {createdAt: -1}, limit: 10};
 	if(searchText) {

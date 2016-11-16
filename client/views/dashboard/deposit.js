@@ -1,4 +1,6 @@
 var deposits = function() {
+	if(Roles.userIsInRole(Meteor.userId(), ['accountant']))
+		return Transactions.find({userID: Meteor.user().invitedBy}).fetch();
 	return Transactions.find({userID: Meteor.userId()}).fetch();
 }
 
@@ -15,6 +17,20 @@ var previousDepositOptions = {
 			title: 'Transaction Amount',
 			data: function(transaction) {
 				return transaction.dollarAmount;
+			}
+		},
+		{
+			title: 'Deposited By',
+			data: function(transaction) {
+				if(Roles.userIsInRole(transaction.depositedBy, ['buyer'])) {
+					var buyerDetails = Buyers.findOne({userId: transaction.depositedBy});
+					var buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
+					return buyerLink;
+				} else {
+					var accountantDetails = Accountants.findOne({userId: transaction.depositedBy});
+					var accountantLink = '<a href="/accountants/' + accountantDetails._id + '">' + accountantDetails.firstName + ' ' + accountantDetails.lastName + '</a>';
+					return accountantLink;
+				}
 			}
 		},
 		{

@@ -1,0 +1,107 @@
+<template name="accountant">
+	<div id="accountantProfile">
+		<div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-3">
+						{{#if customImageUrl}}
+							<div class="avatar avatar-large">
+								<img class="img-responsive img-thumbnail" style="max-height: 200px; max-width: 200px" src="{{customImageUrl}}"/>
+							</div>
+						{{else}}
+							{{> avatar userId=userId size="large"}}
+						{{/if}}
+						<!-- {{#if isInRole 'buyer'}}
+							{{#if currentUser.isBuyer}}
+								<br>
+								{{#if $eq this.status 'active'}}
+									<a href="{{pathFor 'accountantJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>
+								{{else}}
+									<p class="label label-deactivated">Inactive</p>
+								{{/if}}
+							{{/if}}
+						{{/if}} -->
+						<hr>
+						{{#if adminOrAccountant}}
+							{{#if fullLocation}}
+								{{fullLocation.street}}
+								<br>
+								{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+								<br>{{fullLocation.country}}
+							{{/if}}
+						{{else}}
+							{{#if fullLocation}}
+								{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+							{{/if}}
+						{{/if}}
+						<hr>
+						Member since {{formatDate createdAt}}
+						<hr>
+						{{#if adminOrAccountant}}
+							<i class="fa fa-envelope"></i> {{userName}}
+							<br>
+							<i class="fa fa-mobile"></i> {{contactNumber}}
+							<br>
+							<i class="fa fa-mobile"></i> {{smsAddress}}
+							<hr>
+							{{#with dwollaFundingSource}}
+								<i class="fa fa-credit-card"></i> Account No: {{this.accountNumber}} <br>
+								<i class="fa fa-university"></i> Routing No: {{this.routingNumber}} <br>
+								<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.bankAccountType}}
+								<hr>
+							{{/with}}
+							<a href="{{companyUrl}}">{{companyUrl}}</a>
+						{{/if}}
+					</div>
+					<div class="col-sm-9">
+						<div class="row">
+							<div class="col-sm-12">
+								<label class="label label-default">ID: {{readableId}}</label>
+								<label class="label label-default">{{userRole}}</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<h2 class="top-flush">
+									{{displayName}}
+								</h2>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<h4>
+									{{title}} {{#if companyName}}- {{companyName}}{{/if}}
+								</h4>
+							</div>
+							<!-- <div class="col-sm-12">
+								<span class="rateit"></span>
+							</div> -->
+						</div>
+						<!-- <div class="row">
+							<div class="col-sm-12">
+								{{#if htmlDescription}}
+									<hr>
+									<h4>About Me</h4>
+									{{{htmlDescription}}}
+								{{/if}}
+							</div>
+						</div> -->
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						{{#if adminOrAccountant}}
+							<div class="pull-right">
+								&nbsp;
+								<a href="{{pathFor 'accountantEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+							</div>
+							<div class="pull-right">
+								<button class="btn btn-danger {{#if $eq status 'active'}}deactivateProfile{{else}} activateProfile{{/if}}">{{#if $eq status 'active'}}Deactivate{{else}} Activate{{/if}}</button>
+							</div>
+						{{/if}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>

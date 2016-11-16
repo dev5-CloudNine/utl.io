@@ -1,0 +1,186 @@
+<template name="accountantNew">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4>Introduce Yourself</h4>
+				</div>
+				<div class="panel-body">
+					{{#autoForm collection="Accountants" id="accountantNew" type="insert"}}
+					    {{>accountantFields}}
+					    <div class="text-center">
+					    	<button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Save</button>
+					    </div>
+					{{/autoForm}}
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="accountantEdit">
+    <div class="row">
+		<div class="col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4>Edit Accountant Profile</h4>
+				</div>
+				<div class="panel-body">
+					{{#autoForm collection="Accountants" id="accountantEdit" type="update" doc=accountantProfile}}
+					    {{>accountantFields}}
+					    <div class="text-center">
+					    	<button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Update</button>
+					    	<button id="cancel" class="btn btn-default"> Cancel</button>
+					    </div>
+					{{/autoForm}}
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="accountantFields">
+	<div class="row">
+        <div class="col-md-4">
+            <div class="form-group" id="profileAvatarPreview">
+                <label class="control-label">{{#if customImagePreviewUrl}}Custom{{else}}Automatic{{/if}} Avatar</label>
+                {{#if customImagePreviewUrl}}
+                <div class="avatar avatar-large">
+                    <img class="img-responsive" src="{{customImagePreviewUrl}}" onerror="this.src='/images/avatar.png'" />
+                </div>
+                {{else}} {{> avatar user=currentUser size="large"}} {{/if}}
+            </div>
+            <div class="form-group pull-left" style="margin-top: -30px;">
+                <label class="control-label"></label>
+                <div class="input-group">
+                    &nbsp;
+                    <label class="btn btn-success" data-toggle="tooltip" data-placement="top">
+                        <input type="file" accept="image/*" class="file_bag"> Upload
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="spinner" style="position: relative;">
+            {{> spinner}}
+        </div>
+        <div class="col-xs-12">
+            {{#each uploadedFiles}}
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped active" role="progressbar"
+                  aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">
+                    {{percent_uploaded}}%
+                  </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name='companyName' value=companyInvited readOnly=true}}
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name="companyUrl" value=buyerCompanyUrl readOnly=true}}
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+			{{>afQuickField name='firstName' placeholder="Your First Name"}}
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+			{{>afQuickField name='lastName' placeholder="Your Last Name"}}
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+			{{>afQuickField name='title' placeholder="Let us know about your professional role"}}
+		</div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name='contactNumber' placeholder="Mobile Number"}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            {{>afQuickField name='mobileCarrier'}}
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+            {{>afQuickField name="smsAddress" readonly=true placeholder="johndoe@example.com"}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="form-group">
+	            <label for="loc" class="control-label">Location</label>
+	            {{>accountantLocationMap}}
+            </div>
+		</div>
+	</div>
+	<!-- <hr>
+	{{>afQuickField name='description' rows=8  placeholder="Tell us about your professional self, how long you've been programming, things like that"}}
+	<hr> -->
+</template>
+
+<template name="accountantLocationMap">
+    <div class="map-container">
+        <input type="text" id="loc" data-schema-key="location" name="location" class="form-control" value="{{locationData}}" data-source="location" placeholder="Enter full address with zip code" required>
+    </div>
+    <div id="accountantLocationDetails">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Street</label>
+                    <input type="text" name="name" data-schema-key="fullLocation.street" class="form-control" value="{{this.accountantProfile.fullLocation.street}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Sub Locality</label>
+                    <input type="text" name="sublocality" class="form-control" data-schema-key="fullLocation.sublocality" value="{{this.accountantProfile.fullLocation.sublocality}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Locality</label>
+                    <input name="locality" type="text" class="form-control" data-schema-key="fullLocation.locality" value="{{this.accountantProfile.fullLocation.locality}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>State</label>
+                    <input type="text" class="form-control" name="administrative_area_level_1_short" data-schema-key="fullLocation.state" value="{{this.accountantProfile.fullLocation.state}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" class="form-control" name="country" data-schema-key="fullLocation.country" value="{{this.accountantProfile.fullLocation.country}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Formatted Address</label>
+                    <input type="text" class="form-control" name="formatted_address" data-schema-key="fullLocation.formatted_address" value="{{this.accountantProfile.fullLocation.formatted_address}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Zip</label>
+                    <input type="text" class="form-control" name="postal_code" data-schema-key="fullLocation.zip" value="{{this.accountantProfile.fullLocation.zip}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Map Link</label>
+                    <input type="text" name="url" data-schema-key="fullLocation.mapLink" class="form-control" value="{{this.accountantProfile.fullLocation.mapLink}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Latitude</label>
+                    <input type="text" name="lat" data-schema-key="fullLocation.latitude" class="form-control" value="{{this.accountantProfile.fullLocation.latitude}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Longitude</label>
+                    <input type="text" name="lng" data-schema-key="fullLocation.longitude" class="form-control" value="{{this.accountantProfile.fullLocation.longitude}}">
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

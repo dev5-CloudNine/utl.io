@@ -30,10 +30,13 @@ Template.compose.events({
         	toastr.error('Please select recipient');
         	return;
         }
+        var param = Router.current().params.tab;
         var projectID = $('#project').val();
-        if (!projectID) {
-        	toastr.error('Please select a project');
-        	return;
+        if(!param.substr(0, 9) == 'newaccmsg' || !param.substr(0, 9) == 'newdismsg') {
+            if (!projectID) {
+            	toastr.error('Please select a project');
+            	return;
+            }
         }
         var content = $('#summernote').summernote('code');
         $('#summernote').summernote('destroy');
@@ -50,9 +53,6 @@ Template.compose.events({
         message.content = content;
         message.date = new Date();
         message.read = false;
-
-    	var param = Router.current().params.tab;
-
     	var chain = [];
     	if(param.substr(0,6) == 'newrep') {
     		chain.push(param.substr(6));
@@ -70,6 +70,12 @@ Template.compose.events({
         }
         if(param.substr(0,6) == 'newcsm') {
             message.subject = $('#project').val();
+        }
+        if(param.substr(0,9) == 'newaccmsg') {
+            message.subject = $('#subject').val();
+        }
+        if(param.substr(0,9) == 'newdismsg') {
+            message.subject = $('#subject').val();
         }
 
     	message.chain = chain;
@@ -234,6 +240,7 @@ Template.compose.helpers({
     },
     type: function() {
     	var param = Router.current().params.tab;
+        console.log(param)
     	if(param == 'new')
     		return 'new';
     	else if(param.substr(0,6) == 'newrep')
@@ -244,6 +251,10 @@ Template.compose.helpers({
             return 'newpbm';
         else if(param.substr(0,6) == 'newcsm')
             return 'newcsm';
+        else if(param.substr(0,9) == 'newaccmsg')
+            return 'newaccmsg';
+        else if(param.substr(0,9) == 'newdismsg')
+            return 'newdismsg';
     	else 
     		return 'newfwd'; 
     },
@@ -379,5 +390,21 @@ Template.compose.helpers({
             lastName: 'desk'
         }
         return adminDetails;
+    },
+    accRecipient: function() {
+        var accountant = Accountants.findOne({userId: Router.current().params.query.userId});
+        var accountantDetails = {
+            accUserId: Router.current().params.query.userId,
+            accName: accountant.firstName + ' ' + accountant.lastName
+        }
+        return accountantDetails;
+    },
+    disRecipient: function() {
+        var dispatcher = Dispatchers.findOne({userId: Router.current().params.query.userId});
+        var dispatcherDetails = {
+            disUserId: Router.current().params.query.userId,
+            disName: dispatcher.firstName + ' ' + dispatcher.lastName
+        }
+        return dispatcherDetails;
     }
 });

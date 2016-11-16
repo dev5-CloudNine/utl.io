@@ -12,7 +12,7 @@
 						{{else}}
 							{{> avatar userId=userId size="large"}}
 						{{/if}}
-						{{#if isInRole 'buyer, corporate-manager'}}
+						{{#if isInRole 'buyer, dispatcher'}}
 							{{#if currentUser.isBuyer}}
 								<br>
 								{{#if $eq this.status 'active'}}
@@ -51,12 +51,13 @@
 								<i class="fa fa-university"></i> Routing No: {{this.routingNumber}} <br>
 								<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.bankAccountType}}
 							{{/with}}
+							<a href="{{url}}">{{url}}</a>
 						{{/if}}
 					</div>
 					<div class="col-sm-9">
 						<div class="row">
 							<div class="col-sm-12">
-								<label class="label label-default">{{readableId}}</label>
+								<label class="label label-default">ID: {{readableId}}</label>
 								<label class="label label-default">{{userRole}}</label>
 							</div>
 						</div>
@@ -99,7 +100,7 @@
 										{{#if isInRole 'provider, corporate-provider'}}
 											<a href="/subcategory/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
 										{{/if}}
-										{{#if isInRole 'buyer, corporate-manager'}}
+										{{#if isInRole 'buyer, dispatcher'}}
 											<a href="/pro/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
 										{{/if}}
 									{{/each}}

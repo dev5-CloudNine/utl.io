@@ -150,6 +150,12 @@ Template.headerUserMenu.helpers({
       userId: Meteor.userId()
     });
   },
+  dispatcher: function() {
+    return Dispatchers.findOne({userId: Meteor.userId()});
+  },
+  accountant: function() {
+    return Accountants.findOne({userId: Meteor.userId()});
+  },
   bNotificationCount: function() {
     return Notifications.find({$and: [{buyerId: Meteor.userId()}, {side: 'buyer'}, {read: false}]}).count();
   },

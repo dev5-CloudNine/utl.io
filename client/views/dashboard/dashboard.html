@@ -1,5 +1,5 @@
 <template name="dashboard">
-    {{#if isInRole 'buyer, corporate-manager'}}
+    {{#if isInRole 'buyer, dispatcher'}}
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
@@ -51,6 +51,7 @@
             </div>
         </div>
         <div class="row">
+            <hr>
             {{#with myProfile}}
                 {{>buyerSmall}}
             {{/with}}
@@ -60,7 +61,7 @@
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 
             </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="panel panel-default">
                     <div class="panel-heading ui-draggable-handle">
                         <div class="panel-title-box">
@@ -131,7 +132,7 @@
                         
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     {{/if}}
     {{#if isInRole 'provider, corporate-provider'}}
@@ -194,8 +195,8 @@
                 {{>providerCalendar}}
             </div>
         </div>
-        <hr>
         <div class="row">
+            <hr>
             {{#with myProfile}}
                 {{>profileSmall}}
             {{/with}}
@@ -205,7 +206,7 @@
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 
             </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="panel panel-default">
                     <div class="panel-heading ui-draggable-handle">
                         <div class="panel-title-box">
@@ -276,7 +277,7 @@
                         
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     {{/if}}
     {{#if isInRole 'admin'}}

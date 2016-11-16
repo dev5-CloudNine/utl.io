@@ -3,7 +3,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-8">
-                    <span class="label label-xs label-default">{{readableID}}</span>
+                    <span class="label label-xs label-default">ID: {{readableID}}</span>
                     {{>jobLabels}}
                     <h4>
                         <a href="{{#if currentUser}}{{pathFor 'job'}}{{else}}/sign-in{{/if}}">{{title}}</a>
@@ -22,7 +22,12 @@
                         Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}
                     </h4>
                     <small>
-                        Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{firstName}} {{lastName}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
+                        {{#if postedByDispatcher}}
+                            Posted {{#with dispatcherData}}by <a href="{{pathFor 'dispatcher'}}">{{firstName}} {{lastName}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
+                        {{/if}}
+                        {{#if postedByBuyer}}
+                            Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{firstName}} {{lastName}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
+                        {{/if}}
                     </small>
                     <br>
                     <small>

@@ -22,11 +22,16 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 });
 
 Template.duplicateJob.rendered = function() {
-	var accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+	var accountBalance;
+	if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+		accountBalance = Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+	} else {
+		accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+	}
 	if(this.data.job.your_cost > accountBalance) {
 		$('.notEnoughBalance').show();
 		$('.publish').prop('disabled', true);
-		$('.duplicateToFavs').prop('disabled', true);
+		$('#dupToFav').prop('disabled', true);
 		$('.dupInviteIndividual').prop('disabled', true);
 	} else {
 		$('enoughBalance').show();
@@ -37,6 +42,10 @@ Template.duplicateJob.rendered = function() {
 }
 
 Template.duplicateJob.events({
+	'click #dupJob': function(event, template) {
+		$('#dupToFav').prop('disabled', true);
+		$('#dupInvInd').prop('disabled', true);
+	},
 	'click .dupPublishInd': function(event, template) {
 		event.preventDefault();
 	},
@@ -121,7 +130,12 @@ Template.jobFields.events({
 	},
 	'change input[name="fixedamount"], keyup input[name="fixedamount"]': function(event, template) {
 		var fixedamount = parseFloat($('input[name="fixedamount"]').val());
-		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		var accountBalance;
+		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+			accountBalance = Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+		} else {
+			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		}
 		$('input[name="totalfromclient"]').val(fixedamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
 		if(paidBy == 'You') {
@@ -131,7 +145,7 @@ Template.jobFields.events({
 			$('input[name="your_cost"]').val(fixedamount);
 			$('input[name="freelancer_nets"]').val(fixedamount - (fixedamount * 5/100));
 		}
-		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
 			$('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
@@ -144,7 +158,12 @@ Template.jobFields.events({
 	'change input[name="hourlyrate"], keyup input[name="hourlyrate"], change input[name="maxhours"], keyup input[name="maxhours"]': function(event, template) {
 		var hourlyrate = parseFloat($('input[name="hourlyrate"]').val());
 		var maxhours = parseFloat($('input[name="maxhours"]').val());
-		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		var accountBalance;
+		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+			accountBalance = Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+		} else {
+			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		}
 		var totalamount = hourlyrate * maxhours;
 		$('input[name="totalfromclient"]').val(totalamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
@@ -155,7 +174,7 @@ Template.jobFields.events({
 			$('input[name="your_cost"]').val(totalamount);
 			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
 		}
-		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
 			$('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
@@ -168,7 +187,12 @@ Template.jobFields.events({
 	'change input[name="rateperdevice"], keyup input[name="rateperdevice"], change input[name="maxdevices"], keyup input[name="maxdevices"]': function(event, template) {
 		var rateperdevice = parseFloat($('input[name="rateperdevice"]').val());
 		var maxdevices = parseFloat($('input[name="maxdevices"]').val());
-		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		var accountBalance;
+		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+			accountBalance = Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+		} else {
+			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		}
 		var totalamount = rateperdevice * maxdevices;
 		$('input[name="totalfromclient"]').val(totalamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
@@ -179,7 +203,7 @@ Template.jobFields.events({
 			$('input[name="your_cost"]').val(totalamount);
 			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
 		}
-		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
 			$('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
@@ -194,7 +218,12 @@ Template.jobFields.events({
 		var firsthours = $('input[name="firsthours"]').val();
 		var payfornexthours = $('input[name="payfornexthours"]').val();
 		var nexthours = $('input[name="nexthours"]').val();
-		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		var accountBalance;
+		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+			accountBalance = Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+		} else {
+			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		}
 		var totalforfirsthours = parseFloat(payforfirsthours);
 		var totalfornexthours = payfornexthours * nexthours;
 		var totalamount = parseFloat(totalforfirsthours + totalfornexthours);
@@ -207,7 +236,7 @@ Template.jobFields.events({
 			$('input[name="your_cost"]').val(totalamount);
 			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
 		}
-		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
 			$('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
@@ -221,10 +250,15 @@ Template.jobFields.events({
 		event.preventDefault();
 		var totalamount = parseFloat(template.find('input[name="totalfromclient"]').value);
 		var clientCost = totalamount + totalamount * 5/100;
-		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		var accountBalance;
+		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+			accountBalance = Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+		} else {
+			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		}
 		template.find('input[name="your_cost"]').value = clientCost;
 		template.find('input[name="freelancer_nets"]').value = totalamount;
-		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
 			$('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
@@ -238,10 +272,15 @@ Template.jobFields.events({
 		event.preventDefault();
 		var totalamount = parseFloat(template.find('input[name="totalfromclient"]').value);
 		var freenet = totalamount - totalamount * 5/100;
-		var buyerAccBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		var accountBalance;
+		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+			accountBalance = Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+		} else {
+			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		}
 		template.find('input[name="your_cost"]').value = totalamount;
 		template.find('input[name="freelancer_nets"]').value = freenet;
-		if($('input[name="your_cost"]').val() > buyerAccBalance) {
+		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
 			$('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
@@ -512,6 +551,14 @@ Template.providerList.helpers({
 })
 
 Template.jobNew.events({
+	'click #pubNew': function(event, template) {
+		$('#pubFav').prop('disabled', true);
+		$('#pubInd').prop('disabled', true);
+		if(Session.get('insertError')) {
+			$('#pubFav').prop('disabled', false);
+			$('#pubInd').prop('disabled', false);
+		}
+	},
 	'click .publishToFavs': function(event, template) {
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
  		Session.set('publishToFav', true);

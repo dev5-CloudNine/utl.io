@@ -51,7 +51,11 @@ UserSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false
   },
-  isCorporate: {
+  isDispatcher: {
+    type: Boolean,
+    defaultValue: false
+  },
+  isAccountant: {
     type: Boolean,
     defaultValue: false
   },
@@ -135,6 +139,10 @@ UserSchema = new SimpleSchema({
   },
   "roles.$": {
     type: String
+  },
+  invitedBy: {
+    type: String,
+    optional: true
   }
 });
 

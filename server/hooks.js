@@ -40,6 +40,26 @@ Buyers.after.remove(function(userId, doc) {
   });
 });
 
+Dispatchers.after.insert(function(userId, doc) {
+  Users.update({
+    _id: doc.userId
+  }, {
+    $set: {
+      isDispatcher: true
+    }
+  });
+});
+
+Accountants.after.insert(function(userId, doc) {
+  Users.update({
+    _id: doc.userId
+  }, {
+    $set: {
+      isAccountant: true
+    }
+  })
+})
+
 Corporates.after.insert(function(userId, doc) {
   Users.update({
     _id: doc.userId
@@ -69,9 +89,15 @@ Jobs.after.remove(function(userId, doc) {
 Jobs.after.insert(function(userId, doc){
   var obj ={};
   var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+  var inviterId = Meteor.users.findOne({_id: doc.userId}).invitedBy;
   var buyerCost = doc.your_cost;
-  Wallet.update({userId: userId}, {$inc: {accountBalance: -buyerCost}});
-  Wallet.update({userId: adminId}, {$inc: {accountBalance: buyerCost}});
+  if(Roles.userIsInRole(doc.userId, ['dispatcher'])) {
+    Wallet.update({userId: inviterId}, {$inc: {accountBalance: -buyerCost}});
+    Wallet.update({userId: adminId}, {$inc: {accountBalance: buyerCost}});
+  } else {
+    Wallet.update({userId: userId}, {$inc: {accountBalance: -buyerCost}});
+    Wallet.update({userId: adminId}, {$inc: {accountBalance: buyerCost}});
+  }
   var jobTransObj = {
     jobId: doc._id,
     budget: buyerCost,
@@ -143,26 +169,30 @@ Jobs.before.insert(function(userId, doc) {
   doc.invited = false;
   var id = Jobs.findOne({},{limit:1,sort:{'createdAt':-1}});
   if(id) {
-    id = parseInt(id.readableID.substring(2));
+    id = parseInt(id.readableID);
   } else {
     id=0;
   }
   id++;
-  doc.readableID= "J-"+id;
+  doc.readableID= id;
 });
 
 Meteor.users.before.insert(function(userId,doc){
   var id = Meteor.users.findOne({},{limit:1,sort:{'createdAt':-1}});
   if(id) {
-    id = parseInt(id.readableID.substring(2));
+    id = parseInt(id.readableID);
   } else {
     id=0;
   }
   id++;
-  doc.readableID= "U-"+id;  
+  doc.readableID= id;  
 });
 
 Meteor.users.after.insert(function(userId, doc) {
-  Wallet.insert({userId: doc._id, dwollaId: null, accountBalance: 0.0});
+  if(Roles.userIsInRole(doc._id, ['dispatcher', 'accountant'])) {
+    FileManager.insert({userId: doc._id});
+    return;
+  }
+  Wallet.insert({userId: doc._id, dwollaId: null, accountBalance: 0});
   FileManager.insert({userId: doc._id});
 });

@@ -24,6 +24,15 @@ Template.jobSmall.helpers({
 	'buyerData': function() {
 	    return Buyers.findOne({userId: this.userId});
 	},
+	dispatcherData: function() {
+		return Dispatchers.findOne({userId: this.userId});
+	},
+	postedByDispatcher: function() {
+		return Roles.userIsInRole(this.userId, ['dispatcher']);
+	},
+	postedByBuyer: function() {
+		return Roles.userIsInRole(this.userId, ['buyer']);
+	},
 	applicationsCount: function() {
 		if(this.applications) {
 			return this.applications.length;

@@ -10,6 +10,12 @@ Meteor.publish("userData", function() {
             }),
             Buyers.find({
                 userId: this.userId
+            }),
+            Dispatchers.find({
+                userId: this.userId
+            }),
+            Accountants.find({
+                userId: this.useId
             })
         ];
     }
@@ -96,7 +102,7 @@ Meteor.publish('notifications', function(userId) {
     if(roles.indexOf('admin') > -1) {
         return Notifications.find({});
     }
-    if(roles.indexOf('buyer') > -1 || roles.indexOf('corporate-manager') > -1) {
+    if(roles.indexOf('buyer') > -1 || roles.indexOf('dispatcher') > -1) {
         return Notifications.find({$and: [{buyerId: this.userId}, {side: 'buyer'}]});
     } else if(roles.indexOf('provider') > -1 || roles.indexOf('corporate-provider') > -1) {
         return Notifications.find({$and: [{providerId: this.userId}, {side: 'provider'}]});
@@ -110,7 +116,7 @@ Meteor.publish('notificationsJobs', function(userId) {
     if(roles.indexOf('admin') > -1) {
         return Notifications.find({});
     }
-    if (roles.indexOf('buyer') > -1 || roles.indexOf('corporate-manager') > -1) {
+    if (roles.indexOf('buyer') > -1 || roles.indexOf('dispatcher') > -1) {
        notifications = Notifications.find({ $and: [{ buyerId: this.userId}, { side: 'buyer' }] });
     } else if (roles.indexOf('provider') > -1 || roles.indexOf('corporate-provider') > -1) {
        notifications = Notifications.find({ $and: [{ providerId: this.userId}, { side: 'provider' }] });
@@ -193,6 +199,30 @@ Meteor.publishComposite('providers', {
     }]
 });
 
+Meteor.publishComposite('dispatchers', {
+    find: function() {
+        return Dispatchers.find({}, {
+            sort: {
+                createdAt: -1
+            },
+            limit: 8,
+            fields: {
+                userId: true,
+                title: true,
+                location: true,
+                firstName: true,
+                lastName: true,
+                userName: true,
+                status: true,
+                customImageUrl: true,
+                companyName: true,
+                companyUrl: true,
+                createdAt: true
+            }
+        })
+    }
+})
+
 Meteor.publishComposite('buyers', {
     find: function() {
         return Buyers.find({
@@ -211,6 +241,7 @@ Meteor.publishComposite('buyers', {
                 status: true,
                 customImageUrl: true,
                 companyName: true,
+                companyUrl: true,
                 createdAt: true
             }
         });
@@ -364,6 +395,12 @@ Meteor.publish('buyerPostedJobs', function(buyerId) {
     check(arguments, [Match.Any]);
     var uId = Buyers.findOne({_id: buyerId}).userId;
     return Jobs.find({status: 'active', userId: uId}, {sort: {createdAt: -1}});
+});
+
+Meteor.publish('dispatcherPostedJobs', function(dispatcherId) {
+    check(arguments, [Match.Any]);
+    var uId = Dispatchers.findOne({_id: dispatcherId}).userId;
+    return Jobs.find({status: 'active', userId: uId}, {sort: {createdAt: -1}});
 })
 
 Meteor.publish("favorite_users", function() {
@@ -496,6 +533,22 @@ Meteor.publishComposite('buyer', function(buyerId) {
             }
         }]
     }
+});
+
+Meteor.publishComposite('dispatcher', function(dispatcherId) {
+    return {
+        find: function() {
+            return Dispatchers.find({_id: dispatcherId})
+        }
+    }
+});
+
+Meteor.publishComposite('accountant', function(accountantId) {
+    return {
+        find: function() {
+            return Accountants.find({_id: accountantId});
+        }
+    }
 })
 
 Meteor.publish("developerUsers", function() {
@@ -525,6 +578,22 @@ Meteor.publish("buyerUsers", function() {
     ];
 });
 
+Meteor.publish('dispatcherUsers', function() {
+    check(arguments, [Match.Any]);
+    return [
+        Users.find({
+            isDispatcher: true
+        }, {
+            fields: {
+                'emailHash': true,
+                'status': true
+            }
+        })
+    ]
+});
+
+
+
 Meteor.publish("corporateUsers", function() {
     check(arguments, [Match.Any]);
     return [
@@ -548,6 +617,14 @@ Meteor.publish('profiles', function(limit) {
             createdAt: 1
         }
     });
+});
+
+Meteor.publish('dispatchers', function(buyerId) {
+    return Dispatchers.find({invitedBy: buyerId});
+});
+
+Meteor.publish('accountants', function(buyerId) {
+    return  Accountants.find({invitedBy: buyerId});
 });
 
 Meteor.publish('subcategoryProfiles', function(subcategory) {

@@ -144,7 +144,6 @@ Template.buyerFields.helpers({
 });
 
 Template.buyerLocationMap.onRendered(function() {
-  console.log(this);
   this.autorun(() => {
     if(GoogleMaps.loaded()) {
       $('#loc').geocomplete({country: 'us', details: '#buyerLocationDetails'}).bind('geocode:result', function(event, result) {

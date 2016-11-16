@@ -71,7 +71,7 @@ Profiles.attachSchema(
       denyUpdate: true
     },
     readableID: {
-      type: String,
+      type: Number,
       autoValue: function() {
         if(this.isInsert) {
           return Meteor.user().readableID;
@@ -267,8 +267,7 @@ Profiles.attachSchema(
       type: String,
       label: "Personal URL (Website/Blog)",
       max: 1024,
-      optional: true,
-      regEx: SimpleSchema.RegEx.Url
+      optional: true
     },
     resumeUrl: {
       type: String,

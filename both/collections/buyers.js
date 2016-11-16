@@ -1,7 +1,7 @@
 Buyers = new Mongo.Collection("clients");
 BuyersIndex = new EasySearch.Index({
   collection: Buyers,
-  fields: ['name', 'companyName', 'title', 'location', 'readableID'],
+  fields: ['firstName', 'lastName', 'companyName', 'title', 'location', 'readableID'],
   engine: new EasySearch.Minimongo({
     sort: function (searchObject) {
         return {
@@ -71,7 +71,7 @@ Buyers.attachSchema(
 	denyUpdate: true
   },
   readableID: {
-    type: String,
+    type: Number,
     autoValue: function() {
       if(this.isInsert) {
         return Meteor.user().readableID;
@@ -119,6 +119,11 @@ Buyers.attachSchema(
   	label: "Company Name",
   	max: 128,
   	optional: true
+  },
+  companyUrl: {
+    type: String,
+    label: 'Company URL',
+    optional: true
   },
   eintinNumber: {
   	type: String,
@@ -168,6 +173,10 @@ Buyers.attachSchema(
       },
       multiple: true
 		}
+  },
+  invitees: {
+    type: [String],
+    optional: true
   },
   contactNumber: {
     type: String,

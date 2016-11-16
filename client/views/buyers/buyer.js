@@ -99,8 +99,6 @@ Template.buyer.events({
     Meteor.call('deactivateBuyerProfile', this.userId, function(error) {
       if(error) {
         toastr.error('Failed to deactivate profile');
-      } else {
-        toastr.success('Deactivated profiles successfully.');
       }
     })
   },
@@ -108,9 +106,7 @@ Template.buyer.events({
     event.preventDefault();
     Meteor.call('activateBuyerProfile', this.userId, function(error) {
       if(error) {
-        toastr.error('Failed to deactivate profile');
-      } else {
-        toastr.success('Deactivated profiles successfully.');
+        toastr.error('Failed to activate profile');
       }
     })
   }
