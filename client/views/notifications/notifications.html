@@ -1,6 +1,6 @@
 <template name="notifications">
 	<div class="notifications-wrapper">
-		{{#if currentUser.isBuyer}}
+		{{#if isInRole 'buyer, dispatcher'}}
 			{{#each buyerNotifications}}
 				{{#if $eq this.notificationType 'newJobApplication'}}
 					{{#with this}}
@@ -379,7 +379,7 @@
 			{{/if}}
 		{{/if}}
 		{{#if currentUser}}
-			{{#if isInRole 'provider, corporate-provider'}}
+			{{#if isInRole 'provider'}}
 				{{#if welcomeNotification}}
 					<a href="{{#unless currentUser.isDeveloper}}{{pathFor 'profileNew'}}{{/unless}}" class="markRead">
 						<div class="notification-item markRead {{#if this.read}} isRead {{else}} isNotRead {{/if}}">
@@ -389,7 +389,7 @@
 					</a>
 				{{/if}}
 			{{/if}}
-			{{#if isInRole 'buyer, corporate-manager'}}
+			{{#if isInRole 'buyer, dispatcher'}}
 				{{#if welcomeNotification}}
 					<a href="{{#unless currentUser.isBuyer}}{{pathFor 'buyerNew'}}{{/unless}}" class="markRead">
 						<div class="notification-item markRead {{#if this.read}} isRead {{else}} isNotRead {{/if}}">

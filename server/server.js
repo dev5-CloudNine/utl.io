@@ -165,7 +165,7 @@ Meteor.methods({
         }
     },
     removeFromFav: function(id, role) {
-        if(role == 'buyer' || role == 'corporate-manager') {
+        if(role == 'buyer' || role == 'dispatcher') {
             var notificationObj = {
                 buyerId: Meteor.userId(),
                 providerId: id,
@@ -213,7 +213,13 @@ Meteor.methods({
     },
     applyForThisJob: function(jobId, applicationDetails) {
         var providerDetails = Profiles.findOne({userId: applicationDetails.userId});
-        var buyerDetails = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId});
+        var buyerDetails;
+        var jobPostedUser = Jobs.findOne({_id: jobId}).userId;
+        if(Roles.userIsInRole(jobPostedUser, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: jobPostedUser});
+        } else {
+            buyerDetails = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId});
+        }
         var jobDetails = Jobs.findOne({_id: jobId});
         var notificationObj = {
             jobId: jobId,
@@ -241,11 +247,18 @@ Meteor.methods({
     },
     removeFromAppliedJobs: function(jobId, userId) {
         var jobDetails = Jobs.findOne({_id: jobId});
+        Jobs.update({$and:[{_id:jobId},{'applications.userId':userId}]},{$pull:{"applications":{"userId":userId}}});
         Profiles.update({userId: userId}, {$pull: {appliedJobs: jobId}});
     },
     acceptApplication: function(jobId, userId, applicationTime) {
-        var buyerDetails = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId});
         var jobDetails = Jobs.findOne({_id: jobId});
+        var buyerId = jobDetails.userId;
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var providerDetails = Profiles.findOne({userId: userId});
         var notificationObj = {
             jobId: jobId,
@@ -276,7 +289,13 @@ Meteor.methods({
     },
     "acceptCounterOffer": function(jobId, userId, applied_at, buyerCost, freenets) {
         var jobDetails = Jobs.findOne({_id: jobId});
-        var buyerDetails = Buyers.findOne({userId: jobDetails.userId});
+        var buyerId = jobDetails.userId;
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var providerDetails = Profiles.findOne({userId: userId});
         var notificationObj = {
             jobId: jobId,
@@ -311,8 +330,14 @@ Meteor.methods({
     },
     confirmAssignment: function(jobId, buyerId) {
         var jobDetails = Jobs.findOne({_id: jobId});
+        var buyerId = jobDetails.userId;
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var providerDetails = Profiles.findOne({userId: Meteor.userId()});
-        var buyerDetails = Buyers.findOne({userId: buyerId});
         var notificationObj = {
             jobId: jobId,
             providerId: Meteor.userId(),
@@ -346,11 +371,17 @@ Meteor.methods({
     declineAssignment: function(jobId, userId) {
         var jobDetails = Jobs.findOne({_id: jobId});
         var providerDetails = Profiles.findOne({userId: userId});
-        var buyerDetails = Buyers.findOne({userId: jobDetails.userId});
+        var buyerId = jobDetails.userId;
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var notificationObj = {
             jobId: jobId,
             providerId: userId,
-            buyerId: Jobs.findOne({_id: jobId}).userId,
+            buyerId: buyerId,
             timeStamp: new Date(),
             notificationType: 'declineAssignment',
             read: false,
@@ -374,12 +405,18 @@ Meteor.methods({
     },
     submitAssignment: function(jobId) {
         var providerDetails = Profiles.findOne({userId: Meteor.userId()});
-        var buyerDetails = Buyers.findOne({userId: Jobs.findOne({_id: jobId}).userId});
         var jobDetails = Jobs.findOne({_id: jobId});
+        var buyerId = jobDetails.userId;
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var notificationObj = {
             jobId: jobId,
             providerId: Meteor.userId(),
-            buyerId: jobDetails.userId,
+            buyerId: buyerId,
             timeStamp: new Date(),
             notificationType: 'submitAssignment',
             read: false,
@@ -399,12 +436,18 @@ Meteor.methods({
     approveAssignment: function(jobId, providerId) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var providerDetails = Profiles.findOne({userId: providerId})
-        var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
         var jobDetails = Jobs.findOne({_id: jobId});
+        var buyerId = jobDetails.userId;
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var notificationObj = {
             jobId: jobId,
             providerId: providerId,
-            buyerId: Meteor.userId(),
+            buyerId: buyerId,
             timeStamp: new Date(),
             notificationType: 'approveAssignment',
             read: false,
@@ -414,7 +457,7 @@ Meteor.methods({
         var invoiceObject = {
             jobId: jobId,
             providerId: providerDetails.userId,
-            buyerId: jobDetails.userId,
+            buyerId: buyerId,
             budget: jobDetails.projectBudget,
             date: new Date(),
             invoiceId: 'INV' + jobDetails.readableID,
@@ -439,12 +482,18 @@ Meteor.methods({
     },
     rejectAssignment: function(jobId) {
         var providerDetails = Profiles.findOne({userId: Jobs.findOne({_id: jobId}).assignedProvider});
-        var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
         var jobDetails = Jobs.findOne({_id: jobId});
+        var buyerId = jobDetails.userId;
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var notificationObj = {
             jobId: jobId,
             providerId: providerDetails._id,
-            buyerId: Meteor.userId(),
+            buyerId: buyerId,
             timeStamp: new Date(),
             notificationType: 'rejectAssignment',
             read: false,
@@ -465,12 +514,18 @@ Meteor.methods({
         Jobs.update({_id: job._id}, {$set: {invited: true}});
         for(var i = 0; i < job.favoriteProviders.length; i++) {
             var providerDetails = Profiles.findOne({userId: job.favoriteProviders[i]});
-            var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
+            var buyerId = job.userId;
+            var buyerDetails;
+            if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+                buyerDetails = Dispatchers.findOne({userId: buyerId});
+            } else {
+                buyerDetails = Buyers.findOne({userId: buyerId});
+            }
             Profiles.update({userId: job.favoriteProviders[i]}, {$addToSet: {invitedJobs: job._id}});
             var notificationObj = {
                 jobId: job._id,
                 providerId: job.favoriteProviders[i],
-                buyerId: Meteor.userId(),
+                buyerId: buyerId,
                 timeStamp: new Date(),
                 notificationType: 'jobInvitation',
                 read: false,
@@ -491,11 +546,17 @@ Meteor.methods({
         Jobs.update({_id: job._id}, {$set: {invited: true}});
         Profiles.update({userId: job.individualprovider}, {$addToSet: {invitedJobs: job._id}});
         var providerDetails = Profiles.findOne({userId: job.individualprovider});
-        var buyerDetails = Buyers.findOne({userId: job.userId});
+        var buyerId = job.userId;
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var notificationObj = {
             jobId: job._id,
             providerId: job.individualprovider,
-            buyerId: Meteor.userId(),
+            buyerId: buyerId,
             timeStamp: new Date(),
             notificationType: 'jobInvitation',
             read: false,
@@ -514,7 +575,12 @@ Meteor.methods({
     routeNotification: function(buyerId, doc) {
         Profiles.update({userId: doc.selectedProvider}, {$addToSet: {routedJobs: doc._id}});
         var providerDetails = Profiles.findOne({userId: doc.selectedProvider});
-        var buyerDetails = Buyers.findOne({userId: buyerId});
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var notificationObj = {
             providerId: doc.selectedProvider,
             buyerId: buyerId, 
@@ -537,7 +603,13 @@ Meteor.methods({
     requestPayment: function(jobId) {
         var providerDetails = Profiles.findOne({userId: Meteor.userId()});
         var jobDetails = Jobs.findOne({_id: jobId});
-        var buyerDetails = Buyers.findOne({userId: jobDetails.userId});
+        var buyerId = jobDetails.userId;
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var invoiceObject = {
             jobId: jobId,
             providerId: Meteor.userId(),
@@ -574,7 +646,13 @@ Meteor.methods({
         var jobDetails = Jobs.findOne({_id: jobId});
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var projectBudget = jobDetails.projectBudget;
-        var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
+        var buyerId = jobDetails.userId;
+        var buyerDetails;
+        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
+        } else {
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        }
         var providerDetails = Profiles.findOne({userId: jobDetails.assignedProvider});
         var notificationObj = {
             providerId: jobDetails.assignedProvider,
@@ -640,7 +718,7 @@ Meteor.methods({
             Jobs.update({_id: jobId}, {$set: {providerArchived: true}});
             Profiles.update({userId: userId}, {$addToSet: {archivedJobs: jobId}});
             Profiles.update({userId: userId}, {$pull: {paidJobs: jobId}});
-        } else if(Roles.userIsInRole(userId, ['buyer', 'corporate-manager'])) {
+        } else if(Roles.userIsInRole(userId, ['buyer', 'dispatcher'])) {
             Jobs.update({_id: jobId}, {$set: {buyerArchived: true}});
         }
     },

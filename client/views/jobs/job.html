@@ -84,7 +84,13 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <small>
-                                            <i class="fa fa-user fa-fw"></i>Posted {{#with buyerData}}by <a href="/buyers/{{this.id}}">{{this.name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
+                                            <i class="fa fa-user fa-fw"></i>
+                                            {{#if postedByDispatcher}}
+                                                Posted {{#with dispatcherData}}by <a href="{{pathFor 'dispatcher'}}">{{firstName}} {{lastName}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
+                                            {{/if}}
+                                            {{#if postedByBuyer}}
+                                                Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{firstName}} {{lastName}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
+                                            {{/if}}&nbsp;-&nbsp;{{postedTime}}
                                             <br>
                                         </small>
                                         <small>
@@ -604,7 +610,7 @@
                                         <div class="box box-widget widget-user">
                                             <div class="widget-user-header bg-assigned">
                                                 <span class="pull-right providerRatings" data-rateit-value="{{rateItValue}}"></span>
-                                                <small>{{readableID}}</small>
+                                                <small>ID: {{readableID}}</small>
                                                 <h3 class="widget-user-username">{{this.name}}</h3>
                                                 <h5 class="widget-user-desc">{{this.title}}</h5>
                                             </div>
@@ -1399,7 +1405,7 @@
                                     <div class="box box-widget widget-user">
                                         <div class="widget-user-header bg-assigned">
                                             <span class="pull-right buyerRatings"></span>
-                                            <small>{{readableID}}</small>
+                                            <small>ID: {{readableID}}</small>
                                             <h3 class="widget-user-username">{{this.name}}</h3>
                                             <h5 class="widget-user-desc">{{this.title}}</h5>
                                         </div>

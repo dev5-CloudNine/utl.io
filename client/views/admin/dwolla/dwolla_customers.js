@@ -4,6 +4,12 @@ Template.dwollaCustomers.rendered = function() {
 			$('.show-info').text(JSON.stringify(error));
 			return;
 		}
+		if(result.status == 401) {
+			if(result.body.code == 'ExpiredAccessToken') {
+				Meteor.call('refreshAuthorization', Meteor.userId());
+				location.reload();
+			}
+		}
 		result.forEach(function(customer) {
 			$('.customers').append('<a href="#" data-customer-url="' + customer._links.self.href + '" class="getCustomerDetails">' + '<li class="list-group-item">' + customer.firstName + ' ' + customer.lastName + '</li></a>');
 		})

@@ -132,6 +132,7 @@ if (Meteor.isServer) {
             accountToken.get('customers').then(function(result) {
                 fut.return(result.body._embedded.customers);
             }, function(error) {
+                fut.return(error);
                 console.log(error);
             });
             fut.wait();
@@ -150,6 +151,7 @@ if (Meteor.isServer) {
                 fut.return(res.body);
             }, function(err) {
                 console.log(err);
+                fut.return(err)
             })
             fut.wait();
             return fut.value;
@@ -196,7 +198,7 @@ if (Meteor.isServer) {
             adminFSUrl.wait();
             var afsUrl = adminFSUrl.value;
             var requestBody;
-            if(Roles.userIsInRole(reqdUserId, ['provider', 'corporate-provider'])) {
+            if(Roles.userIsInRole(reqdUserId, ['provider'])) {
                 requestBody = {
                     _links: {
                         source: {
@@ -212,7 +214,7 @@ if (Meteor.isServer) {
                     }
                 };
             }
-            if(Roles.userIsInRole(reqdUserId, ['buyer', 'corporate-manager'])) {
+            if(Roles.userIsInRole(reqdUserId, ['buyer'])) {
                 requestBody = {
                     _links: {
                         source: {
@@ -311,9 +313,6 @@ if (Meteor.isServer) {
             }
             var accountToken = new client.Token({access_token: obj.access_token});
             var fut = new Future();
-            var reqBody = {
-                email: 'provider@norm.com'
-            }
             accountToken.get("customers").then(function(res) {
                 fut.return(res.body._embedded.customers);
             }, function(err) {
@@ -323,7 +322,7 @@ if (Meteor.isServer) {
             var customerArray = fut.value;
             customerArray.forEach(function(customer) {
                 var reqBody = {
-                    email: customer.lastName + 'cst@' + customer.firstName + '.com'
+                    email: customer.lastName + 'custo@' + customer.firstName + '.com'
                 }
                 accountToken.post('https://api-uat.dwolla.com/customers/' + customer.id, reqBody).then(function(result) {
                     console.log(result);

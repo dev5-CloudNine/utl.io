@@ -1,5 +1,6 @@
 Template.filteredJobs.helpers({
     filteredJobs: function () {
-        return Jobs.find({$and: [{type: {$in: [category]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
+    	var category = Router.current().params.category;
+        return Jobs.find({$and: [{jobtype: {$in: [category]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}}).fetch();
     }
 });

@@ -679,6 +679,12 @@ Template.job.events({
 });
 
 Template.job.helpers({
+  postedByDispatcher: function() {
+    return Roles.userIsInRole(this.userId, ['dispatcher']);
+  },
+  postedByBuyer: function() {
+    return Roles.userIsInRole(this.userId, ['buyer']);
+  },
   favCount: function() {
     var userId;
     if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {
@@ -693,7 +699,12 @@ Template.job.helpers({
     return moment(this.createdAt).format('LLLL');
   },
   'buyerData': function() {
-    var buyerData = Buyers.findOne({userId: this.userId});
+    var buyerData;
+    if(Roles.userIsInRole(this.userId, ['dispatcher'])) {
+      buyerData = Dispatchers.findOne({userId: this.userId});
+    } else {
+      buyerData = Buyers.findOne({userId: this.userId});
+    }
     var imgUrl;
     var imgURL = Meteor.users.findOne({_id: buyerData.userId}).imgURL;
     if(imgURL)
@@ -709,6 +720,9 @@ Template.job.helpers({
       status: buyerData.status
     }
     return buyer;
+  },
+  dispatcherData: function() {
+    return Dispatchers.findOne({userId: this.userId});
   },
   'hasLabel': function() {
     return this.jobType || this.featured;
@@ -801,6 +815,7 @@ Template.job.helpers({
   },
   'jobPostedBuyer': function() {
     var jobDetails = Jobs.findOne(this._id);
+    console.log(jobDetails);
     if(jobDetails.userId == Meteor.userId())
       return true;
     else
@@ -1137,7 +1152,13 @@ Template.job.helpers({
     var notifications = Notifications.find({jobId: this._id}, {sort: {timeStamp: -1}});
     var notificationDetails = [];
     notifications.forEach(function(notification) {
-      var buyerDetails = Buyers.findOne({userId: notification.buyerId});
+      var buyerId = notification.buyerId;
+      var buyerDetails;
+      if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+        buyerDetails = Dispatchers.findOne({userId: buyerId});
+      } else {
+        buyerDetails = Buyers.findOne({userId: buyerId});
+      }
       if(notification.notificationType == 'newJob') {
         var notif = {
           jobId: notification.jobId,

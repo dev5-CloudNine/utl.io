@@ -275,7 +275,7 @@ Meteor.publish('recommendedJobs', function(categories) {
 })
 
 Meteor.publish('categoryJobs', function(category) {
-    return Jobs.find({$and: [{type: {$in: [category]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
+    return Jobs.find({$and: [{jobtype: {$in: [category]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
 });
 
 Meteor.publish('subCategoryJobs', function(subCategory) {
