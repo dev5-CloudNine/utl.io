@@ -1,5 +1,5 @@
 <template name="jobSmall">
-    <div class="jobSmall panel panel-default {{#if $eq applicationStatus 'open'}}openJob{{/if}} {{#if $eq applicationStatus 'frozen'}}frozenJob{{/if}} {{#if $eq applicationStatus 'assigned'}}assignedJob{{/if}} {{#if $eq applicationStatus 'completed'}}completedJob{{/if}} {{#if $eq applicationStatus 'pending_payment'}}paymentPendingJob{{/if}} {{#if $eq applicationStatus 'paid'}}paidJob{{/if}} {{#if $eq applicationStatus 'deactivated'}}deactivatedJob{{/if}}">
+    <div class="panel panel-default {{#if $eq applicationStatus 'open'}}openJob{{/if}} {{#if $eq applicationStatus 'frozen'}}frozenJob{{/if}} {{#if $eq applicationStatus 'assigned'}}assignedJob{{/if}} {{#if $eq applicationStatus 'completed'}}completedJob{{/if}} {{#if $eq applicationStatus 'pending_payment'}}paymentPendingJob{{/if}} {{#if $eq applicationStatus 'paid'}}paidJob{{/if}} {{#if $eq status 'deactivated'}}deactivatedJob{{/if}}">
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-8">
@@ -31,14 +31,14 @@
                     </small>
                     <br>
                     <small>
-                        <span class="label label-sm {{appStatusLabel}}">Status: {{applicationStatus}}</span>
+                        <span class="label label-sm {{appStatusLabel}}">Status: {{#if $eq status 'deactivated'}} Deactivated {{else}} {{applicationStatus}}{{/if}}</span>
                         {{#if assignedProvider}}
-                            &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'completed'}}by{{/if}}{{/if}}&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
+                            &nbsp;{{#if $eq applicationStatus 'assigned'}}to{{else}}{{#if $eq applicationStatus 'completed'}}by{{/if}}{{/if}}&nbsp;{{#with assignedProfile}} <a href="{{pathFor 'profile'}}">{{this.firstName}} {{this.lastName}}</a>{{/with}}
                         {{/if}}
                         &nbsp;|&nbsp;{{#if selectedProvider}}Routed to {{#with routedProvider}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
                     </small>
                 </div>
-                {{#if acceptedProvider}}
+                <!-- {{#if acceptedProvider}}
                     {{#if $eq applicationStatus 'frozen'}}
                         <div class="col-sm-12">
                             <hr>
@@ -166,7 +166,7 @@
                             </div>
                         {{/if}}
                     {{/if}}
-                {{/if}}
+                {{/if}} -->
             </div>
         </div>
     </div>

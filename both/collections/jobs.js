@@ -180,7 +180,7 @@ Jobs.attachSchema(
       decimal: true,
       optional: true,
       custom: function() {
-        var shouldBeRequired = this.field('serviceschedule').value == 'Fixed Pay';
+        var shouldBeRequired = this.field('ratebasis').value == 'Fixed Pay';
         if(shouldBeRequired) {
           if(!this.operator) {
             if(!this.isSet || this.value === null || this.value === '')
@@ -204,7 +204,7 @@ Jobs.attachSchema(
       optional: true,
       decimal: true,
       custom: function() {
-        var shouldBeRequired = this.field('serviceschedule').value == 'Per Hour';
+        var shouldBeRequired = this.field('ratebasis').value == 'Per Hour';
         if(shouldBeRequired) {
           if(!this.operator) {
             if(!this.isSet || this.value === null || this.value === '')
@@ -228,7 +228,7 @@ Jobs.attachSchema(
       optional: true,
       decimal: true,
       custom: function() {
-        var shouldBeRequired = this.field('serviceschedule').value == 'Per Hour';
+        var shouldBeRequired = this.field('ratebasis').value == 'Per Hour';
         if(shouldBeRequired) {
           if(!this.operator) {
             if(!this.isSet || this.value === null || this.value === '')
@@ -252,7 +252,7 @@ Jobs.attachSchema(
       optional: true,
       decimal: true,
       custom: function() {
-        var shouldBeRequired = this.field('serviceschedule').value == 'Per Device';
+        var shouldBeRequired = this.field('ratebasis').value == 'Per Device';
         if(shouldBeRequired) {
           if(!this.operator) {
             if(!this.isSet || this.value === null || this.value === '')
@@ -275,7 +275,7 @@ Jobs.attachSchema(
       label: "Maximum Devices",
       optional: true,
       custom: function() {
-        var shouldBeRequired = this.field('serviceschedule').value == 'Per Device';
+        var shouldBeRequired = this.field('ratebasis').value == 'Per Device';
         if(shouldBeRequired) {
           if(!this.operator) {
             if(!this.isSet || this.value === null || this.value === '')
@@ -299,7 +299,7 @@ Jobs.attachSchema(
       optional: true,
       decimal: true,
       custom: function() {
-        var shouldBeRequired = this.field('serviceschedule').value == 'Blended';
+        var shouldBeRequired = this.field('ratebasis').value == 'Blended';
         if(shouldBeRequired) {
           if(!this.operator) {
             if(!this.isSet || this.value === null || this.value === '')
@@ -322,7 +322,7 @@ Jobs.attachSchema(
       label: "total for the first",
       optional: true,
       custom: function() {
-        var shouldBeRequired = this.field('serviceschedule').value == 'Blended';
+        var shouldBeRequired = this.field('ratebasis').value == 'Blended';
         if(shouldBeRequired) {
           if(!this.operator) {
             if(!this.isSet || this.value === null || this.value === '')
@@ -346,7 +346,7 @@ Jobs.attachSchema(
       optional: true,
       decimal: true,
       custom: function() {
-        var shouldBeRequired = this.field('serviceschedule').value == 'Blended';
+        var shouldBeRequired = this.field('ratebasis').value == 'Blended';
         if(shouldBeRequired) {
           if(!this.operator) {
             if(!this.isSet || this.value === null || this.value === '')
@@ -369,7 +369,7 @@ Jobs.attachSchema(
       label: "per hour for up to",
       optional: true,
       custom: function() {
-        var shouldBeRequired = this.field('serviceschedule').value == 'Blended';
+        var shouldBeRequired = this.field('ratebasis').value == 'Blended';
         if(shouldBeRequired) {
           if(!this.operator) {
             if(!this.isSet || this.value === null || this.value === '')
@@ -390,27 +390,23 @@ Jobs.attachSchema(
       type: Number,
       min: 1,
       label: "Total Amount",
-      optional: true,
       decimal: true
     },
     your_cost: {
       type:  Number,
       label: "Your Cost",
       min: 1,
-      optional: true,
       decimal: true
     },
     freelancer_nets: {
       type: Number,
       label: "Freelancer Nets",
       min: 1,
-      optional: true,
       decimal: true
     },
     paidby: {
       type: String,
       label: "Paid By",
-      optional: true,
       autoform: {
         type: 'select-radio-inline',
         defaultValue: "Provider",
@@ -428,6 +424,17 @@ Jobs.attachSchema(
         }
       }
     },
+    // bonus: {
+    //   type: Number,
+    //   label: "Bonus (If any)",
+    //   optional: true,
+    //   decimal: true
+    // },
+    // bonusRequested: {
+    //   type: Boolean,
+    //   optional: true,
+    //   defaultValue: false
+    // },
     servicelocation: {
     label: "Service Location *",
     type: String,
@@ -850,6 +857,14 @@ Jobs.attachSchema(
       //     };
       //   }
       // },
+    },
+    paid30Usd: {
+      type: Boolean,
+      defaultValue: false
+    },
+    denied30Usd: {
+      type: Boolean,
+      defaultValue: false
     },
     applicationStatus: {
       type: String,

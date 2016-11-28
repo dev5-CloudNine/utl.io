@@ -283,6 +283,20 @@ Profiles.attachSchema(
     'appliedJobs.$': {
       type: String
     },
+    declinedJobs: {
+      type: Array,
+      optional: true
+    },
+    'declinedJobs.$': {
+      type: String
+    },
+    deactivatedJobs: {
+      type: Array,
+      optional: true
+    },
+    'deactivatedJobs.$': {
+      type: String
+    },
     assignedJobs: {
       type: Array,
       optional: true

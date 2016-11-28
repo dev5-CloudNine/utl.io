@@ -15,7 +15,7 @@ Meteor.publish("userData", function() {
                 userId: this.userId
             }),
             Accountants.find({
-                userId: this.useId
+                userId: this.userId
             })
         ];
     }
@@ -75,6 +75,10 @@ Meteor.publish('usersTasks', function() {
             return Tasks.find({jobID:{$in:jobs||[]}});
         }
     }
+})
+
+Meteor.publish('providerDeactivatedJobs', function() {
+    return Jobs.find({status: 'deactivated'});
 })
 
 Meteor.publish("tasks", function (taskID) {
@@ -217,7 +221,45 @@ Meteor.publishComposite('dispatchers', {
                 customImageUrl: true,
                 companyName: true,
                 companyUrl: true,
-                createdAt: true
+                createdAt: true,
+                invitedBy: true
+            }
+        })
+    }
+});
+
+Meteor.publishComposite('jobs',{
+    find: function() {
+        return Jobs.find({status: 'active'}, {
+            sort: {
+                createdAt: -1
+            },
+            fields: {
+                paid30Usd: true,
+                denied30Usd: true
+            }
+        })
+    }
+})
+
+Meteor.publishComposite('accountants', {
+    find: function() {
+        return Accountants.find({}, {
+            sort: {
+                createdAt: -1
+            },
+            fields: {
+                userId: true,
+                title: true,
+                location: true,
+                firstName: true,
+                lastName: true,
+                userName: true,
+                status: true,
+                customImageUrl: true,
+                companyName: true,
+                companyUrl: true,
+                invitedBy: true
             }
         })
     }

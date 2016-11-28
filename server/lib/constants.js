@@ -1,1 +1,1 @@
-FROM_EMAIL = "UTL <admin@utl.com>";
+FROM_EMAIL = "UTL <utltestsmtp@gmail.com>";

@@ -3,7 +3,12 @@ Template.providerNotifications.helpers({
 		var notifications = Notifications.find({$and: [{providerId: Meteor.userId()}, {side: 'provider'}]}, {sort: {timeStamp: -1}});
 		var notificationDetails = [];
 		notifications.forEach(function (notification) {
-			buyerDetails = Buyers.findOne({userId: notification.buyerId});
+			var buyerDetails;
+			if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
+				buyerDetails = Dispatchers.findOne({userId: notification.buyerId});1
+			} else {
+				buyerDetails = Buyers.findOne({userId: notification.buyerId});
+			}
 			jobDetails = Jobs.findOne({_id: notification.jobId});
 			var imgUrl;
 			var img = Users.findOne({_id: notification.buyerId}).imgURL;

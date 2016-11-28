@@ -20,7 +20,12 @@ Template.adminNotifications.helpers({
 				}
 				notificationDetails.push(notif);
 			} else if(notification.notificationType == 'newJob') {
-				var buyerDetails = Buyers.findOne({userId: notification.buyerId});
+				var buyerDetails;
+				if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
+					buyerDetails = Dispatchers.findOne({userId: notification.buyerId});1
+				} else {
+					buyerDetails = Buyers.findOne({userId: notification.buyerId});
+				}
 				var jobDetails = Jobs.findOne({_id: notification.jobId});
 				var imgURL = Meteor.users.findOne({_id: notification.buyerId}).imgURL;
 				var imgUrl
@@ -41,7 +46,12 @@ Template.adminNotifications.helpers({
 			} else if(notification.notificationType == 'welcomeNotification') {
 				return;
 			} else {
-				var buyerDetails = Buyers.findOne({userId: notification.buyerId});
+				var buyerDetails;
+				if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
+					buyerDetails = Dispatchers.findOne({userId: notification.buyerId});1
+				} else {
+					buyerDetails = Buyers.findOne({userId: notification.buyerId});
+				}
 				var providerDetails = Profiles.findOne({userId: notification.providerId});
 				var jobDetails = Jobs.findOne({_id: notification.jobId});
 				var imgUrl;
@@ -59,6 +69,7 @@ Template.adminNotifications.helpers({
 					else
 						imgUrl = '/images/avatar.png';
 				}
+				if(providerDetails && buyerDetails) {
 				notif = {
 					buyerId: buyerDetails._id,
 					providerId: providerDetails._id,
@@ -69,7 +80,7 @@ Template.adminNotifications.helpers({
 					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 					pname: providerDetails.firstName + ' ' + providerDetails.lastName,
 					imgUrl: imgUrl
-				}
+				}}
 				notificationDetails.push(notif);
 			}
 		});

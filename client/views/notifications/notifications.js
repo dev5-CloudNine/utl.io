@@ -62,8 +62,13 @@ Template.notifications.helpers({
 		var notifications = Notifications.find({$and: [{providerId: Meteor.userId()}, {side: 'provider'}]}, {sort: {timeStamp: -1}, limit: 10});
 		var notificationDetails = [];
 		notifications.forEach(function (notification) {
-			buyerDetails = Buyers.findOne({userId: notification.buyerId});
-			jobDetails = Jobs.findOne({_id: notification.jobId});
+			var buyerDetails;
+			if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
+				buyerDetails = Dispatchers.findOne({userId: notification.buyerId});1
+			} else {
+				buyerDetails = Buyers.findOne({userId: notification.buyerId});
+			}
+			var jobDetails = Jobs.findOne({_id: notification.jobId});
 			var imgUrl;
 			var img = Users.findOne({_id: notification.buyerId}).imgURL;
 			if(img)
@@ -128,7 +133,12 @@ Template.notifications.helpers({
 				}
 				notificationDetails.push(notif);
 			} else if(notification.notificationType == 'newJob') {
-				var buyerDetails = Buyers.findOne({userId: notification.buyerId});
+				var buyerDetails;
+				if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
+					buyerDetails = Dispatchers.findOne({userId: notification.buyerId});1
+				} else {
+					buyerDetails = Buyers.findOne({userId: notification.buyerId});
+				}
 				var jobDetails = Jobs.findOne({_id: notification.jobId});
 				var imgUrl;
 				var imgURL = Meteor.users.findOne({_id: notification.buyerId}).imgURL;
@@ -146,7 +156,12 @@ Template.notifications.helpers({
 			} else if(notification.notificationType == 'welcomeNotification') {
 				return;
 			} else {
-				var buyerDetails = Buyers.findOne({userId: notification.buyerId});
+				var buyerDetails;
+				if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
+					buyerDetails = Dispatchers.findOne({userId: notification.buyerId});
+				} else {
+					buyerDetails = Buyers.findOne({userId: notification.buyerId});
+				}
 				var providerDetails = Profiles.findOne({userId: notification.providerId});
 				var jobDetails = Jobs.findOne({_id: notification.jobId});
 				var imgUrl;
@@ -160,6 +175,7 @@ Template.notifications.helpers({
 					if(imgURL)
 						imgUrl = imgURL;
 				}
+				if(providerDetails && buyerDetails) {
 				notif = {
 					notificationType: notification.notificationType,
 					notificationTime: moment(notification.timeStamp).format('LLLL'),
@@ -168,7 +184,7 @@ Template.notifications.helpers({
 					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 					pname: providerDetails.firstName + ' ' + providerDetails.lastName,
 					imgUrl: imgUrl
-				}
+				}}
 				notificationDetails.push(notif);
 			}
 		});

@@ -16,7 +16,8 @@
 								<br>
 								{{#if $eq this.status 'active'}}
 									<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>
-									<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Del Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</a>
+									<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Del Fav{{else}}Add Fav{{/if}}</a>
+									<a href id="sendBuyerMessage" class="btn btn-primary btn-xs">Send Message</a>
 								{{else}}
 									<p class="label label-deactivated">Inactive</p>
 								{{/if}}
@@ -51,7 +52,7 @@
 								<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.bankAccountType}}
 								<hr>
 							{{/with}}
-							<a href="{{companyUrl}}">{{companyUrl}}</a>
+							{{companyUrl}}
 						{{/if}}
 					</div>
 					<div class="col-sm-9">

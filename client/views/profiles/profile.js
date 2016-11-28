@@ -90,6 +90,11 @@ Template.profile.events({
     });
     event.stopPropagation();
   },
+  'click #sendProviderMessage': function(event, template) {
+    event.preventDefault();
+    Router.go('/mailbox/newpromsg?userId=' + this.userId);
+    event.stopPropagation();
+  },
   'click .deactivateProfile': function(event, template) {
     event.preventDefault();
     Meteor.call('deactivateProviderProfile', this.userId, function(error) {

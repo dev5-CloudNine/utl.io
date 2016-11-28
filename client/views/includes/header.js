@@ -156,12 +156,6 @@ Template.headerUserMenu.helpers({
   accountant: function() {
     return Accountants.findOne({userId: Meteor.userId()});
   },
-  bNotificationCount: function() {
-    return Notifications.find({$and: [{buyerId: Meteor.userId()}, {side: 'buyer'}, {read: false}]}).count();
-  },
-  pNotificationCount: function() {
-    return Notifications.find({$and: [{providerId: Meteor.userId()}, {side: 'provider'}, {read: false}]}).count();
-  },
   adminNotificationCount: function() {
     return Notifications.find({$and: [{adminSide: true}, {adminRead: false}]}).count();
   },
@@ -215,6 +209,9 @@ Template.headerUserMenu.events({
 
 Template.headerUserMenu.onRendered(function(){
   this.$('.dropdown-toggle').dropdown();
+  Meteor.subscribe('allJobs')
+  var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
+  Meteor.subscribe('recommendedJobs', jobCategories);
   Meteor.subscribe('notifications', Meteor.userId());
   Meteor.subscribe('notificationsJobs', Meteor.userId());
 });

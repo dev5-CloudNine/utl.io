@@ -138,7 +138,7 @@ Jobs.after.insert(function(userId, doc){
   }
   Notifications.insert(notificationObj);
   JobTransactions.insert(jobTransObj);
-  var admin = Users.findOne({roles:"admin"});
+  var admin = Users.findOne({roles:{$in: ['admin']}});
   Email.send({
       to: getUserEmail(admin),
       from: FROM_EMAIL,

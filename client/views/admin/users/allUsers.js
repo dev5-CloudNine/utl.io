@@ -12,7 +12,7 @@ var adminOptionsObject = {
 		{
 			title: 'User Name',
 			data: function(user) {
-				if(user.roles[0] == 'buyer' || user.roles[0] == 'corporate-manager') {
+				if(user.roles[0] == 'buyer') {
 					var buyerDetails = Buyers.findOne({userId: user._id});
 					if(buyerDetails) {
 						var buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
@@ -21,7 +21,7 @@ var adminOptionsObject = {
 						return getUserEmail(user);
 					}
 				}
-				if(user.roles[0] == 'provider' || user.roles[0] == 'corporate-provider') {
+				if(user.roles[0] == 'provider') {
 					var providerDetails = Profiles.findOne({userId: user._id});
 					if(providerDetails) {
 						var providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a>';
@@ -30,11 +30,20 @@ var adminOptionsObject = {
 						return getUserEmail(user);
 					}
 				}
-				if(user.roles[0] == 'corporate-admin') {
-					var corporateDetails = Corporates.findOne({userId: user._id});
-					if(corporateDetails) {
-						var corporateLink = '<a href="/corporates/' + corporateDetails._id + '">' + corporateDetails.name + '</a>';
-						return corporateLink;
+				if(user.roles[0] == 'dispatcher') {
+					var dispatcherDetails = Dispatchers.findOne({userId: user._id});
+					if(dispatcherDetails) {
+						var dispatcherLink = '<a href="/dispatchers/' + dispatcherDetails._id + '">' + dispatcherDetails.firstName + ' ' + dispatcherDetails.lastName + '</a>';
+						return dispatcherLink;
+					} else {
+						return getUserEmail(user);
+					}
+				}
+				if(user.roles[0] == 'accountant') {
+					var accountantDetails = Accountants.findOne({userId: user._id});
+					if(accountantDetails) {
+						var accountantLink = '<a href="/accountants/' + accountantDetails._id + '">' + accountantDetails.firstName + ' ' + accountantDetails.lastName + '</a>';
+						return accountantLink;
 					} else {
 						return getUserEmail(user);
 					}
@@ -53,7 +62,7 @@ var adminOptionsObject = {
 		{
 			title: 'Company',
 			data: function(user) {
-				if(user.roles[0] == 'buyer' || user.roles[0] == 'corporate-manager') {
+				if(user.roles[0] == 'buyer') {
 					var buyerDetails = Buyers.findOne({userId: user._id});
 					if(buyerDetails) {
 						if(buyerDetails.companyName) {
@@ -65,7 +74,7 @@ var adminOptionsObject = {
 						return '';
 					}
 				}
-				if(user.roles[0] == 'provider' || user.roles[0] == 'corporate-provider') {
+				if(user.roles[0] == 'provider') {
 					var providerDetails = Profiles.findOne({userId: user._id});
 					if(providerDetails) {
 						if(providerDetails.companyName)
@@ -74,12 +83,22 @@ var adminOptionsObject = {
 							return '';
 					}
 				}
-				if(user.roles[0] == 'corporate-admin') {
-					var companyName = Corporates.findOne({userId: user._id}).companyName;
-					if(companyName) {
-						return companyName;
-					} else {
-						return '';
+				if(user.roles[0] == 'dispatcher') {
+					var dispatcherDetails = Dispatchers.findOne({userId: user._id});
+					if(dispatcherDetails) {
+						if(dispatcherDetails.companyName)
+							return dispatcherDetails.companyName
+						else
+							return '';
+					}
+				}
+				if(user.roles[0] == 'accountant') {
+					var accountantDetails = Accountants.findOne({userId: user._id});
+					if(accountantDetails) {
+						if(accountantDetails.companyName)
+							return accountantDetails.companyName
+						else
+							return '';
 					}
 				}
 				if(user.roles[0] == 'admin') {
@@ -90,6 +109,8 @@ var adminOptionsObject = {
 		{
 			title: 'Account Balance',
 			data: function(user) {
+				if(Roles.userIsInRole(user._id, ['dispatcher', 'accountant']))
+					return;
 				return '$' + Wallet.findOne({userId: user._id}).accountBalance;
 			}
 		},

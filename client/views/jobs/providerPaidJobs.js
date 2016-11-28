@@ -3,7 +3,7 @@ Template.providerPaidJobs.helpers({
 		var paidJobIds = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
 		var paidJobs = [];
 		if(paidJobIds) {
-			for(var i = 0; i < paidJobIds.length; i++) {
+			for(var i = paidJobIds.length - 1; i >= 0; i--) {
 				paidJobs.push(Jobs.findOne({_id: paidJobIds[i]}));
 			}
 			return paidJobs;
@@ -96,6 +96,13 @@ Template.providerPaidJobs.helpers({
 		var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
 		if(invJobIds) {
 			return invJobIds.length;
+		}
+		return 0;
+	},
+	proDeactivatedCount: function() {
+		var deactivatedJobs = Profiles.findOne({userId: Meteor.userId()}).deactivatedJobs;
+		if(deactivatedJobs) {
+			return deactivatedJobs.length;
 		}
 		return 0;
 	}

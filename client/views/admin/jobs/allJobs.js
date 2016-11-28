@@ -20,8 +20,15 @@ var adminOptionsObject = {
 		{
 			title: 'Posted By',
 			data: function(jobDetails) {
-				var buyerDetails = Buyers.findOne({userId: jobDetails.userId});
-				var buyerUrl = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
+				var buyerDetails;
+				var buyerUrl;
+				if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
+					buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
+					buyerUrl = '<a href="/dispatchers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
+				} else {
+					buyerDetails = Buyers.findOne({userId: jobDetails.userId});
+					buyerUrl = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
+				}
 				return buyerUrl;
 			}
 		},

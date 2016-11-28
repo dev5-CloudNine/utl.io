@@ -8,13 +8,11 @@ Template.dashboard.helpers({
 			}
 		});
 	},
-	openJobsCount: function() {
-		return Jobs.find({$and: [{applicationStatus: 'open'}, {invited: false}]}).count();
-	},
-	recommendedJobsCount: function() {
-		var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
-		Meteor.subscribe('recommendedJobs', jobCategories);
-		return Jobs.find({$and: [{applicationStatus: 'open'}, {jobSubCategory: {$in: jobCategories}}]}).count()
+	routedJobsCount: function() {
+		var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+		if(providerDetails && providerDetails.invitedJobs) {
+			return providerDetails.invitedJobs.length;
+		}
 	},
 	assignedJobsCount: function() {
 		var providerDetails = Profiles.findOne({userId: Meteor.userId()});
@@ -173,10 +171,10 @@ Template.dashboard.helpers({
 		return 0;
 	},
 	myProfile: function() {
-		if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'corporate-manager'])) {
+		if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
 			return Buyers.findOne({userId: Meteor.userId()});
 		}
-		if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {
+		if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
 			return Profiles.findOne({userId: Meteor.userId()});
 		}
 	},

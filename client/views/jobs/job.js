@@ -1,4 +1,10 @@
 Template.job.events({
+  'click #appliedProviderMsg': function(event, template) {
+    event.preventDefault();
+    var userId = Profiles.findOne({_id: this.userId}).userId;
+    Router.go('/mailbox/newpromsg?userId=' + userId);
+    event.stopPropagation();
+  },
   'click #loadMap': function(event, template) {
     if(GoogleMaps.loaded()) {
       $('#locationDet').geocomplete({
@@ -26,6 +32,7 @@ Template.job.events({
   },
   'click .applyInactive': function(event, template) {
     event.preventDefault();
+    $(event.currentTarget).button('loading')
     var jobId = this._id;
     var applicationDetails = {
       "userId": Meteor.userId(),
@@ -44,6 +51,7 @@ Template.job.events({
   },
   'click .applyActive': function(event, template) {
     event.preventDefault();
+    $(event.currentTarget).button('loading')
     var jobId = this._id;
     Meteor.call('removeFromAppliedJobs', jobId, Meteor.userId(), function(error) {
       if(error) {
@@ -150,16 +158,19 @@ Template.job.events({
   // },
   'click .acceptApplication': function(event, template) {
     event.preventDefault();
+    $(event.currentTarget).button('loading');
     var jobId = Router.current().params._id;
     var userId = Profiles.findOne({_id: this.userId}).userId;
     var applicationTime = this.appliedAt;
     Meteor.call('acceptApplication', jobId, userId, applicationTime, function (error, result) {
       if(error) {
-        toastr.error("Failed to accept the application");
+        $(event.currentTarget).button('reset');
+        // toastr.error("Failed to accept the application");
       }
     });
   },
   'click .acceptCounterOffer': function(event, template) {
+    $(event.currentTarget).button('loading');
     var jobId = Router.current().params._id;
     var userId = Profiles.findOne({_id: this.userId}).userId;
     var buyerCost = this.buyer_cost;
@@ -176,19 +187,25 @@ Template.job.events({
       var diff = buyerCost - jobDetails.your_cost;
       if(diff > buyerWallet.accountBalance) {
         toastr.error('Your wallet balance is low. Please depositi sufficient funds to accept this counter offer.');
+        $(event.currentTarget).button('reset');
         return;
       } else {
-        Meteor.call('acceptHighBudgetCO', diff, jobDetails.userId);
+        Meteor.call('acceptHighBudgetCO', diff, jobDetails.userId, function(error) {
+          if(error) {
+            $(event.currentTarget).button('reset');
+          }
+        });
       }
     }
     Meteor.call('acceptCounterOffer', jobId, userId, applied_at, buyerCost, freenets, function(error) {
       if(error) {
-        toastr.error('Failed to accept counter offer.');
+        $(event.currentTarget).button('reset');
       }
     })
   },
   'click .counterInactive': function(event, template) {
     event.preventDefault();
+    $(event.currentTarget).button('loading')
     var jobId = this._id;
     var counterOffer = {}
     var counterType = $('#counter_type').val();
@@ -259,9 +276,11 @@ Template.job.events({
     }
     Meteor.call('applyForThisJob', jobId, counterOffer, function (error) {
       if(error) {
+        $(event.currentTarget).button('reset');
         toastr.error(error.message, 'Error');
       }
       else {
+        $(event.currentTarget).button('reset');
         $(event.currentTarget).removeClass('counterInactive');
         $(event.currentTarget).addClass('counterActive');
       }
@@ -269,12 +288,15 @@ Template.job.events({
   },
   'click .counterActive': function(event, template) {
     event.preventDefault();
+    $(event.currentTarget).button('loading');
     var jobId = this._id;
     Meteor.call('removeFromAppliedJobs', jobId, Meteor.userId(), function(error) {
       if(error) {
+        $(event.currentTarget).button('reset');
         toastr.error(error.message, 'Error');
       }
       else {
+        $(event.currentTarget).button('reset');
         $(event.currentTarget).removeClass('counterActive');
         $(event.currentTarget).addClass('counterInactive');
       }
@@ -444,88 +466,100 @@ Template.job.events({
   },
   'click button.confirmAssignment': function(event, template) {
     event.preventDefault();
+    $(event.currentTarget).button('loading');
     var buyerId = this.userId;
     var jobId = this._id;
     Meteor.call('confirmAssignment', jobId, buyerId, function(error) {
       if(error) {
-        toastr.error('Failed to confirm assignment.');
+        $(event.currentTarget).button('reset');
       }
     })
   },
   'click button.declineAssignment': function(event, template) {
+    $(event.currentTarget).button('loading');
     var jobId = this._id;
     var userId = Meteor.userId();
     Meteor.call('declineAssignment', jobId, userId, function(error) {
       if(error) {
-        toastr.error('Failed to decline the assignment.');
+        $(event.currentTarget).button('reset');
       }
     });
   },
   'click button.submitAssignment': function(event, template) {
     event.preventDefault();
+    $(event.currentTarget).button('loading');
     var jobId = this._id;
-    //check for task status
-    var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
-    if(tasksClosed) {
-      toastr.error('Complete assigned tasks to submit the job for approval.');
-      return;
-    }
-    var timeSheetsLogs = TimeSheet.findOne({jobID: jobId});
-    if(!timeSheetsLogs.logs) {
-      toastr.error('Enter your time sheets to submit the job for approval.');
-      return;
-    }
-    if(timeSheetsLogs.logs) {
-      if(timeSheetsLogs.logs.length <= 0) {
-        toastr.error('Enter your time sheets to submit the job for approval.');
-        return;
-      }
-    }
+    // var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
+    // if(tasksClosed) {
+    //   toastr.error('Complete assigned tasks to submit the job for approval.');
+    //   $(event.currentTarget).button('reset');
+    //   return;
+    // }
+    // var timeSheetsLogs = TimeSheet.findOne({jobID: jobId});
+    // if(!timeSheetsLogs.logs) {
+    //   toastr.error('Enter your time sheets to submit the job for approval.');
+    //   $(event.currentTarget).button('reset');
+    //   return;
+    // }
+    // if(timeSheetsLogs.logs) {
+    //   if(timeSheetsLogs.logs.length <= 0) {
+    //     toastr.error('Enter your time sheets to submit the job for approval.');
+    //     $(event.currentTarget).button('reset');
+    //     return;
+    //   }
+    // }
     Meteor.call('submitAssignment', jobId, function(error) {
       if(error) {
+        $(event.currentTarget).button('reset');
         toastr.error('Failed to submit job. Please try again.');
       }
     });
   },
   'click button.approveAssignment': function(event, template) {
+    $(event.currentTarget).button('loading');
     event.preventDefault();
     var jobId = this._id;
     var providerId = this.assignedProvider;
     Meteor.call('approveAssignment', jobId, providerId, function(error) {
       if(error) {
-        toastr.error('Failed to approve assignment. Please try again.');
+        $(event.currentTarget).button('reset');
+        toastr.error('Failed to approve job. Please try again.');
       }
     });
   },
   'click button.rejectAssignment': function(event, template) {
+    $(event.currentTarget).button('loading');
     var jobId = this._id;
     Meteor.call('rejectAssignment', jobId, function(error) {
       if(error) {
-        toastr.error('Failed to reject assignment. Please try again.');
+        $(event.currentTarget).button('reset');
+        toastr.error('Failed to reject job. Please try again.');
       }
     });
   },
-  'click button.requestPayment': function(event, template) {
-    var jobId = this._id;
-    $(event.currentTarget).prop('disabled', true);
-    Meteor.call('requestPayment', jobId, function(error, result) {
-      if(error) {
-        toastr.error('Failed to request paymet. Pleast try again.');
-      }
-    })
-  },
-  'click button.approvePayment': function(event, template) {
-    var jobId = this._id;
-    Meteor.call('approvePayment', jobId, function(error, result) {
-      if(error) {
-        toastr.error('Failed to approve payment. Please try again.');
-      }
-    })
-  },
+  // 'click button.requestPayment': function(event, template) {
+  //   var jobId = this._id;
+  //   $(event.currentTarget).prop('disabled', true);
+  //   Meteor.call('requestPayment', jobId, function(error, result) {
+  //     if(error) {
+  //       toastr.error('Failed to request paymet. Pleast try again.');
+  //     }
+  //   })
+  // },
+  // 'click button.approvePayment': function(event, template) {
+  //   var jobId = this._id;
+  //   Meteor.call('approvePayment', jobId, function(error, result) {
+  //     if(error) {
+  //       toastr.error('Failed to approve payment. Please try again.');
+  //     }
+  //   })
+  // },
   'click button.deactivateJob': function(event, template) {
+    $(event.currentTarget).button('loading');
     var jobId = this._id;
-    Meteor.call('deactivateJob', jobId, function(error) {
+    Meteor.call('deactivateJob', jobId, Meteor.userId(), function(error) {
       if(error) {
+        $(event.currentTarget).button('error');
         toastr.error('Failed to deactivate job Please try again.');
       }
     })
@@ -561,8 +595,6 @@ Template.job.events({
     Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
-      } else {
-        window.location.reload();
       }
     })
   },
@@ -584,8 +616,6 @@ Template.job.events({
     Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
-      } else {
-        window.location.reload();
       }
     })
   },
@@ -611,6 +641,7 @@ Template.job.events({
     event.stopPropagation();
   },
   'click button.rejectCounterOffer': function(event, template) {
+    $(event.currentTarget).button('loading');
     var jobId = Router.current().params._id;
     var userId = Profiles.findOne({_id: this.userId}).userId;
     var applied_at = this.appliedAt;
@@ -621,16 +652,18 @@ Template.job.events({
     }
     Meteor.call('rejectCounterOffer', jobId, userId, applied_at, diff, function(error) {
       if(error) {
-        toastr.error('Failed to reject the counter offer. Please try again');
+        $(event.currentTarget).button('reset');
       }
     })
   },
   'click button.rejectApplication': function(event, template) {
     var jobId = Router.current().params._id;
+    $(event.currentTarget).button('loading');
     var userId = Profiles.findOne({_id: this.userId}).userId;
     var applied_at = this.appliedAt;    
     Meteor.call('rejectApplication', jobId, userId, applied_at, function(error) {
       if(error) {
+        $(event.currentTarget).button('reset');
         toastr.error('Failed to reject the application. Please try again');
       }
     })
@@ -675,10 +708,44 @@ Template.job.events({
       }
     });
     event.stopPropagation();
+  },
+  'click .requestBonus': function(event, template) {
+    event.preventDefault();
+    Meteor.call('requestBonus', this._id, function(error, result) {
+      if(!error)
+        $(event.currentTarget).prop('disabled', true);
+    })
+  },
+  'click .approveBonus': function(event, template) {
+    event.preventDefault();
+    console.log(this);
+  },
+  'click .pay30Usd': function(event, template) {
+    $(event.currentTarget).button('loading')
+    var buyerPayable = 30;
+    var buyerPays = buyerPayable + buyerPayable * 5/100;
+    var adminGets = buyerPayable * 5/100;
+    var providerGets = buyerPayable;
+    var assignedProvider = this.assignedProvider;
+    var buyerId = Meteor.userId();
+    Meteor.call('pay30Usd', buyerPays, adminGets, providerGets, assignedProvider, buyerId, this._id, function(error) {
+      if(error) {
+        $(event.currentTarget).button('reset');
+      }
+    });
+  },
+  'click .deny30Usd': function(event, template) {
+    $(event.currentTarget).button('loading');
+    Meteor.call('deny30Usd', this._id, function(error) {
+      $(event.currentTarget).button('reset');
+    });
   }
 });
 
 Template.job.helpers({
+  buyerPaid30Usd: function() {
+    console.log(this);
+  },
   postedByDispatcher: function() {
     return Roles.userIsInRole(this.userId, ['dispatcher']);
   },
@@ -699,12 +766,7 @@ Template.job.helpers({
     return moment(this.createdAt).format('LLLL');
   },
   'buyerData': function() {
-    var buyerData;
-    if(Roles.userIsInRole(this.userId, ['dispatcher'])) {
-      buyerData = Dispatchers.findOne({userId: this.userId});
-    } else {
-      buyerData = Buyers.findOne({userId: this.userId});
-    }
+    var buyerData = Buyers.findOne({userId: this.userId});
     var imgUrl;
     var imgURL = Meteor.users.findOne({_id: buyerData.userId}).imgURL;
     if(imgURL)
@@ -742,14 +804,15 @@ Template.job.helpers({
     });
     return count;
   },
-  'declined': function() {
-    var applicants = Jobs.findOne({_id: this._id}).applications;
-    for(var i = 0; i < applicants.length; i++) {
-      if(applicants[i].userId == Meteor.userId() && applicants[i].app_status == 'declined') {
-        return true;
-      }
-    }
-    return false;
+  'declinedJob': function() {
+    // var applicants = Jobs.findOne({_id: this._id}).applications;
+    // for(var i = 0; i < applicants.length; i++) {
+    //   if(applicants[i].userId == Meteor.userId() && applicants[i].app_status == 'declined') {
+    //     return true;
+    //   }
+    // }
+    // return false;
+    return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { declinedJobs: { $in: [this._id] } }] }) ? true : false;
   },
   'providerDeclined': function() {
     var uId = Profiles.findOne({_id: this.userId}).userId;
@@ -815,8 +878,11 @@ Template.job.helpers({
   },
   'jobPostedBuyer': function() {
     var jobDetails = Jobs.findOne(this._id);
-    console.log(jobDetails);
-    if(jobDetails.userId == Meteor.userId())
+    var dispatcher;
+    if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
+      dispatcher = Dispatchers.findOne({userId: jobDetails.userId});
+    }
+    if(jobDetails.userId == Meteor.userId() || dispatcher.invitedBy == Meteor.userId())
       return true;
     else
       return false;
@@ -843,15 +909,15 @@ Template.job.helpers({
     return Tasks.find({ 'jobID': this._id }, { sort: { order: 1 } });
   },
   applied: function() {
-    var applications = Jobs.findOne({_id: this._id}).applications;
-    if(applications) {
-      for(var i = 0; i < applications.length; i++) {
-        if(applications[i].userId == Meteor.userId())
-          return true;
-      }
-      // return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { appliedJobs: { $in: [this._id] } }] }) ? true : false;
-    }
-    return false;
+    // var applications = Jobs.findOne({_id: this._id}).applications;
+    // if(applications) {
+    //   for(var i = 0; i < applications.length; i++) {
+    //     if(applications[i].userId == Meteor.userId())
+    //       return true;
+    //   }
+    return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { appliedJobs: { $in: [this._id] } }] }) ? true : false;
+    // }
+    // return false;
   },
   applicationDetails: function() {
     for(var i = 0; i < this.applications.length; i++) {
@@ -982,10 +1048,12 @@ Template.job.helpers({
       var diff = ouT.diff(inT);
       var duration = moment.duration(diff,'milliseconds');
       var days = Math.floor(duration.asDays());
-      var hours = Math.floor(duration.asHours()) - days * 24;
-      var hrs = days*24+hours;
-      var mins = Math.floor(duration.asMinutes()) - hrs * 60;
-      var total = "Days : " + days+", Hours : "+hours+", Mins : "+mins;
+      // var hours = Math.floor(duration.asHours()) - days * 24;
+      var hours = Math.floor(duration.asHours());
+      // var hrs = days*24+hours;
+      // var mins = Math.floor(duration.asMinutes()) - hrs * 60;
+      var mins = Math.floor(duration.asMinutes()) - hours * 60;
+      var total = "Hours : "+hours+", Mins : "+mins;
       obj.total = total;
       totalHours+=diff;
       logList.push(obj);
@@ -993,10 +1061,12 @@ Template.job.helpers({
 
     var duration = moment.duration(totalHours,'milliseconds');
     var days = Math.floor(duration.asDays());
-    var hours = Math.floor(duration.asHours()) - days * 24;
+    // var hours = Math.floor(duration.asHours()) - days * 24;
+    var hours = Math.floor(duration.asHours());
     var hrs = days*24+hours;
-    var mins = Math.floor(duration.asMinutes()) - hrs * 60;
-    var total = "Days : " + days+", Hours : "+hours+", Mins : "+mins;
+    // var mins = Math.floor(duration.asMinutes()) - hrs * 60;
+    var mins = Math.floor(duration.asMinutes()) - hours * 60;
+    var total = "Hours : "+hours+", Mins : "+mins;
     if(duration==0) {
       Session.set('totalHours','No activities are done so far');
     } else {
@@ -1027,12 +1097,12 @@ Template.job.helpers({
     return Profiles.findOne({userId: this.selectedProvider});
   },
   appStatusLabel: function() {
+    if(this.status == 'deactivated')
+      return 'label-deactivated'
     if(this.applicationStatus == 'assigned')
       return 'label-assigned';
     else if(this.applicationStatus == 'completed')
       return 'label-completed';
-    else if(this.applicationStatus == 'deactivated')
-      return 'label-deactivated';
     else if(this.applicationStatus == 'frozen')
       return 'label-frozen';
     else if(this.applicationStatus == 'open')
@@ -1159,6 +1229,15 @@ Template.job.helpers({
       } else {
         buyerDetails = Buyers.findOne({userId: buyerId});
       }
+      if(notification.notificationType == 'jobDeactivated') {
+        var notif = {
+          jobId: notification.jobId,
+          buyerId: buyerDetails._id,
+          buyerName: buyerDetails.firstName + ' ' + buyerDetails.lastName,
+          notificationType: notification.notificationType,
+          timeStamp: moment(notification.timeStamp).format('LLLL')
+        }
+      }
       if(notification.notificationType == 'newJob') {
         var notif = {
           jobId: notification.jobId,
@@ -1184,6 +1263,9 @@ Template.job.helpers({
       notificationDetails.push(notif);
     });
     return notificationDetails;
+  },
+  deactivatedTime: function() {
+    return moment(Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'jobDeactivated'}]}).timeStamp).format('LLLL');
   },
   thisProvider: function() {
     var providerId = Profiles.findOne({_id: this.providerId}).userId;
@@ -1283,6 +1365,23 @@ Template.job.helpers({
   },
   providerReviewDetails: function() {
     return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]});
+  },
+  tasksTSCompleted: function() {
+    var jobId = this._id;
+    var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
+    if(tasksClosed) {
+      return false;
+    }
+    var timeSheetsLogs = TimeSheet.findOne({jobID: jobId});
+    if(!timeSheetsLogs.logs) {
+      return false
+    }
+    if(timeSheetsLogs.logs) {
+      if(timeSheetsLogs.logs.length <= 0) {
+        return false;
+      }
+    }
+    return true;
   }
 });
 

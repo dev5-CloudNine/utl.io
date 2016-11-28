@@ -23,7 +23,22 @@
                             <div class="widget-data">
                                 <div class="widget-int num-count">$ {{amountSpent}}</div>
                                 <div class="widget-title">Amount Spent</div>
-                                <div class="widget-subtitle">Amont spent on this platform.</div>
+                                <div class="widget-subtitle">Amount spent on this platform.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <div class="widget-data">
+                                {{#with myProfile}}
+                                    <a href="{{pathFor 'buyerNotifications'}}">
+                                        <div class="widget-int num-count">{{buyerNotificationCount currentUser._id}}</div>
+                                        <div class="widget-title"> new notifications</div>
+                                    </a>
+                                {{/with}}
+                                <div class="widget-subtitle">
+                                    <a href="{{pathFor 'mailBox' tab="mails"}}">{{unreadMsgCount currentUser._id}} unread message(s)</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -55,13 +70,7 @@
             {{#with myProfile}}
                 {{>buyerSmall}}
             {{/with}}
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                
-            </div>
-            <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-xs-4 col-sm-4 col-md-8 col-lg-8">
                 <div class="panel panel-default">
                     <div class="panel-heading ui-draggable-handle">
                         <div class="panel-title-box">
@@ -69,7 +78,7 @@
                             <span>Projects activity</span>
                         </div>
                     </div>
-                    <div class="panel-body panel-body-table">
+                    <div class="panel-body panel-body-table panel-white">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped">
                                 <thead>
@@ -132,33 +141,26 @@
                         
                     </div>
                 </div>
-            </div> -->
+            </div>
         </div>
     {{/if}}
-    {{#if isInRole 'provider, corporate-provider'}}
+    {{#if isInRole 'provider'}}
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon">
-                            <a href="/jobs">
-                                <div class="widget-data">
-                                    <div class="widget-int num-count">{{openJobsCount}}</div>
+                            <div class="widget-data">
+                                <a href="/jobs">
+                                    <div class="widget-int num-count">
+                                    {{openJobsCount}}</div>
                                     <div class="widget-title">Open Jobs</div>
-                                    <div class="widget-subtitle">On this platform</div>
+                                </a>
+                                <div class="widget-subtitle">
+                                    <a href="/invitedJobs">{{routedJobsCount}} Routed</a> &#124; 
+                                    <a href="/recommendedJobs">{{recommendedJobsCount currentUser._id}} Recommended</a>
                                 </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <a href="/recommendedjobs">
-                                <div class="widget-data">
-                                    <div class="widget-int num-count">{{recommendedJobsCount}}</div>
-                                    <div class="widget-title">Recommended Jobs</div>
-                                    <div class="widget-subtitle">Jobs that suit your category.</div>
-                                </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -170,6 +172,21 @@
                                     <div class="widget-subtitle">Work orders in progress.</div>
                                 </div>
                             </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <div class="widget-data">
+                                {{#with myProfile}}
+                                    <a href="{{pathFor 'providerNotifications'}}">
+                                        <div class="widget-int num-count">{{providerNotificationCount currentUser._id}}</div>
+                                        <div class="widget-title">new notifications</div>
+                                    </a>
+                                {{/with}}
+                                <div class="widget-subtitle">
+                                    <a href="{{pathFor 'mailBox' tab="mails"}}">{{unreadMsgCount currentUser._id}} new message(s)</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -200,13 +217,7 @@
             {{#with myProfile}}
                 {{>profileSmall}}
             {{/with}}
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                
-            </div>
-            <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-xs-4 col-sm-4 col-md-8 col-lg-8">
                 <div class="panel panel-default">
                     <div class="panel-heading ui-draggable-handle">
                         <div class="panel-title-box">
@@ -214,7 +225,7 @@
                             <span>Projects activity</span>
                         </div>
                     </div>
-                    <div class="panel-body panel-body-table">
+                    <div class="panel-body panel-body-table panel-white">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped">
                                 <thead>
@@ -277,7 +288,7 @@
                         
                     </div>
                 </div>
-            </div> -->
+            </div>
         </div>
     {{/if}}
     {{#if isInRole 'admin'}}
@@ -296,7 +307,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon" onclick="location.href='pages-messages.html';">
+                        <div class="widget widget-default widget-item-icon">
                             <a href="/allJobs">                            
                                 <div class="widget-data">
                                     <div class="widget-int num-count">{{getPublishedCount 'adminJobs'}}</div>
@@ -308,7 +319,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon">
-                            <a href="/allJobs">
+                            <a href="">
                                 <div class="widget-data">
                                     <div class="widget-int num-count">20</div>
                                     <div class="widget-title">Bank Transactions</div>

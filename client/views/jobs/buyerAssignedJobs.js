@@ -19,7 +19,7 @@ Template.buyerAssignedJobs.rendered = function() {
 
 Template.buyerAssignedJobs.helpers({
 	buyerAssignedJobs: function() {
-		return BuyerAssignedJobsSearch.getData({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}]});
+		return BuyerAssignedJobsSearch.getData({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}, {status: 'active'}]});
 	},
 	buyerPaymentPendingCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {'applicationStatus': 'pending_payment'}]}).count();
@@ -31,7 +31,7 @@ Template.buyerAssignedJobs.helpers({
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {routed: true}]}).count();
 	},
 	buyerAssignedCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}]}).count();
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}, {status: 'active'}]}).count();
 	},
 	buyerCompletedCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'completed'}]}).count();

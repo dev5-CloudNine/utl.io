@@ -5,6 +5,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 				toastr.error(error);
 				Session.set('insertError', true);
 			} else {
+				Session.set('insertError', false);
 				analytics.track("Job Created");
 				toastr.success('The job has been posted and your account has been debited with the proposed budget.');
         		Router.go('job', {_id:result});
@@ -43,6 +44,7 @@ Template.duplicateJob.rendered = function() {
 
 Template.duplicateJob.events({
 	'click #dupJob': function(event, template) {
+		$(event.currentTarget).button('loading');
 		$('#dupToFav').prop('disabled', true);
 		$('#dupInvInd').prop('disabled', true);
 	},
@@ -50,6 +52,7 @@ Template.duplicateJob.events({
 		event.preventDefault();
 	},
 	'click .dupInviteIndividual': function(event, template) {
+		$(event.currentTarget).button('loading');
 		var individualProvider = $('input[name="individualprovider"]')[0].id;
 		Session.set('publishToIndividual', true);
 		Jobs.before.insert(function(userId, doc) {
@@ -60,6 +63,7 @@ Template.duplicateJob.events({
 				$(event.target).prop('disabled', false);
 				$('button.duplicate').prop('disabled', false);
 				$('button.duplicateToFavs').prop('disabled', false);
+				delete Session.keys['insertError']
 				return;
 			}
 			doc.invited = true;
@@ -81,6 +85,7 @@ Template.duplicateJob.events({
 		})
 	},
 	'click .duplicateToFavs': function(event, template) {
+		$(event.currentTarget).button('loading');
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
  		Session.set('duplicateToFav', true);
  		Jobs.before.insert(function(userId, doc) {
@@ -147,10 +152,10 @@ Template.jobFields.events({
 		}
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			$('div.enoughBalance').hide();
+			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			$('div.enoughBalance').show();
+			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -176,10 +181,10 @@ Template.jobFields.events({
 		}
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			$('div.enoughBalance').hide();
+			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			$('div.enoughBalance').show();
+			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -205,10 +210,10 @@ Template.jobFields.events({
 		}
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			$('div.enoughBalance').hide();
+			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			$('div.enoughBalance').show();
+			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -238,10 +243,10 @@ Template.jobFields.events({
 		}
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			$('div.enoughBalance').hide();
+			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			$('div.enoughBalance').show();
+			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -260,10 +265,10 @@ Template.jobFields.events({
 		template.find('input[name="freelancer_nets"]').value = totalamount;
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			$('div.enoughBalance').hide();
+			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			$('div.enoughBalance').show();
+			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -282,10 +287,10 @@ Template.jobFields.events({
 		template.find('input[name="freelancer_nets"]').value = freenet;
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			$('div.enoughBalance').hide();
+			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			$('div.enoughBalance').show();
+			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -551,15 +556,18 @@ Template.providerList.helpers({
 })
 
 Template.jobNew.events({
-	'click #pubNew': function(event, template) {
+	'click button.publish': function(event, template) {
+		$(event.currentTarget).button('loading');
 		$('#pubFav').prop('disabled', true);
 		$('#pubInd').prop('disabled', true);
 		if(Session.get('insertError')) {
+			$(event.currentTarget).button('reset');
 			$('#pubFav').prop('disabled', false);
 			$('#pubInd').prop('disabled', false);
 		}
 	},
 	'click .publishToFavs': function(event, template) {
+		$(event.currentTarget).button('loading');
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
  		Session.set('publishToFav', true);
  		Jobs.before.insert(function(userId, doc) {
@@ -569,6 +577,7 @@ Template.jobNew.events({
  			if(!Session.get('publishToFav'))
  				return;
  			if(Session.get('insertError')) {
+ 				$(event.currentTarget).button('reset');
  				$('button.publish').prop('disabled', false);
  				$('button.publishInd').prop('disabled', false);
  				$(event.currentTarget).prop('disabled', false);
@@ -589,6 +598,7 @@ Template.jobNew.events({
  			Meteor.call('publishToFavsUpdate', doc, function(error) {
  				if(error) {
  					toastr.error('Failed to publish job to favorites. Please try again');
+ 					$(event.currentTarget).button('reset');
  				} else {
  					delete Session.keys['publishToFav'];
  				}
@@ -599,15 +609,17 @@ Template.jobNew.events({
 		event.preventDefault();
 	},
 	'click .inviteIndividual': function(event, template) {
+		$(event.currentTarget).button('loading');
 		var individualProvider = $('input[name="individualprovider"]')[0].id;
 		Session.set('publishToIndividual', true);
 		Jobs.before.insert(function(userId, doc) {
-			$(event.target).prop('disabled', true);
+			$(event.currentTarget).prop('disabled', true);
 			$('button.publish').prop('disabled', true);
  			$('button.publishToFavs').prop('disabled', true);
 			if(!Session.get('publishToIndividual'))
 				return;
 			if(Session.get('insertError')) {
+				$(event.currentTarget).button('reset');
 				$('button.publish').prop('disabled', false);
  				$('button.publishToFavs').prop('disabled', false);
  				$(event.currentTarget).prop('disabled', false);
@@ -623,6 +635,7 @@ Template.jobNew.events({
 				return;
 			Meteor.call('publishToIndividualUpdate', doc, function(error) {
 				if(error) {
+					$(event.currentTarget).button('reset');
 					toastr.error('Failed to publish to the individual. Please try again.');
 				} else {
 					delete Session.keys['publishToIndividual'];

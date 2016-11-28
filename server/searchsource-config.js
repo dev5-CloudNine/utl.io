@@ -10,9 +10,9 @@ SearchSource.defineSource('openJobs', function(searchText, options) {
 			{servicelocation: regExp},
 			{readableID: regExp}
 		]};
-		return Jobs.find({$and: [{$and: [{status: 'active'}, {applicationStatus: 'open'}, {invited: false}]}, selector]}, options).fetch();
+		return Jobs.find({$and: [{$and: [{status: 'active'}, {$or: [{applicationStatus: 'open'}, {applicationStatus: 'frozen'}]}, {invited: false}]}, selector]}, options).fetch();
 	} else {
-		return Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'open'}, {invited: false}]}, options).fetch();
+		return Jobs.find({$and: [{status: 'active'}, {$or: [{applicationStatus: 'open'}, {applicationStatus: 'frozen'}]}, {invited: false}]}, options).fetch();
 	}
 });
 
@@ -82,9 +82,9 @@ SearchSource.defineSource('buyerAssignedJobs', function(searchText, options) {
 			{servicelocation: regExp},
 			{readableID: regExp}
 		]};
-		return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'assigned'}, selector]}, options).fetch();
+		return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'assigned'}, {status: 'active'}, selector]}, options).fetch();
 	} else {
-		return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'assigned'}]}, options).fetch();
+		return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'assigned'}, {status: 'active'}]}, options).fetch();
 	}
 })
 
@@ -177,6 +177,11 @@ SearchSource.defineSource('buyersList', function(searchText, options) {
 });
 
 SearchSource.defineSource('dispatchersList', function(searchText, options) {
+	var inviterId;
+	if(Roles.userIsInRole(this.userId, ['buyer']))
+		inviterId = this.userId;
+	else if(Roles.userIsInRole(this.userId, ['dispatcher', 'accountant']))
+		inviterId = Meteor.users.findOne({_id: this.userId}).invitedBy;
 	var options = {sort: {createdAt: -1}, limit: 10};
 	if(searchText) {
 		var regExp = buildRegExp(searchText);
@@ -186,13 +191,18 @@ SearchSource.defineSource('dispatchersList', function(searchText, options) {
 			{location: regExp},
 			{title: regExp}
 		]};
-		return Dispatchers.find(selector, options).fetch();
+		return Dispatchers.find({invitedBy: inviterId}, selector, options).fetch();
 	} else {
-		return Dispatchers.find({}, options).fetch();
+		return Dispatchers.find({invitedBy: inviterId}, options).fetch();
 	}
 });
 
 SearchSource.defineSource('accountantsList', function(searchText, options) {
+	var inviterId;
+	if(Roles.userIsInRole(this.userId, ['buyer']))
+		inviterId = this.userId;
+	else if(Roles.userIsInRole(this.userId, ['dispatcher', 'accountant']))
+		inviterId = Meteor.users.findOne({_id: this.userId}).invitedBy;
 	var options = {sort: {createdAt: -1}, limit: 10};
 	if(searchText) {
 		var regExp = buildRegExp(searchText);
@@ -202,9 +212,9 @@ SearchSource.defineSource('accountantsList', function(searchText, options) {
 			{location: regExp},
 			{title: regExp}
 		]};
-		return Accountants.find(selector, options).fetch();
+		return Accountants.find({invitedBy: inviterId}, selector, options).fetch();
 	} else {
-		return Accountants.find({}, options).fetch();
+		return Accountants.find({invitedBy: inviterId}, options).fetch();
 	}
 });
 

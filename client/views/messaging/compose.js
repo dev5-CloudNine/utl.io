@@ -77,6 +77,12 @@ Template.compose.events({
         if(param.substr(0,9) == 'newdismsg') {
             message.subject = $('#subject').val();
         }
+        if(param.substr(0,9) == 'newpromsg') {
+            message.subject = $('#subject').val();
+        }
+        if(param.substr(0,9) == 'newbyrmsg') {
+            message.subject = $('#subject').val();
+        }
 
     	message.chain = chain;
         Meteor.call("postMessage", message, function(err, res) {
@@ -240,7 +246,6 @@ Template.compose.helpers({
     },
     type: function() {
     	var param = Router.current().params.tab;
-        console.log(param)
     	if(param == 'new')
     		return 'new';
     	else if(param.substr(0,6) == 'newrep')
@@ -255,6 +260,10 @@ Template.compose.helpers({
             return 'newaccmsg';
         else if(param.substr(0,9) == 'newdismsg')
             return 'newdismsg';
+        else if(param.substr(0,9) == 'newpromsg')
+            return 'newpromsg';
+        else if(param.substr(0.9) == 'newbyrmsg')
+            return 'newbyrmsg';
     	else 
     		return 'newfwd'; 
     },
@@ -406,5 +415,21 @@ Template.compose.helpers({
             disName: dispatcher.firstName + ' ' + dispatcher.lastName
         }
         return dispatcherDetails;
+    },
+    proRecipient: function() {
+        var provider = Profiles.findOne({userId: Router.current().params.query.userId});
+        var providerDetails = {
+            proUserId: Router.current().params.query.userId,
+            proName: provider.firstName + ' ' + provider.lastName
+        }
+        return providerDetails;
+    },
+    byrRecipient: function() {
+        var buyer = Buyers.findOne({userId: Router.current().params.query.userId});
+        var buyerDetails = {
+            byrUserId: Router.current().params.query.userId,
+            byrName: buyer.firstName + ' ' + buyer.lastName
+        }
+        return buyerDetails;
     }
 });

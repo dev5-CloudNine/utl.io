@@ -1,7 +1,7 @@
 <template name="assignJob">
     <div class="row">
         <div class="col-sm-12">
-            <h5>You are routing this job to {{#with selectedProvider}}<a href="{{pathFor 'profile'}}">{{this.firstName}} {{this.lastName}}.</a> A notification will be sent to the provider to either confirm or reject the routed job.{{/with}}</h5>
+            <h5>You are routing this job to {{#with selectedProvider}}<a href="{{pathFor 'profile'}}">{{this.firstName}} {{this.lastName}}.</a> A notification will be sent to the provider to either apply or counter offer the routed job.{{/with}} <br>Upon publish, your account will be debited with proposed budget. <br>You may edit the job and change the budget until the job is assigned to a provider. Once assigned you cannot edit.</h5>
             <br>
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -10,7 +10,7 @@
                 <div class="panel-body">
                     {{#autoForm id="inviteJob" collection="Jobs" type="insert"}}
                         {{>jobFields}}
-                        <div class="form-group">
+                        <div class="form-group" hidden="true">
                             <input type="text" name="individualprovider" value="{{providerName}}" id="{{providerId}}" class="form-control" readonly="readonly">
                         </div>
                         <div class="form-group">

@@ -32,7 +32,15 @@
                                 {{#if $eq type 'newdismsg'}}
                                     <label for="recipient" class="col-sm-2 control-label">Recipient</label>
                                 {{else}}
-                                    <label for="subject" class="col-sm-2 control-label">Project</label>
+                                    {{#if $eq type 'newpromsg'}}
+                                        <label for="recipient" class="col-sm-2 control-label">Recipient</label>
+                                    {{else}}
+                                        {{#if $eq type 'newbyrmsg'}}
+                                            <label for="recipient" class="col-sm-2 control-label">Recipient</label>
+                                        {{else}}
+                                            <label for="subject" class="col-sm-2 control-label">Subject</label>
+                                        {{/if}}
+                                    {{/if}}
                                 {{/if}}
                             {{/if}}
                             <div class="col-sm-10">
@@ -66,12 +74,32 @@
                                 {{/if}}
                                 {{#if $eq type 'newaccmsg'}}
                                     {{#with accRecipient}}
-                                        <input type="text" disabled class="form-control" id="recipient" value="{{accUserId}}">
+                                        <select id="recipient" class="form-control" disabled="disabled">
+                                            <option value="{{accUserId}}">{{accName}}</option>
+                                        </select>
+                                        <!-- <input type="text" disabled class="form-control" id="recipient" value="{{accUserId}}"> -->
                                     {{/with}}
                                 {{/if}}
                                 {{#if $eq type 'newdismsg'}}
                                     {{#with disRecipient}}
-                                        <input type="text" disabled class="form-control" id="recipient" value="{{disUserId}}">
+                                        <select id="recipient" class="form-control" disabled="disabled">
+                                            <option value="{{disUserId}}">{{disName}}</option>
+                                        </select>
+                                        <!-- <input type="text" disabled class="form-control" id="recipient" value="{{disUserId}}"> -->
+                                    {{/with}}
+                                {{/if}}
+                                {{#if $eq type 'newpromsg'}}
+                                    {{#with proRecipient}}
+                                        <select id="recipient" class="form-control" disabled>
+                                            <option value="{{proUserId}}">{{proName}}</option>
+                                        </select>
+                                    {{/with}}
+                                {{/if}}
+                                {{#if $eq type 'newbyrmsg'}}
+                                    {{#with byrRecipient}}
+                                        <select id="recipient" class="form-control" disabled>
+                                            <option value="{{byrUserId}}">{{byrName}}</option>
+                                        </select>
                                     {{/with}}
                                 {{/if}}
                             </div>
@@ -83,7 +111,15 @@
                                 {{#if $eq type 'newdismsg'}}
                                     <label for="subject" class="col-sm-2 control-label">Subject</label>
                                 {{else}}
-                                    <label for="to" class="col-sm-2 pull-left control-label">Recipient</label>
+                                    {{#if $eq type 'newpromsg'}}
+                                        <label for="subject" class="col-sm-2 control-label">Subject</label>
+                                    {{else}}
+                                        {{#if $eq type 'newbyrmsg'}}
+                                            <label for="subject" class="col-sm-2 control-label">Subject</label>
+                                        {{else}}
+                                            <label for="to" class="col-sm-2 pull-left control-label">Recipient</label>
+                                        {{/if}}
+                                    {{/if}}
                                 {{/if}}
                             {{/if}}                            
                             <div class="col-sm-10">
@@ -133,6 +169,12 @@
                                     <input type="text" id="subject" class="form-control">
                                 {{/if}}
                                 {{#if $eq type 'newdismsg'}}
+                                    <input type="text" id="subject" class="form-control">
+                                {{/if}}
+                                {{#if $eq type 'newpromsg'}}
+                                    <input type="text" id="subject" class="form-control">
+                                {{/if}}
+                                {{#if $eq type 'newbyrmsg'}}
                                     <input type="text" id="subject" class="form-control">
                                 {{/if}}
                             </div>

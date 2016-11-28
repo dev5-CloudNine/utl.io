@@ -40,7 +40,7 @@ Template.buyer.helpers({
     return Meteor.users.findOne({_id: this.userId}).roles[0];
   },
   buyerCompletedJobs: function() {
-    return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'paid'}, {assignmentStatus: 'paid'}]});
+    return Jobs.find({$and: [{userId: this.userId}, {applicationStatus: 'paid'}]});
   },
   reviews: function() {
     return Reviews.findOne({$and: [{buyerId: this.userId}, {reviewedBy: 'provider'}, {reviewedJobId: this._id}]});
@@ -109,6 +109,11 @@ Template.buyer.events({
         toastr.error('Failed to activate profile');
       }
     })
+  },
+  'click #sendBuyerMessage': function(event, template) {
+    event.preventDefault();
+    Router.go('/mailbox/newbyrmsg?userId=' + this.userId);
+    event.stopPropagation();
   }
 });
 

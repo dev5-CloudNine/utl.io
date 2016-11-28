@@ -35,7 +35,7 @@ h3, h4 {
   background-size: 100%;
   background-color: #f2f2f2 !important;
   background-repeat: no-repeat;
-  background: url('images/glossy.png');
+  background: url('images/background_1.jpg');
 }
 
 #home-wrapper {
@@ -532,7 +532,7 @@ div.pub-disc .comments-box .actions {
   color: white !important;
 }
 .gradient-red-orange-h {
-    background: url("images/glossy.png") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
+    background: url("images/background_1.jpg") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
   }
 
 .white {
@@ -1103,7 +1103,7 @@ ul.customers {
   overflow: scroll;
 }
 .well-balance {
-  background-color: #097500 !important;
+  background-color: #000 !important;
   color: #fff !important;
 }
 

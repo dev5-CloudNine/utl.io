@@ -25,6 +25,11 @@ Template.profileSmall.events({
 			}
 		});
 		event.stopPropagation();
+	},
+	'click #sendProviderMessage': function(event, template) {
+		event.preventDefault();
+		Router.go('/mailbox/newpromsg?userId=' + this.userId);
+		event.stopPropagation();
 	}
 });
 

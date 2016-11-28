@@ -1,13 +1,13 @@
 if (Meteor.isServer) {
     var dwolla = Npm.require('dwolla-v2');
     var client = new dwolla.Client({
-        id: 'ZmpgXecJaqy6SvIyNGXRKbK9nu2Z8nuygdXISYAecyfr86ugBb',
-        secret: 'tIMzVgt95AyXhFf2RHZnoIunQQHN8RWVBvvSHKKaY8kF5ZqzAd',
+        id: 'Ljykx8wFK86txAIl6fFys7IP0G6YeH7S7HLqaDSXq66TUWqEC3',
+        secret: '3pBbbQRTbe7UkJ62VjYkmzGEW5fIB7O5aCz8LAWTHf1PJNMpeb',
         environment: 'sandbox'
     });
     var request = Npm.require('request');
     var auth;
-    var redirect_uri = 'https://utl-59972.onmodulus.net/oauth_return';
+    var redirect_uri = 'http://localhost:3000/oauth_return';
     var Future = Npm.require('fibers/future');
     Meteor.methods({
         'authUrl': function(userId) {
@@ -105,16 +105,16 @@ if (Meteor.isServer) {
                     'type': dwolla_req_object.account_type,
                     'name': dwolla_req_object.firstName + ' FSRC'
                 };
-                accountToken.post(customerUrl + '/funding-sources', fundObj).then(function(res) {
-                    var Fiber = Npm.require('fibers');
-                    Fiber(function() {
-                        var dwollaFundingSource = res.headers._headers;
-                        dwollaFundingSource['updated_on'] = new Date();
-                        Wallet.upsert({userId: reqdUserId}, {$set: {dwollaFundingSource: dwollaFundingSource, banc_account_number: dwolla_req_object.account_no, routing_number: dwolla_req_object.routing_no, account_type: dwolla_req_object.account_type}});
-                    }).run();
-                }, function(err) {
-                    console.log(err)
-                });
+                // accountToken.post(customerUrl + '/funding-sources', fundObj).then(function(res) {
+                //     var Fiber = Npm.require('fibers');
+                //     Fiber(function() {
+                //         var dwollaFundingSource = res.headers._headers;
+                //         dwollaFundingSource['updated_on'] = new Date();
+                //         Wallet.upsert({userId: reqdUserId}, {$set: {dwollaFundingSource: dwollaFundingSource, bank_account_number: dwolla_req_object.account_no, routing_number: dwolla_req_object.routing_no, account_type: dwolla_req_object.account_type}});
+                //     }).run();
+                // }, function(err) {
+                //     console.log(err)
+                // });
             }, function(err) {
                 console.log('Create Customer error');
                 console.log(err.body._embedded);
@@ -215,13 +215,14 @@ if (Meteor.isServer) {
                 };
             }
             if(Roles.userIsInRole(reqdUserId, ['buyer'])) {
+                console.log(obj._links.account.href)
                 requestBody = {
                     _links: {
                         source: {
                             href: customerFSUrl
                         },
                         destination: {
-                            href: afsUrl
+                            href: obj._links.account.href
                         }
                     },
                     amount: {
@@ -240,7 +241,8 @@ if (Meteor.isServer) {
             payReqFut.wait();
             return payReqFut.value;
         },
-        'genIavToken': function() {
+        'genIavToken': function(customerUrl) {
+            console.log(customerUrl)
             var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
             var obj = Wallet.findOne({userId: adminId});
             if(!obj) {
@@ -249,11 +251,16 @@ if (Meteor.isServer) {
             }
             var accountToken = new client.Token({access_token: obj.access_token});
             var fut = new Future();
-            accountToken.post('https://api-uat.dwolla.com/customers/069bdfad-a192-4998-9502-7524bd5cf539/iav-token').then(function(res) {
-                console.log(res);
+            accountToken.post(customerUrl + '/iav-token').then(function(res) {
+                fut.return(res)
             }, function(err) {
                 console.log(err);
-            })
+            });
+            fut.wait();
+            return fut.value;
+        },
+        'setFundingSourceInWallet': function(fundingSourceURL, userId) {
+            Wallet.update({userId: userId}, {$set: {fundingSourceUrl: fundingSourceURL}})
         },
         'getFundingSource': function() {
             var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;

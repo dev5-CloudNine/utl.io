@@ -74,10 +74,10 @@
                                             <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="{{pathFor 'addTeam'}}">Invite</a></li>
                                     <li id="user-drop-down" class="dropdown">
                                         <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Team <span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu">
+                                            <li><a href="{{pathFor 'addTeam'}}">Invite</a></li>
                                             <li><a href="{{pathFor 'dispatchers'}}">Dispatchers</a></li>
                                             <li><a href="{{pathFor 'accountants'}}">Accountants</a></li>
                                         </ul>
@@ -149,7 +149,7 @@
                                     <li><a href="{{pathFor 'accountantNew'}}">Create your Profile</a></li>
                                 {{/if}}
                             {{/if}}
-                            {{#if isInRole 'provider, corporate-provider'}}
+                            {{#if isInRole 'provider'}}
                                 {{#if currentUser.isDeveloper}}
                                     <li>
                                         <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
@@ -157,14 +157,13 @@
                                     <li id="user-drop-down" class="dropdown">
                                         <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Jobs <span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'jobs'}}">All Jobs</a></li>
-                                            <li><a href="{{pathFor 'recommendedJobs'}}">Recommended Jobs</a></li>
+                                            <li><a href="{{pathFor 'jobs'}}"><span class="badge pull-right">{{openJobsCount}}</span> Open Jobs</a></li>
+                                            <li><a href="{{pathFor 'recommendedJobs'}}"><span class="badge pull-right">{{recommendedJobsCount}}</span>Recommended Jobs</a></li>
+                                            <li><a href="{{pathFor 'invitedJobs'}}"><span class="badge pull-right">{{invitedJobsCount}}</span> Routed</a></li>
                                             <li class="divider" role="seperator"></li>
                                             <li class="dropdown-header">My Jobs</li>
                                             <li><a href="{{pathFor 'providerAllJobs'}}"><span class="badge pull-right">{{providerAllCount}}</span> All</a></li>
-                                            <li><a href="{{pathFor 'invitedJobs'}}"><span class="badge pull-right">{{invitedJobsCount}}</span> Invited Jobs</a></li>
                                             <li><a href="{{pathFor 'appliedJobs'}}"><span class="badge pull-right">{{appliedJobsCount}}</span> Applied </a></li>
-                                            <li><a href="{{pathFor 'providerRoutedJobs'}}"><span class="badge pull-right">{{routedJobsCount}}</span> Routed</a></li>
                                             <li><a href="{{pathFor 'providerAssignedJobs'}}"><span class="badge pull-right">{{assignedJobsCount}}</span> Assigned</a></li>
                                             <li><a href="{{pathFor 'providerPaidJobs'}}"><span class="badge pull-right">{{proPaidJobsCount}}</span> Paid</a></li>
                                         </ul>
@@ -306,10 +305,10 @@
         <a class="dropdown-toggle box-user-option" style="margin-top: 8px;" data-toggle="dropdown" href="#">
             <i class="fa fa-bell fa-fw"></i>
             ({{#if isInRole 'buyer, dispatcher'}}
-                {{bNotificationCount}}
+                {{buyerNotificationCount currentUser._id}}
             {{else}}
                 {{#if isInRole 'provider'}}
-                    {{pNotificationCount}}
+                    {{providerNotificationCount currentUser._id}}
                 {{else}}
                     {{#if isInRole 'admin'}}
                         {{adminNotificationCount}}
@@ -340,6 +339,6 @@
         </ul>
     </li>
     <li>
-        <a href="{{pathFor 'mailBox' tab="mails"}}" style="margin-top: 8px;"><i class="fa fa-envelope"></i>&nbsp;({{unreadMessageCount}})</a>
+        <a href="{{pathFor 'mailBox' tab="mails"}}" style="margin-top: 8px;"><i class="fa fa-envelope"></i>&nbsp;({{unreadMsgCount currentUser._id}})</a>
     </li>
 </template>

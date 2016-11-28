@@ -9,6 +9,7 @@ Template.providerAllJobs.helpers({
 	    var completedJobs = providerDetails.completedJobs;
 	    var paymentPendingJobs = providerDetails.paymentPendingJobs;
 	    var paidJobs = providerDetails.paidJobs;
+	    var deactivatedJobs = providerDetails.deactivatedJobs;
 	    var archivedJobs = providerDetails.archivedJobs;
 	    if(appliedJobs) {
 	    	for(var i = appliedJobs.length - 1; i >= 0; i--) {
@@ -43,6 +44,11 @@ Template.providerAllJobs.helpers({
 	    if(archivedJobs) {
 	    	for(var i = archivedJobs.length - 1; i >= 0; i--) {
 	    		allJobIds.push(archivedJobs[i]);
+	    	}
+	    }
+	    if(deactivatedJobs) {
+	    	for(var i = deactivatedJobs.length - 1; i >= 0; i--) {
+	    		allJobIds.push(deactivatedJobs[i]);
 	    	}
 	    }
 	    allJobIds.forEach(function(jobId) {
@@ -137,6 +143,13 @@ Template.providerAllJobs.helpers({
 		var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
 		if(invJobIds) {
 			return invJobIds.length;
+		}
+		return 0;
+	},
+	proDeactivatedCount: function() {
+		var deactivatedJobs = Profiles.findOne({userId: Meteor.userId()}).deactivatedJobs;
+		if(deactivatedJobs) {
+			return deactivatedJobs.length;
 		}
 		return 0;
 	}

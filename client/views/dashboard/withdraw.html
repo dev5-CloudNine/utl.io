@@ -3,21 +3,40 @@
 	<div class="panel panel-default">
 		<div class="panel-body">
 			{{#if dwollaCustomer}}
-				<form id="requestDwollaPay">
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-							<div class="form-group">
-								<input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" class="form-control" step="0.01" id="requestAmount" placeholder="Enter Amount To Withdraw" min="1" required><br>
-								<button type="submit" class="btn btn-primary btn-sm submitWithdrawReq" disabled="true">Submit</button>
+				{{#if fundingSourceUrl}}
+					<form id="requestDwollaPay">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								<div class="form-group">
+									<input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" class="form-control" step="0.01" id="requestAmount" placeholder="Enter Amount To Withdraw" min="1" required><br>
+									<button type="submit" class="btn btn-primary btn-sm submitWithdrawReq" disabled="true">Submit</button>
+								</div>
 							</div>
 						</div>
-					</div>
-				</form>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				    <div class="alert alert-info enoughBalance" hidden>
-		                <strong>You don't have sufficient account balance to make this request.</strong>
-		            </div>
-		        </div>
+						<div id="spinner">
+							{{>spinner}}
+						</div>
+					</form>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					    <div class="alert alert-info enoughBalance" hidden>
+			                <strong>You don't have sufficient account balance to make this request.</strong>
+			            </div>
+			        </div>
+		        {{else}}
+		        	<div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <script src="https://cdn.dwolla.com/1/dwolla.js"></script>
+                                <button class="btn btn-primary btn-sm startIav">Initiate Account Verification</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div id="initiateProIav"></div>
+                        </div>
+                    </div>
+		        {{/if}}
 		    {{else}}
 		    	<h4>Create Dwolla Account</h4>
 		    	{{#if currentUser.isDeveloper}}

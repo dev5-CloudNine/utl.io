@@ -17,7 +17,8 @@
 								<br>
 								{{#if $eq this.status 'active'}}
 									<a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-send"></i>&nbsp;Route Job</a>
-									<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Del Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</a>
+									<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Del Fav{{else}}Add Fav{{/if}}</a>
+									<a href="" class="btn btn-xs btn-primary" id="sendProviderMessage">Send Msg</a>
 								{{else}}
 									<p class="label label-deactivated">Inactive</p>
 								{{/if}}
@@ -47,11 +48,12 @@
 							<i class="fa fa-mobile"></i> {{smsAddress}}
 							<hr>
 							{{#with dwollaFundingSource}}
-								<i class="fa fa-credit-card"></i> Account No: {{this.accountNumber}} <br>
-								<i class="fa fa-university"></i> Routing No: {{this.routingNumber}} <br>
-								<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.bankAccountType}}
+								<i class="fa fa-credit-card"></i> Account No: {{this.bank_account_number}} <br>
+								<i class="fa fa-university"></i> Routing No: {{this.routing_number}} <br>
+								<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.account_type}} <br>
+								<i class="fa fa-credit-card"></i> SSN: {{this.socialSecurityNo}}
 							{{/with}}
-							<a href="{{url}}">{{url}}</a>
+							{{url}}
 						{{/if}}
 					</div>
 					<div class="col-sm-9">

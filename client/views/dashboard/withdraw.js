@@ -25,9 +25,15 @@ Template.withdraw.helpers({
 	},
 	dwollaCustomer: function() {
 		var userWallet = Wallet.findOne({userId: Meteor.userId()});
-		if(userWallet.dwollaCustomer && userWallet.dwollaFundingSource) {
+		if(userWallet.dwollaCustomer) {
 			return true;
 		}
+		return false;
+	},
+	fundingSourceUrl: function() {
+		var userWallet = Wallet.findOne({userId: Meteor.userId()});
+		if(userWallet.fundingSourceUrl)
+			return true;
 		return false;
 	}
 });
@@ -89,6 +95,7 @@ Template.withdraw.events({
 	},
 	'submit #requestDwollaPay': function(event, template) {
 		event.preventDefault();
+		$('#spinner').show();
 		$('.submitWithdrawReq').prop('disabled', true);
 		var walletDetails = Wallet.findOne({userId: Meteor.userId()});
 		var reqAmount = $('input#requestAmount').val()
@@ -98,19 +105,40 @@ Template.withdraw.events({
 			return;
 		} else {
 			$('.enoughBalance').hide();
-			var fundingSourceUrl = walletDetails.dwollaFundingSource.location[0];
+			var fundingSourceUrl = walletDetails.fundingSourceUrl;
 			Meteor.call('initiatePayment', fundingSourceUrl, Meteor.userId(), reqAmount, function(error, result) {
 				if(error) {
 					console.log(error);
 				} else {
 					Meteor.call('updateWalletAfterTransfer', reqAmount, Meteor.userId());
-					var transferUrl = result._headers.location[0];
-					var n = transferUrl.lastIndexOf('/');
-					var transferId = transferUrl.substring(n + 1);
-					Router.go('transferDetails', {id: transferId});
 					$('.submitWithdrawReq').prop('disabled', false);
+					$('#spinner').hide();
+					$('input#requestAmount').val('');
 				}
 			})
 		}
+	},
+	'click .startIav': function(event, template) {
+		event.preventDefault();
+		var customerUrl = Wallet.findOne({userId: Meteor.userId()}).dwollaCustomer.location[0];
+		Meteor.call('genIavToken', customerUrl, function(error, result) {
+			if(!error) {
+				var iavToken = result.body.token;
+				dwolla.config.dwollaUrl = 'https://uat.dwolla.com';
+				dwolla.configure('uat');
+                dwolla.iav.start('initiateProIav', iavToken, function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    } else {
+                    	var fundingSourceUrl = res._links['funding-source'].href;
+                        Meteor.call('setFundingSourceInWallet', fundingSourceUrl, Meteor.userId());
+                    }
+                })
+			}
+		})
 	}
-})
+});
+
+Template.withdraw.rendered = function() {
+	$('#spinner').hide();
+}

@@ -78,5 +78,12 @@ Template.invitedJobs.helpers({
 			return invJobIds.length;
 		}
 		return 0;
+	},
+	proDeactivatedCount: function() {
+		var deactivatedJobs = Profiles.findOne({userId: Meteor.userId()}).deactivatedJobs;
+		if(deactivatedJobs) {
+			return deactivatedJobs.length;
+		}
+		return 0;
 	}
 });

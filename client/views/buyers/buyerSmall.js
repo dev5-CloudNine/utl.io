@@ -24,6 +24,11 @@ Template.buyerSmall.events({
 			}
 		});
 		event.stopPropagation();
+	},
+	'click #sendBuyerMessage': function(event, template) {
+		event.preventDefault();
+		Router.go('/mailbox/newbyrmsg?userId=' + this.userId);
+		event.stopPropagation();
 	}
 });
 

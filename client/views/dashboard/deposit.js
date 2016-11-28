@@ -66,9 +66,15 @@ Template.deposit.helpers({
 	previousDepositOptions: previousDepositOptions,
 	dwollaCustomer: function() {
 		var userWallet = Wallet.findOne({userId: Meteor.userId()});
-		if(userWallet.dwollaCustomer && userWallet.dwollaFundingSource) {
+		if(userWallet.dwollaCustomer) {
 			return true;
 		}
+		return false;
+	},
+	fundingSourceUrl: function() {
+		var userWallet = Wallet.findOne({userId: Meteor.userId()});
+		if(userWallet.fundingSourceUrl)
+			return true;
 		return false;
 	},
 	customerTransfers: function() {
@@ -139,7 +145,7 @@ Template.deposit.events({
 		$('.submitWithdrawReq').prop('disabled', true);
 		var reqAmount = $('input#requestAmount').val()
 		$('.enoughBalance').hide();
-		var fundingSourceUrl = walletDetails.dwollaFundingSource.location[0];
+		var fundingSourceUrl = walletDetails.fundingSourceUrl;
 		Meteor.call('initiatePayment', fundingSourceUrl, Meteor.userId(), reqAmount, function(error, result) {
 			if(error) {
 				console.log(error);
@@ -150,6 +156,25 @@ Template.deposit.events({
 				var transferId = transferUrl.substring(n + 1);
 				Router.go('transferDetails', {id: transferId});
 				$('.submitWithdrawReq').prop('disabled', false);
+			}
+		})
+	},
+	'click .startIav': function(event, template) {
+		event.preventDefault();
+		var customerUrl = Wallet.findOne({userId: Meteor.userId()}).dwollaCustomer.location[0];
+		Meteor.call('genIavToken', customerUrl, function(error, result) {
+			if(!error) {
+				var iavToken = result.body.token;
+				dwolla.config.dwollaUrl = 'https://uat.dwolla.com';
+				dwolla.configure('uat');
+                dwolla.iav.start('initiateIav', iavToken, function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    } else {
+                    	var fundingSourceUrl = res._links['funding-source'].href;
+                        Meteor.call('setFundingSourceInWallet', fundingSourceUrl, Meteor.userId());
+                    }
+                })
 			}
 		})
 	}

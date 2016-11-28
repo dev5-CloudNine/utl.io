@@ -14,6 +14,23 @@
 									<a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a>
 								{{/unless}}
 							{{/if}}
+							{{#if isInRole 'dispatcher'}}
+								{{#unless currentUser.isDispatcher}}
+									<a href="{{pathFor 'dispatcherNew'}}">Create Dispatcher Profile</a>
+								{{else}}
+									<a href="{{pathFor 'jobNew'}}">Post a Job</a>&nbsp;&#124;&nbsp;
+									{{#with dispatcher}}<a href="{{pathFor 'dispatcher'}}">My Profile</a>{{/with}}&nbsp;&#124;&nbsp;
+									<a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a>
+								{{/unless}}
+							{{/if}}
+							{{#if isInRole 'accountant'}}
+								{{#unless currentUser.isAccountant}}
+									<a href="{{pathFor 'accountantNew'}}">Create Accountant Profile</a>
+								{{else}}
+									{{#with accountant}}<a href="{{pathFor 'accountant'}}">My Profile</a>{{/with}}&nbsp;&#124;&nbsp;
+									<a href="{{pathFor 'mailBox' tab="mails"}}">View Msgs</a>
+								{{/unless}}
+							{{/if}}
 							{{#if isInRole 'provider'}}
 								{{#unless currentUser.isDeveloper}}
 									<a href="{{pathFor 'profileNew'}}">Create Provider Profile</a>

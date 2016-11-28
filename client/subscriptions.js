@@ -7,7 +7,8 @@ Meteor.subscribe('corporates');
 Meteor.subscribe("jobCount");
 Meteor.subscribe('providers');
 Meteor.subscribe('buyers');
-Meteor.subscribe('dispatchers')
+Meteor.subscribe('dispatchers');
+Meteor.subscribe('accountants');
 Meteor.subscribe("developerCount");
 Meteor.subscribe("userList");
 Meteor.subscribe('categories');

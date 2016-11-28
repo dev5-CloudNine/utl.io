@@ -364,7 +364,7 @@ Meteor.methods({
             to: getUserEmail(Meteor.users.findOne({_id: buyerId})),
             cc: buyerDetails.smsAddress,
             from: FROM_EMAIL,
-            subject: 'Provider has confirmed assignment.',
+            subject: 'Provider has confirmed to do the job.',
             html: 'Hello ' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ', <br>' + providerDetails.firstName + ' ' + providerDetails.lastName + ' has confirmed the assignment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId + '/') + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>The job is now assigned.'
         });
     },
@@ -389,6 +389,8 @@ Meteor.methods({
             adminRead: false
         }
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {applicationStatus: 'open', 'applications.$.app_status': 'declined'}});
+        Profiles.update({userId: userId}, {$addToSet: {declinedJobs: jobId}});
+        Profiles.update({userId: userId}, {$pull: {appliedJobs: jobId}});
         if(jobDetails.routed) {
             Profiles.update({userId: userId}, {$pull: {routedJobs: jobId}});
             Jobs.update({_id: jobId}, {$unset: {routed: '', selectedProvider: ''}});
@@ -399,9 +401,12 @@ Meteor.methods({
             to: getUserEmail(Meteor.users.findOne({_id: jobDetails.userId})),
             cc: buyerDetails.smsAddress,
             from: FROM_EMAIL,
-            subject: 'Provider has declined assignment.',
+            subject: 'Provider has declined to do the job.',
             html: 'Hello ' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ',<br>' + providerDetails.firstName + ' ' + providerDetails.lastName + ' has declined the assignment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>The job is now open. <a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to choose a different provider.'
         })
+    },
+    requestBonus: function(jobId) {
+        Jobs.update({_id: jobId}, {$set: {bonusRequested: true}});
     },
     submitAssignment: function(jobId) {
         var providerDetails = Profiles.findOne({userId: Meteor.userId()});
@@ -477,7 +482,7 @@ Meteor.methods({
             cc: providerDetails.smsAddress,
             from: FROM_EMAIL,
             subject: 'Buyer has approved your assignment.',
-            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has approved the job you submitted.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to raise an invoice and request for payment.'
+            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has approved the job you submitted.'
         });
     },
     rejectAssignment: function(jobId) {
@@ -537,8 +542,8 @@ Meteor.methods({
                 to: getUserEmail(Meteor.users.findOne({_id: job.favoriteProviders[i]})),
                 cc: providerDetails.smsAddress,
                 from: FROM_EMAIL,
-                subject: 'A buyer has invited to bid on his job.',
-                html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">' + job.readableID + ' - ' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
+                subject: 'You have a new routed job.',
+                html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has routed a job to you.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">ID: ' + job.readableID + '<br>' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
             })
         }
     },
@@ -863,11 +868,74 @@ Meteor.methods({
     removeResumeURL: function(id, url) {
         Meteor.users.update({_id: id}, {$pull: {resumeURL: {file_url: url}}});
     },
-    deactivateJob: function(jobId) {
-        Jobs.update({_id: jobId}, {$set: {status: 'deactivated', applicationStatus: 'deactivated'}});
+    deactivateJob: function(jobId, buyerId) {
+        Jobs.update({_id: jobId}, {$set: {status: 'deactivated'}});
+        var jobDetails = Jobs.findOne({_id: jobId});
+        if(jobDetails.applicationStatus == 'open' || jobDetails.applicationStatus == 'frozen') {
+            if(jobDetails.applications) {
+                for(var i = 0; i < jobDetails.applications.length; i++) {
+                    Profiles.update({userId: jobDetails.applications[i].userId}, {$pull: {appliedJobs: jobId}});
+                    Profiles.update({userId: jobDetails.applications[i].userId}, {$addToSet: {deactivatedJobs: jobId}});
+                }
+            }
+        }
+        if(jobDetails.applicationStatus == 'assigned') {
+            Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {assignedJobs: jobId}});
+            Profiles.update({userId: jobDetails.assignedProvider}, {$addToSet: {deactivatedJobs: jobId}});
+        }
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        var totalFromClient = jobDetails.totalfromclient;
+        Wallet.update({userId: buyerId}, {$inc: {accountBalance: totalFromClient}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: -totalFromClient}});
+        var notificationObj = {
+            buyerId: buyerId,
+            jobId: jobId,
+            timeStamp: new Date(),
+            notificationType: 'jobDeactivated',
+            side: 'provider',
+            read: false,
+            adminRead: false
+        };
+        Notifications.insert(notificationObj);
     },
-    activateJob: function(jobId) {
-        Jobs.update({$and: [{_id: jobId}, {status: 'deactivated'}]}, {$set: {status: 'active', applicationStatus: 'open'}});
+    // activateJob: function(jobId) {
+    //     var jobDetails = Jobs.findOne({_id: jobId});
+    //     var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+    //     Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: -jobDetails.totalfromclient}});
+    //     Wallet.update({userId: adminId}, {$inc: {accountBalance: jobDetails.totalfromclient}});
+    //     Jobs.update({$and: [{_id: jobId}, {status: 'deactivated'}]}, {$set: {status: 'active'}});
+    // },
+    pay30Usd: function(buyerPays, adminGets, providerGets, assignedProvider, buyerId, jobId) {
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        Wallet.update({userId: buyerId}, {$inc: {accountBalance: -buyerPays}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: adminGets}});
+        Wallet.update({userId: assignedProvider}, {$inc: {accountBalance: providerGets}});
+        Jobs.update({_id: jobId}, {$set: {paid30Usd: true}});
+        var notificationObj = {
+            jobId: jobId,
+            buyerId: buyerId,
+            providerId: assignedProvider,
+            timeStamp: new Date(),
+            notificationType: 'paid30Usd',
+            side: 'provider',
+            read: false,
+            adminRead: false
+        };
+        Notifications.insert(notificationObj);
+    },
+    deny30Usd: function(jobId) {
+        var jobDetails = Jobs.findOne({_id: jobId});
+        Jobs.update({_id: jobId}, {$set: {denied30Usd: true}});
+        var notificationObj = {
+            jobId: jobId,
+            buyerId: jobDetails.userId,
+            providerId: jobDetails.assignedProvider,
+            timeStamp: new Date(),
+            notificationType: 'denied30Usd',
+            side: 'provider',
+            read: false,
+            adminRead: false
+        }
     },
     saveReceipt : function(data) {
         return Transactions.insert(data);

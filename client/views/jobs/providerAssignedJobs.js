@@ -3,7 +3,7 @@ Template.providerAssignedJobs.helpers({
 		var assignedJobIds = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
 		var assignedJobs = [];
 		if(assignedJobIds) {
-			for(var i = 0; i < assignedJobIds.length; i++) {
+			for(var i = assignedJobIds.length - 1; i >= 0; i--) {
 				assignedJobs.push(Jobs.findOne({_id: assignedJobIds[i]}));
 			}
 			return assignedJobs;
@@ -96,6 +96,13 @@ Template.providerAssignedJobs.helpers({
 		var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
 		if(invJobIds) {
 			return invJobIds.length;
+		}
+		return 0;
+	},
+	proDeactivatedCount: function() {
+		var deactivatedJobs = Profiles.findOne({userId: Meteor.userId()}).deactivatedJobs;
+		if(deactivatedJobs) {
+			return deactivatedJobs.length;
 		}
 		return 0;
 	}
