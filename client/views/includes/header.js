@@ -207,11 +207,13 @@ Template.headerUserMenu.events({
   }
 });
 
-Template.headerUserMenu.onRendered(function(){
+Template.headerUserMenu.rendered = function() {
   this.$('.dropdown-toggle').dropdown();
   Meteor.subscribe('allJobs')
-  var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
-  Meteor.subscribe('recommendedJobs', jobCategories);
+  if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+    var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
+    Meteor.subscribe('recommendedJobs', jobCategories);
+  }
   Meteor.subscribe('notifications', Meteor.userId());
   Meteor.subscribe('notificationsJobs', Meteor.userId());
-});
+}

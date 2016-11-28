@@ -162,7 +162,7 @@ Router.map(function() {
         waitOn: function() {
             Meteor.subscribe('reviews');
             Meteor.subscribe('usersTasks');
-            Meteor.suscribe('providerDeactivatedJobs');
+            Meteor.subscribe('providerDeactivatedJobs');
             return Meteor.subscribe('userWallet', Meteor.userId());
         }
     })
