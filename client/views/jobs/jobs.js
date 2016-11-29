@@ -13,23 +13,26 @@ var options = {
 };
 var fields = ['title', 'location', 'jobtype', 'jobSubCategory', 'servicelocation', 'readableID'];
 
-JobSearch = new SearchSource('openJobs', fields, options);
+// JobSearch = new SearchSource('openJobs', fields, options);
 
 Template.jobs.helpers({
     openJobs: function() {
-        return JobSearch.getData({$and: [{invited: false}, {routed: false}]}, {
+        return Jobs.find({$and: [{invited: false}, {routed: false}]}, {
             sort: {createdAt: -1}
-        });
+        })
+        // return JobSearch.getData({$and: [{invited: false}, {routed: false}]}, {
+        //     sort: {createdAt: -1}
+        // });
     }
 });
 
-Template.jobs.rendered = function() {
-    JobSearch.search('');
-};
+// Template.jobs.rendered = function() {
+//     JobSearch.search('');
+// };
 
-Template.jobs.events({
-    'keyup #search-box': _.throttle(function(e) {
-        var text = $(e.target).val().trim();
-        JobSearch.search(text);
-    }, 200)
-})
+// Template.jobs.events({
+//     'keyup #search-box': _.throttle(function(e) {
+//         var text = $(e.target).val().trim();
+//         JobSearch.search(text);
+//     }, 200)
+// })

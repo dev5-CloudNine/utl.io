@@ -3,13 +3,14 @@
 		<div class="col-sm-12">
 			<p>My Jobs: 
 				<a href="{{pathFor 'providerAllJobs'}}">All - {{providerAllCount}}</a> &#124;
-				Applied - {{appliedJobsCount}} &#124;
-				<a href="{{pathFor 'providerAssignedJobs'}}">Assigned - {{assignedJobsCount}}</a> &#124;<a href="{{pathFor 'providerPaidJobs'}}">Paid - {{proPaidJobsCount}}</a> &#124;
+				Applied - {{appliedJobsCount}} &#124; 
+				<a href="{{pathFor 'providerRoutedJobs'}}">Routed - {{routedJobsCount}}</a> &#124; 
+				<a href="{{pathFor 'providerAssignedJobs'}}">Assigned - {{assignedJobsCount}}</a> &#124; <a href="{{pathFor 'providerPaidJobs'}}">Paid - {{proPaidJobsCount}}</a> &#124;
 				<a href="{{pathFor 'providerDeactivatedJobs'}}">Deactivated - {{proDeactivatedCount}}</a>
 			</p>
+			<hr>
 		</div>
 		<div class="col-sm-12">
-			<hr>
 			{{#each appliedJobs}}
 				{{>jobSmall}}
 			{{else}}

@@ -60,17 +60,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
-                <h4>Scheduled Dates of Assigned Jobs</h4>
-                {{>buyerCalendar}}
-            </div>
-        </div>
-        <div class="row">
             <hr>
             {{#with myProfile}}
                 {{>buyerSmall}}
             {{/with}}
-            <div class="col-xs-4 col-sm-4 col-md-8 col-lg-8">
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{>notifications}}
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-xs-4 col-sm-4 col-md-8 col-lg-8">
                 <div class="panel panel-default">
                     <div class="panel-heading ui-draggable-handle">
                         <div class="panel-title-box">
@@ -141,6 +142,12 @@
                         
                     </div>
                 </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>Scheduled Dates of Assigned Jobs</h4>
+                {{>buyerCalendar}}
             </div>
         </div>
     {{/if}}
@@ -157,21 +164,24 @@
                                     <div class="widget-title">Open Jobs</div>
                                 </a>
                                 <div class="widget-subtitle">
-                                    <a href="/invitedJobs">{{routedJobsCount}} Routed</a> &#124; 
+                                    <a href="/invitedJobs">{{invitedJobsCount}} Invited</a> &#124; 
                                     <a href="/recommendedJobs">{{recommendedJobsCount currentUser._id}} Recommended</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <a href="/assignedJobs">
-                                <div class="widget-data">
-                                    <div class="widget-int num-count">{{assignedJobsCount}}</div>
-                                    <div class="widget-title">Assigned Jobs</div>
-                                    <div class="widget-subtitle">Work orders in progress.</div>
+                        <div class="widget widget-default widget-item-icon">                            
+                            <div class="widget-data">
+                                <a href="/appliedJobs">
+                                    <div class="widget-int num-count">{{appliedJobsCount}}</div>
+                                    <div class="widget-title">Applied Jobs</div>
+                                </a>
+                                <div class="widget-subtitle">
+                                    <a href="/routedJobs">{{routedJobsCount}} Routed</a> &#124;
+                                    <a href="/assignedJobs">{{assignedJobsCount}} Assigned</a>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -207,17 +217,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
-                <h4>Scheduled Dates of Assigned Jobs</h4>
-                {{>providerCalendar}}
-            </div>
-        </div>
-        <div class="row">
             <hr>
             {{#with myProfile}}
                 {{>profileSmall}}
             {{/with}}
-            <div class="col-xs-4 col-sm-4 col-md-8 col-lg-8">
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{>notifications}}
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-xs-4 col-sm-4 col-md-8 col-lg-8">
                 <div class="panel panel-default">
                     <div class="panel-heading ui-draggable-handle">
                         <div class="panel-title-box">
@@ -288,6 +299,12 @@
                         
                     </div>
                 </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>Scheduled Dates of Assigned Jobs</h4>
+                {{>providerCalendar}}
             </div>
         </div>
     {{/if}}

@@ -54,7 +54,7 @@
                                         {{/if}} -->
                                         {{#if jobPostedBuyer}}
                                             <span class="pull-right">
-                                                <a href="{{pathFor 'duplicateJob'}}" class="btn btn-primary">Duplicate Job</a>
+                                                <a href="{{pathFor 'duplicateJob'}}" class="btn btn-primary btn-sm">Duplicate Job</a>
                                             </span>
                                         {{/if}}
                                         <span class="label label-default label-xs">ID: {{readableID}}</span> {{>jobLabels}}
@@ -268,7 +268,9 @@
                                                     <a href="{{pathFor 'jobEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>                                                    
                                                 {{/if}}
                                                 {{#if $eq status 'active'}}
-                                                    <button class="btn btn-primary deactivateJob" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Deactivate Job</button>
+                                                    {{#if openFrozenOrAssigned}}
+                                                        <button class="btn btn-primary btn-sm deactivateJob" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Deactivate Job</button>
+                                                    {{/if}}
                                                 {{/if}}
                                             </div>
                                         {{/if}}
@@ -303,16 +305,16 @@
                                 <div id="{{_id}}" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <form class="form-horizontal task-form" role="form" data-id="{{_id}}">
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <label class="control-label col-sm-2" for="taskName">Task</label>
                                                 <div class="col-sm-10">
                                                     <input type="text" class="form-control taskName" readonly value={{taskName}}>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="form-group">
                                                 <label class="control-label col-sm-2" for="taskDesc">Description</label>
                                                 <div class="col-sm-10">
-                                                    <textarea class="form-control taskDesc" readonly>{{taskdescription}}</textarea>
+                                                    <p>{{taskdescription}}</p>
                                                 </div>
                                             </div>
                                             {{#if show jobID}}
@@ -367,7 +369,7 @@
                                                     <label class="control-label col-sm-2"></label>
                                                     <div class="col-sm-2">
                                                         <div class="input-group">
-                                                            <label class="btn btn-primary input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px">
+                                                            <label class="btn btn-primary btn-sm">
                                                                 <input type="file" class="file_bag" accept="{{fileType _id}}"> Upload New
                                                             </label>
 
@@ -385,7 +387,7 @@
                                             {{#if isBuyer}} {{else}}
                                             <div class="form-group">
                                                 <div class="col-sm-offset-2 col-sm-10">
-                                                    <button type="submit" class="btn btn-default submit-task">Update</button>
+                                                    <button type="submit" class="btn btn-primary btn-sm submit-task">Update</button>
                                                 </div>
                                             </div>
                                             {{/if}} {{/if}}
@@ -905,7 +907,10 @@
                                                 <div class="panel panel-white">
                                                     <div class="panel-heading">
                                                         <a href="#user{{this.userId}}" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">{{this.name}}</a>
-                                                        <a href="/profiles/{{this.userId}}" class="pull-right"><i class="fa fa-link"></i></a>
+                                                        <div class="pull-right">
+                                                            <a href="/profiles/{{this.userId}}"><i class="fa fa-link"></i></a>&nbsp;&#124;&nbsp;
+                                                            <a href id="appliedProviderMsg"><i class="fa fa-envelope"></i></a>
+                                                        </div>
                                                     </div>
                                                     <div id="user{{this.userId}}" class="panel-collapse collapse">
                                                         <div class="panel-body">
@@ -1333,14 +1338,13 @@
                                                 {{/with}}
                                             {{else}}
                                                 <hr>
-                                                <label>Rate buyer</label>&nbsp;<span class="rateit"></span>
-                                                <hr>
                                                 <form id="reviewBuyer">
                                                     <div class="form-group">
                                                         <label for="writeReview">Write a review</label>
                                                         <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea>
                                                     </div>
-                                                    <button class="margin-top-5 btn btn-primary" type="submit">Submit</button>
+                                                    <label>Rate buyer</label><br><span class="rateit"></span><br>
+                                                    <button class="margin-top-5 btn btn-primary btn-sm" type="submit">Submit</button>
                                                 </form>
                                                 <!-- <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewClient">Rate &amp; Review Buyer</button>
                                                 <div id="reviewClient" class="panel panel-white panel-collapse collapse">

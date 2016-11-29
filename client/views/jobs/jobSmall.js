@@ -80,6 +80,24 @@ Template.jobSmall.helpers({
 	},
 	buyerReviewDetails: function() {
 		return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]});
+	},
+	tasksTSCompleted: function() {
+		var jobId = this._id;
+		Meteor.subscribe('timeSheet', this._id);
+		var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
+		if(tasksClosed) {
+			return false;
+		}
+		var timeSheetsLogs = TimeSheet.findOne({jobID: jobId});
+		if(!timeSheetsLogs.logs) {
+			return false
+		}
+		if(timeSheetsLogs.logs) {
+			if(timeSheetsLogs.logs.length <= 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 });
 
@@ -113,90 +131,59 @@ Template.jobSmall.events({
 			}
 		});
 	},
-	// 'click button.confirmAssignment': function(event, template) {
-	// 	event.preventDefault();
-	// 	var buyerId = this.userId;
-	// 	var jobId = this._id;
-	// 	Meteor.call('confirmAssignment', jobId, buyerId, function(error) {
-	// 		if(error) {
-	// 			toastr.error('Failed to confirm assignment.');
-	// 		}
-	// 		else {
-	// 			toastr.success('The assignment has been confirmed.');
-	// 		}
-	// 	})
-	// },
-	// 'click button.declineAssignment': function(event, template) {
-	// 	var jobId = this._id;
-	// 	var userId = Meteor.userId();
-	// 	Meteor.call('declineAssignment', jobId, userId, function(error) {
-	// 		if(error) {
-	// 			toastr.error('Failed to decline the assignment.');
-	// 		} else {
-	// 			toastr.success('Successfully declined the assignment.');
-	// 		}
-	// 	});
-	// },
-	// 'click button.submitAssignment': function(event, template) {
-	// 	event.preventDefault();
-	// 	var jobId = this._id;
-	// 	//check for task status
-	// 	var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
-	// 	if(tasksClosed) {
-	// 		toastr.error('Please close all the tasks before submitting the assignment');
-	// 		return;
-	// 	}
+	'click button.confirmAssignment': function(event, template) {
+		event.preventDefault();
+		var buyerId = this.userId;
+		var jobId = this._id;
+		Meteor.call('confirmAssignment', jobId, buyerId, function(error) {
+			if(error) {
+				toastr.error('Failed to confirm assignment.');
+			}
+		})
+	},
+	'click button.declineAssignment': function(event, template) {
+		var jobId = this._id;
+		var userId = Meteor.userId();
+		Meteor.call('declineAssignment', jobId, userId, function(error) {
+			if(error) {
+				toastr.error('Failed to decline the assignment.');
+			}
+		});
+	},
+	'click button.submitAssignment': function(event, template) {
+		event.preventDefault();
+		var jobId = this._id;
+		//check for task status
+		var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
+		if(tasksClosed) {
+			toastr.error('Please close all the tasks before submitting the assignment');
+			return;
+		}
 		
-	// 	Meteor.call('submitAssignment', jobId, function(error) {
-	// 		if(error) {
-	// 			toastr.error('Failed to submit assignment. Please try again.');
-	// 		} else {
-	// 			toastr.success('Successfully submitted the assignment.');
-	// 		}
-	// 	});
-	// },
-	// 'click button.approveAssignment': function(event, template) {
-	// 	event.preventDefault();
-	// 	var jobId = this._id;
-	// 	var providerId = this.assignedProvider;
-	// 	Meteor.call('approveAssignment', jobId, providerId, function(error) {
-	// 		if(error) {
-	// 			toastr.error('Failed to approve assignment. Please try again.');
-	// 		} else {
-	// 			toastr.success('Approved assignment Successfully');
-	// 		}
-	// 	});
-	// },
-	// 'click button.rejectAssignment': function(event, template) {
-	// 	var jobId = this._id;
-	// 	Meteor.call('rejectAssignment', jobId, function(error) {
-	// 		if(error) {
-	// 			toastr.error('Failed to reject assignment. Please try again.');
-	// 		} else {
-	// 			toastr.success('Rejected assignment successfully');
-	// 		}
-	// 	});
-	// },
-	// 'click button.requestPayment': function(event, template) {
-	// 	var jobId = this._id;
-	// 	Meteor.call('requestPayment', jobId, function(error) {
-	// 		if(error) {
-	// 			toastr.error('Failed to request paymet. Pleast try again.');
-	// 		} else {
-	// 			toastr.success('Payment requested successfully.');
-	// 		}
-	// 	})
-	// },
-	// 'click button.approvePayment': function(event, template) {
-	// 	var jobId = this._id;
-	// 	Meteor.call('approvePayment', jobId, function(error) {
-	// 		if(error) {
-	// 			toastr.error('Failed to approve payment. Please try again.');
-	// 		} else {
-	// 			toastr.success('Payment approved successfully.');
-	// 		}
-	// 	})
-	// },
+		Meteor.call('submitAssignment', jobId, function(error) {
+			if(error) {
+				toastr.error('Failed to submit assignment. Please try again.');
+			}
+		});
+	},
+	'click button.approveAssignment': function(event, template) {
+		event.preventDefault();
+		var jobId = this._id;
+		var providerId = this.assignedProvider;
+		Meteor.call('approveAssignment', jobId, providerId, function(error) {
+			if(error) {
+				toastr.error('Failed to approve assignment. Please try again.');
+			}
+		});
+	},
+	'click button.rejectAssignment': function(event, template) {
+		var jobId = this._id;
+		Meteor.call('rejectAssignment', jobId, function(error) {
+			if(error) {
+				toastr.error('Failed to reject assignment. Please try again.');
+			}
+		});
+	},
 	'click button.archiveJob': function(event, template) {
 		var jobId = this._id;
 		Meteor.call('archiveJob', jobId, Meteor.userId(), function(error) {
@@ -207,46 +194,46 @@ Template.jobSmall.events({
 			}
 		});
 	},
-	// 'rated .rateit': function(event, instance) {
-	// 	var rating = $(event.target).rateit('value');
-	// 	instance.ratingPoints.set(rating);
-	// },
-	// 'submit #reviewProvider': function(event, template) {
-	// 	event.preventDefault();
-	// 	var providerId = this.assignedProvider;
-	// 	var buyerId = this.userId;
-	// 	var jobId = this._id;
-	// 	var timeReviewed = new Date();
-	// 	var ratedPoints = Template.instance().ratingPoints.get();
-	// 	var reviewMessage = "";
-	// 	$('textarea[name="reviewMessage"]').each(function() {
-	// 		reviewMessage += $(this).val();
-	// 	})
-	// 	Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
-	// 		if(error) {
-	// 			toastr.error('Failed to submit review. Please try again.');
-	// 		} else {
-	// 			toastr.success('Submitted the review successfully.');
-	// 		}
-	// 	})
-	// },
-	// 'submit #reviewBuyer': function(event, template) {
-	// 	event.preventDefault();
-	// 	var providerId = this.assignedProvider;
-	// 	var buyerId = this.userId;
-	// 	var jobId = this._id;
-	// 	var timeReviewed = new Date();
-	// 	var ratedPoints = Template.instance().ratingPoints.get();
-	// 	var reviewMessage = "";
-	// 	$('textarea[name="reviewMessage"]').each(function() {
-	// 		reviewMessage += $(this).val();
-	// 	})
-	// 	Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
-	// 		if(error) {
-	// 			toastr.error('Failed to submit review. Please try again.');
-	// 		} else {
-	// 			toastr.success('Submitted the review successfully.');
-	// 		}
-	// 	})
-	// }
+	'rated .rateit': function(event, instance) {
+		var rating = $(event.target).rateit('value');
+		instance.ratingPoints.set(rating);
+	},
+	'submit #reviewProvider': function(event, template) {
+		event.preventDefault();
+		var providerId = this.assignedProvider;
+		var buyerId = this.userId;
+		var jobId = this._id;
+		var timeReviewed = new Date();
+		var ratedPoints = Template.instance().ratingPoints.get();
+		var reviewMessage = "";
+		$('textarea[name="reviewMessage"]').each(function() {
+			reviewMessage += $(this).val();
+		})
+		Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
+			if(error) {
+				toastr.error('Failed to submit review. Please try again.');
+			} else {
+				toastr.success('Submitted the review successfully.');
+			}
+		})
+	},
+	'submit #reviewBuyer': function(event, template) {
+		event.preventDefault();
+		var providerId = this.assignedProvider;
+		var buyerId = this.userId;
+		var jobId = this._id;
+		var timeReviewed = new Date();
+		var ratedPoints = Template.instance().ratingPoints.get();
+		var reviewMessage = "";
+		$('textarea[name="reviewMessage"]').each(function() {
+			reviewMessage += $(this).val();
+		})
+		Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
+			if(error) {
+				toastr.error('Failed to submit review. Please try again.');
+			} else {
+				toastr.success('Submitted the review successfully.');
+			}
+		})
+	}
 })

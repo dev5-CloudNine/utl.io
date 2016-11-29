@@ -336,11 +336,11 @@ Profiles.attachSchema(
     'paidJobs.$': {
       type: String
     },
-    archivedJobs: {
+    allJobs: {
       type: Array,
       optional: true
     },
-    'archivedJobs.$': {
+    'allJobs.$': {
       type: String
     },
     status: {

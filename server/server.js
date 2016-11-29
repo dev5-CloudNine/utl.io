@@ -232,6 +232,7 @@ Meteor.methods({
             adminRead: false
         }
         Jobs.update(jobId, {$addToSet: {applications: applicationDetails}});
+        Profiles.update({userId: Meteor.userId()}, {$addToSet: {allJobs: jobId}});
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {appliedJobs: jobId}});
         if(jobDetails.invited) {
             Profiles.update({userId: Meteor.userId()}, {$pull: {invitedJobs: jobId}});
@@ -357,6 +358,7 @@ Meteor.methods({
         Profiles.update({userId: Meteor.userId()}, {$addToSet: {assignedJobs: jobId}});
         Profiles.update({userId: Meteor.userId()}, {$pull: {appliedJobs: jobId}});
         if(jobDetails.routed) {
+            Jobs.update({_id: jobId}, {$set: {projectBudget: jobDetails.freelancer_nets}});
             Profiles.update({userId: Meteor.userId()}, {$pull: {routedJobs: jobId}});
         }
         Notifications.insert(notificationObj);
@@ -471,9 +473,9 @@ Meteor.methods({
         Invoices.insert(invoiceObject);
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'paid'}});
         Profiles.update({userId: providerId}, {$addToSet: {paidJobs: jobId}});
-        Profiles.update({userId: providerId}, {$pull: {assignedJobs: jobId}});
+        Profiles.update({userId: providerId}, {$pull: {assignedJobs: jobId}});        
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -jobDetails.projectBudget}});
-        Wallet.update({userId: Meteor.userId()}, {$inc: {amountSpent: jobDetails.projectBudget}});
+        Wallet.update({userId: jobDetails.userId}, {$inc: {amountSpent: jobDetails.projectBudget}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: jobDetails.projectBudget}});
         Notifications.insert(notificationObj);
@@ -481,7 +483,7 @@ Meteor.methods({
             to: getUserEmail(Meteor.users.findOne({_id: providerId})),
             cc: providerDetails.smsAddress,
             from: FROM_EMAIL,
-            subject: 'Buyer has approved your assignment.',
+            subject: 'Buyer has approved the job.',
             html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has approved the job you submitted.'
         });
     },
@@ -579,6 +581,7 @@ Meteor.methods({
     },
     routeNotification: function(buyerId, doc) {
         Profiles.update({userId: doc.selectedProvider}, {$addToSet: {routedJobs: doc._id}});
+        Profiles.update({userId: doc.selectedProvider}, {$addToSet: {allJobs: doc._id}});
         var providerDetails = Profiles.findOne({userId: doc.selectedProvider});
         var buyerDetails;
         if(Roles.userIsInRole(buyerId, ['dispatcher'])) {

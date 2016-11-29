@@ -64,9 +64,9 @@ SearchSource.defineSource('buyerRoutedJobs', function(searchText, options) {
 			{servicelocation: regExp},
 			{readableID: regExp}
 		]};
-		return Jobs.find({$and: [{userId: this.userId}, {routed: true}, selector]}, options).fetch();
+		return Jobs.find({$and: [{userId: this.userId}, {invited: true}, selector]}, options).fetch();
 	} else {
-		return Jobs.find({$and: [{userId: this.userId}, {routed: true}]}, options).fetch();
+		return Jobs.find({$and: [{userId: this.userId}, {invited: true}]}, options).fetch();
 	}
 })
 

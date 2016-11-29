@@ -38,7 +38,7 @@
                         &nbsp;|&nbsp;{{#if selectedProvider}}Routed to {{#with routedProvider}} <a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}{{else}}Applications: {{applicationsCount}}{{/if}}
                     </small>
                 </div>
-                <!-- {{#if acceptedProvider}}
+                {{#if acceptedProvider}}
                     {{#if $eq applicationStatus 'frozen'}}
                         <div class="col-sm-12">
                             <hr>
@@ -57,7 +57,9 @@
                             <div class="col-sm-12">
                                 <p><i>{{assignmentTime}}</i></p>
                                 <p>You have confirmed to do the job. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
-                                <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
+                                {{#if tasksTSCompleted}}
+                                    <button class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit Job for Approval.</button>
+                                {{/if}}
                             </div>
                         {{/if}}
                         {{#if $eq assignmentStatus 'rejected'}}
@@ -166,7 +168,7 @@
                             </div>
                         {{/if}}
                     {{/if}}
-                {{/if}} -->
+                {{/if}}
             </div>
         </div>
     </div>

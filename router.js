@@ -176,6 +176,18 @@ Router.map(function() {
         }
     })
 
+    this.route('buyerInvitedJobs', {
+        path: '/myJobs/invited',
+        title: 'UTL - Invited Jobs',
+        waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            Meteor.subscribe('reviews');
+            return Meteor.subscribe('my_jobs');
+        }
+    });
+
     this.route('buyerRoutedJobs', {
         path: '/myJobs/routed',
         title: 'UTL - Routed Jobs',
@@ -186,7 +198,7 @@ Router.map(function() {
             Meteor.subscribe('reviews');
             return Meteor.subscribe('my_jobs');
         }
-    });
+    })
 
     this.route('providerRoutedJobs', {
         path: '/routedJobs',

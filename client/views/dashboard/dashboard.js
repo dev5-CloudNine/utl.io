@@ -8,16 +8,31 @@ Template.dashboard.helpers({
 			}
 		});
 	},
-	routedJobsCount: function() {
-		var providerDetails = Profiles.findOne({userId: Meteor.userId()});
-		if(providerDetails && providerDetails.invitedJobs) {
-			return providerDetails.invitedJobs.length;
+	invitedJobsCount: function() {
+		var routedJobs = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
+		if(routedJobs) {
+			return routedJobs.length;
 		}
+		return 0;
+	},
+	routedJobsCount: function() {
+		var routedJobs = Profiles.findOne({userId: Meteor.userId()}).routedJobs;
+		if(routedJobs) {
+			return routedJobs.length;
+		}
+		return 0;
 	},
 	assignedJobsCount: function() {
 		var providerDetails = Profiles.findOne({userId: Meteor.userId()});
 		if(providerDetails && providerDetails.assignedJobs) {
 			return providerDetails.assignedJobs.length;
+		}
+		return 0;
+	},
+	appliedJobsCount: function() {
+		var providerDetails = Profiles.findOne({userId: Meteor.userId});
+		if(providerDetails && providerDetails.appliedJobs) {
+			return providerDetails.appliedJobs.length;
 		}
 		return 0;
 	},

@@ -1,18 +1,16 @@
 <template name="jobs">
 	<div class="row">
-        <div class="col-sm-12 col-md-9">
+        <div class="col-sm-12">
             <p>
                 Jobs: Open - {{openJobsCount}} &#124; 
                 <a href="{{pathFor 'recommendedJobs'}}">Recommended - {{recommendedJobsCount}}</a> &#124;
                 <a href="{{pathFor 'invitedJobs'}}">Routed - {{providerInvitedCount}}</a>
             </p>
-        </div>
-        <div class="col-sm-12 col-md-3">
-            <input type="text" class="form-control" id="search-box" placeholder="search jobs here" />
-        </div>
-        <div class="col-sm-12">
             <hr>
         </div>
+        <!-- <div class="col-sm-12 col-md-3">
+            <input type="text" class="form-control" id="search-box" placeholder="search jobs here" />
+        </div> -->
     </div>
     <div class="row">
         <div class="col-sm-12">

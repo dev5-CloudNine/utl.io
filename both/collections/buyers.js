@@ -198,12 +198,12 @@ Buyers.attachSchema(
     max: 256,
     optional: true
   },
-  // ongoingJobs: {
+  // allJobs: {
   //   type: Array,
   //   optional: true
   // },
-  // 'ongoingJobs.$': {
-  //   type: String,
+  // 'allJobs.$': {
+  //   type: String
   // },
   createdAt: {
     type: Date,

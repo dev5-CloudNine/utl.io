@@ -4,15 +4,16 @@
 			<p>My Jobs:
 				<a href="{{pathFor 'myJobs'}}">All - {{postedJobCount}}</a> &#124;
 				<a href="{{pathFor 'buyerOpenJobs'}}">Open - {{buyerOpenCount}}</a> &#124;
+				<a href="{{pathFor 'buyerInvitedJobs'}}">Invited - {{buyerInvitedCount}}</a> &#124;
 				<a href="{{pathFor 'buyerRoutedJobs'}}">Routed - {{buyerRoutedCount}}</a> &#124;
 				Assigned - {{buyerAssignedCount}} &#124;
 				<a href="{{pathFor 'buyerPaidJobs'}}">Paid - {{buyerPaidCount}}</a> &#124;
 				<a href="{{pathFor 'deactivatedJobs'}}">Deactivated - {{deactivatedCount}}</a>
 			</p>
 		</div>
-		<div class="col-sm-3">
+		<!-- <div class="col-sm-3">
 			<input type="text" class="form-control" id="search-box" placeholder="search assigned jobs" />
-		</div>
+		</div> -->
 		<div class="col-sm-12">
 			<hr>
 			{{#each buyerAssignedJobs}}

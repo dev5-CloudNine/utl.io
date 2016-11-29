@@ -909,15 +909,15 @@ Template.job.helpers({
     return Tasks.find({ 'jobID': this._id }, { sort: { order: 1 } });
   },
   applied: function() {
-    // var applications = Jobs.findOne({_id: this._id}).applications;
-    // if(applications) {
-    //   for(var i = 0; i < applications.length; i++) {
-    //     if(applications[i].userId == Meteor.userId())
-    //       return true;
-    //   }
-    return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { appliedJobs: { $in: [this._id] } }] }) ? true : false;
-    // }
-    // return false;
+    var applications = Jobs.findOne({_id: this._id}).applications;
+    if(applications) {
+      for(var i = 0; i < applications.length; i++) {
+        if(applications[i].userId == Meteor.userId())
+          return true;
+      }
+    // return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { appliedJobs: { $in: [this._id] } }] }) ? true : false;
+    }
+    return false;
   },
   applicationDetails: function() {
     for(var i = 0; i < this.applications.length; i++) {
@@ -1275,6 +1275,11 @@ Template.job.helpers({
   },
   openOrFrozen: function() {
     if(this.applicationStatus == 'open' || this.applicationStatus == 'frozen')
+      return true;
+    return false;
+  },
+  openFrozenOrAssigned: function() {
+    if(this.applicationStatus == 'open' || this.applicationStatus == 'frozen' || this.applicationStatus == 'assigned')
       return true;
     return false;
   },
