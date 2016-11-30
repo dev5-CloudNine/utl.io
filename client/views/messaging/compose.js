@@ -382,7 +382,12 @@ Template.compose.helpers({
         return provider;
     },
     postedBuyer: function() {
-        var buyerDetails = Buyers.findOne({userId: Router.current().params.query.buyId});
+        var buyerDetails;
+        var buyerId = Router.current().params.query.buyId;
+        if(Roles.userIsInRole(buyerId, ['buyer']))
+            buyerDetails = Buyers.findOne({userId: buyerId});
+        else if(Roles.userIsInRole(buyerId, ['dispatcher']))
+            buyerDetails = Dispatchers.findOne({userId: buyerId});
         var buyer = {
             userId: buyerDetails.userId,
             userEmail: getUserEmail(Meteor.users.findOne({_id: buyerDetails.userId})),

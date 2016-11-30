@@ -192,6 +192,12 @@ Template.dashboard.helpers({
 		if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
 			return Profiles.findOne({userId: Meteor.userId()});
 		}
+		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+			return Dispatchers.findOne({userId: Meteor.userId()});
+		}
+		if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+			return Accountants.findOne({userId: Meteor.userId()});
+		}
 	},
 	buyersCount: function() {
 		return Buyers.find().count();

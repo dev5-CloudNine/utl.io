@@ -445,6 +445,12 @@ Meteor.publish('dispatcherPostedJobs', function(dispatcherId) {
     return Jobs.find({status: 'active', userId: uId}, {sort: {createdAt: -1}});
 })
 
+Meteor.publish('dispatcherPostedJobs', function(dispatcherId) {
+    check(arguments, [Match.Any]);
+    var uId = Dispatchers.findOne({_id: dispatcherId}).userId;
+    return Jobs.find({status: 'active', userId: uId}, {sort: {createdAt: -1}});
+})
+
 Meteor.publish("favorite_users", function() {
     check(arguments,[Match.Any]);
     return Profiles.find({}, {

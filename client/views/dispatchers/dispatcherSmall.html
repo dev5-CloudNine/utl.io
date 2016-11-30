@@ -20,35 +20,64 @@
                         {{/if}}
                     </a>
                 </div>
-                <div class="box-footer">                    
-                    <div class="row">
-                        <div class="col-xs-4 border-right">
-                            <div class="description-block text-center">
-                                {{#with dispatcher}}
-                                    <a href="{{pathFor 'dispatcherJobs'}}">
+                <div class="box-footer">    
+                    {{#if $eq userId currentUser._id}}
+                        <div class="row">
+                            <div class="col-xs-4 border-right">
+                                <div class="description-block text-center">
+                                    <a href="{{pathFor 'jobNew'}}">
                                         <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
-                                        <span class="description-text">View Jobs</span>
+                                        <span class="description-text">Post a Job</span>
                                     </a>
-                                {{/with}}
+                                </div>
+                            </div>
+                            <div class="col-xs-4 border-right">
+                                <div class="description-block text-center">
+                                    <a href="{{pathFor 'dispatcher'}}">
+                                        <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                        <span class="description-text">My Profile</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="description-block text-center">
+                                    <a href="">
+                                        <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
+                                        <span class="description-text">{{favCount}}</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-xs-4 border-right">
-                            <div class="description-block text-center">
-                                <a href="{{pathFor 'dispatcher'}}">
-                                    <h5 class="description-header"><i class="fa fa-chain"></i></h5>
-                                    <span class="description-text">View Profile</span>
-                                </a>
+                    {{else}}                
+                        <div class="row">
+                            <div class="col-xs-4 border-right">
+                                <div class="description-block text-center">
+                                    {{#with dispatcher}}
+                                        <a href="{{pathFor 'dispatcherJobs'}}">
+                                            <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                            <span class="description-text">View Jobs</span>
+                                        </a>
+                                    {{/with}}
+                                </div>
+                            </div>
+                            <div class="col-xs-4 border-right">
+                                <div class="description-block text-center">
+                                    <a href="{{pathFor 'dispatcher'}}">
+                                        <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                        <span class="description-text">View Profile</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="description-block text-center">
+                                    <a href="" class="sendDispatcherMessage">
+                                        <h5 class="description-header"><i class="fa fa-envelope"></i></h5>
+                                        <span class="description-text">Send Msg</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-xs-4">
-                            <div class="description-block text-center">
-                                <a href="" class="sendDispatcherMessage">
-                                    <h5 class="description-header"><i class="fa fa-envelope"></i></h5>
-                                    <span class="description-text">Send Msg</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    {{/if}}
                 </div>
             </div>
         </div>

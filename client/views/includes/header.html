@@ -103,6 +103,7 @@
                                             <li><a href="{{pathFor 'myJobs'}}"><span class="badge pull-right">{{postedJobCount}}</span> All Jobs</a></li>
                                             <li><a href="{{pathFor 'buyerOpenJobs'}}"><span class="badge pull-right">{{buyerOpenCount}}</span> Open Jobs</a></li>
                                             <li><a href="{{pathFor 'buyerInvitedJobs'}}"><span class="badge pull-right">{{buyerInvitedCount}}</span> Invited Jobs</a></li>
+                                            <li><a href="{{pathFor 'buyerRoutedJobs'}}"><span class="badge pull-right">{{buyerRoutedCount}}</span> Routed Jobs</a></li>
                                             <li><a href="{{pathFor 'buyerAssignedJobs'}}"><span class="badge pull-right">{{buyerAssignedCount}}</span> Assigned Jobs</a></li>
                                             <li><a href="{{pathFor 'buyerPaidJobs'}}"><span class="badge pull-right">{{buyerPaidCount}}</span> Paid Jobs</a></li>
                                             <li><a href="{{pathFor 'deactivatedJobs'}}"><span class="badge pull-right">{{deactivatedCount}}</span> Deactivated Job</a></li>
@@ -333,6 +334,11 @@
                 {{#if currentUser.isBuyer}}
                     {{#with buyer}}
                         <a href="{{pathFor 'buyerNotifications'}}">View All Notifications</a>
+                    {{/with}}
+                {{/if}}
+                {{#if currentUser.isDispatcher}}
+                    {{#with dispatcher}}
+                        <a href="{{pathFor 'dispatcherNotifications'}}">View All Notifications</a>
                     {{/with}}
                 {{/if}}
                 {{#if isInRole 'admin'}}

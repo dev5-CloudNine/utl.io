@@ -265,7 +265,7 @@
                                             <div class="pull-right">
                                                 &nbsp;
                                                 {{#if jobNotAssigned}}
-                                                    <a href="{{pathFor 'jobEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>                                                    
+                                                    <a href="{{pathFor 'jobEdit'}}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit</a>                                                    
                                                 {{/if}}
                                                 {{#if $eq status 'active'}}
                                                     {{#if openFrozenOrAssigned}}
@@ -585,33 +585,29 @@
                                         <button class="btn btn-sm btn-primary margin-top-5 approvePayment">Release Payment</button>
                                     {{/if}}
                                     {{#if $eq applicationStatus 'paid'}}
-                                        <p><i>{{approvePaymentTime}}</i></p>
+                                        <p><i>{{approvedTime}}</i></p>
                                         <p>Payment has been released successfully for the job completed. The provider is now paid.</p>
-                                        {{#if reviewedProvider}}
-                                            <hr>
-                                            <strong>Review Details</strong>
-                                            {{#with providerReviewDetails}}
-                                                <p>{{this.reviewMessage}}</p>
-                                                <span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
-                                            {{/with}}
-                                        {{else}}
-                                            <hr>
-                                            <form id="reviewProvider">
-                                                <div class="form-group">
-                                                    <label for="writeReview">Write a review</label>
-                                                    <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
-                                                    <label>Rate provider</label><br>
-                                                    <span class="rateit"></span>
-                                                </div>
-                                                <button class="margin-top-5 btn btn-sm btn-primary" type="submit">Submit</button>
-                                            </form>
-                                            <!-- <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewExpert">Rate &amp; Review Provider</button> -->
-                                            <!-- <div id="reviewExpert" class="panel panel-white panel-collapse collapse">
-                                                <div class="panel-body">
-                                                    
-                                                </div>
-                                            </div> -->
-                                        {{/if}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    {{#if reviewedProvider}}
+                                        <strong>Review Details</strong>
+                                        {{#with providerReviewDetails}}
+                                            <p>{{this.reviewMessage}}</p>
+                                            <span class="rateit" id="providerReviewPoints" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
+                                        {{/with}}
+                                    {{else}}
+                                        <form id="reviewProvider">
+                                            <div class="form-group">
+                                                <label for="writeReview">Write a review</label>
+                                                <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
+                                                <label>Rate provider</label><br>
+                                                <span class="rateit providerReviewPoints"></span>
+                                            </div>
+                                            <button class="margin-top-5 btn btn-sm btn-primary" type="submit">Submit</button>
+                                        </form>
                                     {{/if}}
                                 </div>
                             </div>
@@ -1329,35 +1325,31 @@
                                         {{#if assignedProvider}}
                                             <p><i>{{approvePaymentTime}}</i></p>
                                             <p>The buyer has approved the job you have done. Congratulations! Your account has been credited with {{projectBudget}} USD. The job is now successfully closed.</p>
-                                            {{#if reviewedBuyer}}
-                                                <hr>
-                                                <strong>Review Details</strong>
-                                                {{#with buyerReviewDetails}}
-                                                    <p>{{this.reviewMessage}}</p>
-                                                    <span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
-                                                {{/with}}
-                                            {{else}}
-                                                <hr>
-                                                <form id="reviewBuyer">
-                                                    <div class="form-group">
-                                                        <label for="writeReview">Write a review</label>
-                                                        <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea>
-                                                    </div>
-                                                    <label>Rate buyer</label><br><span class="rateit"></span><br>
-                                                    <button class="margin-top-5 btn btn-primary btn-sm" type="submit">Submit</button>
-                                                </form>
-                                                <!-- <button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#reviewClient">Rate &amp; Review Buyer</button>
-                                                <div id="reviewClient" class="panel panel-white panel-collapse collapse">
-                                                    <div class="panel-body">
-                                                        
-                                                    </div>
-                                                </div> -->
-                                            {{/if}}
                                         {{else}}
                                             <div class="col-sm-12">
                                                 <small>The job is now complete.</small>
                                             </div>
                                         {{/if}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    {{#if reviewedBuyer}}
+                                        <strong>Review Details</strong>
+                                        {{#with buyerReviewDetails}}
+                                            <p>{{this.reviewMessage}}</p>
+                                            <span class="rateit buyerReviewPoints" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
+                                        {{/with}}
+                                    {{else}}
+                                        <form id="reviewBuyer">
+                                            <div class="form-group">
+                                                <label for="writeReview">Write a review</label>
+                                                <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea>
+                                            </div>
+                                            <label>Rate buyer</label><br><span class="rateit buyerReviewPoints"></span><br>
+                                            <button class="margin-top-5 btn btn-primary btn-sm" type="submit">Submit</button>
+                                        </form>
                                     {{/if}}
                                 </div>
                             </div>
@@ -1581,56 +1573,98 @@
                             </div>
                         {{/if}}
                     {{/if}}
-                    {{#with buyerData}}
-                        <label>W.O Posted By</label>
-                        <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
-                            <div class="box box-widget widget-user">
-                                <div class="widget-user-header bg-assigned">
-                                    <span class="pull-right buyerRatings"></span>
-                                    <small>ID: {{readableID}}</small>
-                                    <h3 class="widget-user-username">{{this.name}}</h3>
-                                    <h5 class="widget-user-desc">{{this.title}}</h5>
-                                </div>
-                                <div class="widget-user-image">
-                                    <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
-                                </div>
-                                <div class="box-footer">
-                                    <div class="row">
-                                        <div class="col-xs-4 border-right">
-                                            <div class="description-block text-center">
-                                                <a href class="sendBuyerMessage">
-                                                    <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
-                                                    <span class="description-text">Send Msg</span>
-                                                </a>
+                    {{#if jobPostedByBuyer}}
+                        {{#with buyerData}}
+                            <label>W.O Posted By</label>
+                            <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+                                <div class="box box-widget widget-user">
+                                    <div class="widget-user-header bg-assigned">
+                                        <span class="pull-right buyerRatings"></span>
+                                        <small>ID: {{this.readableID}}</small>
+                                        <h3 class="widget-user-username">{{this.name}}</h3>
+                                        <h5 class="widget-user-desc">{{this.title}}</h5>
+                                    </div>
+                                    <div class="widget-user-image">
+                                        <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
+                                    </div>
+                                    <div class="box-footer">
+                                        <div class="row">
+                                            <div class="col-xs-4 border-right">
+                                                <div class="description-block text-center">
+                                                    <a href class="sendBuyerMessage">
+                                                        <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                                        <span class="description-text">Send Msg</span>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xs-4 border-right">
-                                            <div class="description-block text-center">
-                                                <a href="/buyers/{{this.id}}">
-                                                    <h5 class="description-header"><i class="fa fa-chain"></i></h5>
-                                                    <span class="description-text">View Profile</span>
-                                                </a>
+                                            <div class="col-xs-4 border-right">
+                                                <div class="description-block text-center">
+                                                    <a href="/buyers/{{this.id}}">
+                                                        <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                                        <span class="description-text">View Profile</span>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <div class="description-block text-center">
-                                                <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
-                                                    <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
-                                                    <span class="description-text">{{#if fav}}Del Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
-                                                </a>
+                                            <div class="col-xs-4">
+                                                <div class="description-block text-center">
+                                                    <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
+                                                        <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
+                                                        <span class="description-text">{{#if fav}}Del Fav{{else}}Add Fav{{/if}}</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {{/with}}
-                    <!-- {{#if assignedOrDone}}
-                        {{#if assignedProvider}}
-                            
-                        {{/if}}
-                        <hr>
-                    {{/if}} -->
+                        {{/with}}
+                    {{/if}}
+                    {{#if jobPostedByDispatcher}}
+                        {{#with dispatcherData}}
+                            <label>W.O Posted By</label>
+                            <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+                                <div class="box box-widget widget-user">
+                                    <div class="widget-user-header bg-assigned">
+                                        <span class="pull-right buyerRatings"></span>
+                                        <small>ID: {{this.readableID}}</small>
+                                        <h3 class="widget-user-username">{{this.name}}</h3>
+                                        <h5 class="widget-user-desc">{{this.title}}</h5>
+                                    </div>
+                                    <div class="widget-user-image">
+                                        <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
+                                    </div>
+                                    <div class="box-footer">
+                                        <div class="row">
+                                            <div class="col-xs-4 border-right">
+                                                <div class="description-block text-center">
+                                                    <a href class="sendBuyerMessage">
+                                                        <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                                        <span class="description-text">Send Msg</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 border-right">
+                                                <div class="description-block text-center">
+                                                    <a href="/dispatchers/{{this.id}}">
+                                                        <h5 class="description-header"><i class="fa fa-chain"></i></h5>
+                                                        <span class="description-text">View Profile</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <div class="description-block text-center">
+                                                    <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
+                                                        <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
+                                                        <span class="description-text">{{#if fav}}Del Fav{{else}}Add Fav{{/if}}</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/with}}
+                    {{/if}}
                 {{/if}}
                 {{#if isInRole 'admin'}}
                     <ul class="nav nav-tabs">

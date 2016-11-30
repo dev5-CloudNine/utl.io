@@ -722,9 +722,8 @@ Meteor.methods({
         Reviews.insert(review);
     },
     archiveJob: function(jobId, userId) {
-        if(Roles.userIsInRole(userId, ['provider', 'corporate-provider'])) {
+        if(Roles.userIsInRole(userId, ['provider'])) {
             Jobs.update({_id: jobId}, {$set: {providerArchived: true}});
-            Profiles.update({userId: userId}, {$addToSet: {archivedJobs: jobId}});
             Profiles.update({userId: userId}, {$pull: {paidJobs: jobId}});
         } else if(Roles.userIsInRole(userId, ['buyer', 'dispatcher'])) {
             Jobs.update({_id: jobId}, {$set: {buyerArchived: true}});

@@ -1,7 +1,6 @@
 Template.buyerPaidJobs.helpers({
 	buyerPaidJobs: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}, {buyerArchived: false}, {status: 'active'}]});
-		// return BuyerPaidJobsSearch.getData({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}, {buyerArchived: false}]}, {sort: {createdAt: -1}});
 	},
 	buyerPaidCount: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}, {buyerArchived: false}]}).count();

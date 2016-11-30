@@ -525,6 +525,8 @@ Template.job.events({
         $(event.currentTarget).button('reset');
         toastr.error('Failed to approve job. Please try again.');
       }
+      $('.providerReviewPoints').rateit();
+      $('.buyerReviewPoints').rateit();
     });
   },
   'click button.rejectAssignment': function(event, template) {
@@ -592,11 +594,13 @@ Template.job.events({
     $('textarea[name="reviewMessage"]').each(function() {
       reviewMessage += $(this).val();
     })
+    console.log(reviewMessage, ratedPoints);
     Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
       }
-    })
+    });
+    $('.buyerReviewPoints').rateit({readonly: true});
   },
   'rated .rateit': function(event, instance) {
     var rating = $(event.target).rateit('value');
@@ -616,6 +620,8 @@ Template.job.events({
     Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
+      } else {
+        $('#providerReviewPoints').rateit({readonly: true})
       }
     })
   },
@@ -628,7 +634,7 @@ Template.job.events({
   },
   'click a.sendBuyerMessage': function(event, template) {
     event.preventDefault();
-    var userId = Buyers.findOne({_id: this.id}).userId;
+    var userId = this.userId;
     var jobId = Router.current().params._id;
     Router.go('/mailbox/newpbm?buyId=' + userId + '&jobId=' + jobId);
     event.stopPropagation();
@@ -765,6 +771,12 @@ Template.job.helpers({
   'postedTime': function() {
     return moment(this.createdAt).format('LLLL');
   },
+  jobPostedByBuyer: function() {
+    return Roles.userIsInRole(this.userId, ['buyer'])? true: false
+  },
+  jobPostedByDispatcher: function() {
+    return Roles.userIsInRole(this.userId, ['dispatcher'])? true: false
+  },
   'buyerData': function() {
     var buyerData = Buyers.findOne({userId: this.userId});
     var imgUrl;
@@ -779,12 +791,29 @@ Template.job.helpers({
       title: buyerData.title,
       imgUrl: imgUrl,
       readableID: Meteor.users.findOne({_id: buyerData.userId}).readableID,
-      status: buyerData.status
+      status: buyerData.status,
+      userId: buyerData.userId
     }
     return buyer;
   },
   dispatcherData: function() {
-    return Dispatchers.findOne({userId: this.userId});
+    var buyerData = Dispatchers.findOne({userId: this.userId});
+    var imgUrl;
+    var imgURL = Meteor.users.findOne({_id: buyerData.userId}).imgURL;
+    if(imgURL)
+      imgUrl = imgURL
+    else
+      imgUrl = '/images/avatar.png';
+    var buyer = {
+      id: buyerData._id,
+      name: buyerData.firstName + ' ' + buyerData.lastName,
+      title: buyerData.title,
+      imgUrl: imgUrl,
+      readableID: Meteor.users.findOne({_id: buyerData.userId}).readableID,
+      status: buyerData.status,
+      userId: buyerData.userId
+    }
+    return buyer;
   },
   'hasLabel': function() {
     return this.jobType || this.featured;
@@ -1391,7 +1420,6 @@ Template.job.helpers({
 });
 
 Template.job.rendered = function() {
-  this.$('.rateit').rateit();
   this.ratingPoints = new ReactiveVar(null);
   var providerRatingPoints = 0;
   var providerReviews = Reviews.find({$and: [{providerId: this.data.assignedProvider}, {reviewedBy: 'buyer'}]}).fetch();
@@ -1432,3 +1460,7 @@ Template.job.rendered = function() {
     $('.show-checkin-time').show();
   }
 };
+
+Template.job.onRendered(function() {
+  this.$('.rateit').rateit();
+})

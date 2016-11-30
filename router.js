@@ -1028,6 +1028,15 @@ Router.map(function() {
         }
     });
 
+    this.route('dispatcherNotifications', {
+        path: '/dispatchers/:_id/:slug/notifications',
+        title: 'UTL - Notifications',
+        waitOn: function() {
+            Meteor.subscribe('userList');
+            return Meteor.subscribe('dispatcherPostedJobs', this.params._id);
+        }
+    });
+
     this.route('providerNotifications', {
         path: '/profiles/:_id/:slug/notifications',
         title: 'UTL - Notifications',

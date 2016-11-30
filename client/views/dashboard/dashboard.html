@@ -4,20 +4,21 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <a href="/myjobs">                          
-                                <div class="widget-data">
+                        <div class="widget widget-default widget-item-icon">                            
+                            <div class="widget-data">
+                                <a href="/myjobs">
                                     <div class="widget-int num-count">{{buyerJobsCount}}</div>
                                     <div class="widget-title">Jobs Posted</div>
-                                    <div class="widget-subtitle">
-                                        <a href="/myJobs/open">{{buyerOpenJobsCount}} Open</a> &#124; 
-                                        <a href="/myJobs/assigned">{{buyerAssignedJobsCount}} Assigned</a> &#124; 
-                                        <a href="/myJobs/paid">{{buyerCompletedJobsCount}} Completed</a>
-                                    </div>
+                                </a>
+                                <div class="widget-subtitle">
+                                    <a href="/myJobs/open">{{buyerOpenJobsCount}} Open</a> &#124; 
+                                    <a href="/myJobs/assigned">{{buyerAssignedJobsCount}} Assigned</a> &#124; 
+                                    <a href="/myJobs/paid">{{buyerCompletedJobsCount}} Completed</a>
                                 </div>
-                            </a>
+                            </div>
                         </div>
-                    </div>                    
+                    </div>  
+                    {{#if isInRole 'buyer'}}                  
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon">
                             <div class="widget-data">
@@ -27,11 +28,12 @@
                             </div>
                         </div>
                     </div>
+                    {{/if}}
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon">
                             <div class="widget-data">
                                 {{#with myProfile}}
-                                    <a href="{{pathFor 'buyerNotifications'}}">
+                                    <a href="{{#if isInRole 'buyer'}}{{pathFor 'buyerNotifications'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcherNotifications'}}{{/if}}">
                                         <div class="widget-int num-count">{{buyerNotificationCount currentUser._id}}</div>
                                         <div class="widget-title"> new notifications</div>
                                     </a>
@@ -45,7 +47,7 @@
                     <div class="col-md-3">
                         <div class="widget widget-default widget-padding-sm">
                             {{#with myProfile}}
-                                <a href="{{pathFor 'buyer'}}">
+                                <a href="{{#if isInRole 'buyer'}}{{pathFor 'buyer'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcher'}}{{/if}}">
                                     <div class="widget-big-int">
                                         <div class="count">
                                             <span class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-value="{{buyerRatingPoints}}"></span>
@@ -62,7 +64,12 @@
         <div class="row">
             <hr>
             {{#with myProfile}}
-                {{>buyerSmall}}
+                {{#if isInRole 'buyer'}}
+                    {{>buyerSmall}}
+                {{/if}}
+                {{#if isInRole 'dispatcher'}}
+                    {{>dispatcherSmall}}
+                {{/if}}
             {{/with}}
             <div class="col-lg-4">
                 <div class="panel panel-default">
