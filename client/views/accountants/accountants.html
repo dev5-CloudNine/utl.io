@@ -1,15 +1,11 @@
 <template name="accountants">
 	<div class="row">
 		{{#if currentUser}}
-			<div class="col-sm-12 col-md-3">
-				<input type="text" class="form-control" id="search-box" placeholder="search accountants here">
-			</div>
-			<div class="col-sm-12">
-				<hr>
-			</div>
 			{{#if isInRole 'buyer, accountant, dispatcher'}}
 				{{#each accountantList}}
-					{{>accountantSmall}}
+					<div class="col-md-4">
+						{{>accountantSmall}}
+					</div>
 				{{/each}}
 			{{/if}}
 		{{/if}}

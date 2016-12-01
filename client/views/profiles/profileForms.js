@@ -2,7 +2,7 @@ AutoForm.addHooks(['profileNew', 'profileEdit'], {
   after: {
     insert: function(error, result) {
       if (error) {
-        console.log("Insert Error:", error);
+        toastr.error(error);
       } else {
         analytics.track("Profile Created");
         Router.go('profile', {
@@ -12,7 +12,8 @@ AutoForm.addHooks(['profileNew', 'profileEdit'], {
     },
     update: function(error, result) {
       if (error) {
-        console.log("Update Error:", error);
+        console.log(error)
+        toastr.error(error);
       } else {
         analytics.track("Profile Edited");
         Router.go('profile', {
@@ -24,6 +25,19 @@ AutoForm.addHooks(['profileNew', 'profileEdit'], {
 });
 
 Template.profileFields.events({
+  'keyup input[name="socialSecurityNumber"], keydown input[name="socialSecurityNumber"]': function(event, template) {
+    if (!((event.keyCode == 46 || 
+      event.keyCode == 8  || 
+      event.keyCode == 37 || 
+      event.keyCode == 39 || 
+      event.keyCode == 9) || 
+      $(event.currentTarget).val().length < 4 &&
+      ((event.keyCode >= 48 && event.keyCode <= 57) ||
+      (event.keyCode >= 96 && event.keyCode <= 105)))) {
+      event.preventDefault();
+      return false;
+    }
+  },
   'change select[name="mobileCarrier"]': function(event, template) {
     var mobileNumber = $('input[name="contactNumber"]').val();
     var mobileCarrier = event.target.value;
@@ -170,6 +184,7 @@ Template.profileEdit.events({
 });
 
 Template.profileFields.rendered = function() {
+  $('#dateOfBirth').datepicker();
   $('#resumespinner').hide();
   $('#imgspinner').hide();
   $('.profileImgProgress').hide();

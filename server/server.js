@@ -1025,6 +1025,10 @@ Meteor.methods({
     },
     'updateWalletAfterTransfer': function(reqAmount, providerId) {
         Wallet.update({userId: providerId}, {$inc: {accountBalance: -reqAmount}});
+        
+    },
+    'updateBuyerWallet': function(reqAmount, buyerId) {
+        Wallet.update({userId: buyerId}, {$inc: {accountBalance: reqAmount}});
     },
     'sendQueryRequest': function(queryObject) {
         Email.send({

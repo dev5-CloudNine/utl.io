@@ -20,7 +20,7 @@
                                             <input type="number" id="dwolla_amount" class="form-control" step="0.01" min="1" placeholder="Enter Amount" required>
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-sm submitWithdrawReq">Submit</button>
+                                            <button type="submit" class="btn btn-primary btn-sm" id="depositBtn" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
                                         </div>
                                     </form>
                                 </div>
@@ -30,7 +30,7 @@
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <script src="https://cdn.dwolla.com/1/dwolla.js"></script>
-                                        <button class="btn btn-primary btn-sm startIav">Initiate Account Verification</button>
+                                        <button class="btn btn-primary btn-sm startIav" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Initiate Account Verification</button>
                                     </div>
                                 </div>
                             </div>
@@ -43,50 +43,7 @@
                     {{else}}
                         <h4>Create Dwolla Account</h4>
                         {{#if currentUser.isBuyer}}
-                        <form id="register_dwolla">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label for="date_of_birth">Date of Birth *</label>
-                                        <input type="text" id="date_of_birth" class="form-control" placeholder="Date of Birth" required>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label for="social_security_no">Social Security No. *</label>
-                                        <input type="text" id="social_security_no" class="form-control" placeholder="Last Four Digits of Your SSN" required>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                                    </div>
-                                </div>
-                                <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label for="bank_account_no">Bank Account No. *</label>
-                                        <input type="text" id="bank_account_no" class="form-control" placeholder="Bank Account No." required>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label for="routing_number">Routing No. *</label>
-                                        <input type="text" id="routing_number" class="form-control" placeholder="Routing No." required>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label>Account Type *</label><br>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="account_type" value="checking"> Checking
-                                        </label>&nbsp;
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="account_type" value="savings"> Savings
-                                        </label>
-                                    </div>
-                                </div> -->
-                            </div>
-                        </form>
+                            <button class="btn btn-sm btn-primary" id="register_dwolla" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Create Dwolla Customer</button>
                         {{else}}
                             You need to create your profile before registering with Dwolla. <a href="{{pathFor 'buyerNew'}}">Click here</a> to create your buyer profile.
                         {{/if}}

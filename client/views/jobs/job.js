@@ -583,48 +583,6 @@ Template.job.events({
       }
     })
   },
-  'submit #reviewBuyer': function(event, template) {
-    event.preventDefault();
-    var providerId = this.assignedProvider;
-    var buyerId = this.userId;
-    var jobId = this._id;
-    var timeReviewed = new Date();
-    var ratedPoints = Template.instance().ratingPoints.get();
-    var reviewMessage = "";
-    $('textarea[name="reviewMessage"]').each(function() {
-      reviewMessage += $(this).val();
-    })
-    console.log(reviewMessage, ratedPoints);
-    Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
-      if(error) {
-        toastr.error('Failed to submit review. Please try again.');
-      }
-    });
-    $('.buyerReviewPoints').rateit({readonly: true});
-  },
-  'rated .rateit': function(event, instance) {
-    var rating = $(event.target).rateit('value');
-    instance.ratingPoints.set(rating);
-  },
-  'submit #reviewProvider': function(event, template) {
-    event.preventDefault();
-    var providerId = this.assignedProvider;
-    var buyerId = this.userId;
-    var jobId = this._id;
-    var timeReviewed = new Date();
-    var ratedPoints = Template.instance().ratingPoints.get();
-    var reviewMessage = "";
-    $('textarea[name="reviewMessage"]').each(function() {
-      reviewMessage += $(this).val();
-    })
-    Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
-      if(error) {
-        toastr.error('Failed to submit review. Please try again.');
-      } else {
-        $('#providerReviewPoints').rateit({readonly: true})
-      }
-    })
-  },
   'click a.sendProviderMessage': function(event, template) {
     event.preventDefault();
     var userId = Profiles.findOne({_id: this.id}).userId;
@@ -1314,9 +1272,6 @@ Template.job.helpers({
   },
   reviewedBuyer: function() {
     return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]})? true: false;
-  },
-  reviewedProvider: function() {
-    return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]})? true : false;
   },
   applicationTime: function() {
     var applications = Jobs.findOne(this._id).applications;

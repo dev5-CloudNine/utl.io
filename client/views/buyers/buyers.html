@@ -14,7 +14,9 @@
 			</div>
 			{{#if isInRole 'corporate-admin, provider, corporate-provider'}}
 				{{#each buyersList}}
-					{{>buyerSmall}}
+					<div class="col-md-4">
+						{{>buyerSmall}}
+					</div>
 				{{/each}}
 			{{/if}}
 		{{/if}}

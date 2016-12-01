@@ -2,7 +2,7 @@ AutoForm.addHooks(['buyerNew', 'buyerEdit'], {
   after: {
     insert: function(error, result) {
       if (error) {
-        console.log("Insert Error:", error);
+        toastr.error(error);
       } else {
         analytics.track("Buyer Created");
         Router.go('buyer', {
@@ -12,7 +12,7 @@ AutoForm.addHooks(['buyerNew', 'buyerEdit'], {
     },
     update: function(error, result) {
       if (error) {
-        console.log("Update Error:", error);
+        toastr.error(error);
       } else {
         analytics.track("Buyer Edited");
         Router.go('buyer', {
@@ -31,26 +31,19 @@ Template.buyerFields.events({
     smsEmail = mobileNumber + mobileCarrier;
     $('input[name="smsAddress"]').val(smsEmail);
   },
-  // "change .file_bag": function(event,template) {
-  //   event.preventDefault();
-  //   var files = $(event.currentTarget)[0].files
-
-  //   if (!files) return;
-  //   S3.upload({
-  //       files: files,
-  //       path: S3_FILEUPLOADS
-  //   }, function(err, res) {
-  //       $('.progress').hide();
-  //       if (err) toastr.error("Failed to upload image");
-  //       else {
-  //         Meteor.call('updateImgURL', Meteor.userId(),res.url, function (error, result) {
-  //           if(error){
-  //             toastr.error('Failed to update');
-  //           }
-  //         });
-  //       }
-  //   });
-  // },
+  'keyup input[name="socialSecurityNumber"], keydown input[name="socialSecurityNumber"]': function(event, template) {
+    if (!((event.keyCode == 46 || 
+      event.keyCode == 8  || 
+      event.keyCode == 37 || 
+      event.keyCode == 39 || 
+      event.keyCode == 9) || 
+      $(event.currentTarget).val().length < 4 &&
+      ((event.keyCode >= 48 && event.keyCode <= 57) ||
+      (event.keyCode >= 96 && event.keyCode <= 105)))) {
+      event.preventDefault();
+      return false;
+    }
+  },
   'change .file_bag': function(event, template) {
     event.preventDefault();
     var files = $(event.currentTarget)[0].files;
@@ -72,25 +65,6 @@ Template.buyerFields.events({
       })
     })
   }
-  // "click .remove-img" : function(event) {
-  //   event.preventDefault();
-  //   $('#spinner').show();
-  //   var url = Meteor.users.findOne({_id:Meteor.userId()}).imgURL;
-  //   var index = url.indexOf(S3_FILEUPLOADS)-1;
-  //   var path = url.substr(index);
-  //   S3.delete(path, function(err, res) {
-  //       $('#spinner').hide();
-  //       if (err) {
-  //           toastr.error("Operation failed");
-  //       } else {
-  //         Meteor.call('updateImgURL', Meteor.userId(), function (error, result) {
-  //           if(error){
-  //             toastr.error('Failed to update');
-  //           }
-  //         });
-  //       }
-  //   });
-  // }
 })
 
 Template.buyerEdit.events({
@@ -104,6 +78,7 @@ Template.buyerEdit.events({
 
 
 Template.buyerFields.rendered = function() {
+  $('#dateOfBirth').datepicker();
   $('#spinner').hide();
   $('.progress').hide();
   Meteor.typeahead.inject('.typeahead');

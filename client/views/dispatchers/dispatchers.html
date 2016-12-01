@@ -1,15 +1,11 @@
 <template name="dispatchers">
 	<div class="row">
 		{{#if currentUser}}
-			<div class="col-sm-12 col-md-3">
-				<input type="text" class="form-control" id="search-box" placeholder="search dispatchers here">
-			</div>
-			<div class="col-sm-12">
-				<hr>
-			</div>
 			{{#if isInRole 'buyer, accountant, dispatcher'}}
 				{{#each dispatcherList}}
-					{{>dispatcherSmall}}
+					<div class="col-md-4">
+						{{>dispatcherSmall}}
+					</div>
 				{{/each}}
 			{{/if}}
 		{{/if}}

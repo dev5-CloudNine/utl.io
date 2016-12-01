@@ -43,19 +43,6 @@ Template.withdraw.rendered =  function() {
 }
 
 Template.withdraw.events({
-	'keyup input[name="social_security_no"], keydown input[name="social_security_no"]': function(event, template) {
-		if (!((event.keyCode == 46 || 
-			event.keyCode == 8  || 
-			event.keyCode == 37 || 
-			event.keyCode == 39 || 
-			event.keyCode == 9) || 
-			$(event.currentTarget).val().length < 4 &&
-			((event.keyCode >= 48 && event.keyCode <= 57) ||
-			(event.keyCode >= 96 && event.keyCode <= 105)))) {
-			event.preventDefault();
-			return false;
-		}
-	},
 	'change #requestAmount, keyup #requestAmount': function(event, template) {
 		var accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		var reqAmount = $('input#requestAmount').val()
@@ -67,7 +54,7 @@ Template.withdraw.events({
 			$('.submitWithdrawReq').prop('disabled', false);
 		}
 	},
-	'submit #pro_register_dwolla': function(event, template) {
+	'click #pro_register_dwolla': function(event, template) {
 		event.preventDefault();
 		var providerDetails = Profiles.findOne({userId: Meteor.userId()});
 		var dwolla_req_obj = {
@@ -78,12 +65,9 @@ Template.withdraw.events({
 			city:  providerDetails.fullLocation.locality,
 			state: providerDetails.fullLocation.state,
 			postalCode: providerDetails.fullLocation.zip,
-			dateOfBirth: moment($('#date_of_birth').val()).format('YYYY-MM-DD'),
-			ssn: $('#social_security_no').val(),
+			ssn: providerDetails.socialSecurityNumber,
+			dateOfBirth: moment(providerDetails.dateOfBirth).format('YYYY-MM-DD'),
 			phone: providerDetails.contactNumber,
-			account_no: $('#bank_account_no').val(),
-			routing_no: $('#routing_number').val(),
-			account_type: $('input[name="account_type"]:checked').val()
 		}
 		Meteor.call('createCustomer', dwolla_req_obj, providerDetails.userId, function(error, result) {
 			if(error) {
@@ -120,6 +104,7 @@ Template.withdraw.events({
 	},
 	'click .startIav': function(event, template) {
 		event.preventDefault();
+		$(event.currentTarget).button('loading');
 		var customerUrl = Wallet.findOne({userId: Meteor.userId()}).dwollaCustomer.location[0];
 		Meteor.call('genIavToken', customerUrl, function(error, result) {
 			if(!error) {

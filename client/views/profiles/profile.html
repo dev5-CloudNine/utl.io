@@ -38,7 +38,7 @@
 							{{/if}}
 						{{/if}}
 						<hr>
-						Member since {{formatDate createdAt}}
+						Member since: <br> {{formatDate createdAt}}
 						<hr>
 						{{#if adminOrProvider}}
 							<i class="fa fa-envelope"></i> {{userName}}
@@ -157,7 +157,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="panel panel-default panel-white #providerReviews">
+		<!-- <div class="panel panel-default panel-white #providerReviews">
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-sm-12">
@@ -179,7 +179,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
+		{{>userReviews userId=userId}}
 	</div>
 	{{else}}
 		<p>You access is restricted. <a href="/sign-in">Login</a></p>

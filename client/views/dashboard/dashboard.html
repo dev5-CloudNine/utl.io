@@ -64,14 +64,18 @@
         <div class="row">
             <hr>
             {{#with myProfile}}
-                {{#if isInRole 'buyer'}}
-                    {{>buyerSmall}}
-                {{/if}}
-                {{#if isInRole 'dispatcher'}}
-                    {{>dispatcherSmall}}
-                {{/if}}
+                <div class="col-md-4">
+                    <label>You are</label>
+                    {{#if isInRole 'buyer'}}
+                        {{>buyerSmall}}
+                    {{/if}}
+                    {{#if isInRole 'dispatcher'}}
+                        {{>dispatcherSmall}}
+                    {{/if}}
+                </div>
             {{/with}}
-            <div class="col-lg-4">
+            <div class="col-md-8">
+                <label>Todo important</label>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         {{>notifications}}
@@ -226,9 +230,13 @@
         <div class="row">
             <hr>
             {{#with myProfile}}
-                {{>profileSmall}}
+                <div class="col-md-4">
+                    <label>You are</label>
+                    {{>profileSmall}}
+                </div>
             {{/with}}
-            <div class="col-lg-4">
+            <div class="col-md-8">
+                <label>Todo important</label>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         {{>notifications}}
@@ -313,6 +321,59 @@
                 <h4>Scheduled Dates of Assigned Jobs</h4>
                 {{>providerCalendar}}
             </div>
+        </div>
+    {{/if}}
+    {{#if isInRole 'accountant'}}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <div class="widget-data">
+                                <div class="widget-int num-count"></div>
+                                <div class="widget-title"></div>
+                                <div class="widget-subtitle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <div class="widget-data">
+                                <div class="widget-int num-count"></div>
+                                <div class="widget-title"></div>
+                                <div class="widget-subtitle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <div class="widget-data">
+                                <div class="widget-int num-count"></div>
+                                <div class="widget-title"></div>
+                                <div class="widget-subtitle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget widget-default widget-item-icon">
+                            <div class="widget-data">
+                                <div class="widget-int num-count"></div>
+                                <div class="widget-title"></div>
+                                <div class="widget-subtitle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <hr>
+            {{#with myProfile}}
+                <div class="col-md-4">
+                    <label>You are</label>
+                    {{>accountantSmall}}
+                </div>
+            {{/with}}
         </div>
     {{/if}}
     {{#if isInRole 'admin'}}

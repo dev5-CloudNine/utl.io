@@ -47,11 +47,6 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <!-- {{#if jobAssignedToProvider}}
-                                            {{#if assignedProvider}}
-                                                <span class="pull-right"><button class="btn btn-sm btn-primary createPdf">Download PDF</button></span>
-                                            {{/if}}
-                                        {{/if}} -->
                                         {{#if jobPostedBuyer}}
                                             <span class="pull-right">
                                                 <a href="{{pathFor 'duplicateJob'}}" class="btn btn-primary btn-sm">Duplicate Job</a>
@@ -180,6 +175,7 @@
                                         Payment Type: {{ratebasis}} <br>
                                         {{#if $eq ratebasis 'Blended'}}
                                             {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
+                                            Total Hours: {{blendedTotalHours firsthours nexthours}} <br>
                                             {{#if jobPostedBuyer}}
                                                 Gross: {{totalfromclient}} USD. <br>
                                             {{/if}}
@@ -248,15 +244,13 @@
                                                 {{/each}}
                                             </ul>
                                         {{/if}}
-                                        {{#if tasks}}
-                                            <hr>
-                                            <h4>Tasks</h4>
-                                            <ul>
-                                                {{#each tasks}}
-                                                    <li>{{taskname}}</li>
-                                                {{/each}}
-                                            </ul>
-                                        {{/if}}
+                                        <hr>
+                                        <h4>Tasks</h4>
+                                        <ul>
+                                            {{#each taskList}}
+                                                <li>{{taskName}}</li>
+                                            {{/each}}
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -587,27 +581,7 @@
                                     {{#if $eq applicationStatus 'paid'}}
                                         <p><i>{{approvedTime}}</i></p>
                                         <p>Payment has been released successfully for the job completed. The provider is now paid.</p>
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    {{#if reviewedProvider}}
-                                        <strong>Review Details</strong>
-                                        {{#with providerReviewDetails}}
-                                            <p>{{this.reviewMessage}}</p>
-                                            <span class="rateit" id="providerReviewPoints" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
-                                        {{/with}}
-                                    {{else}}
-                                        <form id="reviewProvider">
-                                            <div class="form-group">
-                                                <label for="writeReview">Write a review</label>
-                                                <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
-                                                <label>Rate provider</label><br>
-                                                <span class="rateit providerReviewPoints"></span>
-                                            </div>
-                                            <button class="margin-top-5 btn btn-sm btn-primary" type="submit">Submit</button>
-                                        </form>
+                                        {{>reviewProvider jobId=_id}}
                                     {{/if}}
                                 </div>
                             </div>
@@ -1325,31 +1299,12 @@
                                         {{#if assignedProvider}}
                                             <p><i>{{approvePaymentTime}}</i></p>
                                             <p>The buyer has approved the job you have done. Congratulations! Your account has been credited with {{projectBudget}} USD. The job is now successfully closed.</p>
+                                            {{>reviewBuyer jobId=_id}}
                                         {{else}}
                                             <div class="col-sm-12">
                                                 <small>The job is now complete.</small>
                                             </div>
                                         {{/if}}
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    {{#if reviewedBuyer}}
-                                        <strong>Review Details</strong>
-                                        {{#with buyerReviewDetails}}
-                                            <p>{{this.reviewMessage}}</p>
-                                            <span class="rateit buyerReviewPoints" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
-                                        {{/with}}
-                                    {{else}}
-                                        <form id="reviewBuyer">
-                                            <div class="form-group">
-                                                <label for="writeReview">Write a review</label>
-                                                <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea>
-                                            </div>
-                                            <label>Rate buyer</label><br><span class="rateit buyerReviewPoints"></span><br>
-                                            <button class="margin-top-5 btn btn-primary btn-sm" type="submit">Submit</button>
-                                        </form>
                                     {{/if}}
                                 </div>
                             </div>
@@ -1436,6 +1391,7 @@
                                         Payment Type: {{../ratebasis}} <br>
                                         {{#if $eq ../ratebasis 'Blended'}}
                                             {{../payforfirsthours}} USD for the first {{../firsthours}} hours, and then {{../payfornexthours}} USD for the next {{../nexthours}} hours. <br>
+                                            Total Hours: {{blendedTotalHours ../firsthours ../nexthours}}
                                             {{#if jobPostedBuyer}}
                                                 Gross: {{../totalfromclient}} USD.
                                             {{/if}}
@@ -1467,6 +1423,7 @@
                                             {{#if $eq this.counterType 'blended'}}
                                                 Payment Type: Blended<br>
                                                 Pay {{first_hours}} USD for the first {{first_max_hours}} and then {{next_hours}} USD for the next {{next_max_hours}}.<br>
+                                                Total Hours: {{blendedTotalHours first_maxHours next_max_hours}}
                                             {{/if}}
                                             {{#if $eq counterType 'per_device'}}
                                                 Payment Type: Per Device<br>
@@ -1898,6 +1855,7 @@
                                                             {{#if $eq counter_type 'blended'}}
                                                                 Payment Type: Blended <br>
                                                                 Pay {{first_hours}} USD for the first {{first_max_hours}} and then {{next_hours}} USD for the next {{next_max_hours}}. <br>
+                                                                Total Hours: {{blendedTotalHours first_max_hours next_max_hours}}
                                                             {{/if}}
                                                             {{#if $eq counter_type 'per_device'}}
                                                                 Payment Type: Per Device <br>

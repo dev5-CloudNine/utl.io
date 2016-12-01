@@ -66,6 +66,9 @@ Template.deposit.helpers({
 	previousDepositOptions: previousDepositOptions,
 	dwollaCustomer: function() {
 		var userWallet = Wallet.findOne({userId: Meteor.userId()});
+		if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+			return Wallet.findOne({userId: Meteor.user().invitedBy}).dwollaCustomer? true: false;
+		}
 		if(userWallet.dwollaCustomer) {
 			return true;
 		}
@@ -73,6 +76,9 @@ Template.deposit.helpers({
 	},
 	fundingSourceUrl: function() {
 		var userWallet = Wallet.findOne({userId: Meteor.userId()});
+		if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+			return Wallet.findOne({userId: Meteor.user().invitedBy}).fundingSourceUrl? true: false;
+		}
 		if(userWallet.fundingSourceUrl)
 			return true;
 		return false;
@@ -100,21 +106,9 @@ Template.deposit.helpers({
 });
 
 Template.deposit.events({
-	'keyup input[name="social_security_no"], keydown input[name="social_security_no"]': function(event, template) {
-		if (!((event.keyCode == 46 || 
-			event.keyCode == 8  || 
-			event.keyCode == 37 || 
-			event.keyCode == 39 || 
-			event.keyCode == 9) || 
-			$(event.currentTarget).val().length < 4 &&
-			((event.keyCode >= 48 && event.keyCode <= 57) ||
-			(event.keyCode >= 96 && event.keyCode <= 105)))) {
-			event.preventDefault();
-			return false;
-		}
-	},
-	'submit #register_dwolla': function(event, template) {
+	'click #register_dwolla': function(event, template) {
 		event.preventDefault();
+		$(event.currentTarget).button('loading');
 		var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
 		var dwolla_req_obj = {
 			firstName: buyerDetails.firstName,
@@ -124,12 +118,9 @@ Template.deposit.events({
 			city:  buyerDetails.fullLocation.locality,
 			state: buyerDetails.fullLocation.state,
 			postalCode: buyerDetails.fullLocation.zip,
-			dateOfBirth: moment($('#date_of_birth').val()).format('YYYY-MM-DD'),
-			ssn: $('#social_security_no').val(),
+			dateOfBirth: moment(buyerDetails.dateOfBirth).format('YYYY-MM-DD'),
+			ssn: buyerDetails.socialSecurityNumber,
 			phone: buyerDetails.contactNumber,
-			account_no: $('#bank_account_no').val(),
-			routing_no: $('#routing_number').val(),
-			account_type: $('input[name="account_type"]:checked').val()
 		}
 		Meteor.call('createCustomer', dwolla_req_obj, buyerDetails.userId, function(error, result) {
 			if(error) {
@@ -141,26 +132,31 @@ Template.deposit.events({
 	},
 	'submit #dwolla_deposit': function(event, template) {
 		event.preventDefault();
-		var walletDetails = Wallet.findOne({userId: Meteor.userId()});
-		$('.submitWithdrawReq').prop('disabled', true);
+		$('#depositBtn').button('loading');
+		var walletDetails;
+		if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+			walletDetails = Wallet.findOne({userId: Meteor.userId()});
+		else if(Roles.userIsInRole(Meteor.userId(), ['accountant']))
+			walletDetails = Wallet.findOne({userId: Meteor.user().invitedBy});
 		var reqAmount = $('input#requestAmount').val()
 		$('.enoughBalance').hide();
 		var fundingSourceUrl = walletDetails.fundingSourceUrl;
-		Meteor.call('initiatePayment', fundingSourceUrl, Meteor.userId(), reqAmount, function(error, result) {
+		Meteor.call('initiatePayment', fundingSourceUrl, walletDetails.userId, reqAmount, function(error, result) {
 			if(error) {
 				console.log(error);
 			} else {
-				Meteor.call('updateWalletAfterTransfer', reqAmount, Meteor.userId());
+				Meteor.call('updateBuyerWallet', reqAmount, walletDetails.userId);
 				var transferUrl = result._headers.location[0];
 				var n = transferUrl.lastIndexOf('/');
 				var transferId = transferUrl.substring(n + 1);
 				Router.go('transferDetails', {id: transferId});
-				$('.submitWithdrawReq').prop('disabled', false);
+				$('#depositBtn').button('reset');
 			}
 		})
 	},
 	'click .startIav': function(event, template) {
 		event.preventDefault();
+		$(event.currentTarget).button('loading');
 		var customerUrl = Wallet.findOne({userId: Meteor.userId()}).dwollaCustomer.location[0];
 		Meteor.call('genIavToken', customerUrl, function(error, result) {
 			if(!error) {

@@ -1,0 +1,43 @@
+<template name="reviewProvider">
+	{{#if reviewedProvider}}
+		<hr>
+        <strong>Review Details</strong>
+        {{#with providerReviewDetails}}
+            <p>{{this.reviewMessage}}</p>
+            <span class="rateit" id="providerReviewPoints" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
+        {{/with}}
+    {{else}}
+    	<hr>
+        <form id="reviewProvider">
+            <div class="form-group">
+                <label for="writeReview">Write a review</label>
+                <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea><br>
+                <label>Rate provider</label><br>
+                <span class="rateit" id="rateProvider"></span>
+            </div>
+            <button class="margin-top-5 btn btn-sm btn-primary" type="submit">Submit</button>
+        </form>
+    {{/if}}
+</template>
+
+<template name="reviewBuyer">
+	{{#if reviewedBuyer}}
+		<hr>
+        <strong>Review Details</strong>
+        {{#with buyerReviewDetails}}
+            <p>{{this.reviewMessage}}</p>
+            <span class="rateit" id="buyerReviewPoints" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
+        {{/with}}
+    {{else}}
+    	<hr>
+        <form id="reviewBuyer">
+            <div class="form-group">
+                <label for="writeReview">Write a review</label>
+                <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea>
+            </div>
+            <label>Rate buyer</label><br>
+            <span class="rateit" id="rateBuyer"></span><br>
+            <button class="margin-top-5 btn btn-primary btn-sm" type="submit">Submit</button>
+        </form>
+    {{/if}}
+</template>

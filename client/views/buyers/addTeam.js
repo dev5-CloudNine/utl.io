@@ -7,7 +7,7 @@ Template.addTeam.helpers({
 
 Template.addTeam.events({
 	'click button.invite': function (event, template) {
-		$(event.target).prop('disabled', true);
+		$(event.currentTarget).button('loading');
 		var email = $('input.email').val();
 		var type = $('input[name=corpRole]:checked').val();
 
@@ -26,11 +26,6 @@ Template.addTeam.events({
 			return;
 		}
 
-		// var invitation = {};
-		// invitation.email = email;
-		// invitation.companyName = Meteor.users.findOne({_id:Meteor.userId()}).companyName;
-		// invitation.type = type;
-
 		var invitation = {
 			buyerName: $('#buyerName').val(),
 			email: email,
@@ -42,7 +37,8 @@ Template.addTeam.events({
 			if(err){
 				toastr.error("Failed to send and invite to this email.")
 			} else {
-				toastr.success("An invitation has been sent to the provided email ID.")
+				$('.invite').button('reset');
+				toastr.success("An invitation has been sent to the provided email ID.");
 			}
 		});
 	}

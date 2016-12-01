@@ -133,13 +133,19 @@ Buyers.attachSchema(
   },
   socialSecurityNumber: {
   	type: String,
-  	label: "Social Security Number",
+  	label: "Social Security Number *",
   	max: 128,
-  	optional: true
+  },
+  dateOfBirth: {
+    type: Date,
+    label: 'Date of Birth *',
+    autoform: {
+      type: 'bootstrap-datepicker'
+    }
   },
   location: {
   	type: String,
-  	label: "Location",
+  	label: "Location *",
   	max: 256
   },
   fullLocation: {

@@ -7,27 +7,11 @@ Template.dispatchers.onCreated(function() {
     });
 });
 
-var options = {
-    keepHistory: 1000 * 60 * 5,
-    localSearch: true
-};
-var fields = ['title', 'name', 'location'];
-
-DispatcherSearch = new SearchSource('dispatchersList', fields, options);
-
 Template.dispatchers.helpers({
     dispatcherList: function() {
-        return DispatcherSearch.getData({}, {sort: {createdAt: -1}});
+        if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+            return Dispatchers.find({invitedBy: Meteor.userId()});
+        } else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher', 'accountant']))
+            return Dispatchers.find({invitedBy: Meteor.user().invitedBy})
     }
 });
-
-Template.dispatchers.rendered = function() {
-    DispatcherSearch.search('');
-}
-
-Template.dispatchers.events({
-    'keyup #search-box': _.throttle(function(e) {
-        var text = $(e.target).val().trim();
-        DispatcherSearch.search(text);
-    }, 200)
-})

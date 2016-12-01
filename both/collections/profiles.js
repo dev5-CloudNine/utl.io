@@ -123,10 +123,10 @@ Profiles.attachSchema(
       label: "Designation *",
       max: 128
     },
-    // socialSecurityNumber: {
-    //   type: String,
-    //   label: "Social Security Number (Last 4 digits only) *"
-    // },
+    socialSecurityNumber: {
+      type: String,
+      label: "Social Security Number *"
+    },
     location: {
       type: String
     },
@@ -176,13 +176,13 @@ Profiles.attachSchema(
         options: MOBILE_CARRIERS
       }
     },
-    // dateOfBirth: {
-    //   type: Date,
-    //   label: 'Date of Birth *',
-    //   autoform: {
-    //     type: 'bootstrap-datepicker'
-    //   }
-    // },
+    dateOfBirth: {
+      type: Date,
+      label: 'Date of Birth *',
+      autoform: {
+        type: 'bootstrap-datepicker'
+      }
+    },
     avgRatesPerHour: {
       type: Number,
       label: "Average Rates Per Hour (USD) *",

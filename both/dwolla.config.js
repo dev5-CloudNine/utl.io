@@ -90,7 +90,6 @@ if (Meteor.isServer) {
                 ssn: dwolla_req_object.ssn,
                 phone: dwolla_req_object.mobile_number
             };
-            var customerUrl;
             accountToken.post('customers', customerDetails).then(function(res) {
                 var Fiber = Npm.require('fibers');
                 Fiber(function() {
@@ -98,23 +97,6 @@ if (Meteor.isServer) {
                     dwollaCustomer['updated_on'] = new Date();
                     Wallet.upsert({userId: reqdUserId}, {$set: {dwollaCustomer: dwollaCustomer, socialSecurityNo: dwolla_req_object.ssn}});
                 }).run();
-                customerUrl = res.headers._headers.location[0];
-                var fundObj = {
-                    'routingNumber': dwolla_req_object.routing_no,
-                    'accountNumber': dwolla_req_object.account_no,
-                    'type': dwolla_req_object.account_type,
-                    'name': dwolla_req_object.firstName + ' FSRC'
-                };
-                // accountToken.post(customerUrl + '/funding-sources', fundObj).then(function(res) {
-                //     var Fiber = Npm.require('fibers');
-                //     Fiber(function() {
-                //         var dwollaFundingSource = res.headers._headers;
-                //         dwollaFundingSource['updated_on'] = new Date();
-                //         Wallet.upsert({userId: reqdUserId}, {$set: {dwollaFundingSource: dwollaFundingSource, bank_account_number: dwolla_req_object.account_no, routing_number: dwolla_req_object.routing_no, account_type: dwolla_req_object.account_type}});
-                //     }).run();
-                // }, function(err) {
-                //     console.log(err)
-                // });
             }, function(err) {
                 console.log('Create Customer error');
                 console.log(err.body._embedded);
@@ -242,7 +224,6 @@ if (Meteor.isServer) {
             return payReqFut.value;
         },
         'genIavToken': function(customerUrl) {
-            console.log(customerUrl)
             var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
             var obj = Wallet.findOne({userId: adminId});
             if(!obj) {
@@ -329,7 +310,7 @@ if (Meteor.isServer) {
             var customerArray = fut.value;
             customerArray.forEach(function(customer) {
                 var reqBody = {
-                    email: customer.lastName + 'custo@' + customer.firstName + '.com'
+                    email: customer.lastName + 'debcu@' + customer.firstName + '.com'
                 }
                 accountToken.post('https://api-uat.dwolla.com/customers/' + customer.id, reqBody).then(function(result) {
                     console.log(result);
