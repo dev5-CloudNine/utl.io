@@ -59,7 +59,7 @@
                                         </h4>
                                         <small>
                                             {{#if $eq servicelocation 'Remote Job'}}
-                                                <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}&nbsp;|&nbsp;
+                                                <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}
                                             {{else}}
                                                 {{#if assignedProvider}}
                                                     <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
@@ -75,14 +75,14 @@
                                         <small>
                                             <i class="fa fa-user fa-fw"></i>
                                             {{#if postedByDispatcher}}
-                                                Posted {{#with dispatcherData}}by <a href="{{pathFor 'dispatcher'}}">{{firstName}} {{lastName}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
+                                                Posted by {{#with dispatcherData}} <a href="/dispatchers/{{id}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
                                             {{/if}}
                                             {{#if postedByBuyer}}
                                                 Posted {{#with buyerData}}by <a href="/buyers/{{id}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
                                             {{/if}}
                                             <br>
                                         </small>
-                                        <small>
+                                        <!-- <small>
                                             <span class="label label-sm {{appStatusLabel}}">Status: {{#if $eq status 'deactivated'}} Deactivated {{else}} {{applicationStatus}}{{/if}}</span>
                                             &nbsp;
                                             {{#if $eq status 'active'}}
@@ -103,7 +103,7 @@
                                                     Applications: {{applicationsCount}}
                                                 {{/if}}
                                             {{/if}}
-                                        </small>
+                                        </small> -->
                                     </div>
                                     <div class="col-sm-12">
                                         {{#if isInRole 'provider'}}
@@ -163,11 +163,11 @@
                                         {{/if}}
                                         <h4>Service Schedule</h4>
                                         {{#if $eq serviceschedule 'exactdate'}}
-                                            On: {{formatDate exactdate}} <br>
+                                            On: {{formatServiceSchedule exactdate}} <br>
                                             Time: {{exacttime}}
                                         {{/if}}
                                         {{#if $eq serviceschedule 'betweendates'}}
-                                            Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} to {{endtime}}
+                                            Between {{formatServiceSchedule startdate}} and {{formatServiceSchedule enddate}} from {{starttime}} to {{endtime}}
                                         {{/if}}
                                         {{#if ratebasis}}
                                         <hr>
@@ -1808,8 +1808,10 @@
                                             <div class="panel-group" id="accordion">
                                                 <div class="panel panel-white">
                                                     <div class="panel-heading">
-                                                        <a href="#user{{this.userId}}" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">{{this.name}}</a>
-                                                        <a href="/profiles/{{this.userId}}" class="pull-right"><i class="fa fa-link"></i></a>
+                                                        <div class="pull-right">
+                                                            <a href="/profiles/{{this.userId}}"><i class="fa fa-link"></i></a>&nbsp;&#124;&nbsp;
+                                                            <a href id="appliedProviderMsg"><i class="fa fa-envelope"></i></a>
+                                                        </div>
                                                     </div>
                                                     <div id="user{{this.userId}}" class="panel-collapse collapse">
                                                         <div class="panel-body">

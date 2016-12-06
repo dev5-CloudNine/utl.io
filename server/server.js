@@ -467,7 +467,7 @@ Meteor.methods({
             buyerId: buyerId,
             budget: jobDetails.projectBudget,
             date: new Date(),
-            invoiceId: 'INV' + jobDetails.readableID,
+            invoiceId: jobDetails.readableID,
             invoiceStatus: 'paid'
         }
         Invoices.insert(invoiceObject);
@@ -517,10 +517,10 @@ Meteor.methods({
             html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has rejected the job you submitted for approval.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to view details and discuss the matter with the buyer.'
         })
     },
-    publishToFavsUpdate: function(job) {
+    publishToFavsUpdate: function(job, favoriteProviders) {
         Jobs.update({_id: job._id}, {$set: {invited: true}});
-        for(var i = 0; i < job.favoriteProviders.length; i++) {
-            var providerDetails = Profiles.findOne({userId: job.favoriteProviders[i]});
+        for(var i = 0; i < favoriteProviders.length; i++) {
+            var providerDetails = Profiles.findOne({userId: favoriteProviders[i]});
             var buyerId = job.userId;
             var buyerDetails;
             if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
@@ -528,10 +528,10 @@ Meteor.methods({
             } else {
                 buyerDetails = Buyers.findOne({userId: buyerId});
             }
-            Profiles.update({userId: job.favoriteProviders[i]}, {$addToSet: {invitedJobs: job._id}});
+            Profiles.update({userId: favoriteProviders[i]}, {$addToSet: {invitedJobs: job._id}});
             var notificationObj = {
                 jobId: job._id,
-                providerId: job.favoriteProviders[i],
+                providerId: favoriteProviders[i],
                 buyerId: buyerId,
                 timeStamp: new Date(),
                 notificationType: 'jobInvitation',
@@ -541,7 +541,7 @@ Meteor.methods({
             };
             Notifications.insert(notificationObj);
             Email.send({
-                to: getUserEmail(Meteor.users.findOne({_id: job.favoriteProviders[i]})),
+                to: getUserEmail(Meteor.users.findOne({_id: favoriteProviders[i]})),
                 cc: providerDetails.smsAddress,
                 from: FROM_EMAIL,
                 subject: 'You have a new routed job.',
@@ -549,35 +549,37 @@ Meteor.methods({
             })
         }
     },
-    publishToIndividualUpdate: function(job) {
-        Jobs.update({_id: job._id}, {$set: {invited: true}});
-        Profiles.update({userId: job.individualprovider}, {$addToSet: {invitedJobs: job._id}});
-        var providerDetails = Profiles.findOne({userId: job.individualprovider});
-        var buyerId = job.userId;
-        var buyerDetails;
-        if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
-            buyerDetails = Dispatchers.findOne({userId: buyerId});
-        } else {
-            buyerDetails = Buyers.findOne({userId: buyerId});
+    publishToIndividualUpdate: function(job, selectedProviders) {
+        for(var i = 0; i < selectedProviders.length; i++) {
+            var providerDetails = Profiles.findOne({userId: selectedProviders[i]});
+            var buyerId = job.userId;
+            var buyerDetails;
+            if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
+                buyerDetails = Dispatchers.findOne({userId: buyerId});
+            } else {
+                buyerDetails = Buyers.findOne({userId: buyerId});
+            }
+            Profiles.update({userId: selectedProviders[i]}, {$addToSet: {invitedJobs: job._id}});
+            var notificationObj = {
+                jobId: job._id,
+                providerId: selectedProviders[i],
+                buyerId: buyerId,
+                timeStamp: new Date(),
+                notificationType: 'jobInvitation',
+                read: false,
+                side: 'provider',
+                adminRead: false
+            };
+            Notifications.insert(notificationObj);
+            Email.send({
+                to: getUserEmail(Meteor.users.findOne({_id: selectedProviders[i]})),
+                cc: providerDetails.smsAddress,
+                from: FROM_EMAIL,
+                subject: 'A buyer has invited to bid on his job.',
+                html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">' + job.readableID + ' - ' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
+            });
         }
-        var notificationObj = {
-            jobId: job._id,
-            providerId: job.individualprovider,
-            buyerId: buyerId,
-            timeStamp: new Date(),
-            notificationType: 'jobInvitation',
-            read: false,
-            side: 'provider',
-            adminRead: false
-        };
-        Notifications.insert(notificationObj);
-        Email.send({
-            to: getUserEmail(Meteor.users.findOne({_id: job.individualprovider})),
-            cc: providerDetails.smsAddress,
-            from: FROM_EMAIL,
-            subject: 'A buyer has invited to bid on his job.',
-            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">' + job.readableID + ' - ' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
-        });
+        Jobs.update({_id: job._id}, {$set: {invited: true}});
     },
     routeNotification: function(buyerId, doc) {
         Profiles.update({userId: doc.selectedProvider}, {$addToSet: {routedJobs: doc._id}});

@@ -92,26 +92,6 @@ Template.profileFields.events({
       }
     });
   },
-  // "change .file_bag": function(event,template) {
-  //   event.preventDefault();
-  //   var files = $(event.currentTarget)[0].files;
-  //   if (!files) return;
-  //   S3.upload({
-  //     files: files,
-  //     path: S3_FILEUPLOADS
-  //   }, function(err, res) {
-  //     $('.profileImgProgress').hide();
-  //     $('.resumeProgress').hide();
-  //     if (err) toastr.error("Failed to upload image");
-  //     else {
-  //       Meteor.call('updateImgURL', Meteor.userId(),res.url, function (error, result) {
-  //         if(error){
-  //           toastr.error('Failed to update');
-  //         }
-  //       });
-  //     }
-  //   });
-  // },
   'change .file_bag': function(event, template) {
     event.preventDefault();
     var files = $(event.currentTarget)[0].files;
@@ -151,26 +131,7 @@ Template.profileFields.events({
         });
       }
     });
-  },
-  // "click .remove-img" : function(event) {
-  //   event.preventDefault();
-  //   $('#spinner').show();
-  //   var url = Meteor.users.findOne({_id: Meteor.userId()}).imgURL;
-  //   var index = url.indexOf(S3_FILEUPLOADS)-1;
-  //   var path = url.substr(index);
-  //   S3.delete(path, function(err, res) {
-  //     $('#spinner').hide();
-  //     if (err) {
-  //         toastr.error("Operation failed");
-  //     } else {
-  //       Meteor.call('updateImgURL', Meteor.userId(), function (error, result) {
-  //         if(error){
-  //           toastr.error('Failed to update');
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
+  }
 });
 // var customImagePreviewUrl = new ReactiveVar();
 
@@ -184,7 +145,7 @@ Template.profileEdit.events({
 });
 
 Template.profileFields.rendered = function() {
-  $('#dateOfBirth').datepicker();
+  $('#dateOfBirth').datepicker({format: 'yyyy-mm-dd'});
   $('#resumespinner').hide();
   $('#imgspinner').hide();
   $('.profileImgProgress').hide();

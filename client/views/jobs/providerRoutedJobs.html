@@ -14,9 +14,15 @@
 			{{#each providerRoutedJobs}}
 				{{>jobSmall}}
 			{{else}}
-				<hr>
 				<p>You have no routed jobs at this moment.</p>
 			{{/each}}
 		</div>
 	</div>
+	<div class="row">
+        <div class="col-sm-12">
+            {{#if hasMoreJobs}}
+                <a href class="load-more btn btn-primary">Load More</a>
+            {{/if}}
+        </div>
+    </div>
 </template>

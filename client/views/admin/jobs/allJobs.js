@@ -2,20 +2,31 @@ var allJobs = function() {
 	return Jobs.find().fetch();
 }
 
-var adminOptionsObject = {
+var allJobsObject = {
+	lengthMenu: [10, 25, 50, 100],
+	pageLength: 10,
+	order: [[0, 'desc']],
 	columns: [
 		{
-			title: 'Readable ID',
+			title: 'ID',
 			data: function(jobDetails) {
 				return jobDetails.readableID;
-			}
+			},
+			width: '10%'
 		},
 		{
 			title: 'Job Name',
 			data: function(jobDetails) {
-				var jobUrl = '<a href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a>';
+				var jobUrl = '<a href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br><small><i>' + moment(jobDetails.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a") + '</i></small>';
 				return jobUrl;
 			}
+		},
+		{
+			title: 'Budget (USD)',
+			data: function(jobDetails) {
+				return jobDetails.your_cost;
+			},
+			width: '12%'
 		},
 		{
 			title: 'Posted By',
@@ -30,19 +41,25 @@ var adminOptionsObject = {
 					buyerUrl = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
 				}
 				return buyerUrl;
-			}
+			},
+			width: '20%'
 		},
 		{
-			title: 'Posted On',
+			title: 'Service Location',
 			data: function(jobDetails) {
-				return moment(jobDetails.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a");
-			}
+				if(jobDetails.servicelocation == 'Remote Job')
+					return 'Remote Job';
+				else
+					return jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
+			},
+			width: '20%'
 		},
 		{
 			title: 'Job Status',
 			data: function(jobDetails) {
 				return jobDetails.applicationStatus;
-			}
+			},
+			width: '10%'
 		}
 	]
 }
@@ -51,5 +68,5 @@ Template.allJobs.helpers({
 	allJobs: function() {
 		return allJobs;
 	},
-	adminOptionsObject: adminOptionsObject
+	adminOptionsObject: allJobsObject
 })

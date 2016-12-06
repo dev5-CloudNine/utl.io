@@ -11,7 +11,7 @@
 }
 
 .panel {
-    background: #f7f7f7 !important;
+    background: #f8f8f8 !important;
 }
 .switch-calculator {
     margin-top: 10px;
@@ -40,7 +40,6 @@ h3, h4 {
 
 #home-wrapper {
     margin-top: -20px;
-    margin-bottom: -28px;
 }
 
 #utl_fees {
@@ -1695,4 +1694,18 @@ a.icoTwitter {
     -o-linear-gradient(right, black, rgba(0, 0, 0, 0)) 1 100%;
   border-image:
     linear-gradient(to right, black, rgba(0, 0, 0, 0)) 1 100%; 
+}
+
+.load-more{
+  text-align:center;
+  /*background:#eee;*/
+  /*border: 1px solid #ddd;*/
+  display:block;
+  padding: 10px;
+}
+
+.jobsloading{
+  position: relative;
+  height: 100px;
+  width: 100%;
 }

@@ -78,7 +78,7 @@ Template.buyerEdit.events({
 
 
 Template.buyerFields.rendered = function() {
-  $('#dateOfBirth').datepicker();
+  $('#dateOfBirth').datepicker({format: 'yyyy-mm-dd'});
   $('#spinner').hide();
   $('.progress').hide();
   Meteor.typeahead.inject('.typeahead');

@@ -22,10 +22,6 @@ Meteor.publish("userData", function() {
     this.ready();
 });
 
-Meteor.publish('corporates', function() {
-    return Corporates.find({});
-})
-
 Meteor.publish('userFiles', function(userId) {
     return FileManager.find({userId: userId});
 })
@@ -75,10 +71,6 @@ Meteor.publish('usersTasks', function() {
             return Tasks.find({jobID:{$in:jobs||[]}});
         }
     }
-})
-
-Meteor.publish('providerDeactivatedJobs', function() {
-    return Jobs.find({status: 'deactivated'});
 })
 
 Meteor.publish("tasks", function (taskID) {
@@ -135,11 +127,6 @@ Meteor.publish('jobNotifications', function(jobId) {
     return Notifications.find({jobId: jobId});
 })
 
-Meteor.publish('postedBuyer', function(jobId) {
-    var userId = Jobs.findOne({_id: jobId}).userId;
-    return Meteor.users.find({_id: userId});
-});
-
 Meteor.publish("tempInvitation", function () {
     return TempInvitation.find();
 });
@@ -159,9 +146,9 @@ Meteor.publish('developerCount', function() {
     }));
 });
 
-Meteor.publish('jobCount', function() {
-    Counts.publish(this, 'jobs', Jobs.find({status: 'active', applicationStatus: 'open', invited: false}));
-})
+// Meteor.publish('jobCount', function() {
+//     Counts.publish(this, 'jobs', Jobs.find({status: 'active', applicationStatus: 'open', invited: false}));
+// })
 
 Meteor.publishComposite('providers', {
     find: function() {
@@ -203,68 +190,6 @@ Meteor.publishComposite('providers', {
     }]
 });
 
-Meteor.publishComposite('dispatchers', {
-    find: function() {
-        return Dispatchers.find({}, {
-            sort: {
-                createdAt: -1
-            },
-            limit: 8,
-            fields: {
-                userId: true,
-                title: true,
-                location: true,
-                firstName: true,
-                lastName: true,
-                userName: true,
-                status: true,
-                customImageUrl: true,
-                companyName: true,
-                companyUrl: true,
-                createdAt: true,
-                invitedBy: true
-            }
-        })
-    }
-});
-
-Meteor.publishComposite('jobs',{
-    find: function() {
-        return Jobs.find({status: 'active'}, {
-            sort: {
-                createdAt: -1
-            },
-            fields: {
-                paid30Usd: true,
-                denied30Usd: true
-            }
-        })
-    }
-})
-
-Meteor.publishComposite('accountants', {
-    find: function() {
-        return Accountants.find({}, {
-            sort: {
-                createdAt: -1
-            },
-            fields: {
-                userId: true,
-                title: true,
-                location: true,
-                firstName: true,
-                lastName: true,
-                userName: true,
-                status: true,
-                customImageUrl: true,
-                companyName: true,
-                companyUrl: true,
-                invitedBy: true
-            }
-        })
-    }
-})
-
 Meteor.publishComposite('buyers', {
     find: function() {
         return Buyers.find({
@@ -299,17 +224,18 @@ Meteor.publish('adminJobCount', function() {
     Counts.publish(this, 'adminJobs', Jobs.find({}));
 });
 
-Meteor.publish('allCompletedJobs', function() {
-    Counts.publish(this, 'allCompletedJobs', Jobs.find({applicationStatus: 'paid'}));
-});
-
 Meteor.publish('usersCount', function() {
     Counts.publish(this, 'userCount', Users.find({}));
 })
 
-Meteor.publish("jobs", function() {
-    check(arguments, [Match.Any]);
-    return Jobs.find({$and: [{status: "active", applicationStatus: 'open', invited: false}]}, {sort: {createdAt: -1}})
+Meteor.publish("jobs", function (limit) {
+    check(limit, Number);
+    return Jobs.find({$and: [{status: "active", applicationStatus: 'open', invited: false}]}, {sort: {createdAt: -1}, limit: limit})
+});
+
+Meteor.publish("my_jobs", function (limit) {
+    check(limit, Number);
+    return Jobs.find({userId: this.userId}, {sort: {createdAt: -1}, limit: limit})
 });
 
 Meteor.publish('recommendedJobs', function(categories) {
@@ -324,99 +250,16 @@ Meteor.publish('subCategoryJobs', function(subCategory) {
     return Jobs.find({$and: [{jobSubCategory: {$in: [subCategory]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
 });
 
-Meteor.publish('invitedJobs', function() {
-    check(arguments, [Match.Any]);
-    return Jobs.find({$and: [{status: 'active', applicationStatus:'open', invited: true}]}, {sort: {createdAt: -1}});
-});
-
-Meteor.publish("my_jobs", function() {
-    check(arguments, [Match.Any]);
-    if (this.userId) {
-        return [
-            Jobs.find({
-                userId: this.userId
-            })
-        ];
-    }
-    this.ready();
-});
-
-Meteor.publish('providerRoutedJobs', function() {
-    check(arguments, [Match.Any]);
-    if(this.userId) {
-        return [
-            Jobs.find({
-                'selectedProvider': this.userId
-            }, {
-                'routed': true
-            }, {
-                'applicationStatus': 'frozen'
-            })
-        ];
-        this.ready();
-    }
-});
-
-Meteor.publish('providerAssignedJobs', function() {
-    check(arguments, [Match.Any]);
-    if(this.userId) {
-        return [
-            Jobs.find({
-                'assignedProvider': this.userId
-            }, {
-                'applicationStatus': 'assigned'
-            })
-        ];
-        this.ready();
-    }
-});
-
-Meteor.publish('providerPaymentPending', function() {
-    check(arguments, [Match.Any]);
-    if(this.userId) {
-        return [
-            Jobs.find({
-                'assignedProvider': this.userId
-            }, {
-                'assignmentStatus': 'pending_payment'
-            })
-        ];
-        this.ready();
-    }
-})
-
-Meteor.publish('providerCompletedJobs', function() {
-    check(arguments, [Match.Any]);
-    if(this.userId) {
-        return [
-            Jobs.find({
-                'assignedProvider': this.userId
-            }, {
-                'applicationStatus': 'completed'
-            })
-        ];
-        this.ready();
-    }
-});
-
-Meteor.publish('providerPaidJobs', function() {
-    check(arguments, [Match.Any]);
-    if(this.userId) {
-        return [
-            Jobs.find({
-                'assignedProvider': this.userId
-            }, {
-                'applicationStatus': 'paid'
-            })
-        ];
-        this.ready();
-    }
-})
-
-Meteor.publish('completedJobs', function() {
-    check(arguments, [Match.Any]);
-    return Jobs.find({status: 'active', applicationStatus: 'done'}, {sort: {createdAt: -1}});
-})
+// Meteor.publish("my_jobs", function(limit) {
+//     check(arguments, [Match.Any]);
+//     if (this.userId) {
+//         return [
+//             Jobs.find({
+//                 userId: this.userId
+//             })
+//         ];
+//     }
+// });
 
 Meteor.publish('allJobs', function() {
     check(arguments, [Match.Any]);
@@ -438,12 +281,6 @@ Meteor.publish('buyerPostedJobs', function(buyerId) {
     var uId = Buyers.findOne({_id: buyerId}).userId;
     return Jobs.find({status: 'active', userId: uId}, {sort: {createdAt: -1}});
 });
-
-Meteor.publish('dispatcherPostedJobs', function(dispatcherId) {
-    check(arguments, [Match.Any]);
-    var uId = Dispatchers.findOne({_id: dispatcherId}).userId;
-    return Jobs.find({status: 'active', userId: uId}, {sort: {createdAt: -1}});
-})
 
 Meteor.publish('dispatcherPostedJobs', function(dispatcherId) {
     check(arguments, [Match.Any]);
@@ -640,21 +477,6 @@ Meteor.publish('dispatcherUsers', function() {
     ]
 });
 
-
-
-Meteor.publish("corporateUsers", function() {
-    check(arguments, [Match.Any]);
-    return [
-        Users.find({
-            isCorporate: true
-        }, {
-            fields: {
-                "emailHash": true,
-            }
-        })
-    ]
-})
-
 Meteor.publish('profiles', function(limit) {
     var selector = {};
     check(limit, Number);
@@ -670,6 +492,10 @@ Meteor.publish('profiles', function(limit) {
 Meteor.publish('dispatchers', function(buyerId) {
     return Dispatchers.find({invitedBy: buyerId});
 });
+
+Meteor.publish('allDispatchers', function() {
+    return Dispatchers.find({});
+})
 
 Meteor.publish('accountants', function(buyerId) {
     return  Accountants.find({invitedBy: buyerId});

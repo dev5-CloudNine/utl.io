@@ -103,7 +103,7 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             <label for="date_of_birth">Date of Birth *</label>
-            <input type="text" id="dateOfBirth" name="dateOfBirth" data-schema-key="dateOfBirth" class="form-control" placeholder="Date of Birth" required>
+            <input type="text" id="dateOfBirth" name="dateOfBirth" value="{{formatDOB this.profile.dateOfBirth}}" data-schema-key="dateOfBirth" class="form-control" placeholder="Date of Birth" required>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name="socialSecurityNumber" placeholder="Last 4 digits of your SSN"}}

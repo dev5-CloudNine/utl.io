@@ -1,10 +1,10 @@
 Template.assignJob.events({
 	'click button.assign': function(event, template) {
 		Session.set('routingJob', true);
-		$(event.curretnTarget).button('loading');
+		$(event.currentTarget).button('loading');
 		Jobs.before.insert(function(userId, doc) {
 			if(Router.current().route.getName() != 'assignJob') {
-				$(event.curretnTarget).button('reset');
+				$(event.currentTarget).button('reset');
 				return;
 			}
 			doc.selectedProvider = "";
@@ -23,12 +23,12 @@ Template.assignJob.events({
 		Jobs.after.insert(function(userId, doc) {
 			if(!Session.get('routingJob')) {
 				return;
-				$(event.curretnTarget).button('reset');
+				$(event.currentTarget).button('reset');
 			}
 			Meteor.call('routeNotification', Meteor.userId(), doc, function(error) {
 				if(error) {
 					toastr.error('Failed to route job.');
-					$(event.curretnTarget).button('reset');
+					$(event.currentTarget).button('reset');
 				} else {
 					delete Session.keys['routingJob'];
 					toastr.success('A notification has been sent to the provider to confirm assignment.');

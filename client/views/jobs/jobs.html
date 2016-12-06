@@ -1,5 +1,5 @@
 <template name="jobs">
-	<div class="row">
+    <div class="row">
         <div class="col-sm-12">
             <p>
                 Jobs: Open - {{openJobsCount}} &#124; 
@@ -14,12 +14,20 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            {{#each openJobs}}
+            {{#each jobs}}
                 {{>jobSmall}}
             {{/each}}
         </div>
     </div>
-    <div class="text-center">
-        {{>infiniteScroll}}
+    <div class="row">
+        <div class="col-sm-12">
+            {{#if Template.subscriptionsReady}}
+                {{#if hasMoreJobs}}
+                    <a href class="load-more btn btn-primary">Load More</a>
+                {{/if}}
+            {{else}}
+                <div class="jobsloading">{{>spinner}}</div>
+            {{/if}}
+        </div>
     </div>
 </template>

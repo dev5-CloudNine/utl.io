@@ -20,4 +20,15 @@
 			{{/if}}
 		</div>
 	</div>
+	<div class="row">
+        <div class="col-sm-12">
+            {{#if Template.subscriptionsReady}}
+                {{#if hasMoreJobs}}
+                    <a href class="load-more btn btn-primary">Load More</a>
+                {{/if}}
+            {{else}}
+                <div class="jobsloading">{{>spinner}}</div>
+            {{/if}}
+        </div>
+    </div>
 </template>

@@ -1,22 +1,6 @@
 Jobs = new Mongo.Collection("jobs");
-JobsIndex = new EasySearch.Index({
-  collection: Jobs,
-  fields: ['title', 'skillsrequired', 'location', 'jobtype', 'jobSubCategory', 'readableID'],
-  engine: new EasySearch.Minimongo({
-    selector: function(searchObject, options, aggregation) {
-     var selector = this.defaultConfiguration().selector(searchObject, options, aggregation);
-     selector.applicationStatus = 'open';     
-     return selector;
-   },
-    sort: function (searchObject) {
-        return {
-          createdAt: -1
-        };
-    }
-  })
-});
 
-SimpleSchema.debug = true;
+// SimpleSchema.debug = true;
 AddressSchema = new SimpleSchema({
   street: {
     type: String,
@@ -62,8 +46,8 @@ AddressSchema = new SimpleSchema({
     decimal: true
   }
 })
-Jobs.attachSchema(
-  new SimpleSchema({
+
+Jobs.attachSchema(new SimpleSchema({
     title: {
       type: String,
       label: "Job Title *"
@@ -116,9 +100,41 @@ Jobs.attachSchema(
       }
     },
     individualprovider: {
-      type: String,
-      optional: true
+      type: [String],
+      optional: true,
+      label: 'Choose one or more providers',
+      autoform: {
+        type: "selectize",
+        options: function() {
+          return Profiles.find().fetch().map(function(profile) {
+            var providerDetails = {
+              label: profile.firstName + ' ' + profile.lastName,
+              value: profile.userId
+            }
+            return providerDetails;
+          })
+        },
+        multiple: true
+      }
     },
+    // providerList: {
+    //   type: [String],
+    //   optional: true,
+    //   label: 'Choose one or more providers',
+    //   autoform: {
+    //     type: "selectize",
+    //     options: function() {
+    //       return Profiles.find().fetch().map(function(profile) {
+    //         var providerDetails = {
+    //           label: profile.firstName + ' ' + profile.lastName,
+    //           value: profile.userId
+    //         }
+    //         return providerDetails;
+    //       })
+    //     },
+    //     multiple: true
+    //   }
+    // },
     jobtype: {
       type: String,
       label: "Select Job Category *"
@@ -952,8 +968,7 @@ Jobs.attachSchema(
       denyInsert: true,
       optional: true
     }
-  })
-);
+  }));
 
 Jobs.helpers({
   path: function() {
@@ -966,6 +981,14 @@ Jobs.helpers({
     return this.featuredThrough && moment().isBefore(this.featuredThrough);
   }
 });
+
+if (Meteor.isServer) {
+  Jobs._ensureIndex({
+    "title": "text",
+    "description": "text",
+    "location": "text"
+  });
+}
 
 Jobs.allow({
   insert: function(userId, doc) {

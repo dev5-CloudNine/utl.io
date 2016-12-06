@@ -1,61 +1,27 @@
 Template.dashboard.helpers({
-	jobs: function() {
-		return Jobs.find({
-			userId: Meteor.userId()
-		}, {
-			sort: {
-				createdAt: -1
-			}
-		});
-	},
-	invitedJobsCount: function() {
-		var routedJobs = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
-		if(routedJobs) {
-			return routedJobs.length;
-		}
-		return 0;
-	},
-	routedJobsCount: function() {
-		var routedJobs = Profiles.findOne({userId: Meteor.userId()}).routedJobs;
-		if(routedJobs) {
-			return routedJobs.length;
-		}
-		return 0;
-	},
-	assignedJobsCount: function() {
-		var providerDetails = Profiles.findOne({userId: Meteor.userId()});
-		if(providerDetails && providerDetails.assignedJobs) {
-			return providerDetails.assignedJobs.length;
-		}
-		return 0;
-	},
-	appliedJobsCount: function() {
-		var providerDetails = Profiles.findOne({userId: Meteor.userId});
-		if(providerDetails && providerDetails.appliedJobs) {
-			return providerDetails.appliedJobs.length;
-		}
-		return 0;
-	},
-	buyerCompletedJobsCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}).count();
-	},
-	ongoingBuyerJobs: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
-	},
-	buyerProfile: function() {
-		return Buyers.find({
-			userId: Meteor.userId()
-		});
-	},
-	allDeactivatedCount: function() {
-		return Jobs.find({status: 'deactivated'}).count();
-	},
-	providerProfile: function() {
-		return Profiles.findOne({userId: Meteor.userId()});
-	},
-	buyerDetails: function() {
-		return Buyers.findOne({userId: Meteor.userId()});
-	},
+	// jobs: function() {
+	// 	return Jobs.find({
+	// 		userId: Meteor.userId()
+	// 	}, {
+	// 		sort: {
+	// 			createdAt: -1
+	// 		}
+	// 	});
+	// },
+	// buyerProfile: function() {
+	// 	return Buyers.find({
+	// 		userId: Meteor.userId()
+	// 	});
+	// },
+	// allDeactivatedCount: function() {
+	// 	return Jobs.find({status: 'deactivated'}).count();
+	// },
+	// providerProfile: function() {
+	// 	return Profiles.findOne({userId: Meteor.userId()});
+	// },
+	// buyerDetails: function() {
+	// 	return Buyers.findOne({userId: Meteor.userId()});
+	// },
 	favJobs: function() {
 		var favJobsIds = [];
 		var favJobsArray = [];
@@ -73,43 +39,43 @@ Template.dashboard.helpers({
 		});
 		return Jobs.find({_id: {$in:appliedJobIds}},{sort: {createdAt: -1}});
 	},
-	ongoingJobs: function() {
-		return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
-	},
-	providerRoutedJobs: function() {
-		return Jobs.find({$and: [{"selectedProvider": Meteor.userId()}, {"routed": true}, {"applicationStatus": "frozen"}]}).fetch()
-	},
-	buyerRoutedJobs: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {routed: true}]}, {sort: {createdAt: -1}});
-	},
-	favUsers: function() {
-		var favUserIds = [];
-		var favUserArray = [];
-		var userDetails = Meteor.user();
-		userDetails.favoriteUsers.forEach(function(favusers) {
-			favUserIds.push(favusers);
-		});
-		favUserIds.forEach(function(id) {
-			favUserArray.push(Profiles.findOne({
-				_id: id
-			}));
-		});
-		return favUserArray;
-	},
-	favBuyers: function() {
-		var favBuyerIds = [];
-		var favBuyerArray = [];
-		var userDetails = Meteor.user();
-		userDetails.favoriteBuyers.forEach(function(favBuyer) {
-			favBuyerIds.push(favBuyer);
-		});
-		favBuyerIds.forEach(function(id) {
-			favBuyerArray.push(Buyers.findOne({
-				_id: id
-			}));
-		});
-		return favBuyerArray;
-	},
+	// ongoingJobs: function() {
+	// 	return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
+	// },
+	// providerRoutedJobs: function() {
+	// 	return Jobs.find({$and: [{"selectedProvider": Meteor.userId()}, {"routed": true}, {"applicationStatus": "frozen"}]}).fetch()
+	// },
+	// buyerRoutedJobs: function() {
+	// 	return Jobs.find({$and: [{userId: Meteor.userId()}, {routed: true}]}, {sort: {createdAt: -1}});
+	// },
+	// favUsers: function() {
+	// 	var favUserIds = [];
+	// 	var favUserArray = [];
+	// 	var userDetails = Meteor.user();
+	// 	userDetails.favoriteUsers.forEach(function(favusers) {
+	// 		favUserIds.push(favusers);
+	// 	});
+	// 	favUserIds.forEach(function(id) {
+	// 		favUserArray.push(Profiles.findOne({
+	// 			_id: id
+	// 		}));
+	// 	});
+	// 	return favUserArray;
+	// },
+	// favBuyers: function() {
+	// 	var favBuyerIds = [];
+	// 	var favBuyerArray = [];
+	// 	var userDetails = Meteor.user();
+	// 	userDetails.favoriteBuyers.forEach(function(favBuyer) {
+	// 		favBuyerIds.push(favBuyer);
+	// 	});
+	// 	favBuyerIds.forEach(function(id) {
+	// 		favBuyerArray.push(Buyers.findOne({
+	// 			_id: id
+	// 		}));
+	// 	});
+	// 	return favBuyerArray;
+	// },
 	buyerJobsCount: function() {
 		return Jobs.find({userId: Meteor.userId()}).count();
 	},
@@ -123,26 +89,14 @@ Template.dashboard.helpers({
 		}
 		return count;
 	},
-	buyerOpenJobsCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();
-	},
-	buyerAssignedJobsCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}]}).count();
-	},
-	buyerCompletedJobs: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}]}).fetch();
-	},
-	providerCompletedJobsCount: function() {
-		var paidJobs = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
-		if(paidJobs)
-			return paidJobs.length;
-		return 0;
-	},
 	accountBalance: function() {
 		return Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 	},
 	amountSpent: function() {
-		return Wallet.findOne({userId: Meteor.userId()}).amountSpent;
+		var amountSpent = Wallet.findOne({userId: Meteor.userId()}).amountSpent;
+		if(amountSpent)
+			return amountSpent;
+		return 0;
 	},
 	amountEarned: function() {
 		return Wallet.findOne({userId: Meteor.userId()}).amountEarned;
@@ -301,7 +255,7 @@ Template.dashboard.helpers({
 			var today = new Date().getUTCMonth();
 			paidJobsLastYear.forEach(function(paidJob) {
 				var paidNotification = Notifications.findOne({$and: [{jobId: paidJob._id}, {notificationType: 'approveAssignment'}]});
-				if(paidNotification.timeStamp.getUTCMonth() == today - diff) {
+				if(paidNotification && paidNotification.timeStamp.getUTCMonth() == today - diff) {
 					count ++;
 				}
 			});

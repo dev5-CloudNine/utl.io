@@ -10,37 +10,38 @@
                 <div class="panel-body">
                     {{#autoForm id="jobNew" collection="Jobs" type="insert"}}
                         {{>jobFields}}
-                        <div>
-                            <button type="submit" class="btn btn-primary publish" id="pubNew" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait..."><i class="fa fa-chevron-right"></i> Publish</button>
-                            <button type="submit" class="btn btn-primary publishToFavs" id="pubFav" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Publish to Fav's</button>
-                            <button class="btn btn-primary publishInd" data-toggle="collapse" data-target="#publishIndividual" id="pubInd">Publish to Individual</button>
-                            <div id="publishIndividual" class="panel panel-white panel-collapse collapse">
-                                <div class="panel-body">
-                                    {{>providerList}}
-                                    <!-- {{> afQuickField name="individualprovider"}} -->
-                                    <button type="submit" class="btn btn-primary inviteIndividual" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
-                                </div>
-                            </div>
-                        </div>
+                        {{>submitButtons}}
                     {{/autoForm}}
                 </div>
             </div>
         </div>
     </div>
 </template>
-<template name="providerList">
-    <div class="form-group">
-        <input type="text" data-schema-key="individualprovider" class="form-control proTypeahead" placeholder="Choose Provider" name="individualprovider" autocomplete="off" spellcheck="off" value="{{providerData}}" data-source="individualprovider" data-select="select" data-template="providerTemplate">
-        <span class="help-block"></span>
+
+<template name="submitButtons">
+    <div class="radio">
+        <label>
+            <input type="radio" name="publishJob" value="allProviders" checked> Publish to all
+        </label>
     </div>
-</template>
-<template name="providerTemplate">
-    <div class="form-group example-twitter oss">
-        <p>{{readableId}}</p>
-        <p>{{value}} - {{title}}</p>
-        <hr>
+    <div class="radio">
+        <label>
+            <input type="radio" name="publishJob" value="favProviders"> Publish to fav's
+        </label>
     </div>
+    <div class="radio">
+        <label>
+            <input type="radio" name="publishJob" value="selectedProviders"> Publish to chosen providers
+        </label>
+    </div>
+    <div id="publishIndividual" class="panel panel-white panel-collapse collapse" hidden>
+        <div class="panel-body">
+            {{> afQuickField name="individualprovider"}}
+        </div>
+    </div>
+    <button class="btn btn-sm btn-primary" id="submitJob" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
 </template>
+
 <template name="jobEdit">
     <div class="row">
         <div class="col-sm-12">
@@ -76,17 +77,7 @@
                 <div class="panel-body">
                     {{#autoForm id="jobNew" collection="Jobs" doc=job type="insert"}}
                         {{>jobFields}}
-                        <div>
-                            <button type="submit" class="btn btn-primary duplicate" id="dupJob" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait..."><i class="fa fa-chevron-right"></i> Publish</button>
-                            <button type="submit" class="btn btn-primary duplicateToFavs" id="dupToFav" value="favs" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Publish to Fav's</button>
-                            <button class="btn btn-primary dupPublishInd" id="dupInvInd" data-toggle="collapse" data-target="#dupPublishInvididual">Publish to Individual</button>
-                            <div id="dupPublishInvididual" class="panel panel-white panel-collapse collapse">
-                                <div class="panel-body">
-                                    {{>providerList}}
-                                    <button type="submit" class="btn btn-primary dupInviteIndividual" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
-                                </div>
-                            </div>
-                        </div>
+                        {{>submitButtons}}
                     {{/autoForm}}
                 </div>
             </div>
@@ -180,11 +171,6 @@
                 </div>
             {{/each}}
         </div>
-            <!-- <ul class="fileList" style="list-style-type: none;">
-                {{#each files}}
-                    <li><i class="fa fa-times-circle remove-job-file" data-url="{{this.file_url}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this.file_url}}" target="_blank">{{this.file_name}}</a></li>
-                {{/each}}
-            </ul> -->
         <div class="fileList">
             {{#each files}}
                 <div class="col-md-2">
@@ -324,11 +310,6 @@
                 </div>
             {{/if}}
         </div>
-        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="alert alert-info enoughBalance" hidden>
-                <strong>You have enough account balance. Your account will be debited once published.</strong>
-            </div>
-        </div> -->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="alert alert-danger notEnoughBalance" hidden>
                 <strong>You don't have enough account balance. Click on the button to deposit funds.</strong>
@@ -340,30 +321,13 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {{>afArrayField name="tasks"}}
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {{>afArrayField name="shipment"}}
         </div>
     </div>
-    <!-- <hr>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{>afQuickField name="assignToProvider"}}
-        </div>
-    </div>
-    <div class="row selectProviders" hidden>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{#each availableProviders}}
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="selectedProviders" data-schema-key="selectedProviders" value="{{this._id}}">{{#with this}} <a href="{{pathFor 'profile'}}"> {{this.name}}</a>{{/with}}
-                    </label>
-                </div>
-            {{/each}}
-        </div>
-    </div> -->
 </template>
 
 <template name="jobLocationMap">

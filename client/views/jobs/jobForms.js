@@ -3,9 +3,8 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 		insert: function(error, result) {
 			if (error) {
 				toastr.error(error);
-				Session.set('insertError', true);
+				$('button#submitJob').button('reset');
 			} else {
-				Session.set('insertError', false);
 				analytics.track("Job Created");
 				toastr.success('The job has been posted and your account has been debited with the proposed budget.');
         		Router.go('job', {_id:result});
@@ -23,107 +22,24 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 });
 
 Template.duplicateJob.rendered = function() {
-	var accountBalance;
-	if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
-		accountBalance = Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
-	} else {
-		accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
-	}
-	if(this.data.job.your_cost > accountBalance) {
-		$('.notEnoughBalance').show();
-		$('.publish').prop('disabled', true);
-		$('#dupToFav').prop('disabled', true);
-		$('.dupInviteIndividual').prop('disabled', true);
-	} else {
-		$('enoughBalance').show();
-		$('.publish').prop('disabled', false);
-		$('.duplicateToFavs').prop('disabled', false);
-		$('.dupInviteIndividual').prop('disabled', false);
-	}
+	this.autorun(function() {
+		var accountBalance;
+		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+			accountBalance = Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+		} else {
+			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		}
+		if(this.data.job.your_cost > accountBalance) {
+			$('.notEnoughBalance').show();
+		}
+	})
 }
-
-Template.duplicateJob.events({
-	'click #dupJob': function(event, template) {
-		$(event.currentTarget).button('loading');
-		$('#dupToFav').prop('disabled', true);
-		$('#dupInvInd').prop('disabled', true);
-	},
-	'click .dupPublishInd': function(event, template) {
-		event.preventDefault();
-	},
-	'click .dupInviteIndividual': function(event, template) {
-		$(event.currentTarget).button('loading');
-		var individualProvider = $('input[name="individualprovider"]')[0].id;
-		Session.set('publishToIndividual', true);
-		Jobs.before.insert(function(userId, doc) {
-			$(event.target).prop('disabled', true);
-			if(!Session.get('publishToIndividual'))
-				return;
-			if(Session.get('insertError')) {
-				$(event.target).prop('disabled', false);
-				$('button.duplicate').prop('disabled', false);
-				$('button.duplicateToFavs').prop('disabled', false);
-				delete Session.keys['insertError']
-				return;
-			}
-			doc.invited = true;
-			doc.individualprovider = individualProvider;
-		});
-		Jobs.after.insert(function(userId, doc) {
-			if(!Session.get('publishToIndividual'))
-				return;
-			if(Session.get('insertError'))
-				return;
-			Meteor.call('publishToIndividualUpdate', doc, function(error) {
-				if(error) {
-					toastr.error('Failed to publish to the individual. Please try again.');
-				} else {
-					delete Session.keys['publishToIndividual'];
-					toastr.success('An invitation has been sent to the individual to apply for this job.');
-				}
-			})
-		})
-	},
-	'click .duplicateToFavs': function(event, template) {
-		$(event.currentTarget).button('loading');
-		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
- 		Session.set('duplicateToFav', true);
- 		Jobs.before.insert(function(userId, doc) {
-			$(event.currentTarget).prop('disabled', true);
-			$('.dupPublishInd').prop('disabled', true);
-			$('.duplicate').prop('disabled', true);
- 			if(!Session.get('duplicateToFav'))
- 				return;
- 			doc.invited = true;
- 			doc.favoriteProviders = [];
- 			for(var i = 0; i < favProviders.length; i++) {
- 				doc.favoriteProviders.push(favProviders[i]);
- 			}
-		});
-		Jobs.after.insert(function(userId, doc) {
- 			if(!Session.get('duplicateToFav'))
- 				return;
- 			doc.invited = true;
- 			Meteor.call('publishToFavsUpdate', doc, function(error) {
- 				if(error) {
- 					toastr.error('Failed to publish job to favorites. Please try again');
- 				} else {
- 					delete Session.keys['duplicateToFav'];
- 				}
- 			})
-		});
-	}
-})
 
 Template.jobFields.rendered = function() {
   	$('#spinner').hide();
   	$('.fileUploadProgress').hide();
 	Meteor.typeahead.inject('.typeahead');
 	$('.note-editor .note-toolbar .note-insert').remove();
-}
-
-Template.providerList.rendered = function() {
-	Meteor.typeahead.inject('.proTypeahead');
 }
 
 var locLoaded=false;
@@ -534,115 +450,63 @@ Template.jobFields.helpers({
 	}
 });
 
-Template.providerList.helpers({
-	individualprovider: function(query, sync, callback) {
-		if(!proLoaded)
-			$('.proTypeahead').addClass('loadinggif');
-		Meteor.call('individualprovider', query, {}, function(err, res) {
-			if(err) {
-				console.log(err);
-				return;
-			}
-			callback(res.map(function(v) {
-				proLoaded = true;
-				$('.proTypeahead').removeClass('loadinggif');
-				return {value: v.firstName + ' ' + v.lastName, id: v.userId, readableId: Meteor.users.findOne({_id: v.userId}).readableID, title: v.title};
-			}))
-		})
+Template.submitButtons.events({
+	'change input[name="publishJob"]': function(event, template) {
+		var publishTo = $(event.currentTarget).val()
+		if(publishTo == 'selectedProviders')
+			$('#publishIndividual').show();
+		else
+			$('#publishIndividual').hide();
 	},
-	select: function(e, suggestion, dataset) {
-		$(e.currentTarget).prop('id', suggestion.id);
+	'click #submitJob': function(event, template) {
+		var publishTo = $('input[name="publishJob"]:checked').val()
+		if(publishTo == 'favProviders') {
+			$(event.currentTarget).button('loading');
+			Session.set('publishToFav', true);
+			var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
+			Jobs.after.insert(function(userId, doc, res) {
+				if(!Session.get('publishToFav')) {
+					$(event.currentTarget).button('reset');
+					return;
+				}
+	 			Meteor.call('publishToFavsUpdate', doc, favProviders, function(error) {
+	 				if(error) {
+	 					toastr.error('Failed to publish job to your favorite providers. Please try again');
+	 					$(event.currentTarget).button('reset');
+	 				} else {
+	 					favProviders.length = 0;
+	 					delete Session.keys['publishToFav'];
+	 				}
+	 			})
+			});
+		}
+		else if(publishTo == 'selectedProviders') {
+			Session.set('publishToIndividual', true);
+			$(event.currentTarget).button('loading');
+			var individualProviders = $('select[name="individualprovider"]').val();
+			Jobs.after.insert(function(userId, doc) {
+				if(!Session.get('publishToIndividual')) {
+					$(event.currentTarget).button('reset');
+					return;
+				}
+				Meteor.call('publishToIndividualUpdate', doc, individualProviders, function(error) {
+					if(error) {
+						$(event.currentTarget).button('reset');
+						toastr.error('Failed to publish to the chosen providers. Please try again.');
+					} else {
+						individualProviders.length = 0;
+						delete Session.keys['publishToIndividual'];
+					}
+				})
+			})
+		}
+		else {
+			$(event.currentTarget).button('loading');
+		}
 	}
 })
 
 Template.jobNew.events({
-	'click button.publish': function(event, template) {
-		$(event.currentTarget).button('loading');
-		$('#pubFav').prop('disabled', true);
-		$('#pubInd').prop('disabled', true);
-		if(Session.get('insertError')) {
-			$(event.currentTarget).button('reset');
-			$('#pubFav').prop('disabled', false);
-			$('#pubInd').prop('disabled', false);
-		}
-	},
-	'click .publishToFavs': function(event, template) {
-		$(event.currentTarget).button('loading');
-		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
- 		Session.set('publishToFav', true);
- 		Jobs.before.insert(function(userId, doc) {
- 			$('button.publish').prop('disabled', true);
- 			$('button.publishInd').prop('disabled', true);
-			$(event.currentTarget).prop('disabled', true);
- 			if(!Session.get('publishToFav'))
- 				return;
- 			if(Session.get('insertError')) {
- 				$(event.currentTarget).button('reset');
- 				$('button.publish').prop('disabled', false);
- 				$('button.publishInd').prop('disabled', false);
- 				$(event.currentTarget).prop('disabled', false);
- 				return;
- 			}
- 			doc.invited = true;
- 			doc.favoriteProviders = [];
- 			for(var i = 0; i < favProviders.length; i++) {
- 				doc.favoriteProviders.push(favProviders[i]);
- 			}
-		});
-		Jobs.after.insert(function(userId, doc, res) {
- 			if(!Session.get('publishToFav'))
- 				return;
- 			if(Session.get('insertError'))
- 				return;
- 			doc.invited = true;
- 			Meteor.call('publishToFavsUpdate', doc, function(error) {
- 				if(error) {
- 					toastr.error('Failed to publish job to favorites. Please try again');
- 					$(event.currentTarget).button('reset');
- 				} else {
- 					delete Session.keys['publishToFav'];
- 				}
- 			})
-		});
-	},
-	'click .publishInd': function(event, template) {
-		event.preventDefault();
-	},
-	'click .inviteIndividual': function(event, template) {
-		$(event.currentTarget).button('loading');
-		var individualProvider = $('input[name="individualprovider"]')[0].id;
-		Session.set('publishToIndividual', true);
-		Jobs.before.insert(function(userId, doc) {
-			$(event.currentTarget).prop('disabled', true);
-			$('button.publish').prop('disabled', true);
- 			$('button.publishToFavs').prop('disabled', true);
-			if(!Session.get('publishToIndividual'))
-				return;
-			if(Session.get('insertError')) {
-				$(event.currentTarget).button('reset');
-				$('button.publish').prop('disabled', false);
- 				$('button.publishToFavs').prop('disabled', false);
- 				$(event.currentTarget).prop('disabled', false);
-				return;
-			}
-			doc.invited = true;
-			doc.individualprovider = individualProvider;
-		});
-		Jobs.after.insert(function(userId, doc) {
-			if(!Session.get('publishToIndividual'))
-				return;
-			if(Session.get('insertError'))
-				return;
-			Meteor.call('publishToIndividualUpdate', doc, function(error) {
-				if(error) {
-					$(event.currentTarget).button('reset');
-					toastr.error('Failed to publish to the individual. Please try again.');
-				} else {
-					delete Session.keys['publishToIndividual'];
-				}
-			})
-		})
-	},
 	'click .saveAsDraft': function(event, template) {
 		var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
 		Session.set('saveAsDraft', true);

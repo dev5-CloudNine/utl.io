@@ -33,7 +33,7 @@
 							{{/if}}
 						{{/if}}
 						<hr>
-						Member since {{formatDate createdAt}}
+						Member since <br> {{formatDate createdAt}}
 						<hr>
 						{{#if adminOrDispatcher}}
 							<i class="fa fa-envelope"></i> {{userName}}
@@ -42,13 +42,7 @@
 							<br>
 							<i class="fa fa-mobile"></i> {{smsAddress}}
 							<hr>
-							{{#with dwollaFundingSource}}
-								<i class="fa fa-credit-card"></i> Account No: {{this.accountNumber}} <br>
-								<i class="fa fa-university"></i> Routing No: {{this.routingNumber}} <br>
-								<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.bankAccountType}}
-								<hr>
-							{{/with}}
-							<a href="{{companyUrl}}">{{companyUrl}}</a>
+							{{companyUrl}}
 						{{/if}}
 					</div>
 					<div class="col-sm-9">

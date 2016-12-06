@@ -51,7 +51,7 @@ Router.map(function() {
             if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
                 Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             }
-            return Meteor.subscribe('jobs');
+            return;
         }
     });
 
@@ -59,10 +59,9 @@ Router.map(function() {
         path: '/jobs',
         title: "UTL - All Jobs",
         waitOn: function() {
-            Meteor.subscribe('userWallet', Meteor.userId());
             if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
                 Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-            return Meteor.subscribe('jobs');
+            return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
 
@@ -140,8 +139,7 @@ Router.map(function() {
             Meteor.subscribe('userWallet', Meteor.userId());
             if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
                 Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-            Meteor.subscribe('reviews');
-            return subs.subscribe('my_jobs');
+            return Meteor.subscribe('reviews');
         }
     });
 
@@ -149,10 +147,9 @@ Router.map(function() {
         path: '/myJobs/open',
         title: 'UTL - Open Jobs',
         waitOn: function() {
-            Meteor.subscribe('userWallet', Meteor.userId());
             if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
-                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-            return Meteor.subscribe('my_jobs');
+                return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
 
@@ -183,8 +180,7 @@ Router.map(function() {
             Meteor.subscribe('userWallet', Meteor.userId());
             if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
                 Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-            Meteor.subscribe('reviews');
-            return Meteor.subscribe('my_jobs');
+            return Meteor.subscribe('reviews');
         }
     });
 
@@ -195,8 +191,7 @@ Router.map(function() {
             Meteor.subscribe('userWallet', Meteor.userId());
             if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
                 Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-            Meteor.subscribe('reviews');
-            return Meteor.subscribe('my_jobs');
+            return Meteor.subscribe('reviews');
         }
     })
 
@@ -204,8 +199,7 @@ Router.map(function() {
         path: '/routedJobs',
         title: 'UTL - Routed Jobs',
         waitOn: function() {
-            Meteor.subscribe('userWallet', Meteor.userId());
-            return Meteor.subscribe('providerRoutedJobs');
+            return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
 
@@ -216,18 +210,7 @@ Router.map(function() {
             Meteor.subscribe('userWallet', Meteor.userId());
             if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
                 Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-            return Meteor.subscribe('my_jobs');
-        }
-    });
-
-    this.route('buyerPaymentPendingJobs', {
-        path: '/myJobs/paymentPending',
-        title: 'UTL - Payment Pending Jobs',
-        waitOn: function() {
-            Meteor.subscribe('userWallet', Meteor.userId());
-            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
-                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-            return Meteor.subscribe('my_jobs');
+            return;
         }
     });
 
@@ -236,29 +219,13 @@ Router.map(function() {
         title: 'UTL - Assigned Jobs',
         waitOn: function() {
             Meteor.subscribe('usersTasks');
-            Meteor.subscribe('userWallet', Meteor.userId());
-            return Meteor.subscribe('providerAssignedJobs');
+            return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
 
     this.route('providerDeactivatedJobs', {
         path: '/deactivatedJobs',
         title: 'UTL - Deactivated Jobs',
-        waitOn: function() {
-            return Meteor.subscribe('providerDeactivatedJobs');
-        }
-    })
-
-    this.route('buyerCompletedJobs', {
-        path: 'myJobs/completed',
-        title: 'UTL - Completed Jobs',
-        waitOn: function() {
-            Meteor.subscribe('userWallet', Meteor.userId());
-            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
-                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-            Meteor.subscribe('reviews');
-            return Meteor.subscribe('my_jobs');
-        }
     });
 
     this.route('buyerPaidJobs', {
@@ -268,8 +235,7 @@ Router.map(function() {
             Meteor.subscribe('userWallet', Meteor.userId());
             if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
                 Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-            Meteor.subscribe('reviews');
-            return Meteor.subscribe('my_jobs');
+            return Meteor.subscribe('reviews');
         }
     });
 
@@ -280,51 +246,27 @@ Router.map(function() {
             Meteor.subscribe('userWallet', Meteor.userId());
             if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
                 Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-            return Meteor.subscribe('my_jobs');
+            return;
         }
     })
-
-    this.route('providerPaymentPendingJobs', {
-        path: '/paymentPendingJobs',
-        title: 'UTL - Payment Pending Jobs',
-        waitOn: function() {
-            return Meteor.subscribe('providerPaymentPending');
-        }
-    })
-
-    this.route('providerCompletedJobs', {
-        path: '/completedJobs',
-        title: 'UTL - Completed Jobs',
-        waitOn: function() {
-            Meteor.subscribe('reviews');
-            return Meteor.subscribe('providerCompletedJobs');
-        }
-    });
 
     this.route('providerPaidJobs', {
         path: '/paidJobs',
         title: 'UTL - Paid Jobs',
         waitOn: function() {
             Meteor.subscribe('reviews');
-            Meteor.subscribe('userWallet', Meteor.userId());
-            return Meteor.subscribe('providerPaidJobs');
+            return Meteor.subscribe('userWallet', Meteor.userId());
         }
     })
 
     this.route('recommendedJobs', {
         path: '/recommendedjobs',
-        title: 'UTL - Recommended Jobs',
-        waitOn: function() {
-            return Meteor.subscribe('jobs')
-        }
+        title: 'UTL - Recommended Jobs'
     });
 
     this.route('invitedJobs', {
         path: '/invitedJobs',
-        title: 'UTL - Invited Jobs',
-        waitOn: function() {
-            return Meteor.subscribe('invitedJobs');
-        }
+        title: 'UTL - Invited Jobs'
     });
 
     this.route('job', {
@@ -346,8 +288,6 @@ Router.map(function() {
             Meteor.subscribe("tasksOfaJob",this.params._id);
             Meteor.subscribe("timeSheet",this.params._id);
             Meteor.subscribe("reviews");
-            if(Roles.userIsInRole(Meteor.userId(), ['provider']))
-                Meteor.subscribe('jobs');
             return Meteor.subscribe("job", this.params._id);
         },
         onBeforeAction: function() {
@@ -425,7 +365,7 @@ Router.map(function() {
         onBeforeAction: function () {
             if (Meteor.user() &&
                 Meteor.user().roles &&
-                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("corporate-admin")) != -1 || (Meteor.user().roles.indexOf("dispatcher")) != -1 )
+                ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("dispatcher")) != -1 )
                 ) {
                 this.next();
             } else {
@@ -559,7 +499,6 @@ Router.map(function() {
             });
         },
         waitOn: function() {
-            // Meteor.subscribe('completedJobs');
             Meteor.subscribe('reviews');
             return Meteor.subscribe('profile', this.params._id);
         },
@@ -765,7 +704,7 @@ Router.map(function() {
                 return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             }
             Meteor.subscribe('reviews');
-            Meteor.subscribe('buyerPostedJobs', this.params._id);
+            // Meteor.subscribe('buyerPostedJobs', this.params._id);
             return subs.subscribe('buyer', this.params._id);
         },
         onBeforeAction: function() {
@@ -1004,8 +943,7 @@ Router.map(function() {
         title: 'UTL - Buyer Jobs',
         waitOn: function() {
             Meteor.subscribe('buyer', this.params._id);
-            Meteor.subscribe('reviews');
-            return Meteor.subscribe('buyerPostedJobs', this.params._id);
+            return Meteor.subscribe('reviews');
         }
     });
 
@@ -1021,41 +959,22 @@ Router.map(function() {
 
     this.route('buyerNotifications', {
         path: '/buyers/:_id/:slug/notifications',
-        title: 'UTL - Notifications',
-        waitOn: function() {
-            Meteor.subscribe('userList');
-            return Meteor.subscribe('buyerPostedJobs', this.params._id);
-        }
+        title: 'UTL - Notifications'
     });
 
     this.route('dispatcherNotifications', {
         path: '/dispatchers/:_id/:slug/notifications',
-        title: 'UTL - Notifications',
-        waitOn: function() {
-            Meteor.subscribe('userList');
-            return Meteor.subscribe('dispatcherPostedJobs', this.params._id);
-        }
+        title: 'UTL - Notifications'
     });
 
     this.route('providerNotifications', {
         path: '/profiles/:_id/:slug/notifications',
-        title: 'UTL - Notifications',
-        waitOn: function() {
-            Meteor.subscribe('userList');
-            Meteor.subscribe('providerAssignedJobs');
-            Meteor.subscribe('providerPaymentPending');
-            Meteor.subscribe('providerRoutedJobs');
-            return Meteor.subscribe('providerCompletedJobs');
-        }
+        title: 'UTL - Notifications'
     });
 
     this.route('adminNotifications', {
         path: '/admin/notifications',
-        title: 'UTL - Notifications',
-        waitOn: function() {
-            Meteor.subscribe('userList');
-            return Meteor.subscribe('allJobs');
-        }
+        title: 'UTL - Notifications'
     });
 
     // this.route('corporates', {

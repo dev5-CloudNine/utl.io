@@ -3,6 +3,7 @@ var allJobCategories = function() {
 }
 
 var adminOptionsObject = {
+	pageLength: 50,
 	columns: [
 		{
 			title: 'Category',

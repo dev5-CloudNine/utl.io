@@ -47,6 +47,7 @@ Template.notifications.helpers({
 						notificationId: notification._id,
 						side: notification.side,
 						read: notification.read,
+						jobReadableId: jobDetails.readableID,
 						notificationTime: moment(notification.timeStamp).format('LLLL')
 					}
 				}
@@ -112,6 +113,7 @@ Template.notifications.helpers({
 						notificationId: notification._id,
 						side: notification.side,
 						read: notification.read,
+						jobReadableId: jobDetails.readableID,
 						notificationTime: moment(notification.timeStamp).format('LLLL')
 					}
 				}

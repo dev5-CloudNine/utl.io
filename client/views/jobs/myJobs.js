@@ -1,27 +1,33 @@
+Template.myJobs.onCreated(function() {
+    var instance = this;
+    instance.loaded = new ReactiveVar(0);
+    instance.limit = new ReactiveVar(10);
+    instance.autorun(function() {
+        var limit = instance.limit.get();
+        var subscription = instance.subscribe('my_jobs', limit);
+        if(subscription.ready()) {
+            instance.loaded.set(limit);
+        }
+    });
+    instance.jobs = function() {
+        return Jobs.find({userId: Meteor.userId()}, {sort: {createdAt: -1}, limit: instance.loaded.get()});
+    }
+});
+
 Template.myJobs.helpers({
 	buyerJobs: function() {
-		return Jobs.find({userId: Meteor.userId()}, {sort: {createdAt: -1}});
-		// return BuyerJobsSearch.getData({userId: Meteor.userId()}, {sort: {createdAt: -1}});
+		return Template.instance().jobs();
 	},
-	postedJobCount: function() {
-		return Jobs.find({userId: Meteor.userId()}).count();
-	},
-	buyerInvitedCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {invited: true}, {status: 'active'}]}).count();
-	},
-	buyerAssignedCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}, {status: 'active'}]}).count();
-	},
-	deactivatedCount: function() {
-	    return Jobs.find({$and: [{userId: Meteor.userId()}, {status: 'deactivated'}]}).count();
-	},
-	buyerOpenCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}, {status: 'active'}]}).count();
-	},
-	buyerPaidCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'paid'}, {status: 'active'}, {buyerArchived: false}]}).count();
-	},
-	buyerRoutedCount: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {routed: true}, {applicationStatus: 'frozen'}, {status: 'active'}]}).count();
-	}
+    hasMoreJobs: function() {
+        return Template.instance().jobs().count() >= Template.instance().limit.get();
+    }
 });
+
+Template.myJobs.events({
+    'click .load-more': function(event, instance) {
+        event.preventDefault();
+        var limit = instance.limit.get();
+        limit += 10;
+        instance.limit.set(limit);
+    }
+})

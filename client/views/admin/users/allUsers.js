@@ -1,13 +1,17 @@
 var allUsers = function() {
 	return Users.find().fetch();
 }
-var adminOptionsObject = {
+var allUsersObject = {
+	lengthMenu: [10, 25, 50, 100],
+	pageLength: 10,
+	order: [[0, 'desc']],
 	columns: [
 		{
-			title: 'Readable ID',
+			title: 'ID',
 			data: function(user) {
 				return user.readableID;
-			}
+			},
+			width: '10%'
 		},
 		{
 			title: 'User Name',
@@ -107,11 +111,11 @@ var adminOptionsObject = {
 			}
 		},
 		{
-			title: 'Account Balance',
+			title: 'Acct. Balance (USD)',
 			data: function(user) {
 				if(Roles.userIsInRole(user._id, ['dispatcher', 'accountant']))
 					return;
-				return '$' + Wallet.findOne({userId: user._id}).accountBalance;
+				return Wallet.findOne({userId: user._id}).accountBalance;
 			}
 		},
 		{
@@ -120,14 +124,11 @@ var adminOptionsObject = {
 				return moment(user.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a");
 			}
 		}
-	],
-	order: [
-		[4, 'asc']
 	]
 }
 Template.allUsers.helpers({
 	allUsers: function() {
 		return allUsers;
 	},
-	adminOptionsObject: adminOptionsObject
+	adminOptionsObject: allUsersObject
 })

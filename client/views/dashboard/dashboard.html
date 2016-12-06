@@ -11,9 +11,9 @@
                                     <div class="widget-title">Jobs Posted</div>
                                 </a>
                                 <div class="widget-subtitle">
-                                    <a href="/myJobs/open">{{buyerOpenJobsCount}} Open</a> &#124; 
-                                    <a href="/myJobs/assigned">{{buyerAssignedJobsCount}} Assigned</a> &#124; 
-                                    <a href="/myJobs/paid">{{buyerCompletedJobsCount}} Completed</a>
+                                    <a href="/myJobs/open">{{buyerOpenCount}} Open</a> &#124; 
+                                    <a href="/myJobs/assigned">{{buyerAssignedCount}} Assigned</a> &#124; 
+                                    <a href="/myJobs/paid">{{buyerPaidCount}} Completed</a>
                                 </div>
                             </div>
                         </div>
@@ -22,7 +22,7 @@
                     <div class="col-md-3">
                         <div class="widget widget-default widget-item-icon">
                             <div class="widget-data">
-                                <div class="widget-int num-count">$ {{amountSpent}}</div>
+                                <div class="widget-int num-count">USD {{amountSpent}}</div>
                                 <div class="widget-title">Amount Spent</div>
                                 <div class="widget-subtitle">Amount spent on this platform.</div>
                             </div>
@@ -455,7 +455,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
+        <!-- <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-12">
@@ -463,7 +463,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     {{/if}}
 </template>
 

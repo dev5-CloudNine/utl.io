@@ -11,16 +11,6 @@
 						{{else}}
 							{{> avatar userId=userId size="large"}}
 						{{/if}}
-						<!-- {{#if isInRole 'buyer'}}
-							{{#if currentUser.isBuyer}}
-								<br>
-								{{#if $eq this.status 'active'}}
-									<a href="{{pathFor 'accountantJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs</a>
-								{{else}}
-									<p class="label label-deactivated">Inactive</p>
-								{{/if}}
-							{{/if}}
-						{{/if}} -->
 						<hr>
 						{{#if adminOrAccountant}}
 							{{#if fullLocation}}
@@ -35,7 +25,7 @@
 							{{/if}}
 						{{/if}}
 						<hr>
-						Member since {{formatDate createdAt}}
+						Member since <br>{{formatDate createdAt}}
 						<hr>
 						{{#if adminOrAccountant}}
 							<i class="fa fa-envelope"></i> {{userName}}
@@ -44,12 +34,6 @@
 							<br>
 							<i class="fa fa-mobile"></i> {{smsAddress}}
 							<hr>
-							{{#with dwollaFundingSource}}
-								<i class="fa fa-credit-card"></i> Account No: {{this.accountNumber}} <br>
-								<i class="fa fa-university"></i> Routing No: {{this.routingNumber}} <br>
-								<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.bankAccountType}}
-								<hr>
-							{{/with}}
 							<a href="{{companyUrl}}">{{companyUrl}}</a>
 						{{/if}}
 					</div>

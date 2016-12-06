@@ -815,35 +815,37 @@ Template.job.helpers({
     var providers = [];
     var providerDetails = {};
     var jobDetails = Jobs.findOne(this._id);
-    jobDetails.applications.forEach(function(provider) {
-      var pDetails = Profiles.findOne({userId: provider.userId});
-      var imgURL
-      var imgUrl = Users.findOne({_id: provider.userId}).imgURL;
-      if(imgUrl)
-        imgURL = imgUrl;
-      providerDetails = {
-        imgUrl: imgURL,
-        userId: pDetails._id,
-        name: pDetails.firstName + ' ' + pDetails.lastName,
-        title: pDetails.title,
-        company: pDetails.companyName,
-        app_type: provider.app_type,
-        appliedAt: provider.applied_at,
-        counter_type: provider.counterType,
-        fixed_amount:provider.fixed_amount,
-        hourly_rate: provider.hourly_rate,
-        max_hours: provider.max_hours,
-        device_rate: provider.device_rate,
-        max_devices: provider.max_devices,
-        first_hours: provider.first_hours,
-        first_max_hours: provider.first_max_hours,
-        next_hours: provider.next_hours,
-        next_max_hours: provider.next_max_hours,
-        buyer_cost: provider.buyer_cost,
-        freelancer_nets: provider.freelancer_nets,
-      }
-      providers.push(providerDetails);
-    });
+    if(jobDetails.applications) {
+      jobDetails.applications.forEach(function(provider) {
+        var pDetails = Profiles.findOne({userId: provider.userId});
+        var imgURL
+        var imgUrl = Users.findOne({_id: provider.userId}).imgURL;
+        if(imgUrl)
+          imgURL = imgUrl;
+        providerDetails = {
+          imgUrl: imgURL,
+          userId: pDetails._id,
+          name: pDetails.firstName + ' ' + pDetails.lastName,
+          title: pDetails.title,
+          company: pDetails.companyName,
+          app_type: provider.app_type,
+          appliedAt: provider.applied_at,
+          counter_type: provider.counterType,
+          fixed_amount:provider.fixed_amount,
+          hourly_rate: provider.hourly_rate,
+          max_hours: provider.max_hours,
+          device_rate: provider.device_rate,
+          max_devices: provider.max_devices,
+          first_hours: provider.first_hours,
+          first_max_hours: provider.first_max_hours,
+          next_hours: provider.next_hours,
+          next_max_hours: provider.next_max_hours,
+          buyer_cost: provider.buyer_cost,
+          freelancer_nets: provider.freelancer_nets,
+        }
+        providers.push(providerDetails);
+      });
+    }
     return _.sortBy(providers, function(provider) {return -provider.appliedAt});
   },
   providerLocation: function() {

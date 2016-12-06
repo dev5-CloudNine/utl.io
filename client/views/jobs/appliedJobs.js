@@ -1,58 +1,40 @@
-Template.appliedJobs.helpers({
-	appliedJobs: function() {
-		var appliedJobIds = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
+Template.appliedJobs.onCreated(function() {
+    var instance = this;
+    instance.loaded = new ReactiveVar(0);
+    instance.limit = new ReactiveVar(10);
+    instance.jobs = function() {
+        var appliedJobIds = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
 		var appliedJobs = [];
 		if(appliedJobIds) {
-			for(var i = appliedJobIds.length - 1; i >= 0; i--) {
+			for(var i = appliedJobIds.length - 1; i>=appliedJobIds.length - instance.limit.get(); i-- ) {
+				if(i<0)
+					break;
 				appliedJobs.push(Jobs.findOne({_id: appliedJobIds[i]}));
 			}
-			return appliedJobs;
 		}
+		return appliedJobs;
+    }
+});
+
+Template.appliedJobs.helpers({
+	appliedJobs: function() {
+		return Template.instance().jobs();
 	},
-	proPaidJobsCount: function() {
-		var paidJobs = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
-		if(paidJobs) {
-			return paidJobs.length;
-		}
-		return 0;
-	},
-	appliedJobsCount: function() {
-		var appliedJobs = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
-		var count = 0;
-		if(appliedJobs)
-			return appliedJobs.length;
-		return count;
-	},
-	routedJobsCount: function() {
-		var routedJobs = Profiles.findOne({userId: Meteor.userId()}).routedJobs;
-		if(routedJobs)
-			return routedJobs.length;
-		return 0;
-	},
-	providerAllCount: function() {
-		var allJobs = Profiles.findOne({userId: Meteor.userId()}).allJobs;
-		if(allJobs)
-			return allJobs.length;
-		return 0;
-  	},
-	assignedJobsCount: function() {
-		var assignedJobs = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
-		if(assignedJobs)
-			return assignedJobs.length;
-		return 0;
-	},
-	invitedJobsCount: function() {
-		var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
-		if(invJobIds) {
-			return invJobIds.length;
-		}
-		return 0;
-	},
-	proDeactivatedCount: function() {
-		var deactivatedJobs = Profiles.findOne({userId: Meteor.userId()}).deactivatedJobs;
-		if(deactivatedJobs) {
-			return deactivatedJobs.length;
-		}
-		return 0;
-	}
+    hasMoreJobs: function() {
+    	var appliedJobIds = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
+    	if(appliedJobIds)
+    		appliedJobsLength = appliedJobIds.length;
+    	else
+    		appliedJobsLength = 0;
+        return Template.instance().limit.get() < appliedJobsLength;
+    }
+})
+
+Template.appliedJobs.events({
+    'click .load-more': function(event, instance) {
+        event.preventDefault();
+        var limit = instance.limit.get();
+        limit += 10;
+        instance.limit.set(limit);
+    }
 })

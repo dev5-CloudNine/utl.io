@@ -1,11 +1,10 @@
-Template.adminNotifications.rendered = function () {
-	this.infiniteScroll({
-		perPage: 20,
-		query: {},
-		collection: 'Notifications',
-		publication: 'allNotifications'
-	});
-};
+// Template.adminNotifications.rendered = function () {
+// 	this.infiniteScroll({
+// 		perPage: 20,
+// 		collection: 'Notifications',
+// 		publication: 'allNotifications'
+// 	});
+// };
 Template.adminNotifications.helpers({
 	'adminNotifications': function() {
 		var notifications = Notifications.find({}, {sort: {timeStamp: -1}}).fetch();
@@ -20,6 +19,7 @@ Template.adminNotifications.helpers({
 				}
 				notificationDetails.push(notif);
 			} else if(notification.notificationType == 'newJob') {
+				console.log(notification.buyerId)
 				var buyerDetails;
 				if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
 					buyerDetails = Dispatchers.findOne({userId: notification.buyerId});1
