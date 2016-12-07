@@ -51,6 +51,24 @@ Template.headerUserMenu.helpers({
   },
   unreadMessageCount: function() {
     return Messages.find({recepient: Meteor.userId()}).count();
+  },
+  initials: function() {
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+      var userDetails = Buyers.findOne({userId: Meteor.userId()});
+      return userDetails.firstName.charAt(0) + userDetails.lastName.charAt(0);
+    }
+    if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+      var userDetails = Profiles.findOne({userId: Meteor.userId()});
+      return userDetails.firstName.charAt(0) + userDetails.lastName.charAt(0);
+    }
+    if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+      var userDetails = Accountants.findOne({userId: Meteor.userId()});
+      return userDetails.firstName.charAt(0) + userDetails.lastName.charAt(0);
+    }
+    if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+      var userDetails = Dispatchers.findOne({userId: Meteor.userId()});
+      return userDetails.firstName.charAt(0) + userDetails.lastName.charAt(0);
+    }
   }
 });
 
