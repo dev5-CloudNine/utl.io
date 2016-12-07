@@ -12,6 +12,10 @@ Template.profile.helpers({
   favCount: function() {
     return Meteor.users.findOne({_id: this.userId}).favCount;
   },
+  initials: function() {
+    var providerDetails = Profiles.findOne({userId: this.userId});
+    return providerDetails.firstName.charAt(0) + providerDetails.lastName.charAt(0);
+  },
   providerCompletedJobs: function() {
     var completedJobs = [];
     if(this.paidJobs) {

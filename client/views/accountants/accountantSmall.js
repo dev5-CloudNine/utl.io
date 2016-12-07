@@ -25,6 +25,10 @@ Template.accountantSmall.helpers({
 	},
 	accountant: function() {
 		return Accountants.findOne({_id: this._id});
+	},
+	initials: function() {
+		var accountantDetails = Accountants.findOne({_id: this._id})
+		return accountantDetails.firstName.charAt(0) + accountantDetails.lastName.charAt(0)
 	}
 });
 

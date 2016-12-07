@@ -48,6 +48,10 @@ Template.profileSmall.helpers({
 		if(imgUrl) {
 			return imgUrl;
 		}
+	},
+	initials: function() {
+		var providerDetails = Profiles.findOne({_id: this._id})
+		return providerDetails.firstName.charAt(0) + providerDetails.lastName.charAt(0)
 	}
 });
 

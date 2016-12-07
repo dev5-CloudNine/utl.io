@@ -6,7 +6,7 @@
                 <small>ID: {{readableId}}</small>
                 <h3 class="widget-user-username"><a href="{{pathFor 'accountant'}}">{{firstName}} {{lastName}}</a></h3>
                 <h5 class="widget-user-desc">{{title}}</h5>
-                <small><i class="fa fa-map-marker"></i>&nbsp;{{location}}</small>
+                <small><i class="fa fa-map-marker"></i>&nbsp;{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}</small>
             </div>
             <div class="widget-user-image">
                 <a href="{{pathFor 'accountant'}}">
@@ -15,7 +15,7 @@
                             <img class="img-circle" src="{{customImageUrl}}"/>
                         </div>
                     {{else}}
-                        {{> avatar userId=userId size="medium" class="center-block"}}
+                        {{> avatar initials=initials size="medium" class="center-block"}}
                     {{/if}}
                 </a>
             </div>

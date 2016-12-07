@@ -25,6 +25,10 @@ Template.dispatcherSmall.helpers({
 	},
 	dispatcher: function() {
 		return Dispatchers.findOne({_id: this._id});
+	},
+	initials: function() {
+		var dispatcherDetails = Dispatchers.findOne({_id: this._id})
+		return dispatcherDetails.firstName.charAt(0) + dispatcherDetails.lastName.charAt(0)
 	}
 });
 

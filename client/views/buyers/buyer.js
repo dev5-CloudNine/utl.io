@@ -9,11 +9,9 @@ Template.buyer.helpers({
       }
     };
   },
-  splitIndustryTypes: function() {
-    console.log(this.industryTypes);
-  },
-  buyer: function() {
-    return Buyers.findOne({userId: this.userId});
+  initials: function() {
+    var buyerDetails = Buyers.findOne({userId: this.userId});
+    return buyerDetails.firstName.charAt(0) + buyerDetails.lastName.charAt(0);
   },
   jobs: function() {
     return Jobs.find({

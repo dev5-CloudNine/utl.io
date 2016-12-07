@@ -9,11 +9,9 @@ Template.accountant.helpers({
       }
     };
   },
-  splitIndustryTypes: function() {
-    console.log(this.industryTypes);
-  },
-  accountant: function() {
-    return Dispatchers.findOne({userId: this.userId});
+  initials: function() {
+    var accoountantDetails = Accountants.findOne({userId: this.userId});
+    return accoountantDetails.firstName.charAt(0) + accoountantDetails.lastName.charAt(0);
   },
   jobs: function() {
     return Jobs.find({

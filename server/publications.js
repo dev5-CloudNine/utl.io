@@ -209,7 +209,8 @@ Meteor.publishComposite('buyers', {
                 customImageUrl: true,
                 companyName: true,
                 companyUrl: true,
-                createdAt: true
+                createdAt: true,
+                fullLocation: true
             }
         });
     }

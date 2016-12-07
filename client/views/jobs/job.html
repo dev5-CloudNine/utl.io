@@ -64,7 +64,7 @@
                                                 {{#if assignedProvider}}
                                                     <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
                                                 {{else}}
-                                                    <i class="fa fa-map-marker"></i>&nbsp;{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+                                                    <i class="fa fa-map-marker"></i>&nbsp;{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
                                                 {{/if}}
                                             {{/if}}
                                         </small>

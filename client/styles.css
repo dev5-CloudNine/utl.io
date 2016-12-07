@@ -659,6 +659,18 @@ footer {
   position: inherit;
 }
 
+.avatar-large .avatar-initials {
+  position: relative !important;
+  border: 3px solid #fff;
+  border-radius: 4px;
+}
+
+.avatar-medium .avatar-initials {
+  position: relative !important;
+  border: 3px solid #fff;
+  border-radius: 4px;
+}
+
 .avatar-medium .avatar-image {
   position: inherit;
 }

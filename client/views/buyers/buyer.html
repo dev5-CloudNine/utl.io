@@ -5,11 +5,11 @@
 				<div class="row">
 					<div class="col-sm-3">
 						{{#if customImageUrl}}
-							<div class="avatar avatar-large">
+							<div class="avatar avatar-large">							
 								<img class="img-responsive img-thumbnail" style="max-height: 200px; max-width: 200px" src="{{customImageUrl}}"/>
 							</div>
 						{{else}}
-							{{> avatar userId=userId size="large"}}
+							{{> avatar initials=initials size="large" shape="rounded"}}
 						{{/if}}
 						{{#if isInRole 'provider, corporate-provider'}}
 							{{#if currentUser.isDeveloper}}
@@ -28,12 +28,14 @@
 							{{#if fullLocation}}
 								{{fullLocation.street}}
 								<br>
-								{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+								{{#if fullLocation.sublocality}}
+								{{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
 								<br>{{fullLocation.country}}
 							{{/if}}
 						{{else}}
 							{{#if fullLocation}}
-								{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+								{{#if fullLocation.sublocality}}
+								{{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
 							{{/if}}
 						{{/if}}
 						<hr>

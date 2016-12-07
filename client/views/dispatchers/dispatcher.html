@@ -9,7 +9,7 @@
 								<img class="img-responsive img-thumbnail" style="max-height: 200px; max-width: 200px" src="{{customImageUrl}}"/>
 							</div>
 						{{else}}
-							{{> avatar userId=userId size="large"}}
+							{{> avatar initials=initials size="large" shape="rounded"}}
 						{{/if}}
 						{{#if isInRole 'buyer, accountant'}}
 							<br>
@@ -24,12 +24,12 @@
 							{{#if fullLocation}}
 								{{fullLocation.street}}
 								<br>
-								{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+								{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
 								<br>{{fullLocation.country}}
 							{{/if}}
 						{{else}}
 							{{#if fullLocation}}
-								{{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+								{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
 							{{/if}}
 						{{/if}}
 						<hr>
