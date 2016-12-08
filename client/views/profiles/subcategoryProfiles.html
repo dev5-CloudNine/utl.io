@@ -2,9 +2,13 @@
 	<div class="row">
 		{{#if isInRole 'buyer, corporate-provider'}}
 			{{#each subcategoryProfiles}}
-				{{>profileSmall}}
+				<div class="col-md-4">
+					{{>profileSmall}}
+				</div>
 			{{else}}
-				<p>No providers have been found under this category.</p>
+				<div class="col-md-4">
+					<p>No providers have been found under this category.</p>
+				</div>
 			{{/each}}
 		{{/if}}
 	</div>

@@ -173,3 +173,10 @@ UI.registerHelper('proDeactivatedCount', function() {
 		return 0;
 	}
 })
+
+UI.registerHelper('userAccountBalance', function() {
+	if(Roles.userIsInRole(Meteor.userId(), ['accountant', 'dispatcher'])) {
+		return Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+	}
+	return Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+})

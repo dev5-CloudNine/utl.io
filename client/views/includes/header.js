@@ -1,3 +1,12 @@
+// Template.header.onCreated(function() {
+//   var instance = this;
+//   instance.query = new ReactiveVar({});
+//   instance.autorun(function() {
+//     var query = instance.query.get();
+//     var subscription = instance.subscribe('searchResults', query);
+//   });
+// })
+
 Template.header.events({
   'click .navbar-nav a': function(event, template) {
     var targetButton = document.getElementsByClassName('navbar-toggle')[0];
@@ -8,7 +17,37 @@ Template.header.events({
       }
     }
   }
+  // 'click a.global-search': function(event, template) {
+  //   event.preventDefault();
+  //   $('#global-search').addClass('open');
+  //   $('#global-search > form > input[type="search"]').focus();
+  // },
+  // 'click button.close': function(event, template) {
+  //   $('#global-search').removeClass('open');
+  // },
+  // 'keyup #global-search': function(event, template) {
+  //   if(event.keyCode == 27)
+  //     $('#global-search').removeClass('open');
+  // },
+  // 'keyup input[type="search"]': _.debounce(function(event, instance) {
+  //   event.preventDefault();
+  //   instance.query.set({text: $('input[type="search"]').val()});
+  // }, 250)
 });
+
+// Template.header.helpers({
+//   searchResults: function() {
+//     var query = Template.instance().query.get();
+//     var options = {
+//       sort: {
+//         createdAt: -1
+//       }
+//     }
+//     if(!query.text)
+//       return;
+//     return Jobs.find({$and: [{invited: false}, {$or: [{applicationStatus: 'open'}, {applicationStatus: 'frozen'}]}]}, options);
+//   }
+// })
 
 Template.headerUserMenu.helpers({
   profile: function() {
@@ -98,11 +137,6 @@ Template.headerUserMenu.events({
 
 Template.headerUserMenu.rendered = function() {
   this.$('.dropdown-toggle').dropdown();
-  Meteor.subscribe('allJobs')
-  if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
-    var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
-    Meteor.subscribe('recommendedJobs', jobCategories);
-  }
   Meteor.subscribe('notifications', Meteor.userId());
   Meteor.subscribe('notificationsJobs', Meteor.userId());
 }

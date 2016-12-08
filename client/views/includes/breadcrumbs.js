@@ -14,11 +14,5 @@ Template.breadcrumbs.helpers({
 	},
 	profile: function() {
 		return Profiles.findOne({userId: Meteor.userId()});
-	},
-	userAccountBalance: function() {
-		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher', 'accountant'])) {
-			return Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
-		}
-		return Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 	}
 })

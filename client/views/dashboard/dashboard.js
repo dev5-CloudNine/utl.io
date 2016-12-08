@@ -13,9 +13,9 @@ Template.dashboard.helpers({
 	// 		userId: Meteor.userId()
 	// 	});
 	// },
-	// allDeactivatedCount: function() {
-	// 	return Jobs.find({status: 'deactivated'}).count();
-	// },
+	allDeactivatedCount: function() {
+		return Jobs.find({status: 'deactivated'}).count();
+	},
 	// providerProfile: function() {
 	// 	return Profiles.findOne({userId: Meteor.userId()});
 	// },

@@ -188,6 +188,7 @@
                                     </li>
                                 {{/if}}
                             {{/if}}
+                                <!-- <li><a href class="global-search">Search</a></li> -->
                         {{else}}
                             <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
                             <li id="user-drop-down" class="dropdown">
@@ -215,6 +216,24 @@
             </div>
         </nav>
     </section>
+    <!-- <div id="global-search">
+        <button type="button" class="close">×</button>
+        <form>
+            <input type="search" class="searchSome" placeholder="type keyword(s) here" />
+        </form>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="search-results">
+                        {{#each searchResults}}
+                            {{this.title}}
+                            <br>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
 </template>
 <template name="headerUserMenu">
     <li id="user-drop-down" class="dropdown">
