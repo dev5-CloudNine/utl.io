@@ -1,14 +1,6 @@
 <template name="favoriteBuyers">
 	<div class="row">
-		<div class="col-sm-12 col-md-9">
-			<p>
-				<a href="{{pathFor 'buyers'}}">All Buyers</a>&nbsp;&#124;&nbsp;Favorite Buyers
-			</p>
-		</div>
-		<div class="col-sm-12">
-			<hr>
-		</div>
-		{{#if isInRole 'provider, corporate-provider'}}
+		{{#if isInRole 'provider'}}
 	        {{#each favBuyers}}
 	            <div class="col-md-4">
 	            	{{>buyerSmall}}

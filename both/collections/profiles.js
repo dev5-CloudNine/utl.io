@@ -1,37 +1,30 @@
 Profiles = new Mongo.Collection("experts"); //todo - rename underlying collection to reflect code refactor
 
-ProfilesIndex = new EasySearch.Index({
-  collection: Profiles,
-  fields: ['name', 'companyName', 'title', 'location', 'readableID'],
-  engine: new EasySearch.Minimongo({
-    sort: function (searchObject) {
-        return {
-          createdAt: -1
-        };
-    }
-  })
-})
-
 AddressSchema = new SimpleSchema({
   street: {
-    type: String
+    type: String,
+    optional: true
   },
   locality: {
-    type: String
+    type: String,
+    optional: true,
   },
   sublocality: {
     type: String,
     optional: true
   },
   state: {
-    type: String
+    type: String,
+    optional: true
   },
   zip: {
     type: String,
-    regEx: /^[0-9]{5}$/
+    regEx: /^[0-9]{5}$/,
+    optional: true
   },
   country: {
-    type: String
+    type: String,
+    optional: true
   },
   formatted_address: {
     type: String,
@@ -116,17 +109,17 @@ Profiles.attachSchema(
     },
     freelancerSkills: {
       type: String,
-      label: "Select a Skill *",
+      label: "Mention Skillset *",
     },
     title: {
       type: String,
       label: "Designation *",
       max: 128
     },
-    socialSecurityNumber: {
-      type: String,
-      label: "Social Security Number *"
-    },
+    // socialSecurityNumber: {
+    //   type: String,
+    //   label: "Social Security Number *"
+    // },
     location: {
       type: String
     },
@@ -176,13 +169,13 @@ Profiles.attachSchema(
         options: MOBILE_CARRIERS
       }
     },
-    dateOfBirth: {
-      type: Date,
-      label: 'Date of Birth *',
-      autoform: {
-        type: 'bootstrap-datepicker'
-      }
-    },
+    // dateOfBirth: {
+    //   type: Date,
+    //   label: 'Date of Birth *',
+    //   autoform: {
+    //     type: 'bootstrap-datepicker'
+    //   }
+    // },
     avgRatesPerHour: {
       type: Number,
       label: "Average Rates Per Hour (USD) *",
@@ -304,6 +297,13 @@ Profiles.attachSchema(
     'assignedJobs.$': {
       type: String
     },
+    pendingApproval: {
+      type: Array,
+      optional: true
+    },
+    'pendingApproval.$': {
+      type: String
+    },
     routedJobs: {
       type: Array,
       optional: true
@@ -375,6 +375,16 @@ Profiles.attachSchema(
     }
   })
 );
+
+if(Meteor.isServer) {
+  Profiles._ensureIndex({
+    'firstName': 'text',
+    'lastName': 'text',
+    'title': 'text',
+    'location': 'text',
+    'readableID': 'text'
+  })
+}
 
 Profiles.helpers({
   displayName: function() {

@@ -1,15 +1,5 @@
 <template name="invitedJobs">
-	<div class="row">
-		<div class="col-sm-12">
-			<p> 
-				Jobs: <a href="{{pathFor 'jobs'}}">Open - {{openJobsCount}}</a> &#124; 
-				<a href="{{pathFor 'recommendedJobs'}}">Recommended - {{recommendedJobsCount}}</a> &#124;
-				Invited - {{invitedJobsCount}}
-			</p>
-		</div>
-		<div class="col-sm-12">
-			<hr>
-		</div>
+	<!-- <div class="row">
 		<div class="col-sm-12">
 			{{#if currentUser}}
 				{{#each invitedJobs}}
@@ -26,5 +16,6 @@
                 <a href class="load-more btn btn-primary">Load More</a>
             {{/if}}
         </div>
-    </div>
+    </div> -->
+    {{>ReactiveDatatable tableData=invitedJobs options=invitedJobsOptions}}
 </template>

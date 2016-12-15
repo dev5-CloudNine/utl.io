@@ -26,7 +26,7 @@ if (Meteor.isServer) {
                     "client_secret": client.secret,
                     "code": code,
                     "grant_type": "authorization_code",
-                    "redirect_uri": redirect_uri + '?id=' +userId
+                    "redirect_uri": redirect_uri + '?id=' + userId
                 }
             };
             request(tokenRequest, function(err, res, body) {
@@ -81,14 +81,14 @@ if (Meteor.isServer) {
                 firstName: dwolla_req_object.firstName,
                 lastName: dwolla_req_object.lastName,
                 email: dwolla_req_object.email,
-                type: 'personal',
-                address1: dwolla_req_object.address1,
-                city: dwolla_req_object.city,
-                state: dwolla_req_object.state,
-                postalCode: dwolla_req_object.postalCode,
-                dateOfBirth: dwolla_req_object.dateOfBirth,
-                ssn: dwolla_req_object.ssn,
-                phone: dwolla_req_object.mobile_number
+                // type: 'personal',
+                // address1: dwolla_req_object.address1,
+                // city: dwolla_req_object.city,
+                // state: dwolla_req_object.state,
+                // postalCode: dwolla_req_object.postalCode,
+                // dateOfBirth: dwolla_req_object.dateOfBirth,
+                // ssn: dwolla_req_object.ssn,
+                // phone: dwolla_req_object.mobile_number
             };
             accountToken.post('customers', customerDetails).then(function(res) {
                 var Fiber = Npm.require('fibers');
@@ -310,7 +310,7 @@ if (Meteor.isServer) {
             var customerArray = fut.value;
             customerArray.forEach(function(customer) {
                 var reqBody = {
-                    email: customer.lastName + 'debcus@' + customer.firstName + '.com'
+                    email: customer.lastName + 'debcus@125' + '.com'
                 }
                 accountToken.post('https://api-uat.dwolla.com/customers/' + customer.id, reqBody).then(function(result) {
                     console.log(result);

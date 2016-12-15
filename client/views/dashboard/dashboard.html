@@ -1,68 +1,6 @@
 <template name="dashboard">
-    {{#if isInRole 'buyer, dispatcher'}}
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">                            
-                            <div class="widget-data">
-                                <a href="/myjobs">
-                                    <div class="widget-int num-count">{{buyerJobsCount}}</div>
-                                    <div class="widget-title">Jobs Posted</div>
-                                </a>
-                                <div class="widget-subtitle">
-                                    <a href="/myJobs/open">{{buyerOpenCount}} Open</a> &#124; 
-                                    <a href="/myJobs/assigned">{{buyerAssignedCount}} Assigned</a> &#124; 
-                                    <a href="/myJobs/paid">{{buyerPaidCount}} Completed</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                    {{#if isInRole 'buyer'}}                  
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <div class="widget-data">
-                                <div class="widget-int num-count">USD {{amountSpent}}</div>
-                                <div class="widget-title">Amount Spent</div>
-                                <div class="widget-subtitle">Amount spent on this platform.</div>
-                            </div>
-                        </div>
-                    </div>
-                    {{/if}}
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <div class="widget-data">
-                                {{#with myProfile}}
-                                    <a href="{{#if isInRole 'buyer'}}{{pathFor 'buyerNotifications'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcherNotifications'}}{{/if}}">
-                                        <div class="widget-int num-count">{{buyerNotificationCount currentUser._id}}</div>
-                                        <div class="widget-title"> new notifications</div>
-                                    </a>
-                                {{/with}}
-                                <div class="widget-subtitle">
-                                    <a href="{{pathFor 'mailBox' tab="mails"}}">{{unreadMsgCount currentUser._id}} unread message(s)</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-padding-sm">
-                            {{#with myProfile}}
-                                <a href="{{#if isInRole 'buyer'}}{{pathFor 'buyer'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcher'}}{{/if}}">
-                                    <div class="widget-big-int">
-                                        <div class="count">
-                                            <span class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-value="{{buyerRatingPoints}}"></span>
-                                        </div>
-                                    </div>
-                                    <div class="widget-subtitle plugin-date">Reviews ({{buyerReviewCount}})</div>
-                                </a>
-                            {{/with}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <hr>
+    <!-- {{#if isInRole 'buyer, dispatcher'}} -->
+        <!-- <div class="row">
             {{#with myProfile}}
                 <div class="col-md-4">
                     <label>You are</label>
@@ -81,7 +19,7 @@
                         {{>notifications}}
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="col-xs-4 col-sm-4 col-md-8 col-lg-8">
                 <div class="panel panel-default">
                     <div class="panel-heading ui-draggable-handle">
@@ -154,81 +92,16 @@
                     </div>
                 </div>
             </div> -->
-        </div>
+        <!-- </div>
         <div class="row">
             <div class="col-xs-12">
                 <h4>Scheduled Dates of Assigned Jobs</h4>
                 {{>buyerCalendar}}
             </div>
-        </div>
-    {{/if}}
-    {{#if isInRole 'provider'}}
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <div class="widget-data">
-                                <a href="/jobs">
-                                    <div class="widget-int num-count">
-                                    {{openJobsCount}}</div>
-                                    <div class="widget-title">Open Jobs</div>
-                                </a>
-                                <div class="widget-subtitle">
-                                    <a href="/invitedJobs">{{invitedJobsCount}} Invited</a> &#124; 
-                                    <a href="/recommendedJobs">{{recommendedJobsCount currentUser._id}} Recommended</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">                            
-                            <div class="widget-data">
-                                <a href="/appliedJobs">
-                                    <div class="widget-int num-count">{{appliedJobsCount}}</div>
-                                    <div class="widget-title">Applied Jobs</div>
-                                </a>
-                                <div class="widget-subtitle">
-                                    <a href="/routedJobs">{{routedJobsCount}} Routed</a> &#124;
-                                    <a href="/assignedJobs">{{assignedJobsCount}} Assigned</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <div class="widget-data">
-                                {{#with myProfile}}
-                                    <a href="{{pathFor 'providerNotifications'}}">
-                                        <div class="widget-int num-count">{{providerNotificationCount currentUser._id}}</div>
-                                        <div class="widget-title">new notifications</div>
-                                    </a>
-                                {{/with}}
-                                <div class="widget-subtitle">
-                                    <a href="{{pathFor 'mailBox' tab="mails"}}">{{unreadMsgCount currentUser._id}} new message(s)</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-padding-sm">
-                            {{#with myProfile}}
-                                <a href="{{pathFor 'profile'}}">
-                                    <div class="widget-big-int">
-                                        <div class="count">
-                                            <span class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-value="{{providerRatingPoints}}"></span>
-                                        </div>
-                                    </div>
-                                    <div class="widget-subtitle plugin-date">Reviews ({{providerReviewCount}})</div>
-                                </a>
-                            {{/with}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <hr>
+        </div> -->
+    <!-- {{/if}} -->
+    <!-- {{#if isInRole 'provider'}} -->
+        <!-- <div class="row">
             {{#with myProfile}}
                 <div class="col-md-4">
                     <label>You are</label>
@@ -242,7 +115,7 @@
                         {{>notifications}}
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="col-xs-4 col-sm-4 col-md-8 col-lg-8">
                 <div class="panel panel-default">
                     <div class="panel-heading ui-draggable-handle">
@@ -315,16 +188,16 @@
                     </div>
                 </div>
             </div> -->
-        </div>
+        <!-- </div>
         <div class="row">
             <div class="col-xs-12">
                 <h4>Scheduled Dates of Assigned Jobs</h4>
                 {{>providerCalendar}}
             </div>
         </div>
-    {{/if}}
-    {{#if isInRole 'accountant'}}
-        <div class="panel panel-default">
+    {{/if}} -->
+    <!-- {{#if isInRole 'accountant'}} -->
+        <!-- <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-3">
@@ -375,64 +248,8 @@
                 </div>
             {{/with}}
         </div>
-    {{/if}}
+    {{/if}} -->
     {{#if isInRole 'admin'}}
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <a href="/allUsers">
-                                <div class="widget-data">
-                                    <div class="widget-int num-count">{{getPublishedCount 'userCount'}}</div>
-                                    <div class="widget-title">Profiles</div>
-                                    <div class="widget-subtitle">{{buyersCount}} Buyers &#124; {{providersCount}} Providers</div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <a href="/allJobs">                            
-                                <div class="widget-data">
-                                    <div class="widget-int num-count">{{getPublishedCount 'adminJobs'}}</div>
-                                    <div class="widget-title">Jobs Posted</div>
-                                    <div class="widget-subtitle">{{getPublishedCount 'allCompletedJobs'}} Completed &#124; {{allDeactivatedCount}} Deactivated</div>
-                                </div>
-                            </a>
-                        </div>     
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <a href="">
-                                <div class="widget-data">
-                                    <div class="widget-int num-count">20</div>
-                                    <div class="widget-title">Bank Transactions</div>
-                                    <div class="widget-subtitle">8 Withdrawls &#124; 12 Deposits</div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-info widget-padding-sm">
-                            <div class="widget-big-int plugin-clock">03<span>:</span>12</div>
-                            <div class="widget-subtitle plugin-date">Tuesday, November 8, 2016</div>
-                            <div class="widget-buttons widget-c3">
-                                <div class="col">
-                                    <a href="#"><span class="fa fa-clock-o"></span></a>
-                                </div>
-                                <div class="col">
-                                    <a href="#"><span class="fa fa-bell"></span></a>
-                                </div>
-                                <div class="col">
-                                    <a href="#"><span class="fa fa-calendar"></span></a>
-                                </div>
-                            </div>                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="panel panel-light">
             <div class="panel-body">
                 <div class="row">

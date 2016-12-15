@@ -229,19 +229,21 @@ Meteor.publish('usersCount', function() {
     Counts.publish(this, 'userCount', Users.find({}));
 })
 
-Meteor.publish("jobs", function (limit) {
-    check(limit, Number);
-    return Jobs.find({$and: [{status: "active", applicationStatus: 'open', invited: false}]}, {sort: {createdAt: -1}, limit: limit})
+Meteor.publish("jobs", function () {
+    return Jobs.find({$and: [{status: "active"}, {invited: false}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}, {sort: {createdAt: -1}})
 });
 
-Meteor.publish("my_jobs", function (limit) {
-    check(limit, Number);
-    return Jobs.find({userId: this.userId}, {sort: {createdAt: -1}, limit: limit})
+Meteor.publish('allJobs', function() {
+    return Jobs.find({});
 });
 
-Meteor.publish('recommendedJobs', function(categories) {
-    return Jobs.find({$and: [{applicationStatus: 'open'}, {jobSubCategory: {$in: categories}}]}, {sort: {createdAt: -1}});
-})
+Meteor.publish("my_jobs", function () {
+    return Jobs.find({userId: this.userId}, {sort: {createdAt: -1}})
+});
+
+// Meteor.publish('recommendedJobs', function(categories) {
+//     return Jobs.find({$and: [{jobSubCategory: {$in: categories}}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}, {sort: {createdAt: -1}});
+// })
 
 Meteor.publish('categoryJobs', function(category) {
     return Jobs.find({$and: [{jobtype: {$in: [category]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
@@ -249,22 +251,6 @@ Meteor.publish('categoryJobs', function(category) {
 
 Meteor.publish('subCategoryJobs', function(subCategory) {
     return Jobs.find({$and: [{jobSubCategory: {$in: [subCategory]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
-});
-
-// Meteor.publish("my_jobs", function(limit) {
-//     check(arguments, [Match.Any]);
-//     if (this.userId) {
-//         return [
-//             Jobs.find({
-//                 userId: this.userId
-//             })
-//         ];
-//     }
-// });
-
-Meteor.publish('allJobs', function() {
-    check(arguments, [Match.Any]);
-    return Jobs.find({status: 'active'}, {sort: {createdAt: -1}});
 });
 
 Meteor.publish('allUsers', function() {
@@ -314,7 +300,8 @@ Meteor.publish("favorite_users", function() {
             url: true,
             resumeUrl: true,
             customImageUrl: true,
-            status: true
+            status: true,
+            fullLocation: true
         }
     })
 });
@@ -338,7 +325,8 @@ Meteor.publish("favorite_buyers", function() {
             mobileCarrier: true,
             userId: true,
             userName: true,
-            status: true
+            status: true,
+            fullLocation: true
         }
     })
 })
@@ -519,6 +507,11 @@ Meteor.publish('userWallet', function(userId) {
 Meteor.publish('invoices', function(userId) {
     if(Roles.userIsInRole(userId, ['admin']))
         return Invoices.find({});
+});
+
+Meteor.publish('jobInvoice',function(jobId) {
+    check(arguments, [Match.Any]);
+    return Invoices.find({jobId: jobId})
 })
 
 Meteor.publish('providerInvoices', function(userId) {

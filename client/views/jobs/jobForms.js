@@ -22,6 +22,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 });
 
 Template.duplicateJob.rendered = function() {
+	var jobBudget = this.data.job.your_cost;
 	this.autorun(function() {
 		var accountBalance;
 		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
@@ -29,7 +30,7 @@ Template.duplicateJob.rendered = function() {
 		} else {
 			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		}
-		if(this.data.job.your_cost > accountBalance) {
+		if(jobBudget > accountBalance) {
 			$('.notEnoughBalance').show();
 		}
 	})

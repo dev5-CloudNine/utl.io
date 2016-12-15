@@ -117,24 +117,6 @@ Jobs.attachSchema(new SimpleSchema({
         multiple: true
       }
     },
-    // providerList: {
-    //   type: [String],
-    //   optional: true,
-    //   label: 'Choose one or more providers',
-    //   autoform: {
-    //     type: "selectize",
-    //     options: function() {
-    //       return Profiles.find().fetch().map(function(profile) {
-    //         var providerDetails = {
-    //           label: profile.firstName + ' ' + profile.lastName,
-    //           value: profile.userId
-    //         }
-    //         return providerDetails;
-    //       })
-    //     },
-    //     multiple: true
-    //   }
-    // },
     jobtype: {
       type: String,
       label: "Select Job Category *"
@@ -798,21 +780,6 @@ Jobs.attachSchema(new SimpleSchema({
       type: String, 
       optional: true
     },
-    // assignToProvider: {
-    //   type: String,
-    //   optional: true,
-    //   label: 'Assign to Provider(s)',
-    //   autoform: {
-    //     type: "select",
-    //     options: function() {
-    //       return [
-    //         {label: 'Individual', value: 'Individual'},
-    //         {label: 'Favorites', value: 'Favorites'},
-    //         {label: 'All', value: 'All'}
-    //       ]
-    //     }
-    //   }
-    // },
     selectedProvider: {
       type: String,
       optional: true
@@ -864,15 +831,6 @@ Jobs.attachSchema(new SimpleSchema({
       type: String,
       allowedValues: STATUSES,
       defaultValue: 'active'
-      // autoValue: function() {
-      //   if (this.isInsert) {
-      //     return 'active';
-      //   } else if (this.isUpsert) {
-      //     return {
-      //       $setOnInsert: 'active'
-      //     };
-      //   }
-      // },
     },
     paid30Usd: {
       type: Boolean,
@@ -886,15 +844,6 @@ Jobs.attachSchema(new SimpleSchema({
       type: String,
       allowedValues: APPLICATION_STATUSES,
       defaultValue: 'open'
-      // autoValue: function() {
-      //   if(this.isInsert) {
-      //     return 'open';
-      //   } else if(this.isUpsert) {
-      //     return {
-      //       $setOnInsert: 'open'
-      //     };
-      //   }
-      // }
     },
     buyerArchived: {
       type: Boolean,
@@ -908,16 +857,8 @@ Jobs.attachSchema(new SimpleSchema({
     },
     assignmentStatus: {
       type: String,
-      allowedValues: ['not_submitted', 'submitted', 'approved', 'rejected', 'pending_payment', 'paid'],
-      autoValue: function() {
-        if(this.isInsert) {
-          return 'not_submitted';
-        } else if(this.isUpsert) {
-          return {
-            $setOnInsert: 'not_submitted'
-          };
-        }
-      }
+      allowedValues: ['not_confirmed', 'confirmed', 'submitted', 'approved', 'rejected', 'pending_payment', 'paid'],
+      optional: true
     },
     htmlDescription: {
       type: String,
@@ -939,8 +880,6 @@ Jobs.attachSchema(new SimpleSchema({
         }
       }
     },
-    // Force value to be current date (on server) upon insert
-    // and prevent updates thereafter.
     createdAt: {
       type: Date,
       autoValue: function() {
@@ -956,8 +895,6 @@ Jobs.attachSchema(new SimpleSchema({
       },
       denyUpdate: true
     },
-    // Force value to be current date (on server) upon update
-    // and don't allow it to be set upon insert.
     updatedAt: {
       type: Date,
       autoValue: function() {

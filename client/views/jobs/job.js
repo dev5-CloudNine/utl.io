@@ -703,10 +703,61 @@ Template.job.events({
     Meteor.call('deny30Usd', this._id, function(error) {
       $(event.currentTarget).button('reset');
     });
+  },
+  'submit #reviewProvider': function(event, template) {
+    event.preventDefault();
+    var providerId = this.assignedProvider;
+    var buyerId = this.userId;
+    var jobId = this._id;
+    var timeReviewed = new Date();
+    var experience = $('input[name="detailAttention"]:checked').val();
+    var ratedPoints = $('input[name="rateProvider"]:checked').val();
+    var reviewMessage = "";
+    $('textarea[name="reviewMessage"]').each(function() {
+      reviewMessage += $(this).val();
+    })
+    Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, experience, ratedPoints, reviewMessage, function(error) {
+      if(error) {
+        toastr.error('Failed to submit review. Please try again.');
+      } else {
+        toastr.success('Submitted the review successfully.');
+      }
+    })
+  },
+  'submit #reviewBuyer': function(event, template) {
+    event.preventDefault();
+    var providerId = this.assignedProvider;
+    var buyerId = this.userId;
+    var jobId = this._id;
+    var timeReviewed = new Date();
+    var experience = $('input[name="jobDesc"]:checked').val();
+    var ratedPoints = $('input[name="rateBuyer"]:checked').val();
+    var reviewMessage = "";
+    $('textarea[name="reviewMessage"]').each(function() {
+      reviewMessage += $(this).val();
+    })
+    Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, experience, ratedPoints, reviewMessage, function(error) {
+      if(error) {
+        toastr.error('Failed to submit review. Please try again.');
+      } else {
+        toastr.success('Submitted the review successfully.');
+      }
+    })
   }
 });
 
 Template.job.helpers({
+  itypes: function() {
+    var itypes = [];
+    var industryTypes = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
+    for(var i  = 0; i < industryTypes.length; i++) {
+      itypes.push({
+        encodedType: encodeURIComponent(industryTypes[i]),
+        decodedType: industryTypes[i]
+      });
+    }
+    return itypes;
+  },
   buyerPaid30Usd: function() {
     console.log(this);
   },
@@ -867,14 +918,9 @@ Template.job.helpers({
   },
   'jobPostedBuyer': function() {
     var jobDetails = Jobs.findOne(this._id);
-    var dispatcher;
-    if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
-      dispatcher = Dispatchers.findOne({userId: jobDetails.userId});
-    }
-    if(jobDetails.userId == Meteor.userId() || dispatcher.invitedBy == Meteor.userId())
+    if(jobDetails && jobDetails.userId == Meteor.userId())
       return true;
-    else
-      return false;
+    return false;
   },
   'assignedProvider': function() {
     if(this.assignedProvider == Meteor.userId()) {
@@ -904,7 +950,6 @@ Template.job.helpers({
         if(applications[i].userId == Meteor.userId())
           return true;
       }
-    // return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { appliedJobs: { $in: [this._id] } }] }) ? true : false;
     }
     return false;
   },
@@ -1013,7 +1058,7 @@ Template.job.helpers({
     return false;
   },
   assignedOrDone: function() {
-    if(this.applicationStatus == 'assigned' || this.applicationStatus == 'completed' || this.applicationStatus == 'pending_payment' || this.applicationStatus == 'paid')
+    if(this.applicationStatus == 'paid' || (this.applicationStatus == 'assigned' && (this.assignmentStatus == 'confirmed' || this.assignmentStatus == 'submitted' || this.assignmentStatus == 'rejected')))
       return true;
     return false;
   },
@@ -1263,14 +1308,24 @@ Template.job.helpers({
     return false;
   },
   openOrFrozen: function() {
-    if(this.applicationStatus == 'open' || this.applicationStatus == 'frozen')
+    if(this.applicationStatus == 'open' || (this.applicationStatus == 'assigned' && this.assignmentStatus == 'not_confirmed'))
       return true;
     return false;
+  },
+  invoiceId: function() {
+    Meteor.subscribe('jobInvoice', this._id);
+    var invoiceDetails = Invoices.findOne({jobId: this._id});
+    if(invoiceDetails)
+      return invoiceDetails.invoiceId;
+    return;
   },
   openFrozenOrAssigned: function() {
     if(this.applicationStatus == 'open' || this.applicationStatus == 'frozen' || this.applicationStatus == 'assigned')
       return true;
     return false;
+  },
+  reviewedProvider: function() {
+    return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]})? true : false;
   },
   reviewedBuyer: function() {
     return Reviews.findOne({$and: [{reviewedJobId: this._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]})? true: false;

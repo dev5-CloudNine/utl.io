@@ -1,15 +1,19 @@
-<template name="providerPaymentPendingJobs">
-	<div class="row">
+<template name="providerPendingApprovalJobs">
+	<!-- <div class="row">
 		<div class="col-sm-12">
-			<p>My Jobs: <a href="{{pathFor 'providerAllJobs'}}">All - {{providerAllCount}}</a> &#124; <a href="{{pathFor 'appliedJobs'}}">Applied - {{appliedJobsCount}}</a> &#124; <a href="{{pathFor 'providerRoutedJobs'}}">Routed - {{routedJobsCount}}</a> &#124; <a href="{{pathFor 'providerAssignedJobs'}}">Assigned - {{assignedJobsCount}}</a> &#124; <a href="{{pathFor 'providerCompletedJobs'}}">Completed - {{completedJobsCount}}</a> &#124; Payment Pending - {{proPaymentJobsCount}} &#124; <a href="{{pathFor 'providerPaidJobs'}}">Paid - {{proPaidJobsCount}}</a></p>
-		</div>
-		<div class="col-sm-12">
-			{{#each providerPaymentPendingJobs}}
+			{{#each providerPendingApprovalJobs}}
 				{{>jobSmall}}
 			{{else}}
-				<hr>
-				<p>You have no jobs that are pending payments at this moment.</p>
+				<p>You have no jobs that are pending approval at this moment.</p>
 			{{/each}}
 		</div>
 	</div>
+	<div class="row">
+        <div class="col-sm-12">
+            {{#if hasMoreJobs}}
+                <a href class="load-more btn btn-primary">Load More</a>
+            {{/if}}
+        </div>
+    </div> -->
+    {{>ReactiveDatatable tableData=pendingApproval options=pendingApprovalOptions}}
 </template>

@@ -10,7 +10,7 @@
 								<img class="img-responsive img-thumbnail" src="{{customImageUrl}}"/>
 							</div>
 						{{else}}
-							{{> avatar initials=initials shape="rounded" size="large"}}
+							<img src="/images/avatar.png" alt="" width="200px">
 						{{/if}}
 						{{#if isInRole 'buyer, dispatcher'}}
 							{{#if currentUser.isBuyer}}
@@ -101,7 +101,7 @@
 									<hr>
 									<h4>Job Categories</h4>
 									{{#each itypes}}
-										{{#if isInRole 'provider, corporate-provider'}}
+										{{#if isInRole 'provider'}}
 											<a href="/subcategory/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
 										{{/if}}
 										{{#if isInRole 'buyer, dispatcher'}}

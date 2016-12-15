@@ -1,11 +1,10 @@
 Meteor.startup(function () {
-
- smtp = {
-  username : 'utltestsmtp@gmail.com',
-  password : 'keepsmiling',
-  server : 'smtp.gmail.com',
-  port : 465
- }
+  smtp = {
+    username : 'utltestsmtp@gmail.com',
+    password : 'keepsmiling',
+    server : 'smtp.gmail.com',
+    port : 465
+  }
 
  process.env.MAIL_URL = 'smtp://' + encodeURIComponent(smtp.username) + ':' + encodeURIComponent(smtp.password) + '@' + encodeURIComponent(smtp.server) + ':' + smtp.port + '/';
 
@@ -29,26 +28,23 @@ Meteor.startup(function () {
  //  sendVerificationEmail : true,
  //  forbidClientAccountCreation : true
  // });
- Accounts.validateLoginAttempt(function (attempt) {
+  Accounts.validateLoginAttempt(function (attempt) {
   var user = attempt.user;
   if (user && !user.emails[0].verified)
-   throw new Meteor.Error(403, 'E-Mail address not verified.');
+    throw new Meteor.Error(403, 'E-Mail address not verified.');
   return true;
- });
+  });
 
 
-Accounts.onCreateUser(function(options, user) {
+  Accounts.onCreateUser(function(options, user) {
     user.favoriteJobs = [];
     if (options.profile)
-        user.profile = options.profile;
+      user.profile = options.profile;
     user.roles = options.profile.role;
     var email = getUserEmail(user);
     if (email) {
-        user.emailHash = CryptoJS.MD5(email.trim().toLowerCase()).toString();
+      user.emailHash = CryptoJS.MD5(email.trim().toLowerCase()).toString();
     }
     return user;
-});
-
-
-
+  });
 });

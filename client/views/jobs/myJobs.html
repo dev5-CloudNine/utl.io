@@ -1,21 +1,6 @@
 <template name="myJobs">
-	<div class="row">
-		<div class="col-sm-9">
-			<p>My Jobs:
-				All - {{postedJobCount}} &#124;
-				<a href="{{pathFor 'buyerOpenJobs'}}">Open - {{buyerOpenCount}}</a> &#124;
-				<a href="{{pathFor 'buyerInvitedJobs'}}">Invited - {{buyerInvitedCount}}</a> &#124;
-				<a href="{{pathFor 'buyerRoutedJobs'}}">Routed - {{buyerRoutedCount}}</a> &#124;
-				<a href="{{pathFor 'buyerAssignedJobs'}}">Assigned - {{buyerAssignedCount}}</a> &#124;
-				<a href="{{pathFor 'buyerPaidJobs'}}">Paid - {{buyerPaidCount}}</a> &#124;
-				<a href="{{pathFor 'deactivatedJobs'}}">Deactivated - {{deactivatedCount}}</a>
-			</p>
-		</div>
-		<!-- <div class="col-sm-3">
-			<input type="text" class="form-control" id="search-box" placeholder="search all jobs" />
-		</div> -->
+	<!-- <div class="row">
 		<div class="col-sm-12">
-			<hr>
 			{{#each buyerJobs}}
 				{{>jobSmall}}
 			{{else}}
@@ -33,5 +18,6 @@
                 <div class="jobsloading">{{>spinner}}</div>
             {{/if}}
         </div>
-    </div>
+    </div> -->
+    {{>ReactiveDatatable tableData=allJobs options=allJobsOptions}}
 </template>

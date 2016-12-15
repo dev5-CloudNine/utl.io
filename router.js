@@ -59,6 +59,7 @@ Router.map(function() {
         path: '/jobs',
         title: "UTL - All Jobs",
         waitOn: function() {
+            Meteor.subscribe('jobs')
             if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
                 Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             return Meteor.subscribe('userWallet', Meteor.userId());
@@ -160,6 +161,7 @@ Router.map(function() {
             Meteor.subscribe('reviews');
             Meteor.subscribe('usersTasks');
             Meteor.subscribe('providerDeactivatedJobs');
+            Meteor.subscribe('allJobs');
             return Meteor.subscribe('userWallet', Meteor.userId());
         }
     })
@@ -168,6 +170,7 @@ Router.map(function() {
         path: '/appliedJobs',
         title: 'UTL - Applied Jobs',
         waitOn: function() {
+            Meteor.subscribe('allJobs');
             Meteor.subscribe('usersTasks');
             return Meteor.subscribe('userWallet', Meteor.userId());
         }
@@ -199,6 +202,7 @@ Router.map(function() {
         path: '/routedJobs',
         title: 'UTL - Routed Jobs',
         waitOn: function() {
+            Meteor.subscribe('allJobs')
             return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
@@ -214,10 +218,32 @@ Router.map(function() {
         }
     });
 
+    this.route('buyerPendingApprovalJobs', {
+        path: '/myJobs/pendingApproval',
+        title: 'UTL - Pending Approval Jobs',
+        waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId());
+            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+                Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+            return;
+        }
+    });
+
     this.route('providerAssignedJobs', {
         path: '/assignedJobs',
         title: 'UTL - Assigned Jobs',
         waitOn: function() {
+            Meteor.subscribe('allJobs');
+            Meteor.subscribe('usersTasks');
+            return Meteor.subscribe('userWallet', Meteor.userId());
+        }
+    });
+
+    this.route('providerPendingApprovalJobs', {
+        path: '/pendingApproval',
+        title: 'UTL - Pending Approval Jobs',
+        waitOn: function() {
+            Meteor.subscribe('allJobs');
             Meteor.subscribe('usersTasks');
             return Meteor.subscribe('userWallet', Meteor.userId());
         }
@@ -226,6 +252,10 @@ Router.map(function() {
     this.route('providerDeactivatedJobs', {
         path: '/deactivatedJobs',
         title: 'UTL - Deactivated Jobs',
+        waitOn: function() {
+            Meteor.subscribe('allJobs');
+            return Meteor.subscribe("userWallet", Meteor.userId());
+        }
     });
 
     this.route('buyerPaidJobs', {
@@ -254,6 +284,7 @@ Router.map(function() {
         path: '/paidJobs',
         title: 'UTL - Paid Jobs',
         waitOn: function() {
+            Meteor.subscribe('allJobs');
             Meteor.subscribe('reviews');
             return Meteor.subscribe('userWallet', Meteor.userId());
         }
@@ -266,7 +297,11 @@ Router.map(function() {
 
     this.route('invitedJobs', {
         path: '/invitedJobs',
-        title: 'UTL - Invited Jobs'
+        title: 'UTL - Invited Jobs',
+        waitOn: function() {
+            Meteor.subscribe('userWallet', Meteor.userId())
+            return Meteor.subscribe('allJobs')
+        }
     });
 
     this.route('job', {
@@ -651,8 +686,6 @@ Router.map(function() {
         path: '/wallet/invoices',
         title: 'Invoices',
         waitOn: function() {
-            Meteor.subscribe('providerInvoices', Meteor.userId());
-            Meteor.subscribe('buyerInvoices', Meteor.userId());
             return Meteor.subscribe('allJobs');
         }
     });
@@ -704,7 +737,6 @@ Router.map(function() {
                 return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
             }
             Meteor.subscribe('reviews');
-            // Meteor.subscribe('buyerPostedJobs', this.params._id);
             return subs.subscribe('buyer', this.params._id);
         },
         onBeforeAction: function() {
@@ -1131,6 +1163,7 @@ Router.map(function() {
 
 
     this.route('signUp', {
+        layoutTemplate: 'layoutNoContainer',
         path: '/SignUp',
         progress: true
     });

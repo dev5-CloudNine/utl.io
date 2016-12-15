@@ -13,15 +13,17 @@ Template.withdraw.helpers({
 				Session.set('customerTransfers', result._embedded.transfers);
 			}
 		});
-		return Session.get('customerTransfers').map(function(transfer) {
-			var obj = {
-				id: transfer.id,
-				status: transfer.status,
-				created: moment.utc(transfer.created).format('MM/DD/YYYY, hh:mm:ss A'),
-				amount: transfer.amount
-			}
-			return obj;
-		})
+		if(Session.get('customerTransfers')) {
+			return Session.get('customerTransfers').map(function(transfer) {
+				var obj = {
+					id: transfer.id,
+					status: transfer.status,
+					created: moment.utc(transfer.created).format('MM/DD/YYYY, hh:mm:ss A'),
+					amount: transfer.amount
+				}
+				return obj;
+			})
+		}
 	},
 	dwollaCustomer: function() {
 		var userWallet = Wallet.findOne({userId: Meteor.userId()});
@@ -56,18 +58,19 @@ Template.withdraw.events({
 	},
 	'click #pro_register_dwolla': function(event, template) {
 		event.preventDefault();
+		$(event.currentTarget).button('loading');
 		var providerDetails = Profiles.findOne({userId: Meteor.userId()});
 		var dwolla_req_obj = {
 			firstName: providerDetails.firstName,
 			lastName: providerDetails.lastName,
 			email: providerDetails.userName,
-			address1: providerDetails.fullLocation.street,
-			city:  providerDetails.fullLocation.locality,
-			state: providerDetails.fullLocation.state,
-			postalCode: providerDetails.fullLocation.zip,
-			ssn: providerDetails.socialSecurityNumber,
-			dateOfBirth: moment(providerDetails.dateOfBirth).format('YYYY-MM-DD'),
-			phone: providerDetails.contactNumber,
+			// address1: providerDetails.fullLocation.street,
+			// city:  providerDetails.fullLocation.locality,
+			// state: providerDetails.fullLocation.state,
+			// postalCode: providerDetails.fullLocation.zip,
+			// ssn: providerDetails.socialSecurityNumber,
+			// dateOfBirth: moment(providerDetails.dateOfBirth).format('YYYY-MM-DD'),
+			// phone: providerDetails.contactNumber,
 		}
 		Meteor.call('createCustomer', dwolla_req_obj, providerDetails.userId, function(error, result) {
 			if(error) {

@@ -16,7 +16,8 @@ Template.assignJob.events({
 				app_status: 'accepted',
 				app_type: 'application'
 			}
-			doc.applicationStatus = 'frozen';
+			doc.applicationStatus = 'assigned';
+			doc.assignmentStatus = 'not_confirmed'
 			doc.applications.push(appDetails);
 			doc.routed = true;
 		});
@@ -31,7 +32,7 @@ Template.assignJob.events({
 					$(event.currentTarget).button('reset');
 				} else {
 					delete Session.keys['routingJob'];
-					toastr.success('A notification has been sent to the provider to confirm assignment.');
+					// toastr.success('A notification has been sent to the provider to confirm assignment.');
 				}
 			})
 		})

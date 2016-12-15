@@ -1,33 +1,37 @@
 <template name="addTeam">
-	<div class="form-group">
-		<div class="row">
-			<div class="col-sm-4">
-				<label>Buyer Name</label>
-				<input type="text" id="buyerName" class="form-control" value="{{buyerName}}" disabled="disabled">
+	<div class="panel panel-light">
+		<div class="panel-body">
+			<div class="form-group">
+				<div class="row" hidden>
+					<div class="col-sm-4">
+						<label>Buyer Name</label>
+						<input type="text" id="buyerName" class="form-control" value="{{buyerName}}" disabled="disabled">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4">
+						<label>Email</label>
+						<input type="text" class="form-control email">
+					</div>
+				</div>
+				<div class="row">                                
+					<div class="col-md-2">
+					    <div class="radio">
+					      <label><input class="type" name="corpRole" type="radio" value="dispatcher">Dispatch</label>
+					    </div>
+					</div>
+					<div class="col-md-2">
+					    <div class="radio">
+					      <label><input class="type" name="corpRole" type="radio" value="accountant">Accountant</label>
+					    </div>
+					</div>
+		        </div>
+		        <div class="row">
+		        	<div class="col-sm-4">
+		        		<button type="submit" class="invite btn btn-sm btn-primary" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Send Invitation</button>
+		        	</div>
+		        </div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-4">
-				<label>Email</label>
-				<input type="text" class="form-control email">
-			</div>
-		</div>
-		<div class="row">                                
-			<div class="col-md-2">
-			    <div class="radio">
-			      <label><input class="type" name="corpRole" type="radio" value="dispatcher">Dispatch</label>
-			    </div>
-			</div>
-			<div class="col-md-2">
-			    <div class="radio">
-			      <label><input class="type" name="corpRole" type="radio" value="accountant">Accountant</label>
-			    </div>
-			</div>
-        </div>
-        <div class="row">
-        	<div class="col-sm-4">
-        		<button type="submit" class="invite btn btn-sm btn-primary" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Invite</button>
-        	</div>
-        </div>
 	</div>
 </template>

@@ -1,7 +1,7 @@
 Template.buyerRoutedJobs.onCreated(function() {
     var instance = this;
     instance.loaded = new ReactiveVar(0);
-    instance.limit = new ReactiveVar(10);
+    instance.limit = new ReactiveVar(100);
     instance.autorun(function() {
         var limit = instance.limit.get();
         var subscription = instance.subscribe('my_jobs', limit);

@@ -9,7 +9,7 @@ Template.invoice.helpers({
 		return Router.current().params.invoiceId;
 	},
 	jobDetails: function() {
-		var invoiceDetails = Invoices.findOne({invoiceId: Router.current().params.invoiceId});
+		var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
 		return Jobs.findOne({_id: invoiceDetails.jobId});
 	},
 	budgetDetails: function(jobId) {
@@ -29,18 +29,18 @@ Template.invoice.helpers({
 		return buyerCost * 5/100;
 	},
 	projectBudget: function() {
-		var invoiceDetails = Invoices.findOne({invoiceId: Router.current().params.invoiceId});
+		var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
 		return Jobs.findOne({_id: invoiceDetails.jobId}).projectBudget;
 	},
 	providerDetails: function() {
-		var invoiceDetails = Invoices.findOne({invoiceId: Router.current().params.invoiceId});
+		var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
 		return Profiles.findOne({userId: invoiceDetails.providerId});
 	},
 	buyerDetails: function() {
-		var invoiceDetails = Invoices.findOne({invoiceId: Router.current().params.invoiceId});
+		var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
 		return Buyers.findOne({userId: invoiceDetails.buyerId});
 	},
 	invoiceDetails: function() {
-		return Invoices.findOne({invoiceId: Router.current().params.invoiceId});
+		return Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
 	}
 });

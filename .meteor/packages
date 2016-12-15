@@ -7,10 +7,6 @@ less
 service-configuration
 accounts-ui
 accounts-password
-#accounts-google
-#pauli:accounts-linkedin
-accounts-google
-#jazeee:spiderable-longer-timeout
 iron:router
 natestrauser:font-awesome
 raix:handlebar-helpers
@@ -18,7 +14,6 @@ momentjs:moment
 aldeed:autoform
 aldeed:collection2
 multiply:iron-router-progress
-#pauli:accounts-linkedin
 natestrauser:connection-banner
 lampe:rssfeed
 meteorhacks:kadira
@@ -74,8 +69,7 @@ chipcastle:countries
 mrt:chosen-package
 chrismbeckett:toastr
 themeteorchef:jquery-validation
-pauli:accounts-linkedin
-easy:search
+#easy:search
 arkham:comments-ui
 spunkedy:autoform-file
 cfs:filesystem
@@ -101,13 +95,9 @@ edgee:slingshot
 meteorhacks:npm
 npm-container
 ephemer:reactive-datatables
-bigdata:elasticsearch
 dfischer:phantomjs
 meteorhacks:ssr
-meteorhacks:search-source
 jeremy:geocomplete
 ecmascript
 fullcalendar:fullcalendar
-barbatus:stars-rating
-kurounin:pagination-blaze
-kurounin:pagination
+digilord:faker

@@ -29,7 +29,7 @@ AccountsTemplates.configureRoute("resetPwd");
 AccountsTemplates.configureRoute("signIn", {
     name: 'signIn',
     path: '/sign-in',
-    layoutTemplate: 'layout',
+    layoutTemplate: 'layoutNoContainer',
     loadingTemplate: 'loading',
     yieldTemplates: {
         header: {

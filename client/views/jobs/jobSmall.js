@@ -7,9 +7,21 @@ Template.jobSmall.helpers({
 	},
 	acceptedProvider: function() {
 		var uId = Meteor.userId();
-		var jobs=Jobs.findOne({_id: this._id}).applications;
-		for(var i=0;i<jobs.length;i++){
-			if(jobs[i].userId == uId && jobs[i].app_status == 'accepted') {
+		var jobs=Jobs.findOne({_id: this._id});
+		if(jobs && jobs.applications) {
+			for(var i=0;i<jobs.applications.length;i++){
+				if(jobs.applications[i].userId == uId && jobs.applications[i].app_status == 'accepted') {
+					return true;
+				}
+			}
+		}
+		return false;
+	},
+	applied: function() {
+		var applications = Jobs.findOne({_id: this._id}).applications;
+	    if(applications) {
+			for(var i = 0; i < applications.length; i++) {
+			if(applications[i].userId == Meteor.userId())
 				return true;
 			}
 		}
@@ -39,15 +51,21 @@ Template.jobSmall.helpers({
 		}
 		return 0;
 	},
+	invoiceId: function() {
+		Meteor.subscribe('jobInvoice', this._id)
+		var invoiceDetails = Invoices.findOne({jobId: this._id});
+		if(invoiceDetails)
+			return invoiceDetails.invoiceId;
+		return;
+	},
 	fav : function() {
 		return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteJobs: {$in: [this._id]}}]})?true:false;
 	},
 	'jobPostedBuyer': function() {
-	    var jobDetails = Jobs.findOne(this._id);
-	    if(jobDetails.userId == Meteor.userId())
+	    var jobDetails = Jobs.findOne({_id: this._id});
+	    if(jobDetails && jobDetails.userId == Meteor.userId())
 	      return true;
-	    else
-	      return false;
+	    return false;
 	},
 	reviewedProvider: function() {
 		return Reviews.findOne({$and: [{reviewedJobId: this._id}, {buyerId: Meteor.userId()}, {reviewedBy: 'buyer'}]})? true : false;
@@ -89,10 +107,10 @@ Template.jobSmall.helpers({
 			return false;
 		}
 		var timeSheetsLogs = TimeSheet.findOne({jobID: jobId});
-		if(!timeSheetsLogs.logs) {
+		if(!timeSheetsLogs || !timeSheetsLogs.logs) {
 			return false
 		}
-		if(timeSheetsLogs.logs) {
+		if(timeSheetsLogs && timeSheetsLogs.logs) {
 			if(timeSheetsLogs.logs.length <= 0) {
 				return false;
 			}

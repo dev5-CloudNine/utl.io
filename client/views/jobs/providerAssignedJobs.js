@@ -1,47 +1,211 @@
-Template.providerAssignedJobs.onCreated(function() {
-    var instance = this;
-    instance.loaded = new ReactiveVar(0);
-    instance.limit = new ReactiveVar(10);
-    instance.jobs = function() {
-        var assignedJobIds = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
-		var assignedJobs = [];
-		if(assignedJobIds) {
-			for(var i = assignedJobIds.length - 1; i>=assignedJobIds.length - instance.limit.get(); i-- ) {
-				if(i<0)
-					break;
-				assignedJobs.push(Jobs.findOne({_id: assignedJobIds[i]}));
-			}
-		}
-		return assignedJobs;
+// Template.providerAssignedJobs.onCreated(function() {
+//     var instance = this;
+//     instance.loaded = new ReactiveVar(0);
+//     instance.limit = new ReactiveVar(10);
+// });
+
+// Template.providerAssignedJobs.helpers({
+// 	providerAssignedJobs: function() {
+// 		var assignedJobIds = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
+//         var assignedJobs = [];
+//         if(assignedJobIds) {
+//             for(var i = assignedJobIds.length - 1; i>=assignedJobIds.length - Template.instance().limit.get(); i-- ) {
+//                 if(i<0)
+//                     break;
+//                 assignedJobs.push(Jobs.findOne({_id: assignedJobIds[i]}));
+//             }
+//         }
+//         return assignedJobs;
+// 	},
+//     hasMoreJobs: function() {
+//     	var assignedJobIds = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
+//     	if(assignedJobIds)
+//     		assignedJobsLength = assignedJobIds.length;
+//     	else
+//     		assignedJobsLength = 0;
+//         return Template.instance().limit.get() < assignedJobsLength;
+//     }
+// })
+
+// Template.providerAssignedJobs.events({
+//     'click .load-more': function(event, instance) {
+//         event.preventDefault();
+//         var limit = instance.limit.get();
+//         limit += 10;
+//         instance.limit.set(limit);
+//     }
+// })
+
+// Template.invitedJobs.onCreated(function() {
+//     var instance = this;
+//     instance.loaded = new ReactiveVar(0);
+//     instance.limit = new ReactiveVar(10);
+//     instance.jobs = function() {
+//         var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
+//      var invitedJobs = [];
+//      if(invJobIds) {
+//          for(var i = invJobIds.length - 1; i>=invJobIds.length - instance.limit.get(); i-- ) {
+//              if(i<0)
+//                  break;
+//              invitedJobs.push(Jobs.findOne({_id: invJobIds[i]}));
+//          }
+//      }
+//      return invitedJobs;
+//     }
+// });
+
+// Template.invitedJobs.helpers({
+//  invitedJobs: function () {
+//      return Template.instance().jobs();
+//  },
+//     hasMoreJobs: function() {
+//      var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
+//      if(invJobIds)
+//          invJobsLength = invJobIds.length;
+//      else
+//          invJobsLength = 0;
+//         return Template.instance().limit.get() < invJobsLength;
+//     }
+// });
+
+// Template.invitedJobs.events({
+//     'click .load-more': function(event, instance) {
+//         event.preventDefault();
+//         var limit = instance.limit.get();
+//         limit += 10;
+//         instance.limit.set(limit);
+//     }
+// })
+
+var assignedJobs = function() {
+    var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+    var assignedJobs = [];
+    if(providerDetails.assignedJobs) {
+        for(var i = providerDetails.assignedJobs.length - 1; i >= 0; i--) {
+            assignedJobs.push(Jobs.findOne({_id: providerDetails.assignedJobs[i]}));
+        }
     }
-});
+    return assignedJobs;
+}
+
+var assignedJobsOptions = {
+    lengthMenu: [40, 80, 160, 320],
+    pageLength: 40,
+    columns: [
+        {
+            title: 'ID',
+            data: function(jobDetails) {
+                return '<small><i>' + jobDetails.readableID + '</i></small>'
+            },
+            responsivePriority: 4
+        },
+        {
+            title: 'Title',
+            data: function(jobDetails) {
+                var jobLocation;
+                var buyerName;
+                if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
+                    buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
+                    buyerName = buyerDetails.firstName + ' ' + buyerDetails.lastName
+                } else {
+                    buyerDetails = Buyers.findOne({userId: jobDetails.userId});
+                    buyerName = buyerDetails.firstName + ' ' + buyerDetails.lastName
+                }
+                if(jobDetails.servicelocation == 'Remote Job') {
+                    jobLocation = 'Remote Job';
+                }
+                else if(jobDetails.servicelocation == 'Field Job') {
+                    if(jobDetails.fullLocation.sublocality) {
+                        jobLocation = jobDetails.fullLocation.sublocality + ', ' + jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
+                    } else {
+                        jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
+                    }
+                }
+                var jobUrl = '<small>' + jobLocation + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
+                if(jobDetails.routed) {
+                    return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a>&nbsp;<span class="jobAppliedTick"><i class="glyphicon glyphicon-send"></i></span><br>' + jobUrl;
+                }
+                return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
+            },
+            width: '60%',
+            responsivePriority: 1
+        },
+        {
+            title: 'Budget (USD)',
+            data: function(jobDetails) {
+                if(jobDetails.routed) {
+                    return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>'
+                }
+                return '<span class="budgetFont">' + jobDetails.projectBudget + '</span>'
+            },
+            width: '20%',
+            responsivePriority: 2
+        },
+        {
+            title: 'Actions',
+            width: '20%',
+            data: function(jobDetails) {
+                var returnText;
+                if(jobDetails.assignmentStatus == 'not_confirmed') {
+                    if(jobDetails.routed) {
+                        returnText = '<small>Assigned job. Needs confirmation.</small>';
+                    } else {
+                        returnText = '<small>Application accepted. Job assigned. Needs confirmation.</small><br>';
+                    }
+                    return returnText + '<button data-job-id="' + jobDetails._id + '" data-buyer-id="' + jobDetails.userId + '" class="margin-top-5 btn btn-primary btn-sm confirmAssignment">Confirm</button>'
+                }
+                if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected') {
+                    Meteor.subscribe('timeSheet', jobDetails._id);
+                    var returnText = '<small>U confirmed. Job assigned. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</small>';
+                    if(jobDetails.assignmentStatus == 'rejected') {
+                        returnText = '<small>Rejected job done. Please discuss with the buyer for futher details and submit the job for buyer approval.</small>'
+                    }
+                    var tasksClosed = Tasks.find({$and:[{jobID:jobDetails._id},{state:{$ne:'Completed'}}]}).count();
+                    if(tasksClosed != 0) {
+                        return returnText;
+                    }
+                    var timeSheetsLogs = TimeSheet.findOne({jobID: jobDetails._id});
+                    if(!timeSheetsLogs || !timeSheetsLogs.logs) {
+                        return returnText;
+                    }
+                    if(timeSheetsLogs && timeSheetsLogs.logs) {
+                        if(timeSheetsLogs.logs.length <= 0) {
+                            return returnText;
+                        }
+                    }
+                    return returnText + '<br><button data-job-id="' + jobDetails._id + '" data-buyer-id="' + jobDetails.userId + '" class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit for Approval.</button>';
+                }
+            }
+        }
+    ],
+    responsive: true
+}
 
 Template.providerAssignedJobs.helpers({
-	providerAssignedJobs: function() {
-		var assignedJobIds = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
-		var assignedJobs = [];
-		if(assignedJobIds) {
-			for(var i = assignedJobIds.length - 1; i >= 0; i--) {
-				assignedJobs.push(Jobs.findOne({_id: assignedJobIds[i]}));
-			}
-			return assignedJobs;
-		}
-	},
-    hasMoreJobs: function() {
-    	var assignedJobIds = Profiles.findOne({userId: Meteor.userId()}).assignedJobs;
-    	if(assignedJobIds)
-    		assignedJobsLength = assignedJobIds.length;
-    	else
-    		assignedJobsLength = 0;
-        return Template.instance().limit.get() < assignedJobsLength;
-    }
-})
+    assignedJobs: function() {
+        return assignedJobs;
+    },
+    assignedJobsOptions: assignedJobsOptions
+});
 
 Template.providerAssignedJobs.events({
-    'click .load-more': function(event, instance) {
+    'click .confirmAssignment': function(event, template) {
         event.preventDefault();
-        var limit = instance.limit.get();
-        limit += 10;
-        instance.limit.set(limit);
+        var buyerId = $(event.currentTarget).data('buyer-id');
+        var jobId = $(event.currentTarget).data('job-id');
+        Meteor.call('confirmAssignment', jobId, buyerId, function(error) {
+            if(error) {
+                toastr.error('Failed to confirm assignment.');
+            }
+        })
+    },
+    'click .submitAssignment': function(event, template) {
+        event.preventDefault();
+        var jobId = $(event.currentTarget).data('job-id');
+        Meteor.call('submitAssignment', jobId, function(error) {
+            if(error) {
+                toastr.error('Failed to submit assignment. Please try again.');
+            }
+        });
     }
 })

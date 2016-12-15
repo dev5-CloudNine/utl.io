@@ -44,30 +44,6 @@ Template.profileFields.events({
     var smsEmail = mobileNumber + mobileCarrier;    
     $('input[name="smsAddress"]').val(smsEmail);
   },
-  'keyup .skills input' : function(event) {
-    var newSkill = $('.skills input').val();
-    if (event.which === 13) {
-         var exists = Skills.findOne({value:newSkill});
-         if(!exists) {
-            new Confirmation({
-              message: "Do you want to add '"+newSkill+ "' to skills?",
-              title: "Confirmation",
-              cancelText: "Cancel",
-              okText: "Ok",
-              success: true, // whether the button should be green or red
-              focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
-            }, function (ok) {
-              if(ok) {                
-                Meteor.call('addNewSkill',newSkill);
-                toastr.info("'"+newSkill + "' has been added. Please select it");
-                $('.skills input').val('');
-              }
-            });
-         }
-         event.stopPropagation();
-         return false;
-    }
-  },
   "change .resume_bag": function(event, template) {
     event.preventDefault();
     var files = $(event.currentTarget)[0].files;
@@ -133,7 +109,6 @@ Template.profileFields.events({
     });
   }
 });
-// var customImagePreviewUrl = new ReactiveVar();
 
 Template.profileEdit.events({
   'click #cancel': function(event, template) {

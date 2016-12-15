@@ -5,6 +5,8 @@ providerInvoices = function() {
 	return Invoices.find({providerId: Meteor.userId()}).fetch();
 }
 var buyerOptionsObject = {
+	lengthMenu: [10, 25, 50, 100],
+	pageLength: 10,
 	columns: [
 		{
 			title: 'Invoice ID',

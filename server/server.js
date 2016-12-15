@@ -250,6 +250,7 @@ Meteor.methods({
         var jobDetails = Jobs.findOne({_id: jobId});
         Jobs.update({$and:[{_id:jobId},{'applications.userId':userId}]},{$pull:{"applications":{"userId":userId}}});
         Profiles.update({userId: userId}, {$pull: {appliedJobs: jobId}});
+        Profiles.update({userId: userId}, {$pull: {allJobs: jobId}});
     },
     acceptApplication: function(jobId, userId, applicationTime) {
         var jobDetails = Jobs.findOne({_id: jobId});
@@ -272,7 +273,9 @@ Meteor.methods({
             adminRead: false
         }
         var jobNets = jobDetails.freelancer_nets;
-        Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen'}});
+        Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'assigned', assignmentStatus: 'not_confirmed'}});
+        Profiles.update({userId: userId}, {$pull: {appliedJobs: jobId}});
+        Profiles.update({userId: userId}, {$addToSet: {assignedJobs: jobId}});
         Jobs.update({_id: jobId}, {$set: {proposedBudget: jobNets}});
         Notifications.insert(notificationObj);
         Email.send({
@@ -308,8 +311,10 @@ Meteor.methods({
             side: 'provider',
             adminRead: false
         }
-        Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.freelancer_nets': freenets}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'frozen'}})
+        Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.freelancer_nets': freenets}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'assigned'}})
         Jobs.update({_id: jobId}, {$set: {proposedBudget: freenets}});
+        Profiles.update({userId: userId}, {$addToSet: {assignedJobs: jobId}});
+        Profiles.update({userId: userId}, {$pull: {appliedJobs: jobId}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: userId})),
@@ -320,6 +325,7 @@ Meteor.methods({
         })
     },
     rejectApplication: function(jobId, userId, applied_at) {
+        Profiles.update({userId: userId}, {$pull: {assignedJobs: jobId}});
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'rejected', applicationStatus: 'open'}})
     },
     rejectCounterOffer: function(jobId, userId, applied_at, difference) {
@@ -354,9 +360,11 @@ Meteor.methods({
         var proBudget = jobDetails.proposedBudget;
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var buyerCost = jobDetails.your_cost;
-        Jobs.update({_id: jobId}, {$set: {applicationStatus: 'assigned', assignedProvider: Meteor.userId(), projectBudget: proBudget}});
-        Profiles.update({userId: Meteor.userId()}, {$addToSet: {assignedJobs: jobId}});
-        Profiles.update({userId: Meteor.userId()}, {$pull: {appliedJobs: jobId}});
+        Jobs.update({_id: jobId}, {$set: {assignedProvider: Meteor.userId(), projectBudget: proBudget, assignmentStatus: 'confirmed'}});
+        var applicants = jobDetails.applications;
+        for(var i = 0; i < applicants.length; i++) {
+            Profiles.update({userId: applicants[i].userId}, {$pull: {appliedJobs: jobId}});
+        }
         if(jobDetails.routed) {
             Jobs.update({_id: jobId}, {$set: {projectBudget: jobDetails.freelancer_nets}});
             Profiles.update({userId: Meteor.userId()}, {$pull: {routedJobs: jobId}});
@@ -431,6 +439,8 @@ Meteor.methods({
             adminRead: false
         }
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'submitted'}});
+        Profiles.update({userId: Meteor.userId()}, {$pull: {assignedJobs: jobId}});
+        Profiles.update({userId: Meteor.userId()}, {$addToSet: {pendingApproval: jobId}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: Jobs.findOne({_id: jobId}).userId})),
@@ -473,7 +483,7 @@ Meteor.methods({
         Invoices.insert(invoiceObject);
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'paid'}});
         Profiles.update({userId: providerId}, {$addToSet: {paidJobs: jobId}});
-        Profiles.update({userId: providerId}, {$pull: {assignedJobs: jobId}});        
+        Profiles.update({userId: providerId}, {$pull: {pendingApproval: jobId}});        
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -jobDetails.projectBudget}});
         Wallet.update({userId: jobDetails.userId}, {$inc: {amountSpent: jobDetails.projectBudget}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
@@ -488,8 +498,8 @@ Meteor.methods({
         });
     },
     rejectAssignment: function(jobId) {
-        var providerDetails = Profiles.findOne({userId: Jobs.findOne({_id: jobId}).assignedProvider});
         var jobDetails = Jobs.findOne({_id: jobId});
+        var providerDetails = Profiles.findOne({userId: jobDetails.assignedProvider});
         var buyerId = jobDetails.userId;
         var buyerDetails;
         if(Roles.userIsInRole(buyerId, ['dispatcher'])) {
@@ -499,7 +509,7 @@ Meteor.methods({
         }
         var notificationObj = {
             jobId: jobId,
-            providerId: providerDetails._id,
+            providerId: providerDetails.userId,
             buyerId: buyerId,
             timeStamp: new Date(),
             notificationType: 'rejectAssignment',
@@ -508,6 +518,8 @@ Meteor.methods({
             adminRead: false
         }
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'rejected'}});
+        Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {pendingApproval: jobId}});
+        Profiles.update({userId: jobDetails.assignedProvider}, {$addToSet: {assignedJobs: jobId}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: Jobs.findOne({_id: jobId}).assignedProvider})),
@@ -582,7 +594,7 @@ Meteor.methods({
         Jobs.update({_id: job._id}, {$set: {invited: true}});
     },
     routeNotification: function(buyerId, doc) {
-        Profiles.update({userId: doc.selectedProvider}, {$addToSet: {routedJobs: doc._id}});
+        Profiles.update({userId: doc.selectedProvider}, {$addToSet: {assignedJobs: doc._id}});
         Profiles.update({userId: doc.selectedProvider}, {$addToSet: {allJobs: doc._id}});
         var providerDetails = Profiles.findOne({userId: doc.selectedProvider});
         var buyerDetails;
@@ -699,25 +711,27 @@ Meteor.methods({
             html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has approved payment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>Now the job is complete and you may rate the buyer by <a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">clicking here</a>.'
         })
     },
-    reviewProvider: function(providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage) {
+    reviewProvider: function(providerId, buyerId, jobId, timeReviewed, experience, ratedPoints, reviewMessage) {
         var review = {
             providerId: providerId,
             buyerId: buyerId,
             reviewedBy: 'buyer',
             reviewedJobId: jobId,
             reviewedAt: timeReviewed,
+            experience: experience,
             pointsRated: ratedPoints,
             reviewMessage: reviewMessage
         };
         Reviews.insert(review);
     },
-    reviewBuyer: function(providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage) {
+    reviewBuyer: function(providerId, buyerId, jobId, timeReviewed, experience, ratedPoints, reviewMessage) {
         var review = {
             providerId: providerId,
             buyerId: buyerId,
             reviewedBy: 'provider',
             reviewedJobId: jobId,
             reviewedAt: timeReviewed,
+            experience: experience,
             pointsRated: ratedPoints,
             reviewMessage: reviewMessage
         }
@@ -1039,5 +1053,11 @@ Meteor.methods({
             subject: queryObject.firstName + ' has sent you a message.',
             html: 'Hello admin, <br>' + queryObject.query
         });
+    },
+    'search_providers': function(query) {
+        return Profiles.find({$and: [{}, {$text: {$search: query}}]}).fetch();
+    },
+    'search_buyers': function(query) {
+        return Buyers.find({$and: [{}, {$text: {$search: query}}]}).fetch();
     }
 });

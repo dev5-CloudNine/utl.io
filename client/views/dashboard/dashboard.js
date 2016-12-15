@@ -76,9 +76,6 @@ Template.dashboard.helpers({
 	// 	});
 	// 	return favBuyerArray;
 	// },
-	buyerJobsCount: function() {
-		return Jobs.find({userId: Meteor.userId()}).count();
-	},
 	providerJobsCount: function() {
 		var count = 0;
 		var jobCount = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
@@ -138,20 +135,6 @@ Template.dashboard.helpers({
 		if(reviews)
 			return reviews.count();
 		return 0;
-	},
-	myProfile: function() {
-		if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
-			return Buyers.findOne({userId: Meteor.userId()});
-		}
-		if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
-			return Profiles.findOne({userId: Meteor.userId()});
-		}
-		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
-			return Dispatchers.findOne({userId: Meteor.userId()});
-		}
-		if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
-			return Accountants.findOne({userId: Meteor.userId()});
-		}
 	},
 	buyersCount: function() {
 		return Buyers.find().count();

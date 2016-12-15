@@ -9,7 +9,7 @@
 								<img class="img-responsive img-thumbnail" style="max-height: 200px; max-width: 200px" src="{{customImageUrl}}"/>
 							</div>
 						{{else}}
-							{{> avatar initials=initials size="large" shape="rounded"}}
+							<img src="/images/avatar.png" width="200px">
 						{{/if}}
 						{{#if isInRole 'provider, corporate-provider'}}
 							{{#if currentUser.isDeveloper}}
@@ -121,27 +121,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- <div class="panel panel-default panel-white">
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-sm-12">
-						<h5>Job History and Feedback</h5>
-						<ul class="list-group">
-							{{#each buyerCompletedJobs}}
-								<li class="list-group-item">
-									<a href="{{pathFor 'job'}}">{{this.title}}</a>
-									<h5>Review</h5>
-									{{#with reviews}}
-										<span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly=true></span> <br>
-										Message: {{this.reviewMessage}}
-									{{/with}}
-								</li>
-							{{/each}}
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div> -->
 		{{>userReviews userId=userId}}
 	</div>
 </template>

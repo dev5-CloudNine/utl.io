@@ -2,17 +2,20 @@ Accountants = new Mongo.Collection('accountants');
 
 AddressSchema = new SimpleSchema({
 	street: {
-		type: String
+		type: String,
+		optional: true
 	},
 	locality: {
-		type: String
+		type: String,
+		optional: true
 	},
 	sublocality: {
 		type: String,
 		optional: true
 	},
 	state: {
-		type: String
+		type: String,
+		optional: true
 	},
 	zip: {
 		type: String,
@@ -20,7 +23,8 @@ AddressSchema = new SimpleSchema({
 		regEx: /^[0-9]{5}$/
 	},
 	country: {
-		type: String
+		type: String,
+		optional: true
 	},
 	formatted_address: {
 		type: String,

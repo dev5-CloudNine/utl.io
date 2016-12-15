@@ -1,9 +1,16 @@
 if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
 	Meteor.subscribe('userWallet', Meteor.user().invitedBy);
 }
-Meteor.subscribe('userWallet', Meteor.userId());
+if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
+	Meteor.subscribe('my_jobs');
+	Meteor.subscribe('buyerInvoices', Meteor.userId());
+}
+if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+	Meteor.subscribe('jobs');
+	Meteor.subscribe('providerInvoices', Meteor.userId());
+}
+Meteor.subscribe('userWallet', Meteor.userId())
 Meteor.subscribe("userData");
-// Meteor.subscribe("jobCount");
 Meteor.subscribe('providers');
 Meteor.subscribe('buyers');
 Meteor.subscribe('allDispatchers');

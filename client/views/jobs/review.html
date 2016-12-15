@@ -2,10 +2,11 @@
 	{{#if reviewedProvider}}
 		<hr>
         <strong>Review Details</strong>
-        {{#with providerReviewDetails}}
+        <!-- {{#with providerReviewDetails}}
             <p>{{this.reviewMessage}}</p>
             <span class="rateit" id="providerReviewPoints" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
-        {{/with}}
+        {{/with}} -->
+        <p>You have reviewed the provider. The job is successfully closed. <a href="/invoices/{{invoiceId}}">View invoice</a></p>
     {{else}}
     	<hr>
         <form id="reviewProvider">
@@ -24,10 +25,11 @@
 	{{#if reviewedBuyer}}
 		<hr>
         <strong>Review Details</strong>
-        {{#with buyerReviewDetails}}
+        <!-- {{#with buyerReviewDetails}}
             <p>{{this.reviewMessage}}</p>
             <span class="rateit" id="buyerReviewPoints" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly="true"></span>
-        {{/with}}
+        {{/with}} -->
+        <p>You have reviewed the buyer. The job is successfully closed. <a href="/invoices/{{invoiceId}}">View invoice</a></p>
     {{else}}
     	<hr>
         <form id="reviewBuyer">

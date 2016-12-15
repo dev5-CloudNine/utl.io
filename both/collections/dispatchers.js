@@ -1,29 +1,21 @@
 Dispatchers = new Mongo.Collection("dispatchers");
-DispatchersIndex = new EasySearch.Index({
-  collection: Dispatchers,
-  fields: ['firstName', 'lastName', 'companyName', 'title', 'location', 'readableID'],
-  engine: new EasySearch.Minimongo({
-    sort: function (searchObject) {
-        return {
-          createdAt: -1
-        };
-    }
-  })
-});
 
 AddressSchema = new SimpleSchema({
   street: {
-    type: String
+    type: String,
+    optional: true
   },
   locality: {
-    type: String
+    type: String,
+    optional: true
   },
   sublocality: {
     type: String,
     optional: true
   },
   state: {
-    type: String
+    type: String,
+    optional: true
   },
   zip: {
     type: String,
@@ -31,7 +23,8 @@ AddressSchema = new SimpleSchema({
     regEx: /^[0-9]{5}$/
   },
   country: {
-    type: String
+    type: String,
+    optional: true
   },
   formatted_address: {
     type: String,

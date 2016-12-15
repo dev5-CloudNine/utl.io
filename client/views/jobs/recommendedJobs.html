@@ -1,15 +1,5 @@
 <template name="recommendedJobs">
-	<div class="row">
-		<div class="col-sm-12">
-			<p>
-				Jobs: <a href="{{pathFor 'jobs'}}">Open - {{openJobsCount}}</a> &#124; 
-				Recommended - {{recommendedJobsCount}} &#124; 
-				<a href="{{pathFor 'invitedJobs'}}">Invited - {{providerInvitedCount}}</a>
-			</p>
-		</div>
-		<div class="col-sm-12">
-			<hr>
-		</div>
+	<!-- <div class="row">
 		<div class="col-sm-12">
 			{{#if currentUser}}
 				{{#each recommendedJobs}}
@@ -30,5 +20,6 @@
                 <div class="jobsloading">{{>spinner}}</div>
             {{/if}}
         </div>
-    </div>
+    </div> -->
+    {{>ReactiveDatatable tableData=recommendedJobs options=recommendedJobsOptions}}
 </template>

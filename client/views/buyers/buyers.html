@@ -1,14 +1,13 @@
 <template name="buyers">
 	<div class="row">
 		{{#if currentUser}}
-			<div class="col-sm-12 col-md-9">
-				<p>
-					All buyers&nbsp;&#124;&nbsp;<a href="{{pathFor 'favoriteBuyers'}}">Favorite Buyers</a>
-				</p>
+			<div class="col-sm-12 col-md-3 col-md-offset-9">
+				<input type="text" id="search-buyers" class="form-control" placeholder="Search Buyers By Name, Location, or Designation">
+				<br>
 			</div>
-			<div class="col-sm-12">
+			<!-- <div class="col-sm-12">
 				<hr>
-			</div>
+			</div> -->
 			{{#if isInRole 'corporate-admin, provider, corporate-provider'}}
 				{{#each buyersList}}
 					<div class="col-md-4">

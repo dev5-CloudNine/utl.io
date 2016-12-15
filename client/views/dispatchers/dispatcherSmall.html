@@ -3,7 +3,7 @@
         <div class="box box-widget widget-user">
             <div class="widget-user-header bg-assigned">
                 <span class="pull-right rateit"></span>
-                <small>ID: {{readableId}}</small>
+                <small><i># {{readableId}}</i></small>
                 <h3 class="widget-user-username"><a href="{{pathFor 'dispatcher'}}">{{firstName}} {{lastName}}</a></h3>
                 <h5 class="widget-user-desc">{{title}}</h5>
                 <small><i class="fa fa-map-marker"></i>&nbsp;{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}</small>
@@ -15,7 +15,7 @@
                             <img class="img-circle" src="{{customImageUrl}}"/>
                         </div>
                     {{else}}
-                        {{> avatar initials=initials size="medium" class="center-block"}}
+                        <img src="/images/avatar.png" alt="">
                     {{/if}}
                 </a>
             </div>

@@ -1,10 +1,10 @@
 <template name="buyerSmall">
     <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
         <div class="box box-widget widget-user">
-            <div class="widget-user-header bg-assigned">
+            <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
                 <span class="pull-right rateit"></span>
-                <small>ID: {{readableId}}</small>
-                <h3 class="widget-user-username"><a href="{{pathFor 'buyer'}}">{{firstName}} {{lastName}}</a></h3>
+                <small><i># {{readableId}}</i></small>
+                <p class="budgetFont"><a href="{{pathFor 'buyer'}}">{{firstName}} {{lastName}}</a></p>
                 <h5 class="widget-user-desc">{{title}}</h5>
                 <small><i class="fa fa-map-marker"></i>&nbsp;{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}</small>
             </div>
@@ -15,7 +15,7 @@
                             <img class="img-circle" src="{{customImageUrl}}"/>
                         </div>
                     {{else}}
-                        {{> avatar initials=initials shape="rounded" size="medium" class="center-block"}}
+                        <img src="/images/avatar.png" alt="">
                     {{/if}}
                 </a>
             </div>

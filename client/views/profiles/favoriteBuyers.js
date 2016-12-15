@@ -1,16 +1,12 @@
 Template.favoriteBuyers.helpers({
 	favBuyers: function() {
-		var favBuyerIds = [];
-		var favBuyerArray = [];
+		var favUserArray = [];
 		var userDetails = Meteor.user();
-		userDetails.favoriteUsers.forEach(function(favBuyer) {
-			favBuyerIds.push(favBuyer);
-		});
-		favBuyerIds.forEach(function(id) {
-			favBuyerArray.push(Buyers.findOne({
-				userId: id
-			}));
-		});
-		return favBuyerArray;
-	}
+		if(userDetails.favoriteUsers) {
+			for(var i = userDetails.favoriteUsers.length - 1; i >= 0; i--) {
+				favUserArray.push(Buyers.findOne({userId: userDetails.favoriteUsers[i]}));
+			}
+		}
+		return favUserArray;
+	},
 });

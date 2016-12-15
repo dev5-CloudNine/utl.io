@@ -147,7 +147,6 @@ Jobs.after.insert(function(userId, doc){
             + Meteor.absoluteUrl("jobs/"+doc._id) + "\n\n\n\n\n\n"
     });
   if(doc.selectedProvider) {
-    Jobs.update(doc._id, {$set: {applicationStatus: 'frozen'}});
     Profiles.update({_id: doc.selectedProvider}, {$addToSet: {appliedJobs: doc._id}});
   }
 });
@@ -192,7 +191,8 @@ Meteor.users.after.insert(function(userId, doc) {
   if(Roles.userIsInRole(doc._id, ['dispatcher', 'accountant'])) {
     FileManager.insert({userId: doc._id});
     return;
+  } else if(Roles.userIsInRole(doc._id, ['buyer', 'provider'])) {
+    Wallet.insert({userId: doc._id, dwollaId: null, accountBalance: 0});
+    FileManager.insert({userId: doc._id});
   }
-  Wallet.insert({userId: doc._id, dwollaId: null, accountBalance: 0});
-  FileManager.insert({userId: doc._id});
 });

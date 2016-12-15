@@ -114,13 +114,13 @@ Template.deposit.events({
 			firstName: buyerDetails.firstName,
 			lastName: buyerDetails.lastName,
 			email: buyerDetails.userName,
-			address1: buyerDetails.fullLocation.street,
-			city:  buyerDetails.fullLocation.locality,
-			state: buyerDetails.fullLocation.state,
-			postalCode: buyerDetails.fullLocation.zip,
-			dateOfBirth: moment(buyerDetails.dateOfBirth).format('YYYY-MM-DD'),
-			ssn: buyerDetails.socialSecurityNumber,
-			phone: buyerDetails.contactNumber,
+			// address1: buyerDetails.fullLocation.street,
+			// city:  buyerDetails.fullLocation.locality,
+			// state: buyerDetails.fullLocation.state,
+			// postalCode: buyerDetails.fullLocation.zip,
+			// dateOfBirth: moment(buyerDetails.dateOfBirth).format('YYYY-MM-DD'),
+			// ssn: buyerDetails.socialSecurityNumber,
+			// phone: buyerDetails.contactNumber,
 		}
 		Meteor.call('createCustomer', dwolla_req_obj, buyerDetails.userId, function(error, result) {
 			if(error) {

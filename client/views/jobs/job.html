@@ -52,19 +52,16 @@
                                                 <a href="{{pathFor 'duplicateJob'}}" class="btn btn-primary btn-sm">Duplicate Job</a>
                                             </span>
                                         {{/if}}
-                                        <span class="label label-default label-xs">ID: {{readableID}}</span> {{>jobLabels}}
-                                        <h4>{{title}}</h4>
-                                        <h4>
-                                            Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;
-                                        </h4>
+                                        <small><i># {{readableID}}</i></small><br>
+                                        <a class="budgetFont">{{title}}</a><br>
                                         <small>
                                             {{#if $eq servicelocation 'Remote Job'}}
-                                                <i class="fa fa-map-marker"></i>&nbsp;{{servicelocation}}
+                                                {{servicelocation}}
                                             {{else}}
                                                 {{#if assignedProvider}}
-                                                    <i class="fa fa-map-marker"></i>&nbsp;{{location}}&nbsp;|&nbsp;
+                                                    {{location}}
                                                 {{else}}
-                                                    <i class="fa fa-map-marker"></i>&nbsp;{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+                                                    {{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
                                                 {{/if}}
                                             {{/if}}
                                         </small>
@@ -73,7 +70,6 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <small>
-                                            <i class="fa fa-user fa-fw"></i>
                                             {{#if postedByDispatcher}}
                                                 Posted by {{#with dispatcherData}} <a href="/dispatchers/{{id}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
                                             {{/if}}
@@ -82,28 +78,9 @@
                                             {{/if}}
                                             <br>
                                         </small>
-                                        <!-- <small>
-                                            <span class="label label-sm {{appStatusLabel}}">Status: {{#if $eq status 'deactivated'}} Deactivated {{else}} {{applicationStatus}}{{/if}}</span>
-                                            &nbsp;
-                                            {{#if $eq status 'active'}}
-                                                {{#if $eq applicationStatus 'assigned'}}
-                                                    to
-                                                {{else}}
-                                                    {{#if $eq applicationStatus 'completed'}}
-                                                        by
-                                                    {{/if}}
-                                                {{/if}}
-                                                {{#with assignedProfile}}
-                                                    <a href="{{pathFor 'profile'}}">{{this.firstName}} {{this.lastName}}</a>
-                                                {{/with}}
-                                                &nbsp;|&nbsp;
-                                                {{#if selectedProvider}} 
-                                                    Routed to {{#with routedProvider}}<a href="{{pathFor 'profile'}}">{{this.name}}</a>{{/with}}
-                                                {{else}}
-                                                    Applications: {{applicationsCount}}
-                                                {{/if}}
-                                            {{/if}}
-                                        </small> -->
+                                        <p class="budgetFont">
+                                            Budget{{#if freelancer_nets}}&nbsp;-&nbsp;{{freelancer_nets}}&nbsp;USD{{/if}}&nbsp;
+                                        </p>
                                     </div>
                                     <div class="col-sm-12">
                                         {{#if isInRole 'provider'}}
@@ -496,11 +473,11 @@
                             <br>
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    {{#if openOrFrozen}}
-                                        <p>No actions to perform now.</p>
-                                    {{/if}}
                                     {{#if $eq applicationStatus 'assigned'}}
-                                        {{#if $eq assignmentStatus 'not_submitted'}}
+                                        {{#if $eq assignmentStatus 'not_confirmed'}}
+                                            <p>Job assigned. Awaiting confirmation.</p>
+                                        {{/if}}
+                                        {{#if $eq assignmentStatus 'confirmed'}}
                                             {{#if $eq status 'deactivated'}}
                                                 {{#if paid30Usd}}
                                                     <p>You have paid 30 USD to the assigned Provider as a good will token.</p>
@@ -561,7 +538,7 @@
                                                 {{/if}}
                                             {{else}}
                                                 <p><i>{{submittedTime}}</i></p>
-                                                <p>The provider has submitted the job for your perusal. Please check the job done and take action.</p>
+                                                <p>The provider has submitted the job for your approval. You may either approve or reject the job done. Upon approval, the provider's account will be credited with {{projectBudget}} USD. Ensure that all the tasks and timesheets are upto your mark.</p>
                                                 <button class="margin-top-5 btn btn-primary btn-sm approveAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Approve</button>
                                                 <button class="margin-top-5 btn btn-primary btn-sm rejectAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
                                             {{/if}}
@@ -580,8 +557,48 @@
                                     {{/if}}
                                     {{#if $eq applicationStatus 'paid'}}
                                         <p><i>{{approvedTime}}</i></p>
-                                        <p>Payment has been released successfully for the job completed. The provider is now paid.</p>
-                                        {{>reviewProvider jobId=_id}}
+                                        <p>The provider's account is successfully credited for the job completed.</p>
+                                        {{#if reviewedProvider}}
+                                            <p>You have reviewed the provider. The job is successfully closed. <a href="/invoices/{{invoiceId}}">View invoice</a></p>
+                                        {{else}}
+                                            <hr>
+                                            <form id="reviewProvider">
+                                                <div class="form-group">
+                                                    <label>Service quality:</label>
+                                                    <br>
+                                                    <label class="radio-inline" >
+                                                        <input type="radio" name="detailAttention" value="Good" required> Good
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="detailAttention" value="Bad"> Bad
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="detailAttention" value="Ugly"> Ugly
+                                                    </label>
+                                                    <br><br>
+                                                    <label for="writeReview">Write a review</label>
+                                                    <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control" required></textarea><br>
+                                                    <label>Rate provider</label><br>
+                                                    <label class="radio-inline" >
+                                                        <input type="radio" name="rateProvider" value="1" required> 1
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="rateProvider" value="2"> 2
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="rateProvider" value="3"> 3
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="rateProvider" value="4"> 4
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="rateProvider" value="5"> 5
+                                                    </label>
+                                                    <!-- <span class="rateit" id="rateProvider"></span> -->
+                                                </div>
+                                                <button class="margin-top-5 btn btn-sm btn-primary" type="submit">Submit</button>
+                                            </form>
+                                        {{/if}}
                                     {{/if}}
                                 </div>
                             </div>
@@ -651,9 +668,9 @@
                     </div>
                     <ul class="nav nav-tabs">
                         {{#if assignedOrDone}}
-                            <li class="active"><a href="#jobAssignedProvider" data-toggle="tab" aria-expanded="true">Assigned Provider</a></li>
+                            <li class="active"><a href="#jobAssignedProvider" data-toggle="tab" aria-expanded="true">Assigned Provider (Confirmed)</a></li>
                         {{/if}}
-                        <li class="{{#unless assignedOrDone}}active{{/unless}}"><a href="#buyerJobApplications" data-toggle="tab">Applications</a></li>
+                        <li class="{{#unless assignedOrDone}}active{{/unless}}"><a href="#buyerJobApplications" data-toggle="tab">Applications <span class="badge">{{applicationsCount}}</span></a></li>
                     </ul>
                     <div class="tab-content">
                         {{#if assignedOrDone}}
@@ -665,7 +682,7 @@
                                             <div class="widget-user-header bg-assigned">
                                                 <span class="pull-right providerRatings" data-rateit-value="{{rateItValue}}"></span>
                                                 <small>ID: {{readableID}}</small>
-                                                <h3 class="widget-user-username">{{this.name}}</h3>
+                                                <p class="budgetFont">{{this.name}}</p>
                                                 <h5 class="widget-user-desc">{{this.title}}</h5>
                                             </div>
                                             <div class="widget-user-image">
@@ -810,9 +827,8 @@
                                                                     <br>Net: {{freelancer_nets}} USD.
                                                                 {{/if}}
                                                             {{/with}}
-                                                            <br>
+                                                            <hr>
                                                             {{#if $eq applicationStatus 'open'}}
-                                                                <br>
                                                                 {{#if providerDeclined}}
                                                                     This provider has declined to do the job.
                                                                 {{else}}
@@ -833,39 +849,31 @@
                                                                 {{/if}}
                                                             {{/if}}
                                                             {{#if $eq applicationStatus 'assigned'}}
-                                                                {{#if assignedApplicant}}
-                                                                    <h5>The job is assigned.</h5>
-                                                                {{else}}
-                                                                    <br>
-                                                                    <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                {{#if $eq ../assignmentStatus 'not_confirmed'}}
+                                                                    {{#if selectedProvider}}
+                                                                        <small>Job assigned. Awaiting confirmation.</small><br>
+                                                                        <button class="btn btn-sm btn-primary rejectApplication" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
+                                                                    {{else}}
+                                                                        <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                    {{/if}}
                                                                 {{/if}}
-                                                            {{/if}}
-                                                            {{#if $eq applicationStatus 'completed'}}
-                                                                {{#if assignedApplicant}}
-                                                                    <h5>The project is completed.</h5>
-                                                                {{else}}
-                                                                    <br>
-                                                                    <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
-                                                                {{/if}}
-                                                            {{/if}}
-                                                            {{#if $eq applicationStatus 'pending_payment'}}
-                                                                {{#if assignedApplicant}}
-                                                                    <h5>The provider has raised an invoice and requested for the payment.</h5>
-                                                                {{else}}
-                                                                    <br>
-                                                                    <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                {{#if $eq ../assignmentStatus 'confirmed'}}
+                                                                    {{#if assignedApplicant}}
+                                                                        <small>Job assigned. Provider confirmed</small>
+                                                                    {{else}}
+                                                                        <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                    {{/if}}
                                                                 {{/if}}
                                                             {{/if}}
                                                             {{#if $eq applicationStatus 'paid'}}
                                                                 {{#if assignedApplicant}}
-                                                                    <h5>You have paid the provider.</h5>
+                                                                    <small>You have paid the provider.</small>
                                                                 {{else}}
-                                                                    <br>
                                                                     <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
                                                                 {{/if}}
                                                             {{/if}}
                                                             {{#if $eq status 'deactivated'}}
-                                                                <h5>You have deactivated the job. Activate it to accept the application.</h5>
+                                                                <small>You have deactivated the job.</small>
                                                             {{/if}}
                                                         </div>
                                                     </div>
@@ -911,7 +919,7 @@
                                                                     <button class="btn btn-primary acceptCounterOffer" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Accept</button>
                                                                 {{/if}}
                                                             {{/if}}
-                                                            {{#if $eq applicationStatus 'frozen'}}
+                                                            <!-- {{#if $eq applicationStatus 'frozen'}}
                                                                 {{#if selectedProvider}}
                                                                     <h5>Awaiting confirmation from provider.</h5>
                                                                     <button class="btn btn-primary rejectCounterOffer" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
@@ -923,41 +931,34 @@
                                                                         <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
                                                                     {{/if}}
                                                                 {{/if}}
-                                                            {{/if}}
+                                                            {{/if}} -->
                                                             {{#if $eq applicationStatus 'assigned'}}
-                                                                {{#if assignedApplicant}}
-                                                                    <h5>The job is assigned.</h5>
-                                                                {{else}}
-                                                                    <br>
-                                                                    <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
+                                                                {{#if $eq ../assignmentStatus 'not_confirmed'}}
+                                                                    {{#if selectedProvider}}
+                                                                        <small>Job assigned. Awaiting confirmation.</small><br>
+                                                                        <button class="btn btn-sm btn-primary rejectApplication" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
+                                                                    {{else}}
+                                                                        <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                    {{/if}}
                                                                 {{/if}}
-                                                            {{/if}}
-                                                            {{#if $eq applicationStatus 'completed'}}
-                                                                {{#if assignedApplicant}}
-                                                                    <h5>The project is completed.</h5>
-                                                                {{else}}
-                                                                    <br>
-                                                                    <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
-                                                                {{/if}}
-                                                            {{/if}}
-                                                            {{#if $eq applicationStatus 'pending_payment'}}
-                                                                {{#if assignedApplicant}}
-                                                                    <h5>The provider has raised an invoice and requested for the payment.</h5>
-                                                                {{else}}
-                                                                    <br>
-                                                                    <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
+                                                                {{#if $eq ../assignmentStatus 'confirmed'}}
+                                                                    {{#if assignedApplicant}}
+                                                                        <small>Job assigned. Provider confirmed</small>
+                                                                    {{else}}
+                                                                        <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                    {{/if}}
                                                                 {{/if}}
                                                             {{/if}}
                                                             {{#if $eq applicationStatus 'paid'}}
                                                                 {{#if assignedApplicant}}
-                                                                    <h5>You have paid the provider.</h5>
+                                                                    <small>You have paid the provider.</small>
                                                                 {{else}}
                                                                     <br>
                                                                     <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
                                                                 {{/if}}
                                                             {{/if}}
                                                             {{#if $eq status 'deactivated'}}
-                                                                <h5>You have deactivated the job. Activate it to accept the application.</h5>
+                                                                <small>You have deactivated the job.</small>
                                                             {{/if}}
                                                         </div>
                                                     </div>
@@ -990,12 +991,12 @@
                                                 <h5>The buyer has deactivated the job.</h5>
                                             {{else}}
                                                 {{#if acceptedProvider}}
-                                                    {{#if $eq applicationStatus 'frozen'}} 
+                                                    <!-- {{#if $eq applicationStatus 'frozen'}} 
                                                         <p><i>{{applicationAcceptedTime}}</i></p>
                                                         <p>Your application has been accepted by the buyer. Please confirm to begin the job.</p>
                                                         <button class="margin-top-5 btn btn-primary btn-sm confirmAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Confirm</button>
                                                         <button class="margin-top-5 btn btn-primary btn-sm declineAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Decline</button>
-                                                    {{/if}}
+                                                    {{/if}} -->
                                                 {{else}}
                                                     <p><i>{{applicationTime}}</i></p>
                                                     <p>You've applied for this job. You'll be notified when the buyer accepts your application. You may cancel your application by clicking the button below.</p>
@@ -1236,8 +1237,15 @@
                                         {{/if}}
                                     {{/if}}
                                     {{#if $eq applicationStatus 'assigned'}}
-                                        {{#if assignedProvider}}
-                                            {{#if $eq assignmentStatus 'not_submitted'}}
+                                        {{#if acceptedProvider}}
+                                            {{#if $eq assignmentStatus 'not_confirmed'}}
+                                                <p><i>{{applicationAcceptedTime}}</i></p>
+                                                <small>Application accepted. Job assigned. Needs confirmation.</small><br>
+                                                <button class="margin-top-5 btn btn-primary btn-sm confirmAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Confirm</button>
+                                            {{/if}}
+                                        {{/if}}
+                                        {{#if $eq assignmentStatus 'confirmed'}}
+                                            {{#if assignedProvider}}                                            
                                                 {{#if $eq status 'deactivated'}}
                                                     <div class="col-sm-12">
                                                         <p><i>{{deactivatedTime}}</i></p>
@@ -1261,45 +1269,70 @@
                                                         Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} to {{endtime}}
                                                     {{/if}}. <br>Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</p>
                                                     {{#if tasksTSCompleted}}
-                                                        <button class="margin-top-5 btn btn-primary btn-sm submitAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit Job for Approval.</button>
+                                                        <button class="margin-top-5 btn btn-primary btn-sm submitAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit Job for Approval.</button> | <button class="margin-top-5 btn btn-primary btn-sm">Budget Increase</button>
                                                     {{/if}}
                                                 {{/if}}
-                                            {{/if}}
-                                            {{#if $eq assignmentStatus 'rejected'}}
-                                                <p><i>{{rejectedTime}}</i></p>
-                                                <p>The buyer has rejected your assignment. Please discuss with the buyer for futher details and submit the job for buyer approval.</p>
-                                                <button class="margin-top-5 btn btn-primary btn-sm submitAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit Job for Approval.</button>
-                                            {{/if}}
-                                            {{#if $eq assignmentStatus 'submitted'}}
-                                                <p><i>{{submittedTime}}</i></p>
-                                                <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves.</small>
-                                            {{/if}}
-                                        {{else}}
-                                            <div class="col-sm-12">
+                                            {{else}}
                                                 <small>This job has been assigned to another provider.</small>
-                                            </div>
-                                        {{/if}}
-                                    {{/if}}
-                                    {{#if $eq applicationStatus 'completed'}}
-                                        {{#if assignedProvider}}
-                                            {{#if $eq assignmentStatus 'approved'}}
-                                                <div class="col-sm-12">
-                                                    <p><i>{{approvedTime}}</i></p>
-                                                    <p>The buyer has approved your job. You can now raise an invoice and request for payment.</p>
-                                                    <button class=" margin-top-5 btn btn-sm btn-primary requestPayment">Raise Invoice &amp; Request Payment</button>
-                                                </div>
                                             {{/if}}
                                         {{/if}}
-                                    {{/if}}
-                                    {{#if $eq applicationStatus 'pending_payment'}}
-                                        <p><i>{{paymentRequestTime}}</i></p>
-                                        <p>You have requested the payment. An invoice has been raised. A notification has been sent to the  buyer. You'll be notified when the payment is released.</p>
+                                        {{#if $eq assignmentStatus 'rejected'}}
+                                            <p><i>{{rejectedTime}}</i></p>
+                                            <p>The buyer has rejected your assignment. Please discuss with the buyer for futher details and submit the job for buyer approval.</p>
+                                            <button class="margin-top-5 btn btn-primary btn-sm submitAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit Job for Approval.</button> | <button class="margin-top-5 btn btn-primary btn-sm">Budget Increase</button>
+                                        {{/if}}
+                                        {{#if $eq assignmentStatus 'submitted'}}
+                                            <p><i>{{submittedTime}}</i></p>
+                                            <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves. Upon buyer's approval, your account will be credited.</small>
+                                        {{/if}}
                                     {{/if}}
                                     {{#if $eq applicationStatus 'paid'}}
                                         {{#if assignedProvider}}
                                             <p><i>{{approvePaymentTime}}</i></p>
                                             <p>The buyer has approved the job you have done. Congratulations! Your account has been credited with {{projectBudget}} USD. The job is now successfully closed.</p>
-                                            {{>reviewBuyer jobId=_id}}
+                                            {{#if reviewedBuyer}}
+                                                <p>You have reviewed the buyer. The job is successfully closed. <a href="/invoices/{{invoiceId}}">View invoice</a></p>
+                                            {{else}}
+                                                <hr>
+                                                <form id="reviewBuyer">
+                                                    <div class="form-group">
+                                                        <label>Job description:</label>
+                                                        <br>
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="jobDesc" value="Good" required> Good
+                                                        </label>
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="jobDesc" value="Bad"> Bad
+                                                        </label>
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="jobDesc" value="Ugly"> Ugly
+                                                        </label>
+                                                        <br><br>
+                                                        <label for="writeReview">Write a review</label>
+                                                        <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea>
+                                                        <br>
+                                                        <label>Rate buyer</label><br>
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="rateBuyer" value="1" required> 1
+                                                        </label>
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="rateBuyer" value="2"> 2
+                                                        </label>
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="rateBuyer" value="3"> 3
+                                                        </label>
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="rateBuyer" value="4"> 4
+                                                        </label>
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="rateBuyer" value="5"> 5
+                                                        </label>
+                                                    </div>
+                                                    <!-- <label>Rate buyer</label><br>
+                                                    <span class="rateit" id="rateBuyer"></span><br> -->
+                                                    <button class="margin-top-5 btn btn-primary btn-sm" type="submit">Submit</button>
+                                                </form>
+                                            {{/if}}
                                         {{else}}
                                             <div class="col-sm-12">
                                                 <small>The job is now complete.</small>
@@ -1423,7 +1456,7 @@
                                             {{#if $eq this.counterType 'blended'}}
                                                 Payment Type: Blended<br>
                                                 Pay {{first_hours}} USD for the first {{first_max_hours}} and then {{next_hours}} USD for the next {{next_max_hours}}.<br>
-                                                Total Hours: {{blendedTotalHours first_maxHours next_max_hours}}
+                                                Total Hours: {{blendedTotalHours first_max_hours next_max_hours}} <br>
                                             {{/if}}
                                             {{#if $eq counterType 'per_device'}}
                                                 Payment Type: Per Device<br>
@@ -1444,42 +1477,6 @@
                                         {{/if}}
                                     {{/if}}
                                 {{/with}} <br>
-                                <!-- {{#if bonus}}
-                                    Bonus: {{bonus}} USD.
-                                {{/if}}
-                                <hr>
-                                {{#if bonus}}
-                                    {{#if $eq bonusRequested false}}
-                                        <button class="btn btn-sm btn-primary requestBonus">Request Bonus</button>
-                                    {{else}}
-                                        <button class="btn btn-sm btn-primary requestBonus" disabled="disabled">Request Bonus</button>
-                                    {{/if}}
-                                {{/if}} -->
-                                <!-- <button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#requestReimbursement">Reimburse</button>
-                                <div id="requestReimbursement" class="panel panel-white panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <form id="reimbursementRequest">
-                                            <div class="row">
-                                                <div class="col-xs-12">
-                                                    <div class="form-group">
-                                                        <label for="#reimburseAmount">Amount (USD)</label>
-                                                        <input type="number" class="form-control" id="reimburseAmount" min="1" step="0.1">
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <div class="form-group">
-                                                        <label for="reimburseMessage">Description</label>
-                                                        <textarea id="reimburseMessage" class="form-control"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <button class="btn btn-primary btn-sm">Upload Docs</button>
-                                                    <button class="btn btn-primary btn-sm" type="submit">Submit</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     {{/if}}
@@ -1532,13 +1529,13 @@
                     {{/if}}
                     {{#if jobPostedByBuyer}}
                         {{#with buyerData}}
-                            <label>W.O Posted By</label>
+                            <label>Posted By</label>
                             <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
                                 <div class="box box-widget widget-user">
                                     <div class="widget-user-header bg-assigned">
                                         <span class="pull-right buyerRatings"></span>
                                         <small>ID: {{this.readableID}}</small>
-                                        <h3 class="widget-user-username">{{this.name}}</h3>
+                                        <h3 class="budgetFont">{{this.name}}</h3>
                                         <h5 class="widget-user-desc">{{this.title}}</h5>
                                     </div>
                                     <div class="widget-user-image">
@@ -1578,7 +1575,7 @@
                     {{/if}}
                     {{#if jobPostedByDispatcher}}
                         {{#with dispatcherData}}
-                            <label>W.O Posted By</label>
+                            <label>Posted By</label>
                             <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
                                 <div class="box box-widget widget-user">
                                     <div class="widget-user-header bg-assigned">
@@ -1621,6 +1618,27 @@
                                 </div>
                             </div>
                         {{/with}}
+                    {{/if}}
+                    {{#if isInRole 'provider'}}
+                        <label>Find similar jobs</label>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <span>
+                                    <small>
+                                        <a href="/category/{{jobtype}}">{{jobtype}}</a>
+                                    </small>
+                                </span>&nbsp;&raquo;&nbsp;
+                                <span>
+                                    <small>
+                                        <a href="/subcategory/{{jobSubCategory}}">{{jobSubCategory}}</a>
+                                    </small>
+                                </span>
+                                <hr>
+                                {{#each itypes}}
+                                    <a href="/subcategory/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
+                                {{/each}}
+                            </div>
+                        </div>
                     {{/if}}
                 {{/if}}
                 {{#if isInRole 'admin'}}

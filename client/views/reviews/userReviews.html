@@ -1,33 +1,13 @@
 <template name="userReviews">
-	<!-- {{#if isProviderProfile}}
-		<ul class="list-group">
-			{{#each providerReviews}}
-				<li class="list-group-item">
-					{{reviewMessage}}
-				</li>
-			{{/each}}
-		</ul>
-	{{/if}}
-	{{#if isBuyerProfile}}
-		<ul class="list-group">
-			{{#each buyerReviews}}
-				<li class="list-group-item">
-					{{reviewMessage}}
-				</li>
-			{{/each}}
-		</ul>
-	{{/if}} -->
-	<ul class="list-group">
-		{{#each userReviews}}
-			<li class="list-group-item user-review-item">
-				{{#with jobDetails reviewedJobId}}
-					<small>ID: {{this.readableID}}</small>
-					<h5>{{this.title}}</h5>
-				{{/with}}
-				<span class="rateit" data-rateit-value="{{pointsRated}}" data-rateit-readonly=true></span>
-				<p>{{reviewMessage}}</p>
-				<p><i>{{reviewerName}} - {{reviewedAt}}</i></p>
-			</li>
-		{{/each}}
-	</ul>
+	{{#each userReviews}}
+		<li class="list-group-item user-review-item">
+			{{#with jobDetails reviewedJobId}}
+				<small>ID: {{this.readableID}}</small>
+				<h5>{{this.title}}</h5>
+			{{/with}}
+			<span class="rateit" data-rateit-value="{{pointsRated}}" data-rateit-readonly=true></span>
+			<p>{{reviewMessage}}</p>
+			<p><i>{{reviewerName}} - {{reviewedAt}}</i></p>
+		</li>
+	{{/each}}
 </template>

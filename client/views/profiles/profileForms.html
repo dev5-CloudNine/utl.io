@@ -101,13 +101,13 @@
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name="smsAddress" placeholder="johndoe@example.com" readonly=true}}
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+        <!-- <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             <label for="date_of_birth">Date of Birth *</label>
             <input type="text" id="dateOfBirth" name="dateOfBirth" value="{{formatDOB this.profile.dateOfBirth}}" data-schema-key="dateOfBirth" class="form-control" placeholder="YYYY-MM-DD" required>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{>afQuickField name="socialSecurityNumber" placeholder="Last 4 digits of your SSN"}}
-        </div>
+        </div> -->
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12">
@@ -163,8 +163,8 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 skills">
-            {{>afQuickField name="freelancerSkills" placeholder="Cable Operator, DB Administrator, Hardware Technician, ..."}}
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{>afQuickField name="freelancerSkills" placeholder="Cable Operator, Network Engineer, Hardware Technician, ..."}}
         </div>
     </div>
     {{>afQuickField name='description' rows=8 placeholder="Tell us about your professional self, how long you've been programming, things like that"}}

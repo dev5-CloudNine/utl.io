@@ -10,7 +10,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{{pathFor 'home'}}">UTL</a>
+                    <a class="navbar-brand" href="{{pathFor 'home'}}"><img src="images/header_logo.png" alt="" width='120px'></a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -47,16 +47,16 @@
                                             Jobs <span class="caret"></span>
                                         </a>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
+                                            <li><a href="{{pathFor 'jobNew'}}"><strong>Post a Job</strong></a></li>
                                             <li class="divider"></li>
-                                            <li class="dropdown-header">My Jobs</li>
-                                            <li><a href="{{pathFor 'myJobs'}}"><span class="badge pull-right">{{postedJobCount}}</span> All Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerOpenJobs'}}"><span class="badge pull-right">{{buyerOpenCount}}</span> Open Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerInvitedJobs'}}"><span class="badge pull-right">{{buyerInvitedCount}}</span> Invited Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerRoutedJobs'}}"><span class="badge pull-right">{{buyerRoutedCount}}</span> Routed Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerAssignedJobs'}}"><span class="badge pull-right">{{buyerAssignedCount}}</span> Assigned Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerPaidJobs'}}"><span class="badge pull-right">{{buyerPaidCount}}</span> Paid Jobs</a></li>
-                                            <li><a href="{{pathFor 'deactivatedJobs'}}"><span class="badge pull-right">{{deactivatedCount}}</span> Deactivated Job</a></li>
+                                            <li><a href="{{pathFor 'myJobs'}}"><span class="badge pull-right">{{postedJobCount}}</span> My Jobs</a></li>
+                                            <li><a href="{{pathFor 'buyerOpenJobs'}}"><span class="badge pull-right">{{buyerOpenCount}}</span> Open</a></li>
+                                            <li><a href="{{pathFor 'buyerInvitedJobs'}}"><span class="badge pull-right">{{buyerInvitedCount}}</span> Invited</a></li>
+                                            <!-- <li><a href="{{pathFor 'buyerRoutedJobs'}}"><span class="badge pull-right">{{buyerRoutedCount}}</span> Routed</a></li> -->
+                                            <li><a href="{{pathFor 'buyerAssignedJobs'}}"><span class="badge pull-right">{{buyerAssignedCount}}</span> Assigned</a></li>
+                                            <li><a href="{{pathFor 'buyerPendingApprovalJobs'}}"><span class="badge pull-right">{{buyerPendingApprovalCount}}</span> Pending Approval</a></li>
+                                            <li><a href="{{pathFor 'buyerPaidJobs'}}"><span class="badge pull-right">{{buyerPaidCount}}</span> Paid</a></li>
+                                            <li><a href="{{pathFor 'deactivatedJobs'}}"><span class="badge pull-right">{{deactivatedCount}}</span> Deactivated</a></li>
                                         </ul>
                                     </li>
                                     <li id="user-drop-down" class="dropdown">
@@ -97,14 +97,14 @@
                                             Jobs <span class="caret"></span>
                                         </a>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'jobNew'}}">Post a Job</a></li>
+                                            <li><a href="{{pathFor 'jobNew'}}"><strong>Post a Job</strong></a></li>
                                             <li class="divider"></li>
-                                            <li class="dropdown-header">My Jobs</li>
-                                            <li><a href="{{pathFor 'myJobs'}}"><span class="badge pull-right">{{postedJobCount}}</span> All Jobs</a></li>
+                                            <li><a href="{{pathFor 'myJobs'}}"><span class="badge pull-right">{{postedJobCount}}</span> My Jobs</a></li>
                                             <li><a href="{{pathFor 'buyerOpenJobs'}}"><span class="badge pull-right">{{buyerOpenCount}}</span> Open Jobs</a></li>
                                             <li><a href="{{pathFor 'buyerInvitedJobs'}}"><span class="badge pull-right">{{buyerInvitedCount}}</span> Invited Jobs</a></li>
                                             <li><a href="{{pathFor 'buyerRoutedJobs'}}"><span class="badge pull-right">{{buyerRoutedCount}}</span> Routed Jobs</a></li>
                                             <li><a href="{{pathFor 'buyerAssignedJobs'}}"><span class="badge pull-right">{{buyerAssignedCount}}</span> Assigned Jobs</a></li>
+                                            <li><a href="{{pathFor 'buyerPendingApprovalJobs'}}"><span class="badge pull-right">{{buyerPendingApprovalCount}}</span> Pending Approval</a></li>
                                             <li><a href="{{pathFor 'buyerPaidJobs'}}"><span class="badge pull-right">{{buyerPaidCount}}</span> Paid Jobs</a></li>
                                             <li><a href="{{pathFor 'deactivatedJobs'}}"><span class="badge pull-right">{{deactivatedCount}}</span> Deactivated Job</a></li>
                                         </ul>
@@ -156,11 +156,11 @@
                                             <li><a href="{{pathFor 'recommendedJobs'}}"><span class="badge pull-right">{{recommendedJobsCount}}</span>Recommended Jobs</a></li>
                                             <li><a href="{{pathFor 'invitedJobs'}}"><span class="badge pull-right">{{invitedJobsCount}}</span> Invited Jobs</a></li>
                                             <li class="divider" role="seperator"></li>
-                                            <li class="dropdown-header">My Jobs</li>
-                                            <li><a href="{{pathFor 'providerAllJobs'}}"><span class="badge pull-right">{{providerAllCount}}</span> All</a></li>
+                                            <li><a href="{{pathFor 'providerAllJobs'}}"><span class="badge pull-right">{{providerAllCount}}</span> My Jobs</a></li>
                                             <li><a href="{{pathFor 'appliedJobs'}}"><span class="badge pull-right">{{appliedJobsCount}}</span> Applied </a></li>
-                                            <li><a href="{{pathFor 'providerRoutedJobs'}}"><span class="badge pull-right">{{routedJobsCount}}</span> Routed </a></li>
+                                            <!-- <li><a href="{{pathFor 'providerRoutedJobs'}}"><span class="badge pull-right">{{routedJobsCount}}</span> Routed </a></li> -->
                                             <li><a href="{{pathFor 'providerAssignedJobs'}}"><span class="badge pull-right">{{assignedJobsCount}}</span> Assigned</a></li>
+                                            <li><a href="{{pathFor 'providerPendingApprovalJobs'}}"><span class="badge pull-right">{{proPendingApprovalCount}}</span> Pending Approval</a></li>
                                             <li><a href="{{pathFor 'providerPaidJobs'}}"><span class="badge pull-right">{{proPaidJobsCount}}</span> Paid</a></li>
                                             <li><a href="{{pathFor 'providerDeactivatedJobs'}}"><span class="badge pull-right">{{proDeactivatedCount}}</span> Deactivated</a></li>
                                         </ul>
@@ -244,13 +244,13 @@
                     <span class="avatar-initials" style="background-color: #aaa; color: #fff;"></span>
                 </div>
             {{else}}
-                {{> avatar initials=initials size="small"}}
+                <img src="/images/avatar.png" alt="" width="36px">
             {{/if}}
             {{currentUserDisplayName}} <span class="caret"></span>
 		</a>
         <ul class="dropdown-menu" role="menu">
             {{#if isInRole 'admin'}}
-                <li><a href="/admin"><i class="fa fa-cogs fa-fw"></i> Admin</a></li>
+                <!-- <li><a href="/admin"><i class="fa fa-cogs fa-fw"></i> Admin</a></li> -->
                 <li><a href="{{pathFor 'jobCategories'}}"><i class="fa fa-bars fa-fw"></i> Job Categories</a></li>
                 <li class="divider"></li>
                 <li>

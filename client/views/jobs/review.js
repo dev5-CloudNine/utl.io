@@ -49,6 +49,13 @@ Template.reviewBuyer.helpers({
 	},
 	buyerReviewDetails: function() {
 		return Reviews.findOne({$and: [{reviewedJobId: this.jobId}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]});
+	},
+	invoiceId: function() {
+		Meteor.subscribe('jobInvoice', this._id)
+		var invoiceDetails = Invoices.findOne({jobId: this._id});
+		if(invoiceDetails)
+			return invoiceDetails.invoiceId;
+		return;
 	}
 })
 

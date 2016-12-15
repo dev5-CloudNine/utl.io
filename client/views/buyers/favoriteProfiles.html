@@ -1,13 +1,5 @@
 <template name="favoriteProfiles">
 	<div class="row">
-		<div class="col-sm-12 col-md-9">
-			<p>
-				<a href="{{pathFor 'profiles'}}">All Providers</a>&nbsp;&#124;&nbsp;Favorite Providers
-			</p>
-		</div>
-		<div class="col-sm-12">
-			<hr>
-		</div>
 		{{#if isInRole 'buyer, dispatcher'}}
 	        {{#each favUsers}}
 	        	<div class="col-md-4">

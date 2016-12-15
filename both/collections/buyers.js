@@ -1,37 +1,42 @@
 Buyers = new Mongo.Collection("clients");
-BuyersIndex = new EasySearch.Index({
-  collection: Buyers,
-  fields: ['firstName', 'lastName', 'companyName', 'title', 'location', 'readableID'],
-  engine: new EasySearch.Minimongo({
-    sort: function (searchObject) {
-        return {
-          createdAt: -1
-        };
-    }
-  })
-});
+// BuyersIndex = new EasySearch.Index({
+//   collection: Buyers,
+//   fields: ['firstName', 'lastName', 'companyName', 'title', 'location', 'readableID'],
+//   engine: new EasySearch.Minimongo({
+//     sort: function (searchObject) {
+//         return {
+//           createdAt: -1
+//         };
+//     }
+//   })
+// });
 
 AddressSchema = new SimpleSchema({
   street: {
-    type: String
+    type: String,
+    optional: true
   },
   locality: {
-    type: String
+    type: String,
+    optional: true
   },
   sublocality: {
     type: String,
     optional: true
   },
   state: {
-    type: String
+    type: String,
+    optional: true
   },
   zip: {
     type: String,
     optional: true,
-    regEx: /^[0-9]{5}$/
+    regEx: /^[0-9]{5}$/,
+    optional: true
   },
   country: {
-    type: String
+    type: String,
+    optional: true
   },
   formatted_address: {
     type: String,
@@ -131,18 +136,18 @@ Buyers.attachSchema(
   	max: 128,
   	optional: true
   },
-  socialSecurityNumber: {
-  	type: String,
-  	label: "Social Security Number *",
-  	max: 128,
-  },
-  dateOfBirth: {
-    type: Date,
-    label: 'Date of Birth *',
-    autoform: {
-      type: 'bootstrap-datepicker'
-    }
-  },
+  // socialSecurityNumber: {
+  // 	type: String,
+  // 	label: "Social Security Number *",
+  // 	max: 128,
+  // },
+  // dateOfBirth: {
+  //   type: Date,
+  //   label: 'Date of Birth *',
+  //   autoform: {
+  //     type: 'bootstrap-datepicker'
+  //   }
+  // },
   location: {
   	type: String,
   	label: "Location *",
@@ -244,6 +249,16 @@ Buyers.attachSchema(
     optional: true
   }
 }));
+
+if(Meteor.isServer) {
+  Buyers._ensureIndex({
+    'firstName': 'text',
+    'lastName': 'text',
+    'title': 'text',
+    'location': 'text',
+    'readableID': 'text'
+  })
+}
 
 Buyers.allow({
   insert: function(userId, doc) {

@@ -10,8 +10,6 @@
     background-repeat: no-repeat;
 }
 
-
-
 .panel {
     background: #f8f8f8 !important;
 }
@@ -37,7 +35,7 @@ h3, h4 {
   background-size: 100%;
   background-color: #f2f2f2 !important;
   background-repeat: no-repeat;
-  background: url('images/background_1.jpg');
+  background: url('images/bg_img.jpg');
 }
 
 #home-wrapper {
@@ -533,7 +531,7 @@ div.pub-disc .comments-box .actions {
   color: white !important;
 }
 .gradient-red-orange-h {
-    background: url("images/background_1.jpg") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
+    background: url("images/bg_img.jpg") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
   }
 
 .white {
@@ -892,6 +890,10 @@ span.bigstars span.rateit-selected
   background-color: #F0F8FF;
 }
 
+.bg-fav {
+  background-color: #f0f8CC;
+}
+
 .box .border-right {
   border-right: 1px solid #f4f4f4;
 }
@@ -1121,6 +1123,10 @@ ul.customers {
   color: #fff !important;
 }
 
+.well-links {
+  background-color: #f2f2f2 !important;
+}
+
 /*Widgets*/
 
 .widget {
@@ -1155,7 +1161,7 @@ ul.customers {
   padding-top: 10px;
 }
 .widget.widget-default {
-  background: #ffffff;
+  background: #F8F8F8;
 
 }
 .widget.widget-primary {
@@ -1179,7 +1185,7 @@ ul.customers {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#95b75d, endColorstr=#89ad4d, GradientType=0);
 }
 .widget.widget-info {
-background: #1caf9a !important;  
+background: #000 !important;
 }
 .widget.widget-warning {
   background: #1caf9a;
@@ -1325,15 +1331,14 @@ background: #1caf9a !important;
   float: left;
   width: 100%;
   text-align: center;
-  padding-top: 3px;
-  margin-top: 5px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  /*padding-top: 3px;
+  margin-top: 5px;*/
+  border-top: 1px solid #333;
 }
 .widget .widget-buttons a {
   position: relative;
   display: inline-block;
   line-height: 30px;
-  font-size: 21px;
 }
 .widget .widget-buttons .col {
   width: 100%;
@@ -1794,4 +1799,36 @@ a.icoTwitter {
   opacity: 1;
   padding: 10px 17px;
   font-size: 27px;
+}
+
+.user-review-item {
+  line-height: 25px !important;
+}
+
+.seperator {
+  padding-top: 4px;
+  border-top: 1px solid #ddd;
+}
+
+hr {
+  border: 0;
+  border-bottom: 1px dashed #ccc;
+  background: #ddd;
+}
+
+.jobAppliedTick {
+  color: #01BF27;
+}
+
+.recommendedIcon {
+  color: #7266BA;
+}
+
+.budgetFont {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.spacer-top {
+  margin-top: 12px;
 }

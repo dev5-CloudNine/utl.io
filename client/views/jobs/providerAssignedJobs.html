@@ -1,16 +1,5 @@
 <template name="providerAssignedJobs">
-	<div class="row">
-		<div class="col-sm-12">
-			<p>My Jobs: 
-				<a href="{{pathFor 'providerAllJobs'}}">All - {{providerAllCount}}</a> &#124;
-				<a href="{{pathFor 'appliedJobs'}}">Applied - {{appliedJobsCount}}</a> &#124;
-				<a href="{{pathFor 'providerRoutedJobs'}}">Routed - {{routedJobsCount}}</a> &#124; 
-				Assigned - {{assignedJobsCount}} &#124;
-				<a href="{{pathFor 'providerPaidJobs'}}">Paid - {{proPaidJobsCount}}</a> &#124;
-				<a href="{{pathFor 'providerDeactivatedJobs'}}">Deactivated - {{proDeactivatedCount}}</a>
-			</p>
-			<hr>
-		</div>
+	<!-- <div class="row">
 		<div class="col-sm-12">
 			{{#each providerAssignedJobs}}
 				{{>jobSmall}}
@@ -25,5 +14,6 @@
                 <a href class="load-more btn btn-primary">Load More</a>
             {{/if}}
         </div>
-    </div>
+    </div> -->
+    {{>ReactiveDatatable tableData=assignedJobs options=assignedJobsOptions}}
 </template>
