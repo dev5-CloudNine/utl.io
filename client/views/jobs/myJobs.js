@@ -88,8 +88,12 @@ var allJobsOptions = {
             width: '20%',
             data: function(jobDetails) {
                 var returnText;
-                if(jobDetails.applicationStatus == 'open')
-                    return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Applications</a>';
+                if(jobDetails.applicationStatus == 'open') {
+                    var appCount = 0;
+                    if(jobDetails.applications)
+                        appCount = jobDetails.applications.length;
+                    return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Applications</a><br>Applications - ' + appCount;
+                }
                 if(jobDetails.applicationStatus == 'assigned') {
                     if(jobDetails.assignmentStatus == 'not_confirmed') {
                         return '<small>Job assigned. Awaiting confirmation.</small>';

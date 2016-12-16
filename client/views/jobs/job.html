@@ -195,10 +195,7 @@
                                             {{#if confidentialDescription}}
                                                 <hr> 
                                                 <h4>Confidential Info</h4>
-                                                Name: {{contactperson}}
-                                                <br>Email: {{contactemail}}
-                                                <br>Phone: {{contactphone}}
-                                                <br>Message: {{{htmlConfdentialDesc}}}
+                                                {{{htmlConfdentialDesc}}}
                                             {{/if}}
                                         {{/if}}
                                         {{#if jobPostedBuyer}}
@@ -681,7 +678,7 @@
                                         <div class="box box-widget widget-user">
                                             <div class="widget-user-header bg-assigned">
                                                 <span class="pull-right providerRatings" data-rateit-value="{{rateItValue}}"></span>
-                                                <small>ID: {{readableID}}</small>
+                                                <small><i>ID: {{readableID}}</i></small>
                                                 <p class="budgetFont">{{this.name}}</p>
                                                 <h5 class="widget-user-desc">{{this.title}}</h5>
                                             </div>
@@ -795,11 +792,13 @@
                                             <div class="panel-group" id="accordion">
                                                 <div class="panel panel-white">
                                                     <div class="panel-heading">
-                                                        <a href="#user{{this.userId}}" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">{{this.name}}</a>
                                                         <div class="pull-right">
                                                             <a href="/profiles/{{this.userId}}"><i class="fa fa-link"></i></a>&nbsp;&#124;&nbsp;
                                                             <a href id="appliedProviderMsg"><i class="fa fa-envelope"></i></a>
                                                         </div>
+                                                        <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">{{#if imgUrl}}<img src="{{imgUrl}}" alt="">{{else}} <img src="/images/avatar.png" width="32px" alt="">{{/if}}&nbsp;{{this.name}}</a>
+                                                        <br>
+                                                        <span class="appDesignation">{{title}}</span>
                                                     </div>
                                                     <div id="user{{this.userId}}" class="panel-collapse collapse">
                                                         <div class="panel-body">

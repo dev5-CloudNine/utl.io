@@ -87,7 +87,10 @@ var openJobsOptions = {
             title: 'Actions',
             width: '20%',
             data: function(jobDetails) {
-                return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Applications</a>';
+                var appCount = 0;
+                if(jobDetails.applications)
+                    appCount = jobDetails.applications.length;
+                return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Applications</a><br>Applications - ' + appCount;
             }
         }
     ],

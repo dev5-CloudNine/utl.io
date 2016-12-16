@@ -1,5 +1,5 @@
 <template name="subCategoryJobs">
-	<div class="row">
+	<!-- <div class="row">
 		<div class="col-sm-12">
 			{{#each subCategoryJobs}}
 				{{>jobSmall}}
@@ -7,5 +7,6 @@
 				<p>No jobs have been found under this category.</p>
 			{{/each}}
 		</div>
-	</div>
+	</div> -->
+	{{>ReactiveDatatable tableData=subCategoryJobs options=subCategoryJobsOptions}}
 </template>

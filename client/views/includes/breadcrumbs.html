@@ -6,131 +6,138 @@
 					<div id="homePageIntro" class="container-fluid gradient-blue-orange-h"></div>
 				</div>
 				<div class="col-sm-12">
-					{{#if isInRole 'buyer, dispatcher'}}
-		                <div class="row spacer-top">
-		                    <div class="col-md-6">
-		                        <div class="widget widget-default widget-item-icon">
-		                            <div class="widget-data">
-		                            	<div class="widget-title">
-		                            		<a href="{{pathFor 'myJobs'}}">Posted Jobs <span class="badge">{{postedJobCount}}</span></a>
+					{{#if profileCreated}}
+						{{#if isInRole 'buyer, dispatcher'}}
+			                <div class="row spacer-top">
+			                    <div class="col-md-6">
+			                        <div class="widget widget-default widget-item-icon">
+			                            <div class="widget-data">
+			                            	<div class="widget-title">
+			                            		<a href="{{pathFor 'myJobs'}}">Posted Jobs <span class="badge">{{postedJobCount}}</span></a>
+				                            </div>
+				                            <div class="widget-subtitle">
+												<a href="{{pathFor 'buyerOpenJobs'}}">Open - {{buyerOpenCount}}</a> &#124;
+												<a href="{{pathFor 'buyerInvitedJobs'}}">Invited - {{buyerInvitedCount}}</a> &#124;
+												<!-- <a href="{{pathFor 'buyerRoutedJobs'}}">Routed - {{buyerRoutedCount}}</a> &#124; -->
+												<a href="{{pathFor 'buyerAssignedJobs'}}">Assigned - {{buyerAssignedCount}}</a> &#124;
+												<a href="{{pathFor 'buyerPendingApprovalJobs'}}">Pending Payment/Approval - {{buyerPendingApprovalCount}}</a> &#124;
+												<a href="{{pathFor 'buyerPaidJobs'}}">Paid/Approved - {{buyerPaidCount}}</a> &#124;
+												<a href="{{pathFor 'deactivatedJobs'}}">Deactivated - {{deactivatedCount}}</a>
+				                            </div>
+				                            <div class="widget-title seperator">
+			                            		<a href="/job">Post New Job</a>		
+			                            	</div>
+			                            	<!-- {{#if buyerHasFavs}}
+			                            		<div class="widget-subtitle">
+				                            		<a href="{{pathFor 'assignToFavs'}}">Assign Job to Fav's</a>
+				                            	</div>
+			                            	{{/if}} -->
 			                            </div>
-			                            <div class="widget-subtitle">
-											<a href="{{pathFor 'buyerOpenJobs'}}">Open - {{buyerOpenCount}}</a> &#124;
-											<a href="{{pathFor 'buyerInvitedJobs'}}">Invited - {{buyerInvitedCount}}</a> &#124;
-											<!-- <a href="{{pathFor 'buyerRoutedJobs'}}">Routed - {{buyerRoutedCount}}</a> &#124; -->
-											<a href="{{pathFor 'buyerAssignedJobs'}}">Assigned - {{buyerAssignedCount}}</a> &#124;
-											<a href="{{pathFor 'buyerPendingApprovalJobs'}}">Pending Payment/Approval - {{buyerPendingApprovalCount}}</a> &#124;
-											<a href="{{pathFor 'buyerPaidJobs'}}">Paid/Approved - {{buyerPaidCount}}</a> &#124;
-											<a href="{{pathFor 'deactivatedJobs'}}">Deactivated - {{deactivatedCount}}</a>
+			                        </div>
+			                    </div>
+			                    <div class="col-md-3">
+			                        <div class="widget widget-default widget-item-icon">
+			                        	<div class="widget-data">
+			                                <div class="widget-title">
+			                                	My Team <span class="badge">{{teamCount}}</span>
+			                                </div>
+			                                <div class="widget-subtitle">
+			                                	<a href="/dispatchers">Dispatchers - {{teamDispatcherCount}}</a> &#124; 
+			                                	<a href="/accountants">Accountants - {{teamAccountantCount}}</a>
+			                                </div>
+			                                <div class="widget-title seperator">
+			                                	<a href="/profiles">Providers <span class="badge">{{providerCount}}</span></a>
+			                                </div>
+			                                <div class="widget-subtitle">
+			                                	<a href="/profiles/favorites">Favorites - {{favUserCount}}</a>
+			                                </div>
 			                            </div>
-			                            <div class="widget-title seperator">
-		                            		<a href="/job">Post New Job</a>
-		                            	</div>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="col-md-3">
-		                        <div class="widget widget-default widget-item-icon">
-		                        	<div class="widget-data">
-		                                <div class="widget-title">
-		                                	My Team <span class="badge">{{teamCount}}</span>
-		                                </div>
-		                                <div class="widget-subtitle">
-		                                	<a href="/dispatchers">Dispatchers - {{teamDispatcherCount}}</a> &#124; 
-		                                	<a href="/accountants">Accountants - {{teamAccountantCount}}</a>
-		                                </div>
-		                                <div class="widget-title seperator">
-		                                	<a href="/profiles">Providers <span class="badge">{{providerCount}}</span></a>
-		                                </div>
-		                                <div class="widget-subtitle">
-		                                	<a href="/profiles/favorites">Favorites - {{favUserCount}}</a>
-		                                </div>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="col-md-3">
-		                        <div class="widget widget-info widget-padding-sm">
-		                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
-		                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
-		                            <div class="widget-buttons widget-c2">
-		                                <div class="col widget-title">
-		                                    <a href="/wallet/deposit">Deposit</a>
-		                                </div>
-		                                <div class="col widget-title">
-		                                    <a href="/wallet/invoices">Invoices - {{invoicesCount}}</a>
-		                                </div>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="col-sm-12">
-		                    	<hr>
-		                    </div>
-		                </div>
-					{{/if}}
-					{{#if isInRole 'provider'}}
-		                <div class="row spacer-top">
-		                    <div class="col-md-6">
-		                        <div class="widget widget-default widget-item-icon">
-		                            <div class="widget-data">
-		                            	<div class="widget-title">
-		                            		<a href="/jobs">Open Jobs <span class="badge">{{openJobsCount}}</span></a>
-		                            	</div>
-		                                <div class="widget-subtitle">
-		                                    <a href="/recommendedJobs">Recommended - {{recommendedJobsCount currentUser._id}}</a> &#124; 
-		                                    <a href="/invitedJobs">Invited - {{invitedJobsCount}}</a>
-		                                </div>
-		                                <div class="widget-title seperator">
-		                            		<a href="/allProviderJobs">My Jobs <span class="badge">{{providerAllCount}}</span></a>
-		                            	</div>				                                
-		                                <div class="widget-subtitle">
-		                                    <a href="{{pathFor 'appliedJobs'}}">Applied - {{appliedJobsCount}}</a> &#124; 
-											<!-- <a href="{{pathFor 'providerRoutedJobs'}}">Routed - {{routedJobsCount}}</a> &#124; --> 
-											<a href="{{pathFor 'providerAssignedJobs'}}">Assigned - {{assignedJobsCount}}</a> &#124;
-											<a href="{{pathFor 'providerPendingApprovalJobs'}}">Pending Payment/Approval - {{proPendingApprovalCount}}</a> &#124;
-											<a href="{{pathFor 'providerPaidJobs'}}">Paid/Approved - {{proPaidJobsCount}}</a> &#124;
-											<a href="{{pathFor 'providerDeactivatedJobs'}}">Deactivated - {{proDeactivatedCount}}</a>
-		                                </div>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="col-md-3">
-		                        <div class="widget widget-default widget-item-icon">
-		                            <div class="widget-data">
-		                                <div class="widget-title">
-		                                	<a href="/buyers">Buyers <span class="badge">{{buyerCount}}</span></a>
-		                                </div>
-		                                <div class="widget-subtitle">
-		                                	<a href="/buyers/favorites">Favorites - {{favUserCount}}</a>
-		                                </div>
-		                                <div class="widget-title seperator">
-			                                {{#with myProfile}}
-                                				<a href="{{pathFor 'providerNotifications'}}">New Notifications <span class="badge">{{providerNotificationCount}}</span></a>
-                                			{{/with}}
-		                                </div>
-		                                <div class="widget-subtitle">
-		                                	<a href="{{pathFor 'mailBox' tab="mails"}}">New Messages - {{unreadMsgCount currentUser._id}}</a>
-		                                </div>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="col-md-3">
-		                        <div class="widget widget-info widget-padding-sm">
-		                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
-		                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
-		                            <div class="widget-buttons widget-c2">
-		                                <div class="col widget-title">
-		                                    <a href="/wallet/withdraw">Withdraw</a>
-		                                </div>
-		                                <div class="col widget-title">
-		                                    <a href="/wallet/invoices">Invoices - {{invoicesCount}}</a>
-		                                </div>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="col-sm-12">
-		                    	<hr>
-		                    </div>
-		                </div>
+			                        </div>
+			                    </div>
+			                    <div class="col-md-3">
+			                        <div class="widget widget-info widget-padding-sm">
+			                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
+			                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
+			                            <div class="widget-buttons widget-c2">
+			                                <div class="col widget-title">
+			                                    <a href="/wallet/deposit">Deposit</a>
+			                                </div>
+			                                <div class="col widget-title">
+			                                    <a href="/wallet/invoices">Invoices - {{invoicesCount}}</a>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="col-sm-12">
+			                    	<hr>
+			                    </div>
+			                </div>
+						{{/if}}
+						{{#if isInRole 'provider'}}
+			                <div class="row spacer-top">
+			                    <div class="col-md-6">
+			                        <div class="widget widget-default widget-item-icon">
+			                            <div class="widget-data">
+			                            	<div class="widget-title">
+			                            		<a href="/jobs">Open Jobs <span class="badge">{{openJobsCount}}</span></a>
+			                            	</div>
+			                                <div class="widget-subtitle">
+			                                    <a href="/recommendedJobs">Recommended - {{recommendedJobsCount currentUser._id}}</a> &#124; 
+			                                    <a href="/invitedJobs">Invited - {{invitedJobsCount}}</a>
+			                                </div>
+			                                <div class="widget-title seperator">
+			                            		<a href="/allProviderJobs">My Jobs <span class="badge">{{providerAllCount}}</span></a>
+			                            	</div>				                                
+			                                <div class="widget-subtitle">
+			                                    <a href="{{pathFor 'appliedJobs'}}">Applied - {{appliedJobsCount}}</a> &#124; 
+												<!-- <a href="{{pathFor 'providerRoutedJobs'}}">Routed - {{routedJobsCount}}</a> &#124; --> 
+												<a href="{{pathFor 'providerAssignedJobs'}}">Assigned - {{assignedJobsCount}}</a> &#124;
+												<a href="{{pathFor 'providerPendingApprovalJobs'}}">Pending Payment/Approval - {{proPendingApprovalCount}}</a> &#124;
+												<a href="{{pathFor 'providerPaidJobs'}}">Paid/Approved - {{proPaidJobsCount}}</a> &#124;
+												<a href="{{pathFor 'providerDeactivatedJobs'}}">Deactivated - {{proDeactivatedCount}}</a>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="col-md-3">
+			                        <div class="widget widget-default widget-item-icon">
+			                            <div class="widget-data">
+			                                <div class="widget-title">
+			                                	<a href="/buyers">Buyers <span class="badge">{{buyerCount}}</span></a>
+			                                </div>
+			                                <div class="widget-subtitle">
+			                                	<a href="/buyers/favorites">Favorites - {{favUserCount}}</a>
+			                                </div>
+			                                <div class="widget-title seperator">
+				                                {{#with myProfile}}
+	                                				<a href="{{pathFor 'providerNotifications'}}">New Notifications <span class="badge">{{providerNotificationCount}}</span></a>
+	                                			{{/with}}
+			                                </div>
+			                                <div class="widget-subtitle">
+			                                	<a href="{{pathFor 'mailBox' tab="mails"}}">New Messages - {{unreadMsgCount currentUser._id}}</a>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="col-md-3">
+			                        <div class="widget widget-info widget-padding-sm">
+			                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
+			                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
+			                            <div class="widget-buttons widget-c2">
+			                                <div class="col widget-title">
+			                                    <a href="/wallet/withdraw">Withdraw</a>
+			                                </div>
+			                                <div class="col widget-title">
+			                                    <a href="/wallet/invoices">Invoices - {{invoicesCount}}</a>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="col-sm-12">
+			                    	<hr>
+			                    </div>
+			                </div>
+						{{/if}}
 					{{/if}}
 					{{#if isInRole 'admin'}}
 		                <div class="row spacer-top">

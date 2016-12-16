@@ -4,22 +4,19 @@
             <p>You can either choose to publish to the portal or to your favorite providers or to any particular service provider. Upon publish, your account will be debited with proposed budget. You may edit the job and change the budget until the job is assigned to a provider. Once assigned you cannot edit.</p>
             <br>
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>Create Your Job Post</h4>
-                </div>
                 <div class="panel-body">
                     {{#autoForm id="jobNew" collection="Jobs" type="insert"}}
                         {{>jobFields}}
-                        {{>submitButtons}}
                     {{/autoForm}}
                 </div>
             </div>
+            {{>submitButtons}}
         </div>
     </div>
 </template>
 
 <template name="submitButtons">
-    <hr>
+    <!-- <hr> -->
     <label>Whom would you like to publish?</label>
     <div class="radio">
         <label>
@@ -41,7 +38,7 @@
             {{> afQuickField name="individualprovider"}}
         </div>
     </div>
-    <button class="btn btn-sm btn-primary" id="submitJob" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
+    <button class="btn btn-sm btn-primary" data-balloon="Post job" data-balloon-pos="up" id="submitJob" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
 </template>
 
 <template name="jobEdit">
@@ -93,6 +90,132 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{> afQuickField name='title' placeholder="This is the first thing providers see. So keep it precise and descriptive."}}
         </div>
+        <div class="col-sm-12">
+            <div class="panel panel-white">
+                <div class="panel-body">                    
+                    {{>afQuickField name="servicelocation"}}
+                </div>
+                {{#if afFieldValueIs name="servicelocation" value="Field Job"}}
+                    <div class="panel-body">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="loc" class="control-label">Location Details</label>
+                                {{>jobLocationMap}}
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="panel panel-white">
+                <div class="panel-body">
+                    {{> afQuickField name='serviceschedule' noselect=true}}
+                    <div class="row">
+                        {{#if afFieldValueIs name="serviceschedule" value="exactdate"}}
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                {{> afQuickField name="exactdate"}}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                {{> afQuickField name="exacttime"}}
+                            </div>
+                        {{/if}}
+                        {{#if afFieldValueIs name="serviceschedule" value="betweendates"}}
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                {{> afQuickField name="startdate"}}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                {{> afQuickField name="enddate"}}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                {{> afQuickField name="starttime"}}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                {{> afQuickField name="endtime"}}
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="panel panel-white">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            {{> afQuickField name="ratebasis"}}
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                            {{#if afFieldValueIs name="ratebasis" value="Fixed Pay"}}
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    {{> afQuickField name="fixedamount" placeholder="Enter amount"}}
+                                    {{>afQuickField name="paidby"}}
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    {{>afQuickField name="totalfromclient" readonly="true"}}
+                                    {{>afQuickField name="your_cost" readonly="true"}}
+                                    <label class="label-control">UTL Fees</label>
+                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                    {{>afQuickField name="freelancer_nets" readonly="true"}}
+                                </div>
+                            {{/if}}
+                            {{#if afFieldValueIs name="ratebasis" value="Per Hour"}}
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    {{> afQuickField name="hourlyrate" placeholder="Enter amount per hour"}}
+                                    {{>afQuickField name="maxhours" placeholder="Maximum hours"}}
+                                    {{>afQuickField name="paidby"}}
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    {{>afQuickField name="totalfromclient" readonly="true"}}
+                                    {{>afQuickField name="your_cost" readonly="true"}}
+                                    <label class="label-control">UTL Fees</label>
+                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                    {{>afQuickField name="freelancer_nets" readonly="true"}}
+                                </div>
+                            {{/if}}
+                            {{#if afFieldValueIs name="ratebasis" value="Per Device"}}
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    {{> afQuickField name="rateperdevice" placeholder="Enter amount per device"}}
+                                    {{> afQuickField name="maxdevices" placeholder="Maximum devices"}}
+                                    {{>afQuickField name="paidby"}}
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    {{>afQuickField name="totalfromclient" readonly="true"}}
+                                    {{>afQuickField name="your_cost" readonly="true"}}
+                                    <label class="label-control">UTL Fees</label>
+                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                    {{>afQuickField name="freelancer_nets" readonly="true"}}
+                                </div>
+                            {{/if}}
+                            {{#if afFieldValueIs name="ratebasis" value="Blended"}}
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    {{>afQuickField name="payforfirsthours"}}
+                                    {{>afQuickField name="firsthours"}}
+                                    {{>afQuickField name="payfornexthours"}}
+                                    {{>afQuickField name="nexthours"}}
+                                    {{>afQuickField name="paidby"}}
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    {{>afQuickField name="totalfromclient" readonly="true"}}
+                                    {{>afQuickField name="your_cost" readonly="true"}}
+                                    <label class="label-control">UTL Fees</label>
+                                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
+                                    {{>afQuickField name="freelancer_nets" readonly="true"}}
+                                </div>
+                            {{/if}}
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="alert alert-danger notEnoughBalance" hidden>
+                                <strong>You don't have enough account balance. Click on the button to deposit funds.</strong>
+                                <div>
+                                    <a href="{{pathFor 'deposit'}}" class="btn btn-primary btn-sm">Deposit Funds</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {{>afQuickField name="jobtype" type="select" options=parentCategories}}
         </div>
@@ -105,6 +228,29 @@
         </div>
     </div>
     {{> afQuickField name='description' rows=12 placeholder="Tell prospective service providers about this job in detail."}}
+    <hr>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <a href="#confidentialDesc" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">
+                            <h5>Confidential Information</h5>
+                        </a>
+                    </div>
+                    <div id="confidentialDesc" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{> afQuickField name='confidentialDescription' rows=4 placeholder="All the information you write here will only be display to the assigned provider."}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-xs-12">
             <button class="btn btn-success" data-toggle="modal" id="uploadDocs" data-target="#uploadJobDocs">Attach Documents</button>
@@ -193,142 +339,28 @@
     <hr>
     <div class="row">
         <div class="col-sm-12">
-            {{>afQuickField name="servicelocation"}}
-        </div>
-        {{#if afFieldValueIs name="servicelocation" value="Field Job"}}
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                    <label for="loc" class="control-label">Location Details</label>
-                    {{>jobLocationMap}}
-                </div>
-            </div>
-        {{/if}}
-    </div>
-    <hr>
-    {{> afQuickField name='serviceschedule' noselect=true}}
-    <div class="row">
-        {{#if afFieldValueIs name="serviceschedule" value="exactdate"}}
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                {{> afQuickField name="exactdate"}}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                {{> afQuickField name="exacttime"}}
-            </div>
-        {{/if}}
-        {{#if afFieldValueIs name="serviceschedule" value="betweendates"}}
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                {{> afQuickField name="startdate"}}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                {{> afQuickField name="enddate"}}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                {{> afQuickField name="starttime"}}
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                {{> afQuickField name="endtime"}}
-            </div>
-        {{/if}}
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h5>Confidential Information (Only assigned providers can see this information)</h5>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{>afQuickField name="contactperson" placeholder=""}}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{>afQuickField name="contactemail"}}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{>afQuickField name="contactphone"}}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{> afQuickField name='confidentialDescription' rows=4 placeholder="All the information you write here will only be display to the assigned provider."}}
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{> afQuickField name="ratebasis"}}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-            {{#if afFieldValueIs name="ratebasis" value="Fixed Pay"}}
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    {{> afQuickField name="fixedamount" placeholder="Enter amount"}}
-                    {{>afQuickField name="paidby"}}
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    {{>afQuickField name="totalfromclient" readonly="true"}}
-                    {{>afQuickField name="your_cost" readonly="true"}}
-                    <label class="label-control">UTL Fees</label>
-                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                    {{>afQuickField name="freelancer_nets" readonly="true"}}
-                </div>
-            {{/if}}
-
-            {{#if afFieldValueIs name="ratebasis" value="Per Hour"}}
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    {{> afQuickField name="hourlyrate" placeholder="Enter amount per hour"}}
-                    {{>afQuickField name="maxhours" placeholder="Maximum hours"}}
-                    {{>afQuickField name="paidby"}}
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    {{>afQuickField name="totalfromclient" readonly="true"}}
-                    {{>afQuickField name="your_cost" readonly="true"}}
-                    <label class="label-control">UTL Fees</label>
-                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                    {{>afQuickField name="freelancer_nets" readonly="true"}}
-                </div>
-            {{/if}}
-            {{#if afFieldValueIs name="ratebasis" value="Per Device"}}
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    {{> afQuickField name="rateperdevice" placeholder="Enter amount per device"}}
-                    {{> afQuickField name="maxdevices" placeholder="Maximum devices"}}
-                    {{>afQuickField name="paidby"}}
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    {{>afQuickField name="totalfromclient" readonly="true"}}
-                    {{>afQuickField name="your_cost" readonly="true"}}
-                    <label class="label-control">UTL Fees</label>
-                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                    {{>afQuickField name="freelancer_nets" readonly="true"}}
-                </div>
-            {{/if}}
-            {{#if afFieldValueIs name="ratebasis" value="Blended"}}
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    {{>afQuickField name="payforfirsthours"}}
-                    {{>afQuickField name="firsthours"}}
-                    {{>afQuickField name="payfornexthours"}}
-                    {{>afQuickField name="nexthours"}}
-                    {{>afQuickField name="paidby"}}
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    {{>afQuickField name="totalfromclient" readonly="true"}}
-                    {{>afQuickField name="your_cost" readonly="true"}}
-                    <label class="label-control">UTL Fees</label>
-                    <input type="text" id="utl_fees" class="form-control" readonly="readonly" placeholder="5%">
-                    {{>afQuickField name="freelancer_nets" readonly="true"}}
-                </div>
-            {{/if}}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="alert alert-danger notEnoughBalance" hidden>
-                <strong>You don't have enough account balance. Click on the button to deposit funds.</strong>
-                <div>
-                    <a href="{{pathFor 'deposit'}}" class="btn btn-primary btn-sm">Deposit Funds</a>
+            <div class="panel panel-white">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            {{>afArrayField name="tasks"}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <hr>
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            {{>afArrayField name="tasks"}}
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            {{>afArrayField name="shipment"}}
+        <div class="col-sm-12">
+            <div class="panel panel-white">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            {{>afArrayField name="shipment"}}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>

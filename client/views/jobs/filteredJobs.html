@@ -1,5 +1,5 @@
 <template name="filteredJobs">
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-sm-12">
             {{#each filteredJobs}}
                 {{>jobSmall}}
@@ -7,5 +7,6 @@
                 <p>No jobs have been found under this category.</p>
             {{/each}}
         </div>
-    </div>
+    </div> -->
+    {{>ReactiveDatatable tableData=filteredJobs options=filteredJobsOptions}}
 </template>

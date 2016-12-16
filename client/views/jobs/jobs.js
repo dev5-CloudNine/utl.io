@@ -111,7 +111,7 @@ var openJobsObject = {
                     }
                 }
                 if(applied)
-                    return '<span class="jobAppliedTick"><i class="fa fa-check-circle fa-2x"></i></span>';
+                    return '<span class="jobAppliedTick"><i class="fa fa-check-circle fa-2x"></i></span><br><small>U\'ve applied</small>';
                 return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">Apply</a>';
             }
         }

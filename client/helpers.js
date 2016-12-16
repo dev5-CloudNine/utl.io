@@ -58,7 +58,7 @@ UI.registerHelper('buyerCount', function() {
 })
 
 UI.registerHelper('favUserCount', function() {
-	var favUsers = Meteor.user().favUsers;
+	var favUsers = Meteor.user().favoriteUsers;
 	if(favUsers)
 		return favUsers.length;
 	return 0;
@@ -127,7 +127,10 @@ UI.registerHelper('deactivatedCount', function() {
 	}
 });
 
-UI.registerHelper('buyerOpenCount', function() {
+UI.registerHelper('buyerOpenCount', function(buyerId) {
+	if(buyerId) {
+		return Jobs.find({$and: [{userId: buyerId}, {applicationStatus: 'open'}]}).count();
+	}
 	if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();
 	}

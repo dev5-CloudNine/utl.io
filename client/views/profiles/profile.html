@@ -16,7 +16,7 @@
 							{{#if currentUser.isBuyer}}
 								<br>
 								{{#if $eq this.status 'active'}}
-									<a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-send"></i>&nbsp;Route Job</a>
+									<a href="{{pathFor 'assignJob'}}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-send"></i>&nbsp;Assign Job</a>
 									<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa fa-thumbs-up"></i>&nbsp;{{#if fav}}Del Fav{{else}}Add Fav{{/if}}</a>
 									<a href="" class="btn btn-xs btn-primary" id="sendProviderMessage">Send Msg</a>
 								{{else}}

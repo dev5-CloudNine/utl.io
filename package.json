@@ -14,6 +14,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/yashosagar/utl.io#readme",
   "dependencies": {
+    "balloon-css": "^0.4.0",
     "dwolla-v2": "^1.2.0",
     "fibers": "~1.0.15",
     "fs": "~0.0.1",

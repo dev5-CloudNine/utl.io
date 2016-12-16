@@ -32,21 +32,43 @@ Template.assignJob.events({
 					$(event.currentTarget).button('reset');
 				} else {
 					delete Session.keys['routingJob'];
-					// toastr.success('A notification has been sent to the provider to confirm assignment.');
 				}
 			})
 		})
-	}
+	},
+	// 'click .assignFavs': function(event, template) {
+	// 	var applications = [];
+	// 	var favUsers = Meteor.user().favoriteUsers;
+	// 	if(favUsers.length > 0) {
+	// 		for(var i = 0; i < favUsers.length; i++) {
+	// 			var appDetails = {
+	// 				userId: favUsers[i],
+	// 				applied_at: new Date(),
+	// 				app_status: 'accepted',
+	// 				app_type: 'application'
+	// 			}
+	// 			applications.push(appDetails);
+	// 		}
+	// 	}
+	// 	Session.set('assignToFavs', true);
+	// 	$(event.currentTarget).button('loading');
+	// 	Jobs.before.insert(function(userId, doc) {
+	// 		if(Router.current().route.getName() != 'assignToFavs') {
+	// 			$(event.currentTarget).button('reset');
+	// 			return;
+	// 		}
+	// 		doc.applications = [];
+	// 		doc.applications = applications;
+	// 	})
+	// }
 });
 Template.assignJob.helpers({
-	// 'providerName': function() {
-	// 	var providerDetails = Profiles.findOne({userId: Router.current().params.userId});
-	// 	return providerDetails.firstName + ' ' + providerDetails.lastName;
-	// },
-	// providerId: function() {
-	// 	return Router.current().params.userId;
-	// },
 	'selectedProvider': function() {
 		return Profiles.findOne({userId: Router.current().params.userId});
-	}
+	},
+	// assignFavProviders: function() {
+	// 	if(Router.current().route.getName() == 'assignToFavs')
+	// 		return true;
+	// 	return false;
+	// }
 })

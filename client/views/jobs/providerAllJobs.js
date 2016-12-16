@@ -111,7 +111,7 @@ var allJobsOptions = {
                     }
                 }
                 if(jobDetails.applicationStatus == 'open')
-                    return '<span class="jobAppliedTick"><i class="fa fa-check-circle fa-2x"></i></span>';
+                    return '<span class="jobAppliedTick"><i class="fa fa-check-circle fa-2x"></i></span><br><small>U\'ve applied</small>';
                 if(jobDetails.applicationStatus == 'assigned') {
                     if(acceptedProvider) {
                         var returnText;
@@ -144,9 +144,15 @@ var allJobsOptions = {
                             }
                             return returnText + '<br><button data-job-id="' + jobDetails._id + '" data-buyer-id="' + jobDetails.userId + '" class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit for Approval.</button>';
                         }
+                        if(jobDetails.assignmentStatus == 'submitted') {
+                            return '<small>Job submitted for approval. Await response.</small>'
+                        }
                     }
                 }
                 if(jobDetails.applicationStatus == 'paid') {
+                    if(jobDetails.assignedProvider != Meteor.userId()) {
+                        return '<small>The job is now complete.</small>'
+                    }
                     var returnText = '<small>Job approved. Account credited.</small>';
                     var reviewed = false;
                     if(Reviews.findOne({$and: [{reviewedJobId: jobDetails._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]}))
