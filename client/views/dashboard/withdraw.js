@@ -63,20 +63,21 @@ Template.withdraw.events({
 		var dwolla_req_obj = {
 			firstName: providerDetails.firstName,
 			lastName: providerDetails.lastName,
-			email: providerDetails.userName,
-			// address1: providerDetails.fullLocation.street,
-			// city:  providerDetails.fullLocation.locality,
-			// state: providerDetails.fullLocation.state,
-			// postalCode: providerDetails.fullLocation.zip,
-			// ssn: providerDetails.socialSecurityNumber,
-			// dateOfBirth: moment(providerDetails.dateOfBirth).format('YYYY-MM-DD'),
-			// phone: providerDetails.contactNumber,
+			email: providerDetails.userName
 		}
 		Meteor.call('createCustomer', dwolla_req_obj, providerDetails.userId, function(error, result) {
 			if(error) {
 				console.log(error);
 			} else {
-				console.log(result);
+				if(result.status == 401) {
+					toastr.error('There was an error creating the customer. Try again!');
+					$(event.currentTarget).button('reset');
+				}
+				if(result.status == 400) {
+					var msg = result.body._embedded.errors[0].message;
+					toastr.error(msg);
+					$(event.currentTarget).button('reset');
+				}
 			}
 		});
 	},

@@ -1,6 +1,10 @@
 .jumbotron, footer {
-    color: #27272b !important;
+    color: #777 !important;
     background-color: #fff !important;
+}
+
+footer .gradient-blue-orange-h {
+  margin-top: 10px;
 }
 
 .jumbotron {
@@ -26,6 +30,7 @@ h3, h4 {
 }
 
 .gradient-blue-orange-h {
+  margin-top: -20px;
   height: 8px;
   background: url("images/glossy_1.png") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
 }
@@ -490,6 +495,10 @@ button.favInactive {
   background-color: white !important;
 }
 
+.panel-black {
+  background-color: #999 !important;
+}
+
 .panel-light {
   background-color: #f6f4ec !important;
 }
@@ -535,12 +544,20 @@ div.pub-disc .comments-box .actions {
     background: url("images/bg_img.jpg") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
   }
 
+  .text-white {
+    color: white;
+  }
+
 .white {
+  padding-left: 4px;
+  padding-right: 4px;
+  background: black;
+  display: inline;
   color: white !important;
 }
 
 footer {
-  border-top: 1px solid #eee !important;
+  border-top: 0px solid #eee !important;
   margin-top: 20px;
   padding: 20px 0px 20px 0px;
 }
@@ -791,15 +808,11 @@ span.bigstars span.rateit-selected
 }
 
 .openJob {
-  border-top: 2px solid #00BA35;
-}
-
-.frozenJob {
-  border-top: 2px solid #0AD561;
+  border-top: 2px solid #45ACEE;
 }
 
 .assignedJob {
-  border-top:  2px solid #FF6600;
+  border-top:  2px solid #5EC17A;
 }
 
 .deactivatedJob {
@@ -807,15 +820,11 @@ span.bigstars span.rateit-selected
 }
 
 .paymentPendingJob {
-  border-top:  2px solid #a479e2;
-}
-
-.completedJob {
-  border-top: 2px solid #EA2A1B;
+  border-top:  2px solid #BCCA2B;
 }
 
 .paidJob {
-  border-top: 2px solid #00008B;
+  border-top: 2px solid #EDB91D;
 }
 
 .panel-body .list-group-item {
@@ -857,6 +866,7 @@ span.bigstars span.rateit-selected
   width: 100px;
   height: auto;
   border: 3px solid #fff;
+  background: white;
 }
 .widget-user .box-footer {
   padding-top: 30px;
@@ -1834,9 +1844,7 @@ hr {
   font-weight: 600;
 }
 
-.spacer-top {
-  margin-top: 12px;
-}
+
 
 .appDesignation {
   left: 40px;
@@ -2024,3 +2032,58 @@ button[data-balloon] {
 
 
 /* -- Balloons CSS -- */
+
+/* credits */
+
+.text--line {
+  font-size: .5em;
+}
+
+svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.text-copy {
+  fill: none;
+  stroke: white;
+  stroke-dasharray: 7% 28%;
+  stroke-width: 3px;
+  -webkit-animation: stroke-offset 9s infinite linear;
+          animation: stroke-offset 9s infinite linear;
+}
+.text-copy:nth-child(1) {
+  stroke: #360745;
+  stroke-dashoffset: 7%;
+}
+.text-copy:nth-child(2) {
+  stroke: #D61C59;
+  stroke-dashoffset: 14%;
+}
+.text-copy:nth-child(3) {
+  stroke: #E7D84B;
+  stroke-dashoffset: 21%;
+}
+.text-copy:nth-child(4) {
+  stroke: #EFEAC5;
+  stroke-dashoffset: 28%;
+}
+.text-copy:nth-child(5) {
+  stroke: #1B8798;
+  stroke-dashoffset: 35%;
+}
+
+@-webkit-keyframes stroke-offset {
+  50% {
+    stroke-dashoffset: 35%;
+    stroke-dasharray: 0 87.5%;
+  }
+}
+
+@keyframes stroke-offset {
+  50% {
+    stroke-dashoffset: 35%;
+    stroke-dasharray: 0 87.5%;
+  }
+}

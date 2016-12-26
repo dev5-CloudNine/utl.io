@@ -146,6 +146,10 @@ Meteor.publish('developerCount', function() {
     }));
 });
 
+Meteor.publish('jobBonusRequest', function(jobId) {
+    return BonusRequests.find({jobId: jobId});
+});
+
 // Meteor.publish('jobCount', function() {
 //     Counts.publish(this, 'jobs', Jobs.find({status: 'active', applicationStatus: 'open', invited: false}));
 // })
@@ -241,10 +245,6 @@ Meteor.publish("my_jobs", function () {
     return Jobs.find({userId: this.userId}, {sort: {createdAt: -1}})
 });
 
-// Meteor.publish('recommendedJobs', function(categories) {
-//     return Jobs.find({$and: [{jobSubCategory: {$in: categories}}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}, {sort: {createdAt: -1}});
-// })
-
 Meteor.publish('categoryJobs', function(category) {
     return Jobs.find({$and: [{jobtype: {$in: [category]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
 });
@@ -252,6 +252,15 @@ Meteor.publish('categoryJobs', function(category) {
 Meteor.publish('subCategoryJobs', function(subCategory) {
     return Jobs.find({$and: [{jobSubCategory: {$in: [subCategory]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
 });
+
+Meteor.publish('paidJobs', function(userId) {
+    if(Roles.userIsInRole(userId, ['provider'])) {
+        return Jobs.find({$and: [{applicationStatus: 'paid'}, {assignedProvider: userId}]});
+    }
+    if(Roles.userIsInRole(userId, ['buyer', 'dispatcher'])) {
+        return Jobs.find({$and: [{applicationStatus: 'paid'}, {userId: userId}]});
+    }
+})
 
 Meteor.publish('allUsers', function() {
     check(arguments, [Match.Any]);

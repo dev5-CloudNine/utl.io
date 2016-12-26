@@ -365,6 +365,13 @@ Meteor.methods({
         for(var i = 0; i < applicants.length; i++) {
             Profiles.update({userId: applicants[i].userId}, {$pull: {appliedJobs: jobId}});
         }
+        if(jobDetails.invited) {
+            for(var i = 0; i < jobDetails.invitedproviders.length; i++) {
+                if(jobDetails.invitedproviders[i] != jobDetails.assignedProvider) {
+                    Profiles.update({userId: jobDetails.invitedproviders[i]}, {$pull: {invitedJobs: jobId}});
+                }
+            }
+        }
         if(jobDetails.routed) {
             Jobs.update({_id: jobId}, {$set: {projectBudget: jobDetails.freelancer_nets}});
             Profiles.update({userId: Meteor.userId()}, {$pull: {routedJobs: jobId}});
@@ -450,7 +457,7 @@ Meteor.methods({
             html: 'Hello ' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ',<br>' + providerDetails.firstName + ' ' + providerDetails.lastName + ' has submitted job for approval. <br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to either approve or reject the job done.'
         })
     },
-    approveAssignment: function(jobId, providerId) {
+    approveAssignment: function(jobId, providerId, approveBonus, bonusObject) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var providerDetails = Profiles.findOne({userId: providerId})
         var jobDetails = Jobs.findOne({_id: jobId});
@@ -479,6 +486,14 @@ Meteor.methods({
             date: new Date(),
             invoiceId: jobDetails.readableID,
             invoiceStatus: 'paid'
+        }
+        if(approveBonus == 'Yes') {
+            Jobs.update({_id: jobId}, {$inc: {projectBudget: bonusObject.total_amount}});
+            Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: parseFloat(-bonusObject.buyer_cost)}});
+            Wallet.update({userId: adminId}, {$inc: {accountBalance: parseFloat(bonusObject.buyer_cost)}});
+            BonusRequests.update({jobId: jobId}, {$set: {request_status: 'accepted'}});
+        } else if(approveBonus == 'No') {
+            BonusRequests.update({jobId: jobId}, {$set: {request_status: 'rejected'}});
         }
         Invoices.insert(invoiceObject);
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'paid'}});
@@ -693,6 +708,15 @@ Meteor.methods({
             debitedAccount: adminId,
             dateAndTime: new Date()
         }
+        var invoiceObject = {
+            jobId: jobId,
+            providerId: jobDetails.assignedProvider,
+            buyerId: jobDetails.userId,
+            budget: jobDetails.projectBudget,
+            date: new Date(),
+            invoiceId: jobDetails.readableID,
+            invoiceStatus: 'Paid'
+        }
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'paid', applicationStatus: 'paid'}});
         Profiles.update({userId: jobDetails.assignedProvider}, {$addToSet: {paidJobs: jobId}});
         Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
@@ -701,7 +725,7 @@ Meteor.methods({
         Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: projectBudget}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: projectBudget}});
         JobTransactions.insert(jobTransObj);
-        Invoices.update({$and: [{jobId: jobId}, {buyerId: jobDetails.userId}]}, {$set: {invoiceStatus: 'paid'}});
+        Invoices.insert(invoiceObject);
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: jobDetails.assignedProvider})),
@@ -711,14 +735,16 @@ Meteor.methods({
             html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has approved payment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>Now the job is complete and you may rate the buyer by <a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">clicking here</a>.'
         })
     },
-    reviewProvider: function(providerId, buyerId, jobId, timeReviewed, experience, ratedPoints, reviewMessage) {
+    reviewProvider: function(providerId, buyerId, jobId, timeReviewed, timeAttention, instructionAttention, deliverableAttention, ratedPoints, reviewMessage) {
         var review = {
             providerId: providerId,
             buyerId: buyerId,
             reviewedBy: 'buyer',
             reviewedJobId: jobId,
             reviewedAt: timeReviewed,
-            experience: experience,
+            timeAttention: timeAttention,
+            instructionAttention: instructionAttention,
+            deliverableAttention: deliverableAttention,
             pointsRated: ratedPoints,
             reviewMessage: reviewMessage
         };
@@ -1059,5 +1085,21 @@ Meteor.methods({
     },
     'search_buyers': function(query) {
         return Buyers.find({$and: [{}, {$text: {$search: query}}]}).fetch();
+    },
+    getDistance: function(prolatlng, joblatlng) {
+        var requestUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=' + prolatlng + '&destinations=' + joblatlng + '&key=AIzaSyCYOFS20R2pwj_iypwsOloV5ctxzClT4GM';
+        var request = Npm.require('request');
+        var Future = Npm.require('fibers/future');
+        var fut = new Future();
+        request(requestUrl, function(error, response, body) {
+            var stringified = JSON.parse(body)
+            fut.return(stringified)
+        });
+        fut.wait();
+        return fut.value;
+    },
+    requestBudgetIncrease: function(request_object) {
+        BonusRequests.insert(request_object);
+        Jobs.update({_id: request_object.jobId}, {$set: {bonusRequested: true}});
     }
 });

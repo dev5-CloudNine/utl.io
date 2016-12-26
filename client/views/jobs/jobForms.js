@@ -6,7 +6,6 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 				$('button#submitJob').button('reset');
 			} else {
 				analytics.track("Job Created");
-				toastr.success('The job has been posted and your account has been debited with the proposed budget.');
         		Router.go('job', {_id:result});
 			}
 		},
@@ -454,10 +453,15 @@ Template.jobFields.helpers({
 Template.submitButtons.events({
 	'change input[name="publishJob"]': function(event, template) {
 		var publishTo = $(event.currentTarget).val()
+		console.log(publishTo)
 		if(publishTo == 'selectedProviders')
 			$('#publishIndividual').show();
 		else
 			$('#publishIndividual').hide();
+		if(publishTo == 'assignToProvider')
+			$('#assignToAProvider').show();
+		else
+			$('#assignToAProvider').hide();
 	},
 	'click #submitJob': function(event, template) {
 		var publishTo = $('input[name="publishJob"]:checked').val()
@@ -484,7 +488,7 @@ Template.submitButtons.events({
 		else if(publishTo == 'selectedProviders') {
 			Session.set('publishToIndividual', true);
 			$(event.currentTarget).button('loading');
-			var individualProviders = $('select[name="individualprovider"]').val();
+			var individualProviders = $('select[name="invitedproviders"]').val();
 			Jobs.after.insert(function(userId, doc) {
 				if(!Session.get('publishToIndividual')) {
 					$(event.currentTarget).button('reset');
@@ -501,8 +505,38 @@ Template.submitButtons.events({
 				})
 			})
 		}
-		else {
+		else if(publishTo == 'assignToProvider'){
+			Session.set('assignToIndividual', true);
 			$(event.currentTarget).button('loading');
+			Jobs.before.insert(function(userId, doc) {
+				doc.selectedProvider = "";
+				doc.selectedProvider = $('select[name="individualProvider"]').val();
+				doc.applications = [];
+				var appDetails = {
+					userId: doc.selectedProvider,
+					applied_at: new Date(),
+					app_status: 'accepted',
+					app_type: 'application'
+				}
+				doc.applicationStatus = 'assigned';
+				doc.assignmentStatus = 'not_confirmed'
+				doc.applications.push(appDetails);
+				doc.routed = true;
+			});
+			Jobs.after.insert(function(userId, doc) {
+				if(!Session.get('assignToIndividual')) {
+					return;
+					$(event.currentTarget).button('reset');
+				}
+				Meteor.call('routeNotification', Meteor.userId(), doc, function(error) {
+					if(error) {
+						toastr.error('Failed to route job.');
+						$(event.currentTarget).button('reset');
+					} else {
+						delete Session.keys['assignToIndividual'];
+					}
+				})
+			})
 		}
 	}
 })

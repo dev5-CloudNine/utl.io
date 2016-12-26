@@ -34,11 +34,22 @@
 								<hr>
 								{{#with jobDetails}}
 									<div class="col-xs-12">
-										<span class="label label-xs label-default">ID: {{readableID}}</span>
-										<h4>Project Title</h4>
-										{{title}}
+										<small><i># {{readableID}}</i></small><br>
+										<a class="budgetFont" href="{{pathFor 'job'}}">{{title}}</a>
 										<br>
-										<h4>Budget Details</h4>
+										<small>
+			                                {{#if $eq servicelocation 'Remote Job'}}
+			                                    {{servicelocation}}
+			                                {{else}}
+			                                    {{#if assignedProvider}}
+			                                        {{location}}
+			                                    {{else}}
+			                                        {{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+			                                    {{/if}}
+			                                {{/if}}
+			                            </small>
+										<br>
+										<h5>Budget Details</h5>
 										{{#with budgetDetails _id}}
 											{{#if $eq this.app_type 'application'}}
 												Application Type: Application <br>
@@ -53,6 +64,28 @@
 												Provider: $ {{this.freelancer_nets}} USD
 											{{/if}}
 										{{/with}}
+										<hr>
+									</div>
+									<div class="col-xs-12">
+										<table class="table table-hover table-striped">
+											<thead>
+												<tr>
+													<th>Check In</th>
+													<th>Check Out</th>
+													<th>Total</th>
+												</tr>
+											</thead>
+											<tbody>
+												{{#each timeLogs _id}}
+													<tr>
+														<td>{{in}}</td>
+														<td>{{out}}</td>
+														<td>{{total}}</td>
+													</tr>
+												{{/each}}
+											</tbody>
+										</table>
+										<strong>Total [{{totalHours}}]</strong>
 									</div>
 								{{/with}}
 							{{/with}}

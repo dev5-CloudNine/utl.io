@@ -1,82 +1,3 @@
-// Template.appliedJobs.onCreated(function() {
-//     var instance = this;
-//     instance.loaded = new ReactiveVar(0);
-//     instance.limit = new ReactiveVar(10);
-// });
-
-// Template.appliedJobs.helpers({
-// 	appliedJobs: function() {
-// 		var appliedJobIds = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
-//         var appliedJobs = [];
-//         if(appliedJobIds) {
-//             for(var i = appliedJobIds.length - 1; i>=appliedJobIds.length - Template.instance().limit.get(); i-- ) {
-//                 if(i<0)
-//                     break;
-//                 appliedJobs.push(Jobs.findOne({_id: appliedJobIds[i]}));
-//             }
-//         }
-//         return appliedJobs;
-// 	},
-//     hasMoreJobs: function() {
-//     	var appliedJobIds = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
-//     	if(appliedJobIds)
-//     		appliedJobsLength = appliedJobIds.length;
-//     	else
-//     		appliedJobsLength = 0;
-//         return Template.instance().limit.get() < appliedJobsLength;
-//     }
-// })
-
-// Template.appliedJobs.events({
-//     'click .load-more': function(event, instance) {
-//         event.preventDefault();
-//         var limit = instance.limit.get();
-//         limit += 10;
-//         instance.limit.set(limit);
-//     }
-// })
-
-// Template.invitedJobs.onCreated(function() {
-//     var instance = this;
-//     instance.loaded = new ReactiveVar(0);
-//     instance.limit = new ReactiveVar(10);
-//     instance.jobs = function() {
-//         var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
-//      var invitedJobs = [];
-//      if(invJobIds) {
-//          for(var i = invJobIds.length - 1; i>=invJobIds.length - instance.limit.get(); i-- ) {
-//              if(i<0)
-//                  break;
-//              invitedJobs.push(Jobs.findOne({_id: invJobIds[i]}));
-//          }
-//      }
-//      return invitedJobs;
-//     }
-// });
-
-// Template.invitedJobs.helpers({
-//  invitedJobs: function () {
-//      return Template.instance().jobs();
-//  },
-//     hasMoreJobs: function() {
-//      var invJobIds = Profiles.findOne({userId: Meteor.userId()}).invitedJobs;
-//      if(invJobIds)
-//          invJobsLength = invJobIds.length;
-//      else
-//          invJobsLength = 0;
-//         return Template.instance().limit.get() < invJobsLength;
-//     }
-// });
-
-// Template.invitedJobs.events({
-//     'click .load-more': function(event, instance) {
-//         event.preventDefault();
-//         var limit = instance.limit.get();
-//         limit += 10;
-//         instance.limit.set(limit);
-//     }
-// })
-
 var appliedJobs = function() {
     var providerDetails = Profiles.findOne({userId: Meteor.userId()});
     var appliedJobs = [];
@@ -91,6 +12,7 @@ var appliedJobs = function() {
 var appliedJobsOptions = {
     lengthMenu: [40, 80, 160, 320],
     pageLength: 40,
+    order: [[0, 'desc']],
     columns: [
         {
             title: 'ID',
@@ -104,6 +26,19 @@ var appliedJobsOptions = {
             data: function(jobDetails) {
                 var jobLocation;
                 var buyerName;
+                var rateBasisText;
+                if(jobDetails.ratebasis == 'Fixed Pay') {
+                    rateBasisText = 'Fixed Pay';
+                }
+                if(jobDetails.ratebasis == 'Per Hour') {
+                    rateBasisText = 'Per Hour<br>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Per Device') {
+                    rateBasisText = 'Per Device<br>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Blended') {
+                    rateBasisText = 'Blended<br>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
+                }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
                     buyerName = buyerDetails.firstName + ' ' + buyerDetails.lastName
@@ -121,7 +56,7 @@ var appliedJobsOptions = {
                         jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
                     }
                 }
-                var jobUrl = '<small>' + jobLocation + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
+                var jobUrl = '<small>' + jobLocation + '</small><br><small>' + rateBasisText + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
             width: '60%',
@@ -130,7 +65,7 @@ var appliedJobsOptions = {
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
-                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>'
+                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>';
             },
             width: '20%',
             responsivePriority: 2

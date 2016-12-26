@@ -56,14 +56,21 @@ var providerOptionsObject = {
 		{
 			title: 'Buyer Name',
 			data: function(invoice) {
-				var buyerDetails = Buyers.findOne({userId: invoice.buyerId});
-				var buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
+				var buyerDetails;
+				if(Roles.userIsInRole(invoice.buyerId, ['buyer'])) {
+					buyerDetails = Buyers.findOne({userId: invoice.buyerId});
+					buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
+				}
+				if(Roles.userIsInRole(invoice.buyerId, ['dispatcher'])) {
+					buyerDetails = Dispatchers.findOne({userId: invoice.buyerId});
+					buyerLink = '<a href="/dispatchers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
+				}
 				return buyerLink;
 			}
 		},
-		{title: 'Amount (USD)', data: 'budget'},
+		{title: 'Amount (USD)', data: function(invoice) {return invoice.budget}},
 		{title: 'Date', data: function(invoice) {return moment(invoice.date).fromNow()}},
-		{title: 'Status', data: 'invoiceStatus'}
+		{title: 'Status', data: function(invoice) {return invoice.invoiceStatus}}
 	]
 }
 Template.invoices.helpers({

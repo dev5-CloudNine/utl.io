@@ -1,7 +1,6 @@
 // API must be configured and built after startup!
 Meteor.startup(function() {
 
-  // Global configuration
   var Api = new Restivus();
 
   Api.addRoute('jobs', {
@@ -9,38 +8,6 @@ Meteor.startup(function() {
       return {
         status: "success",
         data: Jobs.find({
-          createdAt: {
-            $gte: daysUntilExpiration()
-          },
-          status: "active"
-        }, {
-          sort: {
-            createdAt: -1
-          },
-          fields: {
-            userId: false,
-            userName: false
-          },
-          transform: function(doc) {
-            doc.siteUrl = Meteor.absoluteUrl("jobs/" + doc._id + "/" + getSlug(doc.title));
-            return doc;
-          }
-        }).fetch()
-      };
-    }
-  });  
-
-  Api.addRoute('featuredJobs', {
-    get: function() {
-      return {
-        status: "success",
-        data: Jobs.find({
-          featuredThrough: {
-            $gte: new Date()
-          },
-          createdAt: {
-            $gte: daysUntilExpiration()
-          },
           status: "active"
         }, {
           sort: {
@@ -98,28 +65,6 @@ Meteor.startup(function() {
           },
           transform: function(doc) {
             doc.siteUrl = Meteor.absoluteUrl("buyers/" + doc._id + "/" + getSlug((doc.name || doc.userName) + " " + doc.title));
-            return doc;
-          }
-        }).fetch()
-      };
-    }
-  });
-  Api.addRoute('corporates', {
-    get: function() {
-      return {
-        status: "Success",
-        data: Corporates.find({
-          status: "active"
-        }, {
-          sort: {
-            createdAt: -1
-          },
-          fields: {
-            userId: false,
-            userName: false
-          },
-          transform: function(doc) {
-            doc.siteUrl = Meteor.absoluteUrl("corporates/" + doc._id + "/" + getSlug((doc.name || doc.userName) + " " + doc.title));
             return doc;
           }
         }).fetch()

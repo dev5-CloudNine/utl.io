@@ -52,6 +52,19 @@ var invitedJobsOptions = {
             data: function(jobDetails) {
                 var jobLocation;
                 var buyerName;
+                var rateBasisText;
+                if(jobDetails.ratebasis == 'Fixed Pay') {
+                    rateBasisText = 'Fixed Pay';
+                }
+                if(jobDetails.ratebasis == 'Per Hour') {
+                    rateBasisText = 'Per Hour<br>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Per Device') {
+                    rateBasisText = 'Per Device<br>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Blended') {
+                    rateBasisText = 'Blended<br>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
+                }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
                     buyerName = buyerDetails.firstName + ' ' + buyerDetails.lastName
@@ -69,7 +82,7 @@ var invitedJobsOptions = {
                         jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
                     }
                 }
-                var jobUrl = '<small>' + jobLocation + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
+                var jobUrl = '<small>' + jobLocation + '</small><br><small>' + rateBasisText + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
             width: '60%',
@@ -78,7 +91,20 @@ var invitedJobsOptions = {
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
-                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>'
+                var returnText;
+                if(jobDetails.ratebasis == 'Fixed Pay') {
+                    returnText = '<br><small>Fixed Pay</small>';
+                }
+                if(jobDetails.ratebasis == 'Per Hour') {
+                    returnText = '<br><small>Per Hour<br>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.</small>';
+                }
+                if(jobDetails.ratebasis == 'Per Device') {
+                    returnText = '<br><small>Per Device<br>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' hours.</small>';
+                }
+                if(jobDetails.ratebasis == 'Blended') {
+                    returnText = '<br><small>Blended<br>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.</small>'
+                }
+                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>' + returnText;
             },
             width: '20%',
             responsivePriority: 2
@@ -90,7 +116,7 @@ var invitedJobsOptions = {
                 var appCount = 0;
                 if(jobDetails.applications)
                     appCount = jobDetails.applications.length;
-                return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Applications</a><br>Applications - ' + appCount;
+                return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Applications - ' + appCount + '</a>';
             }
         }
     ],

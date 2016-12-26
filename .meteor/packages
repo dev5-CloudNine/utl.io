@@ -71,7 +71,7 @@ chrismbeckett:toastr
 themeteorchef:jquery-validation
 #easy:search
 arkham:comments-ui
-spunkedy:autoform-file
+#spunkedy:autoform-file
 cfs:filesystem
 standard-minifier-css
 standard-minifier-js
@@ -100,4 +100,3 @@ meteorhacks:ssr
 jeremy:geocomplete
 ecmascript
 fullcalendar:fullcalendar
-digilord:faker

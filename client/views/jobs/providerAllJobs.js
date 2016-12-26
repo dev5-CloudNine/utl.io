@@ -66,6 +66,19 @@ var allJobsOptions = {
             data: function(jobDetails) {
                 var jobLocation;
                 var buyerName;
+                var rateBasisText;
+                if(jobDetails.ratebasis == 'Fixed Pay') {
+                    rateBasisText = 'Fixed Pay';
+                }
+                if(jobDetails.ratebasis == 'Per Hour') {
+                    rateBasisText = 'Per Hour<br>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Per Device') {
+                    rateBasisText = 'Per Device<br>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Blended') {
+                    rateBasisText = 'Blended<br>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
+                }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
                     buyerName = buyerDetails.firstName + ' ' + buyerDetails.lastName
@@ -83,7 +96,7 @@ var allJobsOptions = {
                         jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
                     }
                 }
-                var jobUrl = '<small>' + jobLocation + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
+                var jobUrl = '<small>' + jobLocation + '</small><br><small>' + rateBasisText + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
             width: '60%',
@@ -92,7 +105,29 @@ var allJobsOptions = {
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
-                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>'
+                if(jobDetails.applicationStatus == 'open') {
+                    return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>';
+                }
+                if(jobDetails.applicationStatus == 'assigned') {
+                    if(jobDetails.assignmentStatus == 'not_confirmed' || jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'submitted' || jobDetails.assignmentStatus == 'rejected' || jobDetails.assignmentStatus == 'approved') {
+                        var applications = jobDetails.applications;
+                        var budget;
+                        for(var i = 0; i < applications.length; i++) {
+                            if(applications[i].app_status && applications[i].app_status == 'accepted') {
+                                if(applications[i].app_type == 'application') {
+                                    budget = jobDetails.freelancer_nets;
+                                    break;
+                                } else if(applications[i].app_type == 'counteroffer') {
+                                    budget = applications[i].freelancer_nets;
+                                    break;
+                                }
+                            } else {
+                                budget = jobDetails.freelancer_nets;
+                            }
+                        }
+                    }
+                    return '<span class="budgetFont">' + budget + '</span>';
+                }
             },
             width: '20%',
             responsivePriority: 2
@@ -173,4 +208,26 @@ Template.providerAllJobs.helpers({
         return allJobs;
     },
     allJobsOptions: allJobsOptions
+})
+
+Template.providerAllJobs.events({
+    'click .confirmAssignment': function(event, template) {
+        event.preventDefault();
+        var buyerId = $(event.currentTarget).data('buyer-id');
+        var jobId = $(event.currentTarget).data('job-id');
+        Meteor.call('confirmAssignment', jobId, buyerId, function(error) {
+            if(error) {
+                toastr.error('Failed to confirm assignment.');
+            }
+        })
+    },
+    'click .submitAssignment': function(event, template) {
+        event.preventDefault();
+        var jobId = $(event.currentTarget).data('job-id');
+        Meteor.call('submitAssignment', jobId, function(error) {
+            if(error) {
+                toastr.error('Failed to submit assignment. Please try again.');
+            }
+        });
+    }
 })

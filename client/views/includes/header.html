@@ -197,7 +197,6 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
                                     <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
-                                    <li><a href="{{pathFor 'corporateAccounts'}}">Corporates</a></li>
                                 </ul>
                             </li>
                             <li><a href="{{pathFor 'payments'}}">Pricing</a></li>
@@ -208,7 +207,7 @@
                         {{#if currentUser}}
                         	{{>headerUserMenu}}
                         {{else}}
-                            <li class="{{isActiveRoute regex='signIn'}}"><a href="{{pathFor 'signIn'}}">Log In</a></li>
+                            <li class="{{isActiveRoute regex='signIn'}}"><a href="{{pathFor 'signIn'}}">Sign In</a></li>
                             <li class="{{isActiveRoute regex='sign.up'}}"><a href="{{pathFor 'signUp'}}">Sign Up</a></li>
                         {{/if}}
                     </ul>

@@ -11,6 +11,7 @@ Transactions = new Meteor.Collection("transactions");
 Invoices = new Meteor.Collection("invoices");
 JobTransactions = new Meteor.Collection("jobtransactions");
 FileManager = new Meteor.Collection('fileManager');
+BonusRequests = new Meteor.Collection('bonusrequests');
 
 Categories.attachSchema(
 	new SimpleSchema({

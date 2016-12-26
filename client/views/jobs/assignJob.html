@@ -1,28 +1,17 @@
 <template name="assignJob">
     <div class="row">
         <div class="col-sm-12">
-            <!-- {{#if assignFavProviders}}
-                <p>You are assigining this job to your favorites. A notification will be sent to the providers to confirm the assigned job. Upon publish, your account will be debited with proposed budget. You may edit the job and change the budget until the job is assigned to a provider. Once assigned you cannot edit.</p>
-            {{else}} -->
-                <p>You are assigning this job to {{#with selectedProvider}}<a href="{{pathFor 'profile'}}">{{this.firstName}} {{this.lastName}}.</a>{{/with}} A notification will be sent to the provider to confirm the assigned job. Upon publish, your account will be debited with proposed budget. You may edit the job and change the budget until the job is assigned to a provider. Once assigned you cannot edit.</p>
-            <!-- {{/if}} -->
+            <p>You are assigning this job to {{#with selectedProvider}}<a href="{{pathFor 'profile'}}">{{this.firstName}} {{this.lastName}}.</a>{{/with}} A notification will be sent to the provider to confirm the assigned job. Upon publish, your account will be debited with proposed budget. You may edit the job and change the budget until the job is assigned to a provider. Once assigned you cannot edit.</p>
             <br>
             <div class="panel panel-default">
                 <div class="panel-body">
                     {{#autoForm id="jobNew" collection="Jobs" type="insert"}}
                         {{>jobFields}}
-                        <!-- {{#if assignFavProviders}}
-                            <div>
-                                <button class="btn btn-primary btn-sm assignFavs" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait..."><i class="fa fa-chevron-right"></i> Submit</button>
-                            </div>
-                        {{else}} -->
-                        <!-- {{/if}} -->
+                        <div>
+                            <button class="btn btn-primary btn-sm assign" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait..."><i class="fa fa-chevron-right"></i> Submit</button>
+                        </div>
                     {{/autoForm}}
                 </div>
-            </div>
-            <p>You are assigning this job to {{#with selectedProvider}}<a href="{{pathFor 'profile'}}">{{this.firstName}} {{this.lastName}}.</a>{{/with}} A notification will be sent to the provider to confirm the assigned job. Upon publish, your account will be debited with proposed budget. You may edit the job and change the budget until the job is assigned to a provider. Once assigned you cannot edit.</p>
-            <div>
-                <button class="btn btn-primary btn-sm assign" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait..."><i class="fa fa-chevron-right"></i> Submit</button>
             </div>
         </div>
     </div>

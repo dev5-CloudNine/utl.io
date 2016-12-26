@@ -188,12 +188,38 @@ Profiles.attachSchema(
     educationDetails: {
       type: String,
       optional: true,
-      label: "Educational Qualification"
+      autoform: {
+        afFieldInput: SUMMERNOTE_OPTIONS,
+        label: false
+      }
+    },
+    htmlEducationDetails: {
+      type: String,
+      optional: true,
+      autoValue: function(doc) {
+        var htmlContent = this.field("educationDetails");
+        if (Meteor.isServer && htmlContent.isSet) {
+          return cleanHtml(htmlContent.value);
+        }
+      }
     },
     certifications: {
       type: String,
       optional: true,
-      label: "Professional Certifications"
+      autoform: {
+        afFieldInput: SUMMERNOTE_OPTIONS,
+        label: false
+      }
+    },
+    htmlCertifications: {
+      type: String,
+      optional: true,
+      autoValue: function(doc) {
+        var htmlContent = this.field("certifications");
+        if (Meteor.isServer && htmlContent.isSet) {
+          return cleanHtml(htmlContent.value);
+        }
+      }
     },
     languages: {
       type: Array,
@@ -251,6 +277,38 @@ Profiles.attachSchema(
             {
               label: "Speak",
               value: "Speak"
+            }
+          ]
+        }
+      }
+    },
+    distancePreference: {
+      type: Number,
+      label: 'Distance Preferences:',
+      optional: true,
+      autoform: {
+        type: 'select-radio-inline',
+        options: function() {
+          return [
+            {
+              label: '< 40 miles',
+              value: 40
+            },
+            {
+              label: '< 80 miles',
+              value: 80,
+            },
+            {
+              label: '< 120 miles',
+              value: 120,
+            },
+            {
+              label: '< 160 miles',
+              value: 160
+            },
+            {
+              label: 'Doesn\'t matter',
+              value: 0
             }
           ]
         }

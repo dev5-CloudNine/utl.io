@@ -1,43 +1,3 @@
-// Template.providerPaidJobs.onCreated(function() {
-//     var instance = this;
-//     instance.loaded = new ReactiveVar(0);
-//     instance.limit = new ReactiveVar(10);
-//     instance.jobs = function() {
-//         var paidJobIds = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
-// 		var paidJobs = [];
-// 		if(paidJobIds) {
-// 			for(var i = paidJobIds.length - 1; i>=paidJobIds.length - instance.limit.get(); i-- ) {
-// 				if(i<0)
-// 					break;
-// 				paidJobs.push(Jobs.findOne({_id: paidJobIds[i]}));
-// 			}
-// 		}
-// 		return paidJobs;
-//     }
-// });
-
-// Template.providerPaidJobs.helpers({
-// 	providerPaidJobs: function() {
-// 		return Template.instance().jobs();
-// 	},
-//     hasMoreJobs: function() {
-//     	var paidJobIds = Profiles.findOne({userId: Meteor.userId()}).paidJobs;
-//     	if(paidJobIds)
-//     		allJobsLength = paidJobIds.length;
-//     	else
-//     		allJobsLength = 0;
-//         return Template.instance().limit.get() < allJobsLength;
-//     }
-// })
-
-// Template.providerPaidJobs.events({
-//     'click .load-more': function(event, instance) {
-//         event.preventDefault();
-//         var limit = instance.limit.get();
-//         limit += 10;
-//         instance.limit.set(limit);
-//     }
-// })
 var paidJobs = function() {
     var providerDetails = Profiles.findOne({userId: Meteor.userId()});
     var paidJobs = [];
@@ -52,6 +12,7 @@ var paidJobs = function() {
 var paidJobsOptions = {
     lengthMenu: [40, 80, 160, 320],
     pageLength: 40,
+    order: [[0, 'desc']],
     columns: [
         {
             title: 'ID',
@@ -65,6 +26,19 @@ var paidJobsOptions = {
             data: function(jobDetails) {
                 var jobLocation;
                 var buyerName;
+                var rateBasisText;
+                if(jobDetails.ratebasis == 'Fixed Pay') {
+                    rateBasisText = 'Fixed Pay';
+                }
+                if(jobDetails.ratebasis == 'Per Hour') {
+                    rateBasisText = 'Per Hour<br>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Per Device') {
+                    rateBasisText = 'Per Device<br>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Blended') {
+                    rateBasisText = 'Blended<br>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
+                }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
                     buyerName = buyerDetails.firstName + ' ' + buyerDetails.lastName
@@ -82,7 +56,7 @@ var paidJobsOptions = {
                         jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
                     }
                 }
-                var jobUrl = '<small>' + jobLocation + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
+                var jobUrl = '<small>' + jobLocation + '</small><br><small>' + rateBasisText + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
             width: '60%',
@@ -91,7 +65,7 @@ var paidJobsOptions = {
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
-                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>'
+                return '<span class="budgetFont">' + jobDetails.projectBudget + '</span>'
             },
             width: '20%',
             responsivePriority: 2

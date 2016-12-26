@@ -1,44 +1,21 @@
-// Template.jobs.onCreated(function() {
-//     var instance = this;
-//     instance.loaded = new ReactiveVar(0);
-//     instance.limit = new ReactiveVar(100);
-//     instance.autorun(function() {
-//         var limit = instance.limit.get();
-//         var subscription = instance.subscribe('jobs', limit);
-//         if(subscription.ready()) {
-//             instance.loaded.set(limit);
-//         }
-//     });
-//     instance.jobs = function() {
-//         return Jobs.find({$and: [{invited: false}, {$or: [{applicationStatus: 'open'}, {applicationStatus: 'frozen'}]}]}, {sort: {createdAt: -1}, limit: instance.loaded.get()});
-//     }
-// });
-
-// Template.jobs.helpers({
-//     jobs: function() {
-//         return Template.instance().jobs();
-//     },
-//     hasMoreJobs: function() {
-//         return Template.instance().jobs().count() >= Template.instance().limit.get();
-//     }
-// });
-
-// Template.jobs.events({
-//     'click .load-more': function(event, instance) {
-//         event.preventDefault();
-//         var limit = instance.limit.get();
-//         limit += 10;
-//         instance.limit.set(limit);
-//     }
-// })
-
 var openJobs = function() {
-    return Jobs.find({$and: [{invited: false}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).fetch();
+    return Jobs.find({$and: [{invited: false}, {routed: false}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).fetch();
+}
+
+var distance = function(plat, plng, jlat, jlng) {
+    var R = 3959;
+    var dLon = (plng - jlng) * Math.PI/180;
+    var dLat = (plat - jlat) * Math.PI/180;
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(plat * Math.PI / 180 ) * Math.cos(jlat * Math.PI / 180 ) * Math.sin(dLon/2) * Math.sin(dLon/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    return Math.round(d) + ' miles';
 }
 
 var openJobsObject = {
     lengthMenu: [40, 80, 160, 320],
     pageLength: 40,
+    order: [[0, 'desc']],
     columns: [
         {
             title: 'ID',
@@ -52,6 +29,20 @@ var openJobsObject = {
             data: function(jobDetails) {
                 var jobLocation;
                 var buyerName;
+                var jobDistance;
+                var rateBasisText;
+                if(jobDetails.ratebasis == 'Fixed Pay') {
+                    rateBasisText = 'Fixed Pay';
+                }
+                if(jobDetails.ratebasis == 'Per Hour') {
+                    rateBasisText = 'Per Hour<br>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Per Device') {
+                    rateBasisText = 'Per Device<br>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Blended') {
+                    rateBasisText = 'Blended<br>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
+                }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
                     buyerName = buyerDetails.firstName + ' ' + buyerDetails.lastName
@@ -63,10 +54,11 @@ var openJobsObject = {
                     jobLocation = 'Remote Job';
                 }
                 else if(jobDetails.servicelocation == 'Field Job') {
+                    var providerDetails = Profiles.findOne({userId: Meteor.userId()});
                     if(jobDetails.fullLocation.sublocality) {
-                        jobLocation = jobDetails.fullLocation.sublocality + ', ' + jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
+                        jobLocation = jobDetails.fullLocation.sublocality + ', ' + jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip + ' [' + distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude) + ' radius]';
                     } else {
-                        jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
+                        jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip + ' [' + distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude) + ' radius]';
                     }
                 }
                 var recommended = false;
@@ -79,9 +71,9 @@ var openJobsObject = {
                         }
                     }
                 }
-                var jobUrl = '<small>' + jobLocation + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
+                var jobUrl = '<small>' + jobLocation + '</small><br><small>' + rateBasisText + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
                 if(recommended) {
-                    return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a>&nbsp;<span class="recommendedIcon"><i class="fa fa-thumbs-up"></i></span><br>' + jobUrl;
+                    return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a>&nbsp;<span class="recommendedIcon" data-balloon="Recommended" data-balloon-pos="up"><i class="fa fa-thumbs-up"></i></span><br>' + jobUrl;
                 }
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
@@ -91,7 +83,7 @@ var openJobsObject = {
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
-                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>'
+                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>';
             },
             width: '20%',
             responsivePriority: 2

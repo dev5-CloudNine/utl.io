@@ -91,6 +91,40 @@ Template.job.events({
       $('#blended-counter').hide();
     }
   },
+  'change #request_type': function(event, template) {
+    event.preventDefault();
+    var requestType = $('#request_type').val();
+    if(requestType == 'fixed_pay') {
+      $('#fixed-request').show();
+      $('#fixed_amount_req').attr('required', 'required');
+    }
+    else {
+      $('#fixed-request').hide();
+      $('#fixed_amount_req').removeAttr('required');
+    }
+    if(requestType == 'per_hour') {
+      $('#hourly-request').show();
+      $('#hourly_rate_req').attr('required', 'required');
+      $('#max_hours_req').attr('required', 'required');
+    }
+    else {
+      $('#hourly-request').hide();
+      $('#max_hours_req').removeAttr('required');
+      $('#hourly_rate_req').removeAttr('required');
+    }
+    if(requestType == 'per_device') {
+      $('#per-device-request').show();
+    }
+    else {
+      $('#per-device-request').hide();
+    }
+    if(requestType == 'blended') {
+      $('#blended-request').show();
+    }
+    else {
+      $('#blended-request').hide();
+    }
+  },
   //fixed rate
   'change #fixed_amount, keyup #fixed_amount': function(event, template) {
     event.preventDefault();
@@ -140,6 +174,55 @@ Template.job.events({
     $('input[name="buyer_cost"]').val(buyerCost)
     var freenet = totalamount;
     $('input[name="freelancer_nets"]').val(freenet);
+  },
+  'change #fixed_amount_req, keyup #fixed_amount_req': function(event, template) {
+    event.preventDefault();
+    var fixedamount = parseFloat($('#fixed_amount_req').val());
+    $('input[name="total_amount_req"]').val(fixedamount);
+    var buyerCost = parseFloat(fixedamount + (fixedamount * 5/100));
+    $('input[name="buyer_req_cost"]').val(buyerCost);
+    var freenet = fixedamount;
+    $('input[name="freelancer_req_nets"]').val(freenet);
+  },
+  //hourly rate
+  'change #hourly_rate_req, keyup #hourly_rate_req, change #max_hours_req, keyup #max_hours_req': function(event, template) {
+    event.preventDefault();
+    var hourlyrate = parseFloat($('#hourly_rate_req').val());
+    var maxhours = parseFloat($('#max_hours_req').val());
+    var totalamount = hourlyrate * maxhours;
+    $('input[name="total_amount_req"]').val(totalamount);
+    var buyerCost = totalamount + (totalamount * 5/100);
+    $('input[name="buyer_req_cost"]').val(buyerCost);
+    var freenet = totalamount;
+    $('input[name="freelancer_req_nets"]').val(freenet);
+  },
+  //device rate
+  'change #device_rate_req, keyup #device_rate_req, change #max_devices_req, keyup #max_devices_req': function(event, template) {
+    event.preventDefault();
+    var devicerate = parseFloat($('#device_rate_req').val());
+    var maxdevices = parseFloat($('#max_devices_req').val());
+    var totalamount = devicerate * maxdevices;
+    $('input[name="total_amount_req"]').val(totalamount);
+    var buyerCost = totalamount + (totalamount * 5/100);
+    $('input[name="buyer_req_cost"]').val(buyerCost);
+    var freenet = totalamount;
+    $('input[name="freelancer_req_nets"]').val(freenet);
+  },
+  //blended rate
+  'change #first_hours_req, keyup #first_hours_req, change #first_max_hours_req, keyup #first_max_hours_req, change #next_hours_req, keyup #next_hours_req, change #next_max_hours_req, keyup #next_max_hours_req': function(event, template) {
+    event.preventDefault();
+    var payforfirsthours = parseFloat($('#first_hours_req').val());
+    var firsthours = parseFloat($('#first_max_hours_req').val());
+    var payfornexthours = parseFloat($('#next_hours_req').val());
+    var nexthours = parseFloat($('#next_max_hours_req').val());
+    var totalforfirsthours = parseFloat(payforfirsthours);
+    var totalfornexthours = payfornexthours * nexthours;
+    var totalamount = parseFloat(totalforfirsthours + totalfornexthours);
+    $('input[name="total_amount_req"]').val(totalamount);
+    var buyerCost = totalamount + (totalamount * 5/100);
+    $('input[name="buyer_req_cost"]').val(buyerCost)
+    var freenet = totalamount;
+    $('input[name="freelancer_req_nets"]').val(freenet);
   },
   // 'change input[value="provider"]': function(event, template) {
   //   event.preventDefault();
@@ -305,7 +388,6 @@ Template.job.events({
   'click button.submit-task': function(event, template) {
     event.preventDefault();
     var id = $(event.currentTarget).parent().parent().parent().parent().find('.task-form').data('id');
-
     var obj = {};
     obj.state = $(event.currentTarget).parent().parent().parent().find('.state').val();
     obj.comments = $(event.currentTarget).parent().parent().parent().find('.comments').val();
@@ -489,25 +571,6 @@ Template.job.events({
     event.preventDefault();
     $(event.currentTarget).button('loading');
     var jobId = this._id;
-    // var tasksClosed = Tasks.find({$and:[{jobID:jobId},{state:{$ne:'Completed'}}]}).count();
-    // if(tasksClosed) {
-    //   toastr.error('Complete assigned tasks to submit the job for approval.');
-    //   $(event.currentTarget).button('reset');
-    //   return;
-    // }
-    // var timeSheetsLogs = TimeSheet.findOne({jobID: jobId});
-    // if(!timeSheetsLogs.logs) {
-    //   toastr.error('Enter your time sheets to submit the job for approval.');
-    //   $(event.currentTarget).button('reset');
-    //   return;
-    // }
-    // if(timeSheetsLogs.logs) {
-    //   if(timeSheetsLogs.logs.length <= 0) {
-    //     toastr.error('Enter your time sheets to submit the job for approval.');
-    //     $(event.currentTarget).button('reset');
-    //     return;
-    //   }
-    // }
     Meteor.call('submitAssignment', jobId, function(error) {
       if(error) {
         $(event.currentTarget).button('reset');
@@ -515,18 +578,39 @@ Template.job.events({
       }
     });
   },
+  'change input[name="bonus_request"]': function(event, template) {
+    if($(event.currentTarget).val() == 'Yes') {
+      var bonusObject = BonusRequests.findOne({jobId: Router.current().params._id});
+      var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+      var userWallet = Wallet.findOne({userId: Meteor.userId()});
+      if(jobDetails.bonusRequested && bonusObject) {
+        if(bonusObject.buyer_cost > userWallet.accountBalance) {
+          $('.noReqBal').show();
+          $('button.approveAssignment').attr('disabled', 'disabled');
+        } else {
+          $('.noReqBal').hide();
+          $('button.approveAssignment').removeAttr('disabled', 'disabled');
+        }
+      }
+    }
+  },
   'click button.approveAssignment': function(event, template) {
     $(event.currentTarget).button('loading');
     event.preventDefault();
     var jobId = this._id;
     var providerId = this.assignedProvider;
-    Meteor.call('approveAssignment', jobId, providerId, function(error) {
+    var approveBonus = $('input[name="bonus_request"]:checked').val();
+    if(!approveBonus) {
+      toastr.error('Select whether or not to increase the budget');
+      $(event.currentTarget).button('reset');
+      return;
+    }
+    var bonusObject = BonusRequests.findOne({jobId: Router.current().params._id});
+    Meteor.call('approveAssignment', jobId, providerId, approveBonus, bonusObject, function(error) {
       if(error) {
         $(event.currentTarget).button('reset');
         toastr.error('Failed to approve job. Please try again.');
       }
-      $('.providerReviewPoints').rateit();
-      $('.buyerReviewPoints').rateit();
     });
   },
   'click button.rejectAssignment': function(event, template) {
@@ -539,23 +623,6 @@ Template.job.events({
       }
     });
   },
-  // 'click button.requestPayment': function(event, template) {
-  //   var jobId = this._id;
-  //   $(event.currentTarget).prop('disabled', true);
-  //   Meteor.call('requestPayment', jobId, function(error, result) {
-  //     if(error) {
-  //       toastr.error('Failed to request paymet. Pleast try again.');
-  //     }
-  //   })
-  // },
-  // 'click button.approvePayment': function(event, template) {
-  //   var jobId = this._id;
-  //   Meteor.call('approvePayment', jobId, function(error, result) {
-  //     if(error) {
-  //       toastr.error('Failed to approve payment. Please try again.');
-  //     }
-  //   })
-  // },
   'click button.deactivateJob': function(event, template) {
     $(event.currentTarget).button('loading');
     var jobId = this._id;
@@ -710,13 +777,15 @@ Template.job.events({
     var buyerId = this.userId;
     var jobId = this._id;
     var timeReviewed = new Date();
-    var experience = $('input[name="detailAttention"]:checked').val();
+    var timeAttention = $('input[name="timeAttention"]:checked').val();
+    var instructionAttention = $('input[name="instructionAttention"]:checked').val();
+    var deliverableAttention = $('input[name="deliverableAttention"]:checked').val();
     var ratedPoints = $('input[name="rateProvider"]:checked').val();
     var reviewMessage = "";
     $('textarea[name="reviewMessage"]').each(function() {
       reviewMessage += $(this).val();
     })
-    Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, experience, ratedPoints, reviewMessage, function(error) {
+    Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, timeAttention, instructionAttention, deliverableAttention, ratedPoints, reviewMessage, function(error) {
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
       } else {
@@ -743,6 +812,75 @@ Template.job.events({
         toastr.success('Submitted the review successfully.');
       }
     })
+  },
+  'submit #budget_increase_form': function(event, template) {
+    event.preventDefault();
+    $('button.requestIncrease').button('loading');
+    var request_object = {};
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var reqType = $('select[name="request_type"]').val();
+    if(reqType == 'fixed_pay') {
+      request_object = {
+        request_type: 'Fixed Pay',
+        fixed_amount: $('#fixed_amount_req').val(),
+        buyer_cost: $('#buyer_req_cost').val(),
+        total_amount: $('input[name="total_amount_req"]').val(),
+        jobId: Router.current().params._id,
+        timeStamp: new Date(),
+        request_status: 'pending',
+        buyerId: jobDetails.userId,
+        providerId: Meteor.userId()
+      }
+    }
+    else if(reqType == 'per_hour') {
+      request_object = {
+        request_type: 'Per Hour',
+        hourly_rate: $('#hourly_rate_req').val(),
+        max_hours: $('#max_hours_req').val(),
+        total_amount: $('input[name="total_amount_req"]').val(),
+        buyer_cost: $('#buyer_req_cost').val(),
+        jobId: Router.current().params._id,
+        timeStamp: new Date(),
+        request_status: 'pending',
+        buyerId: jobDetails.userId,
+        providerId: Meteor.userId()
+      }
+    }
+    else if(reqType == 'per_device') {
+      request_object = {
+        request_type: 'Per Device',
+        device_rate: $('#device_rate_req').val(),
+        max_devices: $('max_devices_req').val(),
+        total_amount: $('input[name="total_amount_req"]').val(),
+        buyer_cost: $('buyer_req_cost').val(),
+        jobId: Rouer.current().params._id,
+        timeStamp: new Date(),
+        request_status: 'pending',
+        buyerId: jobDetails.userId,
+        providerId: Meteor.userId()
+      }
+    }
+    else if(reqType == 'blended') {
+      request_object = {
+        request_type: 'Blended',
+        first_hours: $('#first_hours_req').val(),
+        first_max_hours: $('#first_max_hours_req').val(),
+        next_hours: $('#next_hours_req').val(),
+        next_max_hours: $('#next_max_hours_req').val(),
+        total_amount: $('input[name="total_amount_req"]').val(),
+        buyer_cost: $('buyer_req_cost').val(),
+        jobId: Router.current().params._id,
+        timeStamp: new Date(),
+        request_status: 'pending',
+        buyerId: jobDetails.userId,
+        providerId: Meteor.userId()
+      }
+    }
+    Meteor.call('requestBudgetIncrease', request_object, function(error, result) {
+      if(error) {
+        $('button.requestIncrease').button('reset');
+      }
+    });
   }
 });
 
@@ -1428,8 +1566,38 @@ Template.job.helpers({
       }
     }
     return true;
+  },
+  distance: function() {
+    var jobDetails = Jobs.findOne({_id: this._id});
+    var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+    return distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude);
+  },
+  bonusRequested: function() {
+    var bonusDetails = BonusRequests.findOne({jobId: Router.current().params._id});
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    if(jobDetails.bonusRequested && bonusDetails)
+      return true;
+    return false;
+  },
+  bonusReqDetails: function() {
+    var bonusDetails = BonusRequests.findOne({jobId: Router.current().params._id});
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    if(jobDetails.bonusRequested && bonusDetails) {
+      return bonusDetails;
+    }
+    return;
   }
 });
+
+var distance = function(plat, plng, jlat, jlng) {
+  var R = 3959;
+  var dLon = (plng - jlng) * Math.PI/180;
+  var dLat = (plat - jlat) * Math.PI/180;
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(plat * Math.PI / 180 ) * Math.cos(jlat * Math.PI / 180 ) * Math.sin(dLon/2) * Math.sin(dLon/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = R * c;
+  return Math.round(d) + ' miles';
+}
 
 Template.job.rendered = function() {
   this.ratingPoints = new ReactiveVar(null);

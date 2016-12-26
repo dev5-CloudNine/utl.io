@@ -77,7 +77,7 @@ UI.registerHelper('unreadMsgCount', function(userId) {
 });
 
 UI.registerHelper('openJobsCount', function() {
-	return Jobs.find({$and: [{invited: false}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count();
+	return Jobs.find({$and: [{invited: false}, {routed: false}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count();
 });
 
 UI.registerHelper('buyerJobsCount', function() {
@@ -86,7 +86,7 @@ UI.registerHelper('buyerJobsCount', function() {
 
 UI.registerHelper('recommendedJobsCount', function() {
 	var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
-	return Jobs.find({$and: [{jobSubCategory: {$in: jobCategories}}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count()
+	return Jobs.find({$and: [{routed: false}, {invited: false}, {jobSubCategory: {$in: jobCategories}}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count()
 });
 
 UI.registerHelper('providerInvitedCount', function() {
@@ -129,10 +129,11 @@ UI.registerHelper('deactivatedCount', function() {
 
 UI.registerHelper('buyerOpenCount', function(buyerId) {
 	if(buyerId) {
-		return Jobs.find({$and: [{userId: buyerId}, {applicationStatus: 'open'}]}).count();
-	}
-	if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();
+		return Jobs.find({$and: [{userId: buyerId}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count();
+	} else {
+		if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
+			return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();
+		}
 	}
 });
 

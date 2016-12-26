@@ -80,16 +80,9 @@ if (Meteor.isServer) {
             var customerDetails = {
                 firstName: dwolla_req_object.firstName,
                 lastName: dwolla_req_object.lastName,
-                email: dwolla_req_object.email,
-                // type: 'personal',
-                // address1: dwolla_req_object.address1,
-                // city: dwolla_req_object.city,
-                // state: dwolla_req_object.state,
-                // postalCode: dwolla_req_object.postalCode,
-                // dateOfBirth: dwolla_req_object.dateOfBirth,
-                // ssn: dwolla_req_object.ssn,
-                // phone: dwolla_req_object.mobile_number
+                email: dwolla_req_object.email
             };
+            var fut = new Future();
             accountToken.post('customers', customerDetails).then(function(res) {
                 var Fiber = Npm.require('fibers');
                 Fiber(function() {
@@ -98,9 +91,10 @@ if (Meteor.isServer) {
                     Wallet.upsert({userId: reqdUserId}, {$set: {dwollaCustomer: dwollaCustomer, socialSecurityNo: dwolla_req_object.ssn}});
                 }).run();
             }, function(err) {
-                console.log('Create Customer error');
-                console.log(err.body._embedded);
-            })
+                fut.return(err);
+            });
+            fut.wait();
+            return fut.value;
         },
         'showCustomers': function(userId) {
             var obj = Wallet.findOne({userId: userId});
@@ -310,7 +304,7 @@ if (Meteor.isServer) {
             var customerArray = fut.value;
             customerArray.forEach(function(customer) {
                 var reqBody = {
-                    email: customer.lastName + 'sucdub@125' + '.com'
+                    email: customer.lastName + 'jubron@125' + '.com'
                 }
                 accountToken.post('https://api-uat.dwolla.com/customers/' + customer.id, reqBody).then(function(result) {
                     console.log(result);

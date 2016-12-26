@@ -1,37 +1,3 @@
-// Template.myJobs.onCreated(function() {
-//     var instance = this;
-//     instance.loaded = new ReactiveVar(0);
-//     instance.limit = new ReactiveVar(100);
-//     instance.autorun(function() {
-//         var limit = instance.limit.get();
-//         var subscription = instance.subscribe('my_jobs', limit);
-//         if(subscription.ready()) {
-//             instance.loaded.set(limit);
-//         }
-//     });
-//     instance.jobs = function() {
-//         return Jobs.find({userId: Meteor.userId()}, {sort: {createdAt: -1}, limit: instance.loaded.get()});
-//     }
-// });
-
-// Template.myJobs.helpers({
-// 	buyerJobs: function() {
-// 		return Template.instance().jobs();
-// 	},
-//     hasMoreJobs: function() {
-//         return Template.instance().jobs().count() >= Template.instance().limit.get();
-//     }
-// });
-
-// Template.myJobs.events({
-//     'click .load-more': function(event, instance) {
-//         event.preventDefault();
-//         var limit = instance.limit.get();
-//         limit += 10;
-//         instance.limit.set(limit);
-//     }
-// })
-
 var allJobs = function() {
     return Jobs.find({userId: Meteor.userId()}).fetch();
 }
@@ -39,6 +5,7 @@ var allJobs = function() {
 var allJobsOptions = {
     lengthMenu: [40, 80, 160, 320],
     pageLength: 40,
+    order: [[0, 'desc']],
     columns: [
         {
             title: 'ID',
@@ -52,6 +19,19 @@ var allJobsOptions = {
             data: function(jobDetails) {
                 var jobLocation;
                 var buyerName;
+                var rateBasisText;
+                if(jobDetails.ratebasis == 'Fixed Pay') {
+                    rateBasisText = 'Fixed Pay';
+                }
+                if(jobDetails.ratebasis == 'Per Hour') {
+                    rateBasisText = 'Per Hour<br>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Per Device') {
+                    rateBasisText = 'Per Device<br>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' hours.';
+                }
+                if(jobDetails.ratebasis == 'Blended') {
+                    rateBasisText = 'Blended<br>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
+                }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
                     buyerName = buyerDetails.firstName + ' ' + buyerDetails.lastName
@@ -69,7 +49,7 @@ var allJobsOptions = {
                         jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
                     }
                 }
-                var jobUrl = '<small>' + jobLocation + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
+                var jobUrl = '<small>' + jobLocation + '</small><br><small>' + rateBasisText + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
             width: '60%',
@@ -78,7 +58,31 @@ var allJobsOptions = {
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
-                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>'
+                if(jobDetails.applicationStatus == 'assigned') {
+                    if(jobDetails.assignmentStatus == 'not_confirmed') {
+                        var applications = jobDetails.applications;
+                        var budget;
+                        for(var i = 0; i < applications.length; i++) {
+                            if(applications[i].app_status == 'accepted') {
+                                if(applications[i].app_type == 'application') {
+                                    budget = jobDetails.freelancer_nets;
+                                    break;
+                                } else if(applications[i].app_type == 'counteroffer') {
+                                    budget = applications[i].freelancer_nets;
+                                    break;
+                                }
+                            }
+                        }
+                        return '<span class="budgetFont">' + budget + '</span>';
+                    }
+                    if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected') {
+                        return '<span class="budgetFont">' + jobDetails.projectBudget + '</span>'
+                    }
+                }
+                if(jobDetails.applicationStatus == 'paid') {
+                    return '<span class="budgetFont">' + jobDetails.projectBudget + '</span>';
+                }
+                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>';
             },
             width: '20%',
             responsivePriority: 2
@@ -92,7 +96,7 @@ var allJobsOptions = {
                     var appCount = 0;
                     if(jobDetails.applications)
                         appCount = jobDetails.applications.length;
-                    return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Applications</a><br>Applications - ' + appCount;
+                    return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Applications - ' + appCount + '</a>';
                 }
                 if(jobDetails.applicationStatus == 'assigned') {
                     if(jobDetails.assignmentStatus == 'not_confirmed') {
@@ -103,7 +107,7 @@ var allJobsOptions = {
                     }
                     if(jobDetails.assignmentStatus == 'submitted') {
                         var returnText = '<small>Job submittted. Approve or reject. Upon approval, the provider\'s account will be credited with ' + jobDetails.projectBudget + ' USD. Ensure that all the tasks and timesheets are upto your mark.</small>'
-                        return returnText + '<br><button data-job-id="' + jobDetails._id + '" data-provider-id="' + jobDetails.assignedProvider + '" class="margin-top-5 btn btn-primary btn-sm approveAssignment">Approve.</button>&nbsp;<button data-job-id="' + jobDetails._id + '" class="margin-top-5 btn btn-primary btn-sm rejectAssignment">Reject</button>';
+                        return returnText + '<br><a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Details</a>';
                     }
                     if(jobDetails.assignmentStatus == 'rejected') {
                         return '<small>You have rejected the assignment. Please discuss with the provider and sort it out.</small>';

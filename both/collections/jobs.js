@@ -99,7 +99,7 @@ Jobs.attachSchema(new SimpleSchema({
         }
       }
     },
-    individualprovider: {
+    invitedproviders: {
       type: [String],
       optional: true,
       label: 'Choose one or more providers',
@@ -115,6 +115,23 @@ Jobs.attachSchema(new SimpleSchema({
           })
         },
         multiple: true
+      }
+    },
+    individualProvider: {
+      type: String,
+      optional: true,
+      label: 'Choose one provider',
+      autoform: {
+        type: 'selectize',
+        options: function() {
+          return Profiles.find().fetch().map(function(profile) {
+            var providerDetails = {
+              label: profile.firstName + ' ' + profile.lastName,
+              value: profile.userId
+            }
+            return providerDetails;
+          })
+        }
       }
     },
     jobtype: {
@@ -134,11 +151,13 @@ Jobs.attachSchema(new SimpleSchema({
     },
     routed: {
       type: Boolean,
-      optional: true
+      optional: true,
+      defaultValue: false
     },
     invited: {
       type: Boolean,
-      optional: true
+      optional: true,
+      defaultValue: false
     },
     favoriteProviders: {
       type: [String],
@@ -407,32 +426,21 @@ Jobs.attachSchema(new SimpleSchema({
       label: "Paid By",
       autoform: {
         type: 'select-radio-inline',
-        defaultValue: "Provider",
+        defaultValue: "You",
         options: function() {
           return [
             {
-              label: "Provider",
-              value: "Provider"
-            },
-            {
               label: "You",
               value: "You"
+            },
+            {
+              label: "Provider",
+              value: "Provider"
             }
           ]
         }
       }
     },
-    // bonus: {
-    //   type: Number,
-    //   label: "Bonus (If any)",
-    //   optional: true,
-    //   decimal: true
-    // },
-    // bonusRequested: {
-    //   type: Boolean,
-    //   optional: true,
-    //   defaultValue: false
-    // },
     servicelocation: {
     label: "Service Location *",
     type: String,
@@ -706,7 +714,6 @@ Jobs.attachSchema(new SimpleSchema({
     },
     shipment: {
       type: Array,
-      label: "Shipments",
       optional: true
     },
     'shipment.$': {
@@ -850,13 +857,15 @@ Jobs.attachSchema(new SimpleSchema({
     },
     buyerArchived: {
       type: Boolean,
-      defaultValue: false,
-      optional: true
+      defaultValue: false
     },
     providerArchived: {
       type: Boolean,
+      defaultValue: false
+    },
+    bonusRequested: {
+      type: Boolean,
       defaultValue: false,
-      optional: true
     },
     assignmentStatus: {
       type: String,
