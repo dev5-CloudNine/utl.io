@@ -311,7 +311,7 @@ Meteor.methods({
             side: 'provider',
             adminRead: false
         }
-        Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.freelancer_nets': freenets}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'assigned'}})
+        Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.freelancer_nets': freenets}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'assigned', assignmentStatus: 'not_confirmed'}})
         Jobs.update({_id: jobId}, {$set: {proposedBudget: freenets}});
         Profiles.update({userId: userId}, {$addToSet: {assignedJobs: jobId}});
         Profiles.update({userId: userId}, {$pull: {appliedJobs: jobId}});
@@ -492,8 +492,12 @@ Meteor.methods({
             Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: parseFloat(-bonusObject.buyer_cost)}});
             Wallet.update({userId: adminId}, {$inc: {accountBalance: parseFloat(bonusObject.buyer_cost)}});
             BonusRequests.update({jobId: jobId}, {$set: {request_status: 'accepted'}});
+            Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
+            Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: jobDetails.projectBudget}});
         } else if(approveBonus == 'No') {
             BonusRequests.update({jobId: jobId}, {$set: {request_status: 'rejected'}});
+            Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
+            Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: jobDetails.projectBudget}});
         }
         Invoices.insert(invoiceObject);
         Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'paid'}});
@@ -501,8 +505,6 @@ Meteor.methods({
         Profiles.update({userId: providerId}, {$pull: {pendingApproval: jobId}});        
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -jobDetails.projectBudget}});
         Wallet.update({userId: jobDetails.userId}, {$inc: {amountSpent: jobDetails.projectBudget}});
-        Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
-        Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: jobDetails.projectBudget}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: providerId})),

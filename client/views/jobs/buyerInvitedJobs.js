@@ -91,20 +91,7 @@ var invitedJobsOptions = {
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
-                var returnText;
-                if(jobDetails.ratebasis == 'Fixed Pay') {
-                    returnText = '<br><small>Fixed Pay</small>';
-                }
-                if(jobDetails.ratebasis == 'Per Hour') {
-                    returnText = '<br><small>Per Hour<br>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.</small>';
-                }
-                if(jobDetails.ratebasis == 'Per Device') {
-                    returnText = '<br><small>Per Device<br>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' hours.</small>';
-                }
-                if(jobDetails.ratebasis == 'Blended') {
-                    returnText = '<br><small>Blended<br>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.</small>'
-                }
-                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>' + returnText;
+                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>';
             },
             width: '20%',
             responsivePriority: 2

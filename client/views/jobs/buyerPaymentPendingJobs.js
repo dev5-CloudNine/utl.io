@@ -70,7 +70,7 @@ var pendingApprovalOptions = {
                 if(jobDetails.assignmentStatus == 'submitted') {
                     var returnText = '<small>Job submittted. Approve or reject. Upon approval, the provider\'s account will be credited with ' + jobDetails.projectBudget + ' USD. Ensure that all the tasks and timesheets are upto your mark.</small>'
                 }
-                return returnText + '<br><button data-job-id="' + jobDetails._id + '" data-provider-id="' + jobDetails.assignedProvider + '" class="margin-top-5 btn btn-primary btn-sm approveAssignment">Approve.</button>&nbsp;<button data-job-id="' + jobDetails._id + '" class="margin-top-5 btn btn-primary btn-sm rejectAssignment">Reject</button>';
+                return returnText + '<br><a href="/jobs/' + jobDetails._id + '" class="btn btn-primary btn-sm">View Details</a>';
             }
         }
     ],
