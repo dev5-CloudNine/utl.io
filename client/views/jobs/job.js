@@ -586,32 +586,42 @@ Template.job.events({
       if(jobDetails.bonusRequested && bonusObject) {
         if(bonusObject.buyer_cost > userWallet.accountBalance) {
           $('.noReqBal').show();
-          $('button.approveAssignment').attr('disabled', 'disabled');
+          $('button.increaseBudget').attr('disabled', 'disabled');
         } else {
           $('.noReqBal').hide();
-          $('button.approveAssignment').removeAttr('disabled', 'disabled');
+          $('button.increaseBudget').removeAttr('disabled', 'disabled');
         }
       }
     }
   },
-  'click button.approveAssignment': function(event, template) {
-    $(event.currentTarget).button('loading');
+  'click button.increaseBudget': function(event, template) {
     event.preventDefault();
+    var approveBonus = $('input[name="bonus_request"]:checked').val();
+  },
+  'click button.approveAssignment': function(event, template) {
+    event.preventDefault();
+    $(event.currentTarget).button('loading');
     var jobId = this._id;
     var providerId = this.assignedProvider;
-    var approveBonus = $('input[name="bonus_request"]:checked').val();
-    if(!approveBonus) {
-      toastr.error('Select whether or not to increase the budget');
-      $(event.currentTarget).button('reset');
-      return;
-    }
-    var bonusObject = BonusRequests.findOne({jobId: Router.current().params._id});
-    Meteor.call('approveAssignment', jobId, providerId, approveBonus, bonusObject, function(error) {
-      if(error) {
+    var bonusRequested = (this.bonusRequested && BonusRequests.findOne({jobId: this._id})? true: false);
+    if(bonusRequested) {
+      var approveBonus = $('input[name="bonus_request"]:checked').val();
+      if(!approveBonus) {
+        toastr.error('Select wheter or not to increase the budget.');
         $(event.currentTarget).button('reset');
-        toastr.error('Failed to approve job. Please try again.');
+        return;
       }
-    });
+      var bonusObject = BonusRequests.findOne({jobId: this._id});
+      Meteor.call('approveAssignment', jobId, providerId, approveBonus, bonusObject, function(error, result) {
+        if(error)
+          $(event.currentTarget).button('reset');
+      });
+    } else {
+      Meteor.call('approveAssignment', jobId, providerId, function(error, result) {
+        if(error)
+          $(event.currentTarget).button('reset');
+      });
+    }
   },
   'click button.rejectAssignment': function(event, template) {
     $(event.currentTarget).button('loading');
@@ -852,7 +862,7 @@ Template.job.events({
         device_rate: $('#device_rate_req').val(),
         max_devices: $('max_devices_req').val(),
         total_amount: $('input[name="total_amount_req"]').val(),
-        buyer_cost: $('buyer_req_cost').val(),
+        buyer_cost: $('#buyer_req_cost').val(),
         jobId: Rouer.current().params._id,
         timeStamp: new Date(),
         request_status: 'pending',
@@ -868,7 +878,7 @@ Template.job.events({
         next_hours: $('#next_hours_req').val(),
         next_max_hours: $('#next_max_hours_req').val(),
         total_amount: $('input[name="total_amount_req"]').val(),
-        buyer_cost: $('buyer_req_cost').val(),
+        buyer_cost: $('#buyer_req_cost').val(),
         jobId: Router.current().params._id,
         timeStamp: new Date(),
         request_status: 'pending',
@@ -881,10 +891,55 @@ Template.job.events({
         $('button.requestIncrease').button('reset');
       }
     });
+  },
+  'submit #extra_expenses': function(event, template) {
+    event.preventDefault();
+    $('button.requestExpense').button('loading');
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var expense_amount = $('input[name="expenseAmount"]').val();
+    var expense_description = "";
+    $('textarea[name="expenseDescription"]').each(function() {
+      expense_description += $(this).val();
+    });
+    var expenseId;
+    if(jobDetails.expenses && jobDetails.expenses.length > 0) {
+      var lastId = jobDetails.expenses[jobDetails.expenses.length - 1].expense_id;
+      expenseId = lastId + 1;
+    } else {
+      expenseId = 1;
+    }
+    var extra_expense_obj = {
+      expense_id: expenseId,
+      expense_amount: expense_amount,
+      expense_description: expense_description,
+      timeStamp: new Date(),
+      request_status: 'pending'
+    }
+    Meteor.call('requestExpense', jobDetails._id, extra_expense_obj, function(error, result) {
+      if(error) {
+        $('button.requestExpense').button('reset');
+      } else {
+        $('input[name="expenseAmount"]').val('');
+        $('textarea[name="expenseDescription"]').val('');
+        $('button.requestExpense').button('reset');
+      }
+    })
+  },
+  'click a.removeExpense': function(event, template) {
+    event.preventDefault();
+    var jobId = Router.current().params._id;
+    var expense_id = $(event.currentTarget).data('expense-id');
+    Meteor.call('removeExpense', jobId, expense_id);
   }
 });
 
 Template.job.helpers({
+  expensesRequested: function() {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    if(jobDetails.expenses && jobDetails.expenses.length > 0)
+      return true;
+    return false;
+  },
   itypes: function() {
     var itypes = [];
     var industryTypes = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
@@ -1124,6 +1179,12 @@ Template.job.helpers({
   "fileList": function(taskID) {
       return Tasks.findOne({ _id: taskID }).files;
   },
+  confirmedOrRejected: function() {
+    var jobDetails = Jobs.findOne({_id: this._id});
+    if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected')
+      return true;
+    return false;
+  },
   show: function(jobID,keepSession) {
     if(!keepSession){
       delete Session.keys.totalHours;
@@ -1179,7 +1240,7 @@ Template.job.helpers({
         }
         return false;
       }
-      if(jobDetails.applicationStatus == 'pending_payment' || jobDetails.applicationStatus == 'completed' || this.applicationStatus == 'paid') {
+      if(jobDetails.applicationStatus == 'paid') {
         return true;
       }
     } else {
@@ -1189,7 +1250,7 @@ Template.job.helpers({
         }
         return false;
       }
-      if(this.applicationStatus == 'pending_payment' || this.applicationStatus == 'completed' || this.applicationStatus == 'paid') {
+      if(this.applicationStatus == 'paid') {
         return true;
       }
     }
@@ -1569,20 +1630,21 @@ Template.job.helpers({
   },
   distance: function() {
     var jobDetails = Jobs.findOne({_id: this._id});
-    var providerDetails = Profiles.findOne({userId: Meteor.userId()});
-    return distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude);
+    if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+      var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+      return distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude);
+    }
+    return;
   },
   bonusRequested: function() {
     var bonusDetails = BonusRequests.findOne({jobId: Router.current().params._id});
-    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
-    if(jobDetails.bonusRequested && bonusDetails)
+    if(bonusDetails)
       return true;
     return false;
   },
   bonusReqDetails: function() {
     var bonusDetails = BonusRequests.findOne({jobId: Router.current().params._id});
-    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
-    if(jobDetails.bonusRequested && bonusDetails) {
+    if(bonusDetails) {
       return bonusDetails;
     }
     return;

@@ -487,24 +487,26 @@ Meteor.methods({
             invoiceId: jobDetails.readableID,
             invoiceStatus: 'paid'
         }
-        if(approveBonus == 'Yes') {
-            Jobs.update({_id: jobId}, {$inc: {projectBudget: bonusObject.total_amount}});
-            Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: parseFloat(-bonusObject.buyer_cost)}});
-            Wallet.update({userId: adminId}, {$inc: {accountBalance: parseFloat(bonusObject.buyer_cost)}});
-            BonusRequests.update({jobId: jobId}, {$set: {request_status: 'accepted'}});
+        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'paid'}});
+        Profiles.update({userId: providerId}, {$addToSet: {paidJobs: jobId}});
+        Profiles.update({userId: providerId}, {$pull: {pendingApproval: jobId}});
+        if(!approveBonus || !bonusObject) {
+            Wallet.update({userId: adminId}, {$inc: {accountBalance: -jobDetails.projectBudget}});
+            Wallet.update({userId: jobDetails.userId}, {$inc: {amountSpent: jobDetails.projectBudget}});
             Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
             Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: jobDetails.projectBudget}});
+        }
+        if(approveBonus == 'Yes') {
+            var budgetJob = Jobs.findOne({_id: bonusObject.jobId});
+            Meteor.call('acceptBudgetIncrease', budgetJob, buyerId, adminId, providerId, bonusObject);
         } else if(approveBonus == 'No') {
             BonusRequests.update({jobId: jobId}, {$set: {request_status: 'rejected'}});
+            Wallet.update({userId: adminId}, {$inc: {accountBalance: -jobDetails.projectBudget}});
+            Wallet.update({userId: jobDetails.userId}, {$inc: {amountSpent: jobDetails.projectBudget}});
             Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
             Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: jobDetails.projectBudget}});
         }
         Invoices.insert(invoiceObject);
-        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'paid'}});
-        Profiles.update({userId: providerId}, {$addToSet: {paidJobs: jobId}});
-        Profiles.update({userId: providerId}, {$pull: {pendingApproval: jobId}});        
-        Wallet.update({userId: adminId}, {$inc: {accountBalance: -jobDetails.projectBudget}});
-        Wallet.update({userId: jobDetails.userId}, {$inc: {amountSpent: jobDetails.projectBudget}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: providerId})),
@@ -513,6 +515,12 @@ Meteor.methods({
             subject: 'Buyer has approved the job.',
             html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has approved the job you submitted.'
         });
+    },
+    acceptBudgetIncrease: function(jobDetails, buyerId, adminId, providerId, bonusObject) {
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: parseFloat(-bonusObject.buyer_cost)}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: parseFloat(bonusObject.buyer_cost)}});
+        Wallet.update({userId: providerId}, {$inc: {accountBalance: parseFloat(jobDetails.projectBudget)}});
     },
     rejectAssignment: function(jobId) {
         var jobDetails = Jobs.findOne({_id: jobId});
@@ -1102,6 +1110,11 @@ Meteor.methods({
     },
     requestBudgetIncrease: function(request_object) {
         BonusRequests.insert(request_object);
-        Jobs.update({_id: request_object.jobId}, {$set: {bonusRequested: true}});
+    },
+    requestExpense: function(jobId, request_object) {
+        Jobs.update({_id: jobId}, {$addToSet: {expenses: request_object}});
+    },
+    removeExpense: function(jobId, expenseId) {
+        Jobs.update({$and: [{_id: jobId}, {'expenses.expense_id': expenseId}]}, {$pull: {'expenses': {'expense_id': expenseId}}});
     }
 });

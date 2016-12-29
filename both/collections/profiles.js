@@ -116,10 +116,10 @@ Profiles.attachSchema(
       label: "Designation *",
       max: 128
     },
-    // socialSecurityNumber: {
-    //   type: String,
-    //   label: "Social Security Number *"
-    // },
+    socialSecurityNumber: {
+      type: String,
+      label: "EIN/SSN Number *"
+    },
     location: {
       type: String
     },

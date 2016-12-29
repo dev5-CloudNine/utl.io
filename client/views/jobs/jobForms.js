@@ -14,7 +14,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 				toastr.error("Update Error:", error);
 			} else {
 				analytics.track("Job Edited");
-        		Router.go('job', {_id: Router.current().params._id});
+				Router.go('job', {_id: Router.current().params._id});
 			}
 		}
 	}

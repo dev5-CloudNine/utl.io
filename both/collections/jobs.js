@@ -580,6 +580,30 @@ Jobs.attachSchema(new SimpleSchema({
       decimal: true,
       optional: true
     },
+    expenses: {
+      type: Array,
+      optional: true
+    },
+    'expenses.$': {
+      type: Object
+    },
+    'expenses.$.expense_id': {
+      type: Number
+    },
+    'expenses.$.expense_amount': {
+      type: Number,
+      decimal: true
+    },
+    'expenses.$.expense_description': {
+      type: String
+    },
+    'expenses.$.timeStamp': {
+      type: Date
+    },
+    'expenses.$.request_status': {
+      type: String,
+      allowedValues: ['pending', 'accepted', 'rejected']
+    },
     proposedBudget: {
       type: Number,
       decimal: true,
@@ -862,10 +886,6 @@ Jobs.attachSchema(new SimpleSchema({
     providerArchived: {
       type: Boolean,
       defaultValue: false
-    },
-    bonusRequested: {
-      type: Boolean,
-      defaultValue: false,
     },
     assignmentStatus: {
       type: String,

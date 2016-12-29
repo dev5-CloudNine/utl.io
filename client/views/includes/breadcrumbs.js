@@ -1,9 +1,20 @@
 Template.breadcrumbs.onCreated(function() {
 	Blaze._allowJavascriptUrls();
-	if(Roles.userIsInRole(Meteor.userId(), ['provider']))
+	if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+		Meteor.subscribe('userWallet', Meteor.userId());
 		Meteor.subscribe('providerInvoices', Meteor.userId());
-	if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
+	}
+	if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+		Meteor.subscribe('userWallet', Meteor.userId());
 		Meteor.subscribe('buyerInvoices', Meteor.userId());
+	}
+	if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+		Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+		Meteor.subscribe('buyerInvoices', Meteor.userId());
+	}
+	if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+		Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+	}
 });
 
 Template.breadcrumbs.helpers({
@@ -21,11 +32,5 @@ Template.breadcrumbs.helpers({
 	},
 	profileCreated: function() {
 		return Meteor.user().isDeveloper || Meteor.user().isBuyer || Meteor.user().isDispatcher || Meteor.user().isAccountant;
-	},
-	buyerHasFavs: function() {
-		var favUsers = Meteor.users.findOne({_id: Meteor.userId()}).favoriteUsers;
-		if(favUsers && favUsers.length > 0)
-			return true;
-		return false;
 	}
 })

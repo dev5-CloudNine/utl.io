@@ -228,10 +228,13 @@ UI.registerHelper('proDeactivatedCount', function() {
 })
 
 UI.registerHelper('userAccountBalance', function() {
+	var accountBalance;
 	if(Roles.userIsInRole(Meteor.userId(), ['accountant', 'dispatcher'])) {
-		return Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+		accountBalance =  Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+	} else {
+		accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 	}
-	return Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+	return +(Math.round(accountBalance + 'e+2') + 'e-2');
 });
 
 UI.registerHelper('teamCount', function() {

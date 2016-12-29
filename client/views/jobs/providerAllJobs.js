@@ -128,6 +128,9 @@ var allJobsOptions = {
                     }
                     return '<span class="budgetFont">' + budget + '</span>';
                 }
+                if(jobDetails.applicationStatus == 'paid') {
+                    return '<span class="budgetFont">' + jobDetails.projectBudget + '</span>';
+                }
             },
             width: '20%',
             responsivePriority: 2
@@ -160,7 +163,7 @@ var allJobsOptions = {
                         }
                         if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected') {
                             Meteor.subscribe('timeSheet', jobDetails._id);
-                            var returnText = '<small>U confirmed. Job assigned. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</small>';
+                            var returnText = '<small>You confirmed. Job assigned. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</small>';
                             if(jobDetails.assignmentStatus == 'rejected') {
                                 returnText = '<small>Rejected job done. Please discuss with the buyer for futher details and submit the job for buyer approval.</small>'
                             }

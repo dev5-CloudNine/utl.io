@@ -37,8 +37,10 @@
 			                                </div>
 			                                <div class="widget-subtitle">
 			                                	<a href="/dispatchers">Dispatchers - {{teamDispatcherCount}}</a> &#124; 
-			                                	<a href="/accountants">Accountants - {{teamAccountantCount}}</a> &#124;
-			                                	<a href="/addTeam">Invite</a>
+			                                	<a href="/accountants">Accountants - {{teamAccountantCount}}</a> 
+			                                	{{#if isInRole 'buyer'}}
+			                                		&#124; <a href="/addTeam">Invite</a>
+			                                	{{/if}}
 			                                </div>
 			                                <div class="widget-title seperator">
 			                                	<a href="/profiles">Providers <span class="badge">{{providerCount}}</span></a>
