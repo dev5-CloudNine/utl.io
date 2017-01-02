@@ -19,6 +19,9 @@ Template.breadcrumbs.onCreated(function() {
 	if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
 		return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
 	}
+	if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+		return Meteor.subscribe('userWallet', Meteor.userId());
+	}
 });
 
 Template.breadcrumbs.helpers({

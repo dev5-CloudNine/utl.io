@@ -834,10 +834,10 @@ Template.job.events({
       request_object = {
         request_type: 'Per Device',
         device_rate: $('#device_rate_req').val(),
-        max_devices: $('max_devices_req').val(),
+        max_devices: $('#max_devices_req').val(),
         total_amount: $('input[name="total_amount_req"]').val(),
         buyer_cost: $('#buyer_req_cost').val(),
-        jobId: Rouer.current().params._id,
+        jobId: Router.current().params._id,
         timeStamp: new Date(),
         request_status: 'pending',
         buyerId: jobDetails.userId,

@@ -167,7 +167,6 @@
                                                 {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
                                                 {{#if fullLocation.mapLink}}
                                                     <br>
-                                                    <button class="btn btn-primary btn-sm" id="loadMap" data-toggle="modal" data-target=".bs-example-modal-lg">View Map</button>
                                                     <a href="https://maps.google.com/maps?saddr={{providerLocation}}&daddr={{fullLocation.formatted_address}}" target="_blank" class="btn btn-primary btn-sm">Get Directions</a>
                                                 {{/if}}
                                                 <hr>
@@ -851,7 +850,21 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td>{{this.request_type}}</td>
+                                                                        <td>
+                                                                            {{this.request_type}}
+                                                                            {{#if $eq request_type 'Fixed Pay'}}
+                                                                                <a href data-balloon="Pay fixed amount of {{fixed_amount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                            {{/if}}
+                                                                            {{#if $eq request_type 'Per Hour'}}
+                                                                                <a href data-balloon="Pay {{hourly_rate}} USD for {{max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                            {{/if}}
+                                                                            {{#if $eq request_type 'Per Device'}}
+                                                                                <a href data-balloon="Pay {{device_rate}} USD for {{max_devices}} devices." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                            {{/if}}
+                                                                            {{#if $eq request_type 'Blended'}}
+                                                                                <a href data-balloon="Pay {{first_hours}} USD for {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                            {{/if}}
+                                                                        </td>
                                                                         <td>{{this.buyer_cost}} USD</td>
                                                                         <td>{{this.total_amount}} USD</td>
                                                                         <td>
@@ -879,7 +892,7 @@
                                                     Grand Total:<br>
                                                     <h5>Your Cost: {{buyerFinalCost}} USD</h5>
                                                     <h5>Provider Earns: {{../projectBudget}} USD</h5>
-                                                    <h5>UTL Comm.: {{utlCommission}} USD (5%)</h5>
+                                                    <h5>UTL Fees: {{utlCommission}} USD (5%)</h5>
                                                     <hr>
                                                     <small><i>* A 5% service fee has been deducted for each payment you accepted.</i></small>
                                                 </div>
@@ -1700,7 +1713,21 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>{{request_type}}</td>
+                                                        <td>
+                                                            {{request_type}}
+                                                            {{#if $eq request_type 'Fixed Pay'}}
+                                                                <a href data-balloon="Pay fixed amount of {{fixed_amount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                            {{/if}}
+                                                            {{#if $eq request_type 'Per Hour'}}
+                                                                <a href data-balloon="Pay {{hourly_rate}} USD for {{max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                            {{/if}}
+                                                            {{#if $eq request_type 'Per Device'}}
+                                                                <a href data-balloon="Pay {{device_rate}} USD for {{max_devices}} devices." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                            {{/if}}
+                                                            {{#if $eq request_type 'Blended'}}
+                                                                <a href data-balloon="Pay {{first_hours}} USD for {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                            {{/if}}
+                                                        </td>
                                                         <td>{{total_amount}} USD</td>
                                                         <td>{{request_status}}</td>
                                                         <td>

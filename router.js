@@ -66,7 +66,6 @@ Router.map(function() {
         title: "UTL - All Jobs",
         waitOn: function() {
             Meteor.subscribe('jobs');
-            Meteor.subscribe('providerInvoices', Meteor.userId());
             return Meteor.subscribe('userWallet', Meteor.userId());
         }
     });
@@ -218,8 +217,7 @@ Router.map(function() {
         path: '/myJobs/assigned',
         title: 'UTL - Assigned Jobs',
         waitOn: function() {
-            Meteor.subscribe('my_jobs');
-            return;
+            return Meteor.subscribe('my_jobs');
         }
     });
 
@@ -236,7 +234,7 @@ Router.map(function() {
         title: 'UTL - Assigned Jobs',
         waitOn: function() {
             Meteor.subscribe('allJobs');
-            Meteor.subscribe('usersTasks');
+            return Meteor.subscribe('usersTasks');
         }
     });
 
@@ -245,7 +243,7 @@ Router.map(function() {
         title: 'UTL - Pending Approval Jobs',
         waitOn: function() {
             Meteor.subscribe('allJobs');
-            Meteor.subscribe('usersTasks');
+            return Meteor.subscribe('usersTasks');
         }
     });
 
@@ -253,7 +251,7 @@ Router.map(function() {
         path: '/deactivatedJobs',
         title: 'UTL - Deactivated Jobs',
         waitOn: function() {
-            Meteor.subscribe('allJobs');
+            return Meteor.subscribe('allJobs');
         }
     });
 
@@ -270,8 +268,7 @@ Router.map(function() {
         path: 'myJobs/deactivatedJobs',
         title: 'UTL - Deactivated Jobs',
         waitOn: function() {
-            Meteor.subscribe('my_jobs');
-            return;
+            return Meteor.subscribe('my_jobs');
         }
     })
 
@@ -280,7 +277,7 @@ Router.map(function() {
         title: 'UTL - Paid Jobs',
         waitOn: function() {
             Meteor.subscribe('allJobs');
-            Meteor.subscribe('reviews');
+            return Meteor.subscribe('reviews');
         }
     })
 
@@ -288,7 +285,7 @@ Router.map(function() {
         path: '/recommendedjobs',
         title: 'UTL - Recommended Jobs',
         waitOn: function() {
-            Meteor.subscribe('allJobs');
+            return Meteor.subscribe('jobs');
         }
     });
 
@@ -296,8 +293,7 @@ Router.map(function() {
         path: '/invitedJobs',
         title: 'UTL - Invited Jobs',
         waitOn: function() {
-            Meteor.subscribe('allJobs')
-            Meteor.subscribe('jobs');
+            return Meteor.subscribe('jobs');
         }
     });
 
@@ -1270,6 +1266,7 @@ Router.map(function() {
             if(invoice) {
                 jobId = invoice.jobId
             }
+            Meteor.subscribe('jobBonusRequest', jobId);
             Meteor.subscribe('job', jobId);
             return Meteor.subscribe('timeSheet', jobId);
         }

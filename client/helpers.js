@@ -77,7 +77,7 @@ UI.registerHelper('unreadMsgCount', function(userId) {
 });
 
 UI.registerHelper('openJobsCount', function() {
-	return Jobs.find({$and: [{invited: false}, {routed: false}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count();
+	return Jobs.find({$and: [{invited: false}, {routed: false}, {status: 'active'}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count();
 });
 
 UI.registerHelper('buyerJobsCount', function() {

@@ -1,5 +1,5 @@
 var openJobs = function() {
-    return Jobs.find({$and: [{invited: false}, {routed: false}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).fetch();
+    return Jobs.find({$and: [{invited: false}, {routed: false}, {status: 'active'}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).fetch();
 }
 
 var distance = function(plat, plng, jlat, jlng) {
