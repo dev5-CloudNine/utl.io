@@ -1,19 +1,23 @@
 Template.breadcrumbs.onCreated(function() {
 	Blaze._allowJavascriptUrls();
 	if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+		Meteor.subscribe('jobs');
+		Meteor.subscribe('allJobs');
 		Meteor.subscribe('userWallet', Meteor.userId());
-		Meteor.subscribe('providerInvoices', Meteor.userId());
+		return Meteor.subscribe('providerInvoices', Meteor.userId());
 	}
 	if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+		Meteor.subscribe('my_jobs');
 		Meteor.subscribe('userWallet', Meteor.userId());
-		Meteor.subscribe('buyerInvoices', Meteor.userId());
+		return Meteor.subscribe('buyerInvoices', Meteor.userId());
 	}
 	if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+		Meteor.subscribe('my_jobs');Accounts.sendEnrollmentEmail(userId, email);
 		Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-		Meteor.subscribe('buyerInvoices', Meteor.userId());
+		return Meteor.subscribe('buyerInvoices', Meteor.userId());
 	}
 	if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
-		Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+		return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
 	}
 });
 

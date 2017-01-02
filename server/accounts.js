@@ -1,9 +1,9 @@
 Meteor.startup(function () {
   smtp = {
-    username : 'utltestsmtp@gmail.com',
-    password : 'keepsmiling',
+    username : 'workorder@ustechland.com',
+    password : 'Password01!$',
     server : 'smtp.gmail.com',
-    port : 465
+    port : 587
   }
 
  process.env.MAIL_URL = 'smtp://' + encodeURIComponent(smtp.username) + ':' + encodeURIComponent(smtp.password) + '@' + encodeURIComponent(smtp.server) + ':' + smtp.port + '/';

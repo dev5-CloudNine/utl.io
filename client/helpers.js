@@ -129,10 +129,10 @@ UI.registerHelper('deactivatedCount', function() {
 
 UI.registerHelper('buyerOpenCount', function(buyerId) {
 	if(buyerId) {
-		return Jobs.find({$and: [{userId: buyerId}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count();
+		return Jobs.find({$and: [{userId: buyerId}, {status: 'active'}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count();
 	} else {
 		if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
-			return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).count();
+			return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}, {status: 'active'}]}).count();
 		}
 	}
 });

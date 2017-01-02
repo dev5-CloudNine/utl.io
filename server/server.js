@@ -422,9 +422,6 @@ Meteor.methods({
             html: 'Hello ' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ',<br>' + providerDetails.firstName + ' ' + providerDetails.lastName + ' has declined the assignment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>The job is now open. <a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to choose a different provider.'
         })
     },
-    requestBonus: function(jobId) {
-        Jobs.update({_id: jobId}, {$set: {bonusRequested: true}});
-    },
     submitAssignment: function(jobId) {
         var providerDetails = Profiles.findOne({userId: Meteor.userId()});
         var jobDetails = Jobs.findOne({_id: jobId});
@@ -457,7 +454,7 @@ Meteor.methods({
             html: 'Hello ' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ',<br>' + providerDetails.firstName + ' ' + providerDetails.lastName + ' has submitted job for approval. <br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to either approve or reject the job done.'
         })
     },
-    approveAssignment: function(jobId, providerId, approveBonus, bonusObject) {
+    approveAssignment: function(jobId, providerId) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var providerDetails = Profiles.findOne({userId: providerId})
         var jobDetails = Jobs.findOne({_id: jobId});
@@ -487,26 +484,14 @@ Meteor.methods({
             invoiceId: jobDetails.readableID,
             invoiceStatus: 'paid'
         }
-        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'paid'}});
-        Profiles.update({userId: providerId}, {$addToSet: {paidJobs: jobId}});
-        Profiles.update({userId: providerId}, {$pull: {pendingApproval: jobId}});
-        if(!approveBonus || !bonusObject) {
-            Wallet.update({userId: adminId}, {$inc: {accountBalance: -jobDetails.projectBudget}});
-            Wallet.update({userId: jobDetails.userId}, {$inc: {amountSpent: jobDetails.projectBudget}});
-            Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
-            Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: jobDetails.projectBudget}});
-        }
-        if(approveBonus == 'Yes') {
-            var budgetJob = Jobs.findOne({_id: bonusObject.jobId});
-            Meteor.call('acceptBudgetIncrease', budgetJob, buyerId, adminId, providerId, bonusObject);
-        } else if(approveBonus == 'No') {
-            BonusRequests.update({jobId: jobId}, {$set: {request_status: 'rejected'}});
-            Wallet.update({userId: adminId}, {$inc: {accountBalance: -jobDetails.projectBudget}});
-            Wallet.update({userId: jobDetails.userId}, {$inc: {amountSpent: jobDetails.projectBudget}});
-            Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
-            Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: jobDetails.projectBudget}});
-        }
         Invoices.insert(invoiceObject);
+        Jobs.update({_id: jobId}, {$set: {assignmentStatus: 'approved', applicationStatus: 'paid'}});
+        Profiles.update({userId: providerId}, {$addToSet: {paidJobs: jobId}});        
+        Profiles.update({userId: providerId}, {$pull: {pendingApproval: jobId}});        
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: -jobDetails.projectBudget}});
+        Wallet.update({userId: jobDetails.userId}, {$inc: {amountSpent: jobDetails.projectBudget}});
+        Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
+        Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: jobDetails.projectBudget}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: providerId})),
@@ -925,7 +910,7 @@ Meteor.methods({
     deactivateJob: function(jobId, buyerId) {
         Jobs.update({_id: jobId}, {$set: {status: 'deactivated'}});
         var jobDetails = Jobs.findOne({_id: jobId});
-        if(jobDetails.applicationStatus == 'open' || jobDetails.applicationStatus == 'frozen') {
+        if(jobDetails.applicationStatus == 'open') {
             if(jobDetails.applications) {
                 for(var i = 0; i < jobDetails.applications.length; i++) {
                     Profiles.update({userId: jobDetails.applications[i].userId}, {$pull: {appliedJobs: jobId}});
@@ -1080,7 +1065,7 @@ Meteor.methods({
         
     },
     'updateBuyerWallet': function(reqAmount, buyerId) {
-        Wallet.update({userId: buyerId}, {$inc: {accountBalance: reqAmount}});
+        Wallet.update({userId: buyerId}, {$inc: {accountBalance: parseFloat(reqAmount)}});
     },
     'sendQueryRequest': function(queryObject) {
         Email.send({
@@ -1111,10 +1096,44 @@ Meteor.methods({
     requestBudgetIncrease: function(request_object) {
         BonusRequests.insert(request_object);
     },
+    cancelBudgetIncrease: function(requestId, jobId) {
+        BonusRequests.remove({$and: [{_id: requestId}, {jobId: jobId}]});
+    },
+    acceptBudgetIncrease: function(budgetObject) {
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        BonusRequests.update({_id: budgetObject._id}, {$set: {request_status: 'accepted'}});
+        Jobs.update({_id: budgetObject.jobId}, {$inc: {projectBudget: budgetObject.total_amount}});
+        Wallet.update({userId: budgetObject.buyerId}, {$inc: {accountBalance: -budgetObject.buyer_cost}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: budgetObject.buyer_cost}});
+    },
+    rejectBudgetIncrease: function(budgetObject) {
+        BonusRequests.update({_id: budgetObject._id}, {$set: {request_status: 'rejected'}});
+    },
     requestExpense: function(jobId, request_object) {
         Jobs.update({_id: jobId}, {$addToSet: {expenses: request_object}});
     },
     removeExpense: function(jobId, expenseId) {
         Jobs.update({$and: [{_id: jobId}, {'expenses.expense_id': expenseId}]}, {$pull: {'expenses': {'expense_id': expenseId}}});
+    },
+    approveExpense: function(jobId, expenseId) {
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        var jobDetails = Jobs.findOne({_id: jobId});
+        var expenseDetails = {};
+        var expenses = Jobs.findOne({_id: jobId}).expenses;
+        if(expenses) {
+            for(var i = 0; i < expenses.length; i++) {
+                if(expenses[i].expense_id == expenseId) {
+                    expenseDetails = expenses[i];
+                    break;
+                }
+            }
+        }
+        Jobs.update({_id: jobId}, {$inc: {projectBudget: expenseDetails.expense_amount}});
+        Jobs.update({$and: [{_id: jobId}, {'expenses.expense_id': expenseId}]}, {$set: {'expenses.$.request_status': 'accepted'}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: expenseDetails.buyer_cost}});
+        Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: -expenseDetails.buyer_cost}});
+    },
+    rejectExpense: function(jobId, expenseId) {
+        Jobs.update({$and: [{_id: jobId}, {'expenses.expense_id': expenseId}]}, {$set: {'expenses.$.request_status': 'rejected'}});
     }
 });

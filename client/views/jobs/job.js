@@ -603,25 +603,10 @@ Template.job.events({
     $(event.currentTarget).button('loading');
     var jobId = this._id;
     var providerId = this.assignedProvider;
-    var bonusRequested = (this.bonusRequested && BonusRequests.findOne({jobId: this._id})? true: false);
-    if(bonusRequested) {
-      var approveBonus = $('input[name="bonus_request"]:checked').val();
-      if(!approveBonus) {
-        toastr.error('Select wheter or not to increase the budget.');
+    Meteor.call('approveAssignment', jobId, providerId, function(error, result) {
+      if(error)
         $(event.currentTarget).button('reset');
-        return;
-      }
-      var bonusObject = BonusRequests.findOne({jobId: this._id});
-      Meteor.call('approveAssignment', jobId, providerId, approveBonus, bonusObject, function(error, result) {
-        if(error)
-          $(event.currentTarget).button('reset');
-      });
-    } else {
-      Meteor.call('approveAssignment', jobId, providerId, function(error, result) {
-        if(error)
-          $(event.currentTarget).button('reset');
-      });
-    }
+    });
   },
   'click button.rejectAssignment': function(event, template) {
     $(event.currentTarget).button('loading');
@@ -749,17 +734,6 @@ Template.job.events({
       }
     });
     event.stopPropagation();
-  },
-  'click .requestBonus': function(event, template) {
-    event.preventDefault();
-    Meteor.call('requestBonus', this._id, function(error, result) {
-      if(!error)
-        $(event.currentTarget).prop('disabled', true);
-    })
-  },
-  'click .approveBonus': function(event, template) {
-    event.preventDefault();
-    console.log(this);
   },
   'click .pay30Usd': function(event, template) {
     $(event.currentTarget).button('loading')
@@ -892,11 +866,25 @@ Template.job.events({
       }
     });
   },
+  'click .cancelBudgetIncrease': function(event, template) {
+    var requestId = this._id;
+    var jobId = this.jobId;
+    Meteor.call('cancelBudgetIncrease', requestId, jobId);
+  },
+  'click .acceptBudgetIncrease': function(event, template) {
+    Meteor.call('acceptBudgetIncrease', this);
+  },
+  'click .rejectBudgetIncrease':function(event, template) {
+    Meteor.call('rejectBudgetIncrease', this);
+  },
+  'click .rejectBudgetIncrease': function(event, template) {
+
+  },
   'submit #extra_expenses': function(event, template) {
     event.preventDefault();
     $('button.requestExpense').button('loading');
     var jobDetails = Jobs.findOne({_id: Router.current().params._id});
-    var expense_amount = $('input[name="expenseAmount"]').val();
+    var expense_amount = parseFloat($('input[name="expenseAmount"]').val());
     var expense_description = "";
     $('textarea[name="expenseDescription"]').each(function() {
       expense_description += $(this).val();
@@ -911,6 +899,7 @@ Template.job.events({
     var extra_expense_obj = {
       expense_id: expenseId,
       expense_amount: expense_amount,
+      buyer_cost: expense_amount + (expense_amount * 5/100),
       expense_description: expense_description,
       timeStamp: new Date(),
       request_status: 'pending'
@@ -930,6 +919,18 @@ Template.job.events({
     var jobId = Router.current().params._id;
     var expense_id = $(event.currentTarget).data('expense-id');
     Meteor.call('removeExpense', jobId, expense_id);
+  },
+  'click a.approveExpense': function(event, template) {
+    event.preventDefault();
+    var jobId = Router.current().params._id;
+    var expense_id = $(event.currentTarget).data('expense-id');
+    Meteor.call('approveExpense', jobId, expense_id);
+  },
+  'click a.rejectExpense': function(event, template) {
+    event.preventDefault();
+    var jobId = Router.current().params._id;
+    var expense_id = $(event.currentTarget).data('expense-id');
+    Meteor.call('rejectExpense', jobId, expense_id);
   }
 });
 
@@ -939,6 +940,30 @@ Template.job.helpers({
     if(jobDetails.expenses && jobDetails.expenses.length > 0)
       return true;
     return false;
+  },
+  buyerFinalCost: function() {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var free_nets = jobDetails.projectBudget;
+    var buyer_nets = free_nets + (free_nets * 5/100);
+    return buyer_nets;
+  },
+  utlCommission: function() {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var free_nets = jobDetails.projectBudget;
+    var buyer_nets = free_nets + (free_nets * 5/100);
+    return +(Math.round((buyer_nets - free_nets) + 'e+2') + 'e-2')
+  },
+  acceptedExpenses: function() {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var acceptedExpenses = [];
+    if(jobDetails.expenses && jobDetails.expenses.length > 0) {
+      for(var i = 0; i < jobDetails.expenses.length; i++) {
+        if(jobDetails.expenses[i].request_status == 'accepted')
+          acceptedExpenses.push(jobDetails.expenses[i]);
+      }
+    }
+    console.log(acceptedExpenses);
+    return acceptedExpenses;
   },
   itypes: function() {
     var itypes = [];
@@ -1299,7 +1324,7 @@ Template.job.helpers({
     var hrs = days*24+hours;
     // var mins = Math.floor(duration.asMinutes()) - hrs * 60;
     var mins = Math.floor(duration.asMinutes()) - hours * 60;
-    var total = "Hours : "+hours+", Mins : "+mins;
+    var total = hours + " hours and " + mins + " minutes";
     if(duration==0) {
       Session.set('totalHours','No activities are done so far');
     } else {

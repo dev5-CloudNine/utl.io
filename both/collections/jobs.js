@@ -151,12 +151,10 @@ Jobs.attachSchema(new SimpleSchema({
     },
     routed: {
       type: Boolean,
-      optional: true,
       defaultValue: false
     },
     invited: {
       type: Boolean,
-      optional: true,
       defaultValue: false
     },
     favoriteProviders: {
@@ -591,6 +589,10 @@ Jobs.attachSchema(new SimpleSchema({
       type: Number
     },
     'expenses.$.expense_amount': {
+      type: Number,
+      decimal: true
+    },
+    'expenses.$.buyer_cost': {
       type: Number,
       decimal: true
     },

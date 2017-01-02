@@ -28,26 +28,29 @@
             <input type="radio" name="publishJob" value="favProviders"> Publish to fav's
         </label>
     </div>
+    <div class="alert alert-info noFavProviders" hidden="true">
+        <strong>You have no favorite providers. <a href="{{pathFor 'profiles'}}">Click here</a> to add favorite providers.</strong>
+    </div>
     <div class="radio">
         <label>
             <input type="radio" name="publishJob" value="selectedProviders"> Publish to chosen providers
         </label>
     </div>
-    <div class="radio">
+    <!-- <div class="radio">
         <label>
             <input type="radio" name="publishJob" value="assignToProvider">Assign to a provider
         </label>
-    </div>
+    </div> -->
     <div id="publishIndividual" class="panel panel-white panel-collapse collapse" hidden>
         <div class="panel-body">
             {{> afQuickField name="invitedproviders"}}
         </div>
     </div>
-    <div id="assignToAProvider" class="panel panel-white panel-collapse collapse" hidden>
+    <!-- <div id="assignToAProvider" class="panel panel-white panel-collapse collapse" hidden>
         <div class="panel-body">
             {{>afQuickField name="individualProvider"}}
         </div>
-    </div>
+    </div> -->
     <button class="btn btn-sm btn-primary" data-balloon="Post job" data-balloon-pos="up" id="submitJob" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
 </template>
 

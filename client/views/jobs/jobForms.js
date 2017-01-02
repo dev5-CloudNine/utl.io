@@ -452,8 +452,8 @@ Template.jobFields.helpers({
 
 Template.submitButtons.events({
 	'change input[name="publishJob"]': function(event, template) {
-		var publishTo = $(event.currentTarget).val()
-		console.log(publishTo)
+		var publishTo = $(event.currentTarget).val();
+		console.log(publishTo);
 		if(publishTo == 'selectedProviders')
 			$('#publishIndividual').show();
 		else
@@ -462,9 +462,19 @@ Template.submitButtons.events({
 			$('#assignToAProvider').show();
 		else
 			$('#assignToAProvider').hide();
+		if(publishTo == 'favProviders') {
+			var favoriteUsers = Meteor.users.findOne({_id: Meteor.userId()}).favoriteUsers;
+			if(!favoriteUsers || favoriteUsers.length < 1) {
+				$('.noFavProviders').show();
+				$('#submitJob').attr('disabled', 'disabled');
+			} else {
+				$('.noFavProviders').hide();
+				$('#submitJob').removeAttr('disabled');
+			}
+		}
 	},
 	'click #submitJob': function(event, template) {
-		var publishTo = $('input[name="publishJob"]:checked').val()
+		var publishTo = $('input[name="publishJob"]:checked').val();
 		if(publishTo == 'favProviders') {
 			$(event.currentTarget).button('loading');
 			Session.set('publishToFav', true);
@@ -505,39 +515,45 @@ Template.submitButtons.events({
 				})
 			})
 		}
-		else if(publishTo == 'assignToProvider'){
-			Session.set('assignToIndividual', true);
-			$(event.currentTarget).button('loading');
-			Jobs.before.insert(function(userId, doc) {
-				doc.selectedProvider = "";
-				doc.selectedProvider = $('select[name="individualProvider"]').val();
-				doc.applications = [];
-				var appDetails = {
-					userId: doc.selectedProvider,
-					applied_at: new Date(),
-					app_status: 'accepted',
-					app_type: 'application'
-				}
-				doc.applicationStatus = 'assigned';
-				doc.assignmentStatus = 'not_confirmed'
-				doc.applications.push(appDetails);
-				doc.routed = true;
-			});
-			Jobs.after.insert(function(userId, doc) {
-				if(!Session.get('assignToIndividual')) {
-					return;
-					$(event.currentTarget).button('reset');
-				}
-				Meteor.call('routeNotification', Meteor.userId(), doc, function(error) {
-					if(error) {
-						toastr.error('Failed to route job.');
-						$(event.currentTarget).button('reset');
-					} else {
-						delete Session.keys['assignToIndividual'];
-					}
-				})
-			})
-		}
+		// else if(publishTo == 'assignToProvider'){
+		// 	Session.set('assignToIndividual', true);
+		// 	$(event.currentTarget).button('loading');
+		// 	var selectedProvider = $('select[name="individualProvider"]').val();
+		// 	var appDetails = {
+		// 		userId: selectedProvider,
+		// 		applied_at: new Date(),
+		// 		app_status: 'accepted',
+		// 		app_type: 'application'
+		// 	}
+		// 	// Jobs.before.insert(function(userId, doc) {
+		// 	// 	doc.applications = [];
+		// 	// 	var appDetails = {
+		// 	// 		userId: selectedProvider,
+		// 	// 		applied_at: new Date(),
+		// 	// 		app_status: 'accepted',
+		// 	// 		app_type: 'application'
+		// 	// 	}
+		// 	// 	doc.applicationStatus = 'assigned';
+		// 	// 	doc.assignmentStatus = 'not_confirmed'
+		// 	// 	doc.applications.push(appDetails);
+		// 	// 	doc.routed = true;
+		// 	// });
+		// 	Jobs.after.insert(function(userId, doc) {
+		// 		if(!Session.get('assignToIndividual')) {
+		// 			return;
+		// 			$(event.currentTarget).button('reset');
+		// 		}
+		// 		Meteor.call('routeNotification', Meteor.userId(), appDetails, doc, function(error) {
+		// 			if(error) {
+		// 				toastr.error('Failed to assign job.');
+		// 				$(event.currentTarget).button('reset');
+		// 			} else {
+		// 				selectedProvider = '';
+		// 				delete Session.keys['assignToIndividual'];
+		// 			}
+		// 		})
+		// 	})
+		// }
 	}
 })
 

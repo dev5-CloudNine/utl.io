@@ -1,5 +1,5 @@
 var openJobs = function() {
-    return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}]}).fetch();
+    return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}, {status: 'active'}]}).fetch();
 }
 
 var openJobsOptions = {

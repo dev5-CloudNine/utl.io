@@ -27,6 +27,11 @@
                             </div>
                         {{else}}
                             <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="alert alert-info">
+                                        <p>In this step, we'll be hooking up your bank account with the platform by processing instant account verification (IAV). All data transfer is via secure connection.</p>
+                                    </div>
+                                </div>
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <script src="https://cdn.dwolla.com/1/dwolla.js"></script>
@@ -41,9 +46,12 @@
                             </div>
                         {{/if}}
                     {{else}}
-                        <h4>Create Dwolla Account</h4>
+                        <h4>Attach Bank Account</h4>
                         {{#if currentUser.isBuyer}}
-                            <button class="btn btn-sm btn-primary" id="register_dwolla" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Create Dwolla Customer</button>
+                            <div class="alert alert-info">
+                                <p>This is the first step towards attaching your bank account to this platform. This will enable your to withdraw funds you earned in this platform directly into your bank account. All data transfer is via secure connection.</p>
+                            </div>
+                            <button class="btn btn-sm btn-primary" id="register_dwolla" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Start</button>
                         {{else}}
                             You need to create your profile before registering with Dwolla. <a href="{{pathFor 'buyerNew'}}">Click here</a> to create your buyer profile.
                         {{/if}}

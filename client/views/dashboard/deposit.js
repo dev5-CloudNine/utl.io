@@ -140,7 +140,8 @@ Template.deposit.events({
 			walletDetails = Wallet.findOne({userId: Meteor.userId()});
 		else if(Roles.userIsInRole(Meteor.userId(), ['accountant']))
 			walletDetails = Wallet.findOne({userId: Meteor.user().invitedBy});
-		var reqAmount = $('input#requestAmount').val()
+		var reqAmount = $('input#dwolla_amount').val();
+		console.log(reqAmount);
 		$('.enoughBalance').hide();
 		var fundingSourceUrl = walletDetails.fundingSourceUrl;
 		Meteor.call('initiatePayment', fundingSourceUrl, walletDetails.userId, reqAmount, function(error, result) {
