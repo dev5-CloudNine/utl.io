@@ -20,6 +20,7 @@ Template.breadcrumbs.onCreated(function() {
 		return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
 	}
 	if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+		Meteor.subscribe('invoices', Meteor.userId());
 		return Meteor.subscribe('userWallet', Meteor.userId());
 	}
 });
@@ -40,4 +41,16 @@ Template.breadcrumbs.helpers({
 	profileCreated: function() {
 		return Meteor.user().isDeveloper || Meteor.user().isBuyer || Meteor.user().isDispatcher || Meteor.user().isAccountant;
 	}
+});
+
+Template.breadcrumbs.events({
+	'click .authUrl' : function(){
+		Meteor.call('authUrl', Meteor.userId(), function (error, result) {
+			if(error){
+				console.log(error);
+				return;
+			}
+			window.location = result;
+		});
+	},
 })

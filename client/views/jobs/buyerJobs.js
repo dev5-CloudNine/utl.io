@@ -7,7 +7,7 @@
 
 var buyerJobs = function() {
 	var buyerId = Buyers.findOne({_id: Router.current().params._id}).userId;
-    return Jobs.find({$and: [{invited: false}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}, {userId: buyerId}]}).fetch();
+    return Jobs.find({$and: [{invited: false}, {routed: false}, {status: 'active'}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}, {userId: buyerId}]}).fetch();
 }
 
 var buyerJobsOptions = {

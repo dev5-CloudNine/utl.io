@@ -1,3 +1,29 @@
+UI.registerHelper('allDeactivatedCount', function() {
+	if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+		return Jobs.find({status: 'deactivated'}).count();
+	}
+});
+
+UI.registerHelper('allCompletedJobs', function() {
+	if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+		return Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'paid'}]}).count();
+	}
+});
+
+UI.registerHelper('allInvoicesCount', function() {
+	if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+		return Invoices.find().count();
+	}
+})
+
+UI.registerHelper('allAssignedJobs', function() {
+	return Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'assigned'}]}).count();
+});
+
+UI.registerHelper('allOpenJobs', function() {
+	return Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'Open'}]}).count();
+});
+
 UI.registerHelper("formatDate", function(timestamp) {
 	if(timestamp)
 		return moment(timestamp).format('LLLL');
@@ -51,10 +77,18 @@ UI.registerHelper('myProfile', function() {
 
 UI.registerHelper('providerCount', function() {
 	return Profiles.find().count();
+});
+
+UI.registerHelper('dispatcherCount', function() {
+	return Dispatchers.find().count();
 })
 
 UI.registerHelper('buyerCount', function() {
 	return Buyers.find().count();
+});
+
+UI.registerHelper('accountantCount', function() {
+	return Accountants.find().count();
 })
 
 UI.registerHelper('favUserCount', function() {
@@ -129,7 +163,7 @@ UI.registerHelper('deactivatedCount', function() {
 
 UI.registerHelper('buyerOpenCount', function(buyerId) {
 	if(buyerId) {
-		return Jobs.find({$and: [{userId: buyerId}, {status: 'active'}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count();
+		return Jobs.find({$and: [{userId: buyerId}, {invited: false}, {routed: false}, {status: 'active'}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count();
 	} else {
 		if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
 			return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'open'}, {status: 'active'}]}).count();

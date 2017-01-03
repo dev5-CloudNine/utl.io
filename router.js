@@ -1181,7 +1181,7 @@ Router.map(function() {
             var code = this.request.query.code;
             Meteor.call("finishAuth", code, userId);
             this.response.writeHead(302, {
-                'Location': '/payment'
+                'Location': '/dashboard'
             });
             this.response.end();
         }

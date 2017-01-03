@@ -757,6 +757,7 @@ Template.job.events({
   },
   'submit #reviewProvider': function(event, template) {
     event.preventDefault();
+    $('.submitProReview').button('loading');
     var providerId = this.assignedProvider;
     var buyerId = this.userId;
     var jobId = this._id;
@@ -772,13 +773,13 @@ Template.job.events({
     Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, timeAttention, instructionAttention, deliverableAttention, ratedPoints, reviewMessage, function(error) {
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
-      } else {
-        toastr.success('Submitted the review successfully.');
+        $('.submitProReview').button('reset');
       }
     })
   },
   'submit #reviewBuyer': function(event, template) {
     event.preventDefault();
+    $('.submitBuyerReview').button('loading')
     var providerId = this.assignedProvider;
     var buyerId = this.userId;
     var jobId = this._id;
@@ -792,8 +793,7 @@ Template.job.events({
     Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, experience, ratedPoints, reviewMessage, function(error) {
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
-      } else {
-        toastr.success('Submitted the review successfully.');
+        $('.submitBuyerReview').button('reset');
       }
     })
   },

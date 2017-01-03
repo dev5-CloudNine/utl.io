@@ -22,9 +22,6 @@ Template.buyer.helpers({
       }
     });
   },
-  readableId: function() {
-    return (Users.findOne({_id: this.userId}).readableID);
-  },
   customImageUrl: function(){
     return Meteor.users.findOne({_id: this.userId}).imgURL;
   },
@@ -120,7 +117,7 @@ Template.buyer.rendered = function() {
   var reviews = Reviews.find({$and: [{buyerId: this.data.userId}, {reviewedBy: 'provider'}]}).fetch();
   if(reviews) {
     for(var i = 0; i < reviews.length; i++) {
-      points += reviews[i].pointsRated;
+      points += parseInt(reviews[i].pointsRated);
     }
   }
   var ratingPoints = points/reviews.length;

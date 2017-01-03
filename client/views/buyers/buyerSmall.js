@@ -63,7 +63,7 @@ Template.buyerSmall.rendered = function() {
 	var reviews = Reviews.find({$and: [{buyerId: this.data.userId}, {reviewedBy: 'provider'}]}).fetch();
 	if(reviews) {
 		for (var i = 0; i < reviews.length; i++) {
-			points += reviews[i].pointsRated;
+			points += parseInt(reviews[i].pointsRated);
 		}
 	}
 	var reviewPoints = points/reviews.length;

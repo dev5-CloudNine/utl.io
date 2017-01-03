@@ -3,8 +3,8 @@ var allJobs = function() {
 }
 
 var allJobsObject = {
-	lengthMenu: [10, 25, 50, 100],
-	pageLength: 10,
+	lengthMenu: [40, 80, 160, 320],
+	pageLength: 40,
 	order: [[0, 'desc']],
 	columns: [
 		{
@@ -57,6 +57,9 @@ var allJobsObject = {
 		{
 			title: 'Job Status',
 			data: function(jobDetails) {
+				if(jobDetails.status == 'deactivated') {
+					return 'Deactivated';
+				}
 				return jobDetails.applicationStatus;
 			},
 			width: '10%'

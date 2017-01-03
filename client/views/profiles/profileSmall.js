@@ -60,7 +60,7 @@ Template.profileSmall.rendered = function () {
 	var reviews = Reviews.find({$and: [{providerId: this.data.userId}, {reviewedBy: 'buyer'}]}).fetch();
 	if(reviews) {
 		for(var i = 0; i < reviews.length; i++) {
-			points += reviews[i].pointsRated;
+			points += parseInt(reviews[i].pointsRated);
 		}
 	}
 	var reviewPoints = points/reviews.length;

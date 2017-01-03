@@ -3,8 +3,8 @@ var invoices = function() {
 }
 
 var allInvoicesObject = {
-	lengthMenu: [10, 25, 50, 100],
-	pageLength: 10,
+	lengthMenu: [40, 80, 160, 320],
+	pageLength: 40,
 	order: [[0, 'desc']],
 	columns: [
 		{

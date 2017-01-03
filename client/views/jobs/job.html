@@ -63,9 +63,9 @@
                                                 {{else}}
                                                     {{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
                                                 {{/if}}
-                                            {{/if}}
-                                            {{#if isInRole 'provider'}}
-                                                [{{distance}} pont to point]
+                                                {{#if isInRole 'provider'}}
+                                                    [{{distance}} point to point]
+                                                {{/if}}
                                             {{/if}}
                                         </small>
                                     </div>
@@ -634,7 +634,7 @@
                                                     <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control" required></textarea><br>
                                                     <!-- <span class="rateit" id="rateProvider"></span> -->
                                                 </div>
-                                                <button class="margin-top-5 btn btn-sm btn-primary" type="submit">Submit</button>
+                                                <button class="margin-top-5 btn btn-sm btn-primary submitProReview" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
                                             </form>
                                         {{/if}}
                                     {{/if}}
@@ -1506,7 +1506,7 @@
                                                     </div>
                                                     <!-- <label>Rate buyer</label><br>
                                                     <span class="rateit" id="rateBuyer"></span><br> -->
-                                                    <button class="margin-top-5 btn btn-primary btn-sm" type="submit">Submit</button>
+                                                    <button class="margin-top-5 btn btn-primary btn-sm submitBuyerReview" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
                                                 </form>
                                             {{/if}}
                                         {{else}}

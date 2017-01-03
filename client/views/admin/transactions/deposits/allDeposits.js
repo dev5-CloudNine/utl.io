@@ -3,6 +3,8 @@ var allDeposits = function() {
 }
 
 var adminOptionsObject = {
+	lengthMenu: [40, 80, 160, 320],
+	pageLength: 40,
 	columns: [
 		{
 			title: 'Transaction Id',

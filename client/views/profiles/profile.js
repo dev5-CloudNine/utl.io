@@ -3,9 +3,6 @@ Template.profile.helpers({
     if (interestedIn)
       return interestedIn.split(",");
   },
-  readableId: function() {
-    return (Users.findOne({_id: this.userId}).readableID);
-  },
   fav : function() {
     return Meteor.users.findOne({$and:[{_id:Meteor.userId()},{favoriteUsers: {$in: [this.userId]}}]})?true:false;
   },
@@ -126,7 +123,7 @@ Template.profile.rendered = function() {
   var reviews = Reviews.find({$and: [{providerId: this.data.userId}, {reviewedBy: 'buyer'}]}).fetch();
   if(reviews) {
     for(var i = 0; i < reviews.length; i++) {
-      points += reviews[i].pointsRated
+      points += parseInt(reviews[i].pointsRated)
     }
   }
   var ratingPoints = points/reviews.length;

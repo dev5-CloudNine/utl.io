@@ -137,38 +137,58 @@
 					{{/if}}
 					{{#if isInRole 'admin'}}
 		                <div class="row spacer-top">
-		                    <div class="col-md-3">
+		                    <div class="col-md-6">
 		                        <div class="widget widget-default widget-item-icon">
-		                            <a href="/allUsers">
-		                                <div class="widget-data">
-		                                    <div class="widget-int num-count">{{getPublishedCount 'userCount'}}</div>
-		                                    <div class="widget-title">Profiles</div>
-		                                    <div class="widget-subtitle">{{buyerCount}} Buyers &#124; {{providerCount}} Providers</div>
-		                                </div>
-		                            </a>
+		                            <div class="widget-data">
+		                                <a href="/allUsers">
+		                                	<div class="widget-title">
+		                                		Users <span class="badge">{{getPublishedCount 'userCount'}}</span>
+		                                	</div>
+		                                    <div class="widget-subtitle">
+		                                    	Buyers - {{buyerCount}} &#124; 
+		                                    	Providers - {{providerCount}} &#124; 
+		                                    	Dispatchers - {{dispatcherCount}} &#124; 
+		                                    	Accountants - {{accountantCount}} &#124; 
+		                                    	Admin - 1
+		                                    </div>
+		                                </a>
+		                            </div>
+		                            <div class="widget-data">
+		                            	<a href="/allJobs">
+			                            	<div class="widget-title seperator">
+		                                    	Jobs <span class="badge">{{getPublishedCount 'adminJobs'}}</span> &#124; <a href="/allInvoices">Invoices <span class="badge">{{allInvoicesCount}}</span></a>
+		                                    </div>
+		                                    <div class="widget-subtitle">
+		                                    	Open - {{allOpenJobs}} &#124; 
+		                                    	Assigned - {{allAssignedJobs}} &#124; 
+		                                    	Paid - {{allCompletedJobs}} &#124;  
+		                                    	Deactivated - {{allDeactivatedCount}}
+		                                    </div>
+			                            </a>
+		                            </div>
 		                        </div>
 		                    </div>
 		                    <div class="col-md-3">
 		                        <div class="widget widget-default widget-item-icon">
-		                            <a href="/allJobs">                            
-		                                <div class="widget-data">
-		                                    <div class="widget-int num-count">{{getPublishedCount 'adminJobs'}}</div>
-		                                    <div class="widget-title">Jobs Posted</div>
-		                                    <div class="widget-subtitle">{{getPublishedCount 'allCompletedJobs'}} Completed &#124; {{allDeactivatedCount}} Deactivated</div>
-		                                </div>
-		                            </a>
+	                                <div class="widget-data">
+	                                	<div class="widget-title">
+	                                		Dwolla
+	                                	</div>
+	                                	<div class="widget-subtitle">
+	                                		<a href="{{pathFor 'dwollaCustomers'}}">Customers</a> &#124;
+	                                		<a href="{{pathFor 'dwollaTransfers'}}">Transfers</a> &#124;
+	                                		<a href="" class="authUrl">Login to Dwolla</a>
+	                                	</div>
+	                                </div>
+	                                <div class="widget-data">
+	                                	<div class="widget-title seperator">
+	                                		Payezee
+	                                	</div>
+	                                	<div class="widget-subtitle">
+	                                		<a href="{{pathFor 'allDeposits'}}">Deposits</a>
+	                                	</div>
+	                                </div>
 		                        </div>     
-		                    </div>
-		                    <div class="col-md-3">
-		                        <div class="widget widget-default widget-item-icon">
-		                            <a href="">
-		                                <div class="widget-data">
-		                                    <div class="widget-int num-count">20</div>
-		                                    <div class="widget-title">Bank Transactions</div>
-		                                    <div class="widget-subtitle">8 Withdrawls &#124; 12 Deposits</div>
-		                                </div>
-		                            </a>
-		                        </div>
 		                    </div>
 		                    <div class="col-md-3">
 		                        <div class="widget widget-info widget-padding-sm">
