@@ -32,7 +32,11 @@ Template.profile.helpers({
     return Meteor.users.findOne({_id: this.userId}).imgURL;
   },
   resumeURL: function() {
-    return Meteor.users.findOne({_id: this.userId}).resumeURL[0];
+    var user = Meteor.users.findOne({_id: this.userId});
+    if(user.resumeURL && user.resumeURL.length > 0) {
+      return user.resumeURL[0];
+    }
+    return;
   },
   itypes: function() {
     var itypes = [];
@@ -101,8 +105,6 @@ Template.profile.events({
     Meteor.call('deactivateProviderProfile', this.userId, function(error) {
       if(error) {
         toastr.error('Failed to deactivate profile');
-      } else {
-        toastr.success('Deactivated profiles successfully.');
       }
     })
   },
@@ -111,8 +113,6 @@ Template.profile.events({
     Meteor.call('activateProviderProfile', this.userId, function(error) {
       if(error) {
         toastr.error('Failed to deactivate profile');
-      } else {
-        toastr.success('Deactivated profiles successfully.');
       }
     })
   }

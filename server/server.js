@@ -776,70 +776,24 @@ Meteor.methods({
     adminSetJobStatus: function(jobId, status) {
         check(jobId, String);
         check(status, String);
-
         var job = Jobs.findOne({
             _id: jobId
         });
         if (!job)
             throw new Meteor.Error("Could not find job.");
-
         if (!Roles.userIsInRole(this.userId, ['admin']))
             throw new Meteor.Error("Only admins can set job status");
-
         var setObject = {
             status: status
         };
         
         if (Meteor.isServer && status === "active" && job.featured())
             setObject.featuredThrough = moment().add(30,"days").toDate();
-
         Jobs.update({
             _id: jobId
         }, {
             $set: setObject
         });
-
-    },
-    createFeaturedJobCharge: function(tokenId, jobId) {
-        check(tokenId, String);
-        check(jobId, String);
-
-        var job = Jobs.findOne({_id:jobId});
-        if(!job)
-            throw new Meteor.Error("Could not find job.");
-
-        if(job.userId !== this.userId)
-            throw new Meteor.Error("You can only pay for you own job post.");
-
-        if(Meteor.isServer){
-            // var result = Stripe.charges.create({
-            //  source:tokenId,
-            //  amount:10000,
-            //  currency:"usd",
-            //  description:"We Work Meteor - Featured Job Post - 30 Days"
-            // });
-
-            // if(result && result.status === "succeeded"){
-            //  Jobs.update({_id:job._id},{
-            //      $set:{
-            //          featuredThrough:moment().add(30,"days").toDate()
-            //      },
-            //      $push:{
-            //          featuredChargeHistory:result.id
-            //      }
-            //  });
-            // }else{
-            //  throw new Meteor.Error("Payment Failed!");
-            // }
-        }else{
-            Jobs.update({
-                _id: jobId
-            }, {
-                $set: {
-                    featuredThrough: moment().add(30, "days").toDate()
-                }
-            });
-        }
     },
     updateTask: function(id,obj){
         Tasks.update({'_id':id},{$set:{'state':obj.state,'comments':obj.comments}});
@@ -1093,21 +1047,33 @@ Meteor.methods({
         fut.wait();
         return fut.value;
     },
-    requestBudgetIncrease: function(request_object) {
-        BonusRequests.insert(request_object);
+    requestBudgetIncrease: function(jobId, request_object) {
+        Jobs.update({_id: jobId}, {$addToSet: {budgetIncreases: request_object}});
     },
     cancelBudgetIncrease: function(requestId, jobId) {
-        BonusRequests.remove({$and: [{_id: requestId}, {jobId: jobId}]});
+        Jobs.update({$and: [{_id: jobId}, {'budgetIncreases.request_id': requestId}]}, {$pull: {'budgetIncreases': {'request_id': requestId}}});
     },
-    acceptBudgetIncrease: function(budgetObject) {
+    acceptBudgetIncrease: function(jobId, requestId) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
-        BonusRequests.update({_id: budgetObject._id}, {$set: {request_status: 'accepted'}});
-        Jobs.update({_id: budgetObject.jobId}, {$inc: {projectBudget: budgetObject.total_amount}});
-        Wallet.update({userId: budgetObject.buyerId}, {$inc: {accountBalance: -budgetObject.buyer_cost}});
-        Wallet.update({userId: adminId}, {$inc: {accountBalance: budgetObject.buyer_cost}});
+        var jobDetails = Jobs.findOne({_id: jobId});
+        var budgetDetails = {};
+        var increases = jobDetails.budgetIncreases;
+        if(increases) {
+            for(var i = 0; i < increases.length; i++) {
+                if(increases[i].request_id == requestId) {
+                    budgetDetails = increases[i];
+                    break;
+                }
+            }
+        }
+        Jobs.update({_id: jobId}, {$inc: {projectBudget: budgetDetails.total_amount}});
+        Jobs.update({$and: [{_id: jobId}, {'budgetIncreases.request_id': requestId}]}, {$set: {'budgetIncreases.$.request_status': 'accepted'}});
+        Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: -budgetDetails.buyer_cost}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: budgetDetails.buyer_cost}});
     },
-    rejectBudgetIncrease: function(budgetObject) {
-        BonusRequests.update({_id: budgetObject._id}, {$set: {request_status: 'rejected'}});
+    rejectBudgetIncrease: function(jobId, requestId) {
+        Jobs.update({$and: [{_id: jobId}, {'budgetIncreases.request_id': requestId}]}, {$set: {'budgetIncreases.$.request_status': 'rejected'}})
+        // BonusRequests.update({_id: budgetObject._id}, {$set: {request_status: 'rejected'}});
     },
     requestExpense: function(jobId, request_object) {
         Jobs.update({_id: jobId}, {$addToSet: {expenses: request_object}});
@@ -1119,7 +1085,7 @@ Meteor.methods({
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var jobDetails = Jobs.findOne({_id: jobId});
         var expenseDetails = {};
-        var expenses = Jobs.findOne({_id: jobId}).expenses;
+        var expenses = jobDetails.expenses;
         if(expenses) {
             for(var i = 0; i < expenses.length; i++) {
                 if(expenses[i].expense_id == expenseId) {

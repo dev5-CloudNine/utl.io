@@ -182,9 +182,47 @@
                     </div>
                     <div id="educationQul" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <div class="row">
+                            <div class="row">                                
+                                {{#afEachArrayItem name="educationDetails"}}
+                                    <div class="col-xs-12">
+                                        <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span></button>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="panel panel-white">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            {{>afQuickField name=this.current.university}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-6">
+                                                        <div class="form-group">
+                                                            {{>afQuickField name=this.current.degree}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-6">
+                                                        <div class="form-group">
+                                                            {{>afQuickField name=this.current.major}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-6">
+                                                        <div class="form-group">
+                                                            {{>afQuickField name=this.current.startTime}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-6">
+                                                        <div class="form-group">
+                                                            {{>afQuickField name=this.current.endTime}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/afEachArrayItem}}
                                 <div class="col-xs-12">
-                                    {{>afQuickField name="educationDetails" rows=8 placeholder="Enter your education details."}}
+                                    <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="educationDetails"><span class="glyphicon glyphicon-plus"></span></button>
                                 </div>
                             </div>
                         </div>

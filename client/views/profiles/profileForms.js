@@ -68,9 +68,6 @@ Template.profileFields.events({
           Meteor.call('updateImgURL', Meteor.userId(), imgUrl, function(error, result) {
             if(error)
               toastr.error("Failed to update.");
-            else {
-              toastr.success('Successfully updated.');
-            }
           })
         }
       })

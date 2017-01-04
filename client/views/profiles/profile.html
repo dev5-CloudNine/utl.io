@@ -118,7 +118,13 @@
 								{{#if educationDetails}}
 									<hr>
 									<h4>Education Details</h4>
-									<p>{{{htmlEducationDetails}}}</p>
+									{{#each educationDetails}}
+										University: {{this.university}} <br>
+										Degree: {{this.degree}} <br>
+										Major: {{this.major}} <br>
+										Starting: {{formatServiceSchedule this.startTime}} <br>
+										Ending: {{formatServiceSchedule this.endTime}} <br>
+									{{/each}}
 								{{/if}}
 								{{#if certifications}}
 									<hr>
@@ -128,17 +134,19 @@
 								{{#if languages}}
 									<hr>
 									<h4>Languages Known</h4>
-									<ul>
+									<ul class="list-unstyled">
 										{{#each languages}}
 											<li>{{level}} in {{language}}</li>
 										{{/each}}
 									</ul>
 								{{/if}}
-								{{#if files}}
+								{{#if resumeURL}}
 									<hr>
 									<h4>Resume</h4>
-									<ul style="list-style: none">
-										<li><a href="{{files}}" download>{{files}}</a></li>
+									<ul class="list-unstyled">
+										{{#with resumeURL}}
+											<li><a href="{{file_url}}" download>{{file_name}}</a></li>
+										{{/with}}
 									</ul>
 								{{/if}}
 							</div>
@@ -160,29 +168,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- <div class="panel panel-default panel-white #providerReviews">
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-sm-12">
-						<h5>Job History and Feedback</h5>
-						{{#if providerCompletedJobs}}
-							<ul class="list-group">
-								{{#each providerCompletedJobs}}
-									<li class="list-group-item">
-										<a href="{{pathFor 'job'}}">{{this.title}}</a>
-										{{#with reviews}}
-											<h5>Review</h5>
-											<span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly=true></span> <br>
-											Message: {{this.reviewMessage}}
-										{{/with}}
-									</li>
-								{{/each}}
-							</ul>
-						{{/if}}
-					</div>
-				</div>
-			</div>
-		</div> -->
 		{{>userReviews userId=userId}}
 	</div>
 	{{else}}

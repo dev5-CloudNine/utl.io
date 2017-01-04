@@ -1,6 +1,4 @@
 Jobs = new Mongo.Collection("jobs");
-
-// SimpleSchema.debug = true;
 AddressSchema = new SimpleSchema({
   street: {
     type: String,
@@ -603,6 +601,80 @@ Jobs.attachSchema(new SimpleSchema({
       type: Date
     },
     'expenses.$.request_status': {
+      type: String,
+      allowedValues: ['pending', 'accepted', 'rejected']
+    },
+    budgetIncreases: {
+      type: Array,
+      optional: true
+    },
+    'budgetIncreases.$': {
+      type: Object
+    },
+    'budgetIncreases.$.request_id': {
+      type: Number,
+      optional: true
+    },
+    'budgetIncreases.$.request_type': {
+      type: String,
+      optional: true
+    },
+    'budgetIncreases.$.fixed_amount': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'budgetIncreases.$.hourly_rate': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'budgetIncreases.$.max_hours': {
+      type: Number,
+      optional: true
+    },
+    'budgetIncreases.$.device_rate': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'budgetIncreases.$.max_devices': {
+      type: Number,
+      optional: true
+    },
+    'budgetIncreases.$.first_hours': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'budgetIncreases.$.first_max_hours': {
+      type: Number,
+      optional: true
+    },
+    'budgetIncreases.$.next_hours': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'budgetIncreases.$.next_max_hours': {
+      type: Number,
+      optional: true
+    },
+    'budgetIncreases.$.total_amount': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'budgetIncreases.$.buyer_cost': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    'budgetIncreases.$.timeStamp': {
+      type: Date,
+      optional: true
+    },
+    'budgetIncreases.$.request_status': {
       type: String,
       allowedValues: ['pending', 'accepted', 'rejected']
     },

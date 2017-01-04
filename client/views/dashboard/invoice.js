@@ -12,19 +12,6 @@ Template.invoice.helpers({
 		var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
 		return Jobs.findOne({_id: invoiceDetails.jobId});
 	},
-	// budgetDetails: function(jobId) {
-	// 	var applicationObj;
-	// 	var jobDetails = Jobs.findOne({_id: jobId});
-	// 	if(jobDetails.applications) {
-	// 		for(var i = 0; i < jobDetails.applications.length; i++) {
-	// 			if(jobDetails.applications[i].app_status == 'accepted') {
-	// 				applicationObj = jobDetails.applications[i];
-	// 				break;
-	// 			}
-	// 		}
-	// 	}
-	// 	return applicationObj;
-	// },
 	budgetDetails: function(jobId) {
 		var applicationDetails = {};
 		var jobDetails = Jobs.findOne({_id: jobId})
@@ -114,8 +101,8 @@ Template.invoice.helpers({
 		return false;
 	},
 	bonusRequested: function(jobId) {
-		var bonusDetails = BonusRequests.findOne({jobId: jobId});
-		if(bonusDetails)
+		var bonusDetails = Jobs.findOne({_id: jobId}).budgetIncreases;
+		if(bonusDetails && bonusDetails.length > 0)
 			return true;
 		return false;
 	},

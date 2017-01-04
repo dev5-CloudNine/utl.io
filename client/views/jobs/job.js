@@ -803,49 +803,51 @@ Template.job.events({
     var request_object = {};
     var jobDetails = Jobs.findOne({_id: Router.current().params._id});
     var reqType = $('select[name="request_type"]').val();
+    var requestId;
+    if(jobDetails.budgetIncreases && jobDetails.budgetIncreases.length > 0) {
+      var lastId = jobDetails.budgetIncreases[jobDetails.budgetIncreases.length - 1].request_id;
+      requestId = lastId + 1;
+    } else {
+      requestId = 1;
+    }
     if(reqType == 'fixed_pay') {
       request_object = {
+        request_id: requestId,
         request_type: 'Fixed Pay',
         fixed_amount: $('#fixed_amount_req').val(),
         buyer_cost: $('#buyer_req_cost').val(),
         total_amount: $('input[name="total_amount_req"]').val(),
-        jobId: Router.current().params._id,
         timeStamp: new Date(),
-        request_status: 'pending',
-        buyerId: jobDetails.userId,
-        providerId: Meteor.userId()
+        request_status: 'pending'
       }
     }
     else if(reqType == 'per_hour') {
       request_object = {
+        request_id: requestId,
         request_type: 'Per Hour',
         hourly_rate: $('#hourly_rate_req').val(),
         max_hours: $('#max_hours_req').val(),
         total_amount: $('input[name="total_amount_req"]').val(),
         buyer_cost: $('#buyer_req_cost').val(),
-        jobId: Router.current().params._id,
         timeStamp: new Date(),
-        request_status: 'pending',
-        buyerId: jobDetails.userId,
-        providerId: Meteor.userId()
+        request_status: 'pending'
       }
     }
     else if(reqType == 'per_device') {
       request_object = {
+        request_id: requestId,
         request_type: 'Per Device',
         device_rate: $('#device_rate_req').val(),
         max_devices: $('#max_devices_req').val(),
         total_amount: $('input[name="total_amount_req"]').val(),
         buyer_cost: $('#buyer_req_cost').val(),
-        jobId: Router.current().params._id,
         timeStamp: new Date(),
-        request_status: 'pending',
-        buyerId: jobDetails.userId,
-        providerId: Meteor.userId()
+        request_status: 'pending'
       }
     }
     else if(reqType == 'blended') {
       request_object = {
+        request_id: requestId,
         request_type: 'Blended',
         first_hours: $('#first_hours_req').val(),
         first_max_hours: $('#first_max_hours_req').val(),
@@ -853,32 +855,34 @@ Template.job.events({
         next_max_hours: $('#next_max_hours_req').val(),
         total_amount: $('input[name="total_amount_req"]').val(),
         buyer_cost: $('#buyer_req_cost').val(),
-        jobId: Router.current().params._id,
         timeStamp: new Date(),
-        request_status: 'pending',
-        buyerId: jobDetails.userId,
-        providerId: Meteor.userId()
+        request_status: 'pending'
       }
     }
-    Meteor.call('requestBudgetIncrease', request_object, function(error, result) {
+    Meteor.call('requestBudgetIncrease', jobDetails._id, request_object, function(error, result) {
       if(error) {
+        $('button.requestIncrease').button('reset');
+      } else {
+        $('#budget_increase_form')[0].reset();
         $('button.requestIncrease').button('reset');
       }
     });
   },
   'click .cancelBudgetIncrease': function(event, template) {
-    var requestId = this._id;
-    var jobId = this.jobId;
+    event.preventDefault();
+    var requestId = $(event.currentTarget).data('bi-id');
+    var jobId = Router.current().params._id;
     Meteor.call('cancelBudgetIncrease', requestId, jobId);
   },
   'click .acceptBudgetIncrease': function(event, template) {
-    Meteor.call('acceptBudgetIncrease', this);
+    var jobId = Router.current().params._id;
+    var requestId = $(event.currentTarget).data('bi-id');
+    Meteor.call('acceptBudgetIncrease', jobId, requestId);
   },
   'click .rejectBudgetIncrease':function(event, template) {
-    Meteor.call('rejectBudgetIncrease', this);
-  },
-  'click .rejectBudgetIncrease': function(event, template) {
-
+    var jobId = Router.current().params._id;
+    var requestId = $(event.currentTarget).data('bi-id');
+    Meteor.call('rejectBudgetIncrease', jobId, requestId);
   },
   'submit #extra_expenses': function(event, template) {
     event.preventDefault();
@@ -1662,17 +1666,10 @@ Template.job.helpers({
     return;
   },
   bonusRequested: function() {
-    var bonusDetails = BonusRequests.findOne({jobId: Router.current().params._id});
-    if(bonusDetails)
+    var bonusDetails = Jobs.findOne({_id: Router.current().params._id}).budgetIncreases;
+    if(bonusDetails && bonusDetails.length > 0)
       return true;
     return false;
-  },
-  bonusReqDetails: function() {
-    var bonusDetails = BonusRequests.findOne({jobId: Router.current().params._id});
-    if(bonusDetails) {
-      return bonusDetails;
-    }
-    return;
   }
 });
 

@@ -1,4 +1,4 @@
-Profiles = new Mongo.Collection("experts"); //todo - rename underlying collection to reflect code refactor
+Profiles = new Mongo.Collection("experts");
 
 AddressSchema = new SimpleSchema({
   street: {
@@ -169,13 +169,6 @@ Profiles.attachSchema(
         options: MOBILE_CARRIERS
       }
     },
-    // dateOfBirth: {
-    //   type: Date,
-    //   label: 'Date of Birth *',
-    //   autoform: {
-    //     type: 'bootstrap-datepicker'
-    //   }
-    // },
     avgRatesPerHour: {
       type: Number,
       label: "Average Rates Per Hour (USD) *",
@@ -186,23 +179,57 @@ Profiles.attachSchema(
       optional: true
     },
     educationDetails: {
+      type: Array,
+      optional: true
+    },
+    'educationDetails.$': {
+      type: Object,
+      optional: true
+    },
+    'educationDetails.$.university': {
+      type: String,
+      optional: true,
+      label: 'University'
+    },
+    'educationDetails.$.degree': {
+      type: String,
+      optional: true
+    },
+    'educationDetails.$.major': {
+      type: String,
+      optional: true
+    },
+    'educationDetails.$.startTime': {
+      type: Date,
+      optional: true,
+      autoform: {
+        type: 'bootstrap-datepicker'
+      }
+    },
+    'educationDetails.$.endTime': {
+      type: Date,
+      optional: true,
+      autoform: {
+        type: 'bootstrap-datepicker'
+      }
+    },
+    'educationDetails.$.focusDescription': {
       type: String,
       optional: true,
       autoform: {
-        afFieldInput: SUMMERNOTE_OPTIONS,
-        label: false
+        type: 'textarea'
       }
     },
-    htmlEducationDetails: {
-      type: String,
-      optional: true,
-      autoValue: function(doc) {
-        var htmlContent = this.field("educationDetails");
-        if (Meteor.isServer && htmlContent.isSet) {
-          return cleanHtml(htmlContent.value);
-        }
-      }
-    },
+    // htmlEducationDetails: {
+    //   type: String,
+    //   optional: true,
+    //   autoValue: function(doc) {
+    //     var htmlContent = this.field("educationDetails");
+    //     if (Meteor.isServer && htmlContent.isSet) {
+    //       return cleanHtml(htmlContent.value);
+    //     }
+    //   }
+    // },
     certifications: {
       type: String,
       optional: true,
@@ -232,8 +259,7 @@ Profiles.attachSchema(
     'languages.$.language': {
       type: String,
       optional: true,
-      label: "Language",
-      max: 128
+      label: "Language"
     },
     'languages.$.level': {
       type: String,
