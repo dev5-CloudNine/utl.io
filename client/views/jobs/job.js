@@ -260,12 +260,11 @@ Template.job.events({
     var applied_at = this.appliedAt;
     var freenets = this.freelancer_nets;
     var jobDetails = Jobs.findOne({_id: jobId});
-    var buyerWallet;
-    if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
-      buyerWallet = Wallet.findOne({userId: Meteor.user().invitedBy});
-    } else {
-      buyerWallet = Wallet.findOne({userId: jobDetails.userId});
-    }
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+      buyerId = Meteor.userId();
+    else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+      buyerId = Meteor.user().invitedBy;
+    var buyerWallet = Wallet.findOne({userId: buyerId});
     if(buyerCost > jobDetails.your_cost) {
       var diff = buyerCost - jobDetails.your_cost;
       if(diff > buyerWallet.accountBalance) {
@@ -273,12 +272,19 @@ Template.job.events({
         $(event.currentTarget).button('reset');
         return;
       } else {
-        Meteor.call('acceptHighBudgetCO', diff, jobDetails.userId, function(error) {
+        Meteor.call('acceptHighBudgetCO', diff, buyerId, function(error) {
           if(error) {
             $(event.currentTarget).button('reset');
           }
         });
       }
+    } else if(buyerCost < jobDetails.your_cost) {
+      var diff = jobDetails.your_cost - buyerCost;
+      Meteor.call('acceptLowBudgetCO', diff, buyerId, function(error) {
+        if(error) {
+          $(event.currentTarget).button('reset');
+        }
+      })
     }
     Meteor.call('acceptCounterOffer', jobId, userId, applied_at, buyerCost, freenets, function(error) {
       if(error) {
@@ -621,7 +627,12 @@ Template.job.events({
   'click button.deactivateJob': function(event, template) {
     $(event.currentTarget).button('loading');
     var jobId = this._id;
-    Meteor.call('deactivateJob', jobId, Meteor.userId(), function(error) {
+    var buyerId;
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+      buyerId = Meteor.userId();
+    else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+      buyerId = Meteor.user().invitedBy;
+    Meteor.call('deactivateJob', jobId, buyerId, function(error) {
       if(error) {
         $(event.currentTarget).button('error');
         toastr.error('Failed to deactivate job Please try again.');
@@ -717,10 +728,10 @@ Template.job.events({
   'click .remFav': function(event, template) {
     event.preventDefault();
     var userId;
-    if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'corporate-manager'])) {
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
       userId = Profiles.findOne({_id: this.id}).userId;
     }
-    if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {
+    if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
       userId = Buyers.findOne({_id: this.id}).userId;
     }
     Meteor.call('removeFromFav', userId, Meteor.user().roles[0], function(error) {
@@ -742,7 +753,11 @@ Template.job.events({
     var adminGets = buyerPayable * 5/100;
     var providerGets = buyerPayable;
     var assignedProvider = this.assignedProvider;
-    var buyerId = Meteor.userId();
+    var buyerId;
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+      buyerId = Meteor.userId();
+    else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+      buyerId = Meteor.user().invitedBy;
     Meteor.call('pay30Usd', buyerPays, adminGets, providerGets, assignedProvider, buyerId, this._id, function(error) {
       if(error) {
         $(event.currentTarget).button('reset');
@@ -875,9 +890,14 @@ Template.job.events({
     Meteor.call('cancelBudgetIncrease', requestId, jobId);
   },
   'click .acceptBudgetIncrease': function(event, template) {
+    var buyerId;
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+      buyerId = Meteor.userId();
+    else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+      buyerId = Meteor.user().invitedBy;
     var jobId = Router.current().params._id;
     var requestId = $(event.currentTarget).data('bi-id');
-    Meteor.call('acceptBudgetIncrease', jobId, requestId);
+    Meteor.call('acceptBudgetIncrease', jobId, buyerId, requestId);
   },
   'click .rejectBudgetIncrease':function(event, template) {
     var jobId = Router.current().params._id;
@@ -926,9 +946,14 @@ Template.job.events({
   },
   'click a.approveExpense': function(event, template) {
     event.preventDefault();
+    var buyerId;
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+      buyerId = Meteor.userId();
+    else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+      buyerId = Meteor.user().invitedBy;
     var jobId = Router.current().params._id;
     var expense_id = $(event.currentTarget).data('expense-id');
-    Meteor.call('approveExpense', jobId, expense_id);
+    Meteor.call('approveExpense', jobId, buyerId, expense_id);
   },
   'click a.rejectExpense': function(event, template) {
     event.preventDefault();
@@ -1218,9 +1243,7 @@ Template.job.helpers({
     if(!keepSession){
       delete Session.keys.totalHours;
     }
-    if (Meteor.user() &&
-      Meteor.user().roles &&
-      (Meteor.user().roles.indexOf("buyer")) != -1) {
+    if (Meteor.user() && Meteor.user().roles && Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
       return true;
     }
     return Jobs.findOne({
@@ -1231,9 +1254,7 @@ Template.job.helpers({
     }) ? true : false;
   },
   isBuyer: function() {
-    if (Meteor.user() &&
-      Meteor.user().roles &&
-      (Meteor.user().roles.indexOf("buyer")) != -1) {
+    if (Meteor.user() && Meteor.user().roles && Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
       return true;
     }
   },

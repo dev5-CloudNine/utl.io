@@ -272,17 +272,29 @@ UI.registerHelper('userAccountBalance', function() {
 });
 
 UI.registerHelper('teamCount', function() {
-	var dispatchers = Dispatchers.find({invitedBy: Meteor.userId()}).count();
-	var accountants = Accountants.find({invitedBy: Meteor.userId()}).count();
+	var dispatchers, accountants;
+	if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+		dispatchers = Dispatchers.find({invitedBy: Meteor.userId()}).count();
+		accountants = Accountants.find({invitedBy: Meteor.userId()}).count();
+	} else if(Roles.userIsInRole(Meteor.userId(), ['accountant', 'dispatcher'])) {
+		dispatchers = Dispatchers.find({invitedBy: Meteor.user().invitedBy}).count();
+		accountants = Accountants.find({invitedBy: Meteor.user().invitedBy}).count();
+	}
 	return dispatchers + accountants;
 });
 
 UI.registerHelper('teamDispatcherCount', function() {
-	return Dispatchers.find({invitedBy: Meteor.userId()}).count();
+	if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+		return Dispatchers.find({invitedBy: Meteor.userId()}).count();
+	else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher', 'accountant']))
+		return Dispatchers.find({invitedBy: Meteor.user().invitedBy}).count();
 })
 
 UI.registerHelper('teamAccountantCount', function() {
-	return Accountants.find({invitedBy: Meteor.userId()}).count();
+	if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+		return Accountants.find({invitedBy: Meteor.userId()}).count();
+	else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher', 'accountant']))
+		return Accountants.find({invitedBy: Meteor.user().invitedBy}).count();
 })
 
 UI.registerHelper('invoicesCount', function() {

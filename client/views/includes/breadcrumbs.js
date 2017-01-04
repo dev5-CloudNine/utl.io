@@ -12,7 +12,7 @@ Template.breadcrumbs.onCreated(function() {
 		return Meteor.subscribe('buyerInvoices', Meteor.userId());
 	}
 	if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
-		Meteor.subscribe('my_jobs');Accounts.sendEnrollmentEmail(userId, email);
+		Meteor.subscribe('my_jobs');
 		Meteor.subscribe('userWallet', Meteor.user().invitedBy);
 		return Meteor.subscribe('buyerInvoices', Meteor.userId());
 	}
