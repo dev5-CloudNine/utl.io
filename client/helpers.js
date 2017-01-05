@@ -120,7 +120,7 @@ UI.registerHelper('buyerJobsCount', function() {
 
 UI.registerHelper('recommendedJobsCount', function() {
 	var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
-	return Jobs.find({$and: [{routed: false}, {invited: false}, {jobSubCategory: {$in: jobCategories}}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count()
+	return Jobs.find({$and: [{routed: false}, {invited: false}, {status: 'active'}, {jobSubCategory: {$in: jobCategories}}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}).count()
 });
 
 UI.registerHelper('providerInvitedCount', function() {

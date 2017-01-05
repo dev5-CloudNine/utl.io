@@ -1,6 +1,6 @@
 var recommendedJobs = function() {
     var jobCategories = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
-    return Jobs.find({$and: [{invited: false}, {routed: false}, {jobSubCategory: {$in: jobCategories}}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}, {sort: {createdAt: -1}}).fetch();
+    return Jobs.find({$and: [{invited: false}, {routed: false}, {status: 'active'}, {jobSubCategory: {$in: jobCategories}}, {$or: [{applicationStatus: 'open'}, {$and: [{applicationStatus: 'assigned'}, {assignmentStatus: 'not_confirmed'}]}]}]}, {sort: {createdAt: -1}}).fetch();
 }
 
 var recommendedJobsObject = {

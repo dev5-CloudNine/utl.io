@@ -859,38 +859,57 @@ Meteor.methods({
         Meteor.users.update({_id: id}, {$pull: {resumeURL: {file_url: url}}});
     },
     deactivateJob: function(jobId, buyerId) {
-        Jobs.update({_id: jobId}, {$set: {status: 'deactivated'}});
         var jobDetails = Jobs.findOne({_id: jobId});
-        if(jobDetails.applicationStatus == 'open') {
-            if(jobDetails.applications) {
-                for(var i = 0; i < jobDetails.applications.length; i++) {
-                    Profiles.update({userId: jobDetails.applications[i].userId}, {$pull: {appliedJobs: jobId}});
-                    Profiles.update({userId: jobDetails.applications[i].userId}, {$addToSet: {deactivatedJobs: jobId}});
+        if(jobDetails.status == 'active') {
+            Jobs.update({_id: jobId}, {$set: {status: 'deactivated'}});
+            var buyerGettable;
+            if(jobDetails.applicationStatus == 'open') {
+                buyerGettable = jobDetails.your_cost;
+                if(jobDetails.applications) {
+                    for(var i = 0; i < jobDetails.applications.length; i++) {
+                        Profiles.update({userId: jobDetails.applications[i].userId}, {$pull: {appliedJobs: jobId}});
+                        Profiles.update({userId: jobDetails.applications[i].userId}, {$addToSet: {deactivatedJobs: jobId}});
+                    }
                 }
             }
-        }
-        if(jobDetails.applicationStatus == 'assigned') {
-            if(jobDetails.assignmentStatus == 'submitted') {
-                Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
+            if(jobDetails.applicationStatus == 'assigned') {
+                if(jobDetails.assignmentStatus == 'submitted') {
+                    Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
+                }
+                if(jobDetails.assignmentStatus == 'not_confirmed' || jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected')
+                    Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {assignedJobs: jobId}});
+                Profiles.update({userId: jobDetails.assignedProvider}, {$addToSet: {deactivatedJobs: jobId}});
+                if(jobDetails.assignmentStatus == 'not_confirmed') {
+                    var acceptedApplication = {};
+                    for(var i = 0; i < jobDetails.applications.length; i++) {
+                        if(jobDetails.applications[i].app_status == 'accepted') {
+                            acceptedApplication = jobDetails.applications[i];
+                            break;
+                        }
+                    }
+                    if(acceptedApplication.app_type == 'counteroffer') {
+                        buyerGettable = acceptedApplication.buyer_cost;
+                    }
+                }
+                if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected')
+                    buyerGettable = jobDetails.projectBudget + (jobDetails.projectBudget * 5/100);
             }
-            if(jobDetails.assignmentStatus == 'not_confirmed' || jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected')
-                Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {assignedJobs: jobId}});
-            Profiles.update({userId: jobDetails.assignedProvider}, {$addToSet: {deactivatedJobs: jobId}});
+            var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+            Wallet.update({userId: buyerId}, {$inc: {accountBalance: buyerGettable}});
+            Wallet.update({userId: adminId}, {$inc: {accountBalance: -buyerGettable}});
+            var notificationObj = {
+                buyerId: buyerId,
+                jobId: jobId,
+                timeStamp: new Date(),
+                notificationType: 'jobDeactivated',
+                side: 'provider',
+                read: false,
+                adminRead: false
+            };
+            Notifications.insert(notificationObj);
+        } else {
+            throw new Meteor.Error(406, 'Not acceptable');
         }
-        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
-        var totalFromClient = jobDetails.totalfromclient;
-        Wallet.update({userId: buyerId}, {$inc: {accountBalance: totalFromClient}});
-        Wallet.update({userId: adminId}, {$inc: {accountBalance: -totalFromClient}});
-        var notificationObj = {
-            buyerId: buyerId,
-            jobId: jobId,
-            timeStamp: new Date(),
-            notificationType: 'jobDeactivated',
-            side: 'provider',
-            read: false,
-            adminRead: false
-        };
-        Notifications.insert(notificationObj);
     },
     pay30Usd: function(buyerPays, adminGets, providerGets, assignedProvider, buyerId, jobId) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
