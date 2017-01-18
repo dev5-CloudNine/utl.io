@@ -891,7 +891,7 @@ Meteor.methods({
                         buyerGettable = acceptedApplication.buyer_cost;
                     }
                 }
-                if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected')
+                if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected' || jobDetails.assignmentStatus == 'submitted')
                     buyerGettable = jobDetails.projectBudget + (jobDetails.projectBudget * 5/100);
             }
             var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
@@ -971,7 +971,8 @@ Meteor.methods({
     },
     generatePdf: function(jobId) {
         var webshot = Meteor.npmRequire('webshot');
-        var fs = Npm.require('fs');
+        var fs = Meteor.npmRequire('fs');
+        console.log(fs)
         var Future = Npm.require('fibers/future');
         var fut = new Future();
         var fileName = 'jobdetails.pdf';
@@ -1079,7 +1080,7 @@ Meteor.methods({
                 }
             }
         }
-        Jobs.update({_id: jobId}, {$inc: {projectBudget: budgetDetails.total_amount}});
+        Jobs.update({_id: jobId}, {$inc: {projectBudget: budgetDetails.provider_nets}});
         Jobs.update({$and: [{_id: jobId}, {'budgetIncreases.request_id': requestId}]}, {$set: {'budgetIncreases.$.request_status': 'accepted'}});
         Wallet.update({userId: buyerId}, {$inc: {accountBalance: -budgetDetails.buyer_cost}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: budgetDetails.buyer_cost}});
@@ -1114,5 +1115,21 @@ Meteor.methods({
     },
     rejectExpense: function(jobId, expenseId) {
         Jobs.update({$and: [{_id: jobId}, {'expenses.expense_id': expenseId}]}, {$set: {'expenses.$.request_status': 'rejected'}});
+    },
+    setWorkedDevices: function(jobId, numberOfDevices) {
+        Jobs.update({_id: jobId}, {$set: {devicescompleted: numberOfDevices}});
+    },
+    updateBudget: function(jobId, diff) {
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        var jobDetails = Jobs.findOne({_id: jobId});
+        Jobs.update({_id: jobId}, {$inc: {projectBudget: -diff}});
+        var buyerReturns = diff + diff * 5 / 100;
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: -buyerReturns}});
+        if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
+            var buyerId = Dispatchers.findOne({userId: jobDetails.userId}).invitedBy;
+            Wallet.update({userId: buyerId}, {$inc: {accountBalance: buyerReturns}});
+        } else if(Roles.userIsInRole(jobDetails.userId, ['buyer'])) {
+            Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: buyerReturns}});
+        }
     }
 });

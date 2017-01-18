@@ -1019,7 +1019,10 @@ Router.map(function() {
 
     this.route('adminNotifications', {
         path: '/admin/notifications',
-        title: 'UTL - Notifications'
+        title: 'UTL - Notifications',
+        waitOn: function() {
+            Meteor.subscribe('allJobs');
+        }
     });
 
     this.route('addTeam', {

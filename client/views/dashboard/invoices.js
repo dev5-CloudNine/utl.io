@@ -38,6 +38,9 @@ var buyerOptionsObject = {
 	]
 };
 var providerOptionsObject = {
+	lengthMenu: [40, 80, 160, 320],
+    pageLength: 40,
+    order: [[0, 'desc']],
 	columns: [
 		{
 			title: 'Invoice ID',

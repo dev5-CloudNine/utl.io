@@ -493,6 +493,7 @@ button.favInactive {
 
 .panel-white {
   background-color: white !important;
+  border-color: #f8f8f8;
 }
 
 .panel-black {
@@ -501,6 +502,7 @@ button.favInactive {
 
 .panel-light {
   background-color: #f6f4ec !important;
+  border-color: #ddd;
 }
 
 .form-group .input-group input[type=file] {
@@ -2086,4 +2088,13 @@ svg {
     stroke-dashoffset: 35%;
     stroke-dasharray: 0 87.5%;
   }
+}
+
+.fa {
+  color: #9DD634;
+}
+
+.btn-white {
+  background-color: #fff;
+  border: thin solid #f8f8f8;
 }

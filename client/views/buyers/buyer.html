@@ -3,88 +3,76 @@
 		<div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-sm-3">
+					<div class="col-sm-4">
 						{{#if customImageUrl}}
 							<div class="avatar avatar-large">							
-								<img class="img-responsive img-thumbnail" style="max-height: 200px; max-width: 200px" src="{{customImageUrl}}"/>
+								<img class="img-responsive img-thumbnail" src="{{customImageUrl}}"/>
 							</div>
 						{{else}}
-							<img src="/images/avatar.png" width="200px">
+							<div class="avatar avatar-large">
+								<img class="img-responsive img-thumbnail" src="/images/avatar.png" width="200px">
+							</div>
 						{{/if}}
 						{{#if isInRole 'provider, corporate-provider'}}
 							{{#if currentUser.isDeveloper}}
 								<br>
 								{{#if $eq this.status 'active'}}
-									<a href="{{pathFor 'buyerJobs'}}" class="btn btn-primary btn-xs"><i class="fa fa-rocket"></i>&nbsp;View Jobs - {{buyerOpenCount userId}}</a>
-									<a href="" class="btn btn-xs {{#if fav}}favActive{{else}}favInactive{{/if}}"><i class="fa {{#if fav}}fa-heart{{else}}fa-heart-o{{/if}}"></i>&nbsp;{{#if fav}}Del Fav{{else}}Add Fav{{/if}}</a>
-									<a href id="sendBuyerMessage" class="btn btn-primary btn-xs"><i class="fa fa-envelope"></i>&nbsp;Send Msg</a>
+									<button class="btn btn-xs btn-white">
+										<a href="{{pathFor 'buyerJobs'}}" data-balloon="View Jobs ({{buyerOpenCount userId}})" data-balloon-pos="up"><i class="fa fa-rocket"></i></a>
+									</button>
+									<button class="btn btn-xs btn-white">
+										<a href="" class="{{#if fav}}favActive{{else}}favInactive{{/if}}" data-balloon="{{#if fav}}Del Fav{{else}}Add Fav{{/if}}" data-balloon-pos="up"><i class="fa {{#if fav}}fa-heart{{else}}fa-heart-o{{/if}}"></i></a>
+									</button>
+									<button class="btn btn-xs btn-white">
+										<a href id="sendBuyerMessage" data-balloon="Send Msg." data-balloon-pos="up"><i class="fa fa-envelope"></i></a>
+									</button>
 								{{else}}
 									<p class="label label-deactivated">Inactive</p>
 								{{/if}}
 							{{/if}}
 						{{/if}}
-						<hr>
-						{{#if adminOrBuyer}}
-							{{#if fullLocation}}
-								{{fullLocation.street}}
-								<br>
-								{{#if fullLocation.sublocality}}
-								{{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
-								<br>{{fullLocation.country}}
-							{{/if}}
-						{{else}}
-							{{#if fullLocation}}
-								{{#if fullLocation.sublocality}}
-								{{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
-							{{/if}}
-						{{/if}}
-						<hr>
-						Member since: <br>
-						{{formatDate createdAt}}
-						<hr>
-						{{#if adminOrBuyer}}
-							<i class="fa fa-envelope"></i> {{userName}}
-							<br>
-							<i class="fa fa-mobile"></i> {{contactNumber}}
-							<br>
-							<i class="fa fa-mobile"></i> {{smsAddress}}
-							<hr>
-							{{#with dwollaFundingSource}}
-								<i class="fa fa-credit-card"></i> Account No: {{this.accountNumber}} <br>
-								<i class="fa fa-university"></i> Routing No: {{this.routingNumber}} <br>
-								<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.bankAccountType}}
-								<hr>
-							{{/with}}
-							{{companyUrl}}
-						{{/if}}
 					</div>
-					<div class="col-sm-9">
+					<div class="col-sm-8">
 						<div class="row">
 							<div class="col-sm-12">
 								<small><i># {{readableID}}</i></small>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12">
-								<h2 class="top-flush">
-									{{displayName}}
-								</h2>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12">
-								<h4>
-									{{title}} {{#if companyName}}- {{companyName}}{{/if}}
-								</h4>
-							</div>
-							<div class="col-sm-12">
+								<p class="budgetFont">{{displayName}} </p>
+								<p>{{title}} {{#if companyName}} - {{companyName}} {{/if}}</p>
 								<span class="rateit"></span>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12">
-								{{#if htmlDescription}}
+								<hr>
+								{{#if adminOrBuyer}}
+									{{#if fullLocation}}
+										{{fullLocation.street}}, 
+										{{#if fullLocation.sublocality}}
+										{{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
+									{{/if}}
+								{{else}}
+									{{#if fullLocation}}
+										{{#if fullLocation.sublocality}}
+										{{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+									{{/if}}
+								{{/if}}
+								<hr>
+								Member since: <br>
+								{{formatDate createdAt}}
+								<hr>
+								{{#if adminOrBuyer}}
+									<i class="fa fa-envelope"></i> {{userName}}
+									<br>
+									<i class="fa fa-mobile"></i> {{contactNumber}}
+									<br>
+									<i class="fa fa-mobile"></i> {{smsAddress}}
+									<br>
+									<i class="fa fa-at"></i> {{companyUrl}}
 									<hr>
+									{{#with dwollaFundingSource}}
+										<i class="fa fa-credit-card"></i> Account No: {{this.accountNumber}} <br>
+										<i class="fa fa-university"></i> Routing No: {{this.routingNumber}} <br>
+										<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.bankAccountType}}
+										<hr>
+									{{/with}}
+								{{/if}}
+								{{#if htmlDescription}}
 									<h4>About Me</h4>
 									{{{htmlDescription}}}
 								{{/if}}

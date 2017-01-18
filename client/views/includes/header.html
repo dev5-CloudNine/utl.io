@@ -239,11 +239,12 @@
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
             {{#if customImageUrl}}
                 <div class="avatar avatar-small">
-                    <img class="avatar-image" src="{{customImageUrl}}" alt="avatar" onerror="this.style.display='none';">
-                    <span class="avatar-initials" style="background-color: #aaa; color: #fff;"></span>
+                    <img class="avatar-image" src="{{customImageUrl}}" alt="readableID">
                 </div>
             {{else}}
-                <img src="/images/avatar.png" alt="" width="36px">
+                <div class="avatar avatar-small">
+                    <img class="avatar-image" src="/images/avatar.png" alt="readableID">
+                </div>
             {{/if}}
             {{currentUserDisplayName}} <span class="caret"></span>
 		</a>

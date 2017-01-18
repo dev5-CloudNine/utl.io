@@ -43,6 +43,13 @@ UI.registerHelper("currentUserDisplayName", function() {
 	return getUserName(Meteor.user());
 });
 
+UI.registerHelper('userFullName', function() {
+	if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+		var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+		return providerDetails.firstName + ' ' + providerDetails.lastName;
+	}
+})
+
 UI.registerHelper('blendedTotalHours', function(firstHours, nextHours) {
 	return (firstHours + nextHours);
 });

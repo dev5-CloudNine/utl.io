@@ -6,7 +6,7 @@
                 <small><i># {{readableId}}</i></small>
                 <p class="budgetFont"><a href="{{pathFor 'profile'}}">{{firstName}} {{lastName}}</a></p>
                 <h5 class="widget-user-desc">{{title}}</h5>
-                <small><i class="fa fa-map-marker"></i>&nbsp;{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}</small>
+                <small>{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}</small>
             </div>
             <div class="widget-user-image">
                 <a href="{{pathFor 'profile'}}">
@@ -52,7 +52,7 @@
                         <div class="col-xs-4 border-right">
                             <div class="description-block text-center">
                                 <a href="{{pathFor 'assignJob'}}">
-                                    <h5 class="description-header"><i class="glyphicon glyphicon-send"></i></h5>
+                                    <h5 class="description-header"><i class="fa fa-paper-plane"></i></h5>
                                     <span class="description-text">Assign Job</span>
                                 </a>
                             </div>

@@ -56,9 +56,11 @@
 			                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
 			                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
 			                            <div class="widget-buttons widget-c2">
-			                                <div class="col widget-title">
-			                                    <a href="/wallet/deposit">Deposit</a>
-			                                </div>
+			                                {{#if isInRole 'buyer'}}
+			                                	<div class="col widget-title">
+				                                    <a href="/wallet/deposit">Deposit</a>
+				                                </div>
+			                                {{/if}}
 			                                <div class="col widget-title">
 			                                    <a href="/wallet/invoices">Invoices - {{invoicesCount}}</a>
 			                                </div>

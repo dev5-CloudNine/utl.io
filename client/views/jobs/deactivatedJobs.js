@@ -64,7 +64,10 @@ var deactivatedJobsOptions = {
         },
         {
             title: 'Actions',
-            width: '20%'
+            width: '20%',
+            data: function(jobDetails) {
+                return '<small>You\'ve deactivated.</small>';
+            }
         }
     ],
     responsive: true

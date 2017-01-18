@@ -173,6 +173,7 @@ Meteor.publishComposite('providers', {
                 customImageUrl: true,
                 companyName: true,
                 createdAt: true,
+                readableID: true
             }
         });
     },

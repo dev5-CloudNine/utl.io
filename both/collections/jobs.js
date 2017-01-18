@@ -239,7 +239,6 @@ Jobs.attachSchema(new SimpleSchema({
       min: 1,
       label: "Maximum Hours",
       optional: true,
-      decimal: true,
       custom: function() {
         var shouldBeRequired = this.field('ratebasis').value == 'Per Hour';
         if(shouldBeRequired) {
@@ -304,6 +303,10 @@ Jobs.attachSchema(new SimpleSchema({
           }
         }
       }
+    },
+    devicescompleted: {
+      type: Number,
+      optional: true
     },
     payforfirsthours: {
       type: Number,
@@ -528,7 +531,6 @@ Jobs.attachSchema(new SimpleSchema({
     },
     'applications.$.max_hours': {
       type: Number,
-      decimal: true,
       optional: true
     },
     'applications.$.device_rate': {
@@ -538,7 +540,6 @@ Jobs.attachSchema(new SimpleSchema({
     },
     'applications.$.max_devices': {
       type: Number,
-      decimal: true,
       optional: true
     },
     'applications.$.first_hours': {
@@ -548,7 +549,6 @@ Jobs.attachSchema(new SimpleSchema({
     },
     'applications.$.first_max_hours': {
       type: Number,
-      decimal: true,
       optional: true
     },
     'applications.$.next_hours': {
@@ -558,7 +558,6 @@ Jobs.attachSchema(new SimpleSchema({
     },
     'applications.$.next_max_hours': {
       type: Number,
-      decimal: true,
       optional: true
     },
     'applications.$.total_amount': {
@@ -670,6 +669,11 @@ Jobs.attachSchema(new SimpleSchema({
       decimal: true,
       optional: true
     },
+    'budgetIncreases.$.provider_nets': {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
     'budgetIncreases.$.timeStamp': {
       type: Date,
       optional: true
@@ -689,6 +693,11 @@ Jobs.attachSchema(new SimpleSchema({
       optional: true
     },
     projectBudget: {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    estimatedProviderEarnings: {
       type: Number,
       decimal: true,
       optional: true

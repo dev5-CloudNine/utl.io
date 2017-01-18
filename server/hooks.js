@@ -151,8 +151,22 @@ Jobs.after.insert(function(userId, doc){
   }
 });
 
+Jobs.before.update(function(userId, doc, fieldNames, modifier) {
+  var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+  if(modifier.$set.your_cost > doc.your_cost) {
+    var diff = modifier.$set.your_cost - doc.your_cost;
+    Wallet.update({userId: adminId}, {$inc: {accountBalance: diff}});
+    Wallet.update({userId: userId}, {$inc: {accountBalance: -diff}});
+  }
+  if(modifier.$set.your_cost < doc.your_cost) {
+    var diff = doc.your_cost - modifier.$set.your_cost;
+    Wallet.update({userId: adminId}, {$inc: {accountBalance: -diff}});
+    Wallet.update({userId: userId}, {$inc: {accountBalance: diff}});
+  }
+})
 
-Jobs.after.update(function(userId, doc){
+
+Jobs.after.update(function(userId, doc, fieldNames, modifier){
   var obj ={};
   if(doc.tasks) doc.tasks.map(function(task){
     obj.taskName = task.taskname;
