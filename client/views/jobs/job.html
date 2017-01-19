@@ -49,8 +49,19 @@
                                     <div class="col-sm-12">
                                         {{#if jobPostedBuyer}}
                                             <span class="pull-right">
-                                                <a href="{{pathFor 'duplicateJob'}}" class="btn btn-primary btn-sm">Duplicate Job</a>
+                                                <button class="btn btn-sm btn-white">
+                                                    <a href="{{pathFor 'duplicateJob'}}" data-balloon="Duplicate Job" data-balloon-pos="up"><i class="fa fa-clone fa-2x"></i></a>
+                                                </button>
                                             </span>
+                                        {{/if}}
+                                        {{#if assignedProvider}}
+                                            {{#if assignedOrDone}}
+                                                <span class="pull-right">
+                                                    <button class="btn btn-sm btn-white">
+                                                        <a href class="createPdf" data-balloon="Download PDF" data-balloon-pos="up"><i class="fa fa-file-pdf-o fa-2x"></i></a>
+                                                    </button>
+                                                </span>
+                                            {{/if}}
                                         {{/if}}
                                         <small><i># {{readableID}}</i></small><br>
                                         <a class="budgetFont">{{title}}</a><br>

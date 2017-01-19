@@ -3,10 +3,10 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-less
-service-configuration
-accounts-ui
-accounts-password
+less@2.7.8
+service-configuration@1.0.11
+accounts-ui@1.1.9
+accounts-password@1.3.3
 iron:router
 natestrauser:font-awesome
 raix:handlebar-helpers
@@ -34,29 +34,29 @@ nimble:restivus
 peppelg:bootstrap-3-modal
 mpowaga:autoform-summernote
 djedi:sanitize-html
-email
+email@1.1.18
 gadicohen:sitemaps
-reactive-var
+reactive-var@1.0.11
 yogiben:admin
 ongoworks:speakingurl
 staringatlights:infinite-scroll
 useraccounts:iron-routing
-meteor-base
-mobile-experience
-mongo
+meteor-base@1.0.4
+mobile-experience@1.0.4
+mongo@1.1.14
 blaze-html-templates
-session
-jquery
-tracker
-logging
-reload
-random
-ejson
+session@1.1.7
+jquery@1.11.10
+tracker@1.1.1
+logging@1.1.16
+reload@1.1.11
+random@1.0.10
+ejson@1.0.13
 spacebars
-check
+check@1.2.4
 dfischer:prerenderio
-force-ssl
-http
+force-ssl@1.0.13
+http@1.2.10
 ostrio:iron-router-title
 astronomerio:core
 
@@ -73,8 +73,8 @@ themeteorchef:jquery-validation
 arkham:comments-ui
 #spunkedy:autoform-file
 cfs:filesystem
-standard-minifier-css
-standard-minifier-js
+standard-minifier-css@1.3.2
+standard-minifier-js@1.2.1
 cfs:gridfs
 cfs:standard-packages
 cfs:ui
@@ -98,6 +98,7 @@ ephemer:reactive-datatables
 dfischer:phantomjs
 meteorhacks:ssr
 jeremy:geocomplete
-ecmascript
+ecmascript@0.6.1
 fullcalendar:fullcalendar
 practicalmeteor:mocha
+shell-server

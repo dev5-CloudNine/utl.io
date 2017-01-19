@@ -205,7 +205,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {{#if currentUser}}
-                        	{{>headerUserMenu}}
+                            {{>headerUserMenu}}
                         {{else}}
                             <li class="{{isActiveRoute regex='signIn'}}"><a href="{{pathFor 'signIn'}}">Sign In</a></li>
                             <li class="{{isActiveRoute regex='sign.up'}}"><a href="{{pathFor 'signUp'}}">Sign Up</a></li>
@@ -215,24 +215,6 @@
             </div>
         </nav>
     </section>
-    <!-- <div id="global-search">
-        <button type="button" class="close">×</button>
-        <form>
-            <input type="search" class="searchSome" placeholder="type keyword(s) here" />
-        </form>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div id="search-results">
-                        {{#each searchResults}}
-                            {{this.title}}
-                            <br>
-                        {{/each}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </template>
 <template name="headerUserMenu">
     <li id="user-drop-down" class="dropdown">

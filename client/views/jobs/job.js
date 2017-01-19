@@ -887,7 +887,7 @@ Template.job.events({
       }
     })
   },
-  'click button.createPdf': function(event, template) {
+  'click a.createPdf': function(event, template) {
     Meteor.call('generatePdf', this._id, function(err, res) {
       if(err) {
         toastr.error('Failed to create PDF. Please try again.');

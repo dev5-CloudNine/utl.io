@@ -972,7 +972,6 @@ Meteor.methods({
     generatePdf: function(jobId) {
         var webshot = Meteor.npmRequire('webshot');
         var fs = Meteor.npmRequire('fs');
-        console.log(fs)
         var Future = Npm.require('fibers/future');
         var fut = new Future();
         var fileName = 'jobdetails.pdf';
