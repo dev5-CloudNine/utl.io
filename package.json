@@ -10,7 +10,10 @@
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/yashosagar/utl.io.git"
   },
-  "author": "Prathviraj",
+  "engines": {
+    "node": "4.4.7"
+  },
+  "author": "Yashwanth",
   "license": "ISC",
   "homepage": "https://bitbucket.org/yashosagar/utl.io#readme",
   "dependencies": {

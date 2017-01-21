@@ -11,5 +11,10 @@
   },
   "PrerenderIO": {
     "token": ""
+  },
+  "galaxy.meteor.com": {
+    "env": {
+      "MONGO_URL": "mongodb://root:obub3uqyJa@jello.modulusmongo.net:27017/q8ywEnip?autoReconnect=true&connectTimeoutMS=60000"
+    }
   }
 }
