@@ -50,15 +50,12 @@ var openJobsObject = {
                     buyerDetails = Buyers.findOne({userId: jobDetails.userId});
                     buyerName = buyerDetails.firstName + ' ' + buyerDetails.lastName
                 }
-                if(jobDetails.servicelocation == 'Remote Job') {
-                    jobLocation = 'Remote Job';
-                }
-                else if(jobDetails.servicelocation == 'Field Job') {
+                if(jobDetails.servicelocation == 'Field Job') {
                     var providerDetails = Profiles.findOne({userId: Meteor.userId()});
                     if(jobDetails.fullLocation.sublocality) {
-                        jobLocation = jobDetails.fullLocation.sublocality + ', ' + jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip + ' [' + distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude) + ' point to point]';
+                        jobLocation = jobDetails.fullLocation.sublocality + ', ' + jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
                     } else {
-                        jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip + ' [' + distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude) + ' point to point]';
+                        jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
                     }
                 }
                 var recommended = false;
@@ -79,6 +76,17 @@ var openJobsObject = {
             },
             width: '60%',
             responsivePriority: 1
+        },
+        {
+            title: 'Distance (Mi.)',
+            data: function(jobDetails) {
+                if(jobDetails.servicelocation == 'Remote Job') {
+                    return 'Remote Job';
+                } else {
+                    var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+                    return distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude);
+                }
+            }
         },
         {
             title: 'Budget (USD)',
