@@ -987,14 +987,95 @@ Meteor.methods({
             'equals': function(a, b) {
                 return a === b;
             },
-            'buyerName': function() {
-                return Buyers.findOne({userId: this.userId}).name;
+            'buyerDetails': function() {
+                return Buyers.findOne({userId: this.userId});
             },
-            'providerName': function() {
-                return Profiles.findOne({userId: this.assignedProvider}).name;
+            'providerDetails': function() {
+                return Profiles.findOne({userId: this.assignedProvider});
             },
             'tasks': function() {
                 return Tasks.find({jobID: this._id}).fetch();
+            },
+            budgetDetails: function(jobId) {
+                var applicationDetails = {};
+                var jobDetails = Jobs.findOne({_id: jobId})
+                for(var i = 0; i < jobDetails.applications.length; i++) {
+                    if(jobDetails.applications[i].userId == jobDetails.assignedProvider && jobDetails.applications[i].app_status == 'accepted') {
+                        if(jobDetails.applications[i].app_type == 'application') {
+                            applicationDetails = {
+                                appType: jobDetails.applications[i].app_type,
+                                appliedAt: jobDetails.applications[i].applied_at
+                            }
+                        }
+                        if(jobDetails.applications[i].app_type == 'counteroffer') {
+                            applicationDetails = {
+                                appType: jobDetails.applications[i].app_type,
+                                appliedAt: jobDetails.applications[i].applied_at,
+                                counter_type: jobDetails.applications[i].counterType,
+                                fixed_amount:jobDetails.applications[i].fixed_amount,
+                                hourly_rate: jobDetails.applications[i].hourly_rate,
+                                max_hours: jobDetails.applications[i].max_hours,
+                                device_rate: jobDetails.applications[i].device_rate,
+                                max_devices: jobDetails.applications[i].max_devices,
+                                first_hours: jobDetails.applications[i].first_hours,
+                                first_max_hours: jobDetails.applications[i].first_max_hours,
+                                next_hours: jobDetails.applications[i].next_hours,
+                                next_max_hours: jobDetails.applications[i].next_max_hours,
+                                buyer_cost: jobDetails.applications[i].buyer_cost,
+                                freelancer_nets: jobDetails.applications[i].freelancer_nets,
+                            }
+                        }
+                    }
+                }
+                var provider = Profiles.findOne({userId: jobDetails.assignedProvider});
+                var providerImg = Users.findOne({_id: jobDetails.assignedProvider}).imgURL;
+                var imgURL;
+                if(providerImg) {
+                    imgURL = providerImg
+                } else {
+                    imgURL = '/images/avatar.png'
+                }
+                if(applicationDetails.appType == 'application') {
+                    var providerDetails = {
+                        name: provider.firstName + ' ' + provider.lastName,
+                        title: provider.title,
+                        status: provider.status,
+                        imgUrl: imgURL,
+                        id: provider._id,
+                        readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
+                        appType: applicationDetails.appType,
+                        appliedAt: applicationDetails.appliedAt,
+                        paymentType: jobDetails.ratebasis,
+                        gross: jobDetails.your_cost,
+                        freelancer_nets: jobDetails.freelancer_nets
+                    }
+                }
+                if(applicationDetails.appType == 'counteroffer') {
+                    var providerDetails = {
+                        name: provider.firstName + ' ' + provider.lastName,
+                        title: provider.title,
+                        status: provider.status,
+                        imgUrl: imgURL,
+                        id: provider._id,
+                        readableID: Meteor.users.findOne({_id: provider.userId}).readableID,
+                        appType: applicationDetails.appType,
+                        appliedAt: applicationDetails.appliedAt,
+                        paymentType: jobDetails.ratebasis,
+                        counter_type: applicationDetails.counter_type,
+                        fixed_amount:applicationDetails.fixed_amount,
+                        hourly_rate: applicationDetails.hourly_rate,
+                        max_hours: applicationDetails.max_hours,
+                        device_rate: applicationDetails.device_rate,
+                        max_devices: applicationDetails.max_devices,
+                        first_hours: applicationDetails.first_hours,
+                        first_max_hours: applicationDetails.first_max_hours,
+                        next_hours: applicationDetails.next_hours,
+                        next_max_hours: applicationDetails.next_max_hours,
+                        buyer_cost: applicationDetails.buyer_cost,
+                        freelancer_nets: applicationDetails.freelancer_nets
+                    }
+                }
+                return providerDetails;
             }
         })
         var jobDetials = Jobs.findOne({_id: jobId});

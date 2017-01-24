@@ -9,7 +9,7 @@ var distance = function(plat, plng, jlat, jlng) {
     var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(plat * Math.PI / 180 ) * Math.cos(jlat * Math.PI / 180 ) * Math.sin(dLon/2) * Math.sin(dLon/2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c;
-    return Math.round(d) + ' miles';
+    return Math.round(d);
 }
 
 var openJobsObject = {
@@ -50,8 +50,9 @@ var openJobsObject = {
                     buyerDetails = Buyers.findOne({userId: jobDetails.userId});
                     buyerName = buyerDetails.firstName + ' ' + buyerDetails.lastName
                 }
-                if(jobDetails.servicelocation == 'Field Job') {
-                    var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+                if(jobDetails.servicelocation == 'Remote Job') {
+                    jobLocation = 'Remote Job';
+                } else {
                     if(jobDetails.fullLocation.sublocality) {
                         jobLocation = jobDetails.fullLocation.sublocality + ', ' + jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
                     } else {
@@ -74,26 +75,27 @@ var openJobsObject = {
                 }
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
-            width: '60%',
+            width: '50%',
             responsivePriority: 1
         },
         {
             title: 'Distance (Mi.)',
             data: function(jobDetails) {
                 if(jobDetails.servicelocation == 'Remote Job') {
-                    return 'Remote Job';
+                    return 'NA';
                 } else {
                     var providerDetails = Profiles.findOne({userId: Meteor.userId()});
                     return distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude);
                 }
-            }
+            },
+            width: '15%'
         },
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
                 return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>';
             },
-            width: '20%',
+            width: '15%',
             responsivePriority: 2
         },
         {

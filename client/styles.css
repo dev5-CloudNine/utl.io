@@ -14,6 +14,10 @@ footer .gradient-blue-orange-h {
     background-repeat: no-repeat;
 }
 
+.jumbotron p {
+  color: #fff;
+}
+
 .panel {
     background: #f8f8f8 !important;
 }

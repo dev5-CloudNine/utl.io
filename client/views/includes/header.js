@@ -97,11 +97,11 @@ Template.headerUserMenu.events({
 });
 
 Template.header.rendered = function() {
-  this.$('.dropdown-toggle').dropdown();
+  return this.$('.dropdown-toggle').dropdown();
 }
 
 Template.headerUserMenu.rendered = function() {
   this.$('.dropdown-toggle').dropdown();
   Meteor.subscribe('notifications', Meteor.userId());
-  Meteor.subscribe('notificationsJobs', Meteor.userId());
+  return Meteor.subscribe('notificationsJobs', Meteor.userId());
 }

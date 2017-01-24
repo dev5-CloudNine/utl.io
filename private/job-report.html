@@ -3,18 +3,39 @@
 		<div class="col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<h3 class="text-center">Job Details</h3>
+					<h3>Job Details</h3>
+					<hr>
 					{{#with jobDetails}}
 						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								{{#with providerDetails}}
+									<strong>Provider</strong>
+									<h6>{{firstName}} {{lastName}}</h6>
+									<small>{{title}}</small> <br>
+									<small>{{location}}</small> <br>
+									<small>{{contactNumber}}</small> <br>
+									<small>{{userName}}</small> <br>
+								{{/with}}
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								{{#with buyerDetails}}
+									<strong>Buyer</strong>
+									<h6>{{firstName}} {{lastName}}</h6>
+									<small>{{title}}</small> <br>
+									<small>{{location}}</small> <br>
+									<small>{{contactNumber}}</small> <br>
+									<small>{{userName}}</small> <br>
+								{{/with}}
+							</div>
 							<div class="col-sm-12">
-								<span class="label labe-default label-xs">{{readableID}}</span>
+								<hr>
+								<small><i># {{readableID}}</i></small>
 								<h4>{{title}}</h4>
 								{{#if equals servicelocation 'Remote Job'}}
                                     {{servicelocation}} <br>
                                 {{else}}
                                     {{location}} <br>
                                 {{/if}}
-                                Posted By: {{buyerName}} &nbsp;|&nbsp; Assigned To: {{providerName}}
 								<hr>
 								<h4>Skills Required</h4>
 								{{skillsrequired}}
@@ -41,30 +62,77 @@
 								{{#if equals serviceschedule 'betweendates'}}
 									Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} to {{endtime}}
 								{{/if}}
-								{{#if ratebasis}}
-                                    <hr>
-                                    <h4>Budget</h4>
-                                    Payment Type: {{ratebasis}} <br>
-                                    {{#if equals ratebasis 'Blended'}}
-                                        {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
-                                        Gross: {{totalfromclient}} USD.
-                                        Net: {{freelancer_nets}} USD.
+								<hr>
+								<h4>Budget Details</h4>
+								{{#with budgetDetails _id}}
+									{{#if equals this.appType 'application'}}
+                                        <table class="table table-striped table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Payment Type</th>
+                                                    <th>Buyer Cost</th>
+                                                    <th>Provider Earns</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        {{this.paymentType}}
+                                                        {{#if equals this.paymentType 'Fixed Pay'}}
+                                                            ({{freelancer_nets}} USD)
+                                                        {{/if}}
+                                                        {{#if equals this.paymentType 'Per Hour'}}
+                                                            ({{hourlyrate}} USD/hr for {{maxhours}} hours)
+                                                        {{/if}}
+                                                        {{#if equals this.paymentType 'Per Device'}}
+                                                            ({{devicerate}} USD/device for {{maxdevices}} devices)
+                                                        {{/if}}
+                                                        {{#if equals this.paymentType 'Blended'}}
+                                                            ({{payforfirsthours}} USD for {{firsthours}} hours and then {{payfornexthours}} USD/hr for the next {{nexthours}} hours)
+                                                        {{/if}}
+                                                    </td>
+                                                    <td>{{../your_cost}} USD</td>
+                                                    <td>{{../freelancer_nets}} USD</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     {{/if}}
-                                    {{#if equals ratebasis 'Per Device'}}
-                                        {{rateperdevice}} USD for {{maxdevices}} devices. <br>
-                                        Gross: {{totalfromclient}} USD. <br>
-                                        Net: {{freelancer_nets}} USD. 
+                                    {{#if equals appType 'counteroffer'}}
+                                        <table class="table table-striped table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Payment Type</th>
+                                                    <th>Buyer Cost</th>
+                                                    <th>Provider Earns</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        {{#if equals counter_type 'blended'}}
+                                                            Blended
+                                                            ({{first_hours}} USD for {{first_max_hours}} hours and then {{next_hours}} USD/hr for the next {{next_max_hours}} hours)
+                                                        {{/if}}
+                                                        {{#if equals counter_type 'per_device'}}
+                                                            Per Device
+                                                            ({{device_rate}} USD/device for {{max_devices}} devices)
+                                                        {{/if}}
+                                                        {{#if equals counter_type 'per_hour'}}
+                                                            Per Hour
+                                                            ({{hourly_rate}} USD/hr for {{max_hours}} hours)
+                                                        {{/if}}
+                                                        {{#if equals counter_type 'fixed_pay'}}
+                                                            Fixed Pay
+                                                            ({{fixed_amount}} USD)
+                                                        {{/if}}
+                                                    </td>
+                                                    <td>{{buyer_cost}} USD</td>
+                                                    <td>{{freelancer_nets}} USD</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     {{/if}}
-                                    {{#if equals ratebasis 'Per Hour'}}
-                                        {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
-                                        Gross: {{totalfromclient}} USD. <br>
-                                        Net: {{freelancer_nets}} USD.
-                                    {{/if}}
-                                    {{#if equals ratebasis 'Fixed Pay'}}
-                                        Gross: {{fixedamount}} USD.
-                                        <br>Net: {{freelancer_nets}} USD.
-                                    {{/if}}
-								{{/if}}
+                                {{/with}}
 								{{#if confidentialDescription}}
                                     <hr> Confidential Info:
                                     <br> {{contactperson}}

@@ -91,7 +91,6 @@ Template.invoice.helpers({
 				freelancer_nets: applicationDetails.freelancer_nets
 			}
 		}
-		console.log(providerDetails);
 		return providerDetails;
 	},
 	expensesRequested: function(jobId) {

@@ -116,89 +116,89 @@
                                                     </tbody>
                                                 </table>
                                             {{/if}}
-                                            {{#if expensesRequested ../_id}}
-                                                <hr>
-                                                Expenses:
-                                                <table class="table table-striped table-responsive">
-                                                    <thead>
+                                        {{/with}}
+                                        {{#if expensesRequested _id}}
+                                            <hr>
+                                            Expenses:
+                                            <table class="table table-striped table-responsive">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Amount</th>
+                                                        <th>Buyer Cost</th>
+                                                        <th>Description</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{#each expenses}}
                                                         <tr>
-                                                            <th>Amount</th>
-                                                            <th>Buyer Cost</th>
-                                                            <th>Description</th>
-                                                            <th>Status</th>
+                                                            <td>{{expense_amount}} USD</td>
+                                                            <td>{{buyer_cost}} USD</td>
+                                                            <td>{{expense_description}}</td>
+                                                            <td>
+                                                                {{#if $eq request_status 'pending'}}
+                                                                    Pending
+                                                                {{/if}}
+                                                                {{#if $eq request_status 'accepted'}}
+                                                                    Accepted
+                                                                {{/if}}
+                                                                {{#if $eq request_status 'rejected'}}
+                                                                    Rejected
+                                                                {{/if}}
+                                                            </td>                        
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {{#each ../expenses}}
-                                                            <tr>
-                                                                <td>{{expense_amount}} USD</td>
-                                                                <td>{{buyer_cost}} USD</td>
-                                                                <td>{{expense_description}}</td>
-                                                                <td>
-                                                                    {{#if $eq request_status 'pending'}}
-                                                                        Pending
-                                                                    {{/if}}
-                                                                    {{#if $eq request_status 'accepted'}}
-                                                                        Accepted
-                                                                    {{/if}}
-                                                                    {{#if $eq request_status 'rejected'}}
-                                                                        Rejected
-                                                                    {{/if}}
-                                                                </td>                        
-                                                            </tr>
-                                                        {{/each}}
-                                                    </tbody>
-                                                </table>
-                                            {{/if}}
-                                            {{#if bonusRequested ../_id}}
-                                                <hr>
-                                                Budget Increase:<br>
-                                                <table class="table table-striped table-responsive">
-                                                    <thead>
+                                                    {{/each}}
+                                                </tbody>
+                                            </table>
+                                        {{/if}}
+                                        {{#if bonusRequested _id}}
+                                            <hr>
+                                            Budget Increase:<br>
+                                            <table class="table table-striped table-responsive">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Payment Type</th>
+                                                        <th>Buyer Cost</th>
+                                                        <th>Provider Earns</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{#each budgetIncreases }}
                                                         <tr>
-                                                            <th>Payment Type</th>
-                                                            <th>Buyer Cost</th>
-                                                            <th>Provider Earns</th>
-                                                            <th>Action</th>
+                                                            <td>
+                                                            	{{request_type}}
+                                                            	{{#if $eq request_type 'Fixed Pay'}}
+	                                                                <a href data-balloon="Pay fixed amount of {{fixed_amount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+	                                                            {{/if}}
+	                                                            {{#if $eq request_type 'Per Hour'}}
+	                                                                <a href data-balloon="Pay {{hourly_rate}} USD for {{max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+	                                                            {{/if}}
+	                                                            {{#if $eq request_type 'Per Device'}}
+	                                                                <a href data-balloon="Pay {{device_rate}} USD for {{max_devices}} devices." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+	                                                            {{/if}}
+	                                                            {{#if $eq request_type 'Blended'}}
+	                                                                <a href data-balloon="Pay {{first_hours}} USD for {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+	                                                            {{/if}}
+                                                            </td>
+                                                            <td>{{this.buyer_cost}} USD</td>
+                                                            <td>{{this.total_amount}} USD</td>
+                                                            <td>
+                                                                {{#if $eq this.request_status 'pending'}}
+                                                                    Pending
+                                                                {{/if}}
+                                                                {{#if $eq this.request_status 'accepted'}}
+                                                                    Accepted
+                                                                {{/if}}
+                                                                {{#if $eq this.request_status 'rejected'}}
+                                                                    Rejected
+                                                                {{/if}}
+                                                            </td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {{#each ../budgetIncreases }}
-                                                            <tr>
-                                                                <td>
-                                                                	{{request_type}}
-                                                                	{{#if $eq request_type 'Fixed Pay'}}
-		                                                                <a href data-balloon="Pay fixed amount of {{fixed_amount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-		                                                            {{/if}}
-		                                                            {{#if $eq request_type 'Per Hour'}}
-		                                                                <a href data-balloon="Pay {{hourly_rate}} USD for {{max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-		                                                            {{/if}}
-		                                                            {{#if $eq request_type 'Per Device'}}
-		                                                                <a href data-balloon="Pay {{device_rate}} USD for {{max_devices}} devices." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-		                                                            {{/if}}
-		                                                            {{#if $eq request_type 'Blended'}}
-		                                                                <a href data-balloon="Pay {{first_hours}} USD for {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-		                                                            {{/if}}
-                                                                </td>
-                                                                <td>{{this.buyer_cost}} USD</td>
-                                                                <td>{{this.total_amount}} USD</td>
-                                                                <td>
-                                                                    {{#if $eq this.request_status 'pending'}}
-                                                                        Pending
-                                                                    {{/if}}
-                                                                    {{#if $eq this.request_status 'accepted'}}
-                                                                        Accepted
-                                                                    {{/if}}
-                                                                    {{#if $eq this.request_status 'rejected'}}
-                                                                        Rejected
-                                                                    {{/if}}
-                                                                </td>
-                                                            </tr>
-                                                        {{/each}}
-                                                    </tbody>
-                                                </table>
-                                            {{/if}}
-										{{/with}}
+                                                    {{/each}}
+                                                </tbody>
+                                            </table>
+                                        {{/if}}
 										<hr>
 										Grand Total:<br>
 										<h5>Buyer Cost: {{buyerFinalCost _id}} USD</h5>
