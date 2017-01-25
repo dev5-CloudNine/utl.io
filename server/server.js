@@ -286,13 +286,15 @@ Meteor.methods({
             html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ', <br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has accepted you application for the job you applied. <br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>You may confirm the assignment or reject the assignment by <a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">clicking here</a>'
         })
     },
-    acceptHighBudgetCO: function(difference, buyerId) {
+    acceptHighBudgetCO: function(difference, buyerId, jobId) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        Jobs.update({_id: jobId}, {$inc: {your_cost: difference}})
         Wallet.update({userId: buyerId}, {$inc: {accountBalance: -difference}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: difference}});
     },
-    acceptLowBudgetCO: function(difference, buyerId) {
+    acceptLowBudgetCO: function(difference, buyerId, jobId) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        Jobs.update({_id: jobId}, {$inc: {your_cost: -difference}})
         Wallet.update({userId: buyerId}, {$inc: {accountBalance: difference}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -difference}});
     },
@@ -1160,7 +1162,7 @@ Meteor.methods({
                 }
             }
         }
-        Jobs.update({_id: jobId}, {$inc: {projectBudget: budgetDetails.provider_nets}});
+        Jobs.update({_id: jobId}, {$inc: {projectBudget: budgetDetails.provider_nets, your_cost: budgetDetails.buyer_cost}});
         Jobs.update({$and: [{_id: jobId}, {'budgetIncreases.request_id': requestId}]}, {$set: {'budgetIncreases.$.request_status': 'accepted'}});
         Wallet.update({userId: buyerId}, {$inc: {accountBalance: -budgetDetails.buyer_cost}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: budgetDetails.buyer_cost}});
@@ -1188,7 +1190,7 @@ Meteor.methods({
                 }
             }
         }
-        Jobs.update({_id: jobId}, {$inc: {projectBudget: expenseDetails.expense_amount}});
+        Jobs.update({_id: jobId}, {$inc: {projectBudget: expenseDetails.expense_amount, your_cost: expenseDetails.buyer_cost}});
         Jobs.update({$and: [{_id: jobId}, {'expenses.expense_id': expenseId}]}, {$set: {'expenses.$.request_status': 'accepted'}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: expenseDetails.buyer_cost}});
         Wallet.update({userId: buyerId}, {$inc: {accountBalance: -expenseDetails.buyer_cost}});
@@ -1208,8 +1210,10 @@ Meteor.methods({
         if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
             var buyerId = Dispatchers.findOne({userId: jobDetails.userId}).invitedBy;
             Wallet.update({userId: buyerId}, {$inc: {accountBalance: buyerReturns}});
+            Jobs.update({userId: buyerId}, {$inc: {your_cost: -buyerReturns}});
         } else if(Roles.userIsInRole(jobDetails.userId, ['buyer'])) {
             Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: buyerReturns}});
+            Jobs.update({userId: jobDetails.userId}, {$inc: {your_cost: -buyerReturns}})
         }
     }
 });

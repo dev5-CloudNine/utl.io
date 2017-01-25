@@ -272,7 +272,7 @@ Template.job.events({
         $(event.currentTarget).button('reset');
         return;
       } else {
-        Meteor.call('acceptHighBudgetCO', diff, buyerId, function(error) {
+        Meteor.call('acceptHighBudgetCO', diff, buyerId, jobId, function(error) {
           if(error) {
             $(event.currentTarget).button('reset');
           }
@@ -280,7 +280,7 @@ Template.job.events({
       }
     } else if(buyerCost < jobDetails.your_cost) {
       var diff = jobDetails.your_cost - buyerCost;
-      Meteor.call('acceptLowBudgetCO', diff, buyerId, function(error) {
+      Meteor.call('acceptLowBudgetCO', diff, buyerId, jobId, function(error) {
         if(error) {
           $(event.currentTarget).button('reset');
         }
@@ -1371,16 +1371,16 @@ Template.job.helpers({
       }
     }
   },
-  buyerFinalCost: function() {
-    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
-    var free_nets = jobDetails.projectBudget;
-    var buyer_nets = free_nets + (free_nets * 5/100);
-    return buyer_nets;
-  },
+  // buyerFinalCost: function() {
+  //   var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+  //   var free_nets = jobDetails.projectBudget;
+  //   var buyer_nets = free_nets + (free_nets * 5/100);
+  //   return buyer_nets;
+  // },
   utlCommission: function() {
     var jobDetails = Jobs.findOne({_id: Router.current().params._id});
     var free_nets = jobDetails.projectBudget;
-    var buyer_nets = free_nets + (free_nets * 5/100);
+    var buyer_nets = jobDetails.your_cost;
     return +(Math.round((buyer_nets - free_nets) + 'e+2') + 'e-2')
   },
   utlFeesPaidBy: function() {
