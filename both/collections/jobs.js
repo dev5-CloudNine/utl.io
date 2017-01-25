@@ -697,21 +697,15 @@ Jobs.attachSchema(new SimpleSchema({
       decimal: true,
       optional: true
     },
-    // buyerCost: {
-    //   type: Number,
-    //   decimal: true,
-    //   autoValue: function() {
-    //     if (this.isInsert) {
-    //       return this.field('your_cost').value;
-    //     } else if (this.isUpsert) {
-    //       return {
-    //         $setOnInsert: this.field('your_cost').value;
-    //       };
-    //     } else {
-    //       this.unset();
-    //     }
-    //   }
-    // },
+    buyerCost: {
+      type: Number,
+      decimal: true,
+      autoValue: function() {
+        if (this.isInsert) {
+          return this.field('your_cost').value;
+        }
+      }
+    },
     estimatedProviderEarnings: {
       type: Number,
       decimal: true,
