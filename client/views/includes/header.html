@@ -12,76 +12,27 @@
                     </button>
                     <a class="navbar-brand" href="{{pathFor 'home'}}"><img src="/images/header_logo.png" alt="" width='120px'></a>
                 </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
+                        <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
+                        <li id="user-drop-down" class="dropdown">
+                            <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">Users <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
+                                <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{pathFor 'payments'}}">Pricing</a></li>
+                        <li><a href="{{pathFor 'faq'}}">FAQ's</a></li>
                         {{#if currentUser}}
                             {{#if isInRole 'admin'}}
                                 <li><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>
-                                <li><a href="{{pathFor 'allUsers'}}">Users</a></li>
-                                <li><a href="{{pathFor 'allJobs'}}">Jobs</a></li>
-                                <li id="user-drop-down" class="dropdown">
-                                    <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-                                        Wallet <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{pathFor 'allDeposits'}}">Deposits</a></li>
-                                        <li><a href="{{pathFor 'allWithdrawls'}}">Withdrawls</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="{{pathFor 'allInvoices'}}">Invoices</a></li>
-                                <li id="user-drop-down" class="dropdown">
-                                    <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Dwolla <span class="caret"></span></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{pathFor 'dwollaCustomers'}}">Customers</a></li>
-                                        <li><a href="{{pathFor 'dwollaTransfers'}}">Transfers</a></li>
-                                    </ul>
-                                </li>
                             {{/if}}
                             {{#if isInRole 'buyer'}}
                                 {{#if currentUser.isBuyer}}
                                     <li>
                                         <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
-                                    </li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-                                            Jobs <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'jobNew'}}"><strong>Post a Job</strong></a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="{{pathFor 'myJobs'}}"><span class="badge pull-right">{{postedJobCount}}</span> My Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerOpenJobs'}}"><span class="badge pull-right">{{buyerOpenCount}}</span> Open</a></li>
-                                            <li><a href="{{pathFor 'buyerInvitedJobs'}}"><span class="badge pull-right">{{buyerInvitedCount}}</span> Invited</a></li>
-                                            <!-- <li><a href="{{pathFor 'buyerRoutedJobs'}}"><span class="badge pull-right">{{buyerRoutedCount}}</span> Routed</a></li> -->
-                                            <li><a href="{{pathFor 'buyerAssignedJobs'}}"><span class="badge pull-right">{{buyerAssignedCount}}</span> Assigned</a></li>
-                                            <li><a href="{{pathFor 'buyerPendingApprovalJobs'}}"><span class="badge pull-right">{{buyerPendingApprovalCount}}</span> Pending Approval</a></li>
-                                            <li><a href="{{pathFor 'buyerPaidJobs'}}"><span class="badge pull-right">{{buyerPaidCount}}</span> Paid</a></li>
-                                            <li><a href="{{pathFor 'deactivatedJobs'}}"><span class="badge pull-right">{{deactivatedCount}}</span> Deactivated</a></li>
-                                        </ul>
-                                    </li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-                                            Providers <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'profiles'}}">All Providers</a></li>
-                                            <li><a href="{{pathFor 'favoriteProfiles'}}">Favorite Providers</a></li>
-                                        </ul>
-                                    </li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Wallet <span class="caret"></span></a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
-                                            <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
-                                        </ul>
-                                    </li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Team <span class="caret"></span></a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'addTeam'}}">Invite</a></li>
-                                            <li><a href="{{pathFor 'dispatchers'}}">Dispatchers</a></li>
-                                            <li><a href="{{pathFor 'accountants'}}">Accountants</a></li>
-                                        </ul>
                                     </li>
                                 {{else}}
                                     <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
@@ -92,39 +43,6 @@
                                     <li>
                                         <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
                                     </li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-                                            Jobs <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'jobNew'}}"><strong>Post a Job</strong></a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="{{pathFor 'myJobs'}}"><span class="badge pull-right">{{postedJobCount}}</span> My Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerOpenJobs'}}"><span class="badge pull-right">{{buyerOpenCount}}</span> Open Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerInvitedJobs'}}"><span class="badge pull-right">{{buyerInvitedCount}}</span> Invited Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerRoutedJobs'}}"><span class="badge pull-right">{{buyerRoutedCount}}</span> Routed Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerAssignedJobs'}}"><span class="badge pull-right">{{buyerAssignedCount}}</span> Assigned Jobs</a></li>
-                                            <li><a href="{{pathFor 'buyerPendingApprovalJobs'}}"><span class="badge pull-right">{{buyerPendingApprovalCount}}</span> Pending Approval</a></li>
-                                            <li><a href="{{pathFor 'buyerPaidJobs'}}"><span class="badge pull-right">{{buyerPaidCount}}</span> Paid Jobs</a></li>
-                                            <li><a href="{{pathFor 'deactivatedJobs'}}"><span class="badge pull-right">{{deactivatedCount}}</span> Deactivated Job</a></li>
-                                        </ul>
-                                    </li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-                                            Providers <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'profiles'}}">All Providers</a></li>
-                                            <li><a href="{{pathFor 'favoriteProfiles'}}">Favorite Providers</a></li>
-                                        </ul>
-                                    </li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Team <span class="caret"></span></a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'dispatchers'}}">Dispatchers</a></li>
-                                            <li><a href="{{pathFor 'accountants'}}">Accountants</a></li>
-                                        </ul>
-                                    </li>
                                 {{else}}
                                     <li><a href="{{pathFor 'dispatcherNew'}}">Create your Profile</a></li>
                                 {{/if}}
@@ -132,14 +50,6 @@
                             {{#if isInRole 'accountant'}}
                                 {{#if currentUser.isAccountant}}
                                     <li><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>
-                                    <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Team <span class="caret"></span></a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'dispatchers'}}">Dispatchers</a></li>
-                                            <li><a href="{{pathFor 'accountants'}}">Accountants</a></li>
-                                        </ul>
-                                    </li>
                                 {{else}}
                                     <li><a href="{{pathFor 'accountantNew'}}">Create your Profile</a></li>
                                 {{/if}}
@@ -149,58 +59,12 @@
                                     <li>
                                         <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
                                     </li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Jobs <span class="caret"></span></a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'jobs'}}"><span class="badge pull-right">{{openJobsCount}}</span> Open Jobs</a></li>
-                                            <li><a href="{{pathFor 'recommendedJobs'}}"><span class="badge pull-right">{{recommendedJobsCount}}</span>Recommended Jobs</a></li>
-                                            <li><a href="{{pathFor 'invitedJobs'}}"><span class="badge pull-right">{{invitedJobsCount}}</span> Invited Jobs</a></li>
-                                            <li class="divider" role="seperator"></li>
-                                            <li><a href="{{pathFor 'providerAllJobs'}}"><span class="badge pull-right">{{providerAllCount}}</span> My Jobs</a></li>
-                                            <li><a href="{{pathFor 'appliedJobs'}}"><span class="badge pull-right">{{appliedJobsCount}}</span> Applied </a></li>
-                                            <!-- <li><a href="{{pathFor 'providerRoutedJobs'}}"><span class="badge pull-right">{{routedJobsCount}}</span> Routed </a></li> -->
-                                            <li><a href="{{pathFor 'providerAssignedJobs'}}"><span class="badge pull-right">{{assignedJobsCount}}</span> Assigned</a></li>
-                                            <li><a href="{{pathFor 'providerPendingApprovalJobs'}}"><span class="badge pull-right">{{proPendingApprovalCount}}</span> Pending Approval</a></li>
-                                            <li><a href="{{pathFor 'providerPaidJobs'}}"><span class="badge pull-right">{{proPaidJobsCount}}</span> Paid</a></li>
-                                            <li><a href="{{pathFor 'providerDeactivatedJobs'}}"><span class="badge pull-right">{{proDeactivatedCount}}</span> Deactivated</a></li>
-                                        </ul>
-                                    </li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
-                                            Buyers <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li>
-                                                <a href="{{pathFor 'buyers'}}">All Buyers</a></li>
-                                            <li><a href="{{pathFor 'favoriteBuyers'}}">Favorite Buyers</a></li>
-                                        </ul>
-                                    </li>
-                                    <li id="user-drop-down" class="dropdown">
-                                        <a href="#" class="dropdown-toggle box-user-option" data-toggle="dropdown">Wallet <span class="caret"></span></a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
-                                            <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
-                                        </ul>
-                                    </li>
                                 {{else}}
                                     <li class="{{isActiveRoute regex='^profile$'}}">
                                         <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
                                     </li>
                                 {{/if}}
                             {{/if}}
-                                <!-- <li><a href class="global-search">Search</a></li> -->
-                        {{else}}
-                            <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
-                            <li id="user-drop-down" class="dropdown">
-                                <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">Users <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
-                                    <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="{{pathFor 'payments'}}">Pricing</a></li>
-                            <li><a href="{{pathFor 'faq'}}">FAQ's</a></li>
                         {{/if}}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -217,7 +81,7 @@
     </section>
 </template>
 <template name="headerUserMenu">
-    <li id="user-drop-down" class="dropdown">
+    <li id="user-drop-down" class="dropdown menu-large">
         <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">
             {{#if customImageUrl}}
                 <div class="avatar avatar-small">
@@ -230,73 +94,184 @@
             {{/if}}
             {{currentUserDisplayName}} <span class="caret"></span>
 		</a>
-        <ul class="dropdown-menu" role="menu">
+        <ul class="dropdown-menu megamenu row" role="menu">
             {{#if isInRole 'admin'}}
-                <!-- <li><a href="/admin"><i class="fa fa-cogs fa-fw"></i> Admin</a></li> -->
-                <li><a href="{{pathFor 'jobCategories'}}"><i class="fa fa-bars fa-fw"></i> Job Categories</a></li>
-                <li class="divider"></li>
-                <li>
-                    <a href="{{pathFor 'mailBox' tab="mails"}}"><i class="fa fa-envelope fa-fw"></i> Messages</a>
+                <li class="col-sm-4">
+                    <ul>
+                        <li class="dropdown-header">Jobs</li>
+                        <li><a href="{{pathFor 'allJobs'}}">All Jobs</a></li>
+                        <li><a href="{{pathFor 'allInvoices'}}">Invoices</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Users</li>
+                        <li><a href="{{pathFor 'allUsers'}}">All Users</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{{pathFor 'jobCategories'}}"><i class="fa fa-bars fa-fw"></i> Job Categories</a></li>
+                    </ul>
+                </li>
+                <li class="col-sm-4">
+                    <ul>
+                        <li class="dropdown-header">Wallet</li>
+                        <li><a href="{{pathFor 'allDeposits'}}">Deposits</a></li>
+                        <li><a href="{{pathFor 'allWithdrawls'}}">Withdrawls</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Dwolla</li>
+                        <li><a href="" class="authUrl">Login to Dwolla</a></li>
+                        <li><a href="{{pathFor 'dwollaCustomers'}}">Customers</a></li>
+                        <li><a href="{{pathFor 'dwollaTransfers'}}">Transfers</a></li>
+                    </ul>
                 </li>
             {{/if}}
             {{#if isInRole 'provider'}}
                 {{#if currentUser.isDeveloper}}
-                    <li>
-                        {{#with profile}}<a href="{{pathFor 'profile'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Jobs</li>
+                            <li><a href="{{pathFor 'jobs'}}"><span class="badge pull-right">{{openJobsCount}}</span> Open Jobs</a></li>
+                            <li><a href="{{pathFor 'recommendedJobs'}}"><span class="badge pull-right">{{recommendedJobsCount}}</span>Recommended Jobs</a></li>
+                            <li><a href="{{pathFor 'invitedJobs'}}"><span class="badge pull-right">{{invitedJobsCount}}</span> Invited Jobs</a></li>
+                            <li class="divider" role="seperator"></li>
+                            <li><a href="{{pathFor 'providerAllJobs'}}"><span class="badge pull-right">{{providerAllCount}}</span> My Jobs</a></li>
+                            <li><a href="{{pathFor 'appliedJobs'}}"><span class="badge pull-right">{{appliedJobsCount}}</span> Applied </a></li>
+                            <li><a href="{{pathFor 'providerAssignedJobs'}}"><span class="badge pull-right">{{assignedJobsCount}}</span> Assigned</a></li>
+                            <li><a href="{{pathFor 'providerPendingApprovalJobs'}}"><span class="badge pull-right">{{proPendingApprovalCount}}</span> Pending Approval</a></li>
+                            <li><a href="{{pathFor 'providerPaidJobs'}}"><span class="badge pull-right">{{proPaidJobsCount}}</span> Paid</a></li>
+                            <li><a href="{{pathFor 'providerDeactivatedJobs'}}"><span class="badge pull-right">{{proDeactivatedCount}}</span> Deactivated</a></li>
+                        </ul>
                     </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="{{pathFor 'mailBox' tab="mails"}}"><i class="fa fa-envelope fa-fw"></i> Messages</a>
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Buyers</li>
+                            <li><a href="{{pathFor 'buyers'}}">All Buyers</a></li>
+                            <li><a href="{{pathFor 'favoriteBuyers'}}">Favorite Buyers</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Wallet</li>
+                            <li><a href="{{pathFor 'withdraw'}}">Withdraw</a></li>
+                            <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
+                        </ul>
                     </li>
                 {{else}}
-                    <li>
-                        <a href="{{pathFor 'profileNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Profile</li>
+                            <li><a href="{{pathFor 'profileNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a></li>
+                        </ul>
                     </li>
                 {{/if}}
             {{/if}}
             {{#if isInRole 'buyer'}}
                 {{#if currentUser.isBuyer}}
-                    <li>
-                        {{#with buyer}}<a href="{{pathFor 'buyer'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Jobs</li>
+                            <li><a href="{{pathFor 'jobNew'}}"><strong>Post a Job</strong></a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{pathFor 'myJobs'}}"><span class="badge pull-right">{{postedJobCount}}</span> My Jobs</a></li>
+                            <li><a href="{{pathFor 'buyerOpenJobs'}}"><span class="badge pull-right">{{buyerOpenCount}}</span> Open</a></li>
+                            <li><a href="{{pathFor 'buyerInvitedJobs'}}"><span class="badge pull-right">{{buyerInvitedCount}}</span> Invited</a></li>
+                            <li><a href="{{pathFor 'buyerAssignedJobs'}}"><span class="badge pull-right">{{buyerAssignedCount}}</span> Assigned</a></li>
+                            <li><a href="{{pathFor 'buyerPendingApprovalJobs'}}"><span class="badge pull-right">{{buyerPendingApprovalCount}}</span> Pending Approval</a></li>
+                            <li><a href="{{pathFor 'buyerPaidJobs'}}"><span class="badge pull-right">{{buyerPaidCount}}</span> Paid</a></li>
+                            <li><a href="{{pathFor 'deactivatedJobs'}}"><span class="badge pull-right">{{deactivatedCount}}</span> Deactivated</a></li>
+                        </ul>
                     </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="{{pathFor 'mailBox' tab="mails"}}"><i class="fa fa-envelope fa-fw"></i> Messages</a>
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Providers</li>
+                            <li><a href="{{pathFor 'profiles'}}">All Providers</a></li>
+                            <li><a href="{{pathFor 'favoriteProfiles'}}">Favorite Providers</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Wallet</li>
+                            <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
+                            <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Team</li>
+                            <li><a href="{{pathFor 'addTeam'}}">Invite</a></li>
+                            <li><a href="{{pathFor 'dispatchers'}}">Dispatchers</a></li>
+                            <li><a href="{{pathFor 'accountants'}}">Accountants</a></li>
+                        </ul>
                     </li>
                 {{else}}
-                    <li>
-                        <a href="{{pathFor 'buyerNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Profile</li>
+                            <li><a href="{{pathFor 'buyerNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a></li>
+                        </ul>
                     </li>
                 {{/if}}
             {{/if}}
             {{#if isInRole 'dispatcher'}}
                 {{#if currentUser.isDispatcher}}
-                    <li>
-                        {{#with dispatcher}}<a href="{{pathFor 'dispatcher'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a>{{/with}}
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Jobs</li>
+                            <li><a href="{{pathFor 'jobNew'}}"><strong>Post a Job</strong></a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{pathFor 'myJobs'}}"><span class="badge pull-right">{{postedJobCount}}</span> My Jobs</a></li>
+                            <li><a href="{{pathFor 'buyerOpenJobs'}}"><span class="badge pull-right">{{buyerOpenCount}}</span> Open Jobs</a></li>
+                            <li><a href="{{pathFor 'buyerInvitedJobs'}}"><span class="badge pull-right">{{buyerInvitedCount}}</span> Invited Jobs</a></li>
+                            <li><a href="{{pathFor 'buyerRoutedJobs'}}"><span class="badge pull-right">{{buyerRoutedCount}}</span> Routed Jobs</a></li>
+                            <li><a href="{{pathFor 'buyerAssignedJobs'}}"><span class="badge pull-right">{{buyerAssignedCount}}</span> Assigned Jobs</a></li>
+                            <li><a href="{{pathFor 'buyerPendingApprovalJobs'}}"><span class="badge pull-right">{{buyerPendingApprovalCount}}</span> Pending Approval</a></li>
+                            <li><a href="{{pathFor 'buyerPaidJobs'}}"><span class="badge pull-right">{{buyerPaidCount}}</span> Paid Jobs</a></li>
+                            <li><a href="{{pathFor 'deactivatedJobs'}}"><span class="badge pull-right">{{deactivatedCount}}</span> Deactivated Job</a></li>
+                        </ul>
                     </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="{{pathFor 'mailBox' tab="mails"}}"><i class="fa fa-envelope fa-fw"></i> Messages</a>
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Providers</li>
+                            <li><a href="{{pathFor 'profiles'}}">All Providers</a></li>
+                            <li><a href="{{pathFor 'favoriteProfiles'}}">Favorite Providers</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Team</li>
+                            <li><a href="{{pathFor 'dispatchers'}}">Dispatchers</a></li>
+                            <li><a href="{{pathFor 'accountants'}}">Accountants</a></li>
+                        </ul>
                     </li>
                 {{else}}
-                    <li>
-                        <a href="{{pathFor 'dispatcherNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a>
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Profile</li>
+                            <li><a href="{{pathFor 'dispatcherNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a></li>
+                        </ul>
                     </li>
                 {{/if}}
             {{/if}}
             {{#if isInRole 'accountant'}}
                 {{#if currentUser.isAccountant}}
-                    <li>
-                        {{#with accountant}} <a href="{{pathFor 'accountant'}}"><i class="fa fa-rocket fa-fw"></i> My Profile</a> {{/with}}
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Wallet</li>
+                            <li><a href="{{pathFor 'deposit'}}">Deposit</a></li>
+                        </ul>
                     </li>
-                    <li class="divider"></li>
-                    <li><a href="{{pathFor 'mailBox' tab="mails"}}"><i class="fa fa-envelope fa-fw"></i> Messages</a></li>
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Team</li>
+                            <li><a href="{{pathFor 'dispatchers'}}">Dispatchers</a></li>
+                            <li><a href="{{pathFor 'accountants'}}">Accountants</a></li>
+                        </ul>
+                    </li>
                 {{else}}
-                    <li><a href="{{pathFor 'accountantNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a></li>
+                    <li class="col-sm-4">
+                        <ul>
+                            <li class="dropdown-header">Profile</li>
+                            <li><a href="{{pathFor 'accountantNew'}}"><i class="fa fa-rocket fa-fw"></i> Create Your Profile</a></li>
+                        </ul>
+                    </li>
                 {{/if}}
             {{/if}}
-            <li class="divider"></li>
-            <li><a href="#" id="signOut"><i class="fa fa-sign-out fa-fw"></i> Sign Out</a></li>
+            <li class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-6">
+                        {{#with profile}}
+                            <a href="{{#if isInRole 'provider'}}{{pathFor 'profile'}}{{/if}}{{#if isInRole 'buyer'}}{{pathFor 'buyer'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcher'}}{{/if}}{{#if isInRole 'accountant'}}{{pathFor 'accountant'}}{{/if}}" class="btn btn-primary btn-sm"><i class="fa fa-rocket fa-fw"></i> My Profile</a>
+                        {{/with}}
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="#" id="signOut" class="btn btn-sm btn-primary"><i class="fa fa-sign-out fa-fw"></i> Sign Out</a>
+                    </div>
+                </div>
+            </li>
         </ul>
     </li>
     <li id="user-drop-down" class="dropdown">

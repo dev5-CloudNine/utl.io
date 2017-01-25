@@ -1,31 +1,15 @@
-Template.header.events({
-  'click .navbar-nav a': function(event, template) {
-    var targetButton = document.getElementsByClassName('navbar-toggle')[0];
-    var _this = $(event.currentTarget);
-    if (window.innerWidth < 768) {
-      if( !_this.hasClass('box-user-option') ){
-         targetButton.click()
-      }
-    }
-  }
-});
-
 Template.headerUserMenu.helpers({
   profile: function() {
-    return Profiles.findOne({
-      userId: Meteor.userId()
-    });
-  },
-  buyer: function() {
-    return Buyers.findOne({
-      userId: Meteor.userId()
-    });
-  },
-  dispatcher: function() {
-    return Dispatchers.findOne({userId: Meteor.userId()});
-  },
-  accountant: function() {
-    return Accountants.findOne({userId: Meteor.userId()});
+    if(Roles.userIsInRole(Meteor.userId(), ['provider']))
+      return Profiles.findOne({userId: Meteor.userId()});
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+      return Buyers.findOne({userId: Meteor.userId()});
+    if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+      return Dispatchers.findOne({userId: Meteor.userId()});
+    if(Roles.userIsInRole(Meteor.userId(), ['accountant']))
+      return Accountants.findOne({userId: Meteor.userId()});
+    if(Roles.userIsInRole(Meteor.userId(), ['admin']))
+      return;
   },
   adminNotificationCount: function() {
     return Notifications.find({$and: [{adminSide: true}, {adminRead: false}]}).count();
@@ -74,34 +58,31 @@ Template.headerUserMenu.helpers({
 
 Template.headerUserMenu.events({
   'click #signOut': function(event, template) {
-    //Meteor.logout();
     Meteor.logout(function(err) {
       Router.go("/");
     });
   },
-  'click .navbar-nav a': function(event, template) {
-    var targetButton = document.getElementsByClassName('navbar-toggle')[0];
-    var _this = $(event.currentTarget); 
-
-    if (window.innerWidth < 768) {
-      if( !_this.hasClass('box-user-option') ){
-         targetButton.click()
-      }
-    }
-  },
   'click #notification_link': function(event, template) {
-    console.log(event);
     $("#notification_container").fadeToggle(300);
     return false;
+  },
+  'click .authUrl' : function(){
+    Meteor.call('authUrl', Meteor.userId(), function (error, result) {
+      if(error){
+        console.log(error);
+        return;
+      }
+      window.location = result;
+    });
   }
 });
 
 Template.header.rendered = function() {
-  return this.$('.dropdown-toggle').dropdown();
+  $('.dropdown-toggle').dropdown();
 }
 
 Template.headerUserMenu.rendered = function() {
-  this.$('.dropdown-toggle').dropdown();
+  $('.dropdown-toggle').dropdown();
   Meteor.subscribe('notifications', Meteor.userId());
   return Meteor.subscribe('notificationsJobs', Meteor.userId());
 }
