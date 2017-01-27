@@ -17,15 +17,9 @@
 							{{#if currentUser.isDeveloper}}
 								<br>
 								{{#if $eq this.status 'active'}}
-									<button class="btn btn-xs btn-white">
-										<a href="{{pathFor 'buyerJobs'}}" data-balloon="View Jobs ({{buyerOpenCount userId}})" data-balloon-pos="up"><i class="fa fa-rocket"></i></a>
-									</button>
-									<button class="btn btn-xs btn-white">
-										<a href="" class="{{#if fav}}favActive{{else}}favInactive{{/if}}" data-balloon="{{#if fav}}Del Fav{{else}}Add Fav{{/if}}" data-balloon-pos="up"><i class="fa {{#if fav}}fa-heart{{else}}fa-heart-o{{/if}}"></i></a>
-									</button>
-									<button class="btn btn-xs btn-white">
-										<a href id="sendBuyerMessage" data-balloon="Send Msg." data-balloon-pos="up"><i class="fa fa-envelope"></i></a>
-									</button>
+									<a href="{{pathFor 'buyerJobs'}}" class="btn btn-xs btn-white" data-balloon="View Jobs ({{buyerOpenCount userId}})" data-balloon-pos="up"><i class="fa fa-rocket"></i></a>
+									<a href="" class="{{#if fav}}favActive{{else}}favInactive{{/if}} btn btn-xs btn-white" data-balloon="{{#if fav}}Del Fav{{else}}Add Fav{{/if}}" data-balloon-pos="up"><i class="fa {{#if fav}}fa-heart{{else}}fa-heart-o{{/if}}"></i></a>
+									<a href id="sendBuyerMessage" class="btn btn-xs btn-white" data-balloon="Send Msg." data-balloon-pos="up"><i class="fa fa-envelope"></i></a>
 								{{else}}
 									<p class="label label-deactivated">Inactive</p>
 								{{/if}}

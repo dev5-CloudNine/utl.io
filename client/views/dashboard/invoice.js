@@ -125,7 +125,7 @@ Template.invoice.helpers({
 	utlCommission: function(jobId) {
 		var jobDetails = Jobs.findOne({_id: jobId});
 		var free_nets = jobDetails.projectBudget;
-		var buyer_nets = free_nets + (free_nets * 5/100);
+		var buyer_nets = jobDetails.buyerCost;
 		return +(Math.round((buyer_nets - free_nets) + 'e+2') + 'e-2')
 	},
 	providerDetails: function() {

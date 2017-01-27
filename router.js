@@ -1127,6 +1127,18 @@ Router.map(function() {
         }
     });
 
+    this.route('terms', {
+        path: '/terms',
+        waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
+                return Meteor.subscribe('my_jobs');
+            }
+            if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+                return Meteor.subscribe('jobs');
+            }
+        }
+    })
+
     this.route('experts', function() {
         this.redirect("profiles");
     });

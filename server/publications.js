@@ -215,7 +215,8 @@ Meteor.publishComposite('buyers', {
                 companyName: true,
                 companyUrl: true,
                 createdAt: true,
-                fullLocation: true
+                fullLocation: true,
+                contactNumber: true
             }
         });
     }
@@ -311,7 +312,8 @@ Meteor.publish("favorite_users", function() {
             resumeUrl: true,
             customImageUrl: true,
             status: true,
-            fullLocation: true
+            fullLocation: true,
+            contactNumber: true
         }
     })
 });

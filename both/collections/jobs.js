@@ -947,7 +947,9 @@ Jobs.attachSchema(new SimpleSchema({
     },
     confidentialDescription: {
       type: String,
-      label: "(Only assigned providers can see this information)",
+      label: function() {
+        return
+      },
       optional: true,
       autoform: {
         afFieldInput: SUMMERNOTE_OPTIONS

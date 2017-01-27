@@ -1206,6 +1206,7 @@ Meteor.methods({
         var jobDetails = Jobs.findOne({_id: jobId});
         Jobs.update({_id: jobId}, {$inc: {projectBudget: -diff}});
         var buyerReturns = diff + diff * 5 / 100;
+        Jobs.update({_id: jobId}, {$inc: {buyerCost: -buyerReturns}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -buyerReturns}});
         if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
             var buyerId = Dispatchers.findOne({userId: jobDetails.userId}).invitedBy;

@@ -23,6 +23,16 @@ AccountsTemplates.configure({
     redirectTimeout: 2000,
 });
 
+AccountsTemplates.addField({
+    _id: 'terms',
+    type: 'checkbox',
+    displayName: 'I have read and agree to the <a href="/terms">Terms and Conditions</a>',
+    errStr: 'You must agree to the terms and conditions.',
+    func: function(value) {
+        return value != '1'
+    }
+})
+
 
 AccountsTemplates.configureRoute("forgotPwd");
 AccountsTemplates.configureRoute("resetPwd");

@@ -25,47 +25,6 @@
                         </li>
                         <li><a href="{{pathFor 'payments'}}">Pricing</a></li>
                         <li><a href="{{pathFor 'faq'}}">FAQ's</a></li>
-                        {{#if currentUser}}
-                            {{#if isInRole 'admin'}}
-                                <li><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>
-                            {{/if}}
-                            {{#if isInRole 'buyer'}}
-                                {{#if currentUser.isBuyer}}
-                                    <li>
-                                        <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
-                                    </li>
-                                {{else}}
-                                    <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
-                                {{/if}}
-                            {{/if}}
-                            {{#if isInRole 'dispatcher'}}
-                                {{#if currentUser.isDispatcher}}
-                                    <li>
-                                        <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
-                                    </li>
-                                {{else}}
-                                    <li><a href="{{pathFor 'dispatcherNew'}}">Create your Profile</a></li>
-                                {{/if}}
-                            {{/if}}
-                            {{#if isInRole 'accountant'}}
-                                {{#if currentUser.isAccountant}}
-                                    <li><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>
-                                {{else}}
-                                    <li><a href="{{pathFor 'accountantNew'}}">Create your Profile</a></li>
-                                {{/if}}
-                            {{/if}}
-                            {{#if isInRole 'provider'}}
-                                {{#if currentUser.isDeveloper}}
-                                    <li>
-                                        <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
-                                    </li>
-                                {{else}}
-                                    <li class="{{isActiveRoute regex='^profile$'}}">
-                                        <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
-                                    </li>
-                                {{/if}}
-                            {{/if}}
-                        {{/if}}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {{#if currentUser}}
@@ -261,16 +220,73 @@
                 {{/if}}
             {{/if}}
             <li class="col-sm-4">
-                <div class="row">
-                    <div class="col-sm-6">
-                        {{#with profile}}
-                            <a href="{{#if isInRole 'provider'}}{{pathFor 'profile'}}{{/if}}{{#if isInRole 'buyer'}}{{pathFor 'buyer'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcher'}}{{/if}}{{#if isInRole 'accountant'}}{{pathFor 'accountant'}}{{/if}}" class="btn btn-primary btn-sm"><i class="fa fa-rocket fa-fw"></i> My Profile</a>
-                        {{/with}}
-                    </div>
-                    <div class="col-sm-6">
-                        <a href="#" id="signOut" class="btn btn-sm btn-primary"><i class="fa fa-sign-out fa-fw"></i> Sign Out</a>
-                    </div>
-                </div>
+                <ul>
+                    <li class="dropdown-header">Account</li>
+                    {{#if currentUser}}
+                        {{#if isInRole 'admin'}}
+                            <li><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>
+                        {{/if}}
+                        {{#if isInRole 'buyer'}}
+                            {{#if currentUser.isBuyer}}
+                                <li>
+                                    <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
+                                </li>
+                                <li>
+                                    {{#with profile}}
+                                        <a href="{{#if isInRole 'provider'}}{{pathFor 'profile'}}{{/if}}{{#if isInRole 'buyer'}}{{pathFor 'buyer'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcher'}}{{/if}}{{#if isInRole 'accountant'}}{{pathFor 'accountant'}}{{/if}}">My Profile</a>
+                                    {{/with}}
+                                </li>
+                            {{else}}
+                                <li><a href="{{pathFor 'buyerNew'}}">Create your Profile</a></li>
+                            {{/if}}
+                        {{/if}}
+                        {{#if isInRole 'dispatcher'}}
+                            {{#if currentUser.isDispatcher}}
+                                <li>
+                                    <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
+                                </li>
+                                <li>
+                                    {{#with profile}}
+                                        <a href="{{#if isInRole 'provider'}}{{pathFor 'profile'}}{{/if}}{{#if isInRole 'buyer'}}{{pathFor 'buyer'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcher'}}{{/if}}{{#if isInRole 'accountant'}}{{pathFor 'accountant'}}{{/if}}">My Profile</a>
+                                    {{/with}}
+                                </li>
+                            {{else}}
+                                <li><a href="{{pathFor 'dispatcherNew'}}">Create your Profile</a></li>
+                            {{/if}}
+                        {{/if}}
+                        {{#if isInRole 'accountant'}}
+                            {{#if currentUser.isAccountant}}
+                                <li><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>
+                                <li>
+                                    {{#with profile}}
+                                        <a href="{{#if isInRole 'provider'}}{{pathFor 'profile'}}{{/if}}{{#if isInRole 'buyer'}}{{pathFor 'buyer'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcher'}}{{/if}}{{#if isInRole 'accountant'}}{{pathFor 'accountant'}}{{/if}}">My Profile</a>
+                                    {{/with}}
+                                </li>
+                            {{else}}
+                                <li><a href="{{pathFor 'accountantNew'}}">Create your Profile</a></li>
+                            {{/if}}
+                        {{/if}}
+                        {{#if isInRole 'provider'}}
+                            {{#if currentUser.isDeveloper}}
+                                <li>
+                                    <a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a>
+                                </li>
+                                <li>
+                                    {{#with profile}}
+                                        <a href="{{#if isInRole 'provider'}}{{pathFor 'profile'}}{{/if}}{{#if isInRole 'buyer'}}{{pathFor 'buyer'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcher'}}{{/if}}{{#if isInRole 'accountant'}}{{pathFor 'accountant'}}{{/if}}">My Profile</a>
+                                    {{/with}}
+                                </li>
+                            {{else}}
+                                <li class="{{isActiveRoute regex='^profile$'}}">
+                                    <a href="{{pathFor 'profileNew'}}">Create Your Profile</a>
+                                </li>
+                            {{/if}}
+                        {{/if}}
+                    {{/if}}
+                    <li>
+                        <a href="#" id="signOut">Sign Out</a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </li>

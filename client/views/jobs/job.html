@@ -49,17 +49,13 @@
                                     <div class="col-sm-12">
                                         {{#if jobPostedBuyer}}
                                             <span class="pull-right">
-                                                <button class="btn btn-sm btn-white">
-                                                    <a href="{{pathFor 'duplicateJob'}}" data-balloon="Duplicate Job" data-balloon-pos="up"><i class="fa fa-clone fa-2x"></i></a>
-                                                </button>
+                                            <a href="{{pathFor 'duplicateJob'}}" class="btn btn-sm btn-white" data-balloon="Duplicate Job" data-balloon-pos="up"><i class="fa fa-clone fa-2x"></i></a>
                                             </span>
                                         {{/if}}
                                         {{#if assignedProvider}}
                                             {{#if assignedOrDone}}
                                                 <span class="pull-right">
-                                                    <button class="btn btn-sm btn-white">
-                                                        <a href class="createPdf" data-balloon="Download PDF" data-balloon-pos="up"><i class="fa fa-file-pdf-o fa-2x"></i></a>
-                                                    </button>
+                                                    <a href class="btn btn-sm btn-white createPdf" data-balloon="Download PDF" data-balloon-pos="up"><i class="fa fa-file-pdf-o fa-2x"></i></a>
                                                 </span>
                                             {{/if}}
                                         {{/if}}
@@ -555,9 +551,9 @@
                                                 {{/if}}
                                             {{else}}
                                                 <p><i>{{assignmentTime}}</i></p>
-                                                <p>The provider has confirmed the assignment. <br>The job is scheduled for <br> {{#if $eq serviceschedule 'exactdate'}}
-                                                    Date: {{formatDate exactdate}} <br>
-                                                    Time: {{exacttime}}
+                                                <p>The provider has confirmed the assignment. <br>The job is scheduled for 
+                                                {{#if $eq serviceschedule 'exactdate'}}
+                                                    Date: {{formatDate exactdate}} at {{exacttime}}
                                                 {{/if}}
                                                 {{#if $eq serviceschedule 'betweendates'}}
                                                     Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} to {{endtime}}
@@ -1070,21 +1066,21 @@
                                                                 {{#if $eq ratebasis 'Blended'}}
                                                                     {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
                                                                     Your Cost: {{your_cost}} USD. <br>
-                                                                    Net: {{freelancer_nets}} USD.
+                                                                    Provider Earns: {{freelancer_nets}} USD.
                                                                 {{/if}}
                                                                 {{#if $eq ratebasis 'Per Device'}}
                                                                     {{rateperdevice}} USD for {{maxdevices}} devices. <br>
                                                                     Your Cost: {{your_cost}} USD.
-                                                                    <br>Net: {{freelancer_nets}} USD.
+                                                                    <br>Provier Earns: {{freelancer_nets}} USD.
                                                                 {{/if}}
                                                                 {{#if $eq ratebasis 'Per Hour'}}
                                                                     {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
                                                                     Your Cost: {{your_cost}} USD. <br>
-                                                                    Net: {{freelancer_nets}} USD.
+                                                                    Provier Earns: {{freelancer_nets}} USD.
                                                                 {{/if}}
                                                                 {{#if $eq ratebasis 'Fixed Pay'}}
                                                                     Your Cost: {{your_cost}} USD.
-                                                                    <br>Net: {{freelancer_nets}} USD.
+                                                                    <br>Provier Earns: {{freelancer_nets}} USD.
                                                                 {{/if}}
                                                             {{/with}}
                                                             <hr>
@@ -1171,8 +1167,8 @@
                                                                 Payment Type: Fixed Pay <br>
                                                                 Pay fixed amount {{fixed_amount}} USD. <br>
                                                             {{/if}}
-                                                            Gross: {{buyer_cost}} USD. <br>
-                                                            Net: {{freelancer_nets}} USD. <br>
+                                                            Your Cost: {{buyer_cost}} USD. <br>
+                                                            Provider Earns: {{freelancer_nets}} USD. <br>
                                                             {{#if $eq applicationStatus 'open'}}
                                                                 <br>
                                                                 {{#if providerDeclined}}

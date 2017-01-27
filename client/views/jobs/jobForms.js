@@ -475,8 +475,8 @@ Template.submitButtons.events({
 	},
 	'click #submitJob': function(event, template) {
 		var publishTo = $('input[name="publishJob"]:checked').val();
+		$(event.currentTarget).button('loading');
 		if(publishTo == 'favProviders') {
-			$(event.currentTarget).button('loading');
 			Session.set('publishToFav', true);
 			var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
 			Jobs.after.insert(function(userId, doc, res) {
@@ -497,7 +497,6 @@ Template.submitButtons.events({
 		}
 		else if(publishTo == 'selectedProviders') {
 			Session.set('publishToIndividual', true);
-			$(event.currentTarget).button('loading');
 			var individualProviders = $('select[name="invitedproviders"]').val();
 			Jobs.after.insert(function(userId, doc) {
 				if(!Session.get('publishToIndividual')) {
@@ -515,45 +514,6 @@ Template.submitButtons.events({
 				})
 			})
 		}
-		// else if(publishTo == 'assignToProvider'){
-		// 	Session.set('assignToIndividual', true);
-		// 	$(event.currentTarget).button('loading');
-		// 	var selectedProvider = $('select[name="individualProvider"]').val();
-		// 	var appDetails = {
-		// 		userId: selectedProvider,
-		// 		applied_at: new Date(),
-		// 		app_status: 'accepted',
-		// 		app_type: 'application'
-		// 	}
-		// 	// Jobs.before.insert(function(userId, doc) {
-		// 	// 	doc.applications = [];
-		// 	// 	var appDetails = {
-		// 	// 		userId: selectedProvider,
-		// 	// 		applied_at: new Date(),
-		// 	// 		app_status: 'accepted',
-		// 	// 		app_type: 'application'
-		// 	// 	}
-		// 	// 	doc.applicationStatus = 'assigned';
-		// 	// 	doc.assignmentStatus = 'not_confirmed'
-		// 	// 	doc.applications.push(appDetails);
-		// 	// 	doc.routed = true;
-		// 	// });
-		// 	Jobs.after.insert(function(userId, doc) {
-		// 		if(!Session.get('assignToIndividual')) {
-		// 			return;
-		// 			$(event.currentTarget).button('reset');
-		// 		}
-		// 		Meteor.call('routeNotification', Meteor.userId(), appDetails, doc, function(error) {
-		// 			if(error) {
-		// 				toastr.error('Failed to assign job.');
-		// 				$(event.currentTarget).button('reset');
-		// 			} else {
-		// 				selectedProvider = '';
-		// 				delete Session.keys['assignToIndividual'];
-		// 			}
-		// 		})
-		// 	})
-		// }
 	}
 })
 

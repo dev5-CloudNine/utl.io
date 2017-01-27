@@ -452,37 +452,6 @@ h3, h4 {
 }
 /** /top tiles **/
 
-i.favActive {
-  cursor: pointer;
-  color: #139AEC;
-}
-
-i.favInactive {
-  cursor: pointer;
-  color: #999999;
-}
-
-a + a.favActive {
-    background-color: #139AEC;
-    color: #fff;
-}
-a + a.favInactive {
-    background-color: #999999;
-    color: #fff;
-}
-
-button.favActive {
-    background-color: #139AEC;
-    color: #fff;
-    border: none;
-}
-
-button.favInactive {
-    background-color: #999999;
-    color: #fff;
-    border: none;
-}
-
 .task-title :before {
   font-family: 'FontAwesome';
   content: '\f02b';
@@ -2109,7 +2078,7 @@ svg {
 }
 .megamenu{
   padding: 20px 0px;
-  width:100%;
+  width:720px;
 }
 .megamenu> li > ul {
   padding: 0;

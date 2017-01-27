@@ -245,14 +245,14 @@
                 <div class="panel panel-white">
                     <div class="panel-heading">
                         <a href="#confidentialDesc" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">
-                            <h5>Confidential Information</h5>
+                            <h5>Confidential Information (Only assigned providers can see this information)</h5>
                         </a>
                     </div>
                     <div id="confidentialDesc" class="panel-collapse collapse">
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-xs-12">
-                                    {{> afQuickField name='confidentialDescription' rows=4 placeholder="All the information you write here will only be display to the assigned provider."}}
+                                    {{> afQuickField name='confidentialDescription' rows=4}}
                                 </div>
                             </div>
                         </div>
@@ -263,17 +263,13 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <button class="btn btn-success" data-toggle="modal" id="uploadDocs" data-target="#uploadJobDocs">Attach Documents</button>
-        </div>
-        <div class="col-xs-12">
-            <div id="uploadJobDocs" class="modal fade" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" data-dismiss="modal" aria-label="close" type="button"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Select/Upload Documents</h4>
-                        </div>
-                        <div class="modal-body">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <a href="#uploadJobDocs" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"><h5>Attach Documents</h5></a>
+                    </div>
+                    <div id="uploadJobDocs" class="panel-collapse collapse">
+                        <div class="panel-body">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                                     <div class="form-group">
@@ -309,7 +305,9 @@
                                                 </div>
                                             </div>
                                         {{else}}
-                                            <p>No files found. Please select from computer.</p>
+                                            <div class="col-sm-12">
+                                                <p>No files found. Please select from computer.</p>
+                                            </div>
                                         {{/if}}
                                     </div>
                                 </div>

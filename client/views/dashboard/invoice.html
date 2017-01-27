@@ -123,18 +123,18 @@
                                             <table class="table table-striped table-responsive">
                                                 <thead>
                                                     <tr>
-                                                        <th>Amount</th>
-                                                        <th>Buyer Cost</th>
                                                         <th>Description</th>
+                                                        <th>Buyer Cost</th>
+                                                        <th>Provider Earns</th>
                                                         <th>Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {{#each expenses}}
                                                         <tr>
-                                                            <td>{{expense_amount}} USD</td>
-                                                            <td>{{buyer_cost}} USD</td>
                                                             <td>{{expense_description}}</td>
+                                                            <td>{{buyer_cost}} USD</td>
+                                                            <td>{{expense_amount}} USD</td>
                                                             <td>
                                                                 {{#if $eq request_status 'pending'}}
                                                                     Pending
