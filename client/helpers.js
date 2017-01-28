@@ -4,6 +4,10 @@ UI.registerHelper('allDeactivatedCount', function() {
 	}
 });
 
+UI.registerHelper('roundToTwo', function(someNumber) {
+	return +(Math.round(someNumber + 'e+2') + 'e-2')
+})
+
 UI.registerHelper('allCompletedJobs', function() {
 	if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
 		return Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'paid'}]}).count();

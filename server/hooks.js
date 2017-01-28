@@ -139,13 +139,25 @@ Jobs.after.insert(function(userId, doc){
   Notifications.insert(notificationObj);
   JobTransactions.insert(jobTransObj);
   var admin = Users.findOne({roles:{$in: ['admin']}});
+  if(!doc.invited || !doc.routed) {
+    var providersList = Profiles.find({}).fetch();
+    console.log(providersList)
+    for(var i = 0; i < providersList.length; i++) {
+      Email.send({
+        to: getUserEmail(Users.findOne({_id: providersList[i].userId})),
+        from: FROM_EMAIL,
+        subject: 'New Job Posted - ' + doc.title,
+        html: 'Hello ' + providersList[i].firstName + ' ' + providersList[i].lastName + ',<br> A new job has been posted.<br><a href="' + Meteor.absoluteUrl('jobs/' + doc._id) + '">ID: ' + doc.readableID + '<br>' + doc.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + doc._id) + '">Click here</a> to apply or counter offer the job.'
+      })
+    }
+  }
   Email.send({
-      to: getUserEmail(admin),
-      from: FROM_EMAIL,
-      subject: "New Job Posted - " + doc.title,
-      text: "A new job is posted: " + doc.title + "\n\n" 
-            + Meteor.absoluteUrl("jobs/"+doc._id) + "\n\n\n\n\n\n"
-    });
+    to: getUserEmail(admin),
+    from: FROM_EMAIL,
+    subject: "New Job Posted - " + doc.title,
+    text: "A new job is posted: " + doc.title + "\n\n" 
+          + Meteor.absoluteUrl("jobs/"+doc._id) + "\n\n\n\n\n\n"
+  });
   if(doc.selectedProvider) {
     Profiles.update({_id: doc.selectedProvider}, {$addToSet: {appliedJobs: doc._id}});
   }

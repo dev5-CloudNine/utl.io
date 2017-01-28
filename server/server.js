@@ -568,7 +568,7 @@ Meteor.methods({
                 cc: providerDetails.smsAddress,
                 from: FROM_EMAIL,
                 subject: 'You have a new routed job.',
-                html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has routed a job to you.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">ID: ' + job.readableID + '<br>' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
+                html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has assigned a job to you.<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">ID: ' + job.readableID + '<br>' + job.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + job._id) + '">Click here</a> to apply or counter offer the job.'
             })
         }
     },

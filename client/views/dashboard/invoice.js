@@ -112,21 +112,11 @@ Template.invoice.helpers({
 		}
 		return;
 	},
-	projectBudget: function() {
-		var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
-		return Jobs.findOne({_id: invoiceDetails.jobId}).projectBudget;
-	},
-	buyerFinalCost: function(jobId) {
-		var jobDetails = Jobs.findOne({_id: jobId});
-		var free_nets = jobDetails.projectBudget;
-		var buyer_nets = free_nets + (free_nets * 5/100);
-		return buyer_nets;
-	},
 	utlCommission: function(jobId) {
 		var jobDetails = Jobs.findOne({_id: jobId});
-		var free_nets = jobDetails.projectBudget;
-		var buyer_nets = jobDetails.buyerCost;
-		return +(Math.round((buyer_nets - free_nets) + 'e+2') + 'e-2')
+		var free_nets = parseFloat(jobDetails.projectBudget);
+		var buyer_nets = parseFloat(jobDetails.buyerCost);
+		return +(Math.round(buyer_nets - free_nets + 'e+2') + 'e-2');
 	},
 	providerDetails: function() {
 		var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});

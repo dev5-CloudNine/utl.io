@@ -95,27 +95,27 @@
                                             {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
                                             Total Hours: {{blendedTotalHours firsthours nexthours}} <br>
                                             {{#if jobPostedBuyer}}
-                                                Your Cost: {{your_cost}} USD. <br>
+                                                Your Cost: {{roundToTwo your_cost}} USD. <br>
                                             {{/if}}
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Device'}}
                                             {{rateperdevice}} USD for {{maxdevices}} devices. <br>
                                             {{#if jobPostedBuyer}}
-                                                Your Cost: {{your_cost}} USD. <br>
+                                                Your Cost: {{roundToTwo your_cost}} USD. <br>
                                             {{/if}}
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Hour'}}
                                             {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
                                             {{#if jobPostedBuyer}}
-                                                Your Cost: {{your_cost}} USD. <br>
+                                                Your Cost: {{roundToTwo your_cost}} USD. <br>
                                             {{/if}}
                                         {{/if}}
                                         {{#if $eq ratebasis 'Fixed Pay'}}
                                             {{#if jobPostedBuyer}}
-                                                Your Cost: {{your_cost}} USD. <br>
+                                                Your Cost: {{roundToTwo your_cost}} USD. <br>
                                             {{/if}}
                                         {{/if}}
-                                        Provider Earns: {{freelancer_nets}}&nbsp;USD
+                                        Provider Earns: {{roundToTwo freelancer_nets}}&nbsp;USD
                                     </div>
                                     <div class="col-sm-12">
                                         {{#if isInRole 'provider'}}
@@ -485,7 +485,7 @@
                                                             <div class="col-xs-12">
                                                                 <div class="form-group">
                                                                     <label for="worked-devices">How many devices have you worked among {{this.max_devices}} devices?</label>
-                                                                    <input type="number" id="worked-devices" min="1" max="{{this.max_devices}}" step="1" class="form-control" required>
+                                                                    <input type="number" id="worked-devices" min="1" step="1" class="form-control" required>
                                                                     <button class="btn btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
                                                                 </div>
                                                             </div>
@@ -525,7 +525,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     {{#if $eq applicationStatus 'open'}}
-                                        <p>The job has been posted and your account has been debited with the proposed budget of {{your_cost}} USD.</p>
+                                        <p>The job has been posted and your account has been debited with the proposed budget of {{roundToTwo your_cost}} USD.</p>
                                     {{/if}}
                                     {{#if $eq applicationStatus 'assigned'}}
                                         {{#if $eq assignmentStatus 'not_confirmed'}}
@@ -840,8 +840,8 @@
                                                                             <a href data-balloon="Pay {{../payforfirsthours}} USD for {{../firsthours}} hours and then {{../payfornexthours}} USD for the next {{../nexthours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
                                                                         {{/if}}
                                                                     </td>
-                                                                    <td>{{../your_cost}} USD</td>
-                                                                    <td>{{../freelancer_nets}} USD</td>
+                                                                    <td>{{roundToTwo ../your_cost}} USD</td>
+                                                                    <td>{{roundToTwo ../freelancer_nets}} USD</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -871,8 +871,8 @@
                                                                             Fixed Pay
                                                                         {{/if}}
                                                                     </td>
-                                                                    <td>{{buyer_cost}} USD</td>
-                                                                    <td>{{freelancer_nets}} USD</td>
+                                                                    <td>{{roundToTwo buyer_cost}} USD</td>
+                                                                    <td>{{roundToTwo freelancer_nets}} USD</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -892,8 +892,8 @@
                                                             <tbody>
                                                                 {{#each ../expenses}}
                                                                     <tr>
-                                                                        <td>{{expense_amount}} USD</td>
-                                                                        <td>{{buyer_cost}} USD</td>
+                                                                        <td>{{roundToTwo expense_amount}} USD</td>
+                                                                        <td>{{roundToTwo buyer_cost}} USD</td>
                                                                         <td>{{expense_description}}</td>
                                                                         <td>
                                                                             {{#if $eq request_status 'pending'}}
@@ -941,8 +941,8 @@
                                                                                 <a href data-balloon="Pay {{next_hours}} USD for {{next_max_hours}} additional hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
                                                                             {{/if}}
                                                                         </td>
-                                                                        <td>{{this.buyer_cost}} USD</td>
-                                                                        <td>{{this.provider_nets}} USD</td>
+                                                                        <td>{{roundToTwo this.buyer_cost}} USD</td>
+                                                                        <td>{{roundToTwo this.provider_nets}} USD</td>
                                                                         <td>
                                                                             {{#if $eq this.request_status 'pending'}}
                                                                                 {{#if $eq ../status 'active'}}
@@ -970,9 +970,9 @@
                                                     {{/if}}
                                                     <hr>
                                                     Grand Total:<br>
-                                                    <h5>Your Cost: {{../buyerCost}} USD</h5>
-                                                    <h5>Provider Earns: {{../projectBudget}} USD</h5>
-                                                    <h5>UTL Fees: {{utlCommission}} USD (5%)</h5>
+                                                    <h5>Your Cost: {{roundToTwo ../buyerCost}} USD</h5>
+                                                    <h5>Provider Earns: {{roundToTwo ../projectBudget}} USD</h5>
+                                                    <h5>UTL Fees: {{roundToTwo utlCommission}} USD (5%)</h5>
                                                     <hr>
                                                     <small><i>* A 5% service fee has been deducted for each payment you accepted.</i></small>
                                                 </div>
@@ -1065,22 +1065,22 @@
                                                                 Payment type: {{ratebasis}} <br>
                                                                 {{#if $eq ratebasis 'Blended'}}
                                                                     {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
-                                                                    Your Cost: {{your_cost}} USD. <br>
-                                                                    Provider Earns: {{freelancer_nets}} USD.
+                                                                    Your Cost: {{roundToTwo your_cost}} USD. <br>
+                                                                    Provider Earns: {{roundToTwo freelancer_nets}} USD.
                                                                 {{/if}}
                                                                 {{#if $eq ratebasis 'Per Device'}}
                                                                     {{rateperdevice}} USD for {{maxdevices}} devices. <br>
-                                                                    Your Cost: {{your_cost}} USD.
-                                                                    <br>Provier Earns: {{freelancer_nets}} USD.
+                                                                    Your Cost: {{roundToTwo your_cost}} USD.
+                                                                    <br>Provier Earns: {{roundToTwo freelancer_nets}} USD.
                                                                 {{/if}}
                                                                 {{#if $eq ratebasis 'Per Hour'}}
                                                                     {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
-                                                                    Your Cost: {{your_cost}} USD. <br>
-                                                                    Provier Earns: {{freelancer_nets}} USD.
+                                                                    Your Cost: {{roundToTwo your_cost}} USD. <br>
+                                                                    Provier Earns: {{roundToTwo freelancer_nets}} USD.
                                                                 {{/if}}
                                                                 {{#if $eq ratebasis 'Fixed Pay'}}
-                                                                    Your Cost: {{your_cost}} USD.
-                                                                    <br>Provier Earns: {{freelancer_nets}} USD.
+                                                                    Your Cost: {{roundToTwo your_cost}} USD.
+                                                                    <br>Provier Earns: {{roundToTwo freelancer_nets}} USD.
                                                                 {{/if}}
                                                             {{/with}}
                                                             <hr>
@@ -1140,13 +1140,29 @@
                                             <div class="panel-group" id="accordion">
                                                 <div class="panel panel-white">
                                                     <div class="panel-heading">
-                                                        <div class="pull-right">
-                                                            <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="up"><i class="fa fa-link"></i></a>&nbsp;&#124;&nbsp;
-                                                            <a href id="appliedProviderMsg" data-balloon="Send Msg." data-balloon-pos="up"><i class="fa fa-envelope"></i></a>
-                                                        </div>
-                                                        <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">{{#if imgUrl}}<img src="{{imgUrl}}" alt="{{this.name}}" width="32px">{{else}} <img src="/images/avatar.png" width="32px" alt="{{this.name}}">{{/if}}&nbsp;{{this.name}}</a>
-                                                        <br>
-                                                        <span class="appDesignation">{{title}}</span>
+                                                        <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">
+                                                            <div class="media">
+                                                                <div class="media-left">
+                                                                    {{#if imgUrl}}
+                                                                        <img src="{{imgUrl}}" alt="{{this.name}}" width="48px" class="media-object">
+                                                                    {{else}}
+                                                                        <img src="/images/avatar.png" width="48px" alt="{{this.name}}" class="media-object">
+                                                                    {{/if}}
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <small><i># {{this.readableId}}</i></small>
+                                                                    <h5 class="media-heading">
+                                                                        {{this.name}}
+                                                                    </h5>
+                                                                    <button class="btn btn-xs btn-white">
+                                                                        <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="right"><i class="fa fa-link"></i></a>
+                                                                    </button>
+                                                                    <button class="btn btn-xs btn-white">
+                                                                        <a href id="appliedProviderMsg" data-balloon="Send Msg." data-balloon-pos="up"><i class="fa fa-envelope"></i></a>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </a>
                                                     </div>
                                                     <div id="user{{this.userId}}" class="panel-collapse collapse">
                                                         <div class="panel-body">
@@ -1167,8 +1183,8 @@
                                                                 Payment Type: Fixed Pay <br>
                                                                 Pay fixed amount {{fixed_amount}} USD. <br>
                                                             {{/if}}
-                                                            Your Cost: {{buyer_cost}} USD. <br>
-                                                            Provider Earns: {{freelancer_nets}} USD. <br>
+                                                            Your Cost: {{roundToTwo buyer_cost}} USD. <br>
+                                                            Provider Earns: {{roundToTwo freelancer_nets}} USD. <br>
                                                             {{#if $eq applicationStatus 'open'}}
                                                                 <br>
                                                                 {{#if providerDeclined}}
@@ -1535,15 +1551,17 @@
                                                                         {{timeWorked ../hourlyrate ../maxhours}}
                                                                         <br>
                                                                     {{/if}}
-                                                                {{/if}}                                                                
+                                                                {{/if}}                   
                                                                 {{#if $eq ../ratebasis 'Per Device'}}
                                                                     {{#if completedDevices ../rateperdevice ../maxdevices}}
                                                                         {{completedDevices ../rateperdevice ../maxdevices}}
+                                                                        <br>
                                                                     {{/if}}
                                                                 {{/if}}
                                                                 {{#if $eq ../ratebasis 'Blended'}}
                                                                     {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
                                                                         {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
+                                                                        <br>
                                                                     {{/if}}
                                                                 {{/if}}
                                                             {{/if}}
@@ -1557,11 +1575,13 @@
                                                                 {{#if $eq this.counterType 'per_device'}}
                                                                     {{#if completedDevices this.device_rate this.max_devices}}
                                                                         {{completedDevices this.device_rate this.max_devices}}
+                                                                        <br>
                                                                     {{/if}}
                                                                 {{/if}}
                                                                 {{#if $eq this.counterType 'blended'}}
                                                                     {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours}}
                                                                         {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours}}
+                                                                        <br>
                                                                     {{/if}}
                                                                 {{/if}}
                                                             {{/if}}
@@ -1626,7 +1646,7 @@
                                     {{#if $eq applicationStatus 'paid'}}
                                         {{#if assignedProvider}}
                                             <p><i>{{approvePaymentTime}}</i></p>
-                                            <p>The buyer has approved the job you have done. Congratulations! Your account has been credited with {{projectBudget}} USD. The job is now successfully closed.</p>
+                                            <p>The buyer has approved the job you have done. Congratulations! Your account has been credited with {{roundToTwo projectBudget}} USD. The job is now successfully closed.</p>
                                             {{#if reviewedBuyer}}
                                                 <p>You have reviewed the buyer. The job is successfully closed. <a href="/invoices/{{invoiceId}}">View invoice</a></p>
                                             {{else}}
@@ -1796,7 +1816,7 @@
                                                                 <a href data-balloon="Pay fixed amount {{../fixedamount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
                                                             {{/if}}
                                                         </td>
-                                                        <td>{{../freelancer_nets}} USD</td>
+                                                        <td>{{roundToTwo ../freelancer_nets}} USD</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -1825,7 +1845,7 @@
                                                                 Fixed Pay <a href data-balloon="Pay {{this.fixed_amount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
                                                             {{/if}}
                                                         </td>
-                                                        <td>{{freelancer_nets}} USD</td>
+                                                        <td>{{roundToTwo freelancer_nets}} USD</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -1846,7 +1866,7 @@
                                             <tbody>
                                                 {{#each expenses}}
                                                     <tr>
-                                                        <td>{{expense_amount}} USD</td>
+                                                        <td>{{roundToTwo expense_amount}} USD</td>
                                                         <td>{{expense_description}}</td>
                                                         <td>{{request_status}}</td>
                                                         <td>
@@ -1889,7 +1909,7 @@
                                                                 <a href data-balloon="Pay {{next_hours}} USD for  {{next_max_hours}} additional hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
                                                             {{/if}}
                                                         </td>
-                                                        <td>{{provider_nets}} USD</td>
+                                                        <td>{{roundToTwo provider_nets}} USD</td>
                                                         <td>{{request_status}}</td>
                                                         <td>
                                                             {{#if $eq request_status 'pending'}}
@@ -1903,7 +1923,7 @@
                                     {{/if}}
                                     <hr>
                                     Grand Total:
-                                    <h5>Your Earnings: {{projectBudget}} USD</h5>
+                                    <h5>Your Earnings: {{roundToTwo projectBudget}} USD</h5>
                                 </div>
                             </div>
                             {{#if $eq applicationStatus 'assigned'}}
@@ -2123,29 +2143,29 @@
                                                 {{../payforfirsthours}} USD for the first {{../firsthours}} hours, and then {{../payfornexthours}} USD for the next {{../nexthours}} hours. <br>
                                                 Total Hours: {{blendedTotalHours ../firsthours ../nexthours}}
                                                 {{#if jobPostedBuyer}}
-                                                    Gross: {{../totalfromclient}} USD.
+                                                    Buyer Cost: {{roundToTwo ../your_cost}} USD.
                                                 {{/if}}
-                                                Net: {{../freelancer_nets}} USD.
+                                                Provider Earns: {{roundToTwo ../freelancer_nets}} USD.
                                             {{/if}}
                                             {{#if $eq ../ratebasis 'Per Device'}}
                                                 {{../rateperdevice}} USD for {{../maxdevices}} devices. <br>
                                                 {{#if jobPostedBuyer}}
-                                                    Gross: {{../totalfromclient}} USD.
+                                                    Buyer Cost: {{roundToTwo ../your_cost}} USD.
                                                 {{/if}}
-                                                Net: {{../freelancer_nets}} USD.
+                                                Provider Earns: {{roundToTwo ../freelancer_nets}} USD.
                                             {{/if}}
                                             {{#if $eq ../ratebasis 'Per Hour'}}
                                                 {{../hourlyrate}} USD per hour for {{../maxhours}} hours. <br>
                                                 {{#if jobPostedBuyer}}
-                                                    Gross: {{../totalfromclient}} USD.
+                                                    Buyer Cost: {{roundToTwo ../your_cost}} USD.
                                                 {{/if}}
-                                                Net: {{../freelancer_nets}} USD.
+                                                Provider Earns: {{roundToTwo ../freelancer_nets}} USD.
                                             {{/if}}
                                             {{#if $eq ../ratebasis 'Fixed Pay'}}
                                                 {{#if jobPostedBuyer}}
-                                                    Gross: {{../fixedamount}} USD.
+                                                    Buyer Cost: {{roundToTwo ../your_cost}} USD.
                                                 {{/if}}
-                                               Net: {{../freelancer_nets}} USD.
+                                               Provider Earns: {{roundToTwo ../freelancer_nets}} USD.
                                             {{/if}}
                                         {{else}}
                                             {{#if $eq this.app_type 'counteroffer'}}
@@ -2168,9 +2188,9 @@
                                                     Pay fixed amount {{fixed_amount}} USD. <br>
                                                 {{/if}}
                                                 {{#if jobPostedBuyer}}
-                                                    Gross: {{buyer_cost}} USD.<br>
+                                                    Buyer Cost: {{roundToTwo buyer_cost}} USD.<br>
                                                 {{/if}}
-                                                Net: {{freelancer_nets}} USD.
+                                                Provider Earns: {{roundToTwo freelancer_nets}} USD.
                                             {{/if}}
                                         {{/if}}
                                     {{/with}} <br>
@@ -2423,22 +2443,22 @@
                                                         Payment Type: {{this.paymentType}} <br>
                                                         {{#if $eq ../ratebasis 'Blended'}}
                                                             {{../payforfirsthours}} USD for the first {{../firsthours}} hours, and then {{../payfornexthours}} USD for the next {{../nexthours}} hours. <br>
-                                                            Gross: {{../totalfromclient}} USD.
-                                                            Net: {{../freelancer_nets}} USD.
+                                                            Buyer Cost: {{roundToTwo ../your_cost}} USD.
+                                                            Provider Earns: {{roundToTwo ../freelancer_nets}} USD.
                                                         {{/if}}
                                                         {{#if $eq ../ratebasis 'Per Device'}}
                                                             {{../rateperdevice}} USD for {{../maxdevices}} devices. <br>
-                                                            Gross: {{../totalfromclient}} USD. <br>
-                                                            Net: {{../freelancer_nets}} USD.
+                                                            Buyer Cost: {{roundToTwo ../your_cost}} USD. <br>
+                                                            Provider Earns: {{roundToTwo ../freelancer_nets}} USD.
                                                         {{/if}}
                                                         {{#if $eq ../ratebasis 'Per Hour'}}
                                                             {{../hourlyrate}} USD per hour for {{../maxhours}} hours. <br>
-                                                            Gross: {{../totalfromclient}} USD. <br>
-                                                            Net: {{../freelancer_nets}} USD.
+                                                            Buyer Cost: {{roundToTwo ../your_cost}} USD. <br>
+                                                            Provider Earns: {{roundToTwo ../freelancer_nets}} USD.
                                                         {{/if}}
                                                         {{#if $eq ../ratebasis 'Fixed Pay'}}
-                                                            Gross: {{../fixedamount}} USD.
-                                                            <br>Net: {{../freelancer_nets}} USD.
+                                                            Buyer Cost: {{roundToTwo ../your_cost}} USD.
+                                                            <br>Provider Earns: {{roundToTwo ../freelancer_nets}} USD.
                                                         {{/if}}
                                                     {{/if}}
                                                     {{#if $eq appType 'counteroffer'}}
@@ -2458,8 +2478,8 @@
                                                             Payment Type: Fixed Pay <br>
                                                             Pay fixed amount {{fixed_amount}} USD. <br>
                                                         {{/if}}
-                                                        Gross: {{buyer_cost}} USD. <br>
-                                                        Net: {{freelancer_nets}} USD.
+                                                        Buyer Cost: {{roundToTwo buyer_cost}} USD. <br>
+                                                        Provider Nets: {{roundToTwo freelancer_nets}} USD.
                                                     {{/if}}
                                                 </div>
                                             </div>
@@ -2490,22 +2510,22 @@
                                                                 Payment type: {{ratebasis}} <br>
                                                                 {{#if $eq ratebasis 'Blended'}}
                                                                     {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
-                                                                    Gross: {{totalfromclient}} USD. <br>
-                                                                    Net: {{freelancer_nets}} USD.
+                                                                    Buyer Cost: {{roundToTwo your_cost}} USD. <br>
+                                                                    Provider Earns: {{roundToTwo freelancer_nets}} USD.
                                                                 {{/if}}
                                                                 {{#if $eq ratebasis 'Per Device'}}
                                                                     {{rateperdevice}} USD for {{maxdevices}} devices. <br>
-                                                                    Gross: {{totalfromclient}} USD.
-                                                                    <br>Net: {{freelancer_nets}} USD.
+                                                                    Buyer Cost: {{roundToTwo your_cost}} USD.
+                                                                    <br>Provider Earns: {{roundToTwo freelancer_nets}} USD.
                                                                 {{/if}}
                                                                 {{#if $eq ratebasis 'Per Hour'}}
                                                                     {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
-                                                                    Gross: {{totalfromclient}} USD. <br>
-                                                                    Net: {{freelancer_nets}} USD.
+                                                                    Buyer Cost: {{roundToTwo your_cost}} USD. <br>
+                                                                    Provider Earns: {{roundToTwo freelancer_nets}} USD.
                                                                 {{/if}}
                                                                 {{#if $eq ratebasis 'Fixed Pay'}}
-                                                                    Gross: {{fixedamount}} USD.
-                                                                    <br>Net: {{freelancer_nets}} USD.
+                                                                    Buyer Cost: {{roundToTwo your_cost}} USD.
+                                                                    <br>Provider Earns: {{roundToTwo freelancer_nets}} USD.
                                                                 {{/if}}
                                                             {{/with}}
                                                         </div>
@@ -2540,8 +2560,8 @@
                                                                 Payment Type: Fixed Pay <br>
                                                                 Pay fixed amount {{fixed_amount}} USD. <br>
                                                             {{/if}}
-                                                            Gross: {{buyer_cost}} USD. <br>
-                                                            Net: {{freelancer_nets}} USD. <br>
+                                                            Buyer Cost: {{roundToTwo buyer_cost}} USD. <br>
+                                                            Provider Earns: {{roundToTwo freelancer_nets}} USD. <br>
                                                             {{#if $eq applicationStatus 'frozen'}}
                                                                 <h5>Awaiting confirmation from provider.</h5>
                                                                 <button class="btn btn-sm btn-primary rejectCounterOffer">Reject Application</button>

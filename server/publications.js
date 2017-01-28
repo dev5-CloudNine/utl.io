@@ -173,7 +173,8 @@ Meteor.publishComposite('providers', {
                 customImageUrl: true,
                 companyName: true,
                 createdAt: true,
-                readableID: true
+                readableID: true,
+                contactNumber: true
             }
         });
     },
@@ -313,7 +314,6 @@ Meteor.publish("favorite_users", function() {
             customImageUrl: true,
             status: true,
             fullLocation: true,
-            contactNumber: true
         }
     })
 });

@@ -777,7 +777,7 @@ Template.job.events({
             }
           })
         } else {
-          Meteor.call('approveAssigment', jobDetails._id, providerId, function(error, result) {
+          Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
             }
@@ -1330,10 +1330,16 @@ Template.job.helpers({
         return 'The provider has worked for ' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes. So will be paid with ' + timeWorked.workedEarnings + ' USD. (' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes X ' + timeWorked.hourlyRate + ' USD = ' + timeWorked.workedEarnings + ' USD)'
     }
     if(timeWorkedMins > jobEstimatedMins) {
-      return 'You have worked for ' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes. You may request for an increase in budget for ' + timeWorked.hours + ' hours and ' + timeWorked.minutes + ' minutes.'
+      if(Roles.userIsInRole(Meteor.userId(), ['provider']))
+        return 'You have worked for ' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes. You may request for an increase in budget for ' + timeWorked.hours + ' hours and ' + timeWorked.minutes + ' minutes.'
+      else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
+        return 'The provider has worked for more time. Check for any budget increase.';
     }
     if(timeWorkedMins == jobEstimatedMins) {
-      return 'You have worked for the estimated time and you may now submit the job for approval.';
+      if(Roles.userIsInRole(Meteor.userId(), ['provider']))
+        return 'You have worked for the estimated time and you may now submit the job for approval.';
+      else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
+        return 'The provider has worked for the estimated time.';
     }
   },
   completedDevices: function(devicerate, maxdevices) {
@@ -1346,8 +1352,16 @@ Template.job.helpers({
         return 'The provider has worked on ' + completedDevices + ' devices. So will be paid with ' + completedDevices * devicerate + ' USD. (' + completedDevices + ' devices X ' + devicerate + ' USD = ' + completedDevices * devicerate + ' USD)';
     }
     if(completedDevices == maxdevices) {
-      return 'You have completed the work on estimated devices and you may now submit the job for approval.';
+      if(Roles.userIsInRole(Meteor.userId(), ['provider']))
+        return 'You have completed the work on estimated devices and you may now submit the job for approval.';
+      else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
+        return 'The provider has worked on ' + completedDevices + ' devices. So will be paid with ' + completedDevices * devicerate + ' USD. (' + completedDevices + ' devices X ' + devicerate + ' USD = ' + completedDevices * devicerate + ' USD)';
     }
+    if(completedDevices > maxdevices)
+      if(Roles.userIsInRole(Meteor.userId(), ['provider']))
+        return 'You have worked on ' + completedDevices - maxdevices + ' extra devices. You may request for budget increase for the extra devices.';
+      else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
+        return 'The provider has worked on more than estimated number of devices. Check for any budget increase.'
   },
   blendedTimeWorked: function(payForFirstHours, firstHours, payForNextHours, nextHours) {
     var total = Session.get('totalHours');
@@ -1369,6 +1383,12 @@ Template.job.helpers({
       } else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
         return 'The provider has worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So will be paid with ' + providerEarns + ' USD';
       }
+    }
+    if(providerWorkedMins == totalEstimatedMins) {
+      if(Roles.userIsInRole(Meteor.userId(), ['provider']))
+        return 'You have worked for the estimated time and you may now submit the job for approval.';
+      else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
+        return 'The provider has worked for the estimated time.'
     }
   },
   utlCommission: function() {

@@ -77,8 +77,8 @@
                                                                     <a href data-balloon="Pay {{../payforfirsthours}} USD for {{../firsthours}} hours and then {{../payfornexthours}} USD for the next {{../nexthours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
                                                                 {{/if}}
                                                             </td>
-                                                            <td>{{../your_cost}} USD</td>
-                                                            <td>{{../freelancer_nets}} USD</td>
+                                                            <td>{{roundToTwo ../your_cost}} USD</td>
+                                                            <td>{{roundToTwo ../freelancer_nets}} USD</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -110,8 +110,8 @@
                                                                     Fixed Pay
                                                                 {{/if}}
                                                             </td>
-                                                            <td>{{buyer_cost}} USD</td>
-                                                            <td>{{freelancer_nets}} USD</td>
+                                                            <td>{{roundToTwo buyer_cost}} USD</td>
+                                                            <td>{{roundToTwo freelancer_nets}} USD</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -133,8 +133,8 @@
                                                     {{#each expenses}}
                                                         <tr>
                                                             <td>{{expense_description}}</td>
-                                                            <td>{{buyer_cost}} USD</td>
-                                                            <td>{{expense_amount}} USD</td>
+                                                            <td>{{roundToTwo buyer_cost}} USD</td>
+                                                            <td>{{roundToTwo expense_amount}} USD</td>
                                                             <td>
                                                                 {{#if $eq request_status 'pending'}}
                                                                     Pending
@@ -181,8 +181,8 @@
 	                                                                <a href data-balloon="Pay {{first_hours}} USD for {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
 	                                                            {{/if}}
                                                             </td>
-                                                            <td>{{this.buyer_cost}} USD</td>
-                                                            <td>{{this.total_amount}} USD</td>
+                                                            <td>{{roundToTwo this.buyer_cost}} USD</td>
+                                                            <td>{{roundToTwo this.provider_nets}} USD</td>
                                                             <td>
                                                                 {{#if $eq this.request_status 'pending'}}
                                                                     Pending
@@ -201,8 +201,8 @@
                                         {{/if}}
 										<hr>
 										Grand Total:<br>
-										<h5>Buyer Cost: {{buyerCost}} USD</h5>
-										<h5>Provider Earns: {{projectBudget}} USD</h5>
+										<h5>Buyer Cost: {{roundToTwo buyerCost}} USD</h5>
+										<h5>Provider Earns: {{roundToTwo projectBudget}} USD</h5>
 										<h5>UTL Fees: {{utlCommission _id}} USD (5%)</h5>
 										<hr>
 									</div>
