@@ -747,6 +747,17 @@ Template.job.events({
             providerEarnings = buyerShouldPay - buyerShouldPay * 5 / 100;
             buyerReturns = buyerInitialBudget - buyerShouldPay;
           }
+          Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
+            if(error) {
+              $(event.currentTarget).button('reset');
+            } else {
+              Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
+                if(error) {
+                  $(event.currentTarget).button('reset');
+                }
+              })
+            }
+          })
         }
         if(providerWorkedMins > firstHourMinutes && providerWorkedMins < totalMinutes) {
           var payForFirstHours = jobDetails.payforfirsthours;
@@ -762,25 +773,25 @@ Template.job.events({
             providerEarnings = buyerShouldPay - buyerShouldPay * 5 / 100;
             buyerReturns = buyerInitialBudget - buyerShouldPay;
           }
+          Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
+            if(error) {
+              $(event.currentTarget).button('reset');
+            } else {
+              Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
+                if(error) {
+                  $(event.currentTarget).button('reset');
+                }
+              })
+            }
+          })
         }
-        if(providerWorkedMins == totalMinutes) {
+        if(providerWorkedMins >= totalMinutes) {
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
             }
           })
         }
-        Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
-          if(error) {
-            $(event.currentTarget).button('reset');
-          } else {
-            Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
-              if(error) {
-                $(event.currentTarget).button('reset');
-              }
-            })
-          }
-        })
       } else {
         Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
           if(error) {
