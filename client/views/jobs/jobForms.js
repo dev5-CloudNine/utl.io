@@ -59,10 +59,10 @@ Template.jobFields.events({
 		}
 		$('input[name="totalfromclient"]').val(fixedamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
-		if(paidBy == 'You') {
+		if(paidBy == 'buyer') {
 			$('input[name="your_cost"]').val(fixedamount + (fixedamount * 5/100));
 			$('input[name="freelancer_nets"]').val(fixedamount);
-		} else if(paidBy == 'Provider') {
+		} else if(paidBy == 'provider') {
 			$('input[name="your_cost"]').val(fixedamount);
 			$('input[name="freelancer_nets"]').val(fixedamount - (fixedamount * 5/100));
 		}
@@ -88,10 +88,10 @@ Template.jobFields.events({
 		var totalamount = hourlyrate * maxhours;
 		$('input[name="totalfromclient"]').val(totalamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
-		if(paidBy == 'You') {
+		if(paidBy == 'buyer') {
 			$('input[name="your_cost"]').val(totalamount + (totalamount * 5/100));
 			$('input[name="freelancer_nets"]').val(totalamount);
-		} else if(paidBy == 'Provider') {
+		} else if(paidBy == 'provider') {
 			$('input[name="your_cost"]').val(totalamount);
 			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
 		}
@@ -117,10 +117,10 @@ Template.jobFields.events({
 		var totalamount = rateperdevice * maxdevices;
 		$('input[name="totalfromclient"]').val(totalamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
-		if(paidBy == 'You') {
+		if(paidBy == 'buyer') {
 			$('input[name="your_cost"]').val(totalamount + (totalamount * 5/100));
 			$('input[name="freelancer_nets"]').val(totalamount);
-		} else if(paidBy == 'Provider') {
+		} else if(paidBy == 'provider') {
 			$('input[name="your_cost"]').val(totalamount);
 			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
 		}
@@ -150,10 +150,10 @@ Template.jobFields.events({
 		var totalamount = parseFloat(totalforfirsthours + totalfornexthours);
 		$('input[name="totalfromclient"]').val(totalamount);
 		var paidBy = $('input[name="paidby"]:checked').val();
-		if(paidBy == 'You') {
+		if(paidBy == 'buyer') {
 			$('input[name="your_cost"]').val(totalamount + (totalamount * 5/100));
 			$('input[name="freelancer_nets"]').val(totalamount);
-		} else if(paidBy == 'Provider') {
+		} else if(paidBy == 'provider') {
 			$('input[name="your_cost"]').val(totalamount);
 			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
 		}
@@ -167,7 +167,7 @@ Template.jobFields.events({
 			$('button[type="submit"]').prop('disabled', false);
 		}
 	},
-	'change input[value="You"]': function(event, template) {
+	'change input[value="buyer"]': function(event, template) {
 		event.preventDefault();
 		var totalamount = parseFloat(template.find('input[name="totalfromclient"]').value);
 		var clientCost = totalamount + totalamount * 5/100;
@@ -189,7 +189,7 @@ Template.jobFields.events({
 			$('button[type="submit"]').prop('disabled', false);
 		}
 	},
-	'change input[value="Provider"]': function(event, template) {
+	'change input[value="provider"]': function(event, template) {
 		event.preventDefault();
 		var totalamount = parseFloat(template.find('input[name="totalfromclient"]').value);
 		var freenet = totalamount - totalamount * 5/100;

@@ -141,7 +141,6 @@ Jobs.after.insert(function(userId, doc){
   var admin = Users.findOne({roles:{$in: ['admin']}});
   if(!doc.invited || !doc.routed) {
     var providersList = Profiles.find({}).fetch();
-    console.log(providersList)
     for(var i = 0; i < providersList.length; i++) {
       Email.send({
         to: getUserEmail(Users.findOne({_id: providersList[i].userId})),

@@ -425,16 +425,16 @@ Jobs.attachSchema(new SimpleSchema({
       label: "Paid By",
       autoform: {
         type: 'select-radio-inline',
-        defaultValue: "You",
+        defaultValue: "buyer",
         options: function() {
           return [
             {
-              label: "You",
-              value: "You"
+              label: "Buyer",
+              value: "buyer"
             },
             {
               label: "Provider",
-              value: "Provider"
+              value: "provider"
             }
           ]
         }

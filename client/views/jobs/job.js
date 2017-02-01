@@ -664,10 +664,21 @@ Template.job.events({
         var jobEstimatedMins = jobDetails.maxhours * 60;
         var estimatedBudgetPerMin = jobDetails.freelancer_nets / jobEstimatedMins;
         var providerWorkedMins = providerWorked.hours * 60 + providerWorked.minutes;
+        var providerEarnings, buyerReturns;
+        var buyerInitialBudget = jobDetails.your_cost;
         if(providerWorkedMins < jobEstimatedMins) {
-          var providerEarnings = providerWorkedMins * estimatedBudgetPerMin;
-          var diff = jobDetails.freelancer_nets - providerEarnings;
-          Meteor.call('updateBudget', jobDetails._id, diff, function(error, result) {
+          if(jobDetails.paidby == 'buyer') {
+            providerEarnings = providerWorkedMins * estimatedBudgetPerMin;
+            var buyerPays = providerWorkedMins * estimatedBudgetPerMin;
+            var buyerShouldPay = buyerPays + buyerPays * 5 / 100;
+            var buyerReturns = buyerInitialBudget - buyerShouldPay;
+          } else if(jobDetails.paidby == 'provider') {
+            var buyerShouldPay = providerWorkedMins * jobDetails.hourlyrate/60;
+            buyerReturns = buyerInitialBudget - buyerShouldPay;
+            providerEarnings = buyerShouldPay - buyerShouldPay * 5 / 100;
+            console.log(buyerShouldPay, buyerReturns, providerEarnings);
+          }
+          Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
             } else {
@@ -687,10 +698,20 @@ Template.job.events({
         }
       } else if(jobDetails.ratebasis == 'Per Device') {
         var providerCompletedDevices = jobDetails.devicescompleted;
+        var providerEarnings, buyerReturns;
+        var buyerInitialBudget = jobDetails.your_cost;
         if(providerCompletedDevices < jobDetails.maxdevices) {
-          var providerEarnings = providerCompletedDevices * jobDetails.rateperdevice;
-          var diff = jobDetails.freelancer_nets - providerEarnings;
-          Meteor.call('updateBudget', jobDetails._id, diff, function(error, result) {
+          if(jobDetails.paidby == 'buyer') {
+            providerEarnings = providerCompletedDevices * jobDetails.rateperdevice;
+            var buyerPays = providerCompletedDevices * jobDetails.rateperdevice;
+            var buyerShouldPay = buyerPays + buyerPays * 5 / 100;
+            buyerReturns = buyerInitialBudget - buyerShouldPay;
+          } else if(jobDetails.paidby == 'provider') {
+            var buyerShouldPay = providerCompletedDevices * jobDetails.rateperdevice;
+            buyerReturns = buyerInitialBudget - buyerShouldPay;
+            providerEarnings = buyerShouldPay - buyerShouldPay * 5 / 100;
+          }
+          Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
             } else {
@@ -714,18 +735,33 @@ Template.job.events({
         var firstHourMinutes = jobDetails.firsthours * 60;
         var nextHourMinutes = jobDetails.nexthours * 60;
         var totalMinutes = firstHourMinutes + nextHourMinutes;
-        var providerEarnings;
-        var diff;
+        var buyerInitialBudget = jobDetails.your_cost;
+        var providerEarnings, buyerReturns;
         if(providerWorkedMins < firstHourMinutes) {
-          providerEarnings = jobDetails.payforfirsthours;
-          diff = jobDetails.freelancer_nets - providerEarnings;
+          if(jobDetails.paidby == 'buyer') {
+            providerEarnings = jobDetails.payforfirsthours;
+            var buyerShouldPay = providerEarnings + providerEarnings * 5 / 100;
+            buyerReturns = buyerInitialBudget - buyerShouldPay;
+          } else if(jobDetails.paidby == 'provider') {
+            var buyerShouldPay = jobDetails.payforfirsthours;
+            providerEarnings = buyerShouldPay - buyerShouldPay * 5 / 100;
+            buyerReturns = buyerInitialBudget - buyerShouldPay;
+          }
         }
         if(providerWorkedMins > firstHourMinutes && providerWorkedMins < totalMinutes) {
           var payForFirstHours = jobDetails.payforfirsthours;
           var nextMinutesWorked = providerWorkedMins - firstHourMinutes;
           var nextHourPayMins = jobDetails.payfornexthours / 60;
-          providerEarnings = payForFirstHours + nextMinutesWorked * nextHourPayMins;
-          diff = jobDetails.freelancer_nets - providerEarnings;
+          if(jobDetails.paidby == 'buyer') {
+            providerEarnings = payForFirstHours + nextMinutesWorked * nextHourPayMins;
+            var buyerShouldPay = providerEarnings + providerEarnings * 5 / 100;
+            buyerReturns = buyerInitialBudget - buyerShouldPay;
+            console.log(buyerShouldPay, providerEarnings, buyerReturns)
+          } if(jobDetails.paidby == 'provider') {
+            var buyerShouldPay = jobDetails.payforfirsthours + nextMinutesWorked * nextHourPayMins;
+            providerEarnings = buyerShouldPay - buyerShouldPay * 5 / 100;
+            buyerReturns = buyerInitialBudget - buyerShouldPay;
+          }
         }
         if(providerWorkedMins == totalMinutes) {
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
@@ -734,7 +770,7 @@ Template.job.events({
             }
           })
         }
-        Meteor.call('updateBudget', jobDetails._id, diff, function(error, result) {
+        Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
           if(error) {
             $(event.currentTarget).button('reset');
           } else {
@@ -754,6 +790,7 @@ Template.job.events({
       }
     }
     if(acceptedApplication.appType == 'counteroffer') {
+      var buyerInitialBudget = acceptedApplication.buyer_cost;
       if(acceptedApplication.counter_type == 'per_hour') {
         var providerWorked = Session.get('totalHours');
         var jobEstimatedMins = acceptedApplication.max_hours * 60;
@@ -763,9 +800,10 @@ Template.job.events({
         $(event.currentTarget).button('reset');
         if(providerWorkedMins < jobEstimatedMins) {
           var providerEarnings = providerWorkedMins * estimatedBudgetPerMin;
-          console.log(providerEarnings);
-          var diff = acceptedApplication.freelancer_nets - providerEarnings;
-          Meteor.call('updateBudget', jobDetails._id, providerEarnings, diff, function(error, result) {
+          var buyerPays = providerWorkedMins * estimatedBudgetPerMin;
+          var buyerShouldPay = buyerPays + buyerPays * 5 / 100;
+          var buyerReturns = buyerInitialBudget - buyerShouldPay;
+          Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
             } else {
@@ -1077,7 +1115,7 @@ Template.job.events({
     var totalPayable = (function() {
       var payable = {};
       if(applicationDetails.app_type == 'application') {
-        if(jobDetails.paidby == 'Provider') {
+        if(jobDetails.paidby == 'provider') {
           if(reqType == 'blended') {
             var nextHours = parseFloat($('#next_hours_req').val());
             var nextMaxHours = parseFloat($('#next_max_hours_req').val());
@@ -1344,22 +1382,22 @@ Template.job.helpers({
   },
   completedDevices: function(devicerate, maxdevices) {
     var jobDetails = Jobs.findOne({_id: Router.current().params._id});
-    var completedDevices = jobDetails.devicescompleted;
-    if(completedDevices < maxdevices) {
+    var devicesCompleted = jobDetails.devicescompleted;
+    if(devicesCompleted < maxdevices) {
       if(Roles.userIsInRole(Meteor.userId(), ['provider']))
-        return 'You have worked on ' + completedDevices + ' devices. So you\'ll be paid with ' + completedDevices * devicerate + ' USD. (' + completedDevices + ' devices X ' + devicerate + ' USD = ' + completedDevices * devicerate + ' USD)';
+        return 'You have worked on ' + devicesCompleted + ' devices. So you\'ll be paid with ' + devicesCompleted * devicerate + ' USD. (' + devicesCompleted + ' devices X ' + devicerate + ' USD = ' + devicesCompleted * devicerate + ' USD)';
       else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
-        return 'The provider has worked on ' + completedDevices + ' devices. So will be paid with ' + completedDevices * devicerate + ' USD. (' + completedDevices + ' devices X ' + devicerate + ' USD = ' + completedDevices * devicerate + ' USD)';
+        return 'The provider has worked on ' + devicesCompleted + ' devices. So will be paid with ' + devicesCompleted * devicerate + ' USD. (' + devicesCompleted + ' devices X ' + devicerate + ' USD = ' + devicesCompleted * devicerate + ' USD)';
     }
-    if(completedDevices == maxdevices) {
+    else if(devicesCompleted == maxdevices) {
       if(Roles.userIsInRole(Meteor.userId(), ['provider']))
         return 'You have completed the work on estimated devices and you may now submit the job for approval.';
       else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
-        return 'The provider has worked on ' + completedDevices + ' devices. So will be paid with ' + completedDevices * devicerate + ' USD. (' + completedDevices + ' devices X ' + devicerate + ' USD = ' + completedDevices * devicerate + ' USD)';
+        return 'The provider has worked on ' + devicesCompleted + ' devices. So will be paid with ' + devicesCompleted * devicerate + ' USD. (' + devicesCompleted + ' devices X ' + devicerate + ' USD = ' + devicesCompleted * devicerate + ' USD)';
     }
-    if(completedDevices > maxdevices)
+    else if(devicesCompleted > maxdevices)
       if(Roles.userIsInRole(Meteor.userId(), ['provider']))
-        return 'You have worked on ' + completedDevices - maxdevices + ' extra devices. You may request for budget increase for the extra devices.';
+        return 'You have worked on ' + devicesCompleted - maxdevices + ' extra devices. You may request for budget increase for the extra devices.';
       else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
         return 'The provider has worked on more than estimated number of devices. Check for any budget increase.'
   },
@@ -1410,7 +1448,7 @@ Template.job.helpers({
     if(applicationDetails.app_type == 'counteroffer') {
       return 'Buyer'
     } else {
-      if(jobDetails.paidby == 'Provider')
+      if(jobDetails.paidby == 'provider')
         return 'Provider';
       else
         return 'Buyer';

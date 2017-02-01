@@ -1201,11 +1201,11 @@ Meteor.methods({
     setWorkedDevices: function(jobId, numberOfDevices) {
         Jobs.update({_id: jobId}, {$set: {devicescompleted: numberOfDevices}});
     },
-    updateBudget: function(jobId, diff) {
+    updateBudget: function(jobId, providerEarnings, buyerReturns) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var jobDetails = Jobs.findOne({_id: jobId});
+        var diff = jobDetails.proposedBudget - providerEarnings
         Jobs.update({_id: jobId}, {$inc: {projectBudget: -diff}});
-        var buyerReturns = diff + diff * 5 / 100;
         Jobs.update({_id: jobId}, {$inc: {buyerCost: -buyerReturns}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -buyerReturns}});
         if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {

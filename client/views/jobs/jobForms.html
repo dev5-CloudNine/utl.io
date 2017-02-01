@@ -35,22 +35,12 @@
         <label>
             <input type="radio" name="publishJob" value="selectedProviders"> Publish to chosen providers
         </label>
-    </div>
-    <!-- <div class="radio">
-        <label>
-            <input type="radio" name="publishJob" value="assignToProvider">Assign to a provider
-        </label>
-    </div> -->
+    </div>    
     <div id="publishIndividual" class="panel panel-white panel-collapse collapse" hidden>
         <div class="panel-body">
             {{> afQuickField name="invitedproviders"}}
         </div>
     </div>
-    <!-- <div id="assignToAProvider" class="panel panel-white panel-collapse collapse" hidden>
-        <div class="panel-body">
-            {{>afQuickField name="individualProvider"}}
-        </div>
-    </div> -->
     <button class="btn btn-sm btn-primary" data-balloon="Post job" data-balloon-pos="up" id="submitJob" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
 </template>
 
