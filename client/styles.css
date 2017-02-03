@@ -511,9 +511,8 @@ div.pub-disc .comments-box .actions {
   display: none;
 }
 #staticPageIntro {
-  height: 180px;
+  height: 120px;
   padding: 40px;
-  color: white !important;
 }
 .gradient-red-orange-h {
     background: url("images/bg_img.jpg") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
@@ -887,6 +886,14 @@ span.bigstars span.rateit-selected
 .box .border-right {
   border-right: 1px solid #f4f4f4;
 }
+
+.right-border {
+  border-right: 1px solid #333;
+}
+
+.left-border {
+  border-left: 1px solid #ddd;
+}
 .timeline {
   list-style: none;
   padding: 20px 0 20px;
@@ -1226,7 +1233,7 @@ background: #000 !important;
   font-family: arial;
 }
 .widget .widget-big-int {
-  font-size: 42px;
+  font-size: 20px;
   line-height: 45px;
   font-weight: 300;
 }

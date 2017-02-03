@@ -499,6 +499,9 @@ Meteor.methods({
         Wallet.update({userId: jobDetails.userId}, {$inc: {amountSpent: jobDetails.projectBudget}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {accountBalance: jobDetails.projectBudget}});
         Wallet.update({userId: providerDetails.userId}, {$inc: {amountEarned: jobDetails.projectBudget}});
+        var utlFees = jobDetails.buyerCost - jobDetails.projectBudget;
+        Wallet.update({userId: adminId}, {$inc: {amountEarned: utlFees}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: -utlFees}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: providerId})),

@@ -224,21 +224,6 @@ Template.job.events({
     var freenet = totalamount;
     $('input[name="freelancer_req_nets"]').val(freenet);
   },
-  // 'change input[value="provider"]': function(event, template) {
-  //   event.preventDefault();
-  //   var totalamount = parseFloat($('input[name="total_amount"]').val());
-  //   var buyerCost = totalamount - totalamount * 5/100;
-  //   $('input[name="buyer_cost"]').val(buyerCost);
-  //   var freenet = totalamount;
-  //   $('input[name="freelancer_nets"]').val(freenet);
-  // },
-  // 'change input[value="buyer"]': function(event, template) {
-  //   event.preventDefault();
-  //   var totalamount = parseFloat($('input[name="total_amount"]').val());
-  //   var clientCost = totalamount + totalamount * 5/100;
-  //   $('input[name="buyer_cost"]').val(clientCost);
-  //   $('input[name="freelancer_nets"]').val(totalamount);
-  // },
   'click .acceptApplication': function(event, template) {
     event.preventDefault();
     $(event.currentTarget).button('loading');
@@ -807,7 +792,6 @@ Template.job.events({
         var jobEstimatedMins = acceptedApplication.max_hours * 60;
         var estimatedBudgetPerMin = acceptedApplication.freelancer_nets / jobEstimatedMins;
         var providerWorkedMins = providerWorked.hours * 60 + providerWorked.minutes;
-        console.log(providerWorkedMins, jobEstimatedMins);
         $(event.currentTarget).button('reset');
         if(providerWorkedMins < jobEstimatedMins) {
           var providerEarnings = providerWorkedMins * estimatedBudgetPerMin;
@@ -836,8 +820,10 @@ Template.job.events({
         var providerCompletedDevices = jobDetails.devicescompleted;
         if(providerCompletedDevices < acceptedApplication.max_devices) {
           var providerEarnings = providerCompletedDevices * acceptedApplication.device_rate;
-          var diff = acceptedApplication.freelancer_nets - providerEarnings;
-          Meteor.call('updateBudget', jobDetails._id, diff, function(error, result) {
+          var buyerPays = providerCompletedDevices * acceptedApplication.device_rate;
+          var buyerShouldPay = buyerPays + buyerPays * 5 / 100;
+          buyerReturns = buyerInitialBudget - buyerShouldPay;
+          Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
             } else {
@@ -862,36 +848,48 @@ Template.job.events({
         var nextHourMinutes = acceptedApplication.next_max_hours * 60;
         var totalMinutes = firstHourMinutes + nextHourMinutes;
         var providerEarnings;
-        var diff;
         if(providerWorkedMins < firstHourMinutes) {
           providerEarnings = acceptedApplication.first_hours;
-          diff = acceptedApplication.freelancer_nets - providerEarnings;
+          var buyerShouldPay = providerEarnings + providerEarnings * 5 / 100;
+          buyerReturns = buyerInitialBudget - buyerShouldPay;
+          Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
+            if(error) {
+              $(event.currentTarget).button('reset');
+            } else {
+              Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
+                if(error) {
+                  $(event.currentTarget).button('reset');
+                }
+              })
+            }
+          })
         }
         if(providerWorkedMins > firstHourMinutes && providerWorkedMins < totalMinutes) {
           var payForFirstHours = acceptedApplication.first_hours;
           var nextMinutesWorked = providerWorkedMins - firstHourMinutes;
           var nextHourPayMins = acceptedApplication.payfornexthours / 60;
           providerEarnings = payForFirstHours + nextMinutesWorked * nextHourPayMins;
-          diff = acceptedApplication.freelancer_nets - providerEarnings;
+          var buyerShouldPay = providerEarnings + providerEarnings * 5 / 100;
+          buyerReturns = buyerInitialBudget - buyerShouldPay;
+          Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
+            if(error) {
+              $(event.currentTarget).button('reset');
+            } else {
+              Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
+                if(error) {
+                  $(event.currentTarget).button('reset');
+                }
+              })
+            }
+          })
         }
-        if(providerWorkedMins == totalMinutes) {
+        if(providerWorkedMins >= totalMinutes) {
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
             }
           })
         }
-        Meteor.call('updateBudget', jobDetails._id, diff, function(error, result) {
-          if(error) {
-            $(event.currentTarget).button('reset');
-          } else {
-            Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
-              if(error) {
-                $(event.currentTarget).button('reset');
-              }
-            })
-          }
-        })
       } else {
         Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
           if(error) {
@@ -1848,6 +1846,190 @@ Template.job.helpers({
   totalHours: function(){
     return Session.get('totalHours');
   },
+  hourlyApprovedCost: function(appType, hourlyRate, maxHours) {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var hoursWorked = Session.get('totalHours');
+    var earnings = {}
+    if(appType == 'application') {
+      var hourlyRate = jobDetails.hourlyrate;
+      var payPerMinute = hourlyRate / 60;
+      if(jobDetails.paidby == 'buyer') {
+        var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
+        var workedEarnings = providerWorkedMinutes * payPerMinute;
+        if(providerWorkedMinutes >= jobDetails.maxhours * 60) {
+          earnings = {
+            buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
+            providerEarnings: jobDetails.proposedBudget
+          }
+        }
+        else {
+          earnings = {
+            buyerCost: workedEarnings + workedEarnings * 5 / 100,
+            providerEarnings: workedEarnings
+          }
+        }
+      } else if(jobDetails.paidby == 'provider') {
+        var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
+        var workedEarnings = providerWorkedMinutes * payPerMinute;
+        if(providerWorkedMinutes >= jobDetails.maxhours * 60) {
+          earnings = {
+            buyerCost: jobDetails.your_cost,
+            providerEarnings: jobDetails.proposedBudget
+          }
+        }
+        else {
+          earnings = {
+            buyerCost: workedEarnings,
+            providerEarnings: workedEarnings - workedEarnings * 5 / 100
+          }
+        }
+      }
+    } else if(appType == 'counteroffer') {
+      var hourlyRate = hourlyRate;
+      var payPerMinute = hourlyRate / 60;
+      var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
+      var workedEarnings = providerWorkedMinutes * payPerMinute;
+      if(providerWorkedMinutes >= maxHours * 60) {
+        earnings = {
+          buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
+          providerEarnings: jobDetails.proposedBudget
+        }
+      } else {
+        earnings = {
+          buyerCost: workedEarnings + workedEarnings * 5 / 100,
+          providerEarnings: workedEarnings
+        }
+      }
+    }
+    return earnings;
+  },
+  deviceApprovedCost: function(appType, deviceRate, maxDevices) {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var devicesCompleted = jobDetails.devicescompleted;
+    var earnings = {};
+    if(appType == 'application') {
+      var ratePerDevice = jobDetails.rateperdevice;
+      if(jobDetails.paidby == 'buyer') {
+        var workedEarnings = devicesCompleted * ratePerDevice;
+        if(devicesCompleted >= jobDetails.maxdevices) {
+          earnings = {
+            buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
+            providerEarnings: jobDetails.proposedBudget
+          }
+        } else {
+          earnings = {
+            buyerCost: workedEarnings + workedEarnings * 5 / 100,
+            providerEarnings: workedEarnings
+          }
+        }
+      } else if(jobDetails.paidby == 'provider') {
+        var workedEarnings = devicesCompleted * ratePerDevice;
+        if(providerWorkedMinutes >= jobDetails.maxhours * 60) {
+          earnings = {
+            buyerCost: jobDetails.your_cost,
+            providerEarnings: jobDetails.proposedBudget
+          }
+        } else {
+          earnings = {
+            buyerCost: workedEarnings,
+            providerEarnings: workedEarnings - workedEarnings * 5 / 100
+          }
+        }
+      }
+    } else if(appType == 'counteroffer') {
+      var workedEarnings = devicesCompleted * deviceRate;
+      if(completedDevices >= maxDevices) {
+        earnings = {
+          buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
+          providerEarnings: jobDetails.proposedBudget
+        }
+      }
+      else {
+        earnings = {
+          buyerCost: workedEarnings + workedEarnings * 5 / 100,
+          providerEarnings: workedEarnings
+        }
+      }
+    }
+    return earnings;
+  },
+  blendedApprovedCost: function(appType, maxFirstHours, payFirstHours, maxNextHours, payNextHours) {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var hoursWorked = Session.get('totalHours');
+    var earnings = {};
+    if(appType == 'application') {
+      var estimatedTimeMins = jobDetails.firsthours * 60 + jobDetails.nexthours * 60;
+      var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
+      if(jobDetails.paidby == 'buyer') {
+        if(providerWorkedMinutes < jobDetails.firsthours * 60) {
+          var workedEarnings = jobDetails.payforfirsthours;
+          earnings = {
+            buyerCost: workedEarnings + workedEarnings * 5 / 100,
+            providerEarnings: workedEarnings
+          }
+        } else if(providerWorkedMinutes > jobDetails.firsthours * 60 && providerWorkedMinutes < estimatedTimeMins) {
+          var nextMinutesWorked = providerWorkedMinutes - jobDetails.firsthours * 60;
+          var payNextHourMins = jobDetails.payfornexthours / 60;
+          var workedEarnings = jobDetails.payforfirsthours + nextMinutesWorked * payNextHourMins;
+          earnings = {
+            buyerCost: workedEarnings + workedEarnings * 5 / 100,
+            providerEarnings: workedEarnings
+          }
+        } else if(providerWorkedMinutes >= estimatedTimeMins) {
+          earnings = {
+            buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
+            providerEarnings: jobDetails.proposedBudget
+          }
+        }
+      } else if(jobDetails.paidby == 'provider') {
+        if(providerWorkedMinutes < jobDetails.firsthours * 60) {
+          var workedEarnings = jobDetails.payforfirsthours;
+          earnings = {
+            buyerCost: workedEarnings,
+            providerEarnings: workedEarnings - workedEarnings * 5 / 100
+          }
+        } else if(providerWorkedMinutes > jobDetails.firsthours * 60 && providerWorkedMinutes < estimatedTimeMins) {
+          var nextMinutesWorked = providerWorkedMinutes - jobDetails.firsthours * 60;
+          var payNextHourMins = jobDetails.payfornexthours / 60;
+          var workedEarnings = jobDetails.payforfirsthours + nextMinutesWorked * payNextHourMins;
+          earnings = {
+            buyerCost: workedEarnings,
+            providerEarnings: workedEarnings - workedEarnings * 5 / 100
+          }
+        } else if(providerWorkedMinutes >= estimatedTimeMins) {
+          earnings = {
+            buyerCost: jobDetails.your_cost,
+            providerEarnings: jobDetails.proposedBudget
+          }
+        }
+      }
+    } else if(appType == 'counteroffer') {
+      console.log(maxFirstHours)
+      var estimatedTimeMins = maxFirstHours * 60 + maxNextHours * 60;
+      var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
+      if(providerWorkedMinutes < maxFirstHours * 60) {
+        var workedEarnings = payFirstHours;
+        earnings = {
+          buyerCost: workedEarnings + workedEarnings * 5 / 100,
+          providerEarnings: workedEarnings
+        }
+      } else if(providerWorkedMinutes > maxFirstHours * 60 && providerWorkedMinutes < estimatedTimeMins) {
+        var nextMinutesWorked = providerWorkedMinutes - maxFirstHours * 60;
+        var payNextHourMins = payNextHours / 60;
+        var workedEarnings = payFirstHours + nextMinutesWorked * payNextHourMins;
+        earnings = {
+          buyerCost: workedEarnings + workedEarnings * 5 / 100,
+          providerEarnings: workedEarnings
+        }
+      } else if(providerWorkedMinutes >= estimatedTimeMins) {
+        earnings = {
+          buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
+          providerEarnings: jobDetails.proposedBudget
+        }
+      }
+    }
+    return earnings;
+  },
   "uploadedFiles": function(){
       return S3.collection.find();
   },
@@ -2231,7 +2413,7 @@ Template.job.rendered = function() {
   var buyerReviews = Reviews.find({$and: [{buyerId: this.data.userId}, {reviewedBy: 'provider'}]}).fetch();
   if(buyerReviews) {
       for(var i = 0; i < buyerReviews.length; i++) {
-          buyerRatingPoints += buyerReviews[i].pointsRated;
+          buyerRatingPoints += parseInt(buyerReviews[i].pointsRated);
       }
   }
   var buyerReviewPoints = buyerRatingPoints/buyerReviews.length;

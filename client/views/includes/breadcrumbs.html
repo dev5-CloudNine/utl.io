@@ -19,8 +19,8 @@
 												<a href="{{pathFor 'buyerOpenJobs'}}">Open - {{buyerOpenCount}}</a> &#124;
 												<a href="{{pathFor 'buyerInvitedJobs'}}">Invited - {{buyerInvitedCount}}</a> &#124;
 												<a href="{{pathFor 'buyerAssignedJobs'}}">Assigned - {{buyerAssignedCount}}</a> &#124;
-												<a href="{{pathFor 'buyerPendingApprovalJobs'}}">Pending Payment/Approval - {{buyerPendingApprovalCount}}</a> &#124;
-												<a href="{{pathFor 'buyerPaidJobs'}}">Paid/Approved - {{buyerPaidCount}}</a> &#124;
+												<a href="{{pathFor 'buyerPendingApprovalJobs'}}">Pending Payment - {{buyerPendingApprovalCount}}</a> &#124;
+												<a href="{{pathFor 'buyerPaidJobs'}}">Paid - {{buyerPaidCount}}</a> &#124;
 												<a href="{{pathFor 'deactivatedJobs'}}">Deactivated - {{deactivatedCount}}</a>
 				                            </div>
 				                            <div class="widget-title seperator">
@@ -57,7 +57,7 @@
 			                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
 			                            <div class="widget-buttons widget-c2">
 			                                {{#if isInRole 'buyer'}}
-			                                	<div class="col widget-title">
+			                                	<div class="col widget-title right-border">
 				                                    <a href="/wallet/deposit">Deposit</a>
 				                                </div>
 			                                {{/if}}
@@ -90,8 +90,8 @@
 			                                <div class="widget-subtitle">
 			                                    <a href="{{pathFor 'appliedJobs'}}">Applied - {{appliedJobsCount}}</a> &#124;
 												<a href="{{pathFor 'providerAssignedJobs'}}">Assigned - {{assignedJobsCount}}</a> &#124;
-												<a href="{{pathFor 'providerPendingApprovalJobs'}}">Pending Payment/Approval - {{proPendingApprovalCount}}</a> &#124;
-												<a href="{{pathFor 'providerPaidJobs'}}">Paid/Approved - {{proPaidJobsCount}}</a> &#124;
+												<a href="{{pathFor 'providerPendingApprovalJobs'}}">Pending Payment - {{proPendingApprovalCount}}</a> &#124;
+												<a href="{{pathFor 'providerPaidJobs'}}">Paid - {{proPaidJobsCount}}</a> &#124;
 												<a href="{{pathFor 'providerDeactivatedJobs'}}">Deactivated - {{proDeactivatedCount}}</a>
 			                                </div>
 			                            </div>
@@ -122,7 +122,7 @@
 			                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
 			                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
 			                            <div class="widget-buttons widget-c2">
-			                                <div class="col widget-title">
+			                                <div class="col widget-title right-border">
 			                                    <a href="/wallet/withdraw">Withdraw</a>
 			                                </div>
 			                                <div class="col widget-title">
@@ -142,31 +142,27 @@
 		                    <div class="col-md-6">
 		                        <div class="widget widget-default widget-item-icon">
 		                            <div class="widget-data">
-		                                <a href="/allUsers">
-		                                	<div class="widget-title">
-		                                		Users <span class="badge">{{getPublishedCount 'userCount'}}</span>
-		                                	</div>
-		                                    <div class="widget-subtitle">
-		                                    	Buyers - {{buyerCount}} &#124; 
-		                                    	Providers - {{providerCount}} &#124; 
-		                                    	Dispatchers - {{dispatcherCount}} &#124; 
-		                                    	Accountants - {{accountantCount}} &#124; 
-		                                    	Admin - 1
-		                                    </div>
-		                                </a>
+	                                	<div class="widget-title">
+	                                		<a href="/allUsers">Users <span class="badge">{{getPublishedCount 'userCount'}}</span></a>
+	                                	</div>
+	                                    <div class="widget-subtitle">
+	                                    	Buyers - {{buyerCount}} &#124; 
+	                                    	Providers - {{providerCount}} &#124; 
+	                                    	Dispatchers - {{dispatcherCount}} &#124; 
+	                                    	Accountants - {{accountantCount}} &#124; 
+	                                    	Admin - 1
+	                                    </div>		                                
 		                            </div>
 		                            <div class="widget-data">
-		                            	<a href="/allJobs">
-			                            	<div class="widget-title seperator">
-		                                    	Jobs <span class="badge">{{getPublishedCount 'adminJobs'}}</span> &#124; <a href="/allInvoices">Invoices <span class="badge">{{allInvoicesCount}}</span></a>
-		                                    </div>
-		                                    <div class="widget-subtitle">
-		                                    	Open - {{allOpenJobs}} &#124; 
-		                                    	Assigned - {{allAssignedJobs}} &#124; 
-		                                    	Paid - {{allCompletedJobs}} &#124;  
-		                                    	Deactivated - {{allDeactivatedCount}}
-		                                    </div>
-			                            </a>
+		                            	<div class="widget-title seperator">
+	                                    	<a href="/allJobs">Jobs <span class="badge">{{getPublishedCount 'adminJobs'}}</span></a> &#124; <a href="/allInvoices">Invoices <span class="badge">{{allInvoicesCount}}</span></a>
+	                                    </div>
+	                                    <div class="widget-subtitle">
+	                                    	Open - {{allOpenJobs}} &#124; 
+	                                    	Assigned - {{allAssignedJobs}} &#124; 
+	                                    	Paid - {{allCompletedJobs}} &#124;  
+	                                    	Deactivated - {{allDeactivatedCount}}
+	                                    </div>
 		                            </div>
 		                        </div>
 		                    </div>
@@ -179,7 +175,7 @@
 	                                	<div class="widget-subtitle">
 	                                		<a href="{{pathFor 'dwollaCustomers'}}">Customers</a> &#124;
 	                                		<a href="{{pathFor 'dwollaTransfers'}}">Transfers</a> &#124;
-	                                		<a href="" class="authUrl">Login to Dwolla</a>
+	                                		<a href="" class="authUrl">Login</a>
 	                                	</div>
 	                                </div>
 	                                <div class="widget-data">
@@ -194,10 +190,20 @@
 		                    </div>
 		                    <div class="col-md-3">
 		                        <div class="widget widget-info widget-padding-sm">
-		                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
-		                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
+		                            <div class="row">
+		                            	<div class="col-xs-12 col-md-6">
+		                            		<div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
+		                            		<div class="widget-subtitle plugin-date">Acc. Balance (USD)</div>
+		                            	</div>
+		                            	<div class="col-xs-12 col-md-6">
+		                            		<div class="widget-big-int plugin-clock">
+		                            			{{utlEarnings}}
+		                            		</div>
+		                            		<div class="widget-subtitle plugin-date">Earned (USD)</div>
+		                            	</div>
+		                            </div>
 		                            <div class="widget-buttons widget-c2">
-		                                <div class="col widget-title">
+		                                <div class="col widget-title right-border">
 		                                    <a href="allDeposits">Deposits</a>
 		                                </div>
 		                                <div class="col widget-title">

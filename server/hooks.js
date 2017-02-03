@@ -216,7 +216,7 @@ Meteor.users.after.insert(function(userId, doc) {
     FileManager.insert({userId: doc._id});
     return;
   } else if(Roles.userIsInRole(doc._id, ['buyer', 'provider'])) {
-    Wallet.insert({userId: doc._id, dwollaId: null, accountBalance: 0});
+    Wallet.insert({userId: doc._id, dwollaId: null, accountBalance: 0, amountEarned: 0});
     FileManager.insert({userId: doc._id});
   }
 });

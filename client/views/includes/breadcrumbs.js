@@ -21,6 +21,7 @@ Template.breadcrumbs.onCreated(function() {
 	}
 	if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
 		Meteor.subscribe('invoices', Meteor.userId());
+		Meteor.subscribe('allJobs');
 		return Meteor.subscribe('userWallet', Meteor.userId());
 	}
 });
@@ -40,6 +41,11 @@ Template.breadcrumbs.helpers({
 	},
 	profileCreated: function() {
 		return Meteor.user().isDeveloper || Meteor.user().isBuyer || Meteor.user().isDispatcher || Meteor.user().isAccountant;
+	},
+	utlEarnings: function() {
+		if(Roles.userIsInRole(Meteor.userId(), ['admin']))
+			return Wallet.findOne({userId: Meteor.userId()}).amountEarned;
+		return;
 	}
 });
 

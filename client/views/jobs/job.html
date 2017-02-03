@@ -187,18 +187,13 @@
                                         {{/if}}
                                         {{#if assignedProvider}}
                                             {{#if confidentialDescription}}
-                                                <hr> 
                                                 <h4>Confidential Info</h4>
                                                 {{{htmlConfdentialDesc}}}
                                             {{/if}}
                                         {{/if}}
                                         {{#if jobPostedBuyer}}
                                             {{#if confidentialDescription}}
-                                                <hr> 
                                                 <h4>Confidential Info</h4>
-                                                Name: {{contactperson}}
-                                                <br> Email: {{contactemail}}
-                                                <br> Phone: {{contactphone}}
                                                 <br> Message: {{{htmlConfdentialDesc}}}
                                             {{/if}}
                                         {{/if}}
@@ -811,16 +806,17 @@
                                 {{#with assignedProviderDetails}}
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <h5>Payment Terms / Pay Accepted</h5>
+                                            <h5>Cost Estimate</h5>
                                         </div>
                                         <div class="panel-body">
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    {{#if $eq this.appType 'application'}}
+                                                    <label>Accepted</label>
+                                                    {{#if $eq appType 'application'}}
                                                         <table class="table table-striped table-responsive">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Payment Type</th>
+                                                                    <th>Type</th>
                                                                     <th>Your Cost</th>
                                                                     <th>Provider Earns</th>
                                                                 </tr>
@@ -861,16 +857,16 @@
                                                                 <tr>
                                                                     <td>
                                                                         {{#if $eq counter_type 'blended'}}
-                                                                            Blended
+                                                                            Blended <a href data-balloon="Pay {{first_hours}} USD for {{first_max_hours}} hours and then {{next_hours}} USD for the next {{next_max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
                                                                         {{/if}}
                                                                         {{#if $eq counter_type 'per_device'}}
-                                                                            Per Device
+                                                                            Per Device <a href data-balloon="Pay {{device_rate}} USD for {{max_devices}} devices." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
                                                                         {{/if}}
                                                                         {{#if $eq counter_type 'per_hour'}}
-                                                                            Per Hour
+                                                                            Per Hour <a href data-balloon="Pay {{hourly_rate}} USD for {{max_hours}} hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
                                                                         {{/if}}
                                                                         {{#if $eq counter_type 'fixed_pay'}}
-                                                                            Fixed Pay
+                                                                            Fixed Pay <a href data-balloon="Pay fixed amount of {{fixed_amount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
                                                                         {{/if}}
                                                                     </td>
                                                                     <td>{{roundToTwo buyer_cost}} USD</td>
@@ -878,6 +874,114 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
+                                                    {{/if}}
+                                                    {{#if $eq ../applicationStatus 'paid'}}
+                                                        {{#if $eq appType 'application'}}
+                                                            <label>Approved</label>
+                                                            <table class="table table-striped table-responsive">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            {{#if $eq ../ratebasis 'Per Hour'}}Hours{{/if}}
+                                                                            {{#if $eq ../ratebasis 'Per Device'}}Devices{{/if}}
+                                                                            {{#if $eq ../ratebasis 'Blended'}}Hours{{/if}}
+                                                                        </th>
+                                                                        <th>Your Cost</th>
+                                                                        <th>Provider Earns</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            {{#if $eq ../ratebasis 'Per Hour'}}
+                                                                                {{#with totalHours}}
+                                                                                    {{this.hours}} Hr {{this.minutes}} Min
+                                                                                {{/with}}
+                                                                            {{/if}}
+                                                                            {{#if $eq ../ratebasis 'Per Device'}}
+                                                                                {{../devicescompleted}} Devices
+                                                                            {{/if}}
+                                                                            {{#if $eq ../ratebasis 'Blended'}}
+                                                                                {{#with totalHours}}
+                                                                                    {{this.hours}} Hr {{this.minutes}} Min
+                                                                                {{/with}}
+                                                                            {{/if}}
+                                                                        </td>
+                                                                        {{#if $eq ../ratebasis 'Per Hour'}}
+                                                                            {{#with hourlyApprovedCost 'application'}}
+                                                                                <td>{{buyerCost}} USD</td>
+                                                                                <td>{{providerEarnings}} USD</td>
+                                                                            {{/with}}
+                                                                        {{/if}}
+                                                                        {{#if $eq ../ratebasis 'Per Device'}}
+                                                                            {{#with deviceApprovedCost 'application'}}
+                                                                                <td>{{buyerCost}} USD</td>
+                                                                                <td>{{providerEarnings}} USD</td>
+                                                                            {{/with}}
+                                                                        {{/if}}
+                                                                        {{#if $eq ../ratebasis 'Blended'}}
+                                                                            {{#with blendedApprovedCost 'application'}}
+                                                                                <td>{{buyerCost}} USD</td>
+                                                                                <td>{{providerEarnings}} USD</td>
+                                                                            {{/with}}
+                                                                        {{/if}}
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        {{/if}}
+                                                        {{#if $eq appType 'counteroffer'}}
+                                                            <label>Approved</label>
+                                                            <table class="table table-striped table-responsive">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            {{#if $eq counter_type 'per_hour'}}Hours{{/if}}
+                                                                            {{#if $eq counter_type 'per_device'}}Devices{{/if}}
+                                                                            {{#if $eq counter_type 'blended'}}Hours{{/if}}
+                                                                        </th>
+                                                                        <th>Your Cost</th>
+                                                                        <th>Provider Earns</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            {{#if $eq counter_type 'per_hour'}}
+                                                                                {{#with totalHours}}
+                                                                                    {{this.hours}} Hr {{this.minutes}} Min
+                                                                                {{/with}}
+                                                                            {{/if}}
+                                                                            {{#if $eq counter_type 'per_device'}}
+                                                                                {{../devicescompleted}} Devices
+                                                                            {{/if}}
+                                                                            {{#if $eq counter_type 'blended'}}
+                                                                                {{#with totalHours}}
+                                                                                    {{this.hours}} Hr {{this.minutes}} Min
+                                                                                {{/with}}
+                                                                            {{/if}}
+                                                                        </td>
+                                                                        {{#if $eq counter_type 'per_hour'}}
+                                                                            {{#with hourlyApprovedCost 'counteroffer' hourly_rate max_hours}}
+                                                                                <td>{{buyerCost}} USD</td>
+                                                                                <td>{{providerEarnings}} USD</td>
+                                                                            {{/with}}
+                                                                        {{/if}}
+                                                                        {{#if $eq counter_type 'per_device'}}
+                                                                            {{#with deviceApprovedCost 'counteroffer' device_rate max_devices}}
+                                                                                <td>{{buyerCost}} USD</td>
+                                                                                <td>{{providerEarnings}} USD</td>
+                                                                            {{/with}}
+                                                                        {{/if}}
+                                                                        {{#if $eq counter_type 'blended'}}
+                                                                            {{#with blendedApprovedCost 'counteroffer' this.first_max_hours this.first_hours this.next_max_hours this.next_hours}}
+                                                                                <td>{{buyerCost}} USD</td>
+                                                                                <td>{{providerEarnings}} USD</td>
+                                                                            {{/with}}
+                                                                        {{/if}}
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        {{/if}}
                                                     {{/if}}
                                                     {{#if expensesRequested}}
                                                         <hr>
@@ -948,12 +1052,14 @@
                                                                         <td>
                                                                             {{#if $eq this.request_status 'pending'}}
                                                                                 {{#if $eq ../status 'active'}}
-                                                                                    <a href class="acceptBudgetIncrease" data-balloon="Accept Increase" data-ballon-pos="up" data-bi-id="{{request_id}}">
+                                                                                    {{#if $eq ../../applicationStatus 'assigned'}}
+                                                                                        <a href class="acceptBudgetIncrease" data-balloon="Accept Increase" data-ballon-pos="up" data-bi-id="{{request_id}}">
                                                                                         <i class="fa fa-check"></i>
-                                                                                    </a>&#124;
-                                                                                    <a href class="rejectBudgetIncrease" data-balloon="Reject Increase" data-ballon-pos="up" data-bi-id="{{request_id}}">
-                                                                                        <i class="fa fa-times"></i>
-                                                                                    </a>
+                                                                                        </a>&#124;
+                                                                                        <a href class="rejectBudgetIncrease" data-balloon="Reject Increase" data-ballon-pos="up" data-bi-id="{{request_id}}">
+                                                                                            <i class="fa fa-times"></i>
+                                                                                        </a>
+                                                                                    {{/if}}
                                                                                 {{else}}
                                                                                     Deactivated
                                                                                 {{/if}}
@@ -1789,7 +1895,7 @@
                         {{#if assignedProvider}}
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h5>Payment Terms / Pay Earned</h5>
+                                    <h5>Cost Estimate</h5>
                                 </div>
                                 <div class="panel-body">
                                     {{#with applicationDetails}}
