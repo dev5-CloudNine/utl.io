@@ -451,14 +451,16 @@
                                                     {{/if}}
                                                 {{/if}}
                                                 {{#if $eq ../ratebasis 'Per Device'}}
-                                                    Estimated Billable Devices: {{../maxdevices}} devices.<br>
-                                                    <div class="row">                                       
-                                                        <form id="devices-worked" class="form-inline">
+                                                    Estimated Billable Devices: {{../maxdevices}} devices.<hr>
+                                                    <div class="row">                     
+                                                        <form id="devices-worked">
                                                             <div class="col-xs-12">
                                                                 <div class="form-group">
-                                                                    <label for="worked-devices">How many devices have you worked among {{../maxdevices}} devices?</label>
+                                                                    <label for="worked-devices">How many devices have you completed?</label>
                                                                     <input type="number" id="worked-devices" min="1" step="1" value="{{../devicescompleted}}" class="form-control" required>
-                                                                    <button class="btn btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <button class="btn btn-sm btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
                                                                 </div>
                                                             </div>
                                                         </form>
