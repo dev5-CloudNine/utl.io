@@ -1256,6 +1256,9 @@ Template.job.events({
     }
     Meteor.call('acceptBudgetIncrease', jobId, buyerId, requestId);
   },
+  'click .hidelessbalalert': function(event, template) {
+    $(event.currentTarget).parent().hide();
+  },
   'click .rejectBudgetIncrease':function(event, template) {
     var jobId = Router.current().params._id;
     var requestId = $(event.currentTarget).data('bi-id');
