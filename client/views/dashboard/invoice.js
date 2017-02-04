@@ -166,5 +166,206 @@ Template.invoice.helpers({
     },
 	totalHours : function(){
 		return Session.get('totalHours');
-	}
+	},
+	workedLess: function(appType, jobId) {
+		var jobDetails = Jobs.findOne({_id: jobId});
+		var logList = [];
+	    var totalHours = 0;
+	    var logs = TimeSheet.findOne({'jobID':jobId}, { sort: { 'logs.checkOut': -1 } }).logs;
+	    if(!logs) return;
+	    logs.map(function(log){
+			var obj = {};
+			obj.id = log.id;
+			obj.in = moment(log.checkIn).format('llll');
+			obj.out = moment(log.checkOut).format('llll');
+			var inT = moment(new Date(obj.in));
+			var ouT = moment(new Date(obj.out));
+			var diff = ouT.diff(inT);
+			var duration = moment.duration(diff,'milliseconds');
+			var days = Math.floor(duration.asDays());
+			var hours = Math.floor(duration.asHours());
+			var mins = Math.floor(duration.asMinutes()) - hours * 60;
+			var total = "Hours : "+hours+", Mins : "+mins;
+			obj.total = total;
+			totalHours+=diff;
+			logList.push(obj);
+	    });
+	    var duration = moment.duration(totalHours,'milliseconds');
+	    var days = Math.floor(duration.asDays());
+	    var hours = Math.floor(duration.asHours());
+	    var hrs = days*24+hours;
+	    var mins = Math.floor(duration.asMinutes()) - hours * 60;
+	    var timeWorked = {
+			hours: hours,
+			minutes: mins
+	    }
+	    Session.set('workedTime', timeWorked);
+		var providerWorkedMins = timeWorked.hours * 60 + timeWorked.minutes;
+		if(appType == 'application') {
+				if(jobDetails.ratebasis == 'Per Hour') {
+				var jobEstimatedMins = jobDetails.maxhours * 60;
+				if(providerWorkedMins < jobEstimatedMins)
+					return true;
+			} else if(jobDetails.ratebasis == 'Per Device') {
+				if(jobDetails.devicescompleted < jobDetails.maxdevices)
+					return tru;
+			} else if(jobDetails.ratebasis == 'Blended') {
+				var jobEstimatedMins = jobDetails.firsthours * 60 + jobDetails.nexthours * 60;
+				if(providerWorkedMins < jobEstimatedMins)
+					return true;
+			}
+		} else if(appType == 'counteroffer') {
+		var applications = jobDetails.applications;
+		var acceptedApplication;
+		for(var i = 0; i < applications.length; i++) {
+			if(applications[i].app_status == 'accepted') {
+				acceptedApplication = applications[i];
+				break;
+				}
+			}
+			if(acceptedApplication.counterType == 'per_hour') {
+				var jobEstimatedMins = acceptedApplication.max_hours * 60;
+				if(providerWorkedMins < jobEstimatedMins)
+				return true;
+			} else if(acceptedApplication.counterType == 'per_device') {
+			if(jobDetails.devicescompleted < acceptedApplication.max_devices)
+			return true;
+			} else if(acceptedApplication.counterType == 'blended') {
+				var jobEstimatedMins = acceptedApplication.first_hours * 60 + acceptedApplication.next_hours * 60;
+				if(providerWorkedMins < jobEstimatedMins)
+					return true;
+			}
+		}
+		return false;
+	},
+	totalHours: function() {
+		return Session.get('workedTime');
+	},
+	hourlyApprovedCost: function(appType, hourlyRate, maxHours) {
+		var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
+    var jobDetails = Jobs.findOne({_id: invoiceDetails.jobId});
+    var hoursWorked = Session.get('workedTime');
+    var earnings = {}
+    if(appType == 'application') {
+      var hourlyRate = jobDetails.hourlyrate;
+      var payPerMinute = hourlyRate / 60;
+      if(jobDetails.paidby == 'buyer') {
+        var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
+        var workedEarnings = providerWorkedMinutes * payPerMinute;        
+        earnings = {
+          buyerCost: workedEarnings + workedEarnings * 5 / 100,
+          providerEarnings: workedEarnings
+        }
+      } else if(jobDetails.paidby == 'provider') {
+        var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
+        var workedEarnings = providerWorkedMinutes * payPerMinute;
+        earnings = {
+          buyerCost: workedEarnings,
+          providerEarnings: workedEarnings - workedEarnings * 5 / 100
+        }
+      }
+    } else if(appType == 'counteroffer') {
+      var hourlyRate = hourlyRate;
+      var payPerMinute = hourlyRate / 60;
+      var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
+      var workedEarnings = providerWorkedMinutes * payPerMinute;
+      earnings = {
+        buyerCost: workedEarnings + workedEarnings * 5 / 100,
+        providerEarnings: workedEarnings
+      }
+    }
+    return earnings;
+  },
+  deviceApprovedCost: function(appType, deviceRate, maxDevices) {
+  	var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
+    var jobDetails = Jobs.findOne({_id: invoiceDetails.jobId});
+    var devicesCompleted = jobDetails.devicescompleted;
+    var earnings = {};
+    if(appType == 'application') {
+      var ratePerDevice = jobDetails.rateperdevice;
+      if(jobDetails.paidby == 'buyer') {
+        var workedEarnings = devicesCompleted * ratePerDevice;
+        earnings = {
+          buyerCost: workedEarnings + workedEarnings * 5 / 100,
+          providerEarnings: workedEarnings
+        }
+      } else if(jobDetails.paidby == 'provider') {
+        var workedEarnings = devicesCompleted * ratePerDevice;
+        earnings = {
+          buyerCost: workedEarnings,
+          providerEarnings: workedEarnings - workedEarnings * 5 / 100
+        }
+      }
+    } else if(appType == 'counteroffer') {
+      var workedEarnings = devicesCompleted * deviceRate;
+      earnings = {
+        buyerCost: workedEarnings + workedEarnings * 5 / 100,
+        providerEarnings: workedEarnings
+      }
+    }
+    return earnings;
+  },
+  blendedApprovedCost: function(appType, maxFirstHours, payFirstHours, maxNextHours, payNextHours) {
+  	var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
+    var jobDetails = Jobs.findOne({_id: invoiceDetails.jobId});
+    var hoursWorked = Session.get('workedTime');
+    var earnings = {};
+    if(appType == 'application') {
+      var estimatedTimeMins = jobDetails.firsthours * 60 + jobDetails.nexthours * 60;
+      var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
+      if(jobDetails.paidby == 'buyer') {
+        if(providerWorkedMinutes < jobDetails.firsthours * 60) {
+          var workedEarnings = jobDetails.payforfirsthours;
+          earnings = {
+            buyerCost: workedEarnings + workedEarnings * 5 / 100,
+            providerEarnings: workedEarnings
+          }
+        } else if(providerWorkedMinutes > jobDetails.firsthours * 60 && providerWorkedMinutes < estimatedTimeMins) {
+          var nextMinutesWorked = providerWorkedMinutes - jobDetails.firsthours * 60;
+          var payNextHourMins = jobDetails.payfornexthours / 60;
+          var workedEarnings = jobDetails.payforfirsthours + nextMinutesWorked * payNextHourMins;
+          earnings = {
+            buyerCost: workedEarnings + workedEarnings * 5 / 100,
+            providerEarnings: workedEarnings
+          }
+        }
+      } else if(jobDetails.paidby == 'provider') {
+        if(providerWorkedMinutes < jobDetails.firsthours * 60) {
+          var workedEarnings = jobDetails.payforfirsthours;
+          earnings = {
+            buyerCost: workedEarnings,
+            providerEarnings: workedEarnings - workedEarnings * 5 / 100
+          }
+        } else if(providerWorkedMinutes > jobDetails.firsthours * 60 && providerWorkedMinutes < estimatedTimeMins) {
+          var nextMinutesWorked = providerWorkedMinutes - jobDetails.firsthours * 60;
+          var payNextHourMins = jobDetails.payfornexthours / 60;
+          var workedEarnings = jobDetails.payforfirsthours + nextMinutesWorked * payNextHourMins;
+          earnings = {
+            buyerCost: workedEarnings,
+            providerEarnings: workedEarnings - workedEarnings * 5 / 100
+          }
+        }
+      }
+    } else if(appType == 'counteroffer') {
+      console.log(maxFirstHours)
+      var estimatedTimeMins = maxFirstHours * 60 + maxNextHours * 60;
+      var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
+      if(providerWorkedMinutes < maxFirstHours * 60) {
+        var workedEarnings = payFirstHours;
+        earnings = {
+          buyerCost: workedEarnings + workedEarnings * 5 / 100,
+          providerEarnings: workedEarnings
+        }
+      } else if(providerWorkedMinutes > maxFirstHours * 60 && providerWorkedMinutes < estimatedTimeMins) {
+        var nextMinutesWorked = providerWorkedMinutes - maxFirstHours * 60;
+        var payNextHourMins = payNextHours / 60;
+        var workedEarnings = payFirstHours + nextMinutesWorked * payNextHourMins;
+        earnings = {
+          buyerCost: workedEarnings + workedEarnings * 5 / 100,
+          providerEarnings: workedEarnings
+        }
+      }
+    }
+    return earnings;
+  }
 });

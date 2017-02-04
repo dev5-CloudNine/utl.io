@@ -1248,6 +1248,12 @@ Template.job.events({
       buyerId = Meteor.user().invitedBy;
     var jobId = Router.current().params._id;
     var requestId = $(event.currentTarget).data('bi-id');
+    var buyerCost = $(event.currentTarget).data('buyer-cost');
+    var userWallet = Wallet.findOne({userId: buyerId});
+    if(buyerCost > userWallet.accountBalance) {
+      $('.lessbalalert').show();
+      return;
+    }
     Meteor.call('acceptBudgetIncrease', jobId, buyerId, requestId);
   },
   'click .rejectBudgetIncrease':function(event, template) {
@@ -1304,6 +1310,12 @@ Template.job.events({
       buyerId = Meteor.user().invitedBy;
     var jobId = Router.current().params._id;
     var expense_id = $(event.currentTarget).data('expense-id');
+    var expense_buyer_cost = $(event.currentTarget).data('buyer-cost');
+    var userWallet = Wallet.findOne({userId: buyerId});
+    if(userWallet.accountBalance < expense_buyer_cost) {
+      $('.lessbalalert').show();
+      return;
+    }
     Meteor.call('approveExpense', jobId, buyerId, expense_id);
   },
   'click a.rejectExpense': function(event, template) {
@@ -1343,6 +1355,49 @@ Template.job.helpers({
     var jobDetails = Jobs.findOne({_id: Router.current().params._id});
     if(jobDetails.expenses && jobDetails.expenses.length > 0)
       return true;
+    return false;
+  },
+  workedLess: function(appType) {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var timeWorked = Session.get('totalHours');
+    var providerWorkedMins = timeWorked.hours * 60 + timeWorked.minutes;
+    if(appType == 'application') {
+      if(jobDetails.ratebasis == 'Per Hour') {
+        var jobEstimatedMins = jobDetails.maxhours * 60;
+        if(providerWorkedMins < jobEstimatedMins)
+          return true;
+      } else if(jobDetails.ratebasis == 'Per Device') {
+        if(jobDetails.devicescompleted < jobDetails.maxdevices)
+          return tru;
+      } else if(jobDetails.ratebasis == 'Blended') {
+        var jobEstimatedMins = jobDetails.firsthours * 60 + jobDetails.nexthours * 60;
+        if(providerWorkedMins < jobEstimatedMins)
+          return true;
+      }
+    } else if(appType == 'counteroffer') {
+      var applications = jobDetails.applications;
+      var acceptedApplication;
+      for(var i = 0; i < applications.length; i++) {
+        if(applications[i].app_status == 'accepted') {
+          acceptedApplication = applications[i];
+          break;
+        }
+      }
+      console.log(acceptedApplication)
+      // var acceptedApplication = Session.get('acceptedApplication');
+      if(acceptedApplication.counterType == 'per_hour') {
+        var jobEstimatedMins = acceptedApplication.max_hours * 60;
+        if(providerWorkedMins < jobEstimatedMins)
+          return true;
+      } else if(acceptedApplication.counterType == 'per_device') {
+        if(jobDetails.devicescompleted < acceptedApplication.max_devices)
+          return true;
+      } else if(acceptedApplication.counterType == 'blended') {
+        var jobEstimatedMins = acceptedApplication.first_hours * 60 + acceptedApplication.next_hours * 60;
+        if(providerWorkedMins < jobEstimatedMins)
+          return true;
+      }
+    }
     return false;
   },
   timeWorked: function(hourlyrate, maxhours) {
@@ -1813,10 +1868,7 @@ Template.job.helpers({
       var diff = ouT.diff(inT);
       var duration = moment.duration(diff,'milliseconds');
       var days = Math.floor(duration.asDays());
-      // var hours = Math.floor(duration.asHours()) - days * 24;
       var hours = Math.floor(duration.asHours());
-      // var hrs = days*24+hours;
-      // var mins = Math.floor(duration.asMinutes()) - hrs * 60;
       var mins = Math.floor(duration.asMinutes()) - hours * 60;
       var total = "Hours : "+hours+", Mins : "+mins;
       obj.total = total;
@@ -1826,12 +1878,9 @@ Template.job.helpers({
 
     var duration = moment.duration(totalHours,'milliseconds');
     var days = Math.floor(duration.asDays());
-    // var hours = Math.floor(duration.asHours()) - days * 24;
     var hours = Math.floor(duration.asHours());
     var hrs = days*24+hours;
-    // var mins = Math.floor(duration.asMinutes()) - hrs * 60;
     var mins = Math.floor(duration.asMinutes()) - hours * 60;
-    // var total = hours + " hours and " + mins + " minutes";
     var total = {
       hours: hours,
       minutes: mins
@@ -1855,33 +1904,17 @@ Template.job.helpers({
       var payPerMinute = hourlyRate / 60;
       if(jobDetails.paidby == 'buyer') {
         var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
-        var workedEarnings = providerWorkedMinutes * payPerMinute;
-        if(providerWorkedMinutes >= jobDetails.maxhours * 60) {
-          earnings = {
-            buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
-            providerEarnings: jobDetails.proposedBudget
-          }
-        }
-        else {
-          earnings = {
-            buyerCost: workedEarnings + workedEarnings * 5 / 100,
-            providerEarnings: workedEarnings
-          }
+        var workedEarnings = providerWorkedMinutes * payPerMinute;        
+        earnings = {
+          buyerCost: workedEarnings + workedEarnings * 5 / 100,
+          providerEarnings: workedEarnings
         }
       } else if(jobDetails.paidby == 'provider') {
         var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
         var workedEarnings = providerWorkedMinutes * payPerMinute;
-        if(providerWorkedMinutes >= jobDetails.maxhours * 60) {
-          earnings = {
-            buyerCost: jobDetails.your_cost,
-            providerEarnings: jobDetails.proposedBudget
-          }
-        }
-        else {
-          earnings = {
-            buyerCost: workedEarnings,
-            providerEarnings: workedEarnings - workedEarnings * 5 / 100
-          }
+        earnings = {
+          buyerCost: workedEarnings,
+          providerEarnings: workedEarnings - workedEarnings * 5 / 100
         }
       }
     } else if(appType == 'counteroffer') {
@@ -1889,16 +1922,9 @@ Template.job.helpers({
       var payPerMinute = hourlyRate / 60;
       var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
       var workedEarnings = providerWorkedMinutes * payPerMinute;
-      if(providerWorkedMinutes >= maxHours * 60) {
-        earnings = {
-          buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
-          providerEarnings: jobDetails.proposedBudget
-        }
-      } else {
-        earnings = {
-          buyerCost: workedEarnings + workedEarnings * 5 / 100,
-          providerEarnings: workedEarnings
-        }
+      earnings = {
+        buyerCost: workedEarnings + workedEarnings * 5 / 100,
+        providerEarnings: workedEarnings
       }
     }
     return earnings;
@@ -1911,44 +1937,22 @@ Template.job.helpers({
       var ratePerDevice = jobDetails.rateperdevice;
       if(jobDetails.paidby == 'buyer') {
         var workedEarnings = devicesCompleted * ratePerDevice;
-        if(devicesCompleted >= jobDetails.maxdevices) {
-          earnings = {
-            buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
-            providerEarnings: jobDetails.proposedBudget
-          }
-        } else {
-          earnings = {
-            buyerCost: workedEarnings + workedEarnings * 5 / 100,
-            providerEarnings: workedEarnings
-          }
-        }
-      } else if(jobDetails.paidby == 'provider') {
-        var workedEarnings = devicesCompleted * ratePerDevice;
-        if(providerWorkedMinutes >= jobDetails.maxhours * 60) {
-          earnings = {
-            buyerCost: jobDetails.your_cost,
-            providerEarnings: jobDetails.proposedBudget
-          }
-        } else {
-          earnings = {
-            buyerCost: workedEarnings,
-            providerEarnings: workedEarnings - workedEarnings * 5 / 100
-          }
-        }
-      }
-    } else if(appType == 'counteroffer') {
-      var workedEarnings = devicesCompleted * deviceRate;
-      if(completedDevices >= maxDevices) {
-        earnings = {
-          buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
-          providerEarnings: jobDetails.proposedBudget
-        }
-      }
-      else {
         earnings = {
           buyerCost: workedEarnings + workedEarnings * 5 / 100,
           providerEarnings: workedEarnings
         }
+      } else if(jobDetails.paidby == 'provider') {
+        var workedEarnings = devicesCompleted * ratePerDevice;
+        earnings = {
+          buyerCost: workedEarnings,
+          providerEarnings: workedEarnings - workedEarnings * 5 / 100
+        }
+      }
+    } else if(appType == 'counteroffer') {
+      var workedEarnings = devicesCompleted * deviceRate;
+      earnings = {
+        buyerCost: workedEarnings + workedEarnings * 5 / 100,
+        providerEarnings: workedEarnings
       }
     }
     return earnings;
@@ -1975,11 +1979,6 @@ Template.job.helpers({
             buyerCost: workedEarnings + workedEarnings * 5 / 100,
             providerEarnings: workedEarnings
           }
-        } else if(providerWorkedMinutes >= estimatedTimeMins) {
-          earnings = {
-            buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
-            providerEarnings: jobDetails.proposedBudget
-          }
         }
       } else if(jobDetails.paidby == 'provider') {
         if(providerWorkedMinutes < jobDetails.firsthours * 60) {
@@ -1995,11 +1994,6 @@ Template.job.helpers({
           earnings = {
             buyerCost: workedEarnings,
             providerEarnings: workedEarnings - workedEarnings * 5 / 100
-          }
-        } else if(providerWorkedMinutes >= estimatedTimeMins) {
-          earnings = {
-            buyerCost: jobDetails.your_cost,
-            providerEarnings: jobDetails.proposedBudget
           }
         }
       }
@@ -2020,11 +2014,6 @@ Template.job.helpers({
         earnings = {
           buyerCost: workedEarnings + workedEarnings * 5 / 100,
           providerEarnings: workedEarnings
-        }
-      } else if(providerWorkedMinutes >= estimatedTimeMins) {
-        earnings = {
-          buyerCost: jobDetails.proposedBudget + jobDetails.proposedBudget * 5 / 100,
-          providerEarnings: jobDetails.proposedBudget
         }
       }
     }
