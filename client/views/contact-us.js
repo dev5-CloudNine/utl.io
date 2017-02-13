@@ -1,6 +1,7 @@
 Template.contactUs.events({
 	'submit #queryRequest': function (event, template) {
 		event.preventDefault();
+		$('.submitQuery').button('loading');
 		var contactRequest = {
 			firstName: $('input[name="firstName"]').val(),
 			lastName: $('input[name="lastName"]').val(),
@@ -12,8 +13,11 @@ Template.contactUs.events({
 		Meteor.call('sendQueryRequest', contactRequest, function(error, result) {
 			if(error) {
 				$(".failedAlert").show().delay(5000).fadeOut();
+				$('.submitQuery').button('reset');
 			} else {
 				$(".successAlert").show().delay(5000).fadeOut();
+				$('.submitQuery').button('reset');
+				$('#queryRequest')[0].reset();
 			}
 		})
 	}

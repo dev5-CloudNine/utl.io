@@ -21,7 +21,7 @@
                     <label class="text-muted">We will reply you ASAP</label>
                 </div>
             </div>
-            <p>We are open to any customer questions, feedback and suggestions. You can contact our Customer Support Department by calling our Customer Support Line at 732-272-0053, or through our customer support email at helpdesk@ustechland.com.</p>
+            <p>We are open to any customer questions, feedback and suggestions. You can contact our Customer Support Department by calling our Customer Support Line at 732-272-0053.</p>
         </div>
 		<div class="col-sm-8">
 			<div class="pane panel-light">
@@ -53,11 +53,17 @@
 							<textarea class="form-control" rows="3" required="required" placeholder="Your Message*" name="query"></textarea>
 						</div>
 						<div class="form-group">
-							<button type="submit" class="btn btn-primary btn-sm">Submit</button>
+							<button type="submit" class="btn btn-primary btn-sm submitQuery" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
 						</div>
 					</form>
-					<div class="alert alert-success successAlert" hidden>We've submitted your query.</div>
-					<div class="alert alert-danger failedAlert" hidden>Failed to submit your query.</div>
+					<div class="alert alert-success successAlert" hidden>
+						<button type="button" class="close hideSuccessAlert" aria-hidden="true">&times;</button>
+						<p>Your query has been submitted.</p>
+					</div>
+					<div class="alert alert-danger failedAlert" hidden>
+						<button type="button" class="close hideFailedAlert" aria-hidden="true">&times;</button>
+						<p>Failed to submit your query.</p>
+					</div>
 				</div>
 			</div>
 		</div>

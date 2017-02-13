@@ -1116,7 +1116,7 @@ Meteor.methods({
     },
     'sendQueryRequest': function(queryObject) {
         Email.send({
-            to: 'administrator@ustechland.com',
+            to: 'helpdesk@ustechland.com',
             from: queryObject.email,
             subject: queryObject.firstName + ' has sent you a message.',
             html: 'Hello admin, <br>' + queryObject.query
