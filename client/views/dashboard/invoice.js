@@ -164,9 +164,6 @@ Template.invoice.helpers({
 		}
 		return logList;
     },
-	totalHours : function(){
-		return Session.get('totalHours');
-	},
 	workedLess: function(appType, jobId) {
 		var jobDetails = Jobs.findOne({_id: jobId});
 		var logList = [];

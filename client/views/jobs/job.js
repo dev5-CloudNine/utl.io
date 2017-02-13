@@ -1345,6 +1345,12 @@ Template.job.events({
 });
 
 Template.job.helpers({
+  confidentialDesc: function() {
+    var desc = Jobs.findOne({_id: Router.current().params._id}).confidentialDescription;
+    var description = '<p>' + desc.replace(/(?:\r\n|\r|\n)/g, '</p><p>');
+    description.slice(0, -3);
+    return description;
+  },
   completedDevices: function(ratePerDevice, maxDevices, devicesCompleted) {
     console.log(ratePerDevice, maxDevices, devicesCompleted);
     if(devicesCompleted == maxDevices) {
@@ -1771,7 +1777,8 @@ Template.job.helpers({
           return false;
   },
   "fileList": function(taskID) {
-      return Tasks.findOne({ _id: taskID }).files;
+    console.log(Tasks.findOne({_id: taskID}).files)
+    return Tasks.findOne({ _id: taskID }).files;
   },
   confirmedOrRejected: function() {
     var jobDetails = Jobs.findOne({_id: this._id});

@@ -942,17 +942,20 @@ Jobs.attachSchema(new SimpleSchema({
       type: String,
       label: "Job Description",
       autoform: {
-        afFieldInput: SUMMERNOTE_OPTIONS
+        type: 'tinyMCE',
+        data: {
+          menubar: false,
+          statusbar: false,
+          height: 400
+        }
       }
     },
     confidentialDescription: {
       type: String,
-      label: function() {
-        return
-      },
+      label: 'Visible to assigned provider only',
       optional: true,
       autoform: {
-        afFieldInput: SUMMERNOTE_OPTIONS
+        rows: 8
       }
     },
     status: {
@@ -985,26 +988,6 @@ Jobs.attachSchema(new SimpleSchema({
       type: String,
       allowedValues: ['not_confirmed', 'confirmed', 'submitted', 'approved', 'rejected', 'pending_payment', 'paid'],
       optional: true
-    },
-    htmlDescription: {
-      type: String,
-      optional: true,
-      autoValue: function(doc) {
-        var htmlContent = this.field("description");
-        if (Meteor.isServer && htmlContent.isSet) {
-          return cleanHtml(htmlContent.value);
-        }
-      }
-    },
-    htmlConfdentialDesc: {
-      type: String,
-      optional: true,
-      autoValue: function(doc) {
-        var htmlContent = this.field("confidentialDescription");
-        if(Meteor.isServer && htmlContent.isSet) {
-          return cleanHtml(htmlContent.value);
-        }
-      }
     },
     createdAt: {
       type: Date,

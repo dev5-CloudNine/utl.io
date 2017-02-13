@@ -144,6 +144,7 @@ Jobs.after.insert(function(userId, doc){
     for(var i = 0; i < providersList.length; i++) {
       Email.send({
         to: getUserEmail(Users.findOne({_id: providersList[i].userId})),
+        cc: providersList[i].smsAddress,
         from: FROM_EMAIL,
         subject: 'New Job Posted - ' + doc.title,
         html: 'Hello ' + providersList[i].firstName + ' ' + providersList[i].lastName + ',<br> A new job has been posted.<br><a href="' + Meteor.absoluteUrl('jobs/' + doc._id) + '">ID: ' + doc.readableID + '<br>' + doc.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + doc._id) + '">Click here</a> to apply or counter offer the job.'

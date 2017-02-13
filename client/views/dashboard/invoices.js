@@ -10,7 +10,7 @@ var buyerOptionsObject = {
     order: [[0, 'desc']],
 	columns: [
 		{
-			title: 'Invoice ID',
+			title: 'ID',
 			data: function(invoice) {
 				var invoiceLink = '<a href="/invoices/' + invoice.invoiceId + '">' + invoice.invoiceId + '</a>';
 				return invoiceLink;
@@ -21,20 +21,35 @@ var buyerOptionsObject = {
 			data: function(invoice) {
 				var jobName = Jobs.findOne({_id: invoice.jobId}).title
 				var jobLink = '<a href="/jobs/' + invoice.jobId + '">' + jobName + '</a>';
-				return jobLink;
-			}
+				return jobName;
+			},
+			width: '50%'
 		},
 		{
 			title: 'Provider Name',
 			data: function(invoice) {
 				var providerDetails = Profiles.findOne({userId: invoice.providerId});
 				var providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a>';
-				return providerLink;
-			}
+				return providerDetails.firstName + ' ' + providerDetails.lastName;
+			},
+			width: '15%'
 		},
-		{title: 'Amount (USD)', data: 'budget'},
-		{title: 'Date', data: function(invoice) {return moment(invoice.date).fromNow()}},
-		{title: 'Status', data: 'invoiceStatus'}
+		{
+			title: 'Amount (USD)',
+			data: 'budget',
+			width: '15%'
+		},
+		{
+			title: 'Status',
+			data: function(invoice) {
+				return invoice.invoiceStatus + ' ' + moment(invoice.date).fromNow()
+			},
+			width: '20%'
+		}
+		// {
+		// 	title: 'Status',
+		// 	data: 'invoiceStatus'
+		// }
 	]
 };
 var providerOptionsObject = {
@@ -43,7 +58,7 @@ var providerOptionsObject = {
     order: [[0, 'desc']],
 	columns: [
 		{
-			title: 'Invoice ID',
+			title: 'ID',
 			data: function(invoice) {
 				var invoiceLink = '<a href="/invoices/' + invoice.invoiceId + '">' + invoice.invoiceId + '</a>';
 				return invoiceLink;
@@ -54,8 +69,9 @@ var providerOptionsObject = {
 			data: function(invoice) {
 				var jobName = Jobs.findOne({_id: invoice.jobId}).title
 				var jobLink = '<a href="/jobs/' + invoice.jobId + '">' + jobName + '</a>';
-				return jobLink;
-			}
+				return jobName;
+			},
+			width: '50%'
 		},
 		{
 			title: 'Buyer Name',
@@ -69,12 +85,24 @@ var providerOptionsObject = {
 					buyerDetails = Dispatchers.findOne({userId: invoice.buyerId});
 					buyerLink = '<a href="/dispatchers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a>';
 				}
-				return buyerLink;
-			}
+				return buyerDetails.firstName + ' ' + buyerDetails.lastName;
+			},
+			width: '15%'
 		},
-		{title: 'Amount (USD)', data: function(invoice) {return invoice.budget}},
-		{title: 'Date', data: function(invoice) {return moment(invoice.date).fromNow()}},
-		{title: 'Status', data: function(invoice) {return invoice.invoiceStatus}}
+		{
+			title: 'Amount (USD)',
+			data: function(invoice) {
+				return invoice.budget
+			},
+			width: '15%'
+		},
+		{
+			title: 'Status',
+			data: function(invoice) {
+				return invoice.invoiceStatus + ' ' + moment(invoice.date).fromNow();
+			},
+			width: '20%'
+		}
 	]
 }
 Template.invoices.helpers({

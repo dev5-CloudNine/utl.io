@@ -381,7 +381,6 @@ Meteor.methods({
         }
         if(jobDetails.routed) {
             Jobs.update({_id: jobId}, {$set: {projectBudget: jobDetails.freelancer_nets}});
-            Profiles.update({userId: Meteor.userId()}, {$pull: {routedJobs: jobId}});
         }
         Notifications.insert(notificationObj);
         Email.send({
@@ -867,10 +866,15 @@ Meteor.methods({
         var jobDetails = Jobs.findOne({_id: jobId});
         if(jobDetails.status == 'active') {
             Jobs.update({_id: jobId}, {$set: {status: 'deactivated'}});
-            var buyerGettable;
+            var buyerGettable = jobDetails.buyerCost;
             if(jobDetails.applicationStatus == 'open') {
-                buyerGettable = jobDetails.your_cost;
-                if(jobDetails.applications) {
+                if(jobDetails.invited && jobDetails.invitedproviders.length > 0) {
+                    for(var i = 0; i < jobDetails.invitedproviders.length; i++) {
+                        Profiles.update({userId: jobDetails.invitedproviders[i]}, {$pull: {invitedJobs: jobId}})
+                        Profiles.update({userId: jobDetails.invitedproviders[i]}, {$addToSet: {deactivatedJobs: jobId}})
+                    }
+                }
+                if(jobDetails.applications && jobDetails.applications.length > 0) {
                     for(var i = 0; i < jobDetails.applications.length; i++) {
                         Profiles.update({userId: jobDetails.applications[i].userId}, {$pull: {appliedJobs: jobId}});
                         Profiles.update({userId: jobDetails.applications[i].userId}, {$addToSet: {deactivatedJobs: jobId}});
@@ -878,26 +882,16 @@ Meteor.methods({
                 }
             }
             if(jobDetails.applicationStatus == 'assigned') {
+                if(jobDetails.routed && jobDetails.assignmentStatus == 'not_confirmed') {
+                    Profiles.update({userId: jobDetails.selectedProvider}, {$pull: {assignedJobs: jobId}});
+                    Profiles.update({userId: jobDetails.selectedProvider}, {$addToSet: {deactivatedJobs: jobId}});
+                }
                 if(jobDetails.assignmentStatus == 'submitted') {
                     Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
                 }
                 if(jobDetails.assignmentStatus == 'not_confirmed' || jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected')
                     Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {assignedJobs: jobId}});
                 Profiles.update({userId: jobDetails.assignedProvider}, {$addToSet: {deactivatedJobs: jobId}});
-                if(jobDetails.assignmentStatus == 'not_confirmed') {
-                    var acceptedApplication = {};
-                    for(var i = 0; i < jobDetails.applications.length; i++) {
-                        if(jobDetails.applications[i].app_status == 'accepted') {
-                            acceptedApplication = jobDetails.applications[i];
-                            break;
-                        }
-                    }
-                    if(acceptedApplication.app_type == 'counteroffer') {
-                        buyerGettable = acceptedApplication.buyer_cost;
-                    }
-                }
-                if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected' || jobDetails.assignmentStatus == 'submitted')
-                    buyerGettable = jobDetails.projectBudget + (jobDetails.projectBudget * 5/100);
             }
             var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
             Wallet.update({userId: buyerId}, {$inc: {accountBalance: buyerGettable}});

@@ -93,7 +93,8 @@ var openJobsObject = {
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
-                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>';
+                var budget = +(Math.round(jobDetails.freelancer_nets + 'e+2') + 'e-2');
+                return '<span class="budgetFont">' + budget + '</span>';
             },
             width: '15%',
             responsivePriority: 2
