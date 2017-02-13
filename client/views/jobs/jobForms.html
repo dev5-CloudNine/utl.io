@@ -205,10 +205,8 @@
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="alert alert-danger notEnoughBalance" hidden>
-                                <strong>You don't have enough account balance. Click on the button to deposit funds.</strong>
-                                <div>
-                                    <a href="{{pathFor 'deposit'}}" class="btn btn-primary btn-sm">Deposit Funds</a>
-                                </div>
+                                <button type="button" class="close hidelessbalalert" aria-hidden="true">&times;</button>
+                                <p>You don't have sufficient funds to post a job. <a href="/deposit">Click here</a> to deposit funds.</p>
                             </div>
                         </div>
                     </div>

@@ -49,6 +49,9 @@ Template.jobFields.events({
 	'click button#uploadDocs': function(event, template) {
 		event.preventDefault();
 	},
+	'click .hidelessbalalert': function(event, template) {
+		$(event.currentTarget).parent().hide();
+	},
 	'change input[name="fixedamount"], keyup input[name="fixedamount"]': function(event, template) {
 		var fixedamount = parseFloat($('input[name="fixedamount"]').val());
 		var accountBalance;
