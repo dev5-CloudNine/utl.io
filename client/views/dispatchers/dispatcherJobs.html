@@ -1,7 +1,3 @@
 <template name="dispatcherJobs">
-	{{#each dispatcherJob}}
-		{{>jobSmall}}
-	{{else}}
-		<h6>This buyer hasn't posted any job yet.</h6>
-	{{/each}}
+	{{>ReactiveDatatable tableData=buyerJobs options=dispatcherJobsOptions}}
 </template>

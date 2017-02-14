@@ -698,6 +698,13 @@ Router.map(function() {
             }
             if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
                 Meteor.subscribe('my_jobs');
+                Meteor.subscribe('dispatcher_jobs', Meteor.userId());
+                return Meteor.subscribe('buyerInvoices', Meteor.userId());
+            }
+            if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+                Meteor.subscribe('dispatcher_jobs', Meteor.user().invitedBy);
+                Meteor.subscribe('dispatchers', Meteor.user().invitedBy)
+                Meteor.subscribe('buyerJobs', Meteor.user().invitedBy);
                 return Meteor.subscribe('buyerInvoices', Meteor.userId());
             }
         }

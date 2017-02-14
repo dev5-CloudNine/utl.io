@@ -9,14 +9,17 @@ Template.breadcrumbs.onCreated(function() {
 	if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
 		Meteor.subscribe('my_jobs');
 		Meteor.subscribe('userWallet', Meteor.userId());
+		Meteor.subscribe('accountants', Meteor.userId());
 		return Meteor.subscribe('buyerInvoices', Meteor.userId());
 	}
 	if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
 		Meteor.subscribe('my_jobs');
 		Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+		Meteor.subscribe('accountants', Meteor.user().invitedBy);
 		return Meteor.subscribe('buyerInvoices', Meteor.userId());
 	}
 	if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+		Meteor.subscribe('buyerInvoices', Meteor.userId())
 		return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
 	}
 	if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {

@@ -58,6 +58,8 @@ Template.deposit.rendered =  function() {
 
 Template.deposit.helpers({
 	accountBalance: function() {
+		if(Roles.userIsInRole(Meteor.userId(), ['accountant', 'dispatcher']))
+			return Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
 		return Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 	},
 	previousDeposits: function() {

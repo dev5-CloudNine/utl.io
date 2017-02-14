@@ -8,6 +8,7 @@ Template.contactUs.events({
 			companyName: $('input[name="companyName"]').val(),
 			email: $('input[name="email"]').val(),
 			mobile: $('input[name="mobile"]').val(),
+			subject: $('select[name="request_subject"]').val(),
 			query: $('textarea[name="query"]').val()
 		}
 		Meteor.call('sendQueryRequest', contactRequest, function(error, result) {

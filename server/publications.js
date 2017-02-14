@@ -248,6 +248,19 @@ Meteor.publish("my_jobs", function () {
     return Jobs.find({userId: this.userId}, {sort: {createdAt: -1}})
 });
 
+Meteor.publish('dispatcher_jobs', function(buyerId) {
+    var dispatcherIds = [];
+    var dispatchers = Dispatchers.find({invitedBy: buyerId}).fetch();
+    for(var i = 0; i < dispatchers.length; i++) {
+        dispatcherIds.push(dispatchers[i].userId);
+    }
+    return Jobs.find({userId: {$in: dispatcherIds}});
+});
+
+Meteor.publish('buyerJobs', function(buyerId) {
+    return Jobs.find({userId: buyerId});
+})
+
 Meteor.publish('categoryJobs', function(category) {
     return Jobs.find({$and: [{jobtype: {$in: [category]}}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}});
 });
@@ -533,7 +546,26 @@ Meteor.publish('providerInvoices', function(userId) {
 
 Meteor.publish('buyerInvoices', function(userId) {
     check(arguments, [Match.Any]);
-    return Invoices.find({buyerId: userId});
+    var dispatcherIds = [];
+    var dispatchers;
+    if(Roles.userIsInRole(userId, ['accountant'])) {
+        var invitedBy = Accountants.findOne({userId: userId}).invitedBy;
+        dispatchers = Dispatchers.find({invitedBy: invitedBy}).fetch();
+    }
+    else if(Roles.userIsInRole(userId, ['buyer']))
+        dispatchers = Dispatchers.find({invitedBy: userId}).fetch();
+    if(Roles.userIsInRole(userId, ['accountant', 'buyer'])) {
+        for(var i = 0; i < dispatchers.length; i++) {
+            dispatcherIds.push(dispatchers[i].userId);
+        }
+    }
+    if(Roles.userIsInRole(userId, ['buyer']))
+        return Invoices.find({$or: [{buyerId: userId}, {buyerId: {$in: dispatcherIds}}]});
+    else if(Roles.userIsInRole(userId, ['dispatcher']))
+        return Invoices.find({buyerId: userId});
+    else if(Roles.userIsInRole(userId, ['accountant'])) {
+        return Invoices.find({$or: [{buyerId: Accountants.findOne({userId: userId}).invitedBy}, {buyerId: {$in: dispatcherIds}}]});
+    }
 });
 
 Meteor.publish('allJobTransactions', function() {

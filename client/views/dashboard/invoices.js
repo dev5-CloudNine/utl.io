@@ -1,5 +1,20 @@
 buyerInvoices = function() {
-	return Invoices.find({buyerId: Meteor.userId()}).fetch();
+	if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'accountant'])) {
+		var dispatcherIds = [];
+		var dispatchers;
+		if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+			dispatchers = Dispatchers.find({invitedBy: Meteor.userId()}).fetch();
+		else if(Roles.userIsInRole(Meteor.userId(), ['accountant']))
+			dispatchers = Dispatchers.find({invitedBy: Meteor.user().invitedBy}).fetch();
+		for(var i = 0; i < dispatchers.length; i++) {
+			dispatcherIds.push(dispatchers[i].userId);
+		}
+		if(Roles.userIsInRole(Meteor.userId(), ['accountant']))
+			return Invoices.find({$or: [{buyerId: Meteor.user().invitedBy}, {buyerId: {$in: dispatcherIds}}]}).fetch()
+		return Invoices.find({$or: [{buyerId: Meteor.userId()}, {buyerId: {$in: dispatcherIds}}]}).fetch()
+	}
+	else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+		return Invoices.find({buyerId: Meteor.userId()}).fetch();
 }
 providerInvoices = function() {
 	return Invoices.find({providerId: Meteor.userId()}).fetch();

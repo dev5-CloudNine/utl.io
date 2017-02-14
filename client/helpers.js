@@ -309,8 +309,29 @@ UI.registerHelper('teamAccountantCount', function() {
 })
 
 UI.registerHelper('invoicesCount', function() {
+	var dispatcherIds = [];
+	var dispatchers;
+    if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+        var invitedBy = Accountants.findOne({userId: Meteor.userId()}).invitedBy;
+        dispatchers = Dispatchers.find({invitedBy: invitedBy}).fetch();
+    }
+    else if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+        dispatchers = Dispatchers.find({invitedBy: Meteor.userId()}).fetch();
+    // else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+    // 	var invitedBy = Dispatchers.findOne({userId: Meteor.userId()}).invitedBy;
+    //     dispatchers = Dispatchers.find({invitedBy: invitedBy}).fetch();
+    // }
+	if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'accountant'])) {
+		for(var i = 0; i < dispatchers.length; i++) {
+			dispatcherIds.push(dispatchers[i].userId);
+		}
+	}
 	if(Roles.userIsInRole(Meteor.userId(), ['provider']))
 		return Invoices.find({providerId: Meteor.userId()}).count();
-	if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
+	if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+		return Invoices.find({$or: [{buyerId: Meteor.userId()}, {buyerId: {$in: dispatcherIds}}]}).count();
+	if(Roles.userIsInRole(Meteor.userId(), ['accountant']))
+		return Invoices.find({$or: [{buyerId: Meteor.user().invitedBy}, {buyerId: {$in: dispatcherIds}}]}).count();
+	if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
 		return Invoices.find({buyerId: Meteor.userId()}).count();
 })

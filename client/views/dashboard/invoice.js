@@ -124,7 +124,10 @@ Template.invoice.helpers({
 	},
 	buyerDetails: function() {
 		var invoiceDetails = Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
-		return Buyers.findOne({userId: invoiceDetails.buyerId});
+		if(Roles.userIsInRole(invoiceDetails.buyerId, ['buyer']))
+			return Buyers.findOne({userId: invoiceDetails.buyerId});
+		else if(Roles.userIsInRole(invoiceDetails.buyerId, ['dispatcher']))
+			return Dispatchers.findOne({userId: invoiceDetails.buyerId});
 	},
 	invoiceDetails: function() {
 		return Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});

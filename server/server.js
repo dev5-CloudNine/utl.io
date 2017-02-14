@@ -1115,10 +1115,20 @@ Meteor.methods({
         Wallet.update({userId: buyerId}, {$inc: {accountBalance: parseFloat(reqAmount)}});
     },
     'sendQueryRequest': function(queryObject) {
+        var subject;
+        if(queryObject.subject == 1) {
+            subject = 'I have problems to sign in';
+        } else if(queryObject.subject == 2) {
+            subject = 'I have problems to create a Work Order';
+        } else if(queryObject.subject == 3) {
+            subject = 'I need to talk to a customer service agent';
+        } else if(queryObject.subject == 4) {
+            subject = 'Other reason'
+        }
         Email.send({
-            to: 'helpdesk@ustechland.com',
+            to: 'administrator@ustechland.com',
             from: queryObject.email,
-            subject: queryObject.firstName + ' has sent you a message.',
+            subject: queryObject.firstName + ', ' + subject,
             html: 'Hello admin, <br>' + queryObject.query
         });
     },

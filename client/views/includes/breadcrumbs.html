@@ -136,6 +136,60 @@
 			                    </div>
 			                </div>
 						{{/if}}
+						{{#if isInRole 'accountant'}}
+							<div class="row spacer-top">
+			                    <div class="col-md-6">
+			                        <div class="widget widget-default widget-item-icon">
+			                            <div class="widget-data">
+			                            	<div class="widget-title">
+			                            		
+				                            </div>
+				                            <div class="widget-subtitle">
+												
+				                            </div>
+				                            <div class="widget-title seperator">
+			                            		
+			                            	</div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="col-md-3">
+			                        <div class="widget widget-default widget-item-icon">
+			                        	<div class="widget-data">
+			                                <div class="widget-title">
+			                                	My Team <span class="badge">{{teamCount}}</span>
+			                                </div>
+			                                <div class="widget-subtitle">
+			                                	<a href="/dispatchers">Dispatchers - {{teamDispatcherCount}}</a> &#124; 
+			                                	<a href="/accountants">Accountants - {{teamAccountantCount}}</a> 
+			                                	{{#if isInRole 'buyer'}}
+			                                		&#124; <a href="/addTeam">Invite</a>
+			                                	{{/if}}
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="col-md-3">
+			                        <div class="widget widget-info widget-padding-sm">
+			                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
+			                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
+			                            <div class="widget-buttons widget-c2">
+			                                {{#if isInRole 'buyer, accountant'}}
+			                                	<div class="col widget-title right-border">
+				                                    <a href="/wallet/deposit">Deposit</a>
+				                                </div>
+			                                {{/if}}
+			                                <div class="col widget-title">
+			                                    <a href="/wallet/invoices">Invoices - {{invoicesCount}}</a>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="col-sm-12">
+			                    	<hr>
+			                    </div>
+			                </div>
+						{{/if}}
 					{{/if}}
 					{{#if isInRole 'admin'}}
 		                <div class="row spacer-top">
