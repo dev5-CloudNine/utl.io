@@ -8,14 +8,18 @@ footer .gradient-blue-orange-h {
 }
 
 .jumbotron {
-    min-height: 440px;
+    min-height: 640px;
     background-size: 100%;
     background-color: #f2f2f2 !important;
     background-repeat: no-repeat;
 }
 
 .jumbotron p {
-  /*color: #fff;*/
+  color: #fff;
+}
+
+.jumbotron h2 {
+  font-size: 48px;
 }
 
 .panel {
@@ -513,6 +517,10 @@ div.pub-disc .comments-box .actions {
 #staticPageIntro {
   height: 80px;
   padding: 20px;
+}
+
+#staticPageIntro p {
+  color: #fff;
 }
 .gradient-red-orange-h {
     background: url("images/bg_img.jpg") repeat scroll 0% 0%, transparent linear-gradient(to right, #2fa2ef 0%, #80d822 50%, #efb002 100%) repeat scroll 0% 0%;
@@ -2169,4 +2177,20 @@ svg {
   color: #777777;
   border: 0;
   border-bottom: 1px solid #e5e5e5;
+}
+
+.at-btn:hover {
+  color: #ffffff;
+  background-color: #0f7bbd;
+  border-color: #0e75b3;
+}
+
+.at-btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+  color: #ffffff;
+  background-color: #139aec;
+  border-color: #139aec;
 }

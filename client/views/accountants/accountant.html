@@ -10,7 +10,7 @@
 							</div>
 						{{else}}
 							<div class="avatar avatar-large">
-								<img src="/images/avatar.png" alt="" widht="200px">
+								<img class="img-responsive img-thumbnail" src="/images/avatar.png" alt="" width="200px">
 							</div>
 						{{/if}}
 					</div>
@@ -42,7 +42,12 @@
 									<i class="fa fa-mobile"></i> {{smsAddress}}
 									<hr>
 									<a href="{{companyUrl}}">{{companyUrl}}</a>
+									<hr>
 								{{/if}}
+							</div>
+							<div class="col-sm-12">
+								<h4>About Me</h4>
+								{{description}}
 							</div>
 						</div>
 					</div>

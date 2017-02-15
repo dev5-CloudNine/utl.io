@@ -5,16 +5,15 @@
 	<div class="jumbotron jumbotron-bg">
 		<div class="container">
 			<div class="row">
-				<h2 class="white">Connect. Collaborate. Coacheive.</h2>
-			</div>
-			<div class="row">
-				<br>
-				<p>
-					Pairing business and savvy professionals across USA, together to get the job done.
-					<br>A simple and precise platform to manage work, workforce and payments.
-				</p>
-			</div>			
-			<div id="callToAction" class="row">
+				<div class="col-md-8">
+					<h2 class="white">Connect. Collaborate. Coacheive.</h2>
+					<p>
+						Pairing business and savvy professionals across USA, together to get the job done.
+						<br>A simple and precise platform to manage work, workforce and payments.
+					</p>
+				</div>
+			</div>		
+			<!-- <div id="callToAction" class="row">
 				{{#if currentUser}}
 					{{#if isInRole 'buyer, dispatcher'}}
 						<a class="text-center btn btn-primary btn-sm" role="button" href="{{pathFor 'jobNew'}}">Post A Job</a>
@@ -37,7 +36,7 @@
 						<a class="text-center btn btn-primary btn-sm" role="button" href="{{pathFor 'profileNew'}}">Create a Profile</a>
 					</div>
 				{{/if}}
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>

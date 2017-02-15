@@ -138,23 +138,18 @@ Accountants.attachSchema(new SimpleSchema({
 		type: AddressSchema,
 		optional: true
 	},
-	// description: {
-	// 	type: String,
-	// 	label: "Description *",
-	// 	autoform: {
-	// 		afFieldInput: SUMMERNOTE_OPTIONS
-	// 	}
-	// },
-	// htmlDescription: {
-	// 	type: String,
-	// 	optional: true,
-	// 	autoValue: function(doc) {
-	// 		var htmlContent = this.field("description");
-	// 		if (Meteor.isServer && htmlContent.isSet) {
-	// 			return cleanHtml(htmlContent.value);
-	// 		}
-	// 	}
-	// },
+	description: {
+		type: String,
+		label: "Description *",
+		autoform: {
+	        type: 'tinyMCE',
+	        data: {
+				menubar: false,
+				statusbar: false,
+				height: 400
+	        }
+	    }
+	},
 	createdAt: {
 		type: Date,
 		autoValue: function() {

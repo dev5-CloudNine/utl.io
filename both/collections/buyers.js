@@ -136,18 +136,6 @@ Buyers.attachSchema(
   	max: 128,
   	optional: true
   },
-  // socialSecurityNumber: {
-  // 	type: String,
-  // 	label: "Social Security Number *",
-  // 	max: 128,
-  // },
-  // dateOfBirth: {
-  //   type: Date,
-  //   label: 'Date of Birth *',
-  //   autoform: {
-  //     type: 'bootstrap-datepicker'
-  //   }
-  // },
   location: {
   	type: String,
   	label: "Location *",
@@ -161,18 +149,13 @@ Buyers.attachSchema(
   	type: String,
   	label: "Description *",
   	autoform: {
-  		afFieldInput: SUMMERNOTE_OPTIONS
-  	}
-  },
- 	htmlDescription: {
-  	type: String,
-  	optional: true,
-  	autoValue: function(doc) {
-  	var htmlContent = this.field("description");
-  	if (Meteor.isServer && htmlContent.isSet) {
-  		return cleanHtml(htmlContent.value);
-  		}
-  	}
+      type: 'tinyMCE',
+      data: {
+        menubar: false,
+        statusbar: false,
+        height: 400
+      }
+    }
   },
 	industryTypes: {
 		type: [String],
