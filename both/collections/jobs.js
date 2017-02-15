@@ -575,6 +575,10 @@ Jobs.attachSchema(new SimpleSchema({
       decimal: true,
       optional: true
     },
+    'applications.$.counter_description': {
+      type: String,
+      optional: true
+    },
     expenses: {
       type: Array,
       optional: true

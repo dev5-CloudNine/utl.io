@@ -304,7 +304,8 @@ Template.job.events({
         "buyer_cost": buyer_cost,
         "freelancer_nets": freelancer_nets,
         "applied_at": new Date(),
-        "app_type": 'counteroffer'
+        "app_type": 'counteroffer',
+        'counter_description': $('#fixed_counter_desc').val()
       }
     }
     else if(counterType == "per_hour") {
@@ -317,7 +318,8 @@ Template.job.events({
         "buyer_cost": buyer_cost,
         "freelancer_nets": freelancer_nets,
         "applied_at": new Date(),
-        "app_type": 'counteroffer'
+        "app_type": 'counteroffer',
+        'counter_description': $('#hourly_counter_desc').val()
       }
     }
     else if(counterType == "per_device") {
@@ -330,7 +332,8 @@ Template.job.events({
         "buyer_cost": buyer_cost,
         "freelancer_nets": freelancer_nets,
         "applied_at": new Date(),
-        "app_type": 'counteroffer'
+        "app_type": 'counteroffer',
+        'counter_description': $('#device_counter_desc').val()
       }
     }
     else if(counterType == "blended") {
@@ -345,7 +348,8 @@ Template.job.events({
         "buyer_cost": buyer_cost,
         "freelancer_nets": freelancer_nets,
         "applied_at": new Date(),
-        "app_type": 'counteroffer'
+        "app_type": 'counteroffer',
+        'counter_description': $('#blended_counter_desc').val()
       }
     }
     Meteor.call('applyForThisJob', jobId, counterOffer, function (error) {
@@ -636,6 +640,14 @@ Template.job.events({
   'click button.increaseBudget': function(event, template) {
     event.preventDefault();
     var approveBonus = $('input[name="bonus_request"]:checked').val();
+  },
+  'click button.confirmApproveAssignment': function(evnent, template) {
+    event.preventDefault();
+    $('.showConfirmAssignment').fadeIn();
+  },
+  'click button.closeConfirmAssignment': function(event, template) {
+    event.preventDefault();
+    $(event.currentTarget).parent().hide();
   },
   'click button.approveAssignment': function(event, template) {
     event.preventDefault();
@@ -1251,12 +1263,15 @@ Template.job.events({
     var buyerCost = $(event.currentTarget).data('buyer-cost');
     var userWallet = Wallet.findOne({userId: buyerId});
     if(buyerCost > userWallet.accountBalance) {
-      $('.lessbalalert').show();
+      $('.lessbalalertbi').show();
       return;
     }
     Meteor.call('acceptBudgetIncrease', jobId, buyerId, requestId);
   },
-  'click .hidelessbalalert': function(event, template) {
+  'click .hidelessbalalertbi': function(event, template) {
+    $(event.currentTarget).parent().hide();
+  },
+  'click .hidelessbalalertexp': function(event, template) {
     $(event.currentTarget).parent().hide();
   },
   'click .rejectBudgetIncrease':function(event, template) {
@@ -1316,7 +1331,7 @@ Template.job.events({
     var expense_buyer_cost = $(event.currentTarget).data('buyer-cost');
     var userWallet = Wallet.findOne({userId: buyerId});
     if(userWallet.accountBalance < expense_buyer_cost) {
-      $('.lessbalalert').show();
+      $('.lessbalalertexp').show();
       return;
     }
     Meteor.call('approveExpense', jobId, buyerId, expense_id);
@@ -1345,6 +1360,23 @@ Template.job.events({
 });
 
 Template.job.helpers({
+  pendingBIOrExpenses: function() {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    if(jobDetails.expenses && jobDetails.expenses.length > 0) {
+      for(var i = 0; i < jobDetails.expenses.length; i++) {
+        if(jobDetails.expenses[i].request_status == 'pending') {
+          return true;
+        }
+      }
+    }
+    if(jobDetails.budgetIncreases && jobDetails.budgetIncreases.length > 0) {
+      for(var i = 0; i < jobDetails.budgetIncreases.length; i++) {
+        if(jobDetails.budgetIncreases[i].request_status == 'pending')
+          return true;
+      }
+    }
+    return false;
+  },
   confidentialDesc: function() {
     var desc = Jobs.findOne({_id: Router.current().params._id}).confidentialDescription;
     var description = '<p>' + desc.replace(/(?:\r\n|\r|\n)/g, '</p><p>');
@@ -1674,6 +1706,7 @@ Template.job.helpers({
           app_type: provider.app_type,
           appliedAt: provider.applied_at,
           counter_type: provider.counterType,
+          counter_description: provider.counter_description,
           fixed_amount:provider.fixed_amount,
           hourly_rate: provider.hourly_rate,
           max_hours: provider.max_hours,
@@ -1777,7 +1810,6 @@ Template.job.helpers({
           return false;
   },
   "fileList": function(taskID) {
-    console.log(Tasks.findOne({_id: taskID}).files)
     return Tasks.findOne({ _id: taskID }).files;
   },
   confirmedOrRejected: function() {

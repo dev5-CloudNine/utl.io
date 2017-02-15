@@ -642,8 +642,19 @@
                                                     {{/if}}
                                                 {{/with}}
                                                 </p>
-                                                <button class="margin-top-5 btn btn-primary btn-sm approveAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Approve</button>
+                                                {{#if pendingBIOrExpenses}}
+                                                    <p>You have pending expense or budget increase requests.</p>
+                                                    <button class="margin-top-5 btn btn-primary btn-sm confirmApproveAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait..." disabled="disabled">Approve</button>
+                                                {{else}}
+                                                    <button class="margin-top-5 btn btn-primary btn-sm confirmApproveAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Approve</button>
+                                                {{/if}}
                                                 <button class="margin-top-5 btn btn-primary btn-sm rejectAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
+                                                <br><br>
+                                                <div class="alert alert-info showConfirmAssignment" hidden>
+                                                    <button type="button" class="close closeConfirmAssignment" aria-hidden="true">&times;</button>
+                                                    <h5>Do your confirm that the assigned job has been successfully completed by the provider? The provider's account will be credited with {{projectBudget}} USD.</h5>
+                                                    <button class="btn btn-primary btn-sm approveAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Yes, I do.</button>
+                                                </div>
                                             {{/if}}
                                         {{/if}}
                                     {{/if}}
@@ -998,7 +1009,7 @@
                                                             <td>{{expense_description}}</td>
                                                             <td>
                                                                 {{#if $eq request_status 'pending'}}
-                                                                    <a href data-expense-id="{{expense_id}}" data-buyer-cost="{{buyer_cost}}" class="approveExpense" data-balloon="Accept Expense" data-balloon-pos="up"><i class="fa fa-check"></i></a>&nbsp;&#124;&nbsp;<a href data-expense-id="{{expense_id}}" class="rejectExpense" data-balloon="Reject Expense" data-balloon-pos="up"><i class="fa fa-times"></i></a>
+                                                                    <a href data-expense-id="{{expense_id}}" data-buyer-cost="{{buyer_cost}}" class="approveExpense" data-balloon="Your account will be debited with {{buyer_cost}} USD." data-balloon-pos="up"><i class="fa fa-check"></i></a>&nbsp;&#124;&nbsp;<a href data-expense-id="{{expense_id}}" class="rejectExpense" data-balloon="Reject Expense" data-balloon-pos="up"><i class="fa fa-times"></i></a>
                                                                 {{/if}}
                                                                 {{#if $eq request_status 'accepted'}}
                                                                     <a href data-balloon="Accepted" data-balloon-pos="up"><i class="fa fa-check"></i></a>
@@ -1011,8 +1022,8 @@
                                                     {{/each}}
                                                 </tbody>
                                             </table>
-                                            <div class="alert alert-danger lessbalalert" hidden>
-                                                <button type="button" class="close hidelessbalalert" aria-hidden="true">&times;</button>
+                                            <div class="alert alert-danger lessbalalertexp" hidden>
+                                                <button type="button" class="close hidelessbalalertexp" aria-hidden="true">&times;</button>
                                                 <p>You don't have sufficient funds to accept the expense. <a href="/deposit">Click here</a> to deposit funds.</p>
                                             </div>
                                         {{/if}}
@@ -1074,8 +1085,8 @@
                                                     {{/each}}
                                                 </tbody>
                                             </table>
-                                            <div class="alert lessbalalert" hidden>
-                                                <button type="button" class="close hidelessbalalert" aria-hidden="true">&times;</button>
+                                            <div class="alert alert-danger lessbalalertbi" hidden>
+                                                <button type="button" class="close hidelessbalalertbi" aria-hidden="true">&times;</button>
                                                 <p>You don't have sufficient funds to accept the budget increase. <a href="/deposit">Click here</a> to deposit funds.</p>
                                             </div>
                                         {{/if}}
@@ -1295,6 +1306,7 @@
                                                             {{/if}}
                                                             Your Cost: {{roundToTwo buyer_cost}} USD. <br>
                                                             Provider Earns: {{roundToTwo freelancer_nets}} USD. <br>
+                                                            Desc: {{counter_description}} <br>
                                                             {{#if $eq applicationStatus 'open'}}
                                                                 <br>
                                                                 {{#if providerDeclined}}
@@ -1394,7 +1406,7 @@
                                                     </div>
                                                     <div id="app_selected">
                                                         {{#if currentUser.isDeveloper}}
-                                                            <button class="btn btn-primary {{#if applied}}applyActive{{else}}applyInactive{{/if}}" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">{{#if applied}}Cancel Application{{else}}Send Application{{/if}}</button>
+                                                            <button class="btn btn-primary btn-sm {{#if applied}}applyActive{{else}}applyInactive{{/if}}" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">{{#if applied}}Cancel Application{{else}}Send Application{{/if}}</button>
                                                         {{else}}
                                                             <h6>You must create your profile before you can apply for this job. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your profile.</h6>
                                                         {{/if}}
@@ -1451,6 +1463,10 @@
                                                                                     <label for="freelancer_fixed_nets">Freelancer Nets</label>
                                                                                     <input type="number" id="freelancer_fixed_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
                                                                                 </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <label for="fixed_counter_desc">Description</label>
+                                                                                    <textarea name="fixed_counter_desc" id="fixed_counter_desc" rows="3" class="form-control"></textarea>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         <div id="hourly-counter" hidden>
@@ -1494,6 +1510,10 @@
                                                                                     <label for="freelancer_hourly_nets">Freelancer Nets</label>
                                                                                     <input type="number" id="freelancer_hourly_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
                                                                                 </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <label for="hourly_counter_desc">Description</label>
+                                                                                    <textarea name="hourly_counter_desc" id="hourly_counter_desc" rows="3" class="form-control"></textarea>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         <div id="per-device-counter" hidden>
@@ -1536,6 +1556,10 @@
                                                                                 <div class="col-sm-12">
                                                                                     <label for="freelancer_device_nets">Freelancer Nets</label>
                                                                                     <input type="number" id="freelancer_device_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <label for="device_counter_desc">Description</label>
+                                                                                    <textarea name="device_counter_desc" id="device_counter_desc" rows="3" class="form-control"></textarea>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1588,13 +1612,17 @@
                                                                                     <label for="freelancer_blended_nets">Freelancer Nets</label>
                                                                                     <input type="number" id="freelancer_blended_nets" class="form-control" name="freelancer_nets" step="any" min="1" readonly="true">
                                                                                 </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <label for="blended_counter_desc">Description</label>
+                                                                                    <textarea name="blended_counter_desc" id="blended_counter_desc" rows="3" class="form-control"></textarea>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         <br>
                                                                         <div class="row">
                                                                             <div class="col-sm-12">
                                                                                 <div class="button-group">
-                                                                                    <button class="btn btn-primary {{#if applied}}counterActive{{else}}counterInactive{{/if}}" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">{{#if applied}}Cancel Application{{else}}Apply{{/if}}</button>
+                                                                                    <button class="btn btn-primary btn-sm {{#if applied}}counterActive{{else}}counterInactive{{/if}}" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">{{#if applied}}Cancel Application{{else}}Apply{{/if}}</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -2074,7 +2102,6 @@
                                                     <th>Amount</th>
                                                     <th>Description</th>
                                                     <th>Status</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -2086,13 +2113,11 @@
                                                             {{#if $eq request_status 'accepted'}}
                                                                 <a href data-balloon="Accepted" data-balloon-pos="up"><i class="fa fa-check"></i></a>
                                                             {{/if}}
+                                                            {{#if $eq request_status 'pending'}}
+                                                                <a href data-balloon="A cup of coffee while the buyer takes an action." data-balloon-pos="up"><i class="fa fa-coffee"></i></a>&nbsp;&#124;&nbsp;<a href data-expense-id="{{expense_id}}" class="removeExpense" data-balloon="Remove Expense" data-balloon-pos="up"><i class="fa fa-trash"></i></a>
+                                                            {{/if}}
                                                             {{#if $eq request_status 'rejected'}}
                                                                 <a href data-balloon="Rejected" data-balloon-pos="up"><i class="fa fa-times"></i></a>
-                                                            {{/if}}
-                                                        </td>
-                                                        <td>
-                                                            {{#if $eq request_status 'pending'}}
-                                                                <a href data-expense-id="{{expense_id}}" class="removeExpense" data-balloon="Remove Expense" data-balloon-pos="up"><i class="fa fa-trash"></i></a>
                                                             {{/if}}
                                                         </td>
                                                     </tr>
@@ -2109,7 +2134,6 @@
                                                     <th>Payment Type</th>
                                                     <th>Amount</th>
                                                     <th>Status</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -2135,13 +2159,11 @@
                                                             {{#if $eq request_status 'accepted'}}
                                                                 <a href data-balloon="Accepted" data-balloon-pos="up"><i class="fa fa-check"></i></a>
                                                             {{/if}}
+                                                            {{#if $eq request_status 'pending'}}
+                                                                <a href data-balloon="A cup of coffee while the buyer takes an action." data-balloon-pos="up"><i class="fa fa-coffee"></i></a>&nbsp;&#124;&nbsp;<a href class="cancelBudgetIncrease" data-bi-id="{{request_id}}" data-balloon="Cancel Request" data-balloon-pos="up"><i class="fa fa-trash"></i></a>
+                                                            {{/if}}
                                                             {{#if $eq request_status 'rejected'}}
                                                                 <a href data-balloon="Rejected" data-balloon-pos="up"><i class="fa fa-times"></i></a>
-                                                            {{/if}}
-                                                        </td>
-                                                        <td>
-                                                            {{#if $eq request_status 'pending'}}
-                                                                <a href class="cancelBudgetIncrease" data-bi-id="{{request_id}}" data-balloon="Cancel Request" data-balloon-pos="up"><i class="fa fa-trash"></i></a>
                                                             {{/if}}
                                                         </td>
                                                     </tr>
@@ -2152,6 +2174,8 @@
                                     <hr>
                                     Grand Total:
                                     <h5>Your Earnings: {{roundToTwo projectBudget}} USD</h5>
+                                    <h5>Buyer Cost: {{roundToTwo buyerCost}} USD</h5>
+                                    <h5>UTL Fees: {{roundToTwo utlCommission}} USD (5%)</h5>
                                 </div>
                             </div>
                             {{#if $eq applicationStatus 'assigned'}}
