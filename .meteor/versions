@@ -79,6 +79,7 @@ email@1.1.18
 ephemer:reactive-datatables@1.1.0
 fastclick@1.0.13
 force-ssl@1.0.13
+fortawesome:fontawesome@4.7.0
 fullcalendar:fullcalendar@2.9.0
 gadicohen:robots-txt@0.0.10
 gadicohen:sitemaps@0.0.26
@@ -144,7 +145,6 @@ mpowaga:autoform-summernote@0.4.3
 mrt:chosen-package@0.11.1
 multiply:iron-router-progress@1.0.2
 natestrauser:connection-banner@0.5.2
-natestrauser:font-awesome@4.6.3
 nemo64:bootstrap@3.3.5_3
 nemo64:bootstrap-data@3.3.5
 nimble:restivus@0.8.11

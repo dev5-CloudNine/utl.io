@@ -8,7 +8,6 @@ service-configuration@1.0.11
 accounts-ui@1.1.9
 accounts-password@1.3.3
 iron:router
-natestrauser:font-awesome
 raix:handlebar-helpers
 momentjs:moment
 aldeed:autoform
@@ -103,3 +102,4 @@ fullcalendar:fullcalendar
 practicalmeteor:mocha
 shell-server
 skehoe1989:autoform-tinymce
+fortawesome:fontawesome

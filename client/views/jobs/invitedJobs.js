@@ -72,8 +72,20 @@ var invitedJobsOptions = {
                 }
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
-            width: '60%',
+            width: '50%',
             responsivePriority: 1
+        },
+        {
+            title: 'Distance (Mi.)',
+            data: function(jobDetails) {
+                if(jobDetails.servicelocation == 'Remote Job') {
+                    return 'NA';
+                } else {
+                    var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+                    return distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude);
+                }
+            },
+            width: '15%'
         },
         {
             title: 'Budget (USD)',
@@ -92,6 +104,16 @@ var invitedJobsOptions = {
         }
     ],
     responsive: true
+}
+
+var distance = function(plat, plng, jlat, jlng) {
+    var R = 3959;
+    var dLon = (plng - jlng) * Math.PI/180;
+    var dLat = (plat - jlat) * Math.PI/180;
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(plat * Math.PI / 180 ) * Math.cos(jlat * Math.PI / 180 ) * Math.sin(dLon/2) * Math.sin(dLon/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    return Math.round(d);
 }
 
 Template.invitedJobs.helpers({

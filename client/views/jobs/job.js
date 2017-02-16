@@ -641,7 +641,7 @@ Template.job.events({
     event.preventDefault();
     var approveBonus = $('input[name="bonus_request"]:checked').val();
   },
-  'click button.confirmApproveAssignment': function(evnent, template) {
+  'click button.confirmApproveAssignment': function(event, template) {
     event.preventDefault();
     $('.showConfirmAssignment').fadeIn();
   },

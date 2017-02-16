@@ -652,6 +652,7 @@ Template.dashboard.onRendered(function() {
 })
 
 Template.dashboard.rendered = function () {
+	Meteor.subscribe('userWallet', Meteor.userId())
 	this.$('.rateit').rateit({'readonly': true});
 	this.$('.highcharts-range-selector').datepicker();
 };

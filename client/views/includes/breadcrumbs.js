@@ -1,32 +1,34 @@
 Template.breadcrumbs.onCreated(function() {
+	this.autorun(function() {
+		if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+			Meteor.subscribe('jobs');
+			Meteor.subscribe('allJobs');
+			Meteor.subscribe('userWallet', Meteor.userId());
+			return Meteor.subscribe('providerInvoices', Meteor.userId());
+		}
+		if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+			Meteor.subscribe('my_jobs');
+			Meteor.subscribe('userWallet', Meteor.userId());
+			Meteor.subscribe('accountants', Meteor.userId());
+			return Meteor.subscribe('buyerInvoices', Meteor.userId());
+		}
+		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+			Meteor.subscribe('my_jobs');
+			Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+			Meteor.subscribe('accountants', Meteor.user().invitedBy);
+			return Meteor.subscribe('buyerInvoices', Meteor.userId());
+		}
+		if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+			Meteor.subscribe('buyerInvoices', Meteor.userId())
+			return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
+		}
+		if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+			Meteor.subscribe('invoices', Meteor.userId());
+			Meteor.subscribe('allJobs');
+			return Meteor.subscribe('userWallet', Meteor.userId());
+		}
+	})
 	Blaze._allowJavascriptUrls();
-	if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
-		Meteor.subscribe('jobs');
-		Meteor.subscribe('allJobs');
-		Meteor.subscribe('userWallet', Meteor.userId());
-		return Meteor.subscribe('providerInvoices', Meteor.userId());
-	}
-	if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
-		Meteor.subscribe('my_jobs');
-		Meteor.subscribe('userWallet', Meteor.userId());
-		Meteor.subscribe('accountants', Meteor.userId());
-		return Meteor.subscribe('buyerInvoices', Meteor.userId());
-	}
-	if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
-		Meteor.subscribe('my_jobs');
-		Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-		Meteor.subscribe('accountants', Meteor.user().invitedBy);
-		return Meteor.subscribe('buyerInvoices', Meteor.userId());
-	}
-	if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
-		Meteor.subscribe('buyerInvoices', Meteor.userId())
-		return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
-	}
-	if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
-		Meteor.subscribe('invoices', Meteor.userId());
-		Meteor.subscribe('allJobs');
-		return Meteor.subscribe('userWallet', Meteor.userId());
-	}
 });
 
 Template.breadcrumbs.helpers({
@@ -41,9 +43,6 @@ Template.breadcrumbs.helpers({
 	},
 	profile: function() {
 		return Profiles.findOne({userId: Meteor.userId()});
-	},
-	profileCreated: function() {
-		return Meteor.user().isDeveloper || Meteor.user().isBuyer || Meteor.user().isDispatcher || Meteor.user().isAccountant;
 	},
 	utlEarnings: function() {
 		if(Roles.userIsInRole(Meteor.userId(), ['admin']))

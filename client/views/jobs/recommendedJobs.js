@@ -72,7 +72,7 @@ var recommendedJobsObject = {
             data: function(jobDetails) {
                 return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>';
             },
-            width: '15%%',
+            width: '15%',
             responsivePriority: 2
         },
         {
@@ -90,7 +90,7 @@ var recommendedJobsObject = {
                     }
                 }
                 if(applied)
-                    return '<span class="jobAppliedTick"><i class="fa fa-check-circle fa-2x"></i></span><br><small>U\'ve applied</small>';
+                    return '<span class="jobAppliedTick" data-balloon="U\'ve applied" data-balloon-pos="up"><i class="fa fa-check-circle fa-2x"></i></span>';
                 return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">Apply</a>';
             }
         }

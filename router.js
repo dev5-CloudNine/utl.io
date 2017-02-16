@@ -17,7 +17,7 @@ Router.configure({
 Router.map(function() {
     this.route('home', {
         path: '/',
-        layoutTemplate: 'layoutNoContainer',
+        layoutTemplate: 'layout',
         data: function() {
             return {
                 jobs: Jobs.find(
@@ -676,6 +676,11 @@ Router.map(function() {
         }
     });
 
+    this.route('attachBankAccount', {
+        path: '/wallet/account-verification',
+        title: 'UTL - Attach Bank Account'
+    })
+
     this.route('withdraw', {
         path: '/wallet/withdraw',
         title: 'UTL - Withdraw Funds',
@@ -1163,7 +1168,7 @@ Router.map(function() {
     });
 
     this.route('signUp', {
-        layoutTemplate: 'layoutNoContainer',
+        layoutTemplate: 'layout',
         path: '/SignUp',
         progress: true
     });

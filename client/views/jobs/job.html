@@ -652,7 +652,7 @@
                                                 <br><br>
                                                 <div class="alert alert-info showConfirmAssignment" hidden>
                                                     <button type="button" class="close closeConfirmAssignment" aria-hidden="true">&times;</button>
-                                                    <h5>Do your confirm that the assigned job has been successfully completed by the provider? The provider's account will be credited with {{projectBudget}} USD.</h5>
+                                                    <p>Do your confirm that the assigned job has been successfully completed by the provider? The provider's account will be credited with {{projectBudget}} USD.</p>
                                                     <button class="btn btn-primary btn-sm approveAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Yes, I do.</button>
                                                 </div>
                                             {{/if}}
@@ -1012,10 +1012,10 @@
                                                                     <a href data-expense-id="{{expense_id}}" data-buyer-cost="{{buyer_cost}}" class="approveExpense" data-balloon="Your account will be debited with {{buyer_cost}} USD." data-balloon-pos="up"><i class="fa fa-check"></i></a>&nbsp;&#124;&nbsp;<a href data-expense-id="{{expense_id}}" class="rejectExpense" data-balloon="Reject Expense" data-balloon-pos="up"><i class="fa fa-times"></i></a>
                                                                 {{/if}}
                                                                 {{#if $eq request_status 'accepted'}}
-                                                                    <a href data-balloon="Accepted" data-balloon-pos="up"><i class="fa fa-check"></i></a>
+                                                                    <i class="fa fa-check"></i> Accepted
                                                                 {{/if}}
                                                                 {{#if $eq request_status 'rejected'}}
-                                                                    <a href data-balloon="Rejected" data-balloon-pos="up"><i class="fa fa-times"></i></a>
+                                                                    <i class="fa fa-times"></i> Rejected
                                                                 {{/if}}
                                                             </td>                        
                                                         </tr>
@@ -1035,7 +1035,7 @@
                                                     <tr>
                                                         <th>Type</th>
                                                         <th>Your Cost</th>
-                                                        <th>Provider Earns</th>
+                                                        <th>Provider</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -1075,10 +1075,10 @@
                                                                     {{/if}}
                                                                 {{/if}}
                                                                 {{#if $eq this.request_status 'accepted'}}
-                                                                    <a href data-balloon="Accepted" data-balloon-pos="up"><i class="fa fa-check"></i></a>
+                                                                    <i class="fa fa-check"></i> Accepted
                                                                 {{/if}}
                                                                 {{#if $eq this.request_status 'rejected'}}
-                                                                    <a href data-balloon="Rejected" data-balloon-pos="up"><i class="fa fa-times"></i></a>
+                                                                    <i class="fa fa-times"></i> Rejected
                                                                 {{/if}}
                                                             </td>
                                                         </tr>
@@ -1096,7 +1096,7 @@
                                         <h5>Provider Earns: {{roundToTwo ../projectBudget}} USD</h5>
                                         <h5>UTL Fees: {{roundToTwo utlCommission}} USD (5%)</h5>
                                         <hr>
-                                        <small><i>* A 5% service fee has been deducted for each payment you accepted.</i></small>
+                                        <small><i>* A 5% fee is deducted for each payment you accepted.</i></small>
                                     </div>
                                 </div>
                             </div>
@@ -1176,16 +1176,10 @@
                                                                     {{/if}}
                                                                 </div>
                                                                 <div class="media-body">
-                                                                    <small><i># {{this.readableId}}</i></small>
-                                                                    <h5 class="media-heading">
-                                                                        {{this.name}}
-                                                                    </h5>
-                                                                    <button class="btn btn-xs btn-white">
-                                                                        <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="right"><i class="fa fa-link"></i></a>
-                                                                    </button>
-                                                                    <button class="btn btn-xs btn-white">
-                                                                        <a href id="appliedProviderMsg" data-balloon="Send Msg." data-balloon-pos="up"><i class="fa fa-envelope"></i></a>
-                                                                    </button>
+                                                                    <small><i># {{this.readableId}} - {{this.name}}</i></small>
+                                                                    <br>
+                                                                    <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="right" class="btn btn-xs btn-white"><i class="fa fa-link"></i></a>
+                                                                    <a href id="appliedProviderMsg" class="btn btn-xs btn-white" data-balloon="Send Msg." data-balloon-pos="right"><i class="fa fa-envelope"></i></a>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -1217,38 +1211,38 @@
                                                                 {{/if}}
                                                             {{/with}}
                                                             <hr>
-                                                            {{#if $eq status 'active'}}
-                                                            {{#if $eq applicationStatus 'open'}}
-                                                                {{#if providerDeclined}}
-                                                                    This provider has declined to do the job.
-                                                                {{else}}
-                                                                    <button class="btn btn-sm btn-primary acceptApplication" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Accept</button>
-                                                                {{/if}}
-                                                            {{/if}}
-                                                            {{#if $eq applicationStatus 'assigned'}}
-                                                                {{#if $eq ../assignmentStatus 'not_confirmed'}}
-                                                                    {{#if selectedProvider}}
-                                                                        <small>Job assigned. Awaiting confirmation.</small><br>
-                                                                        <button class="btn btn-sm btn-primary rejectApplication" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
+                                                            {{#if $eq ../status 'active'}}
+                                                                {{#if $eq applicationStatus 'open'}}
+                                                                    {{#if providerDeclined}}
+                                                                        This provider has declined to do the job.
                                                                     {{else}}
-                                                                        <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                        <button class="btn btn-sm btn-primary acceptApplication" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Accept</button>
                                                                     {{/if}}
                                                                 {{/if}}
-                                                                {{#if $eq ../assignmentStatus 'confirmed'}}
+                                                                {{#if $eq applicationStatus 'assigned'}}
+                                                                    {{#if $eq ../assignmentStatus 'not_confirmed'}}
+                                                                        {{#if selectedProvider}}
+                                                                            <small>Job assigned. Awaiting confirmation.</small><br>
+                                                                            <button class="btn btn-sm btn-primary rejectApplication" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
+                                                                        {{else}}
+                                                                            <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                        {{/if}}
+                                                                    {{/if}}
+                                                                    {{#if $eq ../assignmentStatus 'confirmed'}}
+                                                                        {{#if assignedApplicant}}
+                                                                            <small>Job assigned. Provider confirmed</small>
+                                                                        {{else}}
+                                                                            <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                        {{/if}}
+                                                                    {{/if}}
+                                                                {{/if}}
+                                                                {{#if $eq applicationStatus 'paid'}}
                                                                     {{#if assignedApplicant}}
-                                                                        <small>Job assigned. Provider confirmed</small>
+                                                                        <small>You have paid the provider.</small>
                                                                     {{else}}
                                                                         <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
                                                                     {{/if}}
                                                                 {{/if}}
-                                                            {{/if}}
-                                                            {{#if $eq applicationStatus 'paid'}}
-                                                                {{#if assignedApplicant}}
-                                                                    <small>You have paid the provider.</small>
-                                                                {{else}}
-                                                                    <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
-                                                                {{/if}}
-                                                            {{/if}}
                                                             {{else}}
                                                                 <small>You have deactivated the job.</small>
                                                             {{/if}}
@@ -1271,16 +1265,10 @@
                                                                     {{/if}}
                                                                 </div>
                                                                 <div class="media-body">
-                                                                    <small><i># {{this.readableId}}</i></small>
-                                                                    <h5 class="media-heading">
-                                                                        {{this.name}}
-                                                                    </h5>
-                                                                    <button class="btn btn-xs btn-white">
-                                                                        <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="right"><i class="fa fa-link"></i></a>
-                                                                    </button>
-                                                                    <button class="btn btn-xs btn-white">
-                                                                        <a href id="appliedProviderMsg" data-balloon="Send Msg." data-balloon-pos="up"><i class="fa fa-envelope"></i></a>
-                                                                    </button>
+                                                                    <small><i># {{this.readableId}} - {{this.name}}</i></small>
+                                                                    <br>
+                                                                    <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="right" class="btn btn-xs btn-white"><i class="fa fa-link"></i></a>
+                                                                    <a href id="appliedProviderMsg" class="btn btn-xs btn-white" data-balloon="Send Msg." data-balloon-pos="right"><i class="fa fa-envelope"></i></a>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -1347,7 +1335,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <br>
                                         {{/if}}
                                     {{else}}
                                         <h6>No providers have applied for this job yet.</h6>
@@ -2111,13 +2098,13 @@
                                                         <td>{{expense_description}}</td>
                                                         <td>
                                                             {{#if $eq request_status 'accepted'}}
-                                                                <a href data-balloon="Accepted" data-balloon-pos="up"><i class="fa fa-check"></i></a>
+                                                                <i class="fa fa-check"></i> Accepted
                                                             {{/if}}
                                                             {{#if $eq request_status 'pending'}}
                                                                 <a href data-balloon="A cup of coffee while the buyer takes an action." data-balloon-pos="up"><i class="fa fa-coffee"></i></a>&nbsp;&#124;&nbsp;<a href data-expense-id="{{expense_id}}" class="removeExpense" data-balloon="Remove Expense" data-balloon-pos="up"><i class="fa fa-trash"></i></a>
                                                             {{/if}}
                                                             {{#if $eq request_status 'rejected'}}
-                                                                <a href data-balloon="Rejected" data-balloon-pos="up"><i class="fa fa-times"></i></a>
+                                                                <i class="fa fa-times"></i> Rejected
                                                             {{/if}}
                                                         </td>
                                                     </tr>
@@ -2157,13 +2144,13 @@
                                                         <td>{{roundToTwo provider_nets}} USD</td>
                                                         <td>
                                                             {{#if $eq request_status 'accepted'}}
-                                                                <a href data-balloon="Accepted" data-balloon-pos="up"><i class="fa fa-check"></i></a>
+                                                                <i class="fa fa-check"></i> Accepted
                                                             {{/if}}
                                                             {{#if $eq request_status 'pending'}}
                                                                 <a href data-balloon="A cup of coffee while the buyer takes an action." data-balloon-pos="up"><i class="fa fa-coffee"></i></a>&nbsp;&#124;&nbsp;<a href class="cancelBudgetIncrease" data-bi-id="{{request_id}}" data-balloon="Cancel Request" data-balloon-pos="up"><i class="fa fa-trash"></i></a>
                                                             {{/if}}
                                                             {{#if $eq request_status 'rejected'}}
-                                                                <a href data-balloon="Rejected" data-balloon-pos="up"><i class="fa fa-times"></i></a>
+                                                                <i class="fa fa-times"></i> Rejected
                                                             {{/if}}
                                                         </td>
                                                     </tr>

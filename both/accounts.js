@@ -40,7 +40,7 @@ AccountsTemplates.configureRoute("signIn", {
     name: 'signIn',
     path: '/sign-in',
     template: 'signin',
-    layoutTemplate: 'layoutNoContainer',
+    layoutTemplate: 'layout',
     loadingTemplate: 'loading',
     yieldTemplates: {
         header: {

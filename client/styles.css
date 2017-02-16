@@ -6,6 +6,10 @@
 footer .gradient-blue-orange-h {
   margin-top: 10px;
 }
+/*
+a {
+  color: #45ABEE !important;
+}*/
 
 .jumbotron {
     min-height: 640px;
@@ -15,12 +19,13 @@ footer .gradient-blue-orange-h {
 }
 
 .jumbotron p {
+  font-size: 18px;
   color: #fff;
 }
 
-.jumbotron h2 {
-  font-size: 48px;
-}
+/*.jumbotron h2 {
+  font-size: 30px;
+}*/
 
 .panel {
     background: #f8f8f8 !important;
@@ -1830,7 +1835,6 @@ hr {
 }
 
 .budgetFont {
-  color: #000;
   font-size: 16px;
   font-weight: 600;
 }
@@ -2185,9 +2189,12 @@ svg {
   border-color: #0e75b3;
 }
 
+#at-btn {
+  font-size: 14px;
+}
+
 .at-btn {
   padding: 5px 10px;
-  font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
   color: #ffffff;

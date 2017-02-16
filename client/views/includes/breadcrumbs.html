@@ -6,8 +6,8 @@
 					<div id="homePageIntro" class="container-fluid gradient-blue-orange-h"></div>
 				</div>
 				<div class="col-sm-12">
-					{{#if profileCreated}}
-						{{#if isInRole 'buyer, dispatcher'}}
+					{{#if isInRole 'buyer, dispatcher'}}
+						{{#if currentUser.isBuyer}}
 			                <div class="row spacer-top">
 			                    <div class="col-md-6">
 			                        <div class="widget widget-default widget-item-icon">
@@ -54,7 +54,7 @@
 			                    <div class="col-md-3">
 			                        <div class="widget widget-info widget-padding-sm">
 			                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
-			                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
+			                            <div class="widget-subtitle plugin-date">Acc. Balance (USD)</div>
 			                            <div class="widget-buttons widget-c2">
 			                                {{#if isInRole 'buyer'}}
 			                                	<div class="col widget-title right-border">
@@ -71,8 +71,10 @@
 			                    	<hr>
 			                    </div>
 			                </div>
-						{{/if}}
-						{{#if isInRole 'provider'}}
+		                {{/if}}
+					{{/if}}
+					{{#if isInRole 'provider'}}
+						{{#if currentUser.isDeveloper}}
 			                <div class="row spacer-top">
 			                    <div class="col-md-6">
 			                        <div class="widget widget-default widget-item-icon">
@@ -120,7 +122,7 @@
 			                    <div class="col-md-3">
 			                        <div class="widget widget-info widget-padding-sm">
 			                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
-			                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
+			                            <div class="widget-subtitle plugin-date">Acc. Balance (USD)</div>
 			                            <div class="widget-buttons widget-c2">
 			                                <div class="col widget-title right-border">
 			                                    <a href="/wallet/withdraw">Withdraw</a>
@@ -135,8 +137,10 @@
 			                    	<hr>
 			                    </div>
 			                </div>
-						{{/if}}
-						{{#if isInRole 'accountant'}}
+		                {{/if}}
+					{{/if}}
+					{{#if isInRole 'accountant'}}
+						{{#if currentUser.isAccountant}}
 							<div class="row spacer-top">
 			                    <div class="col-md-6">
 			                        <div class="widget widget-default widget-item-icon">
@@ -172,7 +176,7 @@
 			                    <div class="col-md-3">
 			                        <div class="widget widget-info widget-padding-sm">
 			                            <div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
-			                            <div class="widget-subtitle plugin-date">Account Balance (USD)</div>
+			                            <div class="widget-subtitle plugin-date">Acc. Balance (USD)</div>
 			                            <div class="widget-buttons widget-c2">
 			                                {{#if isInRole 'buyer, accountant'}}
 			                                	<div class="col widget-title right-border">
@@ -189,7 +193,7 @@
 			                    	<hr>
 			                    </div>
 			                </div>
-						{{/if}}
+		                {{/if}}
 					{{/if}}
 					{{#if isInRole 'admin'}}
 		                <div class="row spacer-top">

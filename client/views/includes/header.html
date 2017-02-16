@@ -14,25 +14,26 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="{{pathFor 'howItWorks'}}">How It Works</a></li>
-                        <li id="user-drop-down" class="dropdown">
+                        <li><a href="{{pathFor 'howItWorks'}}">HOW IT WORKS</a></li>
+                        <li><a href="{{pathFor 'buyerBenefits'}}">FOR BUYERS</a></li>
+                        <li><a href="{{pathFor 'providerBenefits'}}">FOR PROVIDERS</a></li>
+                        <!-- <li id="user-drop-down" class="dropdown">
                             <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">Users <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{pathFor 'buyerBenefits'}}">Buyers</a></li>
-                                <li><a href="{{pathFor 'providerBenefits'}}">Providers</a></li>
+                                
                             </ul>
-                        </li>
-                        <li><a href="{{pathFor 'payments'}}">Pricing</a></li>
-                        <li><a href="{{pathFor 'faq'}}">FAQ's</a></li>
-                        <li><a href="{{pathFor 'contactUs'}}">Contact</a></li>
+                        </li> -->
+                        <!-- <li><a href="{{pathFor 'payments'}}">Pricing</a></li>
+                        <li><a href="{{pathFor 'faq'}}">FAQ's</a></li> -->
+                        <li><a href="{{pathFor 'contactUs'}}">CONTACT</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {{#if currentUser}}
                             {{>headerUserMenu}}
                         {{else}}
-                            <li class="{{isActiveRoute regex='signIn'}}"><a href="{{pathFor 'signIn'}}">Sign In</a></li>
-                            <li class="{{isActiveRoute regex='sign.up'}}"><a href="{{pathFor 'signUp'}}">Sign Up</a></li>
+                            <li class="{{isActiveRoute regex='signIn'}}"><a href="{{pathFor 'signIn'}}">SIGN IN</a></li>
+                            <li class="{{isActiveRoute regex='sign.up'}}"><a href="{{pathFor 'signUp'}}">SIGN UP</a></li>
                         {{/if}}
                     </ul>
                 </div>

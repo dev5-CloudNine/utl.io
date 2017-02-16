@@ -40,8 +40,10 @@ Template.withdraw.helpers({
 	}
 });
 
-Template.withdraw.rendered =  function() {
-	$('#date_of_birth').datepicker();
+Template.withdraw.onCreated =  function() {
+	this.autorun(function() {
+		return Meteor.subscribe('userWallet', Meteor.userId());
+	})
 }
 
 Template.withdraw.events({
@@ -73,10 +75,12 @@ Template.withdraw.events({
 					toastr.error('There was an error creating the customer. Try again!');
 					$(event.currentTarget).button('reset');
 				}
-				if(result.status == 400) {
+				else if(result.status == 400) {
 					var msg = result.body._embedded.errors[0].message;
 					toastr.error(msg);
 					$(event.currentTarget).button('reset');
+				} else {
+					Router.go('attachBankAccount');
 				}
 			}
 		});
@@ -105,26 +109,6 @@ Template.withdraw.events({
 				}
 			})
 		}
-	},
-	'click .startIav': function(event, template) {
-		event.preventDefault();
-		$(event.currentTarget).button('loading');
-		var customerUrl = Wallet.findOne({userId: Meteor.userId()}).dwollaCustomer.location[0];
-		Meteor.call('genIavToken', customerUrl, function(error, result) {
-			if(!error) {
-				var iavToken = result.body.token;
-				dwolla.config.dwollaUrl = 'https://uat.dwolla.com';
-				dwolla.configure('uat');
-                dwolla.iav.start('initiateProIav', iavToken, function(err, res) {
-                    if(err) {
-                        console.log(err);
-                    } else {
-                    	var fundingSourceUrl = res._links['funding-source'].href;
-                        Meteor.call('setFundingSourceInWallet', fundingSourceUrl, Meteor.userId());
-                    }
-                })
-			}
-		})
 	}
 });
 

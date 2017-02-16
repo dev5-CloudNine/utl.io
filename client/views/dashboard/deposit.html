@@ -26,24 +26,10 @@
                                 </div>
                             </div>
                         {{else}}
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="alert alert-info">
-                                        <p>In this step, we'll be hooking up your bank account with the platform by processing instant account verification (IAV). All data transfer is via secure connection.</p>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <script src="https://cdn.dwolla.com/1/dwolla.js"></script>
-                                        <button class="btn btn-primary btn-sm startIav" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Initiate Account Verification</button>
-                                    </div>
-                                </div>
+                            <div class="alert alert-info">
+                                <p>In this step, we'll be hooking up your bank account with the platform by processing instant account verification (IAV). All data transfer is via secure connection.</p>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div id="initiateIav"></div>
-                                </div>
-                            </div>
+                            <a href="{{pathFor 'attachBankAccount'}}" class="btn btn-primary btn-sm">Attach Bank Account</a>
                         {{/if}}
                     {{else}}
                         <h4>Attach Bank Account</h4>

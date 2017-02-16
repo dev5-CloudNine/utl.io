@@ -52,9 +52,11 @@ var previousDepositOptions = {
 	]
 }
 
-Template.deposit.rendered =  function() {
-	$('#date_of_birth').datepicker();
-}
+Template.deposit.onCreated(function() {
+	this.autorun(function() {
+		return Meteor.subscribe('userWallet', Meteor.userId());
+	})
+})
 
 Template.deposit.helpers({
 	accountBalance: function() {
@@ -86,24 +88,30 @@ Template.deposit.helpers({
 		return false;
 	},
 	customerTransfers: function() {
-		var customerUrl = Wallet.findOne({userId: Meteor.userId()}).dwollaCustomer.location[0];
-		var customerTransfersUrl = customerUrl + '/transfers'
-		Meteor.call('getCustomerTransfers', customerTransfersUrl, function(error, result) {
-			if(error)
-				console.log(error);
-			else {
-				Session.set('customerTransfers', result._embedded.transfers);
-			}
-		});
-		return Session.get('customerTransfers').map(function(transfer) {
-			var obj = {
-				id: transfer.id,
-				status: transfer.status,
-				created: moment.utc(transfer.created).format('MM/DD/YYYY, hh:mm:ss A'),
-				amount: transfer.amount
-			}
-			return obj;
-		})
+		var userWallet = Wallet.findOne({userId: Meteor.userId()});
+		var customerUrl;
+		if(userWallet.dwollaCustomer && userWallet.fundingSourceUrl) {
+			customerUrl = userWallet.dwollaCustomer.location[0];
+			var customerTransfersUrl = customerUrl + '/transfers'
+			Meteor.call('getCustomerTransfers', customerTransfersUrl, function(error, result) {
+				if(error)
+					console.log(error);
+				else {
+					Session.set('customerTransfers', result._embedded.transfers);
+				}
+			});
+			return Session.get('customerTransfers').map(function(transfer) {
+				var obj = {
+					id: transfer.id,
+					status: transfer.status,
+					created: moment.utc(transfer.created).format('MM/DD/YYYY, hh:mm:ss A'),
+					amount: transfer.amount
+				}
+				return obj;
+			})
+		} else {
+			return;
+		}
 	}
 });
 
@@ -121,15 +129,16 @@ Template.deposit.events({
 			if(error) {
 				console.log(error);
 			} else {
-				console.log(result)
 				if(result.status == 401) {
 					toastr.error('There was an error creating the customer. Try again!');
 					$(event.currentTarget).button('reset');
 				}
-				if(result.status == 400) {
+				else if(result.status == 400) {
 					var msg = result.body._embedded.errors[0].message;
 					toastr.error(msg);
 					$(event.currentTarget).button('reset');
+				} else {
+					Router.go('attachBankAccount');
 				}
 			}
 		});
@@ -159,24 +168,27 @@ Template.deposit.events({
 			}
 		})
 	},
-	'click .startIav': function(event, template) {
-		event.preventDefault();
-		$(event.currentTarget).button('loading');
-		var customerUrl = Wallet.findOne({userId: Meteor.userId()}).dwollaCustomer.location[0];
-		Meteor.call('genIavToken', customerUrl, function(error, result) {
-			if(!error) {
-				var iavToken = result.body.token;
-				dwolla.config.dwollaUrl = 'https://uat.dwolla.com';
-				dwolla.configure('uat');
-                dwolla.iav.start('initiateIav', iavToken, function(err, res) {
-                    if(err) {
-                        console.log(err);
-                    } else {
-                    	var fundingSourceUrl = res._links['funding-source'].href;
-                        Meteor.call('setFundingSourceInWallet', fundingSourceUrl, Meteor.userId());
-                    }
-                })
-			}
-		})
-	}
+	// 'click .startIav': function(event, template) {
+	// 	event.preventDefault();
+	// 	$(event.currentTarget).button('loading');
+	// 	var customerUrl = Wallet.findOne({userId: Meteor.userId()}).dwollaCustomer.location[0];
+	// 	console.log(customerUrl);
+	// 	Meteor.call('genIavToken', customerUrl, function(error, result) {
+	// 		if(!error) {
+	// 			var iavToken = result.body.token;
+	// 			dwolla.config.dwollaUrl = 'https://uat.dwolla.com';
+	// 			dwolla.configure('uat');
+ //                dwolla.iav.start('initiateIav', iavToken, function(err, res) {
+ //                    if(err) {
+ //                        console.log(err);
+ //                    } else {
+ //                    	var fundingSourceUrl = res._links['funding-source'].href;
+ //                        Meteor.call('setFundingSourceInWallet', fundingSourceUrl, Meteor.userId());
+ //                    }
+ //                })
+	// 		} else {
+	// 			console.log(error)
+	// 		}
+	// 	})
+	// }
 })
