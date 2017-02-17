@@ -86,7 +86,7 @@ var appliedJobsOptions = {
             title: 'Actions',
             width: '20%',
             data: function(jobDetails) {
-                return '<span class="jobAppliedTick"><i class="fa fa-check-circle fa-2x"></i></span><br><small>U\'ve applied</small>';
+                return '<span class="jobAppliedTick" data-balloon="U\'ve applied" data-balloon-pos="up"><i class="fa fa-check-square fa-2x"></i></span>';
             }
         }
     ],

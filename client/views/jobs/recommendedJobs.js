@@ -90,7 +90,7 @@ var recommendedJobsObject = {
                     }
                 }
                 if(applied)
-                    return '<span class="jobAppliedTick" data-balloon="U\'ve applied" data-balloon-pos="up"><i class="fa fa-check-circle fa-2x"></i></span>';
+                    return '<span class="jobAppliedTick" data-balloon="U\'ve applied" data-balloon-pos="up"><i class="fa fa-check-square fa-2x"></i></span>';
                 return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">Apply</a>';
             }
         }

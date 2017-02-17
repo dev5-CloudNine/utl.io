@@ -7,6 +7,27 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 			} else {
 				analytics.track("Job Created");
         		Router.go('job', {_id:result});
+        		var jobDetails = Jobs.findOne({_id: result});
+        		var providerEmails = [];
+        		var providerSmsAddresses = [];
+        		var providers = Profiles.find({}).fetch();
+        		for(var i = 0; i < providers.length; i++) {
+        			providerEmails.push(providers[i].userName);
+        			providerSmsAddresses.push(providers[i].smsAddress)
+        		}
+        		if(jobDetails.routed) {
+        			var providerDetails = Profiles.findOne({userId: jobDetails.selectedProvider});
+					var buyerDetails;
+					if(Roles.userIsInRole(jobDetails.userId, ['buyer']))
+						buyerDetails = Buyers.findOne({userId: jobDetails.userId});
+					else if(Roles.userIsInRole(jobDetails.userId, ['dispatcher']))
+						buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
+					Meteor.call('routeEmail', buyerDetails, providerDetails, jobDetails);
+        		} else if(jobDetails.invited) {
+        			return;
+        		} else {
+        			Meteor.call('openJobEmails', jobDetails, buyerDetails, providerEmails, providerSmsAddresses);
+        		}
 			}
 		},
 		update: function(error, result) {
@@ -287,20 +308,6 @@ Template.jobFields.events({
 	    $('#spinner').show();
 		var jobID = Router.current().params._id;
 	    var url = $(event.currentTarget).data('url');
-	 //    var index = url.indexOf(S3_FILEUPLOADS)-1;
-	 //    var path = url.substr(index);
-	 //    S3.delete(path, function(err, res) {
-	 //        $('#spinner').hide();
-	 //        if (err) {
-	 //            toastr.error("Operation failed");
-	 //        } else {
-	 //            Meteor.call('deleteJobFile', url, jobID, Meteor.userId(), function (error, result) {
-	 //                if(!error)
-	 //                  toastr.success("Deleted");
-	 //            });
-	 //        }
-	 //    });
-	 //    event.stopPropagation();
 	 	Meteor.call('deleteJobFile', url, jobID, Meteor.userId(), function(error, result) {
 	 		if(!error) {
 	 			$('#spinner').hide();
@@ -384,17 +391,6 @@ Array.prototype.pushArray = function(files) {
 
 removeFile = function(url) {
 	$('#spinner').show();
-	// var index = url.indexOf(S3_FILEUPLOADS)-1;
-	// var path = url.substr(index);
-	// S3.delete(path, function(err, res) {
-	// 	$('#spinner').hide();
-	// 	if (err) {
-	// 		toastr.error("Operation failed");
-	// 	} else {
-	// 		$("div.fileList").find("[data-url='"+url+"']").remove();
-	// 		toastr.success('Document is deleted successfully');
-	// 	}
-	// });
 	$("div.fileList").find("[data-url='"+url+"']").remove();
 	toastr.success('Document is deleted successfully');
 	$('#spinner').hide();

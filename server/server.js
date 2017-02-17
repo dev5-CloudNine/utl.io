@@ -542,6 +542,24 @@ Meteor.methods({
             html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has rejected the job you submitted for approval.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to view details and discuss the matter with the buyer.'
         })
     },
+    routeEmail: function(buyerDetails, providerDetails, jobDetails) {
+        Email.send({
+            to: getUserEmail(Meteor.users.findOne({_id: jobDetails.selectedProvider})),
+            cc: providerDetails.smsAddress,
+            from: FROM_EMAIL,
+            subject: 'A buyer has directly assigned a job to you.',
+            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has directly assigned a job to you.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to confirm or reject the job offer.'
+        })
+    },
+    openJobEmails: function(jobDetails, buyerDetails, providerEmails, providerSmsAddresses) {
+        Email.send({
+            to: providerEmails,
+            cc: providerSmsAddresses,
+            from: FROM_EMAIL,
+            subject: 'New Job Posted - ' + jobDetails.title,
+            html: 'A new job has been posted.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to apply or counter offer the job.'
+        })
+    },
     publishToFavsUpdate: function(job, favoriteProviders) {
         Jobs.update({_id: job._id}, {$set: {invited: true}});
         for(var i = 0; i < favoriteProviders.length; i++) {
@@ -629,14 +647,6 @@ Meteor.methods({
             adminRead: false
         };
         Notifications.insert(notificationObj);
-        // console.log(doc)
-        // Email.send({
-        //     to: getUserEmail(Meteor.users.findOne({_id: doc.selectedProvider})),
-        //     cc: providerDetails.smsAddress,
-        //     from: FROM_EMAIL,
-        //     subject: 'A buyer has directly assigned a job to you.',
-        //     html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has directly routed a job to you.<br><a href="' + Meteor.absoluteUrl('jobs/' + doc._id) + '">' + doc.readableID + ' - ' + doc.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + doc._id) + '">Click here</a> to confirm or reject the job offer.'
-        // })
     },
     requestPayment: function(jobId) {
         var providerDetails = Profiles.findOne({userId: Meteor.userId()});

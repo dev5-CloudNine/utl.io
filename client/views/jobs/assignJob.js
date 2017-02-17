@@ -7,7 +7,7 @@ Template.assignJob.events({
 				$(event.currentTarget).button('reset');
 				return;
 			}
-			doc.selectedProvider = "";
+			doc.routed = true;
 			doc.selectedProvider = Router.current().params.userId;
 			doc.applications = [];
 			var appDetails = {
@@ -19,7 +19,6 @@ Template.assignJob.events({
 			doc.applicationStatus = 'assigned';
 			doc.assignmentStatus = 'not_confirmed'
 			doc.applications.push(appDetails);
-			doc.routed = true;
 		});
 		Jobs.after.insert(function(userId, doc) {
 			if(!Session.get('routingJob')) {
