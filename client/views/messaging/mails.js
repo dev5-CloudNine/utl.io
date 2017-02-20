@@ -27,6 +27,7 @@ var msgList = function() {
             msgList.push(ele);
         });
     } else {
+        console.log(Messages.find({recipient: Meteor.userId()}).fetch());
         Messages.find({$and:[{recipient: Meteor.userId()}]}, {sort: { date: -1 }}).map(function(ele) {
             ele.username = Meteor.users.findOne({ '_id': ele.sender }).emails[0].address;
             ele.date = moment(new Date(ele.date)).format('LLLL');
@@ -42,13 +43,16 @@ var msgListOptionsObject = {
             title: 'From',
             data: function(mail) {
                 var userName;
-                if(Roles.userIsInRole(mail.sender, ['provider', 'corporate-provider'])) {
+                if(Roles.userIsInRole(mail.sender, ['provider'])) {
                     var profile = Profiles.findOne({userId: mail.sender});
-                    var userName = profile.firstName + ' ' + profile.lastName;
+                    userName = profile.firstName + ' ' + profile.lastName;
                 }
-                if(Roles.userIsInRole(mail.sender, ['buyer', 'corporate-manager'])) {
+                if(Roles.userIsInRole(mail.sender, ['buyer', 'dispatcher'])) {
                     var profile = Buyers.findOne({userId: mail.sender});
-                    var userName = profile.firstName + ' ' + profile.lastName;
+                    userName = profile.firstName + ' ' + profile.lastName;
+                }
+                if(Roles.userIsInRole(mail.sender, ['admin'])) {
+                    userName = 'Administrator'
                 }
                 return userName;
             }
@@ -57,13 +61,16 @@ var msgListOptionsObject = {
             title: 'To',
             data: function(mail) {
                 var userName;
-                if(Roles.userIsInRole(mail.recipient, ['provider', 'corporate-provider'])) {
+                if(Roles.userIsInRole(mail.recipient, ['provider'])) {
                     var profile = Profiles.findOne({userId: mail.recipient});
-                    var userName = profile.firstName + ' ' + profile.lastName;
+                    userName = profile.firstName + ' ' + profile.lastName;
                 }
-                if(Roles.userIsInRole(mail.recipient, ['buyer', 'corporate-manager'])) {
+                if(Roles.userIsInRole(mail.recipient, ['buyer', 'dispatcher'])) {
                     var profile = Buyers.findOne({userId: mail.recipient});
-                    var userName = profile.firstName + ' ' + profile.lastName;
+                    userName = profile.firstName + ' ' + profile.lastName;
+                }
+                if(Roles.userIsInRole(mail.recipient, ['admin'])) {
+                    userName = 'Administrator'
                 }
                 return userName;
             }
@@ -102,3 +109,9 @@ Template.mails.helpers({
     },
     msgListOptionsObject: msgListOptionsObject
 });
+
+Template.mails.onRendered(function() {
+    this.autorun(function() {
+        return Meteor.subscribe('messages', Meteor.userId());
+    })
+})

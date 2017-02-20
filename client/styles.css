@@ -2201,3 +2201,9 @@ svg {
   background-color: #139aec;
   border-color: #139aec;
 }
+
+#jobNotifications {
+  max-height: 480px;
+  overflow: scroll;
+  overflow-x: hidden;
+}

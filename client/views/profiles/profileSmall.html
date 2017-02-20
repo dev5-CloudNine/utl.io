@@ -48,6 +48,7 @@
                         </div>
                     </div>
                 {{else}}
+                    {{#if $eq this.status 'active'}}
                     <div class="row">
                         <div class="col-xs-4 border-right">
                             <div class="description-block text-center">
@@ -74,6 +75,16 @@
                             </div>
                         </div>
                     </div>
+                    {{else}}
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="description-block text-center">
+                                    <h5 class="description-header"><i class="fa fa-ban"></i></h5>
+                                    <span class="description-text">Inactive</span>
+                                </div>
+                            </div>
+                        </div>
+                    {{/if}}
                 {{/if}}                    
             </div>
         </div>

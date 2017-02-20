@@ -23,10 +23,6 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 					else if(Roles.userIsInRole(jobDetails.userId, ['dispatcher']))
 						buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
 					Meteor.call('routeEmail', buyerDetails, providerDetails, jobDetails);
-        		} else if(jobDetails.invited) {
-        			return;
-        		} else {
-        			Meteor.call('openJobEmails', jobDetails, buyerDetails, providerEmails, providerSmsAddresses);
         		}
 			}
 		},
@@ -41,7 +37,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 	}
 });
 
-Template.duplicateJob.rendered = function() {
+Template.duplicateJob.onCreated(function() {
 	var jobBudget = this.data.job.your_cost;
 	this.autorun(function() {
 		var accountBalance;
@@ -54,7 +50,7 @@ Template.duplicateJob.rendered = function() {
 			$('.notEnoughBalance').show();
 		}
 	})
-}
+});
 
 Template.jobFields.rendered = function() {
   	$('#spinner').hide();
@@ -81,21 +77,21 @@ Template.jobFields.events({
 		} else {
 			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		}
-		$('input[name="totalfromclient"]').val(fixedamount);
+		$('input[name="totalfromclient"]').val(+(Math.round(fixedamount + 'e+2') + 'e-2'));
 		var paidBy = $('input[name="paidby"]:checked').val();
 		if(paidBy == 'buyer') {
-			$('input[name="your_cost"]').val(fixedamount + (fixedamount * 5/100));
-			$('input[name="freelancer_nets"]').val(fixedamount);
+			var yourCost = fixedamount + (fixedamount * 5/100)
+			$('input[name="your_cost"]').val(+(Math.round(yourCost + 'e+2') + 'e-2'));
+			$('input[name="freelancer_nets"]').val(+(Math.round(fixedamount + 'e+2') + 'e-2'));
 		} else if(paidBy == 'provider') {
-			$('input[name="your_cost"]').val(fixedamount);
-			$('input[name="freelancer_nets"]').val(fixedamount - (fixedamount * 5/100));
+			var providerNets = fixedamount - (fixedamount * 5/100)
+			$('input[name="your_cost"]').val(+(Math.round(fixedamount + 'e+2') + 'e-2'));
+			$('input[name="freelancer_nets"]').val(+(Math.round(providerNets + 'e+2') + 'e-2'));
 		}
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -110,21 +106,21 @@ Template.jobFields.events({
 			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		}
 		var totalamount = hourlyrate * maxhours;
-		$('input[name="totalfromclient"]').val(totalamount);
+		$('input[name="totalfromclient"]').val(+(Math.round(totalamount + 'e+2') + 'e-2'));
 		var paidBy = $('input[name="paidby"]:checked').val();
 		if(paidBy == 'buyer') {
-			$('input[name="your_cost"]').val(totalamount + (totalamount * 5/100));
-			$('input[name="freelancer_nets"]').val(totalamount);
+			var yourCost = totalamount + (totalamount * 5/100)
+			$('input[name="your_cost"]').val(+(Math.round(yourCost + 'e+2') + 'e-2'));
+			$('input[name="freelancer_nets"]').val(+(Math.round(totalamount + 'e+2') + 'e-2'));
 		} else if(paidBy == 'provider') {
+			var providerNets = totalamount - (totalamount * 5/100)
 			$('input[name="your_cost"]').val(totalamount);
-			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
+			$('input[name="freelancer_nets"]').val(+(Math.round(providerNets + 'e+2') + 'e-2'));
 		}
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -139,21 +135,21 @@ Template.jobFields.events({
 			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		}
 		var totalamount = rateperdevice * maxdevices;
-		$('input[name="totalfromclient"]').val(totalamount);
+		$('input[name="totalfromclient"]').val(+(Math.round(totalamount + 'e+2') + 'e-2'));
 		var paidBy = $('input[name="paidby"]:checked').val();
 		if(paidBy == 'buyer') {
-			$('input[name="your_cost"]').val(totalamount + (totalamount * 5/100));
-			$('input[name="freelancer_nets"]').val(totalamount);
+			var yourCost = totalamount + (totalamount * 5/100)
+			$('input[name="your_cost"]').val(+(Math.round(yourCost + 'e+2') + 'e-2'));
+			$('input[name="freelancer_nets"]').val(+(Math.round(totalamount + 'e+2') + 'e-2'));
 		} else if(paidBy == 'provider') {
+			var providerNets = totalamount - (totalamount * 5/100)
 			$('input[name="your_cost"]').val(totalamount);
-			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
+			$('input[name="freelancer_nets"]').val(+(Math.round(providerNets + 'e+2') + 'e-2'));
 		}
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -172,14 +168,16 @@ Template.jobFields.events({
 		var totalforfirsthours = parseFloat(payforfirsthours);
 		var totalfornexthours = payfornexthours * nexthours;
 		var totalamount = parseFloat(totalforfirsthours + totalfornexthours);
-		$('input[name="totalfromclient"]').val(totalamount);
+		$('input[name="totalfromclient"]').val(+(Math.round(totalamount + 'e+2') + 'e-2'));
 		var paidBy = $('input[name="paidby"]:checked').val();
 		if(paidBy == 'buyer') {
-			$('input[name="your_cost"]').val(totalamount + (totalamount * 5/100));
-			$('input[name="freelancer_nets"]').val(totalamount);
+			var yourCost = totalamount + (totalamount * 5/100)
+			$('input[name="your_cost"]').val(+(Math.round(yourCost + 'e+2') + 'e-2'));
+			$('input[name="freelancer_nets"]').val(+(Math.round(totalamount + 'e+2') + 'e-2'));
 		} else if(paidBy == 'provider') {
+			var providerNets = totalamount - (totalamount * 5/100)
 			$('input[name="your_cost"]').val(totalamount);
-			$('input[name="freelancer_nets"]').val(totalamount - (totalamount * 5/100));
+			$('input[name="freelancer_nets"]').val(+(Math.round(providerNets + 'e+2') + 'e-2'));
 		}
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
@@ -201,14 +199,12 @@ Template.jobFields.events({
 		} else {
 			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		}
-		template.find('input[name="your_cost"]').value = clientCost;
-		template.find('input[name="freelancer_nets"]').value = totalamount;
+		$('input[name="your_cost"]').val(+(Math.round(clientCost + 'e+2') + 'e-2'))
+		$('input[name="freelancer_nets"]').val(+(Math.round(totalamount + 'e+2') + 'e-2'))
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -223,14 +219,12 @@ Template.jobFields.events({
 		} else {
 			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		}
-		template.find('input[name="your_cost"]').value = totalamount;
-		template.find('input[name="freelancer_nets"]').value = freenet;
+		$('input[name="your_cost"]').val(+(Math.round(totalamount + 'e+2') + 'e-2'))
+		$('input[name="freelancer_nets"]').val(+(Math.round(freenet + 'e+2') + 'e-2'))
 		if($('input[name="your_cost"]').val() > accountBalance) {
 			$('div.notEnoughBalance').show();
-			// $('div.enoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', true);
 		} else {
-			// $('div.enoughBalance').show();
 			$('div.notEnoughBalance').hide();
 			$('button[type="submit"]').prop('disabled', false);
 		}
@@ -240,160 +234,94 @@ Template.jobFields.events({
 		instance.selParent.set(parentId);
 	},
 	'change .file_bag': function(event, template){
-		event.preventDefault();
-		$('.fileUploadProgress').show();
-		var files = $(event.currentTarget)[0].files;
-		if(!files)
-			return;
-		S3.upload({
-			files: files,
-			path: S3_FILEUPLOADS
-		}, function(error, result) {
-			$('.fileUploadProgress').hide();
-			if(error) {
-				toastr.error('Failed to upload documents.');
-			}
-			else {
-				var jobID = Router.current().params._id;
-				if(Router.current().params.userId) {
-					var files = [];
-					var fileListItem = '<div class="thumbnail" data-url=' + result.secure_url + '><span title="Remove" class="close-preview" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')">&times;</span><a href=' + result.secure_url + ' target="_blank">' + result.file.original_name + '</a><div class="caption" style="overflow: hidden; word-wrap: break-word"><a href=' + result.secure_url + ' + target="_blank">' + result.file.original_name + '</a></div></div>'
-					$('.fileList').append(fileListItem);
-					$('div.fileList div.thumbnail').each(function(li) {
-						var fileDetails = {
-							file_url: $(this).data('url'),
-							file_name: result.file.original_name
-						}
-						files.push(fileDetails);
-					})
-					Jobs.before.insert(function(userId, doc) {
-						doc.files = files;
-					});
-					$('#uploadJobDocs').modal('hide');
-				} else if(jobID) {
-					var fileDetails = {
-						file_url: result.secure_url,
-						file_name: result.file.original_name
-					}
-		            Meteor.call('addJobFile', fileDetails, jobID,function (error, result) {
-		            	if(!error)
-		            		$('#uploadJobDocs').modal('hide');
-		            });
-				} else {
-					var files = [];
-					var fileListItem = '<div class="col-md-2"><div class="thumbnail" data-url=' + result.secure_url + ' style="position:relative;"><span title="Remove" class="close-preview" style="cursor: pointer;" onclick="removeFile(\''+result.secure_url+'\')">&times;</span><a href=' + result.secure_url + ' target="_blank"><img src=' + result.secure_url + ' style="height: 100px" onerror=this.src="/images/genericFile.jpg"></a><div class="caption" style="overflow: hidden; word-wrap: break-word"><a href=' + result.secure_url + ' + target="_blank">' + result.file.original_name + '</a></div></div></div>'
-					$('.fileList').append(fileListItem);
-					$('div.fileList div.thumbnail').each(function(li) {
-						var fileDetails = {
-							file_url: $(this).data('url'),
-							file_name: result.file.original_name
-						}
-						files.push(fileDetails);
-					});
-					Jobs.before.insert(function(userId, doc) {
-						doc.files = files;
-					});
-					$('#uploadJobDocs').modal('hide');
-				}
-			}
-			var fileDetails = {
-				file_url: result.secure_url,
-				file_name: result.file.original_name
-			}
-			Meteor.call('addFileToUserFM', fileDetails, Meteor.userId());
-		})
-	},
-	'click .remove-job-file' : function(event, template) {
-	    event.preventDefault();
-	    $('#spinner').show();
-		var jobID = Router.current().params._id;
-	    var url = $(event.currentTarget).data('url');
-	 	Meteor.call('deleteJobFile', url, jobID, Meteor.userId(), function(error, result) {
-	 		if(!error) {
-	 			$('#spinner').hide();
-	 		}
-	 	});
-	 	event.stopPropagation();
-	},
-	'click .removeUserFile': function(event, template) {
-		event.preventDefault();
-		var url = $(event.currentTarget).data('url');
-		var index = url.indexOf(S3_FILEUPLOADS)-1;
-		var path = url.substr(index);
-		S3.delete(path, function(err, res) {
-			if(err) {
-				toastr.error('Operation failed');
-			} else {
-				Meteor.call('removeUserFile', url, Meteor.userId(), function(error, result) {
-					if(!error)
-						toastr.success('Removed file from your file manager');
-				})
-			}
-		})
-	},
-	'click .attachSelected': function(event, template) {
-		var selected = $('input[name="select_files"]:checked');
-		if(selected.length <= 0)
-			toastr.error('Please select file(s) to attach.');
-		else {
-			for(var i = 0; i < selected.length; i++) {
-				var fileUrl = $(selected[i]).data('url');
-				var fileName = $(selected[i]).data('file-name');
-				var jobId = Router.current().params._id;
-				if(Router.current().params.userId) {
-					var files = [];
-					var fileListItem = '<div class="thumbnail" data-url=' + fileUrl + '><span title="Remove" class="close-preview" style="cursor: pointer;" onclick="removeFile(\''+fileUrl+'\')">&times;</span><a href=' + fileUrl + ' target="_blank">' + fileName + '</a><div class="caption" style="overflow: hidden; word-wrap: break-word"><a href=' + fileUrl + ' + target="_blank">' + fileName + '</a></div></div>'
-					$('.fileList').append(fileListItem);
-					$('div.fileList div.thumbnail').each(function(li) {
-						var fileDetails = {
-							file_url: fileUrl,
-							file_name: fileName
-						}
-						files.push(fileDetails);
-					})
-					Jobs.before.insert(function(userId, doc) {
-						doc.files = files;
-					});
-					$('#uploadJobDocs').modal('hide');
-				} else if(jobId) {
-					var fileDetails = {
-						file_url: fileUrl,
-						file_name: fileName
-					}
-					Meteor.call('addJobFile', fileDetails, jobId,function (error, result) {
-						if(!error)
-							$('#uploadJobDocs').modal('hide')
-		            });		            
-				} else {
-					var files = [];
-					var fileListItem = '<div class="col-md-2"><div class="thumbnail" data-url=' + fileUrl + ' style="position:relative;"><span title="Remove" class="close-preview" style="cursor: pointer;" onclick="removeFile(\''+fileUrl+'\')">&times;</span><a href=' + fileUrl + ' target="_blank"><img src=' + fileUrl + ' style="height: 100px" onerror=this.src="/images/genericFile.jpg"></a><div class="caption" style="overflow: hidden; word-wrap: break-word"><a href=' + fileUrl + ' + target="_blank">' + fileName + '</a></div></div></div>'
-					$('.fileList').append(fileListItem);
-					$('div.fileList div.thumbnail').each(function(li) {
-						var fileDetails = {
-							file_url: fileUrl,
-							file_name: fileName
-						}
-						files.push(fileDetails);
-					});
-					Jobs.before.insert(function(userId, doc) {
-						doc.files = files;
-					});
-					$('#uploadJobDocs').modal('hide');
-				}
-			}
-		}
-	}
+        event.preventDefault();
+        $('#spinner').show();
+        var files = $(event.currentTarget)[0].files;
+        if(!files)
+            return;
+        S3.upload({
+            files: files,
+            path: S3_FILEUPLOADS
+        }, function(error, result) {
+            $('#spinner').hide();
+            if(error) {
+                toastr.error('Failed to upload documents.');
+            }
+            else {
+                var jobId = Router.current().params._id;
+                if(Router.current().params.userId) {
+                    var files = [];
+                    var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeJobFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.file.original_name+'</a></li>'
+                    $('.fileList').append(fileListItem);
+                    $('ul.fileList li').each(function(li) {
+                        var fileDetails = {
+                            file_url: $(this).data('url'),
+                            file_name: result.file.original_name
+                        }
+                        files.push(fileDetails);
+                    });
+                    Jobs.before.insert(function(userId, doc) {
+                    	doc.files = files;
+                    })
+                } else if(jobId) {
+                	var fileDetails = {
+                		file_url: result.secure_url,
+                		file_name: result.file.original_name
+                	}
+                	Meteor.call('addJobFile', fileDetails, jobId);
+                } else {
+                    var files = [];
+                    var fileListItem = '<li data-url='+result.secure_url+'><i class="fa fa-times-circle remove-file" aria-hidden="true" title="Remove" style="cursor: pointer;" onclick="removeJobFile(\''+result.secure_url+'\')"></i> <a href='+result.secure_url+' target="_blank">'+result.file.original_name+'</a></li>'
+                    $('.fileList').append(fileListItem);
+                    $('ul.fileList li').each(function(li) {
+                        var fileDetails = {
+                            file_url: $(this).data('url'),
+                            file_name: result.file.original_name
+                        }
+                        files.push(fileDetails);
+                    });
+                    Jobs.before.insert(function(userId, doc) {
+                    	doc.files = files;
+                    })
+                }
+            }
+        })        
+    },
+    'click .remove-job-file' : function(event, template) {
+        event.preventDefault();
+        $('#spinner').show();
+        var jobId = Router.current().params._id;
+        var url = $(event.currentTarget).data('url');
+        var index = url.indexOf(S3_FILEUPLOADS)-1;
+        var path = url.substr(index);
+        S3.delete(path, function(err, res) {
+            $('#spinner').hide();
+            if (err) {
+                toastr.error("Operation failed");
+            } else {
+                Meteor.call('deleteJobFile', url, jobId);
+            }
+        });
+        event.stopPropagation();
+    }
 });
 
 Array.prototype.pushArray = function(files) {
 	files.push.apply(files, files.concat.apply([], arguments));
 };
 
-removeFile = function(url) {
+removeJobFile = function(url) {
 	$('#spinner').show();
-	$("div.fileList").find("[data-url='"+url+"']").remove();
-	toastr.success('Document is deleted successfully');
-	$('#spinner').hide();
+    var index = url.indexOf(S3_FILEUPLOADS)-1;
+    var path = url.substr(index);
+    S3.delete(path, function(err, res) {
+      if (err) {
+        toastr.error("Operation failed");
+      } else {
+      	$('#spinner').hide();
+        $("ul.fileList").find("[data-url='"+url+"']").remove();
+      }
+    });
 }
 
 Template.jobFields.created = function() {
@@ -405,12 +333,6 @@ Template.jobFields.created = function() {
 }
 
 Template.jobFields.helpers({
-	userDocuments: function() {
-		var fileManager = FileManager.findOne({userId: Meteor.userId()});
-		if(fileManager.files) {
-			return fileManager.files;
-		}
-	},
 	locationData : function(){
 		locLoaded = true;
 		return this.job.location;
@@ -457,10 +379,6 @@ Template.submitButtons.events({
 			$('#publishIndividual').show();
 		else
 			$('#publishIndividual').hide();
-		if(publishTo == 'assignToProvider')
-			$('#assignToAProvider').show();
-		else
-			$('#assignToAProvider').hide();
 		if(publishTo == 'favProviders') {
 			var favoriteUsers = Meteor.users.findOne({_id: Meteor.userId()}).favoriteUsers;
 			if(!favoriteUsers || favoriteUsers.length < 1) {
@@ -470,14 +388,51 @@ Template.submitButtons.events({
 				$('.noFavProviders').hide();
 				$('#submitJob').removeAttr('disabled');
 			}
+		} else {
+			$('.noFavProviders').hide();
+			$('#submitJob').removeAttr('disabled');
 		}
 	},
 	'click #submitJob': function(event, template) {
 		var publishTo = $('input[name="publishJob"]:checked').val();
 		$(event.currentTarget).button('loading');
-		if(publishTo == 'favProviders') {
+		var buyerDetails;
+		if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+			buyerDetails = Buyers.findOne({userId: Meteor.userId()});
+		else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+			buyerDetails = Dispatchers.findOne({userId: Meteor.userId()});
+		if(publishTo == 'allProviders') {
+			Session.set('publishToAll', true);
+			Session.set('publishToFav', false);
+			Session.set('publishToIndividual', false);
+			var providerEmails = [];
+    		var providerSmsAddresses = [];
+    		var providers = Profiles.find({}).fetch();
+    		for(var i = 0; i < providers.length; i++) {
+    			providerEmails.push(providers[i].userName);
+    			providerSmsAddresses.push(providers[i].smsAddress)
+    		}
+			Jobs.after.insert(function(userId, doc, res) {
+				if(!Session.get('publishToAll')) {
+					$(event.currentTarget).button('reset');
+					return;
+				}
+				providers.length = 0;
+				Meteor.call('openJobEmails', doc, buyerDetails, providerEmails, providerSmsAddresses);
+				delete Session.keys['publishToAll'];
+			})
+		}
+		else if(publishTo == 'favProviders') {
+			Session.set('publishToAll', false);
 			Session.set('publishToFav', true);
+			Session.set('publishToIndividual', false);
 			var favProviders = Users.findOne({_id: Meteor.userId()}).favoriteUsers;
+			var providerEmails = [];
+			var providerSmsAddresses = [];
+			for(var i = 0; i < favProviders.length; i++) {
+				providerEmails.push(Profiles.findOne({userId: favProviders[i]}).userName);
+				providerSmsAddresses.push(Profiles.findOne({userId: favProviders[i]}).smsAddress);
+			}
 			Jobs.after.insert(function(userId, doc, res) {
 				if(!Session.get('publishToFav')) {
 					$(event.currentTarget).button('reset');
@@ -489,14 +444,23 @@ Template.submitButtons.events({
 	 					$(event.currentTarget).button('reset');
 	 				} else {
 	 					favProviders.length = 0;
+	 					Meteor.call('favProvidersEmail', doc, buyerDetails, providerEmails, providerSmsAddresses);
 	 					delete Session.keys['publishToFav'];
 	 				}
 	 			})
 			});
 		}
 		else if(publishTo == 'selectedProviders') {
+			Session.set('publishToAll', false);
+			Session.set('publishToFav', false);
 			Session.set('publishToIndividual', true);
 			var individualProviders = $('select[name="invitedproviders"]').val();
+			var providerEmails = [];
+			var providerSmsAddresses = [];
+			for(var i = 0; i < individualProviders.length; i++) {
+				providerEmails.push(Profiles.findOne({userId: individualProviders[i]}).userName);
+				providerSmsAddresses.push(Profiles.findOne({userId: individualProviders[i]}).smsAddress);
+			}
 			Jobs.after.insert(function(userId, doc) {
 				if(!Session.get('publishToIndividual')) {
 					$(event.currentTarget).button('reset');
@@ -508,6 +472,7 @@ Template.submitButtons.events({
 						toastr.error('Failed to publish to the chosen providers. Please try again.');
 					} else {
 						individualProviders.length = 0;
+						Meteor.call('individualProviderEmail', doc, buyerDetails, providerEmails, providerSmsAddresses);
 						delete Session.keys['publishToIndividual'];
 					}
 				})

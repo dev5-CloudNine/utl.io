@@ -4,27 +4,33 @@ Template.breadcrumbs.onCreated(function() {
 			Meteor.subscribe('jobs');
 			Meteor.subscribe('allJobs');
 			Meteor.subscribe('userWallet', Meteor.userId());
+			Meteor.subscribe('messages', Meteor.userId())
 			return Meteor.subscribe('providerInvoices', Meteor.userId());
 		}
 		if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
 			Meteor.subscribe('my_jobs');
 			Meteor.subscribe('userWallet', Meteor.userId());
 			Meteor.subscribe('accountants', Meteor.userId());
+			Meteor.subscribe('messages', Meteor.userId())
 			return Meteor.subscribe('buyerInvoices', Meteor.userId());
 		}
 		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
 			Meteor.subscribe('my_jobs');
 			Meteor.subscribe('userWallet', Meteor.user().invitedBy);
 			Meteor.subscribe('accountants', Meteor.user().invitedBy);
+			Meteor.subscribe('messages', Meteor.userId())
 			return Meteor.subscribe('buyerInvoices', Meteor.userId());
 		}
 		if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
 			Meteor.subscribe('buyerInvoices', Meteor.userId())
+			Meteor.subscribe('messages', Meteor.userId())
 			return Meteor.subscribe('userWallet', Meteor.user().invitedBy);
 		}
 		if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
 			Meteor.subscribe('invoices', Meteor.userId());
 			Meteor.subscribe('allJobs');
+			Meteor.subscribe('allAccountants', Meteor.userId());
+			Meteor.subscribe('messages', Meteor.userId())
 			return Meteor.subscribe('userWallet', Meteor.userId());
 		}
 	})

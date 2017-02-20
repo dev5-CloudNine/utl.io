@@ -25,7 +25,7 @@ UI.registerHelper('allAssignedJobs', function() {
 });
 
 UI.registerHelper('allOpenJobs', function() {
-	return Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'Open'}]}).count();
+	return Jobs.find({$and: [{status: 'active'}, {applicationStatus: 'open'}]}).count();
 });
 
 UI.registerHelper("formatDate", function(timestamp) {

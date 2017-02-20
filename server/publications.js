@@ -174,7 +174,8 @@ Meteor.publishComposite('providers', {
                 companyName: true,
                 createdAt: true,
                 readableID: true,
-                contactNumber: true
+                contactNumber: true,
+                smsAddress: true
             }
         });
     },
@@ -217,7 +218,8 @@ Meteor.publishComposite('buyers', {
                 companyUrl: true,
                 createdAt: true,
                 fullLocation: true,
-                contactNumber: true
+                contactNumber: true,
+                smsAddress: true
             }
         });
     }
@@ -354,6 +356,12 @@ Meteor.publish("favorite_buyers", function() {
             fullLocation: true
         }
     })
+});
+
+Meteor.publish('allAccountants', function(userId) {
+    if(Roles.userIsInRole(userId, ['admin'])) {
+        return Accountants.find({});
+    }
 })
 
 Meteor.publish("job", function(jobId) {

@@ -5,4 +5,7 @@
     {{#if isInRole 'provider'}}
         {{> ReactiveDatatable tableData=providerInvoices options=providerOptionsObject}}
     {{/if}}
+    {{#if isInRole 'admin'}}
+    	{{> ReactiveDatatable tableData=adminInvoices options=adminOptionsObject}}
+    {{/if}}
 </template>

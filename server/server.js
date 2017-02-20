@@ -242,7 +242,7 @@ Meteor.methods({
             to: getUserEmail(Meteor.users.findOne({_id: jobDetails.userId})),
             cc: buyerDetails.smsAddress,
             from: FROM_EMAIL,
-            subject: 'A provider has applied for the job you posted.',
+            subject: providerDetails.firstName + ' ' + providerDetails.lastName + ' has applied for the job you posted.',
             html: 'Hello ' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ',<br> ' + providerDetails.firstName + ' ' + providerDetails.lastName + ' has applied for your job posted. <br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobId) + '">Click here</a> to see the list of applications.'
         });
     },
@@ -543,21 +543,130 @@ Meteor.methods({
         })
     },
     routeEmail: function(buyerDetails, providerDetails, jobDetails) {
+        var address;
+        if(jobDetails.servicelocation == 'Field Job') {
+            address = jobDetails.fullLocation.formatted_address;
+        } else {
+            address = 'Remote Job'
+        }
+        var budgetDetails;
+        if(jobDetails.ratebasis == 'Fixed Pay') {
+            budgetDetails = 'Fixed amount of ' + jobDetails.fixedamount + ' USD.';
+        } else if(jobDetails.ratebasis == 'Per Hour') {
+            budgetDetails = jobDetails.hourlyrate + '/hour for upto ' + jobDetails.maxhours + ' hours.';
+        } else if(jobDetails.ratebasis == 'Per Device') {
+            budgetDetails = jobDetails.devicerate + '/device for upto ' + jobDetails.maxdevices + ' devices.';
+        } else if(jobDetails.ratebasis == 'Blended') {
+            budgetDetails = 'Fixed amount of ' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hour(s) and then ' + jobDetails.payfornexthours + '/hour for the next ' + jobDetails.nexthours + ' hours.';
+        }
+        var jobSchedule;
+        if(jobDetails.serviceschedule == 'exactdate') {
+            jobSchedule = moment(jobDetails.exactdate).format('LLLL') + ' ' + jobDetails.exacttime;
+        } else {
+            jobSchedule = 'Between ' + moment(jobDetails.startdate).format('DD/MM/YYYY') + ' and ' + moment(jobDetails.enddate).format('DD/MM/YYYY') + ' from ' + jobDetails.starttime + ' to ' + jobDetails.endtime;
+        }
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: jobDetails.selectedProvider})),
             cc: providerDetails.smsAddress,
             from: FROM_EMAIL,
-            subject: 'A buyer has directly assigned a job to you.',
-            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has directly assigned a job to you.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to confirm or reject the job offer.'
+            subject: buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has directly assigned a job to you.',
+            html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '"><i>#' + jobDetails.readableID + '</i><br>' + jobDetails.title + '</a><br>' + address + '<br>' + budgetDetails + '<br>' + jobSchedule +'<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to confirm.'
         })
     },
     openJobEmails: function(jobDetails, buyerDetails, providerEmails, providerSmsAddresses) {
+        var address;
+        if(jobDetails.servicelocation == 'Field Job') {
+            address = jobDetails.fullLocation.formatted_address;
+        } else {
+            address = 'Remote Job'
+        }
+        var budgetDetails;
+        if(jobDetails.ratebasis == 'Fixed Pay') {
+            budgetDetails = 'Fixed amount of ' + jobDetails.fixedamount + ' USD.';
+        } else if(jobDetails.ratebasis == 'Per Hour') {
+            budgetDetails = jobDetails.hourlyrate + '/hour for upto ' + jobDetails.maxhours + ' hours.';
+        } else if(jobDetails.ratebasis == 'Per Device') {
+            budgetDetails = jobDetails.devicerate + '/device for upto ' + jobDetails.maxdevices + ' devices.';
+        } else if(jobDetails.ratebasis == 'Blended') {
+            budgetDetails = 'Fixed amount of ' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hour(s) and then ' + jobDetails.payfornexthours + '/hour for the next ' + jobDetails.nexthours + ' hours.';
+        }
+        var jobSchedule;
+        if(jobDetails.serviceschedule == 'exactdate') {
+            jobSchedule = moment(jobDetails.exactdate).format('LLLL') + ' ' + jobDetails.exacttime;
+        } else {
+            jobSchedule = 'Between ' + moment(jobDetails.startdate).format('DD/MM/YYYY') + ' and ' + moment(jobDetails.enddate).format('DD/MM/YYYY') + ' from ' + jobDetails.starttime + ' to ' + jobDetails.endtime;
+        }
+        var job = Jobs.findOne({_id: jobDetails._id})
         Email.send({
             to: providerEmails,
             cc: providerSmsAddresses,
             from: FROM_EMAIL,
             subject: 'New Job Posted - ' + jobDetails.title,
-            html: 'A new job has been posted.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to apply or counter offer the job.'
+            html: '<a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '"><i>#' + job.readableID + '</i><br>' + jobDetails.title + '</a><br>' + address + '<br>' + budgetDetails + '<br>' + jobSchedule +'<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to apply or counter offer the job.'
+        })
+    },
+    favProvidersEmail: function(jobDetails, buyerDetails, providerEmails, providerSmsAddresses) {
+        var address;
+        if(jobDetails.servicelocation == 'Field Job') {
+            address = jobDetails.fullLocation.formatted_address;
+        } else {
+            address = 'Remote Job'
+        }
+        var budgetDetails;
+        if(jobDetails.ratebasis == 'Fixed Pay') {
+            budgetDetails = 'Fixed amount of ' + jobDetails.fixedamount + ' USD.';
+        } else if(jobDetails.ratebasis == 'Per Hour') {
+            budgetDetails = jobDetails.hourlyrate + '/hour for upto ' + jobDetails.maxhours + ' hours.';
+        } else if(jobDetails.ratebasis == 'Per Device') {
+            budgetDetails = jobDetails.devicerate + '/device for upto ' + jobDetails.maxdevices + ' devices.';
+        } else if(jobDetails.ratebasis == 'Blended') {
+            budgetDetails = 'Fixed amount of ' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hour(s) and then ' + jobDetails.payfornexthours + '/hour for the next ' + jobDetails.nexthours + ' hours.';
+        }
+        var jobSchedule;
+        if(jobDetails.serviceschedule == 'exactdate') {
+            jobSchedule = moment(jobDetails.exactdate).format('LLLL') + ' ' + jobDetails.exacttime;
+        } else {
+            jobSchedule = 'Between ' + moment(jobDetails.startdate).format('DD/MM/YYYY') + ' and ' + moment(jobDetails.enddate).format('DD/MM/YYYY') + ' from ' + jobDetails.starttime + ' to ' + jobDetails.endtime;
+        }
+        var job = Jobs.findOne({_id: jobDetails._id});
+        Email.send({
+            to: providerEmails,
+            cc: providerSmsAddresses,
+            from: FROM_EMAIL,
+            subject: 'A buyer has invited to bid on his job.',
+            html: '<a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '"><i>#' + job.readableID + '</i><br>' + jobDetails.title + '</a><br>' + address + '<br>' + budgetDetails + '<br>' + jobSchedule +'<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to apply or counter offer the job.'
+        })
+    },
+    individualProviderEmail: function(jobDetails, buyerDetails, providerEmails, providerSmsAddresses) {
+        var address;
+        if(jobDetails.servicelocation == 'Field Job') {
+            address = jobDetails.fullLocation.formatted_address;
+        } else {
+            address = 'Remote Job'
+        }
+        var budgetDetails;
+        if(jobDetails.ratebasis == 'Fixed Pay') {
+            budgetDetails = 'Fixed amount of ' + jobDetails.fixedamount + ' USD.';
+        } else if(jobDetails.ratebasis == 'Per Hour') {
+            budgetDetails = jobDetails.hourlyrate + '/hour for upto ' + jobDetails.maxhours + ' hours.';
+        } else if(jobDetails.ratebasis == 'Per Device') {
+            budgetDetails = jobDetails.devicerate + '/device for upto ' + jobDetails.maxdevices + ' devices.';
+        } else if(jobDetails.ratebasis == 'Blended') {
+            budgetDetails = 'Fixed amount of ' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hour(s) and then ' + jobDetails.payfornexthours + '/hour for the next ' + jobDetails.nexthours + ' hours.';
+        }
+        var jobSchedule;
+        if(jobDetails.serviceschedule == 'exactdate') {
+            jobSchedule = moment(jobDetails.exactdate).format('LLLL') + ' ' + jobDetails.exacttime;
+        } else {
+            jobSchedule = 'Between ' + moment(jobDetails.startdate).format('DD/MM/YYYY') + ' and ' + moment(jobDetails.enddate).format('DD/MM/YYYY') + ' from ' + jobDetails.starttime + ' to ' + jobDetails.endtime;
+        }
+        var job = Jobs.findOne({_id: jobDetails._id});
+        Email.send({
+            to: providerEmails,
+            cc: providerSmsAddresses,
+            from: FROM_EMAIL,
+            subject: 'A buyer has invited to bid on his job.',
+            html: '<a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '"><i>#' + job.readableID + '</i><br>' + jobDetails.title + '</a><br>' + address + '<br>' + budgetDetails + '<br>' + jobSchedule +'<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to apply or counter offer the job.'
         })
     },
     publishToFavsUpdate: function(job, favoriteProviders) {
@@ -583,14 +692,6 @@ Meteor.methods({
                 adminRead: false
             };
             Notifications.insert(notificationObj);
-            var jobDetails = Jobs.findOne({_id: job._id});
-            Email.send({
-                to: getUserEmail(Meteor.users.findOne({_id: favoriteProviders[i]})),
-                cc: providerDetails.smsAddress,
-                from: FROM_EMAIL,
-                subject: 'A buyer has invited to bid on his job.',
-                html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to apply or counter offer the job.'
-            })
         }
     },
     publishToIndividualUpdate: function(job, selectedProviders) {
@@ -615,14 +716,6 @@ Meteor.methods({
                 adminRead: false
             };
             Notifications.insert(notificationObj);
-            var jobDetails = Jobs.findOne({_id: job._id});
-            Email.send({
-                to: getUserEmail(Meteor.users.findOne({_id: selectedProviders[i]})),
-                cc: providerDetails.smsAddress,
-                from: FROM_EMAIL,
-                subject: 'A buyer has invited to bid on his job.',
-                html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has invited you to bid on one of his jobs.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to apply or counter offer the job.'
-            });
         }
         Jobs.update({_id: job._id}, {$set: {invited: true}});
     },
@@ -964,19 +1057,19 @@ Meteor.methods({
         Wallet.update({userId: userID}, {$inc: {accountBalance: amountDeposited}});
     },
     deactivateProviderProfile: function(userId) {
-        Profiles.update({userId: userId}, {$set: {status: 'inactive'}});
+        Profiles.update({userId: userId}, {$set: {status: 'deactivated'}});
     },
     activateProviderProfile: function(userId) {
         Profiles.update({userId: userId}, {$set: {status: 'active'}});
     },
     deactivateBuyerProfile: function(userId) {
-        Buyers.update({userId: userId}, {$set: {status: 'inactive'}});
+        Buyers.update({userId: userId}, {$set: {status: 'deactivated'}});
     },
     activateBuyerProfile: function(userId) {
         Buyers.update({userId: userId}, {$set: {status: 'active'}});
     },
     deactivateDispatcherProfile: function(userId) {
-        Dispatchers.update({userId: userId}, {$set: {status: 'inactive'}});
+        Dispatchers.update({userId: userId}, {$set: {status: 'deactivated'}});
     },
     activateDispatcherProfile: function(userId) {
         Dispatchers.update({userId: userId}, {$set: {status: 'active'}});

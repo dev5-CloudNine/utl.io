@@ -149,20 +149,16 @@
                                 {{#if files}}
                                     <div class="row">                                    
                                         <div class="col-sm-12">
-                                            <h4>Attached Documents</h4>
-                                        </div>                                        
-                                        {{#each files}}
-                                            <div class="col-md-3">
-                                                <div class="thumbnail" data-url={{this.file_url}} style="position: relative;">
-                                                    <a href="{{this.file_url}}" target="_blank" download>
-                                                      <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
-                                                    </a>
-                                                    <div class="caption text-center" style="overflow: hidden;word-wrap: break-word;">
+                                            <h4>Uploaded Documents</h4>
+                                            <ul class="list-unstyled list-inline">
+                                                {{#each files}}
+                                                    <li>
                                                         <a href="{{this.file_url}}" target="_blank" download>{{this.file_name}}</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {{/each}}
+                                                    </li>
+                                                {{/each}}
+                                            </ul>
+                                            <hr>
+                                        </div>
                                     </div>
                                 {{/if}}
                                 <div class="row">
@@ -272,67 +268,52 @@
                                                     </div>
                                                 </div>
                                                 {{#if uploadFile _id}}
-                                                <div class="form-group">
-                                                    <label class="control-label col-sm-2" for="comments">Uploaded files</label>
-                                                    <div class="col-sm-10">
-                                                        <div class="row">
-                                                            {{#each fileList _id}}
-                                                                <div class="col-xs-6 col-md-3">
-                                                                    <div class="thumbnail" style="position: relative;">
-                                                                        <span title="Remove" data-id="{{../_id}}" data-path="{{this.file_url}}" class="close-preview remove-file" style="cursor: pointer;">&times;</span>
-                                                                        <a href="{{this.file_url}}" target="_blank" download>
-                                                                          <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
-                                                                        </a>
-                                                                        <div class="caption" style="overflow: hidden;word-wrap: break-word;">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-2" for="comments">Uploaded files</label>
+                                                        <div class="col-sm-10">
+                                                            <div class="row">
+                                                                <ul class="fileList list-unstyled list-inline">
+                                                                    {{#each fileList _id}}
+                                                                        <li>
+                                                                            {{#if isInRole 'provider'}}
+                                                                            <i class="fa fa-times-circle remove-file" data-id="{{../_id}}" data-path="{{this.file_url}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i>
+                                                                            {{/if}}
                                                                             <a href="{{this.file_url}}" target="_blank" download>{{this.file_name}}</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            {{else}}
-                                                                No files found
-                                                            {{/each}}
-                                                        </div>
-                                                        <div class="row utl-progress-bar">
-                                                            <div class="col-md-12">
-                                                            {{#each uploadedFiles}}
-                                                                <div class="progress">
-                                                                  <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                                                  aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">
-                                                                    {{percent_uploaded}}%
-                                                                  </div>
-                                                                </div>
-                                                            {{/each}}
+                                                                        </li>
+                                                                    {{/each}}
+                                                                </ul>                                                            
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                {{#unless isBuyer}}
-                                                <div class="form-group">
-                                                    <label class="control-label col-sm-2"></label>
-                                                    <div class="col-sm-2">
-                                                        <div class="input-group">
-                                                            <label class="btn btn-primary btn-sm">
-                                                                <input type="file" class="file_bag" accept="{{fileType _id}}"> Upload New
-                                                            </label>
+                                                    {{#unless isBuyer}}
+                                                        <div class="form-group">
+                                                            <label class="control-label col-sm-2"></label>
+                                                            <div class="col-sm-2">
+                                                                <div class="input-group">
+                                                                    <label class="btn btn-primary btn-sm">
+                                                                        <input type="file" class="file_bag" accept="{{fileType _id}}"> Upload New
+                                                                    </label>
 
+                                                                </div>
+                                                            </div>
                                                         </div>
+                                                    {{/unless}}
+                                                {{/if}}
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="comments">Comments</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea class="form-control comments" readonly="{{#if isBuyer}}readonly{{/if}}" >{{comments}}</textarea>
                                                     </div>
                                                 </div>
-                                                {{/unless}}
+                                                {{#if isBuyer}}
+                                                {{else}}
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <button type="submit" class="btn btn-primary btn-sm submit-task">Update</button>
+                                                        </div>
+                                                    </div>
+                                                {{/if}}
                                             {{/if}}
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-2" for="comments">Comments</label>
-                                                <div class="col-sm-10">
-                                                    <textarea class="form-control comments" readonly="{{#if isBuyer}}readonly{{/if}}" >{{comments}}</textarea>
-                                                </div>
-                                            </div>
-                                            {{#if isBuyer}} {{else}}
-                                            <div class="form-group">
-                                                <div class="col-sm-offset-2 col-sm-10">
-                                                    <button type="submit" class="btn btn-primary btn-sm submit-task">Update</button>
-                                                </div>
-                                            </div>
-                                            {{/if}} {{/if}}
                                         </form>
                                     </div>
                                 </div>
@@ -745,7 +726,7 @@
                         <div class="tab-pane fade in" id="buyerNotificationsTab">
                             <br>
                             <div class="panel panel-default">
-                                <div class="panel-body">
+                                <div class="panel-body" id="jobNotifications">
                                     {{#each jobRelatedNotifications}}
                                         {{#if $eq notificationType 'jobDeactivated'}}
                                             <li class="list-group-item"><a href="/buyers/{{buyerId}}">{{buyerName}}</a> has deactivated the job. <br>Account credited: {{../totalfromclient}} USD. <br><small><i>{{timeStamp}}</i></small></li>
@@ -1009,7 +990,12 @@
                                                             <td>{{expense_description}}</td>
                                                             <td>
                                                                 {{#if $eq request_status 'pending'}}
-                                                                    <a href data-expense-id="{{expense_id}}" data-buyer-cost="{{buyer_cost}}" class="approveExpense" data-balloon="Your account will be debited with {{buyer_cost}} USD." data-balloon-pos="up"><i class="fa fa-check"></i></a>&nbsp;&#124;&nbsp;<a href data-expense-id="{{expense_id}}" class="rejectExpense" data-balloon="Reject Expense" data-balloon-pos="up"><i class="fa fa-times"></i></a>
+                                                                    {{#if $eq ../../status 'active'}}
+                                                                        <button data-expense-id="{{expense_id}}" data-buyer-cost="{{buyer_cost}}" class="btn btn-xs btn-white approveExpense" data-balloon="Your account will be debited with {{buyer_cost}} USD." data-balloon-pos="up"><i class="fa fa-check"></i></button>
+                                                                        <button data-expense-id="{{expense_id}}" class="btn btn-xs btn-white rejectExpense" data-balloon="Reject Expense" data-balloon-pos="up"><i class="fa fa-times"></i></button>
+                                                                    {{else}}
+                                                                        <a href data-balloon="Deactivated" data-balloon-pos="up"><i class="fa fa-ban"></i></a>
+                                                                    {{/if}}
                                                                 {{/if}}
                                                                 {{#if $eq request_status 'accepted'}}
                                                                     <i class="fa fa-check"></i> Accepted
@@ -1061,17 +1047,17 @@
                                                             <td>{{roundToTwo this.provider_nets}} USD</td>
                                                             <td>
                                                                 {{#if $eq this.request_status 'pending'}}
-                                                                    {{#if $eq ../status 'active'}}
+                                                                    {{#if $eq ../../status 'active'}}
                                                                         {{#if $eq ../../applicationStatus 'assigned'}}
-                                                                            <a href class="acceptBudgetIncrease" data-balloon="Accept Increase" data-ballon-pos="up" data-bi-id="{{request_id}}" data-buyer-cost="{{buyer_cost}}">
+                                                                            <button class="btn btn-xs btn-white acceptBudgetIncrease" data-balloon="Accept Increase" data-ballon-pos="up" data-bi-id="{{request_id}}" data-buyer-cost="{{buyer_cost}}">
                                                                             <i class="fa fa-check"></i>
-                                                                            </a>&#124;
-                                                                            <a href class="rejectBudgetIncrease" data-balloon="Reject Increase" data-ballon-pos="up" data-bi-id="{{request_id}}">
+                                                                            </button>
+                                                                            <button class=" btn btn-xs btn-white rejectBudgetIncrease" data-balloon="Reject Increase" data-ballon-pos="up" data-bi-id="{{request_id}}">
                                                                                 <i class="fa fa-times"></i>
-                                                                            </a>
+                                                                            </button>
                                                                         {{/if}}
                                                                     {{else}}
-                                                                        Deactivated
+                                                                        <a href data-balloon="Deactivated" data-balloon-pos="up"><i class="fa fa-ban"></i></a>
                                                                     {{/if}}
                                                                 {{/if}}
                                                                 {{#if $eq this.request_status 'accepted'}}
@@ -1840,7 +1826,7 @@
                         </div>
                         <div class="tab-pane fade in" id="providerNotificationsTab">
                             <br>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" id="jobNotifications">
                                 <div class="panel-body">
                                     <ul class="list-group">
                                         {{#each jobRelatedNotifications}}
@@ -2560,7 +2546,7 @@
                         <div class="tab-pane fade in active" id="jobNotificationsTab">
                             <br>
                             <div class="panel panel-default">
-                                <div class="panel-body">
+                                <div class="panel-body" id="jobNotifications">
                                     {{#each jobRelatedNotifications}}
                                         {{#if $eq notificationType 'newJob'}}
                                             <li class="list-group-item">
@@ -2735,12 +2721,25 @@
                                     {{#each appliedProviders}}
                                         {{#if $eq this.app_type 'application'}}
                                             <div class="panel-group" id="accordion">
-                                                <div class="panel panel-light">
+                                                <div class="panel panel-white">
                                                     <div class="panel-heading">
-                                                        <div class="pull-right">
-                                                            <a href="/profiles/{{this.userId}}"><i class="fa fa-link"></i></a>&nbsp;&#124;&nbsp;
-                                                            <a href id="appliedProviderMsg"><i class="fa fa-envelope"></i></a>
-                                                        </div>
+                                                        <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">
+                                                            <div class="media">
+                                                                <div class="media-left">
+                                                                    {{#if imgUrl}}
+                                                                        <img src="{{imgUrl}}" alt="{{this.name}}" width="48px" class="media-object">
+                                                                    {{else}}
+                                                                        <img src="/images/avatar.png" width="48px" alt="{{this.name}}" class="media-object">
+                                                                    {{/if}}
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <small><i># {{this.readableId}} - {{this.name}}</i></small>
+                                                                    <br>
+                                                                    <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="right" class="btn btn-xs btn-white"><i class="fa fa-link"></i></a>
+                                                                    <a href id="appliedProviderMsg" class="btn btn-xs btn-white" data-balloon="Send Msg." data-balloon-pos="right"><i class="fa fa-envelope"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </a>
                                                     </div>
                                                     <div id="user{{this.userId}}" class="panel-collapse collapse">
                                                         <div class="panel-body">
@@ -2844,6 +2843,6 @@
             </div>
         </div>
     {{else}}
-        <p>Your access is restricted. <a href="/sign-in">Login</a></p>
+        {{>mustBeLoggedIn}}
     {{/if}}
 </template>

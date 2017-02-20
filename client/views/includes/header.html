@@ -61,7 +61,7 @@
                     <ul>
                         <li class="dropdown-header">Jobs</li>
                         <li><a href="{{pathFor 'allJobs'}}">All Jobs</a></li>
-                        <li><a href="{{pathFor 'allInvoices'}}">Invoices</a></li>
+                        <li><a href="{{pathFor 'invoices'}}">Invoices</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">Users</li>
                         <li><a href="{{pathFor 'allUsers'}}">All Users</a></li>
@@ -323,12 +323,12 @@
                     {{/with}}
                 {{/if}}
                 {{#if currentUser.isBuyer}}
-                    {{#with buyer}}
+                    {{#with profile}}
                         <a href="{{pathFor 'buyerNotifications'}}">View All Notifications</a>
                     {{/with}}
                 {{/if}}
                 {{#if currentUser.isDispatcher}}
-                    {{#with dispatcher}}
+                    {{#with profile}}
                         <a href="{{pathFor 'dispatcherNotifications'}}">View All Notifications</a>
                     {{/with}}
                 {{/if}}

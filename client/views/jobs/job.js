@@ -398,8 +398,8 @@ Template.job.events({
   },
   "change .file_bag": function(event) {
     event.preventDefault();
-    var files = $(event.currentTarget)[0].files
-
+    $('#spinner').show();
+    var files = $(event.currentTarget)[0].files;
     if (!files) return;
     var id = this._id;
     S3.upload({
@@ -407,15 +407,20 @@ Template.job.events({
         path: S3_FILEUPLOADS
     }, function(err, res) {
         $('.progress').remove();
-        if (err) toastr.error("Failed to upload file");
+        if (err) 
+          toastr.error("Failed to upload file");
         else {
             var fileDetails = {
               file_url: res.secure_url,
               file_name: res.file.original_name
             }
             Meteor.call('addFile', fileDetails, id,function (error, result) {
-              if(error)
+              if(error) {
+                $('#spinner').hide();
                 toastr.error("Failed to upload file. Try again.");
+              }
+              else
+                $('#spinner').hide()
             });
         }
     });
@@ -1252,7 +1257,8 @@ Template.job.events({
     var jobId = Router.current().params._id;
     Meteor.call('cancelBudgetIncrease', requestId, jobId);
   },
-  'click .acceptBudgetIncrease': function(event, template) {
+  'click button.acceptBudgetIncrease': function(event, template) {
+    $(event.currentTarget).prop('disabled', 'disabled');
     var buyerId;
     if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
       buyerId = Meteor.userId();
@@ -1264,9 +1270,13 @@ Template.job.events({
     var userWallet = Wallet.findOne({userId: buyerId});
     if(buyerCost > userWallet.accountBalance) {
       $('.lessbalalertbi').show();
+      $(event.currentTarget).removeAttr('disabled');
       return;
     }
-    Meteor.call('acceptBudgetIncrease', jobId, buyerId, requestId);
+    Meteor.call('acceptBudgetIncrease', jobId, buyerId, requestId, function(error, result) {
+      if(error)
+        $(event.currentTarget).removeAttr('disabled');
+    });
   },
   'click .hidelessbalalertbi': function(event, template) {
     $(event.currentTarget).parent().hide();
@@ -1274,10 +1284,14 @@ Template.job.events({
   'click .hidelessbalalertexp': function(event, template) {
     $(event.currentTarget).parent().hide();
   },
-  'click .rejectBudgetIncrease':function(event, template) {
+  'click button.rejectBudgetIncrease':function(event, template) {
+    $(event.currentTarget).prop('disabled', 'disabled');
     var jobId = Router.current().params._id;
     var requestId = $(event.currentTarget).data('bi-id');
-    Meteor.call('rejectBudgetIncrease', jobId, requestId);
+    Meteor.call('rejectBudgetIncrease', jobId, requestId, function(error, result) {
+      if(error)
+        $(event.currentTarget).removeAttr('disabled');
+    });
   },
   'submit #extra_expenses': function(event, template) {
     event.preventDefault();
@@ -1319,8 +1333,8 @@ Template.job.events({
     var expense_id = $(event.currentTarget).data('expense-id');
     Meteor.call('removeExpense', jobId, expense_id);
   },
-  'click a.approveExpense': function(event, template) {
-    event.preventDefault();
+  'click button.approveExpense': function(event, template) {
+    $(event.currentTarget).prop('disabled', 'disabled');
     var buyerId;
     if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
       buyerId = Meteor.userId();
@@ -1332,15 +1346,22 @@ Template.job.events({
     var userWallet = Wallet.findOne({userId: buyerId});
     if(userWallet.accountBalance < expense_buyer_cost) {
       $('.lessbalalertexp').show();
+      $(event.currentTarget).removeAttr('disabled');
       return;
     }
-    Meteor.call('approveExpense', jobId, buyerId, expense_id);
+    Meteor.call('approveExpense', jobId, buyerId, expense_id, function(error, result) {
+      if(error)
+        $(event.currentTarget).removeAttr('disabled');
+    });
   },
-  'click a.rejectExpense': function(event, template) {
-    event.preventDefault();
+  'click button.rejectExpense': function(event, template) {
+    $(event.currentTarget).prop('disabled', 'disabled');
     var jobId = Router.current().params._id;
     var expense_id = $(event.currentTarget).data('expense-id');
-    Meteor.call('rejectExpense', jobId, expense_id);
+    Meteor.call('rejectExpense', jobId, expense_id, function(error, result) {
+      if(error)
+        $(event.currentTarget).removeAttr('disabled');
+    });
   },
   'submit #devices-worked': function(event, template) {
     event.preventDefault();
@@ -1667,13 +1688,6 @@ Template.job.helpers({
     return count;
   },
   'declinedJob': function() {
-    // var applicants = Jobs.findOne({_id: this._id}).applications;
-    // for(var i = 0; i < applicants.length; i++) {
-    //   if(applicants[i].userId == Meteor.userId() && applicants[i].app_status == 'declined') {
-    //     return true;
-    //   }
-    // }
-    // return false;
     return Profiles.findOne({ $and: [{ userId: Meteor.userId() }, { declinedJobs: { $in: [this._id] } }] }) ? true : false;
   },
   'providerDeclined': function() {
@@ -2430,6 +2444,7 @@ var distance = function(plat, plng, jlat, jlng) {
 }
 
 Template.job.rendered = function() {
+  $('.progress').hide();
   this.ratingPoints = new ReactiveVar(null);
   var providerRatingPoints = 0;
   var providerReviews = Reviews.find({$and: [{providerId: this.data.assignedProvider}, {reviewedBy: 'buyer'}]}).fetch();

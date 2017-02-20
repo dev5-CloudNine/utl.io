@@ -1,18 +1,22 @@
 <template name="jobNew">
-    <div class="row">
-        <div class="col-sm-12">
-            <p>You can either choose to publish to the portal or to your favorite providers or to any particular service provider. Upon publish, your account will be debited with proposed budget. You may edit the job and change the budget until the job is assigned to a provider. Once assigned you cannot edit.</p>
-            <br>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {{#autoForm id="jobNew" collection="Jobs" type="insert"}}
-                        {{>jobFields}}
-                        {{>submitButtons}}
-                    {{/autoForm}}
+    {{#if currentUser}}
+        <div class="row">
+            <div class="col-sm-12">
+                <p>You can either choose to publish to the portal or to your favorite providers or to any particular service provider. Upon publish, your account will be debited with proposed budget. You may edit the job and change the budget until the job is assigned to a provider. Once assigned you cannot edit.</p>
+                <br>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{#autoForm id="jobNew" collection="Jobs" type="insert"}}
+                            {{>jobFields}}
+                            {{>submitButtons}}
+                        {{/autoForm}}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {{else}}
+        {{>mustBeLoggedIn}}
+    {{/if}}
 </template>
 
 <template name="submitButtons">
@@ -249,87 +253,25 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12">
-            <div class="panel-group" id="accordion">
-                <div class="panel panel-white">
-                    <div class="panel-heading">
-                        <a href="#uploadJobDocs" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"><h5>Attach Documents</h5></a>
-                    </div>
-                    <div id="uploadJobDocs" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <label class="btn btn-success input-group-btn btn-lbl" data-toggle="tooltip" data-placement="top" style="font-size: 12px;">
-                                                <input type="file" class="file_bag" multiple=true> Select from Computer
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <label class="control-label">Select from the documents</label>
-                                    <br>
-                                    <div class="row">
-                                        {{#each userDocuments}}
-                                            <div class="col-md-3">
-                                                <div class="thumbnail" style="position: relative;">
-                                                    <span title="Remove" class="close-preview removeUserFile" data-url="{{file_url}}" style="cursor: pointer;">&times;</span>
-                                                    <input type="checkbox" name="select_files" value="{{file_url}}" data-url="{{file_url}}" data-file-name="{{file_name}}">
-                                                    <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
-                                                    <div class="caption" style="overflow: hidden;word-wrap: break-word;">
-                                                        <a href="{{file_url}}" target="_blank">{{this.file_name}}</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {{/each}}
-                                        {{#if userDocuments}}
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <button type="button" class="btn btn-success attachSelected">Attach</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {{else}}
-                                            <div class="col-sm-12">
-                                                <p>No files found. Please select from computer.</p>
-                                            </div>
-                                        {{/if}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="btn btn-success">
+                        <input type="file" class="file_bag" multiple=true> Upload Documents
+                    </label>
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-12">  
             <div id="spinner">
                 {{> spinner}}
-            </div>
-            {{#each uploadedFiles}}
-                <div class="fileUploadProgress">
-                    <div class="progress-bar progress-bar-striped" role="progressbar"
-                    aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">{{percent_uploaded}}%</div>
-                </div>
-            {{/each}}
+            </div>              
+            <ul class="fileList list-inline list-unstyled">            
+                {{#each files}}
+                    <li><i class="fa fa-times-circle remove-job-file" data-url="{{this.file_url}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this.file_url}}" target="_blank">{{this.file_name}}</a></li>
+                {{/each}}
+            </ul>
         </div>
-        <div class="fileList">
-            {{#each files}}
-                <div class="col-md-2">
-                    <div class="thumbnail" style="position: relative;">
-                        <span title="Remove" class="close-preview remove-job-file" data-url={{this.file_url}} style="cursor: pointer;">&times;</span>
-                        <a href="{{this.file_path}}" target="_blank">
-                          <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
-                        </a>
-                        <div class="caption" style="overflow: hidden;word-wrap: break-word;">
-                            <a href="{{this.file_path}}" target="_blank">{{this.file_name}}</a>
-                        </div>
-                    </div>
-                </div>
-            {{/each}}
-        </div> 
     </div>
     <hr>
     <div class="row">

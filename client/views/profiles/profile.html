@@ -1,155 +1,166 @@
 <template name="profile">
 	{{#if currentUser}}
-	<div id="profile">
-		<div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-sm-4">
-						{{#if customImageUrl}}
-							<div class="avatar avatar-large">
-								<img class="img-responsive img-thumbnail" src="{{customImageUrl}}"/>
-							</div>
-						{{else}}
-							<div class="avatar avatar-large">
-								<img class="img-responsive img-thumbnail" src="/images/avatar.png" alt="" width="200px">
-							</div>
-						{{/if}}
-						{{#if isInRole 'buyer, dispatcher'}}
-							{{#if currentUser.isBuyer}}
+		<div id="profile">
+			<div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-4">
+							{{#if customImageUrl}}
+								<div class="avatar avatar-large">
+									<img class="img-responsive img-thumbnail" src="{{customImageUrl}}"/>
+								</div>
+							{{else}}
+								<div class="avatar avatar-large">
+									<img class="img-responsive img-thumbnail" src="/images/avatar.png" alt="" width="200px">
+								</div>
+							{{/if}}
+							{{#if isInRole 'buyer, dispatcher'}}
+								{{#if currentUser.isBuyer}}
+									<br>
+									{{#if $eq this.status 'active'}}
+										<a href="{{pathFor 'assignJob'}}" class="btn btn-xs btn-white" data-balloon="Assign Job" data-balloon-pos="up"><i class="fa fa-paper-plane"></i></a>
+										<a href="" class="{{#if fav}}favActive{{else}}favInactive{{/if}} btn btn-xs btn-white" data-balloon="{{#if fav}}Del. Fav{{else}}Add Fav{{/if}}" data-balloon-pos="up"><i class="fa {{#if fav}}fa-heart{{else}}fa-heart-o{{/if}}"></i></a>
+										<a href="" class="btn btn-xs btn-white" id="sendProviderMessage" data-balloon="Send Msg." data-balloon-pos="up"><i class="fa fa-envelope"></i></a>
+									{{else}}
+										<p class="label label-deactivated">Inactive</p>
+									{{/if}}
+								{{/if}}
+							{{/if}}
+							{{#if isInRole 'admin'}}
 								<br>
 								{{#if $eq this.status 'active'}}
-									<a href="{{pathFor 'assignJob'}}" class="btn btn-xs btn-white" data-balloon="Assign Job" data-balloon-pos="up"><i class="fa fa-paper-plane"></i></a>
-									<a href="" class="{{#if fav}}favActive{{else}}favInactive{{/if}} btn btn-xs btn-white" data-balloon="{{#if fav}}Del. Fav{{else}}Add Fav{{/if}}" data-balloon-pos="up"><i class="fa {{#if fav}}fa-heart{{else}}fa-heart-o{{/if}}"></i></a>
 									<a href="" class="btn btn-xs btn-white" id="sendProviderMessage" data-balloon="Send Msg." data-balloon-pos="up"><i class="fa fa-envelope"></i></a>
 								{{else}}
 									<p class="label label-deactivated">Inactive</p>
 								{{/if}}
 							{{/if}}
-						{{/if}}
-					</div>
-					<div class="col-sm-8">
-						<div class="row">
-							<div class="col-sm-12">
-								<small><i># {{readableID}}</i></small>
-								<p class="budgetFont">{{displayName}} </p>
-								<p>{{title}} {{#if companyName}} - {{companyName}} {{/if}}</p>
-								<p>Average Rate per Hour: {{avgRatesPerHour}} USD</p>
-								<span class="rateit"></span>
-								<hr>
-								<small>
+						</div>
+						<div class="col-sm-8">
+							<div class="row">
+								<div class="col-sm-12">
+									<small><i># {{readableID}}</i></small>
+									<p class="budgetFont">{{displayName}} </p>
+									<p>{{title}} {{#if companyName}} - {{companyName}} {{/if}}</p>
+									<p>Average Rate per Hour: {{avgRatesPerHour}} USD</p>
+									<span class="rateit"></span>
+									<hr>
+									<small>
+										{{#if adminOrProvider}}
+											{{#if fullLocation}}
+												{{fullLocation.street}}, 
+												{{#if fullLocation.sublocality}}
+												{{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
+											{{/if}}
+											<hr>
+											EIN/SSN: {{socialSecurityNumber}}
+										{{else}}
+											{{#if fullLocation}}
+												{{#if fullLocation.sublocality}}
+												{{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+											{{/if}}
+										{{/if}}
+									</small>
+									<hr>
+									Member since: <br> {{formatDate createdAt}}
+									<hr>
 									{{#if adminOrProvider}}
-										{{#if fullLocation}}
-											{{fullLocation.street}}, 
-											{{#if fullLocation.sublocality}}
-											{{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
-										{{/if}}
+										<i class="fa fa-envelope"></i> {{userName}}
+										<br>
+										<i class="fa fa-mobile"></i> {{contactNumber}}
+										<br>
+										<i class="fa fa-mobile"></i> {{smsAddress}}
 										<hr>
-										EIN/SSN: {{socialSecurityNumber}}
-									{{else}}
-										{{#if fullLocation}}
-											{{#if fullLocation.sublocality}}
-											{{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
-										{{/if}}
-									{{/if}}
-								</small>
-								<hr>
-								Member since: <br> {{formatDate createdAt}}
-								<hr>
-								{{#if adminOrProvider}}
-									<i class="fa fa-envelope"></i> {{userName}}
-									<br>
-									<i class="fa fa-mobile"></i> {{contactNumber}}
-									<br>
-									<i class="fa fa-mobile"></i> {{smsAddress}}
-									<hr>
-									{{#with dwollaFundingSource}}
-										<i class="fa fa-credit-card"></i> Account No: {{this.bank_account_number}} <br>
-										<i class="fa fa-university"></i> Routing No: {{this.routing_number}} <br>
-										<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.account_type}} <br>
-										<i class="fa fa-credit-card"></i> SSN: {{this.socialSecurityNo}}
-									{{/with}}
-									{{url}}
-								{{/if}}
-								<h4>About Me</h4>
-								{{{description}}}
-								{{#if freelancerSkills}}
-									<hr>
-									<h4>Skills</h4>
-									{{freelancerSkills}}
-								{{/if}}
-								{{#if industryTypes}}
-									<hr>
-									<h4>Job Categories</h4>
-									{{#each itypes}}
-										{{#if isInRole 'provider'}}
-											<a href="/subcategory/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
-										{{/if}}
-										{{#if isInRole 'buyer, dispatcher'}}
-											<a href="/pro/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
-										{{/if}}
-									{{/each}}
-								{{/if}}
-								{{#if preferredWorkLocation}}
-									<hr>
-									<h4>Preferred Work Location</h4>
-									{{preferredWorkLocation}}
-								{{/if}}
-								{{#if educationDetails}}
-									<hr>
-									<h4>Education Details</h4>
-									{{#each educationDetails}}
-										University: {{this.university}} <br>
-										Degree: {{this.degree}} <br>
-										Major: {{this.major}} <br>
-										Starting: {{formatServiceSchedule this.startTime}} <br>
-										Ending: {{formatServiceSchedule this.endTime}} <br>
-									{{/each}}
-								{{/if}}
-								{{#if certifications}}
-									<hr>
-									<h4>Certifications</h4>
-									<p>{{{htmlCertifications}}}</p>
-								{{/if}}
-								{{#if languages}}
-									<hr>
-									<h4>Languages Known</h4>
-									<ul class="list-unstyled">
-										{{#each languages}}
-											<li>{{level}} in {{language}}</li>
-										{{/each}}
-									</ul>
-								{{/if}}
-								{{#if resumeURL}}
-									<hr>
-									<h4>Resume</h4>
-									<ul class="list-unstyled">
-										{{#with resumeURL}}
-											<li><a href="{{file_url}}" download>{{file_name}}</a></li>
+										{{#with dwollaFundingSource}}
+											<i class="fa fa-credit-card"></i> Account No: {{this.bank_account_number}} <br>
+											<i class="fa fa-university"></i> Routing No: {{this.routing_number}} <br>
+											<i class="fa fa-dot-circle-o"></i> Account Type: {{toUpperCase this.account_type}} <br>
+											<i class="fa fa-credit-card"></i> SSN: {{this.socialSecurityNo}}
 										{{/with}}
-									</ul>
-								{{/if}}
+										{{url}}
+									{{/if}}
+									<h4>About Me</h4>
+									{{{description}}}
+									{{#if freelancerSkills}}
+										<hr>
+										<h4>Skills</h4>
+										{{freelancerSkills}}
+									{{/if}}
+									{{#if industryTypes}}
+										<hr>
+										<h4>Job Categories</h4>
+										{{#each itypes}}
+											{{#if isInRole 'provider'}}
+												<a href="/subcategory/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
+											{{/if}}
+											{{#if isInRole 'buyer, dispatcher'}}
+												<a href="/pro/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
+											{{/if}}
+											{{#if isInRole 'admin'}}
+												<label class="label label-default">{{this.decodedType}}</label>
+											{{/if}}
+										{{/each}}
+									{{/if}}
+									{{#if preferredWorkLocation}}
+										<hr>
+										<h4>Preferred Work Location</h4>
+										{{preferredWorkLocation}}
+									{{/if}}
+									{{#if educationDetails}}
+										<hr>
+										<h4>Education Details</h4>
+										{{#each educationDetails}}
+											University: {{this.university}} <br>
+											Degree: {{this.degree}} <br>
+											Major: {{this.major}} <br>
+											Starting: {{formatServiceSchedule this.startTime}} <br>
+											Ending: {{formatServiceSchedule this.endTime}} <br>
+										{{/each}}
+									{{/if}}
+									{{#if certifications}}
+										<hr>
+										<h4>Certifications</h4>
+										<p>{{{htmlCertifications}}}</p>
+									{{/if}}
+									{{#if languages}}
+										<hr>
+										<h4>Languages Known</h4>
+										<ul class="list-unstyled">
+											{{#each languages}}
+												<li>{{level}} in {{language}}</li>
+											{{/each}}
+										</ul>
+									{{/if}}
+									{{#if resumeURL}}
+										<hr>
+										<h4>Resume</h4>
+										<ul class="list-unstyled">
+											{{#with resumeURL}}
+												<li><a href="{{file_url}}" download>{{file_name}}</a></li>
+											{{/with}}
+										</ul>
+									{{/if}}
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-12">
-						{{#if adminOrProvider}}
-							<div class="pull-right">
-								&nbsp;
-								<a href="{{pathFor 'profileEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
-							</div>
-							<div class="pull-right">
-								<button class="btn btn-danger {{#if $eq status 'active'}}deactivateProfile{{else}} activateProfile{{/if}}">{{#if $eq status 'active'}}Deactivate{{else}} Activate{{/if}}</button>
-							</div>
-						{{/if}}
+					<div class="row">
+						<div class="col-sm-12">
+							{{#if adminOrProvider}}
+								<div class="pull-right">
+									&nbsp;
+									<a href="{{pathFor 'profileEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+								</div>
+								<div class="pull-right">
+									<button class="btn btn-danger {{#if $eq status 'active'}}deactivateProfile{{else}} activateProfile{{/if}}">{{#if $eq status 'active'}}Deactivate{{else}} Activate{{/if}}</button>
+								</div>
+							{{/if}}
+						</div>
 					</div>
 				</div>
 			</div>
+			{{>userReviews userId=userId}}
 		</div>
-		{{>userReviews userId=userId}}
-	</div>
 	{{else}}
-		<p>You access is restricted. <a href="/sign-in">Login</a></p>
+		{{>mustBeLoggedIn}}
 	{{/if}}
 </template>

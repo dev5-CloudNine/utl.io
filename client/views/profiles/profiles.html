@@ -5,7 +5,7 @@
 				<input type="text" id="search-providers" class="form-control" placeholder="Search Providers By Name, Location, or Designation">
 				<br>
 			</div>
-			{{#if isInRole 'buyer, admin, corporate-admin, dispatcher'}}
+			{{#if isInRole 'buyer, dispatcher'}}
 				{{#each profilesList}}
 					<div class="col-md-4">
 						{{>profileSmall}}

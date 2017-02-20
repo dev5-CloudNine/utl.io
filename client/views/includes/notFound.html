@@ -11,3 +11,32 @@
 		</div>
 	</div>
 </template>
+
+<template name="mustBeLoggedIn">
+	<div class="row">
+		<div class="col-sm-8 col-sm-offset-2 text-center">
+			<div class="alert alert-danger">
+				<i class="fa fa-frown-o fa-3x pull-left"></i>
+				<b>Oops, you can't access this page without logging in.</b>
+				<br>
+				<br>
+				<a href="{{pathFor 'signIn'}}">Click here</a> to login.
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="notYourUrl">
+	<div class="row">
+		<div class="col-sm-8 col-sm-offset-2 text-center">
+			<div class="alert alert-danger">
+				<i class="fa fa-frown-o fa-3x pull-left"></i>
+				<b>Oops, Looks like you're accessing a URL that doesn't belongs to you</b>
+				<br>
+				<br>
+				Only appropriate users can access this URL.
+			</div>
+		</div>
+	</div>
+</template>
+

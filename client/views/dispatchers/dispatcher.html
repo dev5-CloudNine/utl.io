@@ -1,117 +1,121 @@
 <template name="dispatcher">
-	<div id="dispatcherProfile">
-		<div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-sm-4">
-						{{#if customImageUrl}}
-							<div class="avatar avatar-large">
-								<img class="img-responsive img-thumbnail" src="{{customImageUrl}}"/>
-							</div>
-						{{else}}
-							<div class="avatar avatar-large">
-								<img class="img-responsive img-thumbnail" src="/images/avatar.png" alt="" width="200px">
-							</div>
-						{{/if}}
-						{{#if isInRole 'buyer, accountant'}}
-							<br>
-							{{#if $eq this.status 'active'}}
-								<button class="btn btn-xs btn-white">
-									<a href="{{pathFor 'dispatcherJobs'}}" data-balloon="View Jobs ({{buyerOpenCount userId}})"><i class="fa fa-rocket"></i></a>
-								</button>
+	{{#if currentUser}}
+		<div id="dispatcherProfile">
+			<div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-4">
+							{{#if customImageUrl}}
+								<div class="avatar avatar-large">
+									<img class="img-responsive img-thumbnail" src="{{customImageUrl}}"/>
+								</div>
 							{{else}}
-								<p class="label label-deactivated">Inactive</p>
+								<div class="avatar avatar-large">
+									<img class="img-responsive img-thumbnail" src="/images/avatar.png" alt="" width="200px">
+								</div>
 							{{/if}}
-						{{/if}}
-					</div>
-					<div class="col-sm-8">
-						<div class="row">
-							<div class="col-sm-12">
-								<small><i># {{readableID}}</i></small>
-								<p class="budgetFont">{{displayName}} </p>
-								<p>{{title}} {{#if companyName}} - {{companyName}} {{/if}}</p>
-								<span class="rateit"></span>
-								<hr>
-								{{#if adminOrDispatcher}}
-									{{#if fullLocation}}
-										{{fullLocation.street}}, 
-										{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
-									{{/if}}
+							{{#if isInRole 'buyer, accountant'}}
+								<br>
+								{{#if $eq this.status 'active'}}
+									<button class="btn btn-xs btn-white">
+										<a href="{{pathFor 'dispatcherJobs'}}" data-balloon="View Jobs ({{buyerOpenCount userId}})"><i class="fa fa-rocket"></i></a>
+									</button>
 								{{else}}
-									{{#if fullLocation}}
-										{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+									<p class="label label-deactivated">Inactive</p>
+								{{/if}}
+							{{/if}}
+						</div>
+						<div class="col-sm-8">
+							<div class="row">
+								<div class="col-sm-12">
+									<small><i># {{readableID}}</i></small>
+									<p class="budgetFont">{{displayName}} </p>
+									<p>{{title}} {{#if companyName}} - {{companyName}} {{/if}}</p>
+									<span class="rateit"></span>
+									<hr>
+									{{#if adminOrDispatcher}}
+										{{#if fullLocation}}
+											{{fullLocation.street}}, 
+											{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
+										{{/if}}
+									{{else}}
+										{{#if fullLocation}}
+											{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+										{{/if}}
 									{{/if}}
-								{{/if}}
-								<hr>
-								Member since <br> {{formatDate createdAt}}
-								<hr>
-								{{#if adminOrDispatcher}}
-									<i class="fa fa-envelope"></i> {{userName}}
-									<br>
-									<i class="fa fa-mobile"></i> {{contactNumber}}
-									<br>
-									<i class="fa fa-mobile"></i> {{smsAddress}}
 									<hr>
-									{{companyUrl}}
-								{{/if}}
+									Member since <br> {{formatDate createdAt}}
+									<hr>
+									{{#if adminOrDispatcher}}
+										<i class="fa fa-envelope"></i> {{userName}}
+										<br>
+										<i class="fa fa-mobile"></i> {{contactNumber}}
+										<br>
+										<i class="fa fa-mobile"></i> {{smsAddress}}
+										<hr>
+										{{companyUrl}}
+									{{/if}}
+								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12">
-								<h4>About Me</h4>
-								{{{description}}}
-								{{#if industryTypes}}
-									<hr>
-									<h4>Job Categories</h4>
-										{{#each itypes}}
-											{{#if isInRole 'buyer, dispatcher'}}
-												<a href="/pro/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
-											{{/if}}
-											{{#if isInRole 'provider'}}
-												<a href="/subcategory/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
-											{{/if}}
-										{{/each}}
-									<hr>
-								{{/if}}
+							<div class="row">
+								<div class="col-sm-12">
+									<h4>About Me</h4>
+									{{{description}}}
+									{{#if industryTypes}}
+										<hr>
+										<h4>Job Categories</h4>
+											{{#each itypes}}
+												{{#if isInRole 'buyer, dispatcher'}}
+													<a href="/pro/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
+												{{/if}}
+												{{#if isInRole 'provider'}}
+													<a href="/subcategory/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
+												{{/if}}
+											{{/each}}
+										<hr>
+									{{/if}}
+								</div>
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							{{#if adminOrDispatcher}}
+								<div class="pull-right">
+									&nbsp;
+									<a href="{{pathFor 'dispatcherEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+								</div>
+								<div class="pull-right">
+									<button class="btn btn-danger {{#if $eq status 'active'}}deactivateProfile{{else}} activateProfile{{/if}}">{{#if $eq status 'active'}}Deactivate{{else}} Activate{{/if}}</button>
+								</div>
+							{{/if}}
+						</div>
+					</div>
 				</div>
-				<div class="row">
-					<div class="col-sm-12">
-						{{#if adminOrDispatcher}}
-							<div class="pull-right">
-								&nbsp;
-								<a href="{{pathFor 'dispatcherEdit'}}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
-							</div>
-							<div class="pull-right">
-								<button class="btn btn-danger {{#if $eq status 'active'}}deactivateProfile{{else}} activateProfile{{/if}}">{{#if $eq status 'active'}}Deactivate{{else}} Activate{{/if}}</button>
-							</div>
-						{{/if}}
+			</div>
+			<div class="panel panel-default panel-white">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<h5>Job History and Feedback</h5>
+							<ul class="list-group">
+								{{#each buyerCompletedJobs}}
+									<li class="list-group-item">
+										<a href="{{pathFor 'job'}}">{{this.title}}</a>
+										<h5>Review</h5>
+										{{#with reviews}}
+											<span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly=true></span> <br>
+											Message: {{this.reviewMessage}}
+										{{/with}}
+									</li>
+								{{/each}}
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="panel panel-default panel-white">
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-sm-12">
-						<h5>Job History and Feedback</h5>
-						<ul class="list-group">
-							{{#each buyerCompletedJobs}}
-								<li class="list-group-item">
-									<a href="{{pathFor 'job'}}">{{this.title}}</a>
-									<h5>Review</h5>
-									{{#with reviews}}
-										<span class="rateit" data-rateit-value="{{this.pointsRated}}" data-rateit-readonly=true></span> <br>
-										Message: {{this.reviewMessage}}
-									{{/with}}
-								</li>
-							{{/each}}
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	{{else}}
+		{{>mustBeLoggedIn}}
+	{{/if}}
 </template>

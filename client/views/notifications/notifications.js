@@ -146,17 +146,43 @@ Template.notifications.helpers({
 				var imgURL = Meteor.users.findOne({_id: notification.buyerId}).imgURL;
 				if(imgURL)
 					imgUrl = imgURL;
+				else
+					imgUrl = '/images/avatar.png';
 				notif = {
 					notificationType: notification.notificationType,
 					notificationTime: moment(notification.timeStamp).format('LLLL'),
 					notificationId: notification._id,
 					jobId: notification.jobId,
+					jobReadableId: jobDetails.readableID,
 					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 					imgUrl: imgUrl
 				}
 				notificationDetails.push(notif);
 			} else if(notification.notificationType == 'welcomeNotification') {
 				return;
+			} else if(notification.notificationType == 'addFavProvider') {
+				var buyerDetails;
+				if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
+					buyerDetails = Dispatchers.findOne({userId: notification.buyerId});
+				} else {
+					buyerDetails = Buyers.findOne({userId: notification.buyerId});
+				}
+				var imgUrl;
+				var img = Meteor.users.findOne({_id: notification.buyerId}).imgURL;
+				if(img)
+					imgUrl = img;
+				else
+					imgUrl = '/images/avatar.png';
+				var providerDetails = Profiles.findOne({userId: notification.providerId});
+				var notif = {
+					notificationType: notification.notificationType,
+					notificationTime: moment(notification.timeStamp).format('LLLL'),
+					notificationId: notification._id,
+					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
+					pname: providerDetails.firstName + ' ' + providerDetails.lastName,
+					imgUrl: imgUrl
+				}
+				notificationDetails.push(notif)
 			} else {
 				var buyerDetails;
 				if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
@@ -171,11 +197,15 @@ Template.notifications.helpers({
 					var imgURL = Meteor.users.findOne({_id: notification.providerId}).imgURL;
 					if(imgURL)
 						imgUrl = imgURL;
+					else
+						imgUrl = '/images/avatar.png';
 				}
 				if(notification.side == 'provider') {
 					var imgURL = Meteor.users.findOne({_id: notification.buyerId}).imgURL;
 					if(imgURL)
 						imgUrl = imgURL;
+					else
+						imgUrl = '/images/avatar.png';
 				}
 				if(providerDetails && buyerDetails) {
 				notif = {
@@ -183,6 +213,7 @@ Template.notifications.helpers({
 					notificationTime: moment(notification.timeStamp).format('LLLL'),
 					notificationId: notification._id,
 					jobId: notification.jobId,
+					jobReadableId: jobDetails.readableID,
 					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
 					pname: providerDetails.firstName + ' ' + providerDetails.lastName,
 					imgUrl: imgUrl

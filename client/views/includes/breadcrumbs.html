@@ -213,7 +213,7 @@
 		                            </div>
 		                            <div class="widget-data">
 		                            	<div class="widget-title seperator">
-	                                    	<a href="/allJobs">Jobs <span class="badge">{{getPublishedCount 'adminJobs'}}</span></a> &#124; <a href="/allInvoices">Invoices <span class="badge">{{allInvoicesCount}}</span></a>
+	                                    	<a href="/allJobs">Jobs <span class="badge">{{getPublishedCount 'adminJobs'}}</span></a> &#124; <a href="{{pathFor 'invoices'}}">Invoices <span class="badge">{{allInvoicesCount}}</span></a>
 	                                    </div>
 	                                    <div class="widget-subtitle">
 	                                    	Open - {{allOpenJobs}} &#124; 
@@ -250,12 +250,12 @@
 		                        <div class="widget widget-info widget-padding-sm">
 		                            <div class="row">
 		                            	<div class="col-xs-12 col-md-6">
-		                            		<div class="widget-big-int plugin-clock">{{userAccountBalance}}</div>
+		                            		<div class="widget-big-int plugin-clock">{{roundToTwo userAccountBalance}}</div>
 		                            		<div class="widget-subtitle plugin-date">Acc. Balance (USD)</div>
 		                            	</div>
 		                            	<div class="col-xs-12 col-md-6">
 		                            		<div class="widget-big-int plugin-clock">
-		                            			{{utlEarnings}}
+		                            			{{roundToTwo utlEarnings}}
 		                            		</div>
 		                            		<div class="widget-subtitle plugin-date">Earned (USD)</div>
 		                            	</div>

@@ -115,7 +115,7 @@ var allUsersObject = {
 			data: function(user) {
 				if(Roles.userIsInRole(user._id, ['dispatcher', 'accountant']))
 					return;
-				return Wallet.findOne({userId: user._id}).accountBalance;
+				return +(Math.round(Wallet.findOne({userId: user._id}).accountBalance + 'e+2') + 'e-2');
 			}
 		},
 		{

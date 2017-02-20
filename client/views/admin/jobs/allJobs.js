@@ -11,20 +11,20 @@ var allJobsObject = {
 			title: 'ID',
 			data: function(jobDetails) {
 				return jobDetails.readableID;
-			},
-			width: '10%'
+			}
 		},
 		{
 			title: 'Job Name',
 			data: function(jobDetails) {
 				var jobUrl = '<a href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br><small><i>' + moment(jobDetails.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a") + '</i></small>';
 				return jobUrl;
-			}
+			},
+			width: '38%'
 		},
 		{
 			title: 'Budget (USD)',
 			data: function(jobDetails) {
-				return jobDetails.your_cost;
+				return jobDetails.buyerCost;
 			},
 			width: '12%'
 		},
@@ -45,7 +45,7 @@ var allJobsObject = {
 			width: '20%'
 		},
 		{
-			title: 'Service Location',
+			title: 'Job Location',
 			data: function(jobDetails) {
 				if(jobDetails.servicelocation == 'Remote Job')
 					return 'Remote Job';

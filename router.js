@@ -384,7 +384,7 @@ Router.map(function() {
                 ) {
                 this.next();
             } else {
-                this.render('notFound');
+                this.render('notYourUrl');
             }
         },
         waitOn: function() {
@@ -1281,7 +1281,7 @@ Router.map(function() {
     })
 
     this.route('invoice', {
-        path: '/invoices/:invoiceId',
+        path: '/wallet/invoices/:invoiceId',
         title: 'Invoice',
         waitOn: function() {
             if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
