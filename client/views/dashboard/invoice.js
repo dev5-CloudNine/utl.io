@@ -208,7 +208,7 @@ Template.invoice.helpers({
 					return true;
 			} else if(jobDetails.ratebasis == 'Per Device') {
 				if(jobDetails.devicescompleted < jobDetails.maxdevices)
-					return tru;
+					return true;
 			} else if(jobDetails.ratebasis == 'Blended') {
 				var jobEstimatedMins = jobDetails.firsthours * 60 + jobDetails.nexthours * 60;
 				if(providerWorkedMins < jobEstimatedMins)

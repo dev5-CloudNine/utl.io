@@ -32,7 +32,7 @@ var buyerOptionsObject = {
 		{
 			title: 'ID',
 			data: function(invoice) {
-				var invoiceLink = '<a href="/invoices/' + invoice.invoiceId + '">' + invoice.invoiceId + '</a>';
+				var invoiceLink = '<a href="/wallet/invoices/' + invoice.invoiceId + '">' + invoice.invoiceId + '</a>';
 				return invoiceLink;
 			}
 		},
@@ -76,7 +76,7 @@ var providerOptionsObject = {
 		{
 			title: 'ID',
 			data: function(invoice) {
-				var invoiceLink = '<a href="/invoices/' + invoice.invoiceId + '">' + invoice.invoiceId + '</a>';
+				var invoiceLink = '<a href="/wallet/invoices/' + invoice.invoiceId + '">' + invoice.invoiceId + '</a>';
 				return invoiceLink;
 			}
 		},

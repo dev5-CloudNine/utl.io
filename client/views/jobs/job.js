@@ -1430,7 +1430,7 @@ Template.job.helpers({
           return true;
       } else if(jobDetails.ratebasis == 'Per Device') {
         if(jobDetails.devicescompleted < jobDetails.maxdevices)
-          return tru;
+          return true;
       } else if(jobDetails.ratebasis == 'Blended') {
         var jobEstimatedMins = jobDetails.firsthours * 60 + jobDetails.nexthours * 60;
         if(providerWorkedMins < jobEstimatedMins)
@@ -1445,8 +1445,6 @@ Template.job.helpers({
           break;
         }
       }
-      console.log(acceptedApplication)
-      // var acceptedApplication = Session.get('acceptedApplication');
       if(acceptedApplication.counterType == 'per_hour') {
         var jobEstimatedMins = acceptedApplication.max_hours * 60;
         if(providerWorkedMins < jobEstimatedMins)

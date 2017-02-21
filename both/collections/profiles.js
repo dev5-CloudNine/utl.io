@@ -215,31 +215,15 @@ Profiles.attachSchema(
         type: 'textarea'
       }
     },
-    // htmlEducationDetails: {
-    //   type: String,
-    //   optional: true,
-    //   autoValue: function(doc) {
-    //     var htmlContent = this.field("educationDetails");
-    //     if (Meteor.isServer && htmlContent.isSet) {
-    //       return cleanHtml(htmlContent.value);
-    //     }
-    //   }
-    // },
     certifications: {
       type: String,
       optional: true,
       autoform: {
-        afFieldInput: SUMMERNOTE_OPTIONS,
-        label: false
-      }
-    },
-    htmlCertifications: {
-      type: String,
-      optional: true,
-      autoValue: function(doc) {
-        var htmlContent = this.field("certifications");
-        if (Meteor.isServer && htmlContent.isSet) {
-          return cleanHtml(htmlContent.value);
+        type: 'tinyMCE',
+        data: {
+          menubar: false,
+          statusbar: false,
+          height: 200
         }
       }
     },

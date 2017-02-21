@@ -1315,19 +1315,21 @@ Meteor.methods({
         Jobs.update({_id: jobId}, {$set: {devicescompleted: numberOfDevices}});
     },
     updateBudget: function(jobId, providerEarnings, buyerReturns) {
+        console.log(jobId);
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var jobDetails = Jobs.findOne({_id: jobId});
-        var diff = jobDetails.proposedBudget - providerEarnings
+        var diff = jobDetails.proposedBudget - providerEarnings;
+        console.log(providerEarnings, buyerReturns, diff);
         Jobs.update({_id: jobId}, {$inc: {projectBudget: -diff}});
         Jobs.update({_id: jobId}, {$inc: {buyerCost: -buyerReturns}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -buyerReturns}});
         if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
             var buyerId = Dispatchers.findOne({userId: jobDetails.userId}).invitedBy;
             Wallet.update({userId: buyerId}, {$inc: {accountBalance: buyerReturns}});
-            Jobs.update({userId: buyerId}, {$inc: {buyerCost: -buyerReturns}});
+            // Jobs.update({userId: buyerId}, {$inc: {buyerCost: -buyerReturns}});
         } else if(Roles.userIsInRole(jobDetails.userId, ['buyer'])) {
             Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: buyerReturns}});
-            Jobs.update({userId: jobDetails.userId}, {$inc: {buyerCost: -buyerReturns}})
+            // Jobs.update({userId: jobDetails.userId}, {$inc: {buyerCost: -buyerReturns}})
         }
     }
 });

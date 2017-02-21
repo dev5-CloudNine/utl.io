@@ -1356,7 +1356,7 @@
                                                 {{else}}
                                                     <p><i>{{applicationTime}}</i></p>
                                                     <p>You've applied for this job. You'll be notified when the buyer accepts your application. You may cancel your application by clicking the button below.</p>
-                                                    <button class="btn btn-primary applyActive">Cancel Application</button>
+                                                    <button class="btn btn-sm btn-primary applyActive">Cancel Application</button>
                                                 {{/if}}
                                             {{/if}}
                                         {{else}}
@@ -1379,7 +1379,7 @@
                                                     </div>
                                                     <div id="app_selected">
                                                         {{#if currentUser.isDeveloper}}
-                                                            <button class="btn btn-primary btn-sm {{#if applied}}applyActive{{else}}applyInactive{{/if}}" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">{{#if applied}}Cancel Application{{else}}Send Application{{/if}}</button>
+                                                            <button class="btn btn-sm btn-primary btn-sm {{#if applied}}applyActive{{else}}applyInactive{{/if}}" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">{{#if applied}}Cancel Application{{else}}Send Application{{/if}}</button>
                                                         {{else}}
                                                             <h6>You must create your profile before you can apply for this job. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your profile.</h6>
                                                         {{/if}}
