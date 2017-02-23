@@ -27,7 +27,6 @@ var msgList = function() {
             msgList.push(ele);
         });
     } else {
-        console.log(Messages.find({recipient: Meteor.userId()}).fetch());
         Messages.find({$and:[{recipient: Meteor.userId()}]}, {sort: { date: -1 }}).map(function(ele) {
             ele.username = Meteor.users.findOne({ '_id': ele.sender }).emails[0].address;
             ele.date = moment(new Date(ele.date)).format('LLLL');

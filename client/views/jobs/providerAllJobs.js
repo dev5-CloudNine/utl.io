@@ -1,44 +1,3 @@
-// Template.providerAllJobs.onCreated(function() {
-//     var instance = this;
-//     instance.loaded = new ReactiveVar(0);
-//     instance.limit = new ReactiveVar(10);
-//     instance.jobs = function() {
-//         var allJobIds = Profiles.findOne({userId: Meteor.userId()}).allJobs;
-// 		var allJobs = [];
-// 		if(allJobIds) {
-// 			for(var i = allJobIds.length - 1; i>=allJobIds.length - instance.limit.get(); i-- ) {
-// 				if(i<0)
-// 					break;
-// 				allJobs.push(Jobs.findOne({_id: allJobIds[i]}));
-// 			}
-// 		}
-// 		return allJobs;
-//     }
-// });
-
-// Template.providerAllJobs.helpers({
-// 	providerAllJobs: function() {
-// 		return Template.instance().jobs();
-// 	},
-//     hasMoreJobs: function() {
-//     	var allJobIds = Profiles.findOne({userId: Meteor.userId()}).allJobs;
-//     	if(allJobIds)
-//     		allJobsLength = allJobIds.length;
-//     	else
-//     		allJobsLength = 0;
-//         return Template.instance().limit.get() < allJobsLength;
-//     }
-// })
-
-// Template.providerAllJobs.events({
-//     'click .load-more': function(event, instance) {
-//         event.preventDefault();
-//         var limit = instance.limit.get();
-//         limit += 10;
-//         instance.limit.set(limit);
-//     }
-// })
-
 var allJobs = function() {
     var providerDetails = Profiles.findOne({userId: Meteor.userId()});
     var allJobs = [];
@@ -53,13 +12,13 @@ var allJobs = function() {
 var allJobsOptions = {
     lengthMenu: [40, 80, 160, 320],
     pageLength: 40,
+    order: [[0, 'desc']],
     columns: [
         {
             title: 'ID',
             data: function(jobDetails) {
                 return '<small><i>' + jobDetails.readableID + '</i></small>'
-            },
-            responsivePriority: 4
+            }
         },
         {
             title: 'Title',
@@ -99,8 +58,7 @@ var allJobsOptions = {
                 var jobUrl = '<small>' + jobLocation + '</small><br><small>' + rateBasisText + '</small><br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
-            width: '60%',
-            responsivePriority: 1
+            width: '60%'
         },
         {
             title: 'Budget (USD)',
@@ -132,8 +90,7 @@ var allJobsOptions = {
                     return '<span class="budgetFont">' + jobDetails.projectBudget + '</span>';
                 }
             },
-            width: '20%',
-            responsivePriority: 2
+            width: '20%'
         },
         {
             title: 'Actions',
@@ -149,7 +106,7 @@ var allJobsOptions = {
                     }
                 }
                 if(jobDetails.applicationStatus == 'open')
-                    return '<span class="jobAppliedTick"><i class="fa fa-check-circle fa-2x"></i></span><br><small>U\'ve applied</small>';
+                    return '<span class="jobAppliedTick" data-balloon="U\'ve Applied" data-balloon-pos="up"><i class="fa fa-check-square fa-2x"></i></span>';
                 if(jobDetails.applicationStatus == 'assigned') {
                     if(acceptedProvider) {
                         var returnText;
@@ -202,8 +159,7 @@ var allJobsOptions = {
                 }
             }
         }
-    ],
-    responsive: true
+    ]
 }
 
 Template.providerAllJobs.helpers({

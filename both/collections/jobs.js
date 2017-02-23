@@ -304,6 +304,10 @@ Jobs.attachSchema(new SimpleSchema({
         }
       }
     },
+    estimatedDevices: {
+      type: Number,
+      optional: true
+    },
     devicescompleted: {
       type: Number,
       optional: true
@@ -702,6 +706,15 @@ Jobs.attachSchema(new SimpleSchema({
       optional: true
     },
     buyerCost: {
+      type: Number,
+      decimal: true,
+      autoValue: function() {
+        if (this.isInsert) {
+          return this.field('your_cost').value;
+        }
+      }
+    },
+    buyerInitialBudget: {
       type: Number,
       decimal: true,
       autoValue: function() {

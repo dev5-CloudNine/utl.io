@@ -145,28 +145,12 @@
             <div id="resumespinner">
                 {{> spinner}}
             </div>
-            {{#each uploadedFiles}}
-                <div class="resumeProgress">
-                    <div class="progress-bar progress-bar-striped" role="progressbar"
-                    aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent_uploaded}}%">{{percent_uploaded}}%</div>
-                </div>
-            {{/each}}
+            <ul class="fileList list-inline list-unstyled">            
+                {{#each resumeUrl}}
+                    <li><i class="fa fa-times-circle remove-resume" data-url="{{this.file_url}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this.file_url}}" target="_blank">{{this.file_name}}</a></li>
+                {{/each}}
+            </ul>
         </div>
-    </div>
-    <div class="row">
-        {{#each resumeUrl}}
-            <div class="col-sm-2">
-                <div class="thumbnail" style="position: relative;">
-                    <span title="Remove" class="close-preview remove-resume" data-url={{this.file_url}} style="cursor: pointer;">&times;</span>
-                    <a href="{{this.file_path}}" target="_blank">
-                      <img src="{{this}}" style="height:100px;" onerror="this.src='/images/genericFile.jpg'">
-                    </a>
-                    <div class="caption" style="overflow: hidden;word-wrap: break-word;">
-                        <a href="{{this.file_path}}" target="_blank">{{this.file_name}}</a>
-                    </div>
-                </div>
-            </div>
-        {{/each}}
     </div>
     <hr>
     {{>afQuickField name='description' rows=8 placeholder="Tell us about your professional self, how long you've been programming, things like that"}}

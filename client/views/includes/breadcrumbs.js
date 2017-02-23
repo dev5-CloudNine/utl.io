@@ -54,6 +54,15 @@ Template.breadcrumbs.helpers({
 		if(Roles.userIsInRole(Meteor.userId(), ['admin']))
 			return Wallet.findOne({userId: Meteor.userId()}).amountEarned;
 		return;
+	},
+	userAccountBalance: function() {
+		var accountBalance;
+		if(Roles.userIsInRole(Meteor.userId(), ['accountant', 'dispatcher'])) {
+			accountBalance =  Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+		} else {
+			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+		}
+		return +(Math.round(accountBalance + 'e+2') + 'e-2');
 	}
 });
 

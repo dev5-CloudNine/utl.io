@@ -77,7 +77,7 @@ var paidJobsOptions = {
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
-                return '<span class="budgetFont">' + jobDetails.projectBudget + '</span>'
+                return '<span class="budgetFont">' + (+(Math.round(jobDetails.projectBudget + 'e+2') + 'e-2')) + '</span>'
             },
             width: '15%',
             responsivePriority: 2

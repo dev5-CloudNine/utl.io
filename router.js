@@ -233,8 +233,8 @@ Router.map(function() {
         path: '/assignedJobs',
         title: 'UTL - Assigned Jobs',
         waitOn: function() {
-            Meteor.subscribe('allJobs');
-            return Meteor.subscribe('usersTasks');
+            return Meteor.subscribe('allJobs');
+            // return Meteor.subscribe('usersTasks');
         }
     });
 
@@ -242,8 +242,8 @@ Router.map(function() {
         path: '/pendingApproval',
         title: 'UTL - Pending Approval Jobs',
         waitOn: function() {
-            Meteor.subscribe('allJobs');
-            return Meteor.subscribe('usersTasks');
+            return Meteor.subscribe('allJobs');
+            // Meteor.subscribe('usersTasks');
         }
     });
 
@@ -545,13 +545,22 @@ Router.map(function() {
     this.route('profileNew', {
         path: '/profile',
         title: "UTL - Create Provider Profile",
+        onBeforeAction: function () {
+            if (Meteor.user() && Meteor.user().roles && ((Meteor.user().roles.indexOf("buyer")) != -1 || (Meteor.user().roles.indexOf("dispatcher")) != -1 )) {
+                this.next();
+            } else {
+                this.render('notYourUrl');
+            }
+        },
         onBeforeAction: function() {
             if (Meteor.user().isDeveloper) {
                 Router.go('profile', Profiles.findOne({
                     userId: Meteor.userId()
                 }));
-            } else {
+            } else if(Meteor.user() && Meteor.user().roles && ((Meteor.user().roles.indexOf("provider")) != -1)) {
                 this.next();
+            } else {
+                this.render('notYourUrl');
             }
         }
     });

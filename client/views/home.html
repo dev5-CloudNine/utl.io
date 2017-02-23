@@ -7,11 +7,16 @@
 			<div class="row">
 				<div class="col-md-8">
 					<h2 class="white">Connect. Collaborate. Coacheive.</h2>
-					<p>
+					<h4>
 						Pairing business and savvy professionals across USA, together to get the job done. A simple and precise platform to manage work, workforce and payments.
-					</p>
+					</h4>
 				</div>
-			</div>		
+			</div>	
+			<div class="row">
+				<div class="col-md-3">
+					<a href="{{pathFor 'signUp'}}" class="btn btn-lg btn-primary">SIGN UP</a>
+				</div>
+			</div>	
 			<!-- <div id="callToAction" class="row">
 				{{#if currentUser}}
 					{{#if isInRole 'buyer, dispatcher'}}
@@ -25,13 +30,13 @@
 					{{/if}}
 				{{else}}
 					<div class="col-sm-3 left-border">
-						<p>
+						<h4>
 							The best way to <br> find a professional
-						</p>
+						</h4>
 						<a href="{{pathFor 'jobNew'}}" class="text-center btn btn-primary btn-sm">Post A Job</a>
 					</div>
 					<div class="col-sm-3 left-border">
-						<p>Need a job?<br> Tell us your skills</p>
+						<h4>Need a job?<br> Tell us your skills</h4>
 						<a class="text-center btn btn-primary btn-sm" role="button" href="{{pathFor 'profileNew'}}">Create a Profile</a>
 					</div>
 				{{/if}}

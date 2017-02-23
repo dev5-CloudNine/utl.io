@@ -276,7 +276,6 @@ Meteor.methods({
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'assigned', assignmentStatus: 'not_confirmed'}});
         Profiles.update({userId: userId}, {$pull: {appliedJobs: jobId}});
         Profiles.update({userId: userId}, {$addToSet: {assignedJobs: jobId}});
-        Jobs.update({_id: jobId}, {$set: {proposedBudget: jobNets}});
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: userId})),
@@ -289,12 +288,14 @@ Meteor.methods({
     acceptHighBudgetCO: function(difference, buyerId, jobId) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         Jobs.update({_id: jobId}, {$inc: {buyerCost: difference}})
+        Jobs.update({_id: jobId}, {$inc: {buyerInitialBudget: difference}})
         Wallet.update({userId: buyerId}, {$inc: {accountBalance: -difference}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: difference}});
     },
     acceptLowBudgetCO: function(difference, buyerId, jobId) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         Jobs.update({_id: jobId}, {$inc: {buyerCost: -difference}})
+        Jobs.update({_id: jobId}, {$inc: {buyerInitialBudget: -difference}})
         Wallet.update({userId: buyerId}, {$inc: {accountBalance: difference}});
         Wallet.update({userId: adminId}, {$inc: {accountBalance: -difference}});
     },
@@ -319,7 +320,6 @@ Meteor.methods({
             adminRead: false
         }
         Jobs.update({_id: jobId, 'applications.userId': userId, 'applications.freelancer_nets': freenets}, {$set: {'applications.$.app_status': 'accepted', applicationStatus: 'assigned', assignmentStatus: 'not_confirmed'}})
-        Jobs.update({_id: jobId}, {$set: {proposedBudget: freenets}});
         Profiles.update({userId: userId}, {$addToSet: {assignedJobs: jobId}});
         Profiles.update({userId: userId}, {$pull: {appliedJobs: jobId}});
         Notifications.insert(notificationObj);
@@ -333,16 +333,38 @@ Meteor.methods({
     },
     rejectApplication: function(jobId, userId, applied_at) {
         Profiles.update({userId: userId}, {$pull: {assignedJobs: jobId}});
+        Profiles.update({userId: userId}, {$addToSet: {appliedJobs: jobId}});
         Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'rejected', applicationStatus: 'open'}})
     },
-    rejectCounterOffer: function(jobId, userId, applied_at, difference) {
+    rejectHighBudgetCO: function(jobId, buyerId, diff) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
-        var jobDetails = Jobs.findOne({_id: jobId});
-        Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'rejected', applicationStatus: 'open'}})
-        Wallet.update({userId: adminId}, {$inc: {accountBalance: -difference}});
-        Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: difference}});
+        Jobs.update({_id: jobId}, {$inc: {buyerCost: -diff}});
+        Jobs.update({_id: jobId}, {$inc: {buyerInitialBudget: -diff}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: -diff}});
+        Wallet.update({userId: buyerId}, {$inc: {accountBalance: diff}});
     },
-    confirmAssignment: function(jobId, buyerId) {
+    rejectLowBudgetCO: function(jobId, buyerId, diff) {
+        var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+        Jobs.update({_id: jobId}, {$inc: {buyerCost: diff}});
+        Jobs.update({_id: jobId}, {$inc: {buyerInitialBudget: diff}});
+        Wallet.update({userId: adminId}, {$inc: {accountBalance: diff}});
+        Wallet.update({userId: buyerId}, {$inc: {accountBalance: -diff}});
+    },
+    rejectCounterOffer: function(jobId, userId, applied_at) {        
+        var jobDetails = Jobs.findOne({_id: jobId});
+        Profiles.update({userId: userId}, {$pull: {assignedJobs: jobId}});
+        Profiles.update({userId: userId}, {$addToSet: {appliedJobs: jobId}});
+        Jobs.update({_id: jobId, 'applications.userId': userId}, {$set: {'applications.$.app_status': 'rejected', applicationStatus: 'open'}});
+    },
+    setEstimatedDevices: function(no_of_devices, jobId) {
+        Jobs.update({_id: jobId}, {$set: {estimatedDevices: no_of_devices}});
+    },
+    increaseEstimatedDevices: function(no_of_devices, provider_nets, buyer_cost, jobId) {
+        Jobs.update({_id: jobId}, {$inc: {estimatedDevices: no_of_devices}});
+        Jobs.update({_id: jobId}, {$inc: {proposedBudget: provider_nets}});
+        Jobs.update({_id: jobId}, {$inc: {buyerInitialBudget: buyer_cost}});
+    },
+    confirmAssignment: function(jobId, buyerId, providerEarnings) {
         var jobDetails = Jobs.findOne({_id: jobId});
         var buyerId = jobDetails.userId;
         var buyerDetails;
@@ -364,10 +386,9 @@ Meteor.methods({
         }
         Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {contacts: buyerId+":"+jobId}});
         Meteor.users.update({_id: buyerId}, {$addToSet: {contacts: Meteor.userId()+":"+jobId}});
-        var proBudget = jobDetails.proposedBudget;
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var buyerCost = jobDetails.your_cost;
-        Jobs.update({_id: jobId}, {$set: {assignedProvider: Meteor.userId(), projectBudget: proBudget, assignmentStatus: 'confirmed'}});
+        Jobs.update({_id: jobId}, {$set: {assignedProvider: Meteor.userId(), projectBudget: providerEarnings, proposedBudget: providerEarnings, assignmentStatus: 'confirmed'}});
         var applicants = jobDetails.applications;
         for(var i = 0; i < applicants.length; i++) {
             Profiles.update({userId: applicants[i].userId}, {$pull: {appliedJobs: jobId}});
@@ -588,7 +609,7 @@ Meteor.methods({
         } else if(jobDetails.ratebasis == 'Per Device') {
             budgetDetails = jobDetails.devicerate + '/device for upto ' + jobDetails.maxdevices + ' devices.';
         } else if(jobDetails.ratebasis == 'Blended') {
-            budgetDetails = 'Fixed amount of ' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hour(s) and then ' + jobDetails.payfornexthours + '/hour for the next ' + jobDetails.nexthours + ' hours.';
+            budgetDetails = 'Fixed amount of ' + jobDetails.payforfirsthours + ' USD for the first ' + jobDetails.firsthours + ' hour(s) and then ' + jobDetails.payfornexthours + '/hour for the next ' + jobDetails.nexthours + ' hours.';
         }
         var jobSchedule;
         if(jobDetails.serviceschedule == 'exactdate') {
@@ -1019,7 +1040,7 @@ Meteor.methods({
     pay30Usd: function(buyerPays, adminGets, providerGets, assignedProvider, buyerId, jobId) {
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         Wallet.update({userId: buyerId}, {$inc: {accountBalance: -buyerPays}});
-        Wallet.update({userId: adminId}, {$inc: {accountBalance: adminGets}});
+        Wallet.update({userId: adminId}, {$inc: {amountEarned: adminGets}});
         Wallet.update({userId: assignedProvider}, {$inc: {accountBalance: providerGets}});
         Jobs.update({_id: jobId}, {$set: {paid30Usd: true}});
         var notificationObj = {

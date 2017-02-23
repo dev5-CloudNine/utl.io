@@ -1,42 +1,14 @@
 <template name="transactionDetails">
-	<h2> Transaction Details</h2>
+	<h4>Customer Transaction Record (CTR)</h4>
 	{{#with transaction}}
 		<div class="row">
-			<div class="col-md-6">Trasaction ID:</div> <div class="col-md-6">{{trans_id}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">Amount</div> <div class="col-md-6">{{dollarAmount}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">Email</div> <div class="col-md-6">{{email}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">Card Number</div> <div class="col-md-6">{{cardNumber}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">Transaction Tag</div> <div class="col-md-6">{{transactionTag}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">Authorization Num</div> <div class="col-md-6">{{authorizationNum}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">CardHolders Name</div> <div class="col-md-6">{{cardHoldersName}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">Bank Message</div> <div class="col-md-6">{{bankMessage}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">Retrieval RefNo</div> <div class="col-md-6">{{retrievalRefNo}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">Transaction Card Type</div> <div class="col-md-6">{{transactionCardType}}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">Merchant Name</div> <div class="col-md-6">{{merchantName}}</div>
-		</div>
-		<hr>
-		<div class="row">
-			<div class="col-md-6">Exact CTR</div> <div class="col-md-6">{{exact_ctr}}</div>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						{{{exact_ctr}}}
+					</div>
+				</div>
+			</div>
 		</div>
 	{{/with}}
 </template>

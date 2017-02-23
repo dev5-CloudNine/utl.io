@@ -76,7 +76,7 @@ var deactivatedJobsOptions = {
         {
             title: 'Budget (USD)',
             data: function(jobDetails) {
-                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>'
+                return '<span class="budgetFont">' + (+(Math.round(jobDetails.freelancer_nets + 'e+2') + 'e-2')) + '</span>'
             },
             width: '15%',
             responsivePriority: 2

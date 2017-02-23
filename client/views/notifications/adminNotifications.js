@@ -1,10 +1,3 @@
-// Template.adminNotifications.rendered = function () {
-// 	this.infiniteScroll({
-// 		perPage: 20,
-// 		collection: 'Notifications',
-// 		publication: 'allNotifications'
-// 	});
-// };
 Template.adminNotifications.helpers({
 	'adminNotifications': function() {
 		var notifications = Notifications.find({}, {sort: {timeStamp: -1}}).fetch();
@@ -19,7 +12,6 @@ Template.adminNotifications.helpers({
 				}
 				notificationDetails.push(notif);
 			} else if(notification.notificationType == 'newJob') {
-				console.log(notification.buyerId)
 				var buyerDetails;
 				if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
 					buyerDetails = Dispatchers.findOne({userId: notification.buyerId});1
@@ -70,17 +62,18 @@ Template.adminNotifications.helpers({
 						imgUrl = '/images/avatar.png';
 				}
 				if(providerDetails && buyerDetails) {
-				notif = {
-					buyerId: buyerDetails._id,
-					providerId: providerDetails._id,
-					notificationType: notification.notificationType,
-					notificationTime: moment(notification.timeStamp).format('LLLL'),
-					notificationId: notification._id,
-					jobId: notification.jobId,
-					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
-					pname: providerDetails.firstName + ' ' + providerDetails.lastName,
-					imgUrl: imgUrl
-				}}
+					notif = {
+						buyerId: buyerDetails._id,
+						providerId: providerDetails._id,
+						notificationType: notification.notificationType,
+						notificationTime: moment(notification.timeStamp).format('LLLL'),
+						notificationId: notification._id,
+						jobId: notification.jobId,
+						bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
+						pname: providerDetails.firstName + ' ' + providerDetails.lastName,
+						imgUrl: imgUrl
+					}
+				}
 				notificationDetails.push(notif);
 			}
 		});

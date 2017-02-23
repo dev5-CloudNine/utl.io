@@ -64,11 +64,15 @@
                                         <small>
                                             {{#if $eq servicelocation 'Remote Job'}}
                                                 {{servicelocation}}
-                                            {{else}}
+                                            {{/if}}
+                                            {{#if $eq servicelocation 'Field Job'}}
                                                 {{#if assignedProvider}}
                                                     {{location}}
                                                 {{else}}
-                                                    {{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
+                                                    {{#if fullLocation.sublocality}}
+                                                        {{fullLocation.sublocality}},
+                                                    {{/if}} 
+                                                    {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}
                                                 {{/if}}
                                                 {{#if isInRole 'provider'}}
                                                     [{{distance}} point to point]
@@ -153,7 +157,7 @@
                                             <ul class="list-unstyled list-inline">
                                                 {{#each files}}
                                                     <li>
-                                                        <a href="{{this.file_url}}" target="_blank" download>{{this.file_name}}</a>
+                                                        <a href="{{this.file_url}}" target="_blank" download><i class="fa fa-download"></i> {{this.file_name}}</a>
                                                     </li>
                                                 {{/each}}
                                             </ul>
@@ -240,84 +244,83 @@
                                 {{> spinner}}
                             </div>
                             {{#each taskList}}
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title task-title">
-                                    <a data-toggle="collapse" style="text-decoration: none" data-parent="#accordion" href="#{{_id}}">
-                                    {{taskName}}</a>
-                                  </h4>
-                                </div>
-                                <div id="{{_id}}" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <form class="form-horizontal task-form" role="form" data-id="{{_id}}">
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-2" for="taskDesc">Description</label>
-                                                <div class="col-sm-10">
-                                                    <p>{{taskdescription}}</p>
-                                                </div>
-                                            </div>
-                                            {{#if show jobID}}
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title task-title">
+                                            <a data-toggle="collapse" style="text-decoration: none" data-parent="#accordion" href="#{{_id}}">{{taskName}}</a>
+                                        </h4>
+                                    </div>
+                                    <div id="{{_id}}" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <form class="form-horizontal task-form" role="form" data-id="{{_id}}">
                                                 <div class="form-group">
-                                                    <label class="control-label col-sm-2" for="state">State</label>
+                                                    <label class="control-label col-sm-2" for="taskDesc">Description</label>
                                                     <div class="col-sm-10">
-                                                        <select class="form-control state" readonly="{{#if isBuyer}}readonly{{/if}}" style="width:auto;">
-                                                            {{#each states _id}}
-                                                            <option value="{{value}}" selected="{{selected}}">{{value}}</option>
-                                                            {{/each}}
-                                                        </select>
+                                                        <p>{{taskdescription}}</p>
                                                     </div>
                                                 </div>
-                                                {{#if uploadFile _id}}
+                                                {{#if show jobID}}
                                                     <div class="form-group">
-                                                        <label class="control-label col-sm-2" for="comments">Uploaded files</label>
+                                                        <label class="control-label col-sm-2" for="state">State</label>
                                                         <div class="col-sm-10">
-                                                            <div class="row">
-                                                                <ul class="fileList list-unstyled list-inline">
-                                                                    {{#each fileList _id}}
-                                                                        <li>
-                                                                            {{#if isInRole 'provider'}}
-                                                                            <i class="fa fa-times-circle remove-file" data-id="{{../_id}}" data-path="{{this.file_url}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i>
-                                                                            {{/if}}
-                                                                            <a href="{{this.file_url}}" target="_blank" download>{{this.file_name}}</a>
-                                                                        </li>
-                                                                    {{/each}}
-                                                                </ul>                                                            
-                                                            </div>
+                                                            <select class="form-control state" readonly="{{#if isBuyer}}readonly{{/if}}" style="width:auto;">
+                                                                {{#each states _id}}
+                                                                    <option value="{{value}}" selected="{{selected}}">{{value}}</option>
+                                                                {{/each}}
+                                                            </select>
                                                         </div>
                                                     </div>
-                                                    {{#unless isBuyer}}
+                                                    {{#if uploadFile _id}}
                                                         <div class="form-group">
-                                                            <label class="control-label col-sm-2"></label>
-                                                            <div class="col-sm-2">
-                                                                <div class="input-group">
-                                                                    <label class="btn btn-primary btn-sm">
-                                                                        <input type="file" class="file_bag" accept="{{fileType _id}}"> Upload New
-                                                                    </label>
-
+                                                            <label class="control-label col-sm-2" for="comments">Uploaded files</label>
+                                                            <div class="col-sm-10">
+                                                                <div class="row">
+                                                                    <ul class="fileList list-unstyled list-inline">
+                                                                        {{#each fileList _id}}
+                                                                            <li>
+                                                                                {{#if isInRole 'provider'}}
+                                                                                    <i class="fa fa-times-circle remove-file" data-id="{{../_id}}" data-path="{{this.file_url}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i>
+                                                                                {{/if}}
+                                                                                <a href="{{this.file_url}}" target="_blank" download>{{this.file_name}}</a>
+                                                                            </li>
+                                                                        {{/each}}
+                                                                    </ul>            
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    {{/unless}}
-                                                {{/if}}
-                                                <div class="form-group">
-                                                    <label class="control-label col-sm-2" for="comments">Comments</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control comments" readonly="{{#if isBuyer}}readonly{{/if}}" >{{comments}}</textarea>
-                                                    </div>
-                                                </div>
-                                                {{#if isBuyer}}
-                                                {{else}}
+                                                        {{#unless isBuyer}}
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-2"></label>
+                                                                <div class="col-sm-2">
+                                                                    <div class="input-group">
+                                                                        <label class="btn btn-primary btn-sm">
+                                                                            <input type="file" class="file_bag" accept="{{fileType _id}}"> Upload New
+                                                                        </label>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {{/unless}}
+                                                    {{/if}}
                                                     <div class="form-group">
-                                                        <div class="col-sm-offset-2 col-sm-10">
-                                                            <button type="submit" class="btn btn-primary btn-sm submit-task">Update</button>
+                                                        <label class="control-label col-sm-2" for="comments">Comments</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea class="form-control comments" readonly="{{#if isBuyer}}readonly{{/if}}" >{{comments}}</textarea>
                                                         </div>
                                                     </div>
+                                                    {{#if isBuyer}}
+                                                    {{else}}
+                                                        <div class="form-group">
+                                                            <div class="col-sm-offset-2 col-sm-10">
+                                                                <button type="submit" class="btn btn-primary btn-sm submit-task">Update</button>
+                                                            </div>
+                                                        </div>
+                                                    {{/if}}
                                                 {{/if}}
-                                            {{/if}}
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             {{/each}}
                         </div>
                     </div>
@@ -396,86 +399,89 @@
                                     </table>
                                     <hr>
                                     <strong>Total time recorded: {{#with totalHours}}{{hours}} hours and {{minutes}} minutes.{{/with}}</strong>
-                                    <br>
-                                    {{#if jobPostedBuyer}}
-                                        {{#with assignedProviderDetails}}
-                                            {{#if $eq this.appType 'application'}}
-                                                {{#if $eq ../ratebasis 'Per Hour'}}
-                                                    {{#if timeWorked ../hourlyrate ../maxhours}}
-                                                        {{timeWorked ../hourlyrate ../maxhours}}
-                                                    {{/if}}
-                                                {{/if}}
-                                            {{/if}}
-                                            {{#if $eq this.appType 'counteroffer'}}
-                                                {{#if $eq this.counter_type 'per_hour'}}
-                                                    {{#if timeWorked this.hourly_rate this.max_hours}}
-                                                        {{timeWorked this.hourly_rate this.max_hours}}
-                                                    {{/if}}
-                                                {{/if}}
-                                            {{/if}}
-                                        {{/with}}
-                                    {{/if}}
-                                    {{#if assignedProvider}}
-                                        {{#with applicationDetails}}
-                                            {{#if $eq this.app_type 'application'}}
-                                                {{#if $eq ../ratebasis 'Blended'}}
-                                                    Estimated Billable Time: {{blendedTotalHours ../firsthours ../nexthours}} hours
-                                                {{/if}}
-                                                {{#if $eq ../ratebasis 'Per Hour'}}
-                                                    Estimated Billable Time: {{../maxhours}} hours.<br>
-                                                    {{#if timeWorked ../hourlyrate ../maxhours}}
-                                                        {{timeWorked ../hourlyrate ../maxhours}}
-                                                    {{/if}}
-                                                {{/if}}
-                                                {{#if $eq ../ratebasis 'Per Device'}}
-                                                    Estimated Billable Devices: {{../maxdevices}} devices.<hr>
-                                                    <div class="row">                     
-                                                        <form id="devices-worked">
-                                                            <div class="col-xs-12">
-                                                                <div class="form-group">
-                                                                    <label for="worked-devices">How many devices have you completed?</label>
-                                                                    <input type="number" id="worked-devices" min="1" step="1" value="{{../devicescompleted}}" class="form-control" required>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <button class="btn btn-sm btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    {{#if completedDevices ../rateperdevice ../maxdevices ../devicescompleted}}
-                                                        {{completedDevices ../rateperdevice ../maxdevices ../devicescompleted}}
-                                                    {{/if}}
-                                                {{/if}}
-                                            {{/if}}
-                                            {{#if $eq this.app_type 'counteroffer'}}
-                                                {{#if $eq this.counterType 'blended'}}
-                                                    Estimated Billable Time: {{blendedTotalHours this.first_max_hours this.next_max_hours}} hours
-                                                {{/if}}
-                                                {{#if $eq this.counterType 'per_hour'}}
-                                                    Estimated Billable Time: {{this.max_hours}} hours ({{this.max_hours}} X {{this.hourly_rate}} = {{this.total_amount}} USD). <br>
-                                                    {{#if timeWorked this.hourly_rate this.max_hours}}
-                                                        {{timeWorked this.hourly_rate this.max_hours}}
-                                                    {{/if}}
-                                                {{/if}}
-                                                {{#if $eq this.counterType 'per_device'}}
-                                                    Estimated Billable Devices: {{this.max_devices}} devices <br>
-                                                    <div class="row">
-                                                        <form id="devices-worked" class="form-inline">
-                                                            <div class="col-xs-12">
-                                                                <div class="form-group">
-                                                                    <label for="worked-devices">How many devices have you worked among {{this.max_devices}} devices?</label>
-                                                                    <input type="number" id="worked-devices" min="1" step="1" class="form-control" required>
-                                                                    <button class="btn btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                {{/if}}
-                                            {{/if}}
-                                        {{/with}}
-                                    {{/if}}
                                 {{else}}
                                     <strong>No records yet.</strong>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {{#if assignedProvider}}
+                                    {{#with applicationDetails}}
+                                        {{#if $eq this.app_type 'application'}}
+                                            {{#if $eq ../../ratebasis 'Per Device'}}
+                                                <p>
+                                                    Estimated Billable Devices: {{../../estimatedDevices}} devices. <br>
+                                                    If you have more number of devices to be worked upon, request for a budget increase and wait for the buyer's confirmation.
+                                                </p>
+                                                <hr>
+                                                <div class="row">                     
+                                                    <form id="devices-worked">
+                                                        <div class="col-xs-12">
+                                                            <div class="form-group">
+                                                                <label for="worked-devices">How many devices have you completed?</label>
+                                                                <input type="number" id="worked-devices" min="1" step="1" value="{{../../devicescompleted}}" class="form-control" max="{{../../estimatedDevices}}" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <button class="btn btn-sm btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                {{#if completedDevices ../../rateperdevice ../../estimatedDevices}}
+                                                    {{completedDevices ../../rateperdevice ../../estimatedDevices}}
+                                                {{/if}}
+                                            {{/if}}
+                                            {{#if $eq ../../ratebasis 'Blended'}}
+                                                Estimated Billable Time: {{blendedTotalHours ../firsthours ../nexthours}} hours.<br>
+                                                {{#if blendedTimeWorked}}
+                                            {{/if}}
+                                            {{#if $eq ../../ratebasis 'Per Hour'}}
+                                                Estimated Billable Time: {{../maxhours}} hours.<br>
+                                                {{#if timeWorked ../hourlyrate ../maxhours}}
+                                                    {{timeWorked ../hourlyrate ../maxhours}}
+                                                {{/if}}
+                                            {{/if}}
+                                        {{/if}}
+                                        {{/if}}
+                                    {{/with}}
+                                {{/if}}
+                                {{#if assignedProvider}}
+                                    {{#with applicationDetails}}
+                                        {{#if $eq this.app_type 'counteroffer'}}
+                                            {{#if $eq this.counterType 'blended'}}
+                                                Estimated Billable Time: {{blendedTotalHours this.first_max_hours this.next_max_hours}} hours
+                                            {{/if}}
+                                            {{#if $eq this.counterType 'per_hour'}}
+                                                Estimated Billable Time: {{this.max_hours}} hours ({{this.max_hours}} X {{this.hourly_rate}} = {{this.total_amount}} USD). <br>
+                                                {{#if timeWorked this.hourly_rate this.max_hours}}
+                                                    {{timeWorked this.hourly_rate this.max_hours}}
+                                                {{/if}}
+                                            {{/if}}
+                                            {{#if $eq this.counterType 'per_device'}}
+                                                <p>
+                                                    Estimated Billable Devices: {{../../estimatedDevices}} devices <br>
+                                                    If you have more number of devices to be worked upon, request for a budget increase and wait for the buyer's confirmation.
+                                                </p>
+                                                <div class="row">
+                                                    <form id="devices-worked">
+                                                        <div class="col-xs-12">
+                                                            <div class="form-group">
+                                                                <label for="worked-devices">How many devices have you completed?</label>
+                                                                <input type="number" id="worked-devices" min="1" step="1" class="form-control" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <button class="btn btn-sm btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                {{#if completedDevices this.device_rate ../../estimatedDevices}}
+                                                    {{completedDevices this.device_rate ../../estimatedDevices}}
+                                                {{/if}}
+                                            {{/if}}
+                                        {{/if}}
+                                    {{/with}}
                                 {{/if}}
                             </div>
                         </div>
@@ -504,12 +510,16 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     {{#if $eq applicationStatus 'open'}}
-                                        <p>The job has been posted and your account has been debited with the proposed budget of {{roundToTwo your_cost}} USD.</p>
+                                        {{#if $eq status 'deactivated'}}
+                                            <p>You have deactivated the job. Your account has been credited with {{buyerCost}} USD.</p>
+                                        {{else}}
+                                            <p>The job has been posted and your account has been debited with the proposed budget of {{roundToTwo your_cost}} USD.</p>
+                                        {{/if}}
                                     {{/if}}
                                     {{#if $eq applicationStatus 'assigned'}}
                                         {{#if $eq assignmentStatus 'not_confirmed'}}
                                             {{#if $eq status 'deactivated'}}
-                                                <p>You have deactivated the job.</p>
+                                                <p>You have deactivated the job. Your account has been credited with {{buyerCost}} USD.</p>
                                             {{else}}
                                                 <p>Job assigned. Awaiting confirmation.</p>
                                             {{/if}}
@@ -523,7 +533,7 @@
                                                         <p>You have denied to pay 30 USD to the assigned Provider as a goodwill token.</p>
                                                     {{else}}
                                                         <p><i>{{deactivatedTime}}</i></p>
-                                                        <p>You have deactivated an assigned job. Would you accept to pay 30 USD to the assigned provider as a token of goodwill? Upon accepting, your account will be debited with 31.5 USD (1.5 USD as commission).</p>
+                                                        <p>You have deactivated an assigned job. Your account has been credited with {{buyerCost}} USD. Would you accept to pay 30 USD to the assigned provider as a token of goodwill? Upon accepting, your account will be debited with 31.5 USD (1.5 USD as commission).</p>
                                                         <button class="btn btn-primary btn-sm pay30Usd" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Accept</button>
                                                         <button class="btn btn-primary btn-sm deny30Usd" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Deny</button>
                                                     {{/if}}
@@ -633,7 +643,7 @@
                                                 <br><br>
                                                 <div class="alert alert-info showConfirmAssignment" hidden>
                                                     <button type="button" class="close closeConfirmAssignment" aria-hidden="true">&times;</button>
-                                                    <p>Do your confirm that the assigned job has been successfully completed by the provider? The provider's account will be credited with {{projectBudget}} USD.</p>
+                                                    <p>Do your confirm?</p>
                                                     <button class="btn btn-primary btn-sm approveAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Yes, I do.</button>
                                                 </div>
                                             {{/if}}
@@ -1720,11 +1730,13 @@
                                                     {{#if $eq ../ratebasis 'Per Device'}}
                                                         {{#if completedDevices ../rateperdevice ../maxdevices}}
                                                             {{completedDevices ../rateperdevice ../maxdevices}}
+                                                            <br>
                                                         {{/if}}
                                                     {{/if}}
                                                     {{#if $eq ../ratebasis 'Blended'}}
                                                         {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
                                                             {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
+                                                            <br>
                                                         {{/if}}
                                                     {{/if}}
                                                 {{/if}}
@@ -1738,11 +1750,13 @@
                                                     {{#if $eq this.counterType 'per_device'}}
                                                         {{#if completedDevices this.device_rate this.max_devices}}
                                                             {{completedDevices this.device_rate this.max_devices}}
+                                                            <br>
                                                         {{/if}}
                                                     {{/if}}
                                                     {{#if $eq this.counterType 'blended'}}
                                                         {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours}}
                                                             {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours}}
+                                                            <br>
                                                         {{/if}}
                                                     {{/if}}
                                                 {{/if}}
@@ -1803,7 +1817,7 @@
                                             {{/if}}
                                         {{else}}
                                             <div class="col-sm-12">
-                                                <small>The job is now complete.</small>
+                                                <small>The job has been assigned to another provider.</small>
                                             </div>
                                         {{/if}}
                                     {{/if}}
@@ -2256,10 +2270,10 @@
                                                                                     <input type="number" class="form-control" id="hourly_rate_req" step="any" min="1" value="{{this.hourly_rate}}" readonly="readonly">
                                                                                     <br>
                                                                                     <label for="max_hours_req">Maximum Hours</label>
-                                                                                    <input type="number" class="form-control" id="max_hours_req" step="any" min="1" value="{{this.max_hours}}">
+                                                                                    <input type="number" class="form-control" id="max_hours_req" step="any" min="1">
                                                                                     <br>
                                                                                     <label for="hourly_total_req">Total Amount</label>
-                                                                                    <input type="number" class="form-control" name="total_amount_req" id="hourly_total_req" readonly="true" step="any" min="1" value="{{this.total_amount}}">
+                                                                                    <input type="number" class="form-control" name="total_amount_req" id="hourly_total_req" readonly="true" step="any" min="1">
                                                                                 {{/if}}
                                                                                 {{#if $eq this.counterType 'per_device'}}
                                                                                     <select name="request_type" id="request_type" class="form-control" disabled="disabled">
@@ -2270,10 +2284,10 @@
                                                                                     <input type="number" class="form-control" id="device_rate_req" step="any" min="1" value="{{this.device_rate}}" readonly="readonly">
                                                                                     <br>
                                                                                     <label for="max_devices_req">Maximum devices</label>
-                                                                                    <input type="number" class="form-control" id="max_devices_req" step="any" min="1" value="{{this.max_devices}}">
+                                                                                    <input type="number" class="form-control" id="max_devices_req" step="any" min="1">
                                                                                     <br>
                                                                                     <label for="device_total_req">Total Amount</label>
-                                                                                    <input type="number" class="form-control" name="total_amount_req" id="device_total_req" readonly="true" step="any" min="1" value="{{this.total_amount}}">
+                                                                                    <input type="number" class="form-control" name="total_amount_req" id="device_total_req" readonly="true" step="any" min="1">
                                                                                 {{/if}}
                                                                                 {{#if $eq this.counterType 'blended'}}
                                                                                     <select name="request_type" id="request_type" class="form-control" disabled="disabled">
@@ -2290,7 +2304,7 @@
                                                                                     <input type="number" class="form-control" id="next_hours_req" step="any" min="1" value="{{this.next_hours}}" readonly="readonly">
                                                                                     <br>
                                                                                     <label for="next_max_hours_req">per hour for upto</label>
-                                                                                    <input type="number" class="form-control" id="next_max_hours_req" step="any" min="1" value="{{this.next_max_hours}}">
+                                                                                    <input type="number" class="form-control" id="next_max_hours_req" step="any" min="1">
                                                                                     <br>
                                                                                     <label for="blended_total">Total Amount</label>
                                                                                     <input type="number" class="form-control" name="total_amount_req" id="blended_total" readonly="true" step="any" min="1" value="{{this.total_amount}}">

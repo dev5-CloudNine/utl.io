@@ -88,12 +88,14 @@ if (Meteor.isServer) {
                 Fiber(function() {
                     var dwollaCustomer = res.headers._headers;
                     dwollaCustomer['updated_on'] = new Date();
-                    Wallet.upsert({userId: reqdUserId}, {$set: {dwollaCustomer: dwollaCustomer, socialSecurityNo: dwolla_req_object.ssn}});
+                    Wallet.upsert({userId: reqdUserId}, {$set: {dwollaCustomer: dwollaCustomer}});
                 }).run();
+                fut.return(res);
             }, function(err) {
                 fut.return(err);
             });
             fut.wait();
+            console.log(fut.value)
             return fut.value;
         },
         'showCustomers': function(userId) {
@@ -191,7 +193,6 @@ if (Meteor.isServer) {
                 };
             }
             if(Roles.userIsInRole(reqdUserId, ['buyer'])) {
-                console.log(obj._links.account.href)
                 requestBody = {
                     _links: {
                         source: {
@@ -209,7 +210,6 @@ if (Meteor.isServer) {
             }
             var payReqFut = new Future();
             accountToken.post('transfers', requestBody).then(function(res) {
-                console.log(res);
                 payReqFut.return(res.headers);
             }, function(err) {
                 console.log(err);
@@ -304,7 +304,7 @@ if (Meteor.isServer) {
             var customerArray = fut.value;
             customerArray.forEach(function(customer) {
                 var reqBody = {
-                    email: customer.lastName + 'hubrla@824' + '.com'
+                    email: customer.email + 'asefas@824' + '.com'
                 }
                 accountToken.post('https://api-uat.dwolla.com/customers/' + customer.id, reqBody).then(function(result) {
                     console.log(result);

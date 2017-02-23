@@ -24,7 +24,7 @@ var allJobsObject = {
 		{
 			title: 'Budget (USD)',
 			data: function(jobDetails) {
-				return jobDetails.buyerCost;
+				return +(Math.round(jobDetails.buyerCost + 'e+2') + 'e-2');
 			},
 			width: '12%'
 		},

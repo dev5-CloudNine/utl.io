@@ -1,3 +1,10 @@
+Template.notifications.onCreated(function() {
+	var instance = this;
+	instance.autorun(function() {
+		return Meteor.subscribe('allJobs')
+	})
+})
+
 Template.notifications.helpers({
 	'buyerNotifications': function() {
 		var notifications = Notifications.find({$and: [{buyerId: Meteor.userId()}, {side: 'buyer'}]}, {sort: {timeStamp: -1}, limit: 10});
@@ -185,13 +192,13 @@ Template.notifications.helpers({
 				notificationDetails.push(notif)
 			} else {
 				var buyerDetails;
+				var providerDetails = Profiles.findOne({userId: notification.providerId});
+				var jobDetails = Jobs.findOne({_id: notification.jobId});
 				if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
 					buyerDetails = Dispatchers.findOne({userId: notification.buyerId});
 				} else {
 					buyerDetails = Buyers.findOne({userId: notification.buyerId});
 				}
-				var providerDetails = Profiles.findOne({userId: notification.providerId});
-				var jobDetails = Jobs.findOne({_id: notification.jobId});
 				var imgUrl;
 				if(notification.side == 'buyer') {
 					var imgURL = Meteor.users.findOne({_id: notification.providerId}).imgURL;
@@ -208,16 +215,17 @@ Template.notifications.helpers({
 						imgUrl = '/images/avatar.png';
 				}
 				if(providerDetails && buyerDetails) {
-				notif = {
-					notificationType: notification.notificationType,
-					notificationTime: moment(notification.timeStamp).format('LLLL'),
-					notificationId: notification._id,
-					jobId: notification.jobId,
-					jobReadableId: jobDetails.readableID,
-					bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
-					pname: providerDetails.firstName + ' ' + providerDetails.lastName,
-					imgUrl: imgUrl
-				}}
+					notif = {
+						notificationType: notification.notificationType,
+						notificationTime: moment(notification.timeStamp).format('LLLL'),
+						notificationId: notification._id,
+						jobId: notification.jobId,
+						jobReadableId: jobDetails.readableID,
+						bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
+						pname: providerDetails.firstName + ' ' + providerDetails.lastName,
+						imgUrl: imgUrl
+					}
+				}
 				notificationDetails.push(notif);
 			}
 		});
@@ -232,4 +240,4 @@ Template.notifications.events({
 	'click div.markRead': function(event, template) {
 		Meteor.call('markRead', this.notificationId, this.side);
 	}
-})
+});

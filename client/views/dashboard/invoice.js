@@ -207,7 +207,7 @@ Template.invoice.helpers({
 				if(providerWorkedMins < jobEstimatedMins)
 					return true;
 			} else if(jobDetails.ratebasis == 'Per Device') {
-				if(jobDetails.devicescompleted < jobDetails.maxdevices)
+				if(jobDetails.devicescompleted < jobDetails.estimatedDevices)
 					return true;
 			} else if(jobDetails.ratebasis == 'Blended') {
 				var jobEstimatedMins = jobDetails.firsthours * 60 + jobDetails.nexthours * 60;
@@ -226,10 +226,10 @@ Template.invoice.helpers({
 			if(acceptedApplication.counterType == 'per_hour') {
 				var jobEstimatedMins = acceptedApplication.max_hours * 60;
 				if(providerWorkedMins < jobEstimatedMins)
-				return true;
+					return true;
 			} else if(acceptedApplication.counterType == 'per_device') {
-			if(jobDetails.devicescompleted < acceptedApplication.max_devices)
-			return true;
+				if(jobDetails.devicescompleted < jobDetails.estimatedDevices)
+					return true;
 			} else if(acceptedApplication.counterType == 'blended') {
 				var jobEstimatedMins = acceptedApplication.first_hours * 60 + acceptedApplication.next_hours * 60;
 				if(providerWorkedMins < jobEstimatedMins)

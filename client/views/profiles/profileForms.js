@@ -33,13 +33,13 @@ Template.profileFields.events({
   },
   "change .resume_bag": function(event, template) {
     event.preventDefault();
+    $('#resumespinner').show();
     var files = $(event.currentTarget)[0].files;
     if(!files) return;
     S3.upload({
       files: files,
       path: S3_FILEUPLOADS
     }, function(err, res) {
-      $('.resumeProgress').hide();
       $('.profileImgProgress').hide();
       if(err) toastr.error("Failed to upload resume");
       else {
@@ -50,6 +50,9 @@ Template.profileFields.events({
         Meteor.call('updateResumeURL', Meteor.userId(), fileDetails, function(error, result) {
           if(error) {
             toastr.error('Failed to update');
+            $('#resumespinner').hide();
+          } else {
+            $('#resumespinner').hide();
           }
         })
       }

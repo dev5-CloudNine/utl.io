@@ -73,16 +73,16 @@ var allJobsOptions = {
                                 }
                             }
                         }
-                        return '<span class="budgetFont">' + budget + '</span>';
+                        return '<span class="budgetFont">' + (+(Math.round(budget + 'e+2') + 'e-2')) + '</span>';
                     }
                     if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected') {
-                        return '<span class="budgetFont">' + jobDetails.projectBudget + '</span>'
+                        return '<span class="budgetFont">' + (+(Math.round(jobDetails.projectBudget + 'e+2') + 'e-2')) + '</span>'
                     }
                 }
                 if(jobDetails.applicationStatus == 'paid') {
-                    return '<span class="budgetFont">' + jobDetails.projectBudget + '</span>';
+                    return '<span class="budgetFont">' + (+(Math.round(jobDetails.projectBudget + 'e+2') + 'e-2')) + '</span>';
                 }
-                return '<span class="budgetFont">' + jobDetails.freelancer_nets + '</span>';
+                return '<span class="budgetFont">' + (+(Math.round(jobDetails.freelancer_nets + 'e+2') + 'e-2')) + '</span>';
             },
             width: '20%',
             responsivePriority: 2
@@ -92,29 +92,33 @@ var allJobsOptions = {
             width: '20%',
             data: function(jobDetails) {
                 var returnText;
-                if(jobDetails.applicationStatus == 'open') {
-                    var appCount = 0;
-                    if(jobDetails.applications)
-                        appCount = jobDetails.applications.length;
-                    return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Applications - ' + appCount + '</a>';
-                }
-                if(jobDetails.applicationStatus == 'assigned') {
-                    if(jobDetails.assignmentStatus == 'not_confirmed') {
-                        return '<small>Job assigned. Awaiting confirmation.</small>';
+                if(jobDetails.status == 'active') {
+                    if(jobDetails.applicationStatus == 'open') {
+                        var appCount = 0;
+                        if(jobDetails.applications)
+                            appCount = jobDetails.applications.length;
+                        return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Applications - ' + appCount + '</a>';
                     }
-                    if(jobDetails.assignmentStatus == 'confirmed') {
-                        return '<small>Job assigned. Provider confirmed.</small>';
+                    if(jobDetails.applicationStatus == 'assigned') {
+                        if(jobDetails.assignmentStatus == 'not_confirmed') {
+                            return '<small>Job assigned. Awaiting confirmation.</small>';
+                        }
+                        if(jobDetails.assignmentStatus == 'confirmed') {
+                            return '<small>Job assigned. Provider confirmed.</small>';
+                        }
+                        if(jobDetails.assignmentStatus == 'submitted') {
+                            var returnText = '<small>Job submittted. Approve or reject. Upon approval, the provider\'s account will be credited with ' + jobDetails.projectBudget + ' USD. Ensure that all the tasks and timesheets are upto your mark.</small>'
+                            return returnText + '<br><a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Details</a>';
+                        }
+                        if(jobDetails.assignmentStatus == 'rejected') {
+                            return '<small>You have rejected the assignment. Please discuss with the provider and sort it out.</small>';
+                        }
                     }
-                    if(jobDetails.assignmentStatus == 'submitted') {
-                        var returnText = '<small>Job submittted. Approve or reject. Upon approval, the provider\'s account will be credited with ' + jobDetails.projectBudget + ' USD. Ensure that all the tasks and timesheets are upto your mark.</small>'
-                        return returnText + '<br><a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Details</a>';
+                    if(jobDetails.applicationStatus == 'paid') {
+                        return '<small>Job approved. Provider\'s account credited.</small>'
                     }
-                    if(jobDetails.assignmentStatus == 'rejected') {
-                        return '<small>You have rejected the assignment. Please discuss with the provider and sort it out.</small>';
-                    }
-                }
-                if(jobDetails.applicationStatus == 'paid') {
-                    return '<small>Job approved. Provider\'s account credited.</small>'
+                } else {
+                    return '<small>Job deactivated.</small>';
                 }
             }
         }

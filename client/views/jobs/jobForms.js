@@ -290,8 +290,13 @@ Template.jobFields.events({
     'click .remove-job-file' : function(event, template) {
         event.preventDefault();
         $('#spinner').show();
-        var jobId = Router.current().params._id;
         var url = $(event.currentTarget).data('url');
+        if(Router.current().route.getName() == 'duplicateJob') {
+        	$("ul.fileList").find("[data-url='"+url+"']").parent().remove();
+        	$('#spinner').hide();
+        	return;
+        }
+        var jobId = Router.current().params._id;        
         var index = url.indexOf(S3_FILEUPLOADS)-1;
         var path = url.substr(index);
         S3.delete(path, function(err, res) {

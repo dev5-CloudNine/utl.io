@@ -231,16 +231,16 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-12">  
-            <div id="spinner">
-                {{> spinner}}
-            </div>              
-            <ul class="fileList" style="list-style-type: none;">            
-                {{#each files}}
-                    <li><i class="fa fa-times-circle remove-msg-file" data-url="{{this}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this}}" target="_blank">{{this}}</a></li>
-                {{/each}}
-            </ul>
+            <div class="col-sm-12">  
+                <div id="spinner">
+                    {{> spinner}}
+                </div>              
+                <ul class="fileList" style="list-style-type: none;">            
+                    {{#each files}}
+                        <li><i class="fa fa-times-circle remove-msg-file" data-url="{{this}}" aria-hidden="true" title="Remove" style="cursor: pointer;"></i> <a href="{{this}}" target="_blank">{{this}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
         </div>
     </div>
 </template>

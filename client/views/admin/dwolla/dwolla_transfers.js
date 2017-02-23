@@ -5,6 +5,7 @@ Template.dwollaTransfers.helpers({
 			if(err) {
 				console.log(err)
 			} else {
+				console.log(res);
 				Session.set('transfersResult', res);
 			}
 		});
