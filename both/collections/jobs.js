@@ -711,6 +711,8 @@ Jobs.attachSchema(new SimpleSchema({
       autoValue: function() {
         if (this.isInsert) {
           return this.field('your_cost').value;
+        } else if(this.isUpdate) {
+          return this.field('your_cost').value;
         }
       }
     },
@@ -719,6 +721,8 @@ Jobs.attachSchema(new SimpleSchema({
       decimal: true,
       autoValue: function() {
         if (this.isInsert) {
+          return this.field('your_cost').value;
+        } else if(this.isUpdate) {
           return this.field('your_cost').value;
         }
       }

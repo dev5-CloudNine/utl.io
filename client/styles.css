@@ -486,7 +486,10 @@ h3, h4 {
   background-color: #f6f4ec !important;
   border-color: #ddd;
 }
-
+.panel-blue
+{
+  background-color: #ffeded !important;
+}
 .form-group .input-group input[type=file] {
     display:none;
 }
@@ -2206,4 +2209,12 @@ svg {
   max-height: 480px;
   overflow: scroll;
   overflow-x: hidden;
+}
+
+.fa-appscount {
+  color: #ffeded; 
+}
+
+.fa-cocount {
+  color: #F6F4EC;
 }

@@ -43,7 +43,7 @@
                 <div class="tab-content">
                     <div class="tab-pane fade active in" id="jobDesc">
                         <br>
-                        <div class="panel panel-default {{#if $eq applicationStatus 'open'}}openJob{{/if}} {{#if $eq applicationStatus 'frozen'}}frozenJob{{/if}} {{#if $eq applicationStatus 'assigned'}}{{#if $eq assignmentStatus 'submitted'}}paymentPendingJob{{else}}assignedJob{{/if}}{{/if}} {{#if $eq applicationStatus 'completed'}}completedJob{{/if}} {{#if $eq applicationStatus 'pending_payment'}}paymentPendingJob{{/if}} {{#if $eq applicationStatus 'paid'}}paidJob{{/if}} {{#if $eq status 'deactivated'}}deactivatedJob{{/if}}">
+                        <div class="panel panel-default {{#if $eq applicationStatus 'open'}}openJob{{/if}} {{#if $eq applicationStatus 'assigned'}}{{#if $eq assignmentStatus 'submitted'}}paymentPendingJob{{else}}assignedJob{{/if}}{{/if}} {{#if $eq applicationStatus 'pending_payment'}}paymentPendingJob{{/if}} {{#if $eq applicationStatus 'paid'}}paidJob{{/if}} {{#if $eq status 'deactivated'}}deactivatedJob{{/if}}">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -204,8 +204,8 @@
                                             <h4>Shipments to site</h4>
                                             <ul>
                                                 {{#each shipment}}
-                                                <li>{{itembeingshipped}} via {{#if shipmentcarriername}} {{shipmentcarriername}} {{else}} {{shipmentcarrier}} {{/if}} with tracking ID {{shipmenttracking}}
-                                                </li>
+                                                    <li>{{itembeingshipped}} via {{#if shipmentcarriername}} {{shipmentcarriername}} {{else}} {{shipmentcarrier}} {{/if}} with tracking ID {{shipmenttracking}}
+                                                    </li>
                                                 {{/each}}
                                             </ul>
                                         {{/if}}
@@ -223,7 +223,7 @@
                                             <div class="pull-right">
                                                 &nbsp;
                                                 {{#if jobNotAssigned}}
-                                                    <a href="{{pathFor 'jobEdit'}}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit</a>                                                    
+                                                    <a href="{{pathFor 'jobEdit'}}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit</a>
                                                 {{/if}}
                                                 {{#if $eq status 'active'}}
                                                     {{#if openFrozenOrAssigned}}
@@ -296,7 +296,6 @@
                                                                         <label class="btn btn-primary btn-sm">
                                                                             <input type="file" class="file_bag" accept="{{fileType _id}}"> Upload New
                                                                         </label>
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -308,14 +307,13 @@
                                                             <textarea class="form-control comments" readonly="{{#if isBuyer}}readonly{{/if}}" >{{comments}}</textarea>
                                                         </div>
                                                     </div>
-                                                    {{#if isBuyer}}
-                                                    {{else}}
+                                                    {{#unless isBuyer}}
                                                         <div class="form-group">
                                                             <div class="col-sm-offset-2 col-sm-10">
                                                                 <button type="submit" class="btn btn-primary btn-sm submit-task">Update</button>
                                                             </div>
                                                         </div>
-                                                    {{/if}}
+                                                    {{/unless}}
                                                 {{/if}}
                                             </form>
                                         </div>
@@ -372,7 +370,7 @@
                                                 {{#if show ../_id true}}
                                                     {{#unless isBuyer}}
                                                         {{#unless submittedOrDone}}
-                                                        <th>Action</th>
+                                                            <th>Action</th>
                                                         {{/unless}}
                                                     {{/unless}}
                                                 {{/if}}
@@ -434,7 +432,9 @@
                                             {{/if}}
                                             {{#if $eq ../../ratebasis 'Blended'}}
                                                 Estimated Billable Time: {{blendedTotalHours ../firsthours ../nexthours}} hours.<br>
-                                                {{#if blendedTimeWorked}}
+                                                {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
+                                                    {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
+                                                {{/if}}
                                             {{/if}}
                                             {{#if $eq ../../ratebasis 'Per Hour'}}
                                                 Estimated Billable Time: {{../maxhours}} hours.<br>
@@ -443,14 +443,12 @@
                                                 {{/if}}
                                             {{/if}}
                                         {{/if}}
-                                        {{/if}}
-                                    {{/with}}
-                                {{/if}}
-                                {{#if assignedProvider}}
-                                    {{#with applicationDetails}}
                                         {{#if $eq this.app_type 'counteroffer'}}
                                             {{#if $eq this.counterType 'blended'}}
-                                                Estimated Billable Time: {{blendedTotalHours this.first_max_hours this.next_max_hours}} hours
+                                                Estimated Billable Time: {{blendedTotalHours this.first_max_hours this.next_max_hours}} hours. <br>
+                                                {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hour this.next_max_hours}}
+                                                    {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hour this.next_max_hours}}
+                                                {{/if}}
                                             {{/if}}
                                             {{#if $eq this.counterType 'per_hour'}}
                                                 Estimated Billable Time: {{this.max_hours}} hours ({{this.max_hours}} X {{this.hourly_rate}} = {{this.total_amount}} USD). <br>
@@ -1108,7 +1106,10 @@
                         {{#if assignedOrDone}}
                             <div class="tab-pane active fade in" id="jobAssignedProvider">
                                 <br>
-                                {{#with assignedProviderDetails}}
+                                {{#with assignedProDetails}}
+                                    {{>profileSmall}}
+                                {{/with}}
+                                <!-- {{#with assignedProviderDetails}}
                                     <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
                                         <div class="box box-widget widget-user">
                                             <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
@@ -1150,17 +1151,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                {{/with}}
+                                {{/with}} -->
                             </div>
                         {{/if}}
                         <div class="tab-pane fade in {{#unless assignedOrDone}}active{{/unless}}" id="buyerJobApplications">
                             <br>
+                            <small>
+                                <i class="fa fa-circle fa-appscount"></i> APP - {{appsCount}}
+                                <i class="fa fa-circle fa-cocount"></i> C. O - {{coCount}}
+                            </small>
+                            <hr>
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     {{#each appliedProviders}}
                                         {{#if $eq this.app_type 'application'}}
                                             <div class="panel-group" id="accordion">
-                                                <div class="panel panel-white">
+                                                <div class="panel panel-blue">
                                                     <div class="panel-heading">
                                                         <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">
                                                             <div class="media">
@@ -1249,7 +1255,7 @@
                                         {{/if}}
                                         {{#if $eq this.app_type 'counteroffer'}}
                                             <div class="panel-group" id="accordion">
-                                                <div class="panel panel-white">
+                                                <div class="panel panel-light">
                                                     <div class="panel-heading">
                                                         <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">
                                                             <div class="media">

@@ -63,6 +63,9 @@ Template.breadcrumbs.helpers({
 			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		}
 		return +(Math.round(accountBalance + 'e+2') + 'e-2');
+	},
+	buyerOrDispatcher: function() {
+		return (Meteor.user().isBuyer || Meteor.user().isDispatcher)? true: false;
 	}
 });
 

@@ -714,15 +714,18 @@ Template.job.events({
   },
   'click button.confirmApproveAssignment': function(event, template) {
     event.preventDefault();
+    $(event.currentTarget).button('loading');
     $('.showConfirmAssignment').fadeIn();
   },
   'click button.closeConfirmAssignment': function(event, template) {
     event.preventDefault();
+    $('button.confirmApproveAssignment').button('reset');
     $(event.currentTarget).parent().hide();
   },
   'click button.approveAssignment': function(event, template) {
     event.preventDefault();
     $(event.currentTarget).button('loading');
+    $(event.currentTarget).prop('disabled', 'disabled');
     var jobDetails = Jobs.findOne({_id: Router.current().params._id});
     var acceptedApplication = Session.get('acceptedApplication');
     var providerId = this.assignedProvider;
@@ -749,10 +752,12 @@ Template.job.events({
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
                   $(event.currentTarget).button('reset');
+                  $(event.currentTarget).removeAttr('disabled');
                 }
               })
             }
@@ -761,6 +766,7 @@ Template.job.events({
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             }
           })
         }
@@ -782,10 +788,12 @@ Template.job.events({
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
                   $(event.currentTarget).button('reset');
+                  $(event.currentTarget).removeAttr('disabled');
                 }
               })
             }
@@ -794,6 +802,7 @@ Template.job.events({
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             }
           })
         }
@@ -818,10 +827,12 @@ Template.job.events({
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
                   $(event.currentTarget).button('reset');
+                  $(event.currentTarget).removeAttr('disabled');
                 }
               })
             }
@@ -844,10 +855,12 @@ Template.job.events({
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
                   $(event.currentTarget).button('reset');
+                  $(event.currentTarget).removeAttr('disabled');
                 }
               })
             }
@@ -857,6 +870,7 @@ Template.job.events({
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             }
           })
         }
@@ -864,6 +878,8 @@ Template.job.events({
         Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
           if(error) {
             $(event.currentTarget).button('reset');
+            $(event.currentTarget).removeAttr('disabled');
+            $(event.currentTarget).removeAttr('disabled')
           }
         })
       }
@@ -884,10 +900,12 @@ Template.job.events({
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled')
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
                   $(event.currentTarget).button('reset');
+                  $(event.currentTarget).removeAttr('disabled')
                 }
               })
             }
@@ -896,6 +914,7 @@ Template.job.events({
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled')
             }
           })
         }
@@ -909,10 +928,12 @@ Template.job.events({
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
                   $(event.currentTarget).button('reset');
+                  $(event.currentTarget).removeAttr('disabled');
                 }
               })
             }
@@ -921,6 +942,7 @@ Template.job.events({
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             }
           })
         }
@@ -938,10 +960,12 @@ Template.job.events({
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
                   $(event.currentTarget).button('reset');
+                  $(event.currentTarget).removeAttr('disabled');
                 }
               })
             }
@@ -957,10 +981,12 @@ Template.job.events({
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
                   $(event.currentTarget).button('reset');
+                  $(event.currentTarget).removeAttr('disabled');
                 }
               })
             }
@@ -970,6 +996,7 @@ Template.job.events({
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
               $(event.currentTarget).button('reset');
+              $(event.currentTarget).removeAttr('disabled');
             }
           })
         }
@@ -977,6 +1004,7 @@ Template.job.events({
         Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
           if(error) {
             $(event.currentTarget).button('reset');
+            $(event.currentTarget).removeAttr('disabled');
           }
         })
       }
@@ -1958,9 +1986,40 @@ Template.job.helpers({
     }
     return false;
   },
+  assignedProDetails: function() {
+    return Profiles.findOne({userId: this.assignedProvider});
+  },
+  appsCount: function() {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var appCount = 0;
+    if(jobDetails.applications && jobDetails.applications.length > 0) {
+      for(var i = 0; i < jobDetails.applications.length; i++) {
+        if(jobDetails.applications[i].app_type == 'application') {
+          appCount++;
+        }
+      }
+    }
+    return appCount;
+  },
+  coCount: function() {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    var coCount = 0;
+    if(jobDetails.applications && jobDetails.applications.length > 0) {
+      for(var i = 0; i < jobDetails.applications.length; i++) {
+        if(jobDetails.applications[i].app_type == 'counteroffer') {
+          coCount++;
+        }
+      }
+    }
+    return coCount;
+  },
   assignedOrDone: function() {
-    if(this.applicationStatus == 'paid' || (this.applicationStatus == 'assigned' && (this.assignmentStatus == 'confirmed' || this.assignmentStatus == 'submitted' || this.assignmentStatus == 'rejected')))
+    if(this.applicationStatus == 'assigned' && (this.assignmentStatus == 'confirmed' || this.assignmentStatus == 'rejected' || this.assignmentStatus == 'approved')) {
       return true;
+    }
+    if(this.applicationStatus == 'paid') {
+      return true;
+    }
     return false;
   },
   checkInTime: function(){
@@ -2147,9 +2206,6 @@ Template.job.helpers({
     }
     return false;
   },
-  aHelper: function() {
-    console.log(this);
-  },
   routedProvider: function() {
     return Profiles.findOne({userId: this.selectedProvider});
   },
@@ -2158,10 +2214,6 @@ Template.job.helpers({
       return 'label-deactivated'
     if(this.applicationStatus == 'assigned')
       return 'label-assigned';
-    else if(this.applicationStatus == 'completed')
-      return 'label-completed';
-    else if(this.applicationStatus == 'frozen')
-      return 'label-frozen';
     else if(this.applicationStatus == 'open')
       return 'label-open';
     else if(this.applicationStatus == 'pending_payment')
@@ -2172,7 +2224,7 @@ Template.job.helpers({
   showTabs: function(id) {
       if(Jobs.findOne({_id: id}).userId == Meteor.userId())
         return true;
-      return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned', 'completed', 'pending_payment','paid']}}]}) ? true : false;
+      return Jobs.findOne({$and: [{ _id: id },{ applicationStatus: {$in:['assigned', 'pending_payment','paid']}}]}) ? true : false;
   },
   jobNotAssigned: function() {
     if(this.applicationStatus == 'open' && this.status == 'active') {

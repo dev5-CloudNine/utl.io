@@ -605,9 +605,9 @@ Meteor.methods({
         if(jobDetails.ratebasis == 'Fixed Pay') {
             budgetDetails = 'Fixed amount of ' + jobDetails.fixedamount + ' USD.';
         } else if(jobDetails.ratebasis == 'Per Hour') {
-            budgetDetails = jobDetails.hourlyrate + '/hour for upto ' + jobDetails.maxhours + ' hours.';
+            budgetDetails = jobDetails.hourlyrate + ' USD/hour for upto ' + jobDetails.maxhours + ' hours.';
         } else if(jobDetails.ratebasis == 'Per Device') {
-            budgetDetails = jobDetails.devicerate + '/device for upto ' + jobDetails.maxdevices + ' devices.';
+            budgetDetails = jobDetails.rateperdevice + ' USD/device for upto ' + jobDetails.maxdevices + ' devices.';
         } else if(jobDetails.ratebasis == 'Blended') {
             budgetDetails = 'Fixed amount of ' + jobDetails.payforfirsthours + ' USD for the first ' + jobDetails.firsthours + ' hour(s) and then ' + jobDetails.payfornexthours + '/hour for the next ' + jobDetails.nexthours + ' hours.';
         }

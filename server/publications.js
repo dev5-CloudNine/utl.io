@@ -22,6 +22,18 @@ Meteor.publish("userData", function() {
     this.ready();
 });
 
+// Meteor.publish('onlineJobs', function() {
+//     var self = this;
+//     try {
+//         var jobs = HTTP.get('https://utl-95476.app.xervo.io/api/jobs');
+//         _.each(jobs.data.data, function(job) {
+//             self.added('jobs', Random.id(), job)
+//         })
+//     } catch(error) {
+//         console.log(error)
+//     }
+// })
+
 Meteor.publish('userFiles', function(userId) {
     return FileManager.find({userId: userId});
 })
@@ -166,6 +178,7 @@ Meteor.publishComposite('providers', {
                 userId: true,
                 title: true,
                 location: true,
+                fullLocation: true,
                 lastName: true,
                 firstName: true,
                 userName: true,
