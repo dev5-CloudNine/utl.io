@@ -49,11 +49,14 @@ h3, h4 {
 }
 
 .jumbotron-bg {
-  /*min-height: 440px;*/
   background-size: 100%;
   background-color: #f2f2f2 !important;
   background-repeat: no-repeat;
   background: url('images/bg_img.jpg');
+}
+
+.jumbotron-bg h3, .jumbotron-bg h4 {
+  color: #fff;
 }
 
 #home-wrapper {

@@ -1054,6 +1054,17 @@ Meteor.methods({
             read: false,
             adminRead: false
         };
+        var jobDetails = Jobs.findOne({_id: jobId});
+        var invoiceObject = {
+            jobId: jobId,
+            providerId: assignedProvider,
+            buyerId: buyerId,
+            budget: jobDetails.projectBudget,
+            date: new Date(),
+            invoiceId: jobDetails.readableID,
+            invoiceStatus: 'paid (deactivated)'
+        }
+        Invoices.insert(invoiceObject);
         Notifications.insert(notificationObj);
     },
     deny30Usd: function(jobId) {

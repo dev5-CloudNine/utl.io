@@ -40,7 +40,11 @@ var adminOptionsObject = {
 			'title': 'Job Name',
 			data: function(invoice) {
 				var jobDetails = Jobs.findOne({_id: invoice.jobId});
-				var jobLink = '<a href="/jobs/' + invoice.jobId + '">' + jobDetails.title + '</a><br><small><i>' + moment(invoice.date).format('dddd, MMMM Do YYYY, h:mm:ss a') + '</i><small>';
+				var jobLink;
+				if(jobDetails.status == 'deactivated')
+					jobLink = '<a href="/jobs/' + invoice.jobId + '">' + jobDetails.title + '</a> <small>(Deactivated)</small><br><small><i>' + moment(invoice.date).format('dddd, MMMM Do YYYY, h:mm:ss a') + '</i><small>';
+				else
+					jobLink = '<a href="/jobs/' + invoice.jobId + '">' + jobDetails.title + '</a><br><small><i>' + moment(invoice.date).format('dddd, MMMM Do YYYY, h:mm:ss a') + '</i><small>';
 				return jobLink;
 			},
 			width: '40%'
@@ -53,11 +57,17 @@ var adminOptionsObject = {
 				var jobDetails = Jobs.findOne({_id: invoice.jobId});
 				if(Roles.userIsInRole(invoice.buyerId, ['buyer'])) {
 					buyerDetails = Buyers.findOne({userId: invoice.buyerId});
-					buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a><br><small><i>Cost: ' + (+(Math.round((jobDetails.buyerCost) + 'e+2') + 'e-2')) + ' USD';
+					if(jobDetails.status == 'deactivated')
+						buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a><br><small><i>Cost: 31.5 USD';
+					else
+						buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a><br><small><i>Cost: ' + (+(Math.round((jobDetails.buyerCost) + 'e+2') + 'e-2')) + ' USD';
 				}
 				else if(Roles.userIsInRole(invoice.buyerId, ['dispatcher'])) {
 					buyerDetails = Dispatchers.findOne({userId: invoice.buyerId});
-					buyerLink = '<a href="/dispatchers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a><br><small><i>Cost: ' + (+(Math.round((jobDetails.buyerCost) + 'e+2') + 'e-2')) + ' USD';
+					if(jobDetails.status == 'deactivated')
+						buyerLink = '<a href="/buyers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a><br><small><i>Cost: 31.5 USD';
+					else
+						buyerLink = '<a href="/dispatchers/' + buyerDetails._id + '">' + buyerDetails.firstName + ' ' + buyerDetails.lastName + '</a><br><small><i>Cost: ' + (+(Math.round((jobDetails.buyerCost) + 'e+2') + 'e-2')) + ' USD';
 				}
 				return buyerLink;
 			},
@@ -68,7 +78,11 @@ var adminOptionsObject = {
 			data: function(invoice) {
 				var providerDetails = Profiles.findOne({userId: invoice.providerId});
 				var jobDetails = Jobs.findOne({_id: invoice.jobId});
-				var providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a><br><small><i>Earned: ' + (+(Math.round((jobDetails.projectBudget) + 'e+2') + 'e-2')) + ' USD';
+				var providerLink;
+				if(jobDetails.status == 'deactivated')
+					providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a><br><small><i>Earned: 30 USD';
+				else
+					providerLink = '<a href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a><br><small><i>Earned: ' + (+(Math.round((jobDetails.projectBudget) + 'e+2') + 'e-2')) + ' USD';
 				return providerLink;
 			},
 			width: '20%'
@@ -77,7 +91,10 @@ var adminOptionsObject = {
 			'title': 'Administrator',
 			data: function(invoice) {
 				var jobDetails = Jobs.findOne({_id: invoice.jobId});
-				return '<a>Earnings</a><br><small><i>' + (+(Math.round((jobDetails.buyerCost - jobDetails.projectBudget) + 'e+2') + 'e-2')) + ' USD</i></small>';
+				if(jobDetails.status == 'deactivated')
+					return '<a>Earnings</a><br><small><i>1.5 USD</i></small>';
+				else
+					return '<a>Earnings</a><br><small><i>' + (+(Math.round((jobDetails.buyerCost - jobDetails.projectBudget) + 'e+2') + 'e-2')) + ' USD</i></small>';
 			},
 			width: '20%'
 		}
