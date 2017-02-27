@@ -12,11 +12,13 @@
 					</h4>
 				</div>
 			</div>	
-			<div class="row">
-				<div class="col-md-3">
-					<a href="{{pathFor 'signUp'}}" class="btn btn-lg btn-primary">SIGN UP</a>
+			{{#unless currentUser}}
+				<div class="row">
+					<div class="col-md-3">
+						<a href="{{pathFor 'signUp'}}" class="btn btn-lg btn-primary">SIGN UP</a>
+					</div>
 				</div>
-			</div>	
+			{{/unless}}
 			<!-- <div id="callToAction" class="row">
 				{{#if currentUser}}
 					{{#if isInRole 'buyer, dispatcher'}}

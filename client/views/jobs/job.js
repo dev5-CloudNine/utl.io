@@ -668,7 +668,6 @@ Template.job.events({
         var jobEstimatedMins = applicationDetails.max_hours * 60;
         var providerEarnings = applicationDetails.freelancer_nets;
         var earningsPerMinute = providerEarnings/jobEstimatedMins;
-        console.log(+(Math.round(earningsPerMinute + 'e+2') + 'e-2'))
         var workedEarnings = timeWorkedMins * earningsPerMinute;
         var diff = jobEstimatedMins - timeWorkedMins;
         var duration = moment.duration(diff, 'minutes')
@@ -724,7 +723,6 @@ Template.job.events({
   },
   'click button.approveAssignment': function(event, template) {
     event.preventDefault();
-    $(event.currentTarget).button('loading');
     $(event.currentTarget).prop('disabled', 'disabled');
     var jobDetails = Jobs.findOne({_id: Router.current().params._id});
     var acceptedApplication = Session.get('acceptedApplication');
@@ -751,12 +749,10 @@ Template.job.events({
           }
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
-                  $(event.currentTarget).button('reset');
                   $(event.currentTarget).removeAttr('disabled');
                 }
               })
@@ -765,7 +761,6 @@ Template.job.events({
         } else {
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             }
           })
@@ -787,12 +782,10 @@ Template.job.events({
           }
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
-                  $(event.currentTarget).button('reset');
                   $(event.currentTarget).removeAttr('disabled');
                 }
               })
@@ -801,7 +794,6 @@ Template.job.events({
         } else {
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             }
           })
@@ -826,12 +818,10 @@ Template.job.events({
           }
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
-                  $(event.currentTarget).button('reset');
                   $(event.currentTarget).removeAttr('disabled');
                 }
               })
@@ -854,12 +844,10 @@ Template.job.events({
           }
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
-                  $(event.currentTarget).button('reset');
                   $(event.currentTarget).removeAttr('disabled');
                 }
               })
@@ -869,7 +857,6 @@ Template.job.events({
         if(providerWorkedMins >= totalMinutes) {
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             }
           })
@@ -877,9 +864,7 @@ Template.job.events({
       } else {
         Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
           if(error) {
-            $(event.currentTarget).button('reset');
             $(event.currentTarget).removeAttr('disabled');
-            $(event.currentTarget).removeAttr('disabled')
           }
         })
       }
@@ -899,12 +884,10 @@ Template.job.events({
           var buyerReturns = buyerInitialBudget - buyerShouldPay;
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled')
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
-                  $(event.currentTarget).button('reset');
                   $(event.currentTarget).removeAttr('disabled')
                 }
               })
@@ -913,7 +896,6 @@ Template.job.events({
         } else {
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled')
             }
           })
@@ -927,12 +909,10 @@ Template.job.events({
           buyerReturns = buyerInitialBudget - buyerShouldPay;
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
-                  $(event.currentTarget).button('reset');
                   $(event.currentTarget).removeAttr('disabled');
                 }
               })
@@ -941,7 +921,6 @@ Template.job.events({
         } else {
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             }
           })
@@ -959,12 +938,10 @@ Template.job.events({
           buyerReturns = buyerInitialBudget - buyerShouldPay;
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
-                  $(event.currentTarget).button('reset');
                   $(event.currentTarget).removeAttr('disabled');
                 }
               })
@@ -980,12 +957,10 @@ Template.job.events({
           buyerReturns = buyerInitialBudget - buyerShouldPay;
           Meteor.call('updateBudget', jobDetails._id, providerEarnings, buyerReturns, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             } else {
               Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
                 if(error) {
-                  $(event.currentTarget).button('reset');
                   $(event.currentTarget).removeAttr('disabled');
                 }
               })
@@ -995,7 +970,6 @@ Template.job.events({
         if(providerWorkedMins >= totalMinutes) {
           Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
             if(error) {
-              $(event.currentTarget).button('reset');
               $(event.currentTarget).removeAttr('disabled');
             }
           })
@@ -1003,7 +977,6 @@ Template.job.events({
       } else {
         Meteor.call('approveAssignment', jobDetails._id, providerId, function(error, result) {
           if(error) {
-            $(event.currentTarget).button('reset');
             $(event.currentTarget).removeAttr('disabled');
           }
         })
@@ -1493,14 +1466,6 @@ Template.job.helpers({
     description.slice(0, -3);
     return description;
   },
-  completedDevices: function(ratePerDevice, maxDevices, devicesCompleted) {
-    if(devicesCompleted == maxDevices) {
-      return 'You have completed the assigned devices. You may now submit the job for approval.';
-    }
-    if(devicesCompleted < maxDevices) {
-      return 'You have completed ' + devicesCompleted + ' devices. So you\'ll be paid with ' + devicesCompleted * ratePerDevice + ' USD.';
-    }
-  },
   expensesRequested: function() {
     var jobDetails = Jobs.findOne({_id: Router.current().params._id});
     if(jobDetails.expenses && jobDetails.expenses.length > 0)
@@ -1548,8 +1513,39 @@ Template.job.helpers({
     }
     return false;
   },
-  timeWorked: function(hourlyrate, maxhours) {
-    var total = Session.get('totalHours');
+  timeWorked: function(hourlyrate, maxhours, paidBy) {
+    var logList = [];
+    var totalHours = 0;
+    var logs = TimeSheet.findOne({'jobID':Router.current().params._id}, { sort: { 'logs.checkOut': -1 } }).logs;
+    if(!logs) return;
+    logs.map(function(log){
+      var obj = {};
+      obj.id = log.id;
+      obj.in = moment(log.checkIn).format('llll');
+      obj.out = moment(log.checkOut).format('llll');
+      var inT = moment(new Date(obj.in));
+      var ouT = moment(new Date(obj.out));
+      var diff = ouT.diff(inT);
+      var duration = moment.duration(diff,'milliseconds');
+      var days = Math.floor(duration.asDays());
+      var hours = Math.floor(duration.asHours());
+      var mins = Math.floor(duration.asMinutes()) - hours * 60;
+      var total = "Hours : "+hours+", Mins : "+mins;
+      obj.total = total;
+      totalHours+=diff;
+      logList.push(obj);
+    });
+
+    var duration = moment.duration(totalHours,'milliseconds');
+    var days = Math.floor(duration.asDays());
+    var hours = Math.floor(duration.asHours());
+    var hrs = days*24+hours;
+    var mins = Math.floor(duration.asMinutes()) - hours * 60;
+    var total = {
+      hours: hours,
+      minutes: mins
+    }
+    // var total = Session.get('totalHours');
     var timeWorkedMins = total.hours * 60 + total.minutes;
     var jobEstimatedMins = maxhours * 60;
     var providerEarnings = hourlyrate * maxhours;
@@ -1574,12 +1570,26 @@ Template.job.helpers({
       workedEarnings: +(Math.round(workedEarnings + 'e+2') + 'e-2')
     }
     if(timeWorkedMins < jobEstimatedMins) {
-      if(Roles.userIsInRole(Meteor.userId(), ['provider']))
-        return 'You have worked for ' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes. So you\'ll be paid with ' + timeWorked.workedEarnings + ' USD. (' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes X ' + timeWorked.hourlyRate + ' USD = ' + timeWorked.workedEarnings + ' USD)'
-      else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
-        return 'The provider has worked for ' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes. So will be paid with ' + timeWorked.workedEarnings + ' USD. (' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes X ' + timeWorked.hourlyRate + ' USD = ' + timeWorked.workedEarnings + ' USD)'
+      var paidWith;
+      if(paidBy == 'buyer') {
+        paidWith = timeWorked.workedEarnings;
+      } else if(paidBy == 'provider') {
+        paidWith = timeWorked.workedEarnings - timeWorked.workedEarnings * 5 / 100;
+      }
+      if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+        if(paidBy == 'provider') {
+          return 'You have worked for ' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes. So you\'ll be paid with ' + paidWith + ' USD. (' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes X ' + timeWorked.hourlyRate + ' USD = ' + timeWorked.workedEarnings + ' USD - 5% Fees.)'
+        }
+        return 'You have worked for ' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes. So you\'ll be paid with ' + paidWith + ' USD. (' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes X ' + timeWorked.hourlyRate + ' USD = ' + timeWorked.workedEarnings + ' USD)'
+      }
+      else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
+        if(paidBy == 'provider') {
+          return 'The provider has worked for ' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes. So will be paid with ' + paidWith + ' USD. (' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes X ' + timeWorked.hourlyRate + ' USD = ' + timeWorked.workedEarnings + ' USD - 5% Fees.)'
+        }
+        return 'The provider has worked for ' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes. So will be paid with ' + paidWith + ' USD. (' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes X ' + timeWorked.hourlyRate + ' USD = ' + timeWorked.workedEarnings + ' USD)'
+      }
     }
-    if(timeWorkedMins >= jobEstimatedMins) {
+    if(timeWorkedMins > jobEstimatedMins) {
       if(Roles.userIsInRole(Meteor.userId(), ['provider']))
         return 'You have worked for ' + timeWorked.hoursWorked + ' hours and ' + timeWorked.minutesWorked + ' minutes. You may request for an increase in budget for ' + timeWorked.hours + ' hours and ' + timeWorked.minutes + ' minutes.'
       else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
@@ -1592,14 +1602,27 @@ Template.job.helpers({
         return 'The provider has worked for the estimated time.';
     }
   },
-  completedDevices: function(devicerate, maxdevices) {
+  completedDevices: function(devicerate, maxdevices, paidBy) {
     var jobDetails = Jobs.findOne({_id: Router.current().params._id});
     var devicesCompleted = jobDetails.devicescompleted;
     if(devicesCompleted < jobDetails.estimatedDevices) {
-      if(Roles.userIsInRole(Meteor.userId(), ['provider']))
-        return 'You have worked on ' + devicesCompleted + ' devices. So you\'ll be paid with ' + devicesCompleted * devicerate + ' USD. (' + devicesCompleted + ' devices X ' + devicerate + ' USD = ' + devicesCompleted * devicerate + ' USD)';
+      var paidWith;
+      if(paidBy == 'buyer') {
+        paidWith = devicesCompleted * devicerate;
+      } else if(paidBy == 'provider') {
+        paidWith = devicesCompleted * devicerate - (devicesCompleted * devicerate) * 5 / 100;
+      }
+      if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+        if(paidBy == 'provider') {
+          return 'You have worked on ' + devicesCompleted + ' devices. So you\'ll be paid with ' + paidWith + ' USD. (' + devicesCompleted + ' devices X ' + devicerate + ' USD = ' + devicesCompleted * devicerate + ' USD - 5% Fees.)';
+        }
+        return 'You have worked on ' + devicesCompleted + ' devices. So you\'ll be paid with ' + paidWith + ' USD. (' + devicesCompleted + ' devices X ' + devicerate + ' USD = ' + devicesCompleted * devicerate + ' USD)';
+      }
       else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
-        return 'The provider has worked on ' + devicesCompleted + ' devices. So will be paid with ' + devicesCompleted * devicerate + ' USD. (' + devicesCompleted + ' devices X ' + devicerate + ' USD = ' + devicesCompleted * devicerate + ' USD)';
+        if(paidBy == 'provider') {
+          return 'The provider has worked on ' + devicesCompleted + ' devices. So will be paid with ' + paidWith + ' USD. (' + devicesCompleted + ' devices X ' + devicerate + ' USD = ' + devicesCompleted * devicerate + ' USD - 5% Fees.)';
+        }
+        return 'The provider has worked on ' + devicesCompleted + ' devices. So will be paid with ' + paidWith + ' USD. (' + devicesCompleted + ' devices X ' + devicerate + ' USD = ' + devicesCompleted * devicerate + ' USD)';
     }
     else if(devicesCompleted == jobDetails.estimatedDevices) {
       if(Roles.userIsInRole(Meteor.userId(), ['provider']))
@@ -1613,25 +1636,80 @@ Template.job.helpers({
       else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
         return 'The provider has worked on more than estimated number of devices. Check for any budget increase.'
   },
-  blendedTimeWorked: function(payForFirstHours, firstHours, payForNextHours, nextHours) {
-    var total = Session.get('totalHours');
+  blendedTimeWorked: function(payForFirstHours, firstHours, payForNextHours, nextHours, paidBy) {
+    var logList = [];
+    var totalHours = 0;
+    var logs = TimeSheet.findOne({'jobID':Router.current().params._id}, { sort: { 'logs.checkOut': -1 } }).logs;
+    if(!logs) return;
+    logs.map(function(log){
+      var obj = {};
+      obj.id = log.id;
+      obj.in = moment(log.checkIn).format('llll');
+      obj.out = moment(log.checkOut).format('llll');
+      var inT = moment(new Date(obj.in));
+      var ouT = moment(new Date(obj.out));
+      var diff = ouT.diff(inT);
+      var duration = moment.duration(diff,'milliseconds');
+      var days = Math.floor(duration.asDays());
+      var hours = Math.floor(duration.asHours());
+      var mins = Math.floor(duration.asMinutes()) - hours * 60;
+      var total = "Hours : "+hours+", Mins : "+mins;
+      obj.total = total;
+      totalHours+=diff;
+      logList.push(obj);
+    });
+
+    var duration = moment.duration(totalHours,'milliseconds');
+    var days = Math.floor(duration.asDays());
+    var hours = Math.floor(duration.asHours());
+    var hrs = days*24+hours;
+    var mins = Math.floor(duration.asMinutes()) - hours * 60;
+    var total = {
+      hours: hours,
+      minutes: mins
+    }
     var totalEstimatedMins = firstHours * 60 + nextHours * 60;
     var providerWorkedMins = total.hours * 60 + total.minutes;
     if(providerWorkedMins < firstHours * 60) {
+      var paidWith;
+      if(paidBy == 'buyer') {
+        paidWith = payForFirstHours;
+      } else if(paidBy == 'provider') {
+        paidWith = payForFirstHours - payForFirstHours * 5 / 100;
+      }
       if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+        if(paidBy == 'provider') {
+          return 'You have worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So you\'ll be paid with ' + paidWith + ' USD (' + payForFirstHours + ' - 5% Fees.)';
+        }
         return 'You have worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So you\'ll be paid with ' + payForFirstHours + ' USD';
       } else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
+        if(paidBy == 'provider') {
+          return 'The provider has worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So will be paid with ' + payForFirstHours + ' USD (' + payForFirstHours + ' - 5% Fees.)';
+        }
         return 'The provider has worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So will be paid with ' + payForFirstHours + ' USD';
       }
     }
     if(providerWorkedMins >= firstHours * 60 && providerWorkedMins < totalEstimatedMins) {
       var nextMinutesWorked = providerWorkedMins - firstHours * 60;
       var payNextHourMins = payForNextHours / 60;
-      var providerEarns = payForFirstHours + nextMinutesWorked * payNextHourMins;
+      var providerEarns = +(Math.round((payForFirstHours + nextMinutesWorked * payNextHourMins) + 'e+2') + 'e-2');
+       var paidWith;
+        if(paidBy == 'buyer') {
+          paidWith = +(Math.round(providerEarns + 'e+2') + 'e-2');
+        } else if(paidBy == 'provider') {
+          paidWith = +(Math.round((providerEarns - providerEarns * 5 / 100) + 'e+2') + 'e-2');
+        }
       if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
-        return 'You have worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So you\'ll be paid with ' + providerEarns + ' USD';
+        if(paidBy == 'provider') {
+          var nextDurationHours = +(Math.round((moment.duration(nextMinutesWorked, 'minutes').asHours()) + 'e+2') + 'e-2');
+          return 'You have worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So you\'ll be paid with ' + paidWith + ' USD (' + payForFirstHours + ' + ' + nextDurationHours + ' hours * ' + payForNextHours + ' = ' + providerEarns + ' - 5% Fees)';
+        }
+        return 'You have worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So you\'ll be paid with ' + paidWith + ' USD';
       } else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
-        return 'The provider has worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So will be paid with ' + providerEarns + ' USD';
+        if(paidBy == 'provider') {
+          return 'The provider has worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So you\'ll be paid with ' + paidWith + ' USD (' + payForFirstHours + ' + ' + nextDurationHours + ' hours * ' + payForNextHours + ' = ' + providerEarns + ' - 5% Fees)';
+        }
+        return 'The provider has worked for ' + total.hours + ' hours and ' + total.minutes + ' minutes. So will be paid with ' + paidWith + ' USD';
       }
     }
     if(providerWorkedMins == totalEstimatedMins) {
@@ -1639,6 +1717,12 @@ Template.job.helpers({
         return 'You have worked for the estimated time and you may now submit the job for approval.';
       else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
         return 'The provider has worked for the estimated time.'
+    }
+    if(providerWorkedMins > totalEstimatedMins) {
+      if(Roles.userIsInRole(Meteor.userId(), ['provider']))
+        return 'You have worked for more than the estimated time. You may request for a budget increase.';
+      else if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
+        return 'The provider has worked for more than the estimated time. Check for any budget increases.';
     }
     return;
   },
@@ -1676,7 +1760,6 @@ Template.job.helpers({
           acceptedExpenses.push(jobDetails.expenses[i]);
       }
     }
-    console.log(acceptedExpenses);
     return acceptedExpenses;
   },
   itypes: function() {
@@ -1690,14 +1773,11 @@ Template.job.helpers({
     }
     return itypes;
   },
-  buyerPaid30Usd: function() {
-    console.log(this);
-  },
   postedByDispatcher: function() {
-    return Roles.userIsInRole(this.userId, ['dispatcher']);
+    return (Roles.userIsInRole(this.userId, ['dispatcher'])) ? true: false;
   },
   postedByBuyer: function() {
-    return Roles.userIsInRole(this.userId, ['buyer']);
+    return (Roles.userIsInRole(this.userId, ['buyer'])) ? true: false;
   },
   favCount: function() {
     var userId;
@@ -2172,7 +2252,6 @@ Template.job.helpers({
         }
       }
     } else if(appType == 'counteroffer') {
-      console.log(maxFirstHours)
       var estimatedTimeMins = maxFirstHours * 60 + maxNextHours * 60;
       var providerWorkedMinutes = hoursWorked.hours * 60 + hoursWorked.minutes;
       if(providerWorkedMinutes < maxFirstHours * 60) {
@@ -2515,7 +2594,6 @@ Template.job.helpers({
     }
     if(acceptedApplication.app_type == 'application') {
       if(jobDetails.ratebasis == 'Per Device') {
-        console.log(jobDetails)
         if(!jobDetails.devicescompleted || jobDetails.devicescompleted < 1) {
           return false;
         }

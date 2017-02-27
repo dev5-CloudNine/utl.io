@@ -486,9 +486,9 @@ h3, h4 {
   background-color: #f6f4ec !important;
   border-color: #ddd;
 }
-.panel-blue
-{
+.panel-blue {
   background-color: #ffeded !important;
+  border-color: #ddd;
 }
 .form-group .input-group input[type=file] {
     display:none;

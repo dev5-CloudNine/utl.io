@@ -404,12 +404,38 @@
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-body">
+                                {{#if $eq userId $.Meteor.userId}}
+                                    {{#with assignedProviderDetails}}
+                                        {{#if $eq this.appType 'application'}}
+                                            {{#if $eq ../../ratebasis 'Per Device'}}
+                                                <p>Estimated Billable Devices: {{../../estimatedDevices}}</p>
+                                            {{/if}}
+                                            {{#if $eq ../../ratebasis 'Per Hour'}}
+                                                <p>Estimated Billable Time: {{../../maxhours}} Hours.</p>
+                                            {{/if}}
+                                            {{#if $eq ../../ratebasis 'Blended'}}
+                                                <p>Estimated Billable Time: {{blendedTotalHours ../../firsthours ../../nexthours}} Hours.</p>
+                                            {{/if}}
+                                        {{/if}}
+                                        {{#if $eq this.appType 'counteroffer'}}
+                                            {{#if $eq this.counter_type 'per_device'}}
+                                                <p>Estimated Billable Devices: {{../../estimatedDevices}}</p>
+                                            {{/if}}
+                                            {{#if $eq this.counter_type 'per_hour'}}
+                                                <p>Estimated Billable Time: {{this.max_hours}} Hours.</p>
+                                            {{/if}}
+                                            {{#if $eq this.counter_type 'blended'}}
+                                                <p>Estimated Billable Time: {{blendedTotalHours this.first_max_hours this.next_max_hours}} Hours.</p>
+                                            {{/if}}
+                                        {{/if}}
+                                    {{/with}}
+                                {{/if}}
                                 {{#if assignedProvider}}
                                     {{#with applicationDetails}}
                                         {{#if $eq this.app_type 'application'}}
                                             {{#if $eq ../../ratebasis 'Per Device'}}
                                                 <p>
-                                                    Estimated Billable Devices: {{../../estimatedDevices}} devices. <br>
+                                                    Estimated Billable Devices: {{../../estimatedDevices}} devices<br>
                                                     If you have more number of devices to be worked upon, request for a budget increase and wait for the buyer's confirmation.
                                                 </p>
                                                 <hr>
@@ -426,34 +452,34 @@
                                                         </div>
                                                     </form>
                                                 </div>
-                                                {{#if completedDevices ../../rateperdevice ../../estimatedDevices}}
-                                                    {{completedDevices ../../rateperdevice ../../estimatedDevices}}
+                                                {{#if completedDevices ../../rateperdevice ../../estimatedDevices ../../paidby}}
+                                                    {{completedDevices ../../rateperdevice ../../estimatedDevices ../../paidby}}
                                                 {{/if}}
                                             {{/if}}
                                             {{#if $eq ../../ratebasis 'Blended'}}
                                                 Estimated Billable Time: {{blendedTotalHours ../firsthours ../nexthours}} hours.<br>
-                                                {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
-                                                    {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
+                                                {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
+                                                    {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
                                                 {{/if}}
                                             {{/if}}
                                             {{#if $eq ../../ratebasis 'Per Hour'}}
                                                 Estimated Billable Time: {{../maxhours}} hours.<br>
-                                                {{#if timeWorked ../hourlyrate ../maxhours}}
-                                                    {{timeWorked ../hourlyrate ../maxhours}}
+                                                {{#if timeWorked ../hourlyrate ../maxhours ../paidby}}
+                                                    {{timeWorked ../hourlyrate ../maxhours ../paidby}}
                                                 {{/if}}
                                             {{/if}}
                                         {{/if}}
                                         {{#if $eq this.app_type 'counteroffer'}}
                                             {{#if $eq this.counterType 'blended'}}
                                                 Estimated Billable Time: {{blendedTotalHours this.first_max_hours this.next_max_hours}} hours. <br>
-                                                {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hour this.next_max_hours}}
-                                                    {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hour this.next_max_hours}}
+                                                {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hour this.next_max_hours 'buyer'}}
+                                                    {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hour this.next_max_hours 'buyer'}}
                                                 {{/if}}
                                             {{/if}}
                                             {{#if $eq this.counterType 'per_hour'}}
                                                 Estimated Billable Time: {{this.max_hours}} hours ({{this.max_hours}} X {{this.hourly_rate}} = {{this.total_amount}} USD). <br>
-                                                {{#if timeWorked this.hourly_rate this.max_hours}}
-                                                    {{timeWorked this.hourly_rate this.max_hours}}
+                                                {{#if timeWorked this.hourly_rate this.max_hours 'buyer'}}
+                                                    {{timeWorked this.hourly_rate this.max_hours 'buyer'}}
                                                 {{/if}}
                                             {{/if}}
                                             {{#if $eq this.counterType 'per_device'}}
@@ -474,8 +500,8 @@
                                                         </div>
                                                     </form>
                                                 </div>
-                                                {{#if completedDevices this.device_rate ../../estimatedDevices}}
-                                                    {{completedDevices this.device_rate ../../estimatedDevices}}
+                                                {{#if completedDevices this.device_rate ../../estimatedDevices 'buyer'}}
+                                                    {{completedDevices this.device_rate ../../estimatedDevices 'buyer'}}
                                                 {{/if}}
                                             {{/if}}
                                         {{/if}}
@@ -540,10 +566,10 @@
                                                 <p><i>{{assignmentTime}}</i></p>
                                                 <p>The provider has confirmed the assignment. <br>The job is scheduled for 
                                                 {{#if $eq serviceschedule 'exactdate'}}
-                                                    Date: {{formatDate exactdate}} at {{exacttime}}
+                                                    Date: {{formatServiceSchedule exactdate}} at {{exacttime}}
                                                 {{/if}}
                                                 {{#if $eq serviceschedule 'betweendates'}}
-                                                    Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} to {{endtime}}
+                                                    Between {{formatServiceSchedule startdate}} and {{formatDate enddate}} from {{starttime}} to {{endtime}}
                                                 {{/if}}
                                                 <br>Wait for the provider to complete all assigned tasks and fill up timesheets.</p>
                                             {{/if}}
@@ -564,7 +590,7 @@
                                                 {{/if}}
                                             {{else}}
                                                 <p><i>{{rejectedTime}}</i></p>
-                                                <p>You have rejected the assignment. Please discuss with the provider and sort it out.</p>
+                                                <p>You have rejected the assignment. Discuss with the provider and sort it out.</p>
                                             {{/if}}
                                         {{/if}}
                                         {{#if $eq assignmentStatus 'submitted'}}
@@ -583,49 +609,39 @@
                                                 {{/if}}
                                             {{else}}
                                                 <p><i>{{submittedTime}}</i></p>
-                                                <p>The provider has submitted the job for your approval. You may either approve or reject the job done. Upon approval, the provider's account will be credited with {{projectBudget}} USD. Ensure that all the tasks and timesheets are upto your mark.<br>
+                                                <p>The provider has submitted the job for your approval. You may either approve or reject the job done. Ensure that all the tasks and timesheets are upto your mark.<br>
                                                 {{#with assignedProviderDetails}}
                                                     {{#if $eq this.appType 'application'}}
                                                         {{#if $eq ../ratebasis 'Per Hour'}}
-                                                            {{#if timeWorked ../hourlyrate ../maxhours}}
-                                                                {{timeWorked ../hourlyrate ../maxhours}}
+                                                            {{#if timeWorked ../hourlyrate ../maxhours ../paidby}}
+                                                                {{timeWorked ../hourlyrate ../maxhours ../paidby}}
                                                             {{/if}}
                                                         {{/if}}
                                                         {{#if $eq ../ratebasis 'Per Device'}}
-                                                            {{#if completedDevices ../rateperdevice ../maxdevices}}
-                                                                {{completedDevices ../rateperdevice ../maxdevices}}
-                                                            {{/if}}
-                                                        {{/if}}
-                                                        {{#if $eq ../ratebasis 'Per Device'}}
-                                                            {{#if completedDevices ../rateperdevice ../maxdevices}}
-                                                                {{completedDevices ../rateperdevice ../maxdevices}}
+                                                            {{#if completedDevices ../rateperdevice ../maxdevices ../paidby}}
+                                                                {{completedDevices ../rateperdevice ../maxdevices ../paidby}}
                                                             {{/if}}
                                                         {{/if}}
                                                         {{#if $eq ../ratebasis 'Blended'}}
-                                                            {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
-                                                                {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
+                                                            {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
+                                                                {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
                                                             {{/if}}
                                                         {{/if}}
                                                     {{/if}}
                                                     {{#if $eq this.appType 'counteroffer'}}
                                                         {{#if $eq this.counter_type 'per_hour'}}
-                                                            {{#if timeWorked this.hourly_rate this.max_hours}}
-                                                                {{timeWorked this.hourly_rate this.max_hours}}
+                                                            {{#if timeWorked this.hourly_rate this.max_hours 'buyer'}}
+                                                                {{timeWorked this.hourly_rate this.max_hours 'buyer'}}
                                                             {{/if}}
                                                         {{/if}}
                                                         {{#if $eq this.counter_type 'per_device'}}
-                                                            {{#if completedDevices this.device_rate this.max_devices}}
-                                                                {{completedDevices this.device_rate this.max_devices}}
-                                                            {{/if}}
-                                                        {{/if}}
-                                                        {{#if $eq this.counterType 'per_device'}}
-                                                            {{#if completedDevices this.device_rate this.max_devices}}
-                                                                {{completedDevices this.device_rate this.max_devices}}
+                                                            {{#if completedDevices this.device_rate this.max_devices 'buyer'}}
+                                                                {{completedDevices this.device_rate this.max_devices 'buyer'}}
                                                             {{/if}}
                                                         {{/if}}
                                                         {{#if $eq this.counterType 'blended'}}
-                                                            {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours}}
-                                                                {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours}}
+                                                            {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours 'buyer'}}
+                                                                {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours 'buyer'}}
                                                             {{/if}}
                                                         {{/if}}
                                                     {{/if}}
@@ -652,7 +668,7 @@
                                         <p>The provider's account is successfully credited for the job completed.</p>
                                         {{#if reviewedProvider}}
                                             <hr>
-                                            <p>You have reviewed the provider. The job is successfully closed. <a href="/invoices/{{invoiceId}}">View invoice</a></p>
+                                            <p>You have reviewed the provider. The job is successfully closed. <a href="/wallet/invoices/{{invoiceId}}">View invoice</a></p>
                                         {{else}}
                                             <hr>
                                             <form id="reviewProvider">
@@ -1664,50 +1680,49 @@
                                                     <p><i>{{assignmentTime}}</i></p>
                                                     <p>You have confirmed to do the job. <br>The job is scheduled for 
                                                     {{#if $eq serviceschedule 'exactdate'}}
-                                                        Date: {{formatServiceSchedule exactdate}} <br>
-                                                        Time: {{exacttime}}
+                                                        Date: {{formatServiceSchedule exactdate}} at {{exacttime}}.
                                                     {{/if}}
                                                     {{#if $eq serviceschedule 'betweendates'}}
-                                                        Between {{formatServiceSchedule startdate}} and {{formatServiceSchedule enddate}} from {{starttime}} to {{endtime}}
-                                                    {{/if}}.</p>
+                                                        Between {{formatServiceSchedule startdate}} and {{formatServiceSchedule enddate}} from {{starttime}} to {{endtime}}.
+                                                    {{/if}}</p>
                                                     {{#if tasksTSCompleted}}
                                                         {{#with applicationDetails}}
                                                             {{#if $eq this.app_type 'application'}}
                                                                 {{#if $eq ../ratebasis 'Per Hour'}}
-                                                                    {{#if timeWorked ../hourlyrate ../maxhours}}
-                                                                        {{timeWorked ../hourlyrate ../maxhours}}
+                                                                    {{#if timeWorked ../hourlyrate ../maxhours ../paidby}}
+                                                                        {{timeWorked ../hourlyrate ../maxhours ../paidby}}
                                                                         <br>
                                                                     {{/if}}
                                                                 {{/if}}                   
                                                                 {{#if $eq ../ratebasis 'Per Device'}}
-                                                                    {{#if completedDevices ../rateperdevice ../maxdevices}}
-                                                                        {{completedDevices ../rateperdevice ../maxdevices}}
+                                                                    {{#if completedDevices ../rateperdevice ../maxdevices ../paidby}}
+                                                                        {{completedDevices ../rateperdevice ../maxdevices ../paidby}}
                                                                         <br>
                                                                     {{/if}}
                                                                 {{/if}}
                                                                 {{#if $eq ../ratebasis 'Blended'}}
-                                                                    {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
-                                                                        {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
+                                                                    {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
+                                                                        {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
                                                                         <br>
                                                                     {{/if}}
                                                                 {{/if}}
                                                             {{/if}}
                                                             {{#if $eq this.app_type 'counteroffer'}}
                                                                 {{#if $eq this.counterType 'per_hour'}}
-                                                                    {{#if timeWorked this.hourly_rate this.max_hours}}
-                                                                        {{timeWorked this.hourly_rate this.max_hours}}
+                                                                    {{#if timeWorked this.hourly_rate this.max_hours 'buyer'}}
+                                                                        {{timeWorked this.hourly_rate this.max_hours 'buyer'}}
                                                                         <br>
                                                                     {{/if}}
                                                                 {{/if}}
                                                                 {{#if $eq this.counterType 'per_device'}}
-                                                                    {{#if completedDevices this.device_rate this.max_devices}}
-                                                                        {{completedDevices this.device_rate this.max_devices}}
+                                                                    {{#if completedDevices this.device_rate this.max_devices 'buyer'}}
+                                                                        {{completedDevices this.device_rate this.max_devices 'buyer'}}
                                                                         <br>
                                                                     {{/if}}
                                                                 {{/if}}
                                                                 {{#if $eq this.counterType 'blended'}}
-                                                                    {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours}}
-                                                                        {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours}}
+                                                                    {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours 'buyer'}}
+                                                                        {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours 'buyer'}}
                                                                         <br>
                                                                     {{/if}}
                                                                 {{/if}}
@@ -1724,44 +1739,44 @@
                                         {{/if}}
                                         {{#if $eq assignmentStatus 'rejected'}}
                                             <p><i>{{rejectedTime}}</i></p>
-                                            <p>The buyer has rejected your assignment. Please discuss with the buyer for futher details and submit the job for buyer approval.</p>
+                                            <p>The buyer has rejected your assignment. Discuss with the buyer for futher details and submit the job for buyer approval.</p>
                                             {{#with applicationDetails}}
                                                 {{#if $eq this.app_type 'application'}}
                                                     {{#if $eq ../ratebasis 'Per Hour'}}
-                                                        {{#if timeWorked ../hourlyrate ../maxhours}}
-                                                            {{timeWorked ../hourlyrate ../maxhours}}
+                                                        {{#if timeWorked ../hourlyrate ../maxhours ../paidby}}
+                                                            {{timeWorked ../hourlyrate ../maxhours ../paidby}}
                                                             <br>
                                                         {{/if}}
                                                     {{/if}}
                                                     {{#if $eq ../ratebasis 'Per Device'}}
-                                                        {{#if completedDevices ../rateperdevice ../maxdevices}}
-                                                            {{completedDevices ../rateperdevice ../maxdevices}}
+                                                        {{#if completedDevices ../rateperdevice ../maxdevices ../paidby}}
+                                                            {{completedDevices ../rateperdevice ../maxdevices ../paidby}}
                                                             <br>
                                                         {{/if}}
                                                     {{/if}}
                                                     {{#if $eq ../ratebasis 'Blended'}}
-                                                        {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
-                                                            {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours}}
+                                                        {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
+                                                            {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
                                                             <br>
                                                         {{/if}}
                                                     {{/if}}
                                                 {{/if}}
                                                 {{#if $eq this.app_type 'counteroffer'}}
                                                     {{#if $eq this.counterType 'per_hour'}}
-                                                        {{#if timeWorked this.hourly_rate this.max_hours}}
-                                                            {{timeWorked this.hourly_rate this.max_hours}}
+                                                        {{#if timeWorked this.hourly_rate this.max_hours 'buyer'}}
+                                                            {{timeWorked this.hourly_rate this.max_hours 'buyer'}}
                                                             <br>
                                                         {{/if}}
                                                     {{/if}}
                                                     {{#if $eq this.counterType 'per_device'}}
-                                                        {{#if completedDevices this.device_rate this.max_devices}}
-                                                            {{completedDevices this.device_rate this.max_devices}}
+                                                        {{#if completedDevices this.device_rate this.max_devices 'buyer'}}
+                                                            {{completedDevices this.device_rate this.max_devices 'buyer'}}
                                                             <br>
                                                         {{/if}}
                                                     {{/if}}
                                                     {{#if $eq this.counterType 'blended'}}
-                                                        {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours}}
-                                                            {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours}}
+                                                        {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours 'buyer'}}
+                                                            {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours 'buyer'}}
                                                             <br>
                                                         {{/if}}
                                                     {{/if}}
@@ -1779,7 +1794,7 @@
                                             <p><i>{{approvePaymentTime}}</i></p>
                                             <p>The buyer has approved the job you have done. Congratulations! Your account has been credited with {{roundToTwo projectBudget}} USD. The job is now successfully closed.</p>
                                             {{#if reviewedBuyer}}
-                                                <p>You have reviewed the buyer. The job is successfully closed. <a href="/invoices/{{invoiceId}}">View invoice</a></p>
+                                                <p>You have reviewed the buyer. The job is successfully closed. <a href="/wallet/invoices/{{invoiceId}}">View invoice</a></p>
                                             {{else}}
                                                 <hr>
                                                 <form id="reviewBuyer">

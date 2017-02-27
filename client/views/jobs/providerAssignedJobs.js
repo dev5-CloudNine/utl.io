@@ -167,9 +167,33 @@ Template.providerAssignedJobs.events({
         event.preventDefault();
         var buyerId = $(event.currentTarget).data('buyer-id');
         var jobId = $(event.currentTarget).data('job-id');
-        Meteor.call('confirmAssignment', jobId, buyerId, function(error) {
+        $(event.currentTarget).button('loading');
+        var jobDetails = Jobs.findOne({_id: jobId});
+        var providerEarnings;
+        if(jobDetails.applications) {
+            var acceptedApplication;
+            for(var i = 0; i < jobDetails.applications.length; i++) {
+                if(jobDetails.applications[i].app_status == 'accepted') {
+                    acceptedApplication = jobDetails.applications[i];
+                    break;
+                }
+            }
+            if(acceptedApplication.app_type == 'application') {
+                providerEarnings = jobDetails.freelancer_nets;
+                if(jobDetails.ratebasis == 'Per Device') {
+                    Meteor.call('setEstimatedDevices', jobDetails.maxdevices, jobId);
+                }
+            } 
+            if(acceptedApplication.app_type == 'counteroffer') {
+                providerEarnings = acceptedApplication.freelancer_nets;
+                if(acceptedApplication.counterType == 'per_device') {
+                    Meteor.call('setEstimatedDevices', acceptedApplication.max_devices, jobId);
+                }
+            }
+        }
+        Meteor.call('confirmAssignment', jobId, buyerId, providerEarnings, function(error) {
             if(error) {
-                toastr.error('Failed to confirm assignment.');
+                $(event.currentTarget).button('reset');
             }
         })
     },

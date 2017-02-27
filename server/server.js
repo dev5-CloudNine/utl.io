@@ -388,7 +388,8 @@ Meteor.methods({
         Meteor.users.update({_id: buyerId}, {$addToSet: {contacts: Meteor.userId()+":"+jobId}});
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var buyerCost = jobDetails.your_cost;
-        Jobs.update({_id: jobId}, {$set: {assignedProvider: Meteor.userId(), projectBudget: providerEarnings, proposedBudget: providerEarnings, assignmentStatus: 'confirmed'}});
+        Jobs.update({_id: jobId}, {$set: {projectBudget: providerEarnings, proposedBudget: providerEarnings}});
+        Jobs.update({_id: jobId}, {$set: {assignedProvider: Meteor.userId(), assignmentStatus: 'confirmed'}});
         var applicants = jobDetails.applications;
         for(var i = 0; i < applicants.length; i++) {
             Profiles.update({userId: applicants[i].userId}, {$pull: {appliedJobs: jobId}});
