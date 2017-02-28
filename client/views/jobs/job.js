@@ -994,7 +994,7 @@ Template.job.events({
     });
   },
   'click button.deactivateJob': function(event, template) {
-    $(event.currentTarget).button('loading');
+    $(event.currentTarget).prop('disabled', 'disabled');
     var jobId = this._id;
     var jobDetails = Jobs.findOne({_id: Router.current().params._id});
     var buyerId;
@@ -1006,7 +1006,7 @@ Template.job.events({
     }
     Meteor.call('deactivateJob', jobId, buyerId, function(error) {
       if(error) {
-        $(event.currentTarget).button('error');
+        $(event.currentTarget).removeAttr('disabled');
         toastr.error('Failed to deactivate job Please try again.');
       } else {
         toastr.success('Account credited: ' + jobDetails.buyerCost + ' USD.')
@@ -2053,6 +2053,9 @@ Template.job.helpers({
   submittedOrDone: function(jobId) {
     if(jobId) {
       var jobDetails = Jobs.findOne({_id: jobId});
+      if(jobDetails.status == 'deactivated') {
+        return true;
+      }
       if(jobDetails.applicationStatus == 'assigned') {
         if(jobDetails.assignmentStatus == 'submitted' || jobDetails.assignmentStatus == 'approved') {
           return true;
@@ -2063,6 +2066,9 @@ Template.job.helpers({
         return true;
       }
     } else {
+      if(this.status == 'deactivated') {
+        return true;
+      }
       if(this.applicationStatus == 'assigned') {
         if(this.assignmentStatus == 'submitted' || this.assignmentStatus == 'approved') {
           return true;

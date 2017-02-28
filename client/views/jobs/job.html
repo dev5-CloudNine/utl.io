@@ -49,7 +49,15 @@
                                     <div class="col-sm-12">
                                         {{#if jobPostedBuyer}}
                                             <span class="pull-right">
-                                            <a href="{{pathFor 'duplicateJob'}}" class="btn btn-sm btn-white" data-balloon="Duplicate Job" data-balloon-pos="up"><i class="fa fa-clone fa-2x"></i></a>
+                                                {{#if jobNotAssigned}}
+                                                    <a href="{{pathFor 'jobEdit'}}" class="btn btn-white btn-sm" data-balloon="Edit Job" data-balloon-pos="up"><i class="fa fa-pencil fa-2x"></i></a>
+                                                {{/if}}
+                                                <a href="{{pathFor 'duplicateJob'}}" class="btn btn-sm btn-white" data-balloon="Duplicate Job" data-balloon-pos="up"><i class="fa fa-clone fa-2x"></i></a>
+                                                {{#if $eq status 'active'}}
+                                                    {{#if openFrozenOrAssigned}}
+                                                        <button class="btn btn-white btn-sm deactivateJob" data-balloon="Deactivate Job" data-balloon-pos="up"><i class="fa fa-ban fa-2x"></i></button>
+                                                    {{/if}}
+                                                {{/if}}
                                             </span>
                                         {{/if}}
                                         {{#if assignedProvider}}
@@ -219,19 +227,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        {{#if $eq userId $.Meteor.userId}}
-                                            <div class="pull-right">
-                                                &nbsp;
-                                                {{#if jobNotAssigned}}
-                                                    <a href="{{pathFor 'jobEdit'}}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit</a>
-                                                {{/if}}
-                                                {{#if $eq status 'active'}}
-                                                    {{#if openFrozenOrAssigned}}
-                                                        <button class="btn btn-primary btn-sm deactivateJob" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Deactivate Job</button>
-                                                    {{/if}}
-                                                {{/if}}
-                                            </div>
-                                        {{/if}}
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -289,16 +285,18 @@
                                                             </div>
                                                         </div>
                                                         {{#unless isBuyer}}
-                                                            <div class="form-group">
-                                                                <label class="control-label col-sm-2"></label>
-                                                                <div class="col-sm-2">
-                                                                    <div class="input-group">
-                                                                        <label class="btn btn-primary btn-sm">
-                                                                            <input type="file" class="file_bag" accept="{{fileType _id}}"> Upload New
-                                                                        </label>
+                                                            {{#unless submittedOrDone ../_id}}
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-sm-2"></label>
+                                                                    <div class="col-sm-2">
+                                                                        <div class="input-group">
+                                                                            <label class="btn btn-primary btn-sm">
+                                                                                <input type="file" class="file_bag" accept="{{fileType _id}}"> Upload New
+                                                                            </label>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            {{/unless}}
                                                         {{/unless}}
                                                     {{/if}}
                                                     <div class="form-group">
@@ -308,11 +306,13 @@
                                                         </div>
                                                     </div>
                                                     {{#unless isBuyer}}
-                                                        <div class="form-group">
-                                                            <div class="col-sm-offset-2 col-sm-10">
-                                                                <button type="submit" class="btn btn-primary btn-sm submit-task">Update</button>
+                                                        {{#unless submittedOrDone ../_id}}
+                                                            <div class="form-group">
+                                                                <div class="col-sm-offset-2 col-sm-10">
+                                                                    <button type="submit" class="btn btn-primary btn-sm submit-task">Update</button>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        {{/unless}}
                                                     {{/unless}}
                                                 {{/if}}
                                             </form>
@@ -438,20 +438,22 @@
                                                     Estimated Billable Devices: {{../../estimatedDevices}} devices<br>
                                                     If you have more number of devices to be worked upon, request for a budget increase and wait for the buyer's confirmation.
                                                 </p>
-                                                <hr>
-                                                <div class="row">                     
-                                                    <form id="devices-worked">
-                                                        <div class="col-xs-12">
-                                                            <div class="form-group">
-                                                                <label for="worked-devices">How many devices have you completed?</label>
-                                                                <input type="number" id="worked-devices" min="1" step="1" value="{{../../devicescompleted}}" class="form-control" max="{{../../estimatedDevices}}" required>
+                                                {{#unless submittedOrDone ../../_id}}
+                                                    <hr>
+                                                    <div class="row">                     
+                                                        <form id="devices-worked">
+                                                            <div class="col-xs-12">
+                                                                <div class="form-group">
+                                                                    <label for="worked-devices">How many devices have you completed?</label>
+                                                                    <input type="number" id="worked-devices" min="1" step="1" value="{{../../devicescompleted}}" class="form-control" max="{{../../estimatedDevices}}" required>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <button class="btn btn-sm btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <button class="btn btn-sm btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                                        </form>
+                                                    </div>
+                                                {{/unless}}
                                                 {{#if completedDevices ../../rateperdevice ../../estimatedDevices ../../paidby}}
                                                     {{completedDevices ../../rateperdevice ../../estimatedDevices ../../paidby}}
                                                 {{/if}}
@@ -487,19 +489,22 @@
                                                     Estimated Billable Devices: {{../../estimatedDevices}} devices <br>
                                                     If you have more number of devices to be worked upon, request for a budget increase and wait for the buyer's confirmation.
                                                 </p>
-                                                <div class="row">
-                                                    <form id="devices-worked">
-                                                        <div class="col-xs-12">
-                                                            <div class="form-group">
-                                                                <label for="worked-devices">How many devices have you completed?</label>
-                                                                <input type="number" id="worked-devices" min="1" step="1" class="form-control" required>
+                                                {{#unless submimttedOrDone ../../_id}}
+                                                    <hr>
+                                                    <div class="row">
+                                                        <form id="devices-worked">
+                                                            <div class="col-xs-12">
+                                                                <div class="form-group">
+                                                                    <label for="worked-devices">How many devices have you completed?</label>
+                                                                    <input type="number" id="worked-devices" min="1" step="1" class="form-control" required>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <button class="btn btn-sm btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <button class="btn btn-sm btn-primary setDevices" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                                        </form>
+                                                    </div>
+                                                {{/unless}}
                                                 {{#if completedDevices this.device_rate ../../estimatedDevices 'buyer'}}
                                                     {{completedDevices this.device_rate ../../estimatedDevices 'buyer'}}
                                                 {{/if}}
@@ -1663,7 +1668,6 @@
                                                 {{else}}
                                                     <small><i>{{applicationAcceptedTime}}</i></small>
                                                     <p>Application accepted. Job assigned. Needs confirmation.</p>
-                                                    <br>
                                                     <button class="margin-top-5 btn btn-primary btn-sm confirmAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Confirm</button>
                                                 {{/if}}
                                             {{/if}}
@@ -2519,8 +2523,8 @@
                                 <div class="box box-widget widget-user">
                                     <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
                                         <span class="pull-right buyerRatings"></span>
-                                        <small>ID: {{this.readableID}}</small>
-                                        <h3 class="widget-user-username">{{this.name}}</h3>
+                                        <small><i># {{this.readableID}}</i></small>
+                                        <p class="budgetFont"><a href="/dispatchers/{{this.id}}">{{this.name}}</a></p>
                                         <h5 class="widget-user-desc">{{this.title}}</h5>
                                     </div>
                                     <div class="widget-user-image">
@@ -2948,8 +2952,8 @@
                                         <div class="box box-widget widget-user">
                                             <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
                                                 <span class="pull-right providerRatings" data-rateit-value="{{rateItValue}}"></span>
-                                                <small>{{readableID}}</small>
-                                                <h3 class="widget-user-username"><a href="/profiles/{{this.id}}">{{this.name}}</a></h3>
+                                                <small># {{readableID}}</small><br>
+                                                <a href="/profiles/{{this.id}}" class="budgetFont">{{this.name}}</a>
                                                 <h5 class="widget-user-desc">{{this.title}}</h5>
                                             </div>
                                             <div class="widget-user-image">

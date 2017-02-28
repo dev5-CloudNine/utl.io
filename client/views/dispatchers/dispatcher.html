@@ -71,6 +71,9 @@
 												{{#if isInRole 'provider'}}
 													<a href="/subcategory/{{this.encodedType}}" class="label label-default profileLabel">{{this.decodedType}}</a>
 												{{/if}}
+												{{#if isInRole 'admin'}}
+													<label class="label label-default">{{this.decodedType}}</label>
+												{{/if}}
 											{{/each}}
 										<hr>
 									{{/if}}
