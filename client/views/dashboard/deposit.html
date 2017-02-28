@@ -29,7 +29,8 @@
                             <div class="alert alert-info">
                                 <p>In this step, we'll be hooking up your bank account with the platform by processing instant account verification (IAV). All data transfer is via secure connection.</p>
                             </div>
-                            <a href="{{pathFor 'attachBankAccount'}}" class="btn btn-primary btn-sm">Attach Bank Account</a>
+                            <button class="btn btn-primary btn-sm startIav" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Attach Bank Account</button>
+                            <div id="initiateIav"></div>
                         {{/if}}
                     {{else}}
                         <h4>Attach Bank Account</h4>

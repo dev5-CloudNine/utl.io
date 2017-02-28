@@ -8,7 +8,7 @@ Tracker.autorun(function() {
 		socket.close();
 	})
 	toastr.options = {
-		"closeButton": true,
+		"closeButton": false,
 		"debug": false,
 		"newestOnTop": false,
 		"progressBar": false,

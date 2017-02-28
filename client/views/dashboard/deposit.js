@@ -138,7 +138,6 @@ Template.deposit.events({
 					toastr.error(msg);
 					$(event.currentTarget).button('reset');
 				} else {
-					Router.go('attachBankAccount');
 				}
 			}
 		});
@@ -168,27 +167,32 @@ Template.deposit.events({
 			}
 		})
 	},
-	// 'click .startIav': function(event, template) {
-	// 	event.preventDefault();
-	// 	$(event.currentTarget).button('loading');
-	// 	var customerUrl = Wallet.findOne({userId: Meteor.userId()}).dwollaCustomer.location[0];
-	// 	console.log(customerUrl);
-	// 	Meteor.call('genIavToken', customerUrl, function(error, result) {
-	// 		if(!error) {
-	// 			var iavToken = result.body.token;
-	// 			dwolla.config.dwollaUrl = 'https://uat.dwolla.com';
-	// 			dwolla.configure('uat');
- //                dwolla.iav.start('initiateIav', iavToken, function(err, res) {
- //                    if(err) {
- //                        console.log(err);
- //                    } else {
- //                    	var fundingSourceUrl = res._links['funding-source'].href;
- //                        Meteor.call('setFundingSourceInWallet', fundingSourceUrl, Meteor.userId());
- //                    }
- //                })
-	// 		} else {
-	// 			console.log(error)
-	// 		}
-	// 	})
-	// }
+	'click .startIav': function(event, template) {
+		event.preventDefault();
+		$(event.currentTarget).button('loading');
+		var userWallet = Wallet.findOne({userId: Meteor.userId()});
+		$.getScript('https://cdn.dwolla.com/1/dwolla.js')
+		var customerUrl = userWallet.dwollaCustomer.location[0];
+		Meteor.call('genIavToken', customerUrl, function(error, result) {
+			if(!error) {
+				var iavToken = result.body.token;
+				dwolla.config.dwollaUrl = 'https://uat.dwolla.com';
+				dwolla.configure('uat');
+	            dwolla.iav.start('initiateIav', iavToken, function(err, res) {
+	                if(err) {
+	                    console.log(err);
+	                } else {
+	                	var fundingSourceUrl = res._links['funding-source'].href;
+	                    Meteor.call('setFundingSourceInWallet', fundingSourceUrl, Meteor.userId());
+	                    if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+	                    	Router.go('deposit');
+	                    else if(Roles.userIsInRole(Meteor.userId(), ['provider']))
+	                    	Router.go('withdraw')
+	                }
+	            })
+			} else {
+				console.log(error)
+			}
+		})
+	}
 })

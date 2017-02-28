@@ -996,6 +996,7 @@ Template.job.events({
   'click button.deactivateJob': function(event, template) {
     $(event.currentTarget).button('loading');
     var jobId = this._id;
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
     var buyerId;
     if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
       buyerId = Meteor.userId();
@@ -1007,6 +1008,8 @@ Template.job.events({
       if(error) {
         $(event.currentTarget).button('error');
         toastr.error('Failed to deactivate job Please try again.');
+      } else {
+        toastr.success('Account credited: ' + jobDetails.buyerCost + ' USD.')
       }
     })
   },
@@ -1116,6 +1119,8 @@ Template.job.events({
     Meteor.call('pay30Usd', buyerPays, adminGets, providerGets, assignedProvider, buyerId, this._id, function(error) {
       if(error) {
         $(event.currentTarget).button('reset');
+      } else {
+        toastr.success('Account debited: ' + buyerPays + ' USD.');
       }
     });
   },
@@ -1338,6 +1343,8 @@ Template.job.events({
     Meteor.call('acceptBudgetIncrease', jobId, buyerId, requestId, function(error, result) {
       if(error)
         $(event.currentTarget).removeAttr('disabled');
+      else
+        toastr.success('Account debited: ' + buyerCost + ' USD.')
     });
   },
   'click .hidelessbalalertbi': function(event, template) {
@@ -1414,6 +1421,8 @@ Template.job.events({
     Meteor.call('approveExpense', jobId, buyerId, expense_id, function(error, result) {
       if(error)
         $(event.currentTarget).removeAttr('disabled');
+      else
+        toastr.success('Account debited: ' + expense_buyer_cost + ' USD.');
     });
   },
   'click button.rejectExpense': function(event, template) {
@@ -2094,10 +2103,11 @@ Template.job.helpers({
     return coCount;
   },
   assignedOrDone: function() {
-    if(this.applicationStatus == 'assigned' && (this.assignmentStatus == 'confirmed' || this.assignmentStatus == 'rejected' || this.assignmentStatus == 'approved')) {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    if(jobDetails.applicationStatus == 'assigned' && (jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected' || jobDetails.assignmentStatus == 'approved' || jobDetails.assignmentStatus == 'submitted')) {
       return true;
     }
-    if(this.applicationStatus == 'paid') {
+    if(jobDetails.applicationStatus == 'paid') {
       return true;
     }
     return false;
@@ -2316,6 +2326,7 @@ Template.job.helpers({
     return jobDetails;
   },
   assignedProviderDetails: function() {
+    console.log(this)
     var applicationDetails = {};
     for(var i = 0; i < this.applications.length; i++) {
       if(this.applications[i].userId == this.assignedProvider && this.applications[i].app_status == 'accepted') {
@@ -2346,7 +2357,7 @@ Template.job.helpers({
       }
     }
     var imgURL, provider, proUser;
-    if(this.applicationStatus == 'assigned' && (this.assignmentStatus == 'confirmed' || this.assignmentStatus == 'submitted' || this.assignmentStatus == 'rejected')) {
+    if(this.applicationStatus == 'paid' || (this.applicationStatus == 'assigned' && (this.assignmentStatus == 'confirmed' || this.assignmentStatus == 'submitted' || this.assignmentStatus == 'rejected' || this.assignmentStatus == 'approved'))) {
       provider = Profiles.findOne({userId: this.assignedProvider});
       proUser = Users.findOne({_id: this.assignedProvider});
       if(proUser.imgURL) {

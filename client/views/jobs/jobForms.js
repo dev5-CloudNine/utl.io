@@ -24,6 +24,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 						buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
 					Meteor.call('routeEmail', buyerDetails, providerDetails, jobDetails);
         		}
+        		toastr.success('Account Debited: ' + jobDetails.buyerCost + ' USD');
 			}
 		},
 		update: function(error, result) {
