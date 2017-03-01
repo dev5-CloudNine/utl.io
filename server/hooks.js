@@ -138,14 +138,14 @@ Jobs.after.insert(function(userId, doc){
   }
   Notifications.insert(notificationObj);
   JobTransactions.insert(jobTransObj);
-  var admin = Users.findOne({roles:{$in: ['admin']}});
-  Email.send({
-    to: getUserEmail(admin),
-    from: FROM_EMAIL,
-    subject: "New Job Posted - " + doc.title,
-    text: "A new job is posted: " + doc.title + "\n\n" 
-          + Meteor.absoluteUrl("jobs/"+doc._id) + "\n\n\n\n\n\n"
-  });
+  // var admin = Users.findOne({roles:{$in: ['admin']}});
+  // Email.send({
+  //   to: getUserEmail(admin),
+  //   from: FROM_EMAIL,
+  //   subject: "New Job Posted - " + doc.title,
+  //   text: "A new job is posted: " + doc.title + "\n\n" 
+  //         + Meteor.absoluteUrl("jobs/"+doc._id) + "\n\n\n\n\n\n"
+  // });
 });
 
 Jobs.before.update(function(userId, doc, fieldNames, modifier) {

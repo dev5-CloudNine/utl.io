@@ -67,6 +67,12 @@ var deactivatedJobsOptions = {
             title: 'Actions',
             width: '20%',
             data: function(jobDetails) {
+                if(jobDetails.paid30Usd) {
+                    return '<small>You have deactivated the job. You have paid 30 USD to the assigned provider as a goodwill token.</small>'
+                }
+                if(jobDetails.denied30Usd) {
+                    return '<small>You have deactivated the job. You denied to pay 30 USD.</small>'
+                }
                 return '<small>Job deactivated.</small>';
             }
         }

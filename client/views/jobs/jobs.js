@@ -82,7 +82,7 @@ var openJobsObject = {
             title: 'Distance (Mi.)',
             data: function(jobDetails) {
                 if(jobDetails.servicelocation == 'Remote Job') {
-                    return 'NA';
+                    return 0;
                 } else {
                     var providerDetails = Profiles.findOne({userId: Meteor.userId()});
                     return distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude);

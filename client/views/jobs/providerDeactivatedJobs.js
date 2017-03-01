@@ -66,7 +66,7 @@ var deactivatedJobsOptions = {
             title: 'Distance (Mi.)',
             data: function(jobDetails) {
                 if(jobDetails.servicelocation == 'Remote Job') {
-                    return 'NA';
+                    return 0;
                 } else {
                     var providerDetails = Profiles.findOne({userId: Meteor.userId()});
                     return distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude);
@@ -86,7 +86,13 @@ var deactivatedJobsOptions = {
             title: 'Actions',
             width: '20%',
             data: function(jobDetails) {
-                return '<small>Buyer deactivated.</small>';
+                if(jobDetails.paid30Usd) {
+                    return '<small>The job has been deactivated. The buyer has released 30 USD as a token of goodwill to you for deactivating an assigned job.</small>'
+                }
+                if(jobDetails.denied30Usd) {
+                    return '<small>The job has been deactivated. The buyer has denied to pay 30 USD.</small>'
+                }
+                return '<small>The job has been deactivated.</small>';
             }
         }
     ],

@@ -69,7 +69,7 @@ var assignedJobsOptions = {
             title: 'Distance (Mi.)',
             data: function(jobDetails) {
                 if(jobDetails.servicelocation == 'Remote Job') {
-                    return 'NA';
+                    return 0;
                 } else {
                     var providerDetails = Profiles.findOne({userId: Meteor.userId()});
                     return distance(providerDetails.fullLocation.latitude, providerDetails.fullLocation.longitude, jobDetails.fullLocation.latitude, jobDetails.fullLocation.longitude);
@@ -137,12 +137,37 @@ var assignedJobsOptions = {
                             return returnText;
                         }
                     }
+                    var acceptedApplication = getAcceptedApplication(jobDetails._id);
+                    if(acceptedApplication.app_type == 'application') {
+                        if(jobDetails.ratebasis == 'Per Device') {
+                            if(!jobDetails.devicescompleted || jobDetails.devicescompleted < 1)
+                                return returnText;
+                        }
+                    } else if(acceptedApplication.app_type == 'counteroffer') {
+                        if(acceptedApplication.counterType == 'per_device') {
+                            if(!jobDetails.devicescompleted || jobDetails.devicescompleted < 1) {
+                                return returnText;
+                            }
+                        }
+                    }
                     return returnText + '<br><button data-job-id="' + jobDetails._id + '" data-buyer-id="' + jobDetails.userId + '" class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit for Approval.</button>';
                 }
             }
         }
     ],
     responsive: true
+}
+
+var getAcceptedApplication = function(jobId) {
+    var jobDetails = Jobs.findOne({_id: jobId});
+    if(jobDetails.applications && jobDetails.applications.length > 0) {
+        for(var i = 0; i < jobDetails.applications.length; i++) {
+            if(jobDetails.applications[i].app_status == 'accepted') {
+                return jobDetails.applications[i];
+            }
+        }
+    }
+    return;
 }
 
 var distance = function(plat, plng, jlat, jlng) {
@@ -167,6 +192,7 @@ Template.providerAssignedJobs.events({
         event.preventDefault();
         var buyerId = $(event.currentTarget).data('buyer-id');
         var jobId = $(event.currentTarget).data('job-id');
+        $(event.currentTarget).button({loadingText:'<i class="fa fa-circle-o-notch fa-spin"></i> OK Wait...'})
         $(event.currentTarget).button('loading');
         var jobDetails = Jobs.findOne({_id: jobId});
         var providerEarnings;
@@ -199,10 +225,13 @@ Template.providerAssignedJobs.events({
     },
     'click .submitAssignment': function(event, template) {
         event.preventDefault();
+        $(event.currentTarget).button({loadingText: '<i class="fa fa-circle-o-notch fa-spin"></i> OK Wait...'});
+        $(event.currentTarget).button('loading');
         var jobId = $(event.currentTarget).data('job-id');
         Meteor.call('submitAssignment', jobId, function(error) {
             if(error) {
                 toastr.error('Failed to submit assignment. Please try again.');
+                $(event.currentTarget).button('reset');
             }
         });
     }

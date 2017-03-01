@@ -1137,15 +1137,12 @@ Template.job.events({
     var buyerId = this.userId;
     var jobId = this._id;
     var timeReviewed = new Date();
-    var timeAttention = $('input[name="timeAttention"]:checked').val();
-    var instructionAttention = $('input[name="instructionAttention"]:checked').val();
-    var deliverableAttention = $('input[name="deliverableAttention"]:checked').val();
     var ratedPoints = $('input[name="rateProvider"]:checked').val();
     var reviewMessage = "";
     $('textarea[name="reviewMessage"]').each(function() {
       reviewMessage += $(this).val();
     })
-    Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, timeAttention, instructionAttention, deliverableAttention, ratedPoints, reviewMessage, function(error) {
+    Meteor.call('reviewProvider', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
         $('.submitProReview').button('reset');
@@ -1159,13 +1156,12 @@ Template.job.events({
     var buyerId = this.userId;
     var jobId = this._id;
     var timeReviewed = new Date();
-    var experience = $('input[name="jobDesc"]:checked').val();
     var ratedPoints = $('input[name="rateBuyer"]:checked').val();
     var reviewMessage = "";
     $('textarea[name="reviewMessage"]').each(function() {
       reviewMessage += $(this).val();
     })
-    Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, experience, ratedPoints, reviewMessage, function(error) {
+    Meteor.call('reviewBuyer', providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage, function(error) {
       if(error) {
         toastr.error('Failed to submit review. Please try again.');
         $('.submitBuyerReview').button('reset');

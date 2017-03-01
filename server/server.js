@@ -619,8 +619,10 @@ Meteor.methods({
             jobSchedule = 'Between ' + moment(jobDetails.startdate).format('DD/MM/YYYY') + ' and ' + moment(jobDetails.enddate).format('DD/MM/YYYY') + ' from ' + jobDetails.starttime + ' to ' + jobDetails.endtime;
         }
         var job = Jobs.findOne({_id: jobDetails._id})
+        var admin = Users.findOne({roles: {$in: ['admin']}});
         Email.send({
-            to: providerEmails,
+            to: getUserEmail(admin),
+            bcc: providerEmails,
             cc: providerSmsAddresses,
             from: FROM_EMAIL,
             subject: 'New Job Posted - ' + jobDetails.title,
@@ -861,29 +863,25 @@ Meteor.methods({
             html: 'Hello ' + providerDetails.firstName + ' ' + providerDetails.lastName + ',<br>' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has approved payment for the job.<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">' + jobDetails.readableID + ' - ' + jobDetails.title + '</a><br>Now the job is complete and you may rate the buyer by <a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">clicking here</a>.'
         })
     },
-    reviewProvider: function(providerId, buyerId, jobId, timeReviewed, timeAttention, instructionAttention, deliverableAttention, ratedPoints, reviewMessage) {
+    reviewProvider: function(providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage) {
         var review = {
             providerId: providerId,
             buyerId: buyerId,
             reviewedBy: 'buyer',
             reviewedJobId: jobId,
             reviewedAt: timeReviewed,
-            timeAttention: timeAttention,
-            instructionAttention: instructionAttention,
-            deliverableAttention: deliverableAttention,
             pointsRated: ratedPoints,
             reviewMessage: reviewMessage
         };
         Reviews.insert(review);
     },
-    reviewBuyer: function(providerId, buyerId, jobId, timeReviewed, experience, ratedPoints, reviewMessage) {
+    reviewBuyer: function(providerId, buyerId, jobId, timeReviewed, ratedPoints, reviewMessage) {
         var review = {
             providerId: providerId,
             buyerId: buyerId,
             reviewedBy: 'provider',
             reviewedJobId: jobId,
             reviewedAt: timeReviewed,
-            experience: experience,
             pointsRated: ratedPoints,
             reviewMessage: reviewMessage
         }
@@ -1015,7 +1013,7 @@ Meteor.methods({
                     Profiles.update({userId: jobDetails.selectedProvider}, {$addToSet: {deactivatedJobs: jobId}});
                 }
                 if(jobDetails.assignmentStatus == 'submitted') {
-                    Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {paymentPendingJobs: jobId}});
+                    Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {pendingApproval: jobId}});
                 }
                 if(jobDetails.assignmentStatus == 'not_confirmed' || jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected')
                     Profiles.update({userId: jobDetails.assignedProvider}, {$pull: {assignedJobs: jobId}});

@@ -416,6 +416,9 @@
                                             {{#if $eq ../../ratebasis 'Blended'}}
                                                 <p>Estimated Billable Time: {{blendedTotalHours ../../firsthours ../../nexthours}} Hours.</p>
                                             {{/if}}
+                                            {{#if $eq ../../ratebasis 'Fixed Pay'}}
+                                                Fixed type job.
+                                            {{/if}}
                                         {{/if}}
                                         {{#if $eq this.appType 'counteroffer'}}
                                             {{#if $eq this.counter_type 'per_device'}}
@@ -426,6 +429,9 @@
                                             {{/if}}
                                             {{#if $eq this.counter_type 'blended'}}
                                                 <p>Estimated Billable Time: {{blendedTotalHours this.first_max_hours this.next_max_hours}} Hours.</p>
+                                            {{/if}}
+                                            {{#if $eq this.counter_type 'fixed_pay'}}
+                                                Fixed type job.
                                             {{/if}}
                                         {{/if}}
                                     {{/with}}
@@ -470,8 +476,14 @@
                                                     {{timeWorked ../hourlyrate ../maxhours ../paidby}}
                                                 {{/if}}
                                             {{/if}}
+                                            {{#if $eq ../../ratebasis 'Fixed Pay'}}
+                                                Fixed type job.
+                                            {{/if}}
                                         {{/if}}
                                         {{#if $eq this.app_type 'counteroffer'}}
+                                            {{#if $eq this.counterType 'fixed_pay'}}
+                                                Fixed type job.
+                                            {{/if}}
                                             {{#if $eq this.counterType 'blended'}}
                                                 Estimated Billable Time: {{blendedTotalHours this.first_max_hours this.next_max_hours}} hours. <br>
                                                 {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hour this.next_max_hours 'buyer'}}
@@ -489,7 +501,7 @@
                                                     Estimated Billable Devices: {{../../estimatedDevices}} devices <br>
                                                     If you have more number of devices to be worked upon, request for a budget increase and wait for the buyer's confirmation.
                                                 </p>
-                                                {{#unless submimttedOrDone ../../_id}}
+                                                {{#unless submittedOrDone ../../_id}}
                                                     <hr>
                                                     <div class="row">
                                                         <form id="devices-worked">
@@ -553,6 +565,7 @@
                                                 <small><i>{{formatDate deactivatedTime}}</i></small>
                                                 <p>You have deactivated the job. Your account has been credited with {{buyerCost}} USD.</p>
                                             {{else}}
+                                                <small><i>{{formatDate applicationAcceptedTime}}</i></small>
                                                 <p>Job assigned. Awaiting confirmation.</p>
                                             {{/if}}
                                         {{/if}}
@@ -679,11 +692,27 @@
                                         {{#if reviewedProvider}}
                                             <hr>
                                             <p>You have reviewed the provider. The job is successfully closed. <a href="/wallet/invoices/{{invoiceId}}">View invoice</a></p>
+                                        {{/if}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                            {{#if $eq applicationStatus 'paid'}}
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h5>Rate &amp; Review</h5>
+                                    </div>
+                                    <div class="panel-body">
+                                        {{#if reviewedProvider}}
+                                            {{#with providerReviewDetails}}
+                                                <p>
+                                                    Review: {{reviewMessage}} <br>
+                                                    Overall satisfaction: {{pointsRated}}/5
+                                                </p>
+                                            {{/with}}
                                         {{else}}
-                                            <hr>
                                             <form id="reviewProvider">
                                                 <div class="form-group">
-                                                    <label>Was the provider on time?</label>
+                                                    <!-- <label>Was the provider on time?</label>
                                                     <br>
                                                     <label class="radio-inline" >
                                                         <input type="radio" name="timeAttention" value="Yes" required> Yes
@@ -712,8 +741,8 @@
                                                     <label class="radio-inline">
                                                         <input type="radio" name="deliverableAttention" value="Na"> N/A
                                                     </label>
-                                                    <br><br>
-                                                    <label>Overall Satisfaction</label><br>
+                                                    <br><br> -->
+                                                    <label>Rate Provider</label><br>
                                                     <label class="radio-inline" >
                                                         <input type="radio" name="rateProvider" value="1" required> 1
                                                     </label>
@@ -729,30 +758,13 @@
                                                     <label class="radio-inline">
                                                         <input type="radio" name="rateProvider" value="5"> 5
                                                     </label>
-                                                    <br><br>
-                                                    <label for="writeReview">Write a review</label>
-                                                    <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control" required></textarea><br>
+                                                    <hr>
+                                                    <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control" placeholder="Write a review" required></textarea><br>
                                                     <!-- <span class="rateit" id="rateProvider"></span> -->
                                                 </div>
                                                 <button class="margin-top-5 btn btn-sm btn-primary submitProReview" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
                                             </form>
                                         {{/if}}
-                                    {{/if}}
-                                </div>
-                            </div>
-                            {{#if reviewedProvider}}
-                                <label>Review</label>
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        {{#with providerReviewDetails}}
-                                            <p>
-                                                Description: {{reviewMessage}} <br>
-                                                Was the provider on time?: {{timeAttention}} <br>
-                                                Did the provider follow the instructions?: {{instructionAttention}} <br>
-                                                Were the deliverables corrent and on time?: {{deliverableAttention}} <br>
-                                                Overall satisfaction: {{pointsRated}}/5
-                                            </p>
-                                        {{/with}}
                                     </div>
                                 </div>
                             {{/if}}
@@ -1398,7 +1410,7 @@
                                                 {{else}}
                                                     <small><i>{{applicationTime}}</i></small>
                                                     <p>You've applied for this job. You'll be notified when the buyer accepts your application. You may cancel your application by clicking the button below.</p>
-                                                    <button class="btn btn-sm btn-primary applyActive">Cancel Application</button>
+                                                    <button class="btn btn-sm btn-primary applyActive" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Cancel Application</button>
                                                 {{/if}}
                                             {{/if}}
                                         {{else}}
@@ -1748,55 +1760,83 @@
                                             {{/if}}
                                         {{/if}}
                                         {{#if $eq assignmentStatus 'rejected'}}
-                                            <small><i>{{rejectedTime}}</i></small>
-                                            <p>The buyer has rejected your assignment. Discuss with the buyer for futher details and submit the job for buyer approval.</p>
-                                            {{#with applicationDetails}}
-                                                {{#if $eq this.app_type 'application'}}
-                                                    {{#if $eq ../ratebasis 'Per Hour'}}
-                                                        {{#if timeWorked ../hourlyrate ../maxhours ../paidby}}
-                                                            {{timeWorked ../hourlyrate ../maxhours ../paidby}}
-                                                            <br>
+                                            {{#if $eq status 'deactivated'}}
+                                                <div class="col-sm-12">
+                                                    <small><i>{{deactivatedTime}}</i></small>
+                                                    <p>The job has been deactivated.</p>
+                                                    {{#if paid30Usd}}
+                                                        <p>The buyer has released 30 USD as a token of goodwill to you for deactivating an assigned job.</p>
+                                                    {{else}}
+                                                        {{#if denied30Usd}}
+                                                            <p>The buyer has denied to pay 30 USD.</p>
                                                         {{/if}}
                                                     {{/if}}
-                                                    {{#if $eq ../ratebasis 'Per Device'}}
-                                                        {{#if completedDevices ../rateperdevice ../maxdevices ../paidby}}
-                                                            {{completedDevices ../rateperdevice ../maxdevices ../paidby}}
-                                                            <br>
+                                                </div>
+                                            {{else}}
+                                                <small><i>{{rejectedTime}}</i></small>
+                                                <p>The buyer has rejected your assignment. Discuss with the buyer for futher details and submit the job for buyer approval.</p>
+                                                {{#with applicationDetails}}
+                                                    {{#if $eq this.app_type 'application'}}
+                                                        {{#if $eq ../ratebasis 'Per Hour'}}
+                                                            {{#if timeWorked ../hourlyrate ../maxhours ../paidby}}
+                                                                {{timeWorked ../hourlyrate ../maxhours ../paidby}}
+                                                                <br>
+                                                            {{/if}}
+                                                        {{/if}}
+                                                        {{#if $eq ../ratebasis 'Per Device'}}
+                                                            {{#if completedDevices ../rateperdevice ../maxdevices ../paidby}}
+                                                                {{completedDevices ../rateperdevice ../maxdevices ../paidby}}
+                                                                <br>
+                                                            {{/if}}
+                                                        {{/if}}
+                                                        {{#if $eq ../ratebasis 'Blended'}}
+                                                            {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
+                                                                {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
+                                                                <br>
+                                                            {{/if}}
                                                         {{/if}}
                                                     {{/if}}
-                                                    {{#if $eq ../ratebasis 'Blended'}}
-                                                        {{#if blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
-                                                            {{blendedTimeWorked ../payforfirsthours ../firsthours ../payfornexthours ../nexthours ../paidby}}
-                                                            <br>
+                                                    {{#if $eq this.app_type 'counteroffer'}}
+                                                        {{#if $eq this.counterType 'per_hour'}}
+                                                            {{#if timeWorked this.hourly_rate this.max_hours 'buyer'}}
+                                                                {{timeWorked this.hourly_rate this.max_hours 'buyer'}}
+                                                                <br>
+                                                            {{/if}}
+                                                        {{/if}}
+                                                        {{#if $eq this.counterType 'per_device'}}
+                                                            {{#if completedDevices this.device_rate this.max_devices 'buyer'}}
+                                                                {{completedDevices this.device_rate this.max_devices 'buyer'}}
+                                                                <br>
+                                                            {{/if}}
+                                                        {{/if}}
+                                                        {{#if $eq this.counterType 'blended'}}
+                                                            {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours 'buyer'}}
+                                                                {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours 'buyer'}}
+                                                                <br>
+                                                            {{/if}}
                                                         {{/if}}
                                                     {{/if}}
-                                                {{/if}}
-                                                {{#if $eq this.app_type 'counteroffer'}}
-                                                    {{#if $eq this.counterType 'per_hour'}}
-                                                        {{#if timeWorked this.hourly_rate this.max_hours 'buyer'}}
-                                                            {{timeWorked this.hourly_rate this.max_hours 'buyer'}}
-                                                            <br>
-                                                        {{/if}}
-                                                    {{/if}}
-                                                    {{#if $eq this.counterType 'per_device'}}
-                                                        {{#if completedDevices this.device_rate this.max_devices 'buyer'}}
-                                                            {{completedDevices this.device_rate this.max_devices 'buyer'}}
-                                                            <br>
-                                                        {{/if}}
-                                                    {{/if}}
-                                                    {{#if $eq this.counterType 'blended'}}
-                                                        {{#if blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours 'buyer'}}
-                                                            {{blendedTimeWorked this.first_hours this.first_max_hours this.next_hours this.next_max_hours 'buyer'}}
-                                                            <br>
-                                                        {{/if}}
-                                                    {{/if}}
-                                                {{/if}}
-                                            {{/with}}
-                                            <button class="margin-top-5 btn btn-primary btn-sm submitAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit Job for Approval.</button>
+                                                {{/with}}
+                                                <button class="margin-top-5 btn btn-primary btn-sm submitAssignment" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit Job for Approval.</button>
+                                            {{/if}}
                                         {{/if}}
                                         {{#if $eq assignmentStatus 'submitted'}}
-                                            <small><i>{{submittedTime}}</i></small>
-                                            <small>You've submitted this job for buyer's approval. You'll be notified when the buyer approves. Upon buyer's approval, your account will be credited.</small>
+                                            {{#if $eq status 'deactivated'}}
+                                                <div class="col-sm-12">
+                                                    <small><i>{{deactivatedTime}}</i></small>
+                                                    <p>The job has been deactivated.</p>
+                                                    {{#if paid30Usd}}
+                                                        <p>The buyer has released 30 USD as a token of goodwill to you for deactivating an assigned job.</p>
+                                                    {{else}}
+                                                        {{#if denied30Usd}}
+                                                            <p>The buyer has denied to pay 30 USD.</p>
+                                                        {{/if}}
+                                                    {{/if}}
+                                                </div>
+                                            {{else}}
+                                                <small><i>{{submittedTime}}</i></small>
+                                                <p>You've submitted this job for buyer's approval. You'll be notified when the buyer approves. Upon buyer's approval, your account will be credited.</p>
+                                            {{/if}}
                                         {{/if}}
                                     {{/if}}
                                     {{#if $eq applicationStatus 'paid'}}
@@ -1805,46 +1845,6 @@
                                             <p>The buyer has approved the job you have done. Congratulations! Your account has been credited with {{roundToTwo projectBudget}} USD. The job is now successfully closed.</p>
                                             {{#if reviewedBuyer}}
                                                 <p>You have reviewed the buyer. The job is successfully closed. <a href="/wallet/invoices/{{invoiceId}}">View invoice</a></p>
-                                            {{else}}
-                                                <hr>
-                                                <form id="reviewBuyer">
-                                                    <div class="form-group">
-                                                        <label>How was the job description?:</label>
-                                                        <br>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="jobDesc" value="Good" required> Good
-                                                        </label>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="jobDesc" value="Bad"> Bad
-                                                        </label>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="jobDesc" value="Ugly"> Ugly
-                                                        </label>
-                                                        <br><br>
-                                                        <label for="writeReview">Write a review</label>
-                                                        <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control"></textarea>
-                                                        <br>
-                                                        <label>Rate buyer</label><br>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="rateBuyer" value="1" required> 1
-                                                        </label>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="rateBuyer" value="2"> 2
-                                                        </label>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="rateBuyer" value="3"> 3
-                                                        </label>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="rateBuyer" value="4"> 4
-                                                        </label>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="rateBuyer" value="5"> 5
-                                                        </label>
-                                                    </div>
-                                                    <!-- <label>Rate buyer</label><br>
-                                                    <span class="rateit" id="rateBuyer"></span><br> -->
-                                                    <button class="margin-top-5 btn btn-primary btn-sm submitBuyerReview" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
-                                                </form>
                                             {{/if}}
                                         {{else}}
                                             <div class="col-sm-12">
@@ -1855,19 +1855,48 @@
                                     {{/if}}
                                 </div>
                             </div>
-                            {{#if reviewedBuyer}}
-                                <label>Review</label>
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
+                            {{#if $eq applicationStatus 'paid'}}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h5>Rate &amp; Review</h5>
+                                </div>
+                                <div class="panel-body">
+                                    {{#if reviewedBuyer}}
                                         {{#with buyerReviewDetails}}
                                             <p>
-                                                Description: {{reviewMessage}} <br>
-                                                How was the job description?: {{experience}} <br>
+                                                Review: {{reviewMessage}} <br>
                                                 Overall satisfaction: {{pointsRated}}/5
                                             </p>
                                         {{/with}}
-                                    </div>
+                                    {{else}}
+                                        <form id="reviewBuyer">
+                                            <div class="form-group">
+                                                <label>Rate buyer</label><br>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="rateBuyer" value="1" required> 1
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="rateBuyer" value="2"> 2
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="rateBuyer" value="3"> 3
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="rateBuyer" value="4"> 4
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="rateBuyer" value="5"> 5
+                                                </label>
+                                                <hr>
+                                                <textarea name="reviewMessage" id="writeReview" rows="3" class="form-control" placeholder="Write a review" required></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="margin-top-5 btn btn-primary btn-sm submitBuyerReview" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Submit</button>
+                                            </div>
+                                        </form>
+                                    {{/if}}
                                 </div>
+                            </div>
                             {{/if}}
                         </div>
                         <div class="tab-pane fade in" id="providerNotificationsTab">
