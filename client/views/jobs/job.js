@@ -687,7 +687,7 @@ Template.job.events({
     Meteor.call('submitAssignment', jobId, function(error) {
       if(error) {
         $(event.currentTarget).button('reset');
-        toastr.error('Failed to submit job. Please try again.');
+        toastr.error('Failed to submit job. Try again!');
       }
     });
   },
