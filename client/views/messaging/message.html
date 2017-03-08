@@ -60,7 +60,13 @@
                 {{#if $eq sender $.Meteor.userId}}
                     <div class="col-md-11 col-xs-11">
                         <div class="messages msg_sent">
-                            <p>{{text}}</p>
+                            {{#if text}}
+                                <p>{{text}}</p>
+                            {{else}}
+                                {{#if file}}
+                                    <p><a href="{{file.fileUrl}}" download><i class="fa fa-download"></i> {{file.fileName}}</a></p>
+                                {{/if}}
+                            {{/if}}
                             <time>{{messageTime time}}</time>
                         </div>
                     </div>
@@ -77,7 +83,13 @@
                     </div>
                     <div class="col-md-11 col-xs-11">
                         <div class="messages msg_sent">
-                            <p>{{text}}</p>
+                            {{#if text}}
+                                <p>{{text}}</p>
+                            {{else}}
+                                {{#if file}}
+                                    <p><a href="{{file.fileUrl}}" download><i class="fa fa-download"></i> {{file.fileName}}</a></p>
+                                {{/if}}
+                            {{/if}}
                             <time>{{messageTime time}}</time>
                         </div>
                     </div>

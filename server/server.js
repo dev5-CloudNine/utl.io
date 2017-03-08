@@ -1383,5 +1383,37 @@ Meteor.methods({
             time: time
         }
         Channels.update({jobId: jobId}, {$addToSet: {messages: msg}});
+    },
+    sendFile: function(fileObj, sender, jobId, time) {
+        var msg = {
+            file: fileObj,
+            sender: sender,
+            time: time
+        }
+        Channels.update({jobId: jobId}, {$addToSet: {messages: msg}});
+    },
+    sendUserFile: function(fileObj, sender, time, chatId) {
+        var msg = {
+            file: fileObj,
+            sender: sender,
+            time: time
+        }
+        UserChats.update({_id: chatId}, {$addToSet: {messages: msg}})
+    },
+    createUserChat: function(participant_1, participant_2) {
+        var participants = [participant_1, participant_2]
+        var chatObject = {
+            participants: participants,
+            messages: []
+        }
+        return UserChats.insert(chatObject);
+    },
+    sendUserMessage: function(message, sender, time, chatId) {
+        var msg = {
+            text: message,
+            sender: sender,
+            time: time
+        }
+        UserChats.update({_id: chatId}, {$addToSet: {messages: msg}})
     }
 });

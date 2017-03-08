@@ -6,7 +6,7 @@
                     <li class="active">
                         <a href="#jobDesc" data-toggle="tab" aria-expanded="true">
                             <span class="round-tabs one">
-                                <i class="fa fa-file"></i>&nbsp; Job Details
+                                <i class="fa fa-file"></i>&nbsp; DETAILS
                             </span>
                         </a>
                     </li>
@@ -15,7 +15,7 @@
                             <li>
                                 <a href="#tasks" data-toggle="tab">
                                     <span class="round-tabs two">
-                                      <i class="fa fa-bars"></i>&nbsp; Tasks
+                                      <i class="fa fa-bars"></i>&nbsp; TASKS
                                  </span>
                                 </a>
                             </li>
@@ -24,7 +24,7 @@
                             <li>
                                 <a href="#timesheet" data-toggle="tab">
                                     <span class="round-tabs three timesheet">
-                                      <i class="fa fa-calendar"></i>&nbsp; Timesheet
+                                      <i class="fa fa-calendar"></i>&nbsp; TIMESHEETS
                                  </span>
                                 </a>
                             </li>
@@ -33,7 +33,7 @@
                             <li>
                                 <a href="#disc" data-toggle="tab">
                                     <span class="round-tabs four disc">
-                                        <i class="fa fa-comments"></i>&nbsp; Discuss
+                                        <i class="fa fa-comments"></i>&nbsp; DISCUZ
                                     </span>
                                 </a>
                             </li>
@@ -538,8 +538,8 @@
             <div class="col-sm-4">
                 {{#if jobPostedBuyer}}
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#buyerActionsTab" data-toggle="tab" aria-expanded="true">Actions</a></li>
-                        <li><a href="#buyerNotificationsTab" data-toggle="tab">Notifications</a></li>
+                        <li class="active"><a href="#buyerActionsTab" data-toggle="tab" aria-expanded="true">ACTIONS</a></li>
+                        <li><a href="#buyerNotificationsTab" data-toggle="tab">HISTORY</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="buyerActionsTab">
@@ -1132,9 +1132,9 @@
                     {{/with}}
                     <ul class="nav nav-tabs">
                         {{#if assignedOrDone}}
-                            <li class="active"><a href="#jobAssignedProvider" data-toggle="tab" aria-expanded="true">Assigned Provider (Confirmed)</a></li>
+                            <li class="active"><a href="#jobAssignedProvider" data-toggle="tab" aria-expanded="true">ASGN'D PROVIDER</a></li>
                         {{/if}}
-                        <li class="{{#unless assignedOrDone}}active{{/unless}}"><a href="#buyerJobApplications" data-toggle="tab">Applications <span class="badge">{{applicationsCount}}</span></a></li>
+                        <li class="{{#unless assignedOrDone}}active{{/unless}}"><a href="#buyerJobApplications" data-toggle="tab">APPLICATIONS <span class="badge">{{applicationsCount}}</span></a></li>
                     </ul>
                     <div class="tab-content">
                         {{#if assignedOrDone}}
@@ -1382,8 +1382,8 @@
                 {{/if}}
                 {{#if isInRole 'provider'}}
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#providerActionTab" data-toggle="tab">Actions</a></li>
-                        <li><a href="#providerNotificationsTab" data-toggle="tab">Notifications</a></li>
+                        <li class="active"><a href="#providerActionTab" data-toggle="tab">ACTIONS</a></li>
+                        <li><a href="#providerNotificationsTab" data-toggle="tab">HISTORY</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="providerActionTab">

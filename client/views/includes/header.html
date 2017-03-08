@@ -17,15 +17,11 @@
                         <li><a href="{{pathFor 'howItWorks'}}">HOW IT WORKS</a></li>
                         <li><a href="{{pathFor 'buyerBenefits'}}">FOR BUYERS</a></li>
                         <li><a href="{{pathFor 'providerBenefits'}}">FOR PROVIDERS</a></li>
-                        <!-- <li id="user-drop-down" class="dropdown">
-                            <a class="dropdown-toggle box-user-option" data-toggle="dropdown" href="#">Users <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                
-                            </ul>
-                        </li> -->
-                        <!-- <li><a href="{{pathFor 'payments'}}">Pricing</a></li>
-                        <li><a href="{{pathFor 'faq'}}">FAQ's</a></li> -->
+                        {{#if currentUser}}
+                            {{#if profileCreated}}
+                                <li><a href="{{pathFor 'dashboard' tab='dashboard'}}">DASHBOARD</a></li>
+                            {{/if}}
+                        {{/if}}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {{#if currentUser}}

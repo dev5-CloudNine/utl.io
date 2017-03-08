@@ -86,3 +86,9 @@ Template.headerUserMenu.rendered = function() {
   Meteor.subscribe('notifications', Meteor.userId());
   return Meteor.subscribe('notificationsJobs', Meteor.userId());
 }
+
+Template.header.helpers({
+  profileCreated: function() {
+    return (Meteor.user().isDeveloper || Meteor.user().isBuyer || Meteor.user().isDispatcher || Meteor.user().isAccountant) ? true: false;
+  }
+})

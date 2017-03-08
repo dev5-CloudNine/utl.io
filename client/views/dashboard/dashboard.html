@@ -5,10 +5,10 @@
                 <div role="tabpanel">
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
-                            <a href="#buyerAssigned" aria-controls="buyerAssigned" role="tab" data-toggle="tab">CHANNELS</a>
+                            <a href="#buyerAssigned" aria-controls="buyerAssigned" role="tab" data-toggle="tab">ASGN'D JOBS</a>
                         </li>
                         <li role="presentation">
-                            <a href="#buyerAllUsers" aria-controls="buyerAllUsers" role="tab" data-toggle="tab">USERS</a>
+                            <a href="#buyerAllUsers" aria-controls="buyerAllUsers" role="tab" data-toggle="tab">FAV'S</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -19,6 +19,8 @@
                                     <ul class="nav mailbox-nav">
                                         {{#each buyerAssignedJobs}}
                                             <li><a href="{{pathFor 'dashboard'}}/?jobId={{_id}}"><small><i>#{{readableID}}</i></small><p class="budgetFont">{{title}}</p></a></li>
+                                        {{else}}
+                                            <p>There are no assigned jobs right now.</p>
                                         {{/each}}
                                     </ul>
                                 </div>
@@ -27,8 +29,8 @@
                         <div role="tabpanel" class="tab-pane" id="buyerAllUsers">
                             <br>
                             <div class="panel panel-default">
-                                <div class="panel-body">
-                                    
+                                <div class="panel-body assigned-jobs-list">
+                                    {{>ReactiveDatatable tableData=buyerAllUsers options=buyerAllUserOptions}}
                                 </div>
                             </div>
                         </div>
@@ -36,13 +38,26 @@
                 </div>
             </div>
             <div class="col-sm-8">
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a aria-controls="home" role="tab" data-toggle="tab">DISCUZ</a>
+                        </li>
+                    </ul>
+                    <br>
+                </div>
                 {{#if jobSelected}}
-                    {{#with selectedJobDetails}}
-                        <legend><small><i>#{{readableID}}</i></small> - {{title}}</legend>
-                    {{/with}}
                     {{>messages}}
                 {{else}}
-                    <p>Select an assigned job from the left panel and you can discuss directly with the corresponding assigned provider.</p>
+                    {{#if userSelected}}
+                        {{>messages}}
+                    {{else}}
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <p>Select an assigned job from the left panel and you can discuss directly with the corresponding assigned provider.</p>
+                            </div>
+                        </div>
+                    {{/if}}
                 {{/if}}
             </div>
         </div>
@@ -58,22 +73,14 @@
                     {{/if}}
                 </div>
             {{/with}}
-            <div class="col-md-8">
-                <label>Todo important</label>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        {{>notifications}}
-                    </div>
-                </div>
-            </div>
         </div> -->
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-xs-12">
                 <h4>Scheduled Dates of Assigned Jobs</h4>
                 <hr>
                 {{>buyerCalendar}}
             </div>
-        </div>
+        </div> -->
     {{/if}}
     {{#if isInRole 'provider'}}
         <div class="row">
@@ -112,10 +119,15 @@
                 </div>
             </div>
             <div class="col-sm-8">
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a aria-controls="home" role="tab" data-toggle="tab">DISCUZ</a>
+                        </li>
+                    </ul>
+                    <br>
+                </div>
                 {{#if jobSelected}}
-                    {{#with selectedJobDetails}}
-                        <legend><small><i>#{{readableID}}</i></small> - {{title}}</legend>
-                    {{/with}}
                     {{>messages}}
                 {{else}}
                     <p>Select an assigned job from the left panel and you can discuss directly with the corresponding buyer.</p>
@@ -129,22 +141,14 @@
                     {{>profileSmall}}
                 </div>
             {{/with}}
-            <div class="col-md-8">
-                <label>Todo important</label>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        {{>notifications}}
-                    </div>
-                </div>
-            </div>
         </div> -->
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-xs-12">
                 <h4>Scheduled Dates of Assigned Jobs</h4>
                 <hr>
                 {{>providerCalendar}}
             </div>
-        </div>
+        </div> -->
     {{/if}}
     {{#if isInRole 'accountant'}}
         <div class="panel panel-default">
@@ -189,7 +193,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <hr>
             {{#with myProfile}}
                 <div class="col-md-4">
@@ -197,7 +201,7 @@
                     {{>accountantSmall}}
                 </div>
             {{/with}}
-        </div>
+        </div> -->
     {{/if}}
     {{#if isInRole 'admin'}}
         <div class="panel panel-light">

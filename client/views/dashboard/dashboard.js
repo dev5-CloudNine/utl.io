@@ -1,4 +1,45 @@
+var buyerAllUsers = function() {
+	var allUsers = [];
+	if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+		allUsers = allUsers.concat(Profiles.find({status: 'active'}).fetch());
+		allUsers = allUsers.concat(Dispatchers.find({invitedBy: Meteor.userId()}).fetch());
+		allUsers = allUsers.concat(Accountants.find({invitedBy: Meteor.userId()}).fetch());
+	}
+	if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+		allUsers = allUsers.push(Buyers.findOne({userId: Meteor.user().invitedBy}));
+		allUsers = allUsers.concat(Profiles.find({status: 'active'}).fetch());
+		allUsers = allUsers.concat(Dispatchers.find({$and: [{invitedBy: Meteor.userId()}, {userId: {$ne: Meteor.userId()}}]}).fetch());
+		allUsers = allUsers.concat(Accountants.find({invitedBy: Meteor.userId()}).fetch());
+	}
+	return allUsers;
+}
+
+var buyerAllUserOptions = {
+	order: [[0, 'desc']],
+	paging: false,
+	columns: [
+		{
+			title: 'ID',
+			data: function(user) {
+				return user.readableID;
+			}
+		},
+		{
+			title: 'Name',
+			data: function(user) {
+				var currentRoute = Router.current().route._path;
+				var userLink = '<a href="' + currentRoute + '/?userId=' + user.userId + '">' + user.firstName + ' ' + user.lastName +'</a>'
+				return userLink
+			}
+		}
+	]
+}
+
 Template.dashboard.helpers({
+	buyerAllUsers: function() {
+		return buyerAllUsers;
+	},
+	buyerAllUserOptions: buyerAllUserOptions,
 	buyerAssignedJobs: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}, {$or: [{assignmentStatus: 'confirmed'}, {assignmentStatus: 'submitted'}, {assignmentStatus: 'rejected'}]}, {status: 'active'}]});
 	},
@@ -17,12 +58,15 @@ Template.dashboard.helpers({
 		}
 		return assignedJobs;
 	},
-	commentsJobId: function() {
-		return Router.current().params.query.jobId;
-	},
 	jobSelected: function() {
 		var jobId = Router.current().params.query.jobId
 		if(jobId)
+			return true;
+		return false;
+	},
+	userSelected: function() {
+		var userId = Router.current().params.query.userId
+		if(userId)
 			return true;
 		return false;
 	},
@@ -492,10 +536,6 @@ Template.dashboard.helpers({
 	}
 });
 
-Template.dashboard.onRendered(function() {
-	$('.highcharts-credits').remove();
-});
-
 Template.dashboard.onCreated(function() {
 	this.autorun(function() {
 		var jobId = Router.current().params.query.jobId;
@@ -506,6 +546,7 @@ Template.dashboard.onCreated(function() {
 })
 
 Template.dashboard.rendered = function () {
+	$('.datatable_wrapper > .dataTables_wrapper > .row > .col-sm-6:first-child').remove();
 	Meteor.subscribe('userWallet', Meteor.userId())
 	this.$('.rateit').rateit({'readonly': true});
 	this.$('.highcharts-range-selector').datepicker();

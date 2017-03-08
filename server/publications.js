@@ -625,3 +625,8 @@ Meteor.publish('userChannels', function(userId) {
     check(arguments, [Match.Any]);
     return Channels.find({participants: {$in: [userId]}});
 })
+
+Meteor.publish('userChats', function(currentUser, selectedUser) {
+    check(arguments, [Match.Any]);
+    return UserChats.find({$and: [{participants: {$in: [currentUser]}}, {participants: {$in: [selectedUser]}}]});
+})

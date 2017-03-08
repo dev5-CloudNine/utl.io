@@ -2223,9 +2223,9 @@ svg {
 }
 
 .assigned-jobs-list {
-  min-height: 640px;
-  max-height: 640px;
-  overflow-y: scroll auto;
+  min-height: 700px;
+  max-height: 700px;
+  overflow-y: scroll;
 }
 
 .message-history-body {

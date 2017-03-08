@@ -13,6 +13,7 @@ JobTransactions = new Meteor.Collection("jobtransactions");
 FileManager = new Meteor.Collection('fileManager');
 BonusRequests = new Meteor.Collection('bonusrequests');
 Channels = new Meteor.Collection('channels');
+UserChats = new Meteor.Collection('userchats');
 
 Categories.attachSchema(
 	new SimpleSchema({
