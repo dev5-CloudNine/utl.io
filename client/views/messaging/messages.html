@@ -1,0 +1,15 @@
+<template name="messages">
+	<div class="panel panel-default">
+		<div class="panel-body message-history-body">
+			{{#each messages}}
+				{{>message}}
+			{{/each}}
+		</div>
+		<div class="panel-footer">
+			<div class="input-group">
+				<input type="text" class="form-control" name="message-text" id="message-text">
+				<a class="input-group-addon sendMsg"><i class="fa fa-chevron-right sendMsg"></i></a>
+			</div>
+		</div>
+	</div>
+</template>
