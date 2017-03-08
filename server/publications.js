@@ -34,6 +34,14 @@ Meteor.publish("userData", function() {
 //     }
 // })
 
+Meteor.publish('documentComments', function(jobId) {
+    return Comments.get(jobId);
+});
+
+Meteor.publish('allComments', function() {
+    return Comments.getAll();
+})
+
 Meteor.publish('userFiles', function(userId) {
     return FileManager.find({userId: userId});
 })
@@ -611,4 +619,9 @@ Meteor.publish('transactions', function(userId) {
 Meteor.publish('transactionDetails', function(transId) {
     check(arguments, [Match.Any]);
     return Transactions.find({_id: transId});
+})
+
+Meteor.publish('userChannels', function(userId) {
+    check(arguments, [Match.Any]);
+    return Channels.find({participants: {$in: [userId]}});
 })

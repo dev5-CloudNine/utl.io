@@ -6,6 +6,10 @@ Template.compose.onRendered(function() {
 	$('.note-editor .note-toolbar .note-insert').remove();
 });
 
+Template.compose.rendered = function() {
+    Meteor.typeahead.inject('#recipient');
+}
+
 var messageFiles = [];
 var attachFiles = function(files) {
     messageFiles = [];
@@ -31,15 +35,7 @@ Template.compose.events({
         	return;
         }
         var param = Router.current().params.tab;
-        var projectID = $('#project').val();
-        if(!param.substr(0, 9) == 'newaccmsg' || !param.substr(0, 9) == 'newdismsg') {
-            if (!projectID) {
-            	toastr.error('Please select a project');
-            	return;
-            }
-        }
-        var content = $('#summernote').summernote('code');
-        $('#summernote').summernote('destroy');
+        var content = $('#content').val();
         var sender = Meteor.userId();
         var message = {};
         message.files = [];
@@ -47,8 +43,7 @@ Template.compose.events({
             message.files.push(msgFile);
         })
         message.recipient = recipient;
-        message.subject = $( "#project option:selected" ).text();
-        message.projectID = projectID;
+        message.subject = $("#subject").val();
         message.sender = sender;
         message.content = content;
         message.date = new Date();
@@ -60,7 +55,7 @@ Template.compose.events({
     		temp = Messages.findOne({'_id':param.substr(6)}).chain;
     		chain = chain.concat(temp);
     		message.chain = chain;
-            message.subject = $('#project').val();
+            message.subject = $('#subject').val();
     	}
         if(param.substr(0, 6) == 'newapm') {
             message.subject = $('#project').val();
@@ -323,8 +318,6 @@ Template.compose.helpers({
     parentMsg: function() {
     	var param = Router.current().params.tab;
     	var id = param.substr(6);
-
-
     	var row = $('<div/>', {
 		    'class':'row'
 		});
@@ -436,5 +429,16 @@ Template.compose.helpers({
             byrName: buyer.firstName + ' ' + buyer.lastName
         }
         return buyerDetails;
+    },
+    recipients: function(query, sync, callback) {
+        Meteor.call('allUsers', query, {}, Meteor.userId(), function(err, res) {
+            if(err) {
+                console.log(err);
+                return;
+            }
+            callback(res.map(function(user) {
+                return {value: user.userId}
+            }))
+        })
     }
 });

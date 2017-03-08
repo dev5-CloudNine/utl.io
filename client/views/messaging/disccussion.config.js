@@ -14,6 +14,10 @@ Comments.config({
 			var userName = profile.firstName + ' ' + profile.lastName;
 		}
 		return userName;
+	},
+	generateAvatar: function(user) {
+		if(user.imgURL)
+			return user.imgURL;
 	}
 })
 Comments.ui.config({

@@ -85,19 +85,25 @@ Meteor.methods({
     },
     "location": function(query, options) {
         if (!query) return [];
-
         options = options || {};
-
-        // guard against client-side DOS: hard limit to 50
         if (options.limit) {
             options.limit = Math.min(50, Math.abs(options.limit));
         } else {
             options.limit = 50;
         }
-
-        // TODO fix regexp to support multiple tokens
         var regex = new RegExp("^" + query,'gi');
         return Cities.find({city: {$regex:  regex}}, options).fetch();
+    },
+    allUsers: function(query, options, userId)  {
+        if(!query) return [];
+        options = options || {};
+        var regex = new RegExp('^' + query, 'gi');
+        var users = [];
+        if(Roles.userIsInRole(userId, ['buyer'])) {
+            users = users.concat(Profiles.find({$or: [{firstName: {$regex: regex}}, {lastName: {$regex: regex}}]}, options).fetch());
+            users = users.concat(Dispatchers.find({$and: [{invitedBy: userId}, {$or: [{firstName: {$regex: regex}}, {lastName: {$regex: regex}}]}]}, options).fetch());
+        }
+        return users;
     },
     'individualprovider': function(query, options) {
         if(!query) return [];
@@ -404,6 +410,13 @@ Meteor.methods({
         if(jobDetails.routed) {
             Jobs.update({_id: jobId}, {$set: {projectBudget: jobDetails.freelancer_nets}});
         }
+        var participants = [buyerId, providerDetails.userId, adminId];
+        var newChannel = {
+            jobId: jobId,
+            participants: participants,
+            messages: []
+        }
+        Channels.insert(newChannel);
         Notifications.insert(notificationObj);
         Email.send({
             to: getUserEmail(Meteor.users.findOne({_id: buyerId})),
@@ -1362,5 +1375,13 @@ Meteor.methods({
             Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: buyerReturns}});
             // Jobs.update({userId: jobDetails.userId}, {$inc: {buyerCost: -buyerReturns}})
         }
+    },
+    sendMessage: function(message, sender, jobId, time) {
+        var msg = {
+            text: message,
+            sender: sender,
+            time: time
+        }
+        Channels.update({jobId: jobId}, {$addToSet: {messages: msg}});
     }
 });

@@ -229,7 +229,7 @@
                     <li class="dropdown-header">Account</li>
                     {{#if currentUser}}
                         {{#if isInRole 'admin'}}
-                            <li><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>
+                            <li><a href="{{pathFor 'dashboard' tab='dashboard'}}">Dashboard</a></li>
                         {{/if}}
                         {{#if isInRole 'buyer'}}
                             {{#if currentUser.isBuyer}}

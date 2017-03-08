@@ -238,7 +238,7 @@ Template.job.events({
     });
   },
   'click .acceptCounterOffer': function(event, template) {
-    $(event.currentTarget).button('loading');
+    $(event.currentTarget).prop('disabled', 'disabled');
     var jobId = Router.current().params._id;
     var userId = Profiles.findOne({_id: this.userId}).userId;
     var buyerCost = this.buyer_cost;
@@ -254,15 +254,14 @@ Template.job.events({
       var diff = buyerCost - jobDetails.your_cost;
       if(diff > buyerWallet.accountBalance) {
         toastr.error('Your wallet balance is low. Please deposit sufficient funds to accept this counter offer.');
-        $(event.currentTarget).button('reset');
+        $(event.currentTarget).removeAttr('disabled');
         return;
       } else {
         Meteor.call('acceptHighBudgetCO', diff, buyerId, jobId, function(error) {
           if(error) {
-            $(event.currentTarget).button('reset');
+            $(event.currentTarget).removeAttr('disabled');
           } else {
             toastr.success('Your account has been debited with ' + (+(Math.round(diff + 'e+2') + 'e-2')) + ' USD.');
-            $(event.currentTarget).button('reset');
           }
         });
       }
@@ -270,16 +269,15 @@ Template.job.events({
       var diff = jobDetails.your_cost - buyerCost;
       Meteor.call('acceptLowBudgetCO', diff, buyerId, jobId, function(error) {
         if(error) {
-          $(event.currentTarget).button('reset');
+          $(event.currentTarget).removeAttr('disabled');
         } else {
           toastr.success('Your account has been credited with ' + (+(Math.round(diff + 'e+2') + 'e-2')) + ' USD.');
-          $(event.currentTarget).button('reset');
         }
       })
     }
     Meteor.call('acceptCounterOffer', jobId, userId, applied_at, buyerCost, freenets, function(error) {
       if(error) {
-        $(event.currentTarget).button('reset');
+        $(event.currentTarget).removeAttr('disabled');
       }
     })
   },
@@ -2328,7 +2326,6 @@ Template.job.helpers({
     return jobDetails;
   },
   assignedProviderDetails: function() {
-    console.log(this)
     var applicationDetails = {};
     for(var i = 0; i < this.applications.length; i++) {
       if(this.applications[i].userId == this.assignedProvider && this.applications[i].app_status == 'accepted') {

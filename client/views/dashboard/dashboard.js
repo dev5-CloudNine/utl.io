@@ -1,188 +1,33 @@
 Template.dashboard.helpers({
-	// jobs: function() {
-	// 	return Jobs.find({
-	// 		userId: Meteor.userId()
-	// 	}, {
-	// 		sort: {
-	// 			createdAt: -1
-	// 		}
-	// 	});
-	// },
-	// buyerProfile: function() {
-	// 	return Buyers.find({
-	// 		userId: Meteor.userId()
-	// 	});
-	// },
-	allDeactivatedCount: function() {
-		return Jobs.find({status: 'deactivated'}).count();
+	buyerAssignedJobs: function() {
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}, {$or: [{assignmentStatus: 'confirmed'}, {assignmentStatus: 'submitted'}, {assignmentStatus: 'rejected'}]}, {status: 'active'}]});
 	},
-	// providerProfile: function() {
-	// 	return Profiles.findOne({userId: Meteor.userId()});
-	// },
-	// buyerDetails: function() {
-	// 	return Buyers.findOne({userId: Meteor.userId()});
-	// },
-	favJobs: function() {
-		var favJobsIds = [];
-		var favJobsArray = [];
-		var userDetails = Meteor.user();
-		userDetails.favoriteJobs.forEach(function (favjobs) {
-			favJobsIds.push(favjobs);
-		});
-		return Jobs.find({_id: {$in:favJobsIds}},{sort: {createdAt: -1}});
-	},
-	appliedJobs: function() {
-		var appliedJobIds = [];
-		var appliedJobsArray = [];
-		Profiles.findOne({userId: Meteor.userId()}).appliedJobs.forEach(function(jobId) {
-			appliedJobIds.push(jobId);
-		});
-		return Jobs.find({_id: {$in:appliedJobIds}},{sort: {createdAt: -1}});
-	},
-	// ongoingJobs: function() {
-	// 	return Jobs.find({$and: [{assignedProvider: Meteor.userId()}, {applicationStatus: 'assigned'}]}).fetch();
-	// },
-	// providerRoutedJobs: function() {
-	// 	return Jobs.find({$and: [{"selectedProvider": Meteor.userId()}, {"routed": true}, {"applicationStatus": "frozen"}]}).fetch()
-	// },
-	// buyerRoutedJobs: function() {
-	// 	return Jobs.find({$and: [{userId: Meteor.userId()}, {routed: true}]}, {sort: {createdAt: -1}});
-	// },
-	// favUsers: function() {
-	// 	var favUserIds = [];
-	// 	var favUserArray = [];
-	// 	var userDetails = Meteor.user();
-	// 	userDetails.favoriteUsers.forEach(function(favusers) {
-	// 		favUserIds.push(favusers);
-	// 	});
-	// 	favUserIds.forEach(function(id) {
-	// 		favUserArray.push(Profiles.findOne({
-	// 			_id: id
-	// 		}));
-	// 	});
-	// 	return favUserArray;
-	// },
-	// favBuyers: function() {
-	// 	var favBuyerIds = [];
-	// 	var favBuyerArray = [];
-	// 	var userDetails = Meteor.user();
-	// 	userDetails.favoriteBuyers.forEach(function(favBuyer) {
-	// 		favBuyerIds.push(favBuyer);
-	// 	});
-	// 	favBuyerIds.forEach(function(id) {
-	// 		favBuyerArray.push(Buyers.findOne({
-	// 			_id: id
-	// 		}));
-	// 	});
-	// 	return favBuyerArray;
-	// },
-	providerJobsCount: function() {
-		var count = 0;
-		var jobCount = Profiles.findOne({userId: Meteor.userId()}).appliedJobs;
-		if(jobCount) {
-			for(var i = 0; i < jobCount.length; i++)
-				count++;
-			return count;
+	providerAssignedJobs: function() {
+		var assigned = [];
+		var assignedJobs = [];
+		var providerDetails = Profiles.findOne({userId: Meteor.userId()});
+		if((providerDetails.assignedJobs && providerDetails.assignedJobs.length > 0) && (providerDetails.pendingApproval && providerDetails.pendingApproval.length > 0))
+			assigned = assigned.concat(providerDetails.assignedJobs, providerDetails.pendingApproval);
+		if(!providerDetails.pendingApproval || providerDetails.pendingApproval.length <= 0)
+			assigned = assigned.concat(providerDetails.assignedJobs);
+		if((!providerDetails.assignedJobs || providerDetails.assignedJobs.length <=0) && (providerDetails.pendingApproval && providerDetails.pendingApproval.length > 0))
+			assigned = assigned.concat(providerDetails.pendingApproval);
+		for(var i = assigned.length - 1; i >= 0; i--) {
+			assignedJobs.push(Jobs.findOne({_id: assigned[i]}));
 		}
-		return count;
+		return assignedJobs;
 	},
-	accountBalance: function() {
-		return Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+	commentsJobId: function() {
+		return Router.current().params.query.jobId;
 	},
-	amountSpent: function() {
-		var amountSpent = Wallet.findOne({userId: Meteor.userId()}).amountSpent;
-		if(amountSpent)
-			return amountSpent;
-		return 0;
+	jobSelected: function() {
+		var jobId = Router.current().params.query.jobId
+		if(jobId)
+			return true;
+		return false;
 	},
-	amountEarned: function() {
-		return Wallet.findOne({userId: Meteor.userId()}).amountEarned;
-	},
-	providerRatingPoints: function() {
-		var totalPoints = 0;
-		var count = 0;
-		var reviews = Reviews.find({$and: [{'providerId': Meteor.userId()}, {'reviewedBy': 'buyer'}]}).fetch();
-		if(reviews) {
-			for(var i = 0; i < reviews.length; i++) {
-				totalPoints += reviews[i].pointsRated;
-				count++;
-			}
-			return totalPoints/count;
-		}
-		return 0;
-	},
-	providerReviewCount: function() {
-		var reviews = Reviews.find({$and: [{'providerId': Meteor.userId()}, {'reviewedBy': 'buyer'}]});
-		if(reviews)
-			return reviews.count();
-		return 0;
-	},
-	buyerRatingPoints: function () {
-		var totalPoints = 0;
-		var count = 0;
-		var reviews = Reviews.find({$and: [{'buyerId': Meteor.userId()}, {'reviewedBy': 'provider'}]}).fetch();
-		if(reviews) {
-			for(var i = 0; i < reviews.length; i++) {
-				totalPoints += reviews[i].pointsRated;
-				count++;
-			}
-			return totalPoints/count;
-		}
-		return 0;
-	},
-	buyerReviewCount: function() {
-		var reviews = Reviews.find({$and: [{'buyerId': Meteor.userId()}, {'reviewedBy': 'provider'}]});
-		if(reviews)
-			return reviews.count();
-		return 0;
-	},
-	buyersCount: function() {
-		return Buyers.find().count();
-	},
-	providersCount: function() {
-		return Profiles.find().count();
-	},
-	todayUserCount: function() {
-		var count = 0;
-		var today = new Date().getUTCDate();
-		var allUsers = Meteor.users.find().fetch();
-		allUsers.forEach(function(user) {
-			if(user.createdAt.getUTCDate() == today) {
-				count++;
-			}
-		});
-		if(count == 0)
-			return 0;
-		else
-			return count;
-	},
-	todayBuyerCount: function() {
-		var count = 0;
-		var today = new Date().getUTCDate();
-		var allBuyers = Buyers.find().fetch();
-		allBuyers.forEach(function(buyer) {
-			if(buyer.createdAt.getUTCDate() == today) {
-				count ++;
-			}
-		});
-		if(count == 0)
-			return 0;
-		else
-			return count;
-	},
-	todayProviderCount: function() {
-		var count = 0;
-		var today = new Date().getUTCDate();
-		var allProviders = Profiles.find().fetch();
-		allProviders.forEach(function(provider) {
-			if(provider.createdAt.getUTCDate() == today) {
-				count ++;
-			}
-		});
-		if(count == 0)
-			return 0;
-		else
-			return count;
+	selectedJobDetails: function() {
+		return Jobs.findOne({_id: Router.current().params.query.jobId});
 	},
 	createChart: function() {
 		var highCharts = require('highcharts/highstock');
@@ -649,6 +494,15 @@ Template.dashboard.helpers({
 
 Template.dashboard.onRendered(function() {
 	$('.highcharts-credits').remove();
+});
+
+Template.dashboard.onCreated(function() {
+	this.autorun(function() {
+		var jobId = Router.current().params.query.jobId;
+		if(!jobId)
+			return;
+		return Meteor.subscribe('documentComments', jobId);
+	})
 })
 
 Template.dashboard.rendered = function () {

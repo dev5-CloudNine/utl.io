@@ -38,7 +38,7 @@
                                         {{#if $eq type 'newbyrmsg'}}
                                             <label for="recipient" class="col-sm-2 control-label">Recipient</label>
                                         {{else}}
-                                            <label for="subject" class="col-sm-2 control-label">Subject</label>
+                                            <label for="subject" class="col-sm-2 control-label">Recipient</label>
                                         {{/if}}
                                     {{/if}}
                                 {{/if}}
@@ -53,15 +53,20 @@
                                     </select> 
                                 {{/if}}
                                 {{#if $eq type 'newrep'}}
-                                    <input type="text" disabled class="form-control" id="project" value="{{parentSub}}">
+                                    <select disabled id="recipient" class="form-control">
+                                        {{#with parentUser}}
+                                            <option value="{{parentUserId}}">{{firstName}} {{lastName}}</option>
+                                        {{/with}}
+                                    </select>
                                 {{/if}}
                                 {{#if $eq type 'new'}}
-                                    <select class="form-control" id="project">
+                                    <!-- <select class="form-control" id="project">
                                         <option value="">Select project</option>
                                         {{#each projectList}}
                                             <option value="{{id}}">{{title}}</option>
                                         {{/each}} 
-                                    </select> 
+                                    </select>  -->
+                                    <input type="text" class="form-control" id="recipient" name="recipient" data-source="recipients" data-template="userDetails" required>
                                 {{/if}}
                                 {{#if $eq type 'newapm'}}
                                     <input type="text" disabled class="form-control" id="project" value="{{messageJobId}}">
@@ -117,25 +122,17 @@
                                         {{#if $eq type 'newbyrmsg'}}
                                             <label for="subject" class="col-sm-2 control-label">Subject</label>
                                         {{else}}
-                                            <label for="to" class="col-sm-2 pull-left control-label">Recipient</label>
+                                            <label for="to" class="col-sm-2 pull-left control-label">Subject</label>
                                         {{/if}}
                                     {{/if}}
                                 {{/if}}
                             {{/if}}                            
                             <div class="col-sm-10">
                                 {{#if $eq type 'newrep'}}                                    
-                                    <select disabled id="recipient" class="form-control">
-                                        {{#with parentUser}}
-                                            <option value="{{parentUserId}}">{{firstName}} {{lastName}}</option>
-                                        {{/with}}
-                                    </select>
+                                    <input type="text" class="form-control" disabled id="subject" name="subject" value="{{parentSub}}">
                                 {{/if}}
                                 {{#if $eq type 'new'}}
-                                    <select class="form-control" id="recipient">
-                                        {{#each userList}}
-                                            <option value="{{id}}">{{firstName}} {{lastName}}</option>
-                                        {{/each}}
-                                    </select>
+                                    <input type="text" class="form-control" id="subject" name="subject">
                                 {{/if}}
                                 {{#if $eq type 'newfwd'}}
                                     <select class="form-control" id="recipient">
@@ -243,4 +240,8 @@
             </div>
         </div>
     </div>
+</template>
+
+<template name="userDetails">
+    
 </template>

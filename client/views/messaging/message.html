@@ -1,4 +1,4 @@
-<template name="message">	
+<!-- <template name="message">	
     <div class="row m-t-md">
         <div class="col-md-12">
             <div class="row mailbox-header">
@@ -49,6 +49,40 @@
                     </div>
                 </div>
             {{/each}}
+        </div>
+    </div>
+</template> -->
+
+<template name="message">
+    <div class="message_container_base">
+        <div class="message_container">
+            <div class="row msg_container {{#if $eq sender $.Meteor.userId}} base_sent {{else}} base_receive {{/if}}">
+                {{#if $eq sender $.Meteor.userId}}
+                    <div class="col-md-11 col-xs-11">
+                        <div class="messages msg_sent">
+                            <p>{{text}}</p>
+                            <time>{{messageTime time}}</time>
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-xs-1 avatar">
+                        <img src="{{#if $.Meteor.user.imgURL}}{{$.Meteor.user.imgURL}}{{else}}/images/avatar.png{{/if}}" class="img-responsive ">
+                    </div>
+                {{else}}
+                    <div class="col-md-1 col-xs-1 avatar">
+                        {{#if senderImgUrl sender}}
+                            <img src="{{senderImgUrl sender}}" alt="" class="img-responsive">
+                        {{else}}
+                            <img src="/images/avatar.png" class="img-responsive">
+                        {{/if}}
+                    </div>
+                    <div class="col-md-11 col-xs-11">
+                        <div class="messages msg_sent">
+                            <p>{{text}}</p>
+                            <time>{{messageTime time}}</time>
+                        </div>
+                    </div>
+                {{/if}}
+            </div>
         </div>
     </div>
 </template>

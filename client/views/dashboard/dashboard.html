@@ -1,6 +1,52 @@
 <template name="dashboard">
-    <!-- {{#if isInRole 'buyer, dispatcher'}}
+    {{#if isInRole 'buyer, dispatcher'}}
         <div class="row">
+            <div class="col-sm-4">
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#buyerAssigned" aria-controls="buyerAssigned" role="tab" data-toggle="tab">CHANNELS</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#buyerAllUsers" aria-controls="buyerAllUsers" role="tab" data-toggle="tab">USERS</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="buyerAssigned">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body assigned-jobs-list">
+                                    <ul class="nav mailbox-nav">
+                                        {{#each buyerAssignedJobs}}
+                                            <li><a href="{{pathFor 'dashboard'}}/?jobId={{_id}}"><small><i>#{{readableID}}</i></small><p class="budgetFont">{{title}}</p></a></li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="buyerAllUsers">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                {{#if jobSelected}}
+                    {{#with selectedJobDetails}}
+                        <legend><small><i>#{{readableID}}</i></small> - {{title}}</legend>
+                    {{/with}}
+                    {{>messages}}
+                {{else}}
+                    <p>Select an assigned job from the left panel and you can discuss directly with the corresponding assigned provider.</p>
+                {{/if}}
+            </div>
+        </div>
+        <!-- <div class="row">
             {{#with myProfile}}
                 <div class="col-md-4">
                     <label>You are</label>
@@ -20,16 +66,63 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row">
             <div class="col-xs-12">
                 <h4>Scheduled Dates of Assigned Jobs</h4>
+                <hr>
                 {{>buyerCalendar}}
             </div>
         </div>
     {{/if}}
     {{#if isInRole 'provider'}}
         <div class="row">
+            <div class="col-sm-4">
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#providerAssigned" aria-controls="providerAssigned" role="tab" data-toggle="tab">CHANNELS</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#buyerAllUsers" aria-controls="buyerAllUsers" role="tab" data-toggle="tab">USERS</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="providerAssigned">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body assigned-jobs-list">
+                                    <ul class="nav mailbox-nav">
+                                        {{#each providerAssignedJobs}}
+                                            <li><a href="{{pathFor 'dashboard'}}/?jobId={{_id}}"><small><i>#{{readableID}}</i></small><p class="budgetFont">{{title}}</p></a></li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="buyerAllUsers">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                {{#if jobSelected}}
+                    {{#with selectedJobDetails}}
+                        <legend><small><i>#{{readableID}}</i></small> - {{title}}</legend>
+                    {{/with}}
+                    {{>messages}}
+                {{else}}
+                    <p>Select an assigned job from the left panel and you can discuss directly with the corresponding buyer.</p>
+                {{/if}}
+            </div>
+        </div>
+        <!-- <div class="row">
             {{#with myProfile}}
                 <div class="col-md-4">
                     <label>You are</label>
@@ -44,10 +137,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row">
             <div class="col-xs-12">
                 <h4>Scheduled Dates of Assigned Jobs</h4>
+                <hr>
                 {{>providerCalendar}}
             </div>
         </div>
@@ -104,7 +198,7 @@
                 </div>
             {{/with}}
         </div>
-    {{/if}} -->
+    {{/if}}
     {{#if isInRole 'admin'}}
         <div class="panel panel-light">
             <div class="panel-body">
