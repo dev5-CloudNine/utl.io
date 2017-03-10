@@ -1,7 +1,17 @@
 Template.messages.onCreated(function() {
 	this.autorun(function() {
-		var selectedUser = Router.current().params.query.userId;
-		Meteor.subscribe('userChats', Meteor.userId(), selectedUser);
+		var selectedUserId;
+		if(Router.current().route.getName() == 'profile')
+			selectedUserId = Profiles.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'buyer')
+			selectedUserId = Buyers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dispatcher')
+			selectedUserId = Dispatchers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'accountant')
+			selectedUserId = Accountants.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dashboard')
+			selectedUserId = Router.current().params.query.userId;
+		Meteor.subscribe('userChats', Meteor.userId(), selectedUserId);
 		return Meteor.subscribe('userChannels', Meteor.userId());
 	})
 });
@@ -38,17 +48,60 @@ Template.messages.events({
 		}
 	},
 	'keypress #user-text': function(event, template) {
-		var selectedUserId = Router.current().params.query.userId;
+		var selectedUserId;
+		if(Router.current().route.getName() == 'profile')
+			selectedUserId = Profiles.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'buyer')
+			selectedUserId = Buyers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dispatcher')
+			selectedUserId = Dispatchers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'accountant')
+			selectedUserId = Accountants.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dashboard')
+			selectedUserId = Router.current().params.query.userId;
 		var chatExists = UserChats.findOne({$and: [{participants: {$in: [Meteor.userId()]}}, {participants: {$in: [selectedUserId]}}]});
 		var message = $('#user-text').val();
 		if(!!message) {
 			var charCode = (typeof event.which == "number") ? event.which : event.keyCode;
 			if (charCode == 13) {
 				event.stopPropagation();
+				var messageObject = {}
+				if(Roles.userIsInRole(selectedUserId, ['provider'])) {
+					messageObject = {
+						text: message,
+						sender: Meteor.userId(),
+						providerRead: false,
+						time: new Date()
+					}
+				}
+				if(Roles.userIsInRole(selectedUserId, ['buyer'])) {
+					messageObject = {
+						text: message,
+						sender: Meteor.userId(),
+						buyerRead: false,
+						time: new Date()
+					}
+				}
+				if(Roles.userIsInRole(selectedUserId, ['dispatcher'])) {
+					messageObject = {
+						text: message,
+						sender: Meteor.userId(),
+						dispatcherRead: false,
+						time: new Date()
+					}
+				}
+				if(Roles.userIsInRole(selectedUserId, ['accountant'])) {
+					messageObject = {
+						text: message,
+						sender: Meteor.userId(),
+						accountantRead: false,
+						time: new Date()
+					}
+				}
 				if(!chatExists) {
 					Meteor.call('createUserChat', Meteor.userId(), selectedUserId, function(err, res) {
 						if(!err) {
-							Meteor.call('sendUserMessage', message, Meteor.userId(), new Date(), res, function(error, result) {
+							Meteor.call('sendUserMessage', messageObject, res, function(error, result) {
 								if(!error) {
 									var msgDiv = $('.message-history-body');
 									var height = msgDiv[0].scrollHeight;
@@ -58,7 +111,7 @@ Template.messages.events({
 						}
 					});
 				} else {
-					Meteor.call('sendUserMessage', message, Meteor.userId(), new Date(), chatExists._id, function(error, result) {
+					Meteor.call('sendUserMessage', messageObject, chatExists._id, function(error, result) {
 						if(!error) {
 							var msgDiv = $('.message-history-body');
 							var height = msgDiv[0].scrollHeight;
@@ -74,7 +127,17 @@ Template.messages.events({
 	'change .user_documents': function(event, template) {
 		event.preventDefault();
 		$('#spinner').show();
-		var selectedUserId = Router.current().params.query.userId;
+		var selectedUserId;
+		if(Router.current().route.getName() == 'profile')
+			selectedUserId = Profiles.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'buyer')
+			selectedUserId = Buyers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dispatcher')
+			selectedUserId = Dispatchers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'accountant')
+			selectedUserId = Accountants.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dashboard')
+			selectedUserId = Router.current().params.query.userId;
 		var files = $(event.currentTarget)[0].files;
 		if(!files)
 			return;
@@ -169,14 +232,24 @@ Template.messages.events({
 
 Template.messages.helpers({
 	jobSelected: function() {
-		var jobId = Router.current().params.query.jobId || Router.current().params._id;
+		var jobId = Router.current().params.query.jobId || (Router.current().route.getName() == 'job' && Router.current().params._id);
 		if(jobId)
 			return true;
 		return false;
 	},
 	userSelected: function() {
-		var userId = Router.current().params.query.userId;
-		if(userId)
+		var selectedUserId;
+		if(Router.current().route.getName() == 'profile')
+			selectedUserId = Profiles.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'buyer')
+			selectedUserId = Buyers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dispatcher')
+			selectedUserId = Dispatchers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'accountant')
+			selectedUserId = Accountants.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dashboard')
+			selectedUserId = Router.current().params.query.userId;
+		if(selectedUserId)
 			return true;
 		return false;
 	},
@@ -189,12 +262,26 @@ Template.messages.helpers({
 		return Jobs.findOne({_id: jobId});
 	},
 	userDetails: function() {
-		var userId = Router.current().params.query.userId;
+		var userId;
+		if(Router.current().route.getName() == 'profile')
+			userId = Profiles.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'buyer')
+			userId = Buyers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dispatcher')
+			userId = Dispatchers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'accountant')
+			userId = Accountants.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dashboard')
+			userId = Router.current().params.query.userId;
+		if(Roles.userIsInRole(userId, ['provider']))
+			return Profiles.findOne({userId: userId});
+		if(Roles.userIsInRole(userId, ['buyer']))
+			return Buyers.findOne({userId: userId});
 		if(Roles.userIsInRole(userId, ['provider']))
 			return Profiles.findOne({userId: userId});
 		if(Roles.userIsInRole(userId, ['dispatcher']))
 			return Dispatchers.findOne({userId: userId});
-		if(Roles.userIsInRole(userId, ['Accountant']))
+		if(Roles.userIsInRole(userId, ['accountant']))
 			return Accountants.findOne({userId: userId});
 	},
 	messages: function() {
@@ -216,6 +303,17 @@ Template.messages.helpers({
 			var height = msgDiv[0].scrollHeight;
 			msgDiv.animate({scrollTop: height}, 1000)
 		})
-		return UserChats.findOne({$and: [{participants: {$in: [Meteor.userId()]}}, {participants: {$in: [Router.current().params.query.userId]}}]}).messages;
+		var selectedUserId;
+		if(Router.current().route.getName() == 'profile')
+			selectedUserId = Profiles.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'buyer')
+			selectedUserId = Buyers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dispatcher')
+			selectedUserId = Dispatchers.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'accountant')
+			selectedUserId = Accountants.findOne({_id: Router.current().params._id}).userId;
+		if(Router.current().route.getName() == 'dashboard')
+			selectedUserId = Router.current().params.query.userId;
+		return UserChats.findOne({$and: [{participants: {$in: [Meteor.userId()]}}, {participants: {$in: [selectedUserId]}}]}).messages;
 	}
 })

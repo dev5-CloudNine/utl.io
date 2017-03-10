@@ -63,9 +63,14 @@ Template.profile.helpers({
   }
 });
 
-Template.profile.rendered = function() {
-  this.$('.rateit').rateit();
-}
+Template.profile.onCreated(function() {
+  this.autorun(function() {
+    if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
+      var providerUserId = Profiles.findOne({_id: Router.current().params._id}).userId;
+      return Meteor.subscribe('userChats', Meteor.userId(), providerUserId);
+    }
+  })
+});
 
 Template.profile.events({
   'click .favInactive': function(event, template) {

@@ -185,7 +185,7 @@ Accountants.attachSchema(new SimpleSchema({
 		label: "Mobile Number *",
 		max: 128,
 	},
-		mobileCarrier: {
+	mobileCarrier: {
 		type: String,
 		label: "Mobile Provider *",
 		max: 128,

@@ -2,7 +2,7 @@ S3.config = {
     key: 'AKIAJFKN5NR3ZC2YF6KQ',
     secret: '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',
     bucket: 'project-tasks',
-    region: 'us-east-1' // Only needed if not "us-east-1" or "us-standard"
+    region: 'us-east-1'
 };
 
 Slingshot.createDirective('userImages', Slingshot.S3Storage, {
@@ -54,9 +54,9 @@ Meteor.methods({
         Messages.remove({parent:id});
         Messages.remove({_id:id});
     },
-    "markMessageRead": function(id){
-        Messages.update({'_id':id},{$set:{'read':true}});
-    },
+    // "markMessageRead": function(id){
+    //     Messages.update({'_id':id},{$set:{'read':true}});
+    // },
     "createInvite": function(obj) {
         var id = TempInvitation.insert(obj);
         Email.send({
@@ -1383,6 +1383,7 @@ Meteor.methods({
             time: time
         }
         Channels.update({jobId: jobId}, {$addToSet: {messages: msg}});
+        Channels.update({jobId: jobId}, {$set: {updatedAt: new Date()}});
     },
     sendFile: function(fileObj, sender, jobId, time) {
         var msg = {
@@ -1391,6 +1392,7 @@ Meteor.methods({
             time: time
         }
         Channels.update({jobId: jobId}, {$addToSet: {messages: msg}});
+        Channels.update({jobId: jobId}, {$set: {updatedAt: new Date()}});
     },
     sendUserFile: function(fileObj, sender, time, chatId) {
         var msg = {
@@ -1399,6 +1401,7 @@ Meteor.methods({
             time: time
         }
         UserChats.update({_id: chatId}, {$addToSet: {messages: msg}})
+        UserChats.update({_id: chatId}, {$set: {updatedAt: new Date()}})
     },
     createUserChat: function(participant_1, participant_2) {
         var participants = [participant_1, participant_2]
@@ -1408,12 +1411,18 @@ Meteor.methods({
         }
         return UserChats.insert(chatObject);
     },
-    sendUserMessage: function(message, sender, time, chatId) {
-        var msg = {
-            text: message,
-            sender: sender,
-            time: time
-        }
-        UserChats.update({_id: chatId}, {$addToSet: {messages: msg}})
+    sendUserMessage: function(messageObject, chatId) {
+        UserChats.update({_id: chatId}, {$addToSet: {messages: messageObject}})
+        UserChats.update({_id: chatId}, {$set: {updatedAt: new Date()}})
+    },
+    markMessageRead: function(chatId, text, time, senderId, userId) {
+        if(Roles.userIsInRole(userId, ['buyer']))
+            UserChats.update({_id: chatId, 'messages.text': text, 'messages.time': time, 'messages.sender': senderId}, {$set: {'messages.$.buyerRead': true}});
+        if(Roles.userIsInRole(userId, ['provider']))
+            UserChats.update({_id: chatId, 'messages.text': text, 'messages.time': time, 'messages.sender': senderId}, {$set: {'messages.$.providerRead': true}});
+        if(Roles.userIsInRole(userId, ['dispatcher']))
+            UserChats.update({_id: chatId, 'messages.text': text, 'messages.time': time, 'messages.sender': senderId}, {$set: {'messages.$.dispatcherRead': true}});
+        if(Roles.userIsInRole(userId, ['accountant']))
+            UserChats.update({_id: chatId, 'messages.text': text, 'messages.time': time, 'messages.sender': senderId}, {$set: {'messages.$.accountantRead': true}});
     }
 });

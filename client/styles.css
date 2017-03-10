@@ -2230,7 +2230,7 @@ svg {
 
 .message-history-body {
   /*min-height: 420px;*/
-  height: 640px;
+  height: 480px;
   overflow-y: scroll;
 }
 

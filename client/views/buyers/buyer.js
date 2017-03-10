@@ -58,6 +58,15 @@ Template.buyer.helpers({
   }
 });
 
+Template.buyer.onCreated(function() {
+  this.autorun(function() {
+    if(Roles.userIsInRole(Meteor.userId(), ['provider', 'dispatcher', 'accountant'])) {
+      var buyerUserId = Buyers.findOne({_id: Router.current().params._id}).userId;
+      Meteor.subscribe('userChats', Meteor.userId(), buyerUserId);
+    }
+  })
+})
+
 Template.buyer.rendered = function() {
   this.$('.rateit').rateit();
 }

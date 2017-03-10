@@ -8,7 +8,10 @@
                             <a href="#buyerAssigned" aria-controls="buyerAssigned" role="tab" data-toggle="tab">ASGN'D JOBS</a>
                         </li>
                         <li role="presentation">
-                            <a href="#buyerAllUsers" aria-controls="buyerAllUsers" role="tab" data-toggle="tab">FAV'S</a>
+                            <a href="#buyerAllUsers" aria-controls="buyerAllUsers" role="tab" data-toggle="tab">USERS</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#recentChats" aria-controls="recentChats" role="tab" data-toggle="tab">RECENT CONV.</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -30,7 +33,31 @@
                             <br>
                             <div class="panel panel-default">
                                 <div class="panel-body assigned-jobs-list">
-                                    {{>ReactiveDatatable tableData=buyerAllUsers options=buyerAllUserOptions}}
+                                    {{>ReactiveDatatable tableData=allUsers options=allUserOptions}}
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="recentChats">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body assigned-jobs-list">
+                                    <ul class="nav mailbox-nav">
+                                        {{#each userChats}}
+                                            {{#with otherUser participants}}
+                                                <li>
+                                                    <a href="{{pathFor 'dashboard'}}/?userId={{this.userId}}" class="mark-message-read" data-other-user="{{userId}}">
+                                                        {{#if unreadMessages ../_id}}
+                                                            <span class="pull-right badge badge-default">
+                                                                {{unreadMessages ../_id}}
+                                                            </span>
+                                                        {{/if}}
+                                                        <small><i>#{{readableID}}</i></small>
+                                                        <p class="budgetFont">{{firstName}} {{lastName}}</p>
+                                                    </a>
+                                                </li>
+                                            {{/with}}
+                                        {{/each}}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -88,10 +115,13 @@
                 <div role="tabpanel">
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
-                            <a href="#providerAssigned" aria-controls="providerAssigned" role="tab" data-toggle="tab">CHANNELS</a>
+                            <a href="#providerAssigned" aria-controls="providerAssigned" role="tab" data-toggle="tab">ASGN'D JOBS</a>
                         </li>
                         <li role="presentation">
-                            <a href="#buyerAllUsers" aria-controls="buyerAllUsers" role="tab" data-toggle="tab">USERS</a>
+                            <a href="#providerAllUsers" aria-controls="providerAllUsers" role="tab" data-toggle="tab">USERS</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#providerRecentChats" aria-controls="providerRecentChats" role="tab" data-toggle="tab">RECENT CONV.</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -107,11 +137,35 @@
                                 </div>
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="buyerAllUsers">
+                        <div role="tabpanel" class="tab-pane" id="providerAllUsers">
                             <br>
                             <div class="panel panel-default">
-                                <div class="panel-body">
-                                    
+                                <div class="panel-body assigned-jobs-list">
+                                    {{>ReactiveDatatable tableData=allUsers options=allUserOptions}}
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="providerRecentChats">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body assigned-jobs-list">
+                                    <ul class="nav mailbox-nav">
+                                        {{#each userChats}}
+                                            {{#with otherUser participants}}
+                                                <li>
+                                                    <a href="{{pathFor 'dashboard'}}/?userId={{this.userId}}" class="mark-message-read" data-other-user="{{userId}}">
+                                                        {{#if unreadMessages ../_id}}
+                                                            <span class="pull-right badge badge-default">
+                                                                {{unreadMessages ../_id}}
+                                                            </span>
+                                                        {{/if}}
+                                                        <small><i>#{{readableID}}</i></small>
+                                                        <p class="budgetFont">{{firstName}} {{lastName}}</p>
+                                                    </a>
+                                                </li>
+                                            {{/with}}
+                                        {{/each}}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +184,15 @@
                 {{#if jobSelected}}
                     {{>messages}}
                 {{else}}
-                    <p>Select an assigned job from the left panel and you can discuss directly with the corresponding buyer.</p>
+                    {{#if userSelected}}
+                        {{>messages}}
+                    {{else}}
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <p>Select an assigned job from the left panel and you can discuss directly with the corresponding assigned provider.</p>
+                            </div>
+                        </div>
+                    {{/if}}
                 {{/if}}
             </div>
         </div>
@@ -151,46 +213,72 @@
         </div> -->
     {{/if}}
     {{#if isInRole 'accountant'}}
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <div class="widget-data">
-                                <div class="widget-int num-count"></div>
-                                <div class="widget-title"></div>
-                                <div class="widget-subtitle"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#accountantAllUsers" aria-controls="accountantAllUsers" role="tab" data-toggle="tab">USERS</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#providerRecentChats" aria-controls="providerRecentChats" role="tab" data-toggle="tab">RECENT CONV.</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="accountantAllUsers">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body assigned-jobs-list">
+                                    {{>ReactiveDatatable tableData=allUsers options=allUserOptions}}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <div class="widget-data">
-                                <div class="widget-int num-count"></div>
-                                <div class="widget-title"></div>
-                                <div class="widget-subtitle"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <div class="widget-data">
-                                <div class="widget-int num-count"></div>
-                                <div class="widget-title"></div>
-                                <div class="widget-subtitle"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget-default widget-item-icon">
-                            <div class="widget-data">
-                                <div class="widget-int num-count"></div>
-                                <div class="widget-title"></div>
-                                <div class="widget-subtitle"></div>
+                        <div role="tabpanel" class="tab-pane" id="providerRecentChats">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-body assigned-jobs-list">
+                                    <ul class="nav mailbox-nav">
+                                        {{#each userChats}}
+                                            {{#with otherUser participants}}
+                                                <li>
+                                                    <a href="{{pathFor 'dashboard'}}/?userId={{this.userId}}" class="mark-message-read" data-other-user="{{userId}}">
+                                                        {{#if unreadMessages ../_id}}
+                                                            <span class="pull-right badge badge-default">
+                                                                {{unreadMessages ../_id}}
+                                                            </span>
+                                                        {{/if}}
+                                                        <small><i>#{{readableID}}</i></small>
+                                                        <p class="budgetFont">{{firstName}} {{lastName}}</p>
+                                                    </a>
+                                                </li>
+                                            {{/with}}
+                                        {{/each}}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-8">
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a aria-controls="home" role="tab" data-toggle="tab">DISCUZ</a>
+                        </li>
+                    </ul>
+                    <br>
+                </div>
+                {{#if userSelected}}
+                    {{>messages}}
+                {{else}}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <p>Select user from the left panel and you can discuss directly.</p>
+                        </div>
+                    </div>
+                {{/if}}
             </div>
         </div>
         <!-- <div class="row">

@@ -61,6 +61,13 @@ Template.dispatcher.helpers({
   }
 });
 
+Template.dispatcher.onCreated(function() {
+  this.autorun(function() {
+    var dispatcherUserId = Dispatchers.findOne({_id: Router.current().params._id}).userId;
+    Meteor.subscribe('userChats', Meteor.userId(), dispatcherUserId);
+  })
+})
+
 Template.dispatcher.rendered = function() {
   this.$('.rateit').rateit();
 }

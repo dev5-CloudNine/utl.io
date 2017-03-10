@@ -609,6 +609,7 @@ Router.map(function() {
             if(Roles.userIsInRole(Meteor.userId(), ['admin']))
                 Meteor.subscribe('allJobs');
             Meteor.subscribe('reviews');
+            Meteor.subscribe('userChatList', Meteor.userId());
             return Meteor.subscribe("messages",Meteor.userId());
         }
     });

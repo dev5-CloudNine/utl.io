@@ -1,4 +1,4 @@
-var buyerAllUsers = function() {
+var allUsers = function() {
 	var allUsers = [];
 	if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
 		allUsers = allUsers.concat(Profiles.find({status: 'active'}).fetch());
@@ -6,15 +6,24 @@ var buyerAllUsers = function() {
 		allUsers = allUsers.concat(Accountants.find({invitedBy: Meteor.userId()}).fetch());
 	}
 	if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
-		allUsers = allUsers.push(Buyers.findOne({userId: Meteor.user().invitedBy}));
 		allUsers = allUsers.concat(Profiles.find({status: 'active'}).fetch());
 		allUsers = allUsers.concat(Dispatchers.find({$and: [{invitedBy: Meteor.userId()}, {userId: {$ne: Meteor.userId()}}]}).fetch());
 		allUsers = allUsers.concat(Accountants.find({invitedBy: Meteor.userId()}).fetch());
+		allUsers = allUsers.concat(Buyers.findOne({userId: Meteor.user().invitedBy}));
+	}
+	if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+		allUsers = allUsers.concat(Buyers.findOne({userId: Meteor.user().invitedBy}));
+		allUsers = allUsers.concat(Dispatchers.find({invitedBy: Meteor.user().invitedBy}).fetch());
+		allUsers = allUsers.concat(Accountants.find({$and: [{invitedBy: Meteor.userId()}, {userId: {$ne: Meteor.userId()}}]}).fetch());
+	}
+	if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+		allUsers = allUsers.concat(Buyers.find({status: 'active'}).fetch());
+		allUsers = allUsers.concat(Dispatchers.find({status: 'active'}).fetch());
 	}
 	return allUsers;
 }
 
-var buyerAllUserOptions = {
+var allUserOptions = {
 	order: [[0, 'desc']],
 	paging: false,
 	columns: [
@@ -36,12 +45,68 @@ var buyerAllUserOptions = {
 }
 
 Template.dashboard.helpers({
-	buyerAllUsers: function() {
-		return buyerAllUsers;
+	allUsers: function() {
+		return allUsers;
 	},
-	buyerAllUserOptions: buyerAllUserOptions,
+	allUserOptions: allUserOptions,
 	buyerAssignedJobs: function() {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}, {$or: [{assignmentStatus: 'confirmed'}, {assignmentStatus: 'submitted'}, {assignmentStatus: 'rejected'}]}, {status: 'active'}]});
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}, {$or: [{assignmentStatus: 'confirmed'}, {assignmentStatus: 'submitted'}, {assignmentStatus: 'rejected'}]}, {status: 'active'}]}, {$sort: {createdAt: -1}});
+	},
+	userChats: function() {
+		return UserChats.find({participants: {$in: [Meteor.userId()]}}, {sort: {updatedAt: -1}});
+	},
+	otherUser: function(participants) {
+		var participant;
+		for(var i = 0; i < participants.length; i++) {
+			if(participants[i] !== Meteor.userId()) {
+				participant = participants[i];
+				break;
+			}
+		}
+		if(Roles.userIsInRole(participant, ['provider']))
+			return Profiles.findOne({userId: participant});
+		if(Roles.userIsInRole(participant, ['dispatcher']))
+			return Dispatchers.findOne({userId: participant});
+		if(Roles.userIsInRole(participant, ['accountant']))
+			return Accountants.findOne({userId: participant});
+		if(Roles.userIsInRole(participant, ['buyer']))
+			return Buyers.findOne({userId: participant});
+
+	},
+	unreadMessages: function(chatId) {
+		var messages = UserChats.findOne({_id: chatId}).messages;
+		var unreadMessages = 0;
+		for(var i = 0; i < messages.length; i++) {
+			if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+				if(messages[i].buyerRead == false) {
+					unreadMessages ++;
+				}
+				if(unreadMessages > 0)
+					return unreadMessages;
+			}
+			if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+				if(messages[i].providerRead == false) {
+					unreadMessages ++;
+				}
+				if(unreadMessages > 0)
+					return unreadMessages;
+			}
+			if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+				if(messages[i].dispatcherRead == false) {
+					unreadMessages ++;
+				}
+				if(unreadMessages > 0)
+					return unreadMessages;
+			}
+			if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+				if(messages[i].accountantRead == false) {
+					unreadMessages ++;
+				}
+				if(unreadMessages > 0)
+					return unreadMessages;
+			}
+		}
+		return false;
 	},
 	providerAssignedJobs: function() {
 		var assigned = [];
@@ -535,6 +600,37 @@ Template.dashboard.helpers({
 		});
 	}
 });
+
+Template.dashboard.events({
+	'click .mark-message-read': function(event, template) {
+		var otherUser = $(event.currentTarget).data('other-user');
+		var chat = UserChats.findOne({$and: [{participants: {$in: [Meteor.userId()]}}, {participants: {$in: [otherUser]}}]})
+		var messages = chat.messages;
+		for(var i = 0; i < messages.length; i++) {
+			if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+				if(messages[i].buyerRead == false) {
+					Meteor.call('markMessageRead', chat._id, messages[i].text, messages[i].time, otherUser, Meteor.userId());
+				}
+			}
+			if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+				if(messages[i].providerRead == false) {
+					Meteor.call('markMessageRead', chat._id, messages[i].text, messages[i].time, otherUser, Meteor.userId());
+				}
+			}
+			if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+				if(messages[i].dispatcherRead == false) {
+					Meteor.call('markMessageRead', chat._id, messages[i].text, messages[i].time, otherUser, Meteor.userId());
+				}
+			}
+			if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+				if(messages[i].accountantRead == false) {
+					Meteor.call('markMessageRead', chat._id, messages[i].text, messages[i].time, otherUser, Meteor.userId());
+				}
+			}
+
+		}
+	}
+})
 
 Template.dashboard.onCreated(function() {
 	this.autorun(function() {

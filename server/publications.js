@@ -240,7 +240,8 @@ Meteor.publishComposite('buyers', {
                 createdAt: true,
                 fullLocation: true,
                 contactNumber: true,
-                smsAddress: true
+                smsAddress: true,
+                readableID: true
             }
         });
     }
@@ -629,4 +630,9 @@ Meteor.publish('userChannels', function(userId) {
 Meteor.publish('userChats', function(currentUser, selectedUser) {
     check(arguments, [Match.Any]);
     return UserChats.find({$and: [{participants: {$in: [currentUser]}}, {participants: {$in: [selectedUser]}}]});
+})
+
+Meteor.publish('userChatList', function(userId) {
+    check(arguments, [Match.Any]);
+    return UserChats.find({participants: {$in: [userId]}});
 })
