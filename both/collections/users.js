@@ -14,20 +14,32 @@ UserSchema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Id
   },
-  // u_id: {
-  //   type: String,
-  //   autoValue: function() {
-  //     return 'utlu-' + incrementCounter('counters', 'uId');
-  //   }
-  // },
   username: {
     type: String,
     optional: true
   },
+  status: {
+    type: Object,
+    optional: true
+  },
+  'status.lastLogin.date': {
+    type: Date, optional: true
+  },
+  'status.lastLogin.ipAddr': {
+    type: String, optional: true
+  },
+  'status.userAgent': {
+    type: String, optional: true
+  },
+  'status.idle': { type: Boolean, optional: true },
+  'status.lastActivity': { type: Date, optional: true },
+  'status.online': {
+    type: Boolean,
+    index: true,
+    optional: true,
+  },
   emails: {
     type: [Object],
-    // this must be optional if you also use other login services like facebook,
-    // but if you use only accounts-password, then it can be required
     optional: true
   },
   "emails.$.address": {
@@ -74,13 +86,6 @@ UserSchema = new SimpleSchema({
     type: Object,
     optional: true,
     blackbox: true
-  },
-  contacts: {
-    type: Array,
-    optional: true
-  },
-  'contacts.$': {
-    type: String
   },
   favoriteJobs: {
     type: Array,

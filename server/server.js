@@ -390,8 +390,6 @@ Meteor.methods({
             side: 'buyer',
             adminRead: false
         }
-        Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {contacts: buyerId+":"+jobId}});
-        Meteor.users.update({_id: buyerId}, {$addToSet: {contacts: Meteor.userId()+":"+jobId}});
         var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
         var buyerCost = jobDetails.your_cost;
         Jobs.update({_id: jobId}, {$set: {projectBudget: providerEarnings, proposedBudget: providerEarnings}});

@@ -52,7 +52,13 @@
                                                             </span>
                                                         {{/if}}
                                                         <small><i>#{{readableID}}</i></small>
-                                                        <p class="budgetFont">{{firstName}} {{lastName}}</p>
+                                                        <p class="budgetFont">
+                                                            {{firstName}} {{lastName}}
+                                                            &nbsp;
+                                                            {{#if userOnline userId}}
+                                                                <i class="fa fa-circle"></i>
+                                                            {{/if}}
+                                                        </p>
                                                     </a>
                                                 </li>
                                             {{/with}}

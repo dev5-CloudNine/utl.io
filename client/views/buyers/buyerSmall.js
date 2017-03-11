@@ -51,11 +51,7 @@ Template.buyerSmall.helpers({
 	},
 	buyer: function() {
 		return Buyers.findOne({_id: this._id});
-	},
-	// initials: function() {
-	// 	var buyerDetails = Buyers.findOne({_id: this._id})
-	// 	return buyerDetails.firstName.charAt(0) + buyerDetails.lastName.charAt(0)
-	// }
+	}
 });
 
 Template.buyerSmall.rendered = function() {

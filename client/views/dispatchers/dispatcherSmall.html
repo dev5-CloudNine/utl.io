@@ -4,7 +4,15 @@
             <div class="widget-user-header bg-assigned">
                 <span class="pull-right rateit"></span>
                 <small><i># {{readableId}}</i></small>
-                <p class="budgetFont"><a href="{{pathFor 'dispatcher'}}">{{firstName}} {{lastName}}</a></p>
+                <p class="budgetFont">
+                    <a href="{{pathFor 'dispatcher'}}">{{firstName}} {{lastName}}</a>
+                    &nbsp;
+                    {{#unless $eq userId $.Meteor.userId}}
+                        {{#if userOnline userId}}
+                            <i class="fa fa-circle"></i>
+                        {{/if}}
+                    {{/unless}}
+                </p>
                 <h5 class="widget-user-desc">{{title}}</h5>
                 <small>{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}</small>
             </div>

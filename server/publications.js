@@ -34,6 +34,10 @@ Meteor.publish("userData", function() {
 //     }
 // })
 
+// Meteor.publish('onlineUsers', function() {
+//     return Meteor.users.find({'status.online': true});
+// })
+
 Meteor.publish('documentComments', function(jobId) {
     return Comments.get(jobId);
 });
@@ -152,7 +156,7 @@ Meteor.publish("tempInvitation", function () {
 });
 
 Meteor.publish("userList", function () {
-    return Meteor.users.find({}, {fields: {createdAt: 1, emails: 1, profile: 1, readableID: 1, roles: 1, imgURL: 1, companyName: 1, contacts: 1, favCount: 1, resumeURL: 1}});
+    return Meteor.users.find({}, {fields: {createdAt: 1, emails: 1, profile: 1, readableID: 1, roles: 1, imgURL: 1, companyName: 1, contacts: 1, favCount: 1, resumeURL: 1, status: 1}});
 });
 
 Meteor.publish("contacts", function (userID) {
