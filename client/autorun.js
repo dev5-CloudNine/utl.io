@@ -24,6 +24,7 @@ Tracker.autorun(function() {
 		"showMethod": "fadeIn",
 		"hideMethod": "fadeOut"
 	}
+	$(document.body).attr('id', 'style-1');
 });
 
 Meteor.startup(function() {

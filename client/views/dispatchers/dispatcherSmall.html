@@ -30,7 +30,7 @@
             <div class="box-footer">    
                 {{#if $eq userId currentUser._id}}
                     <div class="row">
-                        <div class="col-xs-4 border-right">
+                        <div class="col-xs-6 border-right">
                             <div class="description-block text-center">
                                 <a href="{{pathFor 'jobNew'}}">
                                     <h5 class="description-header"><i class="fa fa-paper-plane"></i></h5>
@@ -38,15 +38,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="col-xs-4 border-right">
-                            <div class="description-block text-center">
-                                <a href="{{pathFor 'dispatcher'}}">
-                                    <h5 class="description-header"><i class="fa fa-chain"></i></h5>
-                                    <span class="description-text">My Profile</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-xs-4">
+                        <div class="col-xs-6">
                             <div class="description-block text-center">
                                 <a href="">
                                     <h5 class="description-header"><i class="fa fa-thumbs-up"></i></h5>
@@ -57,7 +49,7 @@
                     </div>
                 {{else}}                
                     <div class="row">
-                        <div class="col-xs-4 border-right">
+                        <div class="col-xs-6 border-right">
                             <div class="description-block text-center">
                                 {{#with dispatcher}}
                                     <a href="{{pathFor 'dispatcherJobs'}}">
@@ -67,19 +59,11 @@
                                 {{/with}}
                             </div>
                         </div>
-                        <div class="col-xs-4 border-right">
-                            <div class="description-block text-center">
-                                <a href="{{pathFor 'dispatcher'}}">
-                                    <h5 class="description-header"><i class="fa fa-chain"></i></h5>
-                                    <span class="description-text">View Profile</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-xs-4">
+                        <div class="col-xs-6">
                             <div class="description-block text-center">
                                 <a href="{{pathFor 'dispatcher'}}">
                                     <h5 class="description-header"><i class="fa fa-comments"></i></h5>
-                                    <span class="description-text">Discuz</span>
+                                    <span class="description-text">View Profile</span>
                                 </a>
                             </div>
                         </div>

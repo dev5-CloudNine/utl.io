@@ -2,9 +2,6 @@
 	{{#if currentUser}}
 		<div id="buyerProfile">
 			<div class="row">
-				<div class="col-md-4">
-					{{>buyerSmall}}
-				</div>
 				<div class="col-md-8">
 					<div role="tabpanel">
 						<ul class="nav nav-tabs" role="tablist">
@@ -12,13 +9,8 @@
 								<a href="#buyerDetails" aria-controls="buyerDetails" role="tab" data-toggle="tab">PROFILE</a>
 							</li>
 							<li role="presentation">
-								<a href="#reviews" aria-controls="reviews" role="tab" data-toggle="tab">Reviews</a>
+								<a href="#reviews" aria-controls="reviews" role="tab" data-toggle="tab">REVIEWS</a>
 							</li>
-							{{#unless $eq userId $.Meteor.userId}}
-								<li role="presentation">
-									<a href="#discuz" aria-controls="discuz" role="tab" data-toggle="tab">DISCUZ</a>
-								</li>
-							{{/unless}}
 						</ul>
 						<div class="tab-content">
 							<div role="tabpanel" class="tab-pane active" id="buyerDetails">
@@ -80,15 +72,16 @@
 								<br>
 								{{>userReviews userId=userId}}
 							</div>
-							<div role="tabpanel" class="tab-pane" id="discuz">
-								<br>
-								{{#unless $eq userId $.Meteor.userId}}
-									{{>messages}}
-								{{/unless}}
-							</div>
 						</div>
 					</div>
 				</div>
+				<div class="col-md-4">
+					{{>buyerSmall}}
+					<hr>
+					{{#unless $eq userId $.Meteor.userId}}
+						{{>messages}}
+					{{/unless}}
+				</div>				
 			</div>
 		</div>
 	{{else}}

@@ -28,20 +28,37 @@ var allUserOptions = {
 	paging: false,
 	columns: [
 		{
-			title: 'ID',
-			data: function(user) {
-				return user.readableID;
-			}
-		},
-		{
-			title: 'Name',
 			data: function(user) {
 				var currentRoute = Router.current().route._path;
-				var userLink = '<a href="' + currentRoute + '/?userId=' + user.userId + '">' + user.firstName + ' ' + user.lastName +'</a>'
+				var userOnline = userOnlineStatus(user.userId);
+				var userProvider = userIsProvider(user.userId);
+				var userLink;
+				if(userOnline) {
+					if(userProvider) {
+						userLink = '<span class="pull-right"><a href="/job/' + user.userId + '" data-balloon="Assign Job." data-balloon-pos="left"><i class="fa fa-paper-plane"></i></a></span><a href="' + currentRoute + '/?userId=' + user.userId + '"><small><i>#' + user.readableID + '</i></small><p class="budgetFont">' + user.firstName + ' ' + user.lastName +'&nbsp;<i class="fa fa-circle"></i></p></a>'
+					} else {
+						userLink = '<a href="' + currentRoute + '/?userId=' + user.userId + '"><small><i>#' + user.readableID + '</i></small><p class="budgetFont">' + user.firstName + ' ' + user.lastName +'&nbsp;<i class="fa fa-circle"></i></p></a>'
+					}
+				}
+				else {
+					if(userProvider) {
+						userLink = '<span class="pull-right"><a href="/job/' + user.userId + '" data-balloon="Assign Job." data-balloon-pos="left"><i class="fa fa-paper-plane"></i></a></span><a href="' + currentRoute + '/?userId=' + user.userId + '"><small><i>#' + user.readableID + '</i></small><p class="budgetFont">' + user.firstName + ' ' + user.lastName +'</p></a>'
+					} else {
+						userLink = '<a href="' + currentRoute + '/?userId=' + user.userId + '"><small><i>#' + user.readableID + '</i></small><p class="budgetFont">' + user.firstName + ' ' + user.lastName +'</p></a>'
+					}
+				}
 				return userLink
 			}
 		}
 	]
+}
+
+var userOnlineStatus = function(userId) {
+	return Meteor.users.findOne({_id: userId}).status.online;
+}
+var userIsProvider = function(userId) {
+	console.log(Meteor.users.findOne({_id: userId}).isDeveloper)
+	return Meteor.users.findOne({_id: userId}).isDeveloper;
 }
 
 Template.dashboard.helpers({
@@ -81,31 +98,25 @@ Template.dashboard.helpers({
 				if(messages[i].buyerRead == false) {
 					unreadMessages ++;
 				}
-				if(unreadMessages > 0)
-					return unreadMessages;
 			}
 			if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
 				if(messages[i].providerRead == false) {
 					unreadMessages ++;
 				}
-				if(unreadMessages > 0)
-					return unreadMessages;
 			}
 			if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
 				if(messages[i].dispatcherRead == false) {
 					unreadMessages ++;
 				}
-				if(unreadMessages > 0)
-					return unreadMessages;
 			}
 			if(Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
 				if(messages[i].accountantRead == false) {
 					unreadMessages ++;
 				}
-				if(unreadMessages > 0)
-					return unreadMessages;
 			}
 		}
+		if(unreadMessages > 0)
+			return unreadMessages;
 		return false;
 	},
 	providerAssignedJobs: function() {

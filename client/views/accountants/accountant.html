@@ -2,20 +2,12 @@
 	{{#if currentUser}}
 		<div id="accountantProfile">
 			<div class="row">
-				<div class="col-md-4">
-					{{>accountantSmall}}
-				</div>
 				<div class="col-md-8">
 					<div role="tabpanel">
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">
 								<a href="#accountantDetails" aria-controls="accountantDetails" role="tab" data-toggle="tab">PROFILE</a>
 							</li>
-							{{#unless $eq userId $.Meteor.userId}}
-								<li role="presentation">
-									<a href="#discuz" aria-controls="discuz" role="tab" data-toggle="tab">DISCUZ</a>
-								</li>
-							{{/unless}}
 						</ul>
 						<div class="tab-content">
 							<div role="tabpanel" class="tab-pane active" id="accountantDetails">
@@ -51,14 +43,15 @@
 									</div>
 								</div>
 							</div>
-							<div role="tabpanel" class="tab-pane" id="discuz">
-								<br>
-								{{#unless $eq userId $.Meteor.userId}}
-									{{>messages}}
-								{{/unless}}
-							</div>
 						</div>
 					</div>
+				</div>
+				<div class="col-md-4">
+					{{>accountantSmall}}
+					<hr>
+					{{#unless $eq userId $.Meteor.userId}}
+						{{>messages}}
+					{{/unless}}
 				</div>
 			</div>
 		</div>

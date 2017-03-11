@@ -631,10 +631,10 @@ Meteor.methods({
         }
         var job = Jobs.findOne({_id: jobDetails._id})
         var admin = Users.findOne({roles: {$in: ['admin']}});
+        var allProviderEmails = providerEmails.concat(providerSmsAddresses);
         Email.send({
             to: getUserEmail(admin),
-            bcc: providerEmails,
-            cc: providerSmsAddresses,
+            bcc: allProviderEmails,
             from: FROM_EMAIL,
             subject: 'New Job Posted - ' + jobDetails.title,
             html: '<a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '"><i>#' + job.readableID + '</i><br>' + jobDetails.title + '</a><br>' + address + '<br>' + budgetDetails + '<br>' + jobSchedule +'<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to apply or counter offer the job.'
@@ -664,9 +664,11 @@ Meteor.methods({
             jobSchedule = 'Between ' + moment(jobDetails.startdate).format('DD/MM/YYYY') + ' and ' + moment(jobDetails.enddate).format('DD/MM/YYYY') + ' from ' + jobDetails.starttime + ' to ' + jobDetails.endtime;
         }
         var job = Jobs.findOne({_id: jobDetails._id});
+        var admin = Meteor.users.findOne({roles: {$in: ['admin']}});
+        var allProviderEmails = providerEmails.concat(providerSmsAddresses);
         Email.send({
-            to: providerEmails,
-            cc: providerSmsAddresses,
+            to: getUserEmail(admin),
+            bcc: allProviderEmails,
             from: FROM_EMAIL,
             subject: 'A buyer has invited to bid on his job.',
             html: '<a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '"><i>#' + job.readableID + '</i><br>' + jobDetails.title + '</a><br>' + address + '<br>' + budgetDetails + '<br>' + jobSchedule +'<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to apply or counter offer the job.'
@@ -696,9 +698,11 @@ Meteor.methods({
             jobSchedule = 'Between ' + moment(jobDetails.startdate).format('DD/MM/YYYY') + ' and ' + moment(jobDetails.enddate).format('DD/MM/YYYY') + ' from ' + jobDetails.starttime + ' to ' + jobDetails.endtime;
         }
         var job = Jobs.findOne({_id: jobDetails._id});
+        var admin = Users.findOne({roles: {$in: ['admin']}});
+        var allProviderEmails = providerEmails.concat(providerSmsAddresses);
         Email.send({
-            to: providerEmails,
-            cc: providerSmsAddresses,
+            to: getUserEmail(admin),
+            bcc: allProviderEmails,
             from: FROM_EMAIL,
             subject: 'A buyer has invited to bid on his job.',
             html: '<a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '"><i>#' + job.readableID + '</i><br>' + jobDetails.title + '</a><br>' + address + '<br>' + budgetDetails + '<br>' + jobSchedule +'<br><a href="' + Meteor.absoluteUrl('jobs/' + jobDetails._id) + '">Click here</a> to apply or counter offer the job.'
