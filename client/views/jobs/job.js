@@ -1802,23 +1802,24 @@ Template.job.helpers({
     return Roles.userIsInRole(this.userId, ['dispatcher'])? true: false
   },
   'buyerData': function() {
-    var buyerData = Buyers.findOne({userId: this.userId});
-    var imgUrl;
-    var imgURL = Meteor.users.findOne({_id: buyerData.userId}).imgURL;
-    if(imgURL)
-      imgUrl = imgURL
-    else
-      imgUrl = '/images/avatar.png';
-    var buyer = {
-      id: buyerData._id,
-      name: buyerData.firstName + ' ' + buyerData.lastName,
-      title: buyerData.title,
-      imgUrl: imgUrl,
-      readableID: Meteor.users.findOne({_id: buyerData.userId}).readableID,
-      status: buyerData.status,
-      userId: buyerData.userId
-    }
-    return buyer;
+    // var buyerData = Buyers.findOne({userId: this.userId});
+    // var imgUrl;
+    // var imgURL = Meteor.users.findOne({_id: buyerData.userId}).imgURL;
+    // if(imgURL)
+    //   imgUrl = imgURL
+    // else
+    //   imgUrl = '/images/avatar.png';
+    // var buyer = {
+    //   id: buyerData._id,
+    //   name: buyerData.firstName + ' ' + buyerData.lastName,
+    //   title: buyerData.title,
+    //   imgUrl: imgUrl,
+    //   readableID: Meteor.users.findOne({_id: buyerData.userId}).readableID,
+    //   status: buyerData.status,
+    //   userId: buyerData.userId
+    // }
+    // return buyer;
+    return Buyers.findOne({userId: this.userId});
   },
   dispatcherData: function() {
     var buyerData = Dispatchers.findOne({userId: this.userId});
@@ -2360,7 +2361,7 @@ Template.job.helpers({
       provider = Profiles.findOne({userId: this.assignedProvider});
       proUser = Users.findOne({_id: this.assignedProvider});
       if(proUser.imgURL) {
-        imgURL = providerImg
+        imgURL = proUser.imgURL;
       } else {
         imgURL = '/images/avatar.png'
       }

@@ -597,6 +597,10 @@ footer {
 
 .notifications-wrapper {
   height: 420px !important;
+  overflow-y: hidden;
+}
+
+.notifications-wrapper:hover {
   overflow-y: auto;
 }
 
@@ -800,24 +804,28 @@ span.bigstars span.rateit-selected
   background-color: #f8f8f8 !important;
 }
 
-.openJob {
-  border-top: 2px solid #45ACEE;
+.label-fixed-pay {
+  background-color: #45ACEE;
 }
 
-.assignedJob {
-  border-top:  2px solid #5EC17A;
+.label-hourly-pay {
+  background-color:  #5EC17A;
+}
+
+.label-device-pay {
+  background-color:  #BCCA2B;
+}
+
+.label-blended-pay {
+  background-color: #EDB91D;
 }
 
 .deactivatedJob {
   border-top: 2px solid #CC181E;
 }
 
-.paymentPendingJob {
-  border-top:  2px solid #BCCA2B;
-}
-
-.paidJob {
-  border-top: 2px solid #EDB91D;
+.activeJob {
+  border-top: 2px solid #5EC17A;
 }
 
 .panel-body .list-group-item {

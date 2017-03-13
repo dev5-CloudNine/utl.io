@@ -29,7 +29,7 @@
                                 </a>
                             </li>
                         {{/if}}
-                        {{#if show _id}}
+                        <!-- {{#if show _id}}
                             <li>
                                 <a href="#disc" data-toggle="tab">
                                     <span class="round-tabs four disc">
@@ -37,13 +37,13 @@
                                     </span>
                                 </a>
                             </li>
-                        {{/if}}
+                        {{/if}} -->
                     {{/if}}
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade active in" id="jobDesc">
                         <br>
-                        <div class="panel panel-default {{#if $eq applicationStatus 'open'}}openJob{{/if}} {{#if $eq applicationStatus 'assigned'}}{{#if $eq assignmentStatus 'submitted'}}paymentPendingJob{{else}}assignedJob{{/if}}{{/if}} {{#if $eq applicationStatus 'pending_payment'}}paymentPendingJob{{/if}} {{#if $eq applicationStatus 'paid'}}paidJob{{/if}} {{#if $eq status 'deactivated'}}deactivatedJob{{/if}}">
+                        <div class="panel panel-default {{#if $eq status 'active'}}activeJob{{else}}deactivatedJob{{/if}}">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -96,7 +96,7 @@
                                                 Posted by {{#with dispatcherData}} <a href="/dispatchers/{{id}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
                                             {{/if}}
                                             {{#if postedByBuyer}}
-                                                Posted {{#with buyerData}}by <a href="/buyers/{{id}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
+                                                Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{firstName}} {{lastName}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
                                             {{/if}}
                                             <br>
                                         </small>
@@ -527,12 +527,12 @@
                             </div>
                         </div>
                     </div>
-                    {{#if show _id}}
+                    <!-- {{#if show _id}}
                         <div class="tab-pane fade" id="disc">
                             <br>
                             {{>messages}}
                         </div>
-                    {{/if}}
+                    {{/if}} -->
                 </div>
             </div>
             <div class="col-sm-4">
@@ -827,7 +827,12 @@
                                 </div>
                             </div>
                         </div>
-                    </div>    
+                    </div>
+                    {{#if assignedOrDone}}
+                        <hr>
+                        {{>messages}}
+                        <hr>
+                    {{/if}}
                     {{#with assignedProviderDetails}}
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -1143,49 +1148,6 @@
                                 {{#with assignedProDetails}}
                                     {{>profileSmall}}
                                 {{/with}}
-                                <!-- {{#with assignedProviderDetails}}
-                                    <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
-                                        <div class="box box-widget widget-user">
-                                            <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
-                                                <span class="pull-right providerRatings" data-rateit-value="{{rateItValue}}"></span>
-                                                <small><i># {{readableID}}</i></small>
-                                                <p class="budgetFont">{{this.name}}</p>
-                                                <h5 class="widget-user-desc">{{this.title}}</h5>
-                                            </div>
-                                            <div class="widget-user-image">
-                                                <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
-                                            </div>
-                                            <div class="box-footer">
-                                                <div class="row">
-                                                    <div class="col-xs-4 border-right">
-                                                        <div class="description-block text-center">
-                                                            <a href class="sendProviderMessage">
-                                                                <h5 class="description-header"><i class="fa fa-envelope"></i></h5>
-                                                                <span class="description-text">Send Msg</span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-4 border-right">
-                                                        <div class="description-block text-center">
-                                                            <a href="/profiles/{{this.id}}">
-                                                                <h5 class="description-header"><i class="fa fa-chain"></i></h5>
-                                                                <span class="description-text">View Profile</span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-4">
-                                                        <div class="description-block text-center">
-                                                            <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
-                                                                <h5 class="description-header"><i class="fa {{#if fav}}fa-heart fav-icon{{else}}fa-heart-o{{/if}}"></i></h5>
-                                                                <span class="description-text">{{#if fav}}Del Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {{/with}} -->
                             </div>
                         {{/if}}
                         <div class="tab-pane fade in {{#unless assignedOrDone}}active{{/unless}}" id="buyerJobApplications">
@@ -1965,6 +1927,9 @@
                     </div>
                     {{#if applied}}
                         {{#if assignedProvider}}
+                            <hr>
+                            {{>messages}}
+                            <hr>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h5>Cost Estimate</h5>
@@ -2496,7 +2461,8 @@
                     {{#if jobPostedByBuyer}}
                         {{#with buyerData}}
                             <label>Posted By</label>
-                            <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+                            {{>buyerSmall}}
+                            <!-- <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
                                 <div class="box box-widget widget-user">
                                     <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
                                         <span class="pull-right buyerRatings"></span>
@@ -2536,13 +2502,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         {{/with}}
                     {{/if}}
                     {{#if jobPostedByDispatcher}}
                         {{#with dispatcherData}}
                             <label>Posted By</label>
-                            <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
+                            {{>dispatcher}}
+                            <!-- <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
                                 <div class="box box-widget widget-user">
                                     <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
                                         <span class="pull-right buyerRatings"></span>
@@ -2582,7 +2549,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         {{/with}}
                     {{/if}}
                     {{#if isInRole 'provider'}}

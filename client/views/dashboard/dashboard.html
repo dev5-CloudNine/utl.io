@@ -1,6 +1,23 @@
 <template name="dashboard">
     {{#if isInRole 'buyer, dispatcher'}}
         <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <label>Important Notifications &amp; Todos</label>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{>notifications}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-4">
                 <div role="tabpanel">
                     <ul class="nav nav-tabs" role="tablist">
@@ -20,10 +37,25 @@
                             <div class="panel panel-default">
                                 <div class="panel-body assigned-jobs-list" id="style-1">
                                     <ul class="nav mailbox-nav">
-                                        {{#each buyerAssignedJobs}}
+                                        <!-- {{#each buyerAssignedJobs}}
                                             <li><a href="{{pathFor 'dashboard'}}/?jobId={{_id}}"><small><i>#{{readableID}}</i></small><p class="budgetFont">{{title}}</p></a></li>
                                         {{else}}
                                             <p>There are no assigned jobs right now.</p>
+                                        {{/each}} -->
+                                        {{#each userChannels}}
+                                            {{#with channelJob jobId}}
+                                                <li>
+                                                    <a href="{{pathFor 'dashboard'}}/?jobId={{_id}}" class="mark-job-msg-read" data-job-id="{{_id}}">
+                                                        {{#if unreadJobMessages ../_id}}
+                                                            <span class="pull-right badge">{{unreadJobMessages ../_id}}</span>
+                                                        {{/if}}
+                                                        <small><i>#{{readableID}}</i></small>
+                                                        <p class="budgetFont">{{title}}</p>
+                                                    </a>
+                                                </li>
+                                            {{/with}}
+                                        {{else}}
+                                            <p>There are no job related channels right now.</p>
                                         {{/each}}
                                     </ul>
                                 </div>
@@ -117,6 +149,23 @@
     {{/if}}
     {{#if isInRole 'provider'}}
         <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <label>Important Notifications &amp; Todos</label>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{>notifications}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-4">
                 <div role="tabpanel">
                     <ul class="nav nav-tabs" role="tablist">
@@ -136,13 +185,20 @@
                             <div class="panel panel-default">
                                 <div class="panel-body assigned-jobs-list" id="style-1">
                                     <ul class="nav mailbox-nav">
-                                        {{#each providerAssignedJobs}}
-                                            <li>
-                                                <a href="{{pathFor 'dashboard'}}/?jobId={{_id}}">
-                                                    <small><i>#{{readableID}}</i></small>
-                                                    <p class="budgetFont">{{title}}</p>
-                                                </a>
-                                            </li>
+                                        {{#each userChannels}}
+                                            {{#with channelJob jobId}}
+                                                <li>
+                                                    <a href="{{pathFor 'dashboard'}}/?jobId={{_id}}" class="mark-job-msg-read" data-job-id="{{_id}}">
+                                                        {{#if unreadJobMessages ../_id}}
+                                                            <span class="pull-right badge">{{unreadJobMessages ../_id}}</span>
+                                                        {{/if}}
+                                                        <small><i>#{{readableID}}</i></small>
+                                                        <p class="budgetFont">{{title}}</p>
+                                                    </a>
+                                                </li>
+                                            {{/with}}
+                                        {{else}}
+                                            <p>There are no job related channels right now.</p>
                                         {{/each}}
                                     </ul>
                                 </div>

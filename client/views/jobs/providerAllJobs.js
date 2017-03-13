@@ -27,16 +27,16 @@ var allJobsOptions = {
                 var buyerName;
                 var rateBasisText;
                 if(jobDetails.ratebasis == 'Fixed Pay') {
-                    rateBasisText = 'Fixed Pay';
+                    rateBasisText = '<p class="label label-fixed-pay">FIXED PAY</p>';
                 }
                 if(jobDetails.ratebasis == 'Per Hour') {
-                    rateBasisText = 'Per Hour<br>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
+                    rateBasisText = '<p class="label label-hourly-pay">PER HOUR</p>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
                 }
                 if(jobDetails.ratebasis == 'Per Device') {
-                    rateBasisText = 'Per Device<br>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' hours.';
+                    rateBasisText = '<p class="label label-device-pay">PER DEVICE</p>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' devices.';
                 }
                 if(jobDetails.ratebasis == 'Blended') {
-                    rateBasisText = 'Blended<br>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
+                    rateBasisText = '<p class="label label-blended-pay">BLENDED PAY</p>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
                 }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});

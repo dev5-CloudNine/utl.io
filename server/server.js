@@ -412,7 +412,8 @@ Meteor.methods({
         var newChannel = {
             jobId: jobId,
             participants: participants,
-            messages: []
+            messages: [],
+            updatedAt: new Date()
         }
         Channels.insert(newChannel);
         Notifications.insert(notificationObj);
@@ -1375,35 +1376,15 @@ Meteor.methods({
             // Jobs.update({userId: buyerId}, {$inc: {buyerCost: -buyerReturns}});
         } else if(Roles.userIsInRole(jobDetails.userId, ['buyer'])) {
             Wallet.update({userId: jobDetails.userId}, {$inc: {accountBalance: buyerReturns}});
-            // Jobs.update({userId: jobDetails.userId}, {$inc: {buyerCost: -buyerReturns}})
         }
     },
-    sendMessage: function(message, sender, jobId, time) {
-        var msg = {
-            text: message,
-            sender: sender,
-            time: time
-        }
-        Channels.update({jobId: jobId}, {$addToSet: {messages: msg}});
+    sendMessage: function(messageObject, jobId) {
+        Channels.update({jobId: jobId}, {$addToSet: {messages: messageObject}});
         Channels.update({jobId: jobId}, {$set: {updatedAt: new Date()}});
     },
-    sendFile: function(fileObj, sender, jobId, time) {
-        var msg = {
-            file: fileObj,
-            sender: sender,
-            time: time
-        }
-        Channels.update({jobId: jobId}, {$addToSet: {messages: msg}});
+    sendFile: function(fileObj, jobId) {
+        Channels.update({jobId: jobId}, {$addToSet: {messages: fileObj}});
         Channels.update({jobId: jobId}, {$set: {updatedAt: new Date()}});
-    },
-    sendUserFile: function(fileObj, sender, time, chatId) {
-        var msg = {
-            file: fileObj,
-            sender: sender,
-            time: time
-        }
-        UserChats.update({_id: chatId}, {$addToSet: {messages: msg}})
-        UserChats.update({_id: chatId}, {$set: {updatedAt: new Date()}})
     },
     createUserChat: function(participant_1, participant_2) {
         var participants = [participant_1, participant_2]
@@ -1417,6 +1398,10 @@ Meteor.methods({
         UserChats.update({_id: chatId}, {$addToSet: {messages: messageObject}})
         UserChats.update({_id: chatId}, {$set: {updatedAt: new Date()}})
     },
+    sendUserFile: function(fileObj, chatId) {
+        UserChats.update({_id: chatId}, {$addToSet: {messages: fileObj}})
+        UserChats.update({_id: chatId}, {$set: {updatedAt: new Date()}})
+    },
     markMessageRead: function(chatId, text, time, senderId, userId) {
         if(Roles.userIsInRole(userId, ['buyer']))
             UserChats.update({_id: chatId, 'messages.text': text, 'messages.time': time, 'messages.sender': senderId}, {$set: {'messages.$.buyerRead': true}});
@@ -1426,5 +1411,17 @@ Meteor.methods({
             UserChats.update({_id: chatId, 'messages.text': text, 'messages.time': time, 'messages.sender': senderId}, {$set: {'messages.$.dispatcherRead': true}});
         if(Roles.userIsInRole(userId, ['accountant']))
             UserChats.update({_id: chatId, 'messages.text': text, 'messages.time': time, 'messages.sender': senderId}, {$set: {'messages.$.accountantRead': true}});
+    },
+    markJobMsgRead: function(chatId, text, time, userId) {
+        if(Roles.userIsInRole(userId, ['buyer']))
+            Channels.update({_id: chatId, 'messages.text': text, 'messages.time': time}, {$set: {'messages.$.buyerRead': true}});
+        if(Roles.userIsInRole(userId, ['provider']))
+            Channels.update({_id: chatId, 'messages.text': text, 'messages.time': time}, {$set: {'messages.$.providerRead': true}});
+        if(Roles.userIsInRole(userId, ['dispatcher']))
+            Channels.update({_id: chatId, 'messages.text': text, 'messages.time': time}, {$set: {'messages.$.dispatcherRead': true}});
+        if(Roles.userIsInRole(userId, ['accountant']))
+            Channels.update({_id: chatId, 'messages.text': text, 'messages.time': time}, {$set: {'messages.$.accountantRead': true}});
+        if(Roles.userIsInRole(userId, ['admin']))
+            Channels.update({_id: chatId, 'messages.text': text, 'messages.time': time}, {$set: {'messages.$.adminRead': true}});
     }
 });

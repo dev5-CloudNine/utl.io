@@ -35,7 +35,35 @@ Template.messages.events({
 			var charCode = (typeof event.which == "number") ? event.which : event.keyCode;
 			if (charCode == 13) {
 				event.stopPropagation();
-				Meteor.call('sendMessage', message, Meteor.userId(), jobId, new Date(), function(err, res) {
+				var messageObject = {};
+				if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
+					messageObject = {
+						text: message,
+						sender: Meteor.userId(),
+						providerRead: false,
+						adminRead: false,
+						time: new Date()
+					}
+				}
+				if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+					messageObject = {
+						text: message,
+						sender: Meteor.userId(),
+						buyerRead: false,
+						adminRead: false,
+						time: new Date()
+					}
+				}
+				if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+					messageObject = {
+						text: message,
+						sender: Meteor.userId(),
+						providerRead: false,
+						buyerRead: false,
+						time: new Date()
+					}
+				}
+				Meteor.call('sendMessage', messageObject, jobId, function(err, res) {
 					if(!err) {
 						var msgDiv = $('.message-history-body');
 						var height = msgDiv[0].scrollHeight;
@@ -157,7 +185,40 @@ Template.messages.events({
 								fileName: result.file.original_name,
 								fileUrl: result.secure_url
 							}
-							Meteor.call('sendUserFile', fileDetails, Meteor.userId(), new Date(), res, function(error, result) {
+							var messageObject = {};
+							if(Roles.userIsInRole(selectedUserId, ['provider'])) {
+								messageObject = {
+									file: fileDetails,
+									sender: Meteor.userId(),
+									providerRead: false,
+									time: new Date()
+								}
+							}
+							if(Roles.userIsInRole(selectedUserId, ['buyer'])) {
+								messageObject = {
+									file: fileDetails,
+									sender: Meteor.userId(),
+									buyerRead: false,
+									time: new Date()
+								}
+							}
+							if(Roles.userIsInRole(selectedUserId, ['dispatcher'])) {
+								messageObject = {
+									file: fileDetails,
+									sender: Meteor.userId(),
+									dispatcherRead: false,
+									time: new Date()
+								}
+							}
+							if(Roles.userIsInRole(selectedUserId, ['accountant'])) {
+								messageObject = {
+									file: fileDetails,
+									sender: Meteor.userId(),
+									accountantRead: false,
+									time: new Date()
+								}
+							}
+							Meteor.call('sendUserFile', messageObject, res, function(error, result) {
 								if(!error) {
 									$('#spinner').hide();
 									var msgDiv = $('.message-history-body');
@@ -182,7 +243,39 @@ Template.messages.events({
 						fileName: result.file.original_name,
 						fileUrl: result.secure_url
 					}
-					Meteor.call('sendUserFile', fileDetails, Meteor.userId(), new Date(), chatExists._id, function(error, result) {
+					if(Roles.userIsInRole(selectedUserId, ['provider'])) {
+						messageObject = {
+							file: fileDetails,
+							sender: Meteor.userId(),
+							providerRead: false,
+							time: new Date()
+						}
+					}
+					if(Roles.userIsInRole(selectedUserId, ['buyer'])) {
+						messageObject = {
+							file: fileDetails,
+							sender: Meteor.userId(),
+							buyerRead: false,
+							time: new Date()
+						}
+					}
+					if(Roles.userIsInRole(selectedUserId, ['dispatcher'])) {
+						messageObject = {
+							file: fileDetails,
+							sender: Meteor.userId(),
+							dispatcherRead: false,
+							time: new Date()
+						}
+					}
+					if(Roles.userIsInRole(selectedUserId, ['accountant'])) {
+						messageObject = {
+							file: fileDetails,
+							sender: Meteor.userId(),
+							accountantRead: false,
+							time: new Date()
+						}
+					}
+					Meteor.call('sendUserFile', fileDetails, chatExists._id, function(error, result) {
 						if(!error) {
 							$('#spinner').hide();
 							var msgDiv = $('.message-history-body');
@@ -217,7 +310,34 @@ Template.messages.events({
 					fileUrl: result.secure_url,
 					fileName: result.file.original_name
 				}
-				Meteor.call('sendFile', fileDetails, Meteor.userId(), jobId, new Date(), function(err, res) {
+				if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
+					messageObject = {
+						file: fileDetails,
+						sender: Meteor.userId(),
+						providerRead: false,
+						adminRead: false,
+						time: new Date()
+					}
+				}
+				if(Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+					messageObject = {
+						file: fileDetails,
+						sender: Meteor.userId(),
+						buyerRead: false,
+						adminRead: false,
+						time: new Date()
+					}
+				}
+				if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+					messageObject = {
+						file: fileDetails,
+						sender: Meteor.userId(),
+						providerRead: false,
+						buyerRead: false,
+						time: new Date()
+					}
+				}
+				Meteor.call('sendFile', messageObject, jobId, function(err, res) {
 					if(!err) {
 						$('#spinner').hide();
 						var msgDiv = $('.message-history-body');

@@ -1,6 +1,6 @@
 
 <template name="notifications">
-	<div class="notifications-wrapper">
+	<div class="notifications-wrapper" id="style-1">
 		{{#if isInRole 'buyer, dispatcher'}}
 			{{#each buyerNotifications}}
 				{{#if $eq this.notificationType 'newJobApplication'}}
