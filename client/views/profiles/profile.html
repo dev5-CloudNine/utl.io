@@ -15,6 +15,7 @@
 						<div class="tab-content">
 							<div role="tabpanel" class="tab-pane active" id="providerDetails">
 								<br>
+								{{>profileSmall}}
 								<div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
 									<div class="panel-body">
 										<p>Average Rate per Hour: {{avgRatesPerHour}} USD</p>
@@ -135,11 +136,23 @@
 					</div>
 				</div>
 				<div class="col-md-4">
-					{{>profileSmall}}
-					<hr>
-					{{#unless $eq userId $.Meteor.userId}}
-						{{>messages}}
-					{{/unless}}
+					<!-- {{>profileSmall}}
+					<hr> -->
+					<div role="tabpanel">
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active">
+								<a href="#discuz" aria-controls="discuz" role="tab" data-toggle="tab">DISCUZ</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div role="tabpanel" class="tab-pane active" id="discuz">
+								<br>
+								{{#unless $eq userId $.Meteor.userId}}
+									{{>messages}}
+								{{/unless}}
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -15,6 +15,7 @@
 						<div class="tab-content">
 							<div role="tabpanel" class="tab-pane active" id="dispatcherDetails">
 								<br>
+								{{>dispatcherSmall}}
 								<div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
 									<div class="panel-body">											
 										<small><i># {{readableID}}</i></small>
@@ -82,11 +83,21 @@
 					</div>
 				</div>
 				<div class="col-md-4">
-					{{>dispatcherSmall}}
-					<hr>
-					{{#unless $eq userId $.Meteor.userId}}
-						{{>messages}}
-					{{/unless}}
+					<div role="tabpanel">
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active">
+								<a href="#discuz" aria-controls="discuz" role="tab" data-toggle="tab">DISCUZ</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div role="tabpanel" class="tab-pane active" id="discuz">
+								<br>
+								{{#unless $eq userId $.Meteor.userId}}
+									{{>messages}}
+								{{/unless}}
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

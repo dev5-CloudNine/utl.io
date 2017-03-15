@@ -2377,3 +2377,11 @@ svg {
   display: none;
 }
 /*hide column header in USERS on dashboard*/
+
+.message-notifications {
+  height: 450px;
+  overflow-y: hidden;
+}
+.message-notifications:hover {
+  overflow-y: auto;
+}

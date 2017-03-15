@@ -77,6 +77,23 @@ Template.dashboard.helpers({
 	channelJob: function(jobId) {
 		return Jobs.findOne({_id: jobId});
 	},
+	userRole: function() {
+		if(Roles.userIsInRole(this.userId, ['provider'])) {
+			return 'provider'
+		}
+		if(Roles.userIsInRole(this.userId, ['dispatcher'])) {
+			return 'dispatcher'
+		}
+		if(Roles.userIsInRole(this.userId, ['buyer'])) {
+			return 'buyer'
+		}
+		if(Roles.userIsInRole(this.userId, ['accountant'])) {
+			return 'accountant'
+		}
+		if(Roles.userIsInRole(this.userId, ['admin'])) {
+			return 'admin'
+		}
+	},
 	otherUser: function(participants) {
 		var participant;
 		for(var i = 0; i < participants.length; i++) {
@@ -181,6 +198,18 @@ Template.dashboard.helpers({
 	},
 	selectedJobDetails: function() {
 		return Jobs.findOne({_id: Router.current().params.query.jobId});
+	},
+	messageNotifications: function() {
+		var userChats = UserChats.find({participants: {$in: [Meteor.userId()]}}).fetch();
+		var jobChannels = Channels.find({participants: {$in: [Meteor.userId()]}}).fetch();
+		var allChats = [];
+		for(var i = 0; i < userChats.length; i++) {
+			allChats.push(userChats[i]);
+		}
+		for(var i = 0; i < jobChannels.length; i++) {
+			allChats.push(jobChannels[i]);
+		}
+		return _.sortBy(allChats, function(chat) {return -chat.updatedAt});
 	},
 	createChart: function() {
 		var highCharts = require('highcharts/highstock');
@@ -632,9 +661,6 @@ Template.dashboard.helpers({
 	                	return data;
 	                }())
 	            };
-
-	            // As we're loading the data asynchronously, we don't know what order it will arrive. So
-	            // we keep a counter and create the chart when all the data is loaded.
 	            seriesCounter += 1;
 
 	            if (seriesCounter === names.length) {

@@ -2,9 +2,65 @@
     {{#if isInRole 'buyer, dispatcher'}}
         <div class="row">
             <div class="col-md-4">
+                <label>Recent Conversations</label>
                 <div class="panel panel-default">
-                    <div class="panel-body">
-                        
+                    <div class="panel-body message-notifications">
+                        <div class="notifications-wrapper" id="style-1">
+                            {{#each messageNotifications}}
+                                <div class="notification-item">
+                                    {{#if jobId}}
+                                        {{#with channelJob jobId}}
+                                            <a href="{{pathFor 'job'}}" class="budgetFont mark-job-msg-read" data-job-id="{{_id}}">
+                                                {{title}}
+                                                {{#if unreadJobMessages ../_id}}
+                                                    <br>
+                                                    <small><i class="mark-job-msg-read" data-job-id="{{_id}}">{{unreadJobMessages ../_id}} new messages</i></small>
+                                                {{/if}}
+                                            </a>
+                                        {{/with}}
+                                    {{else}}
+                                        {{#with otherUser participants}}
+                                            {{#if $eq userRole 'provider'}}
+                                                <a href="{{pathFor 'profile'}}" class="budgetFont mark-message-read" data-other-user="{{userId}}">
+                                                    {{firstName}} {{lastName}}
+                                                    {{#if userOnline userId}}
+                                                        &nbsp;<i class="fa fa-circle"></i>
+                                                    {{/if}}
+                                                    {{#if unreadMessages ../_id}}
+                                                        <br>
+                                                        <small><i class="mark-message-read" data-other-user="{{userId}}">{{unreadMessages ../_id}} new messages</i></small>
+                                                    {{/if}}
+                                                </a>
+                                            {{/if}}
+                                            {{#if $eq userRole 'dispatcher'}}
+                                                <a href="{{pathFor 'dispatcher'}}" class="budgetFont mark-message-read" data-other-user="{{userId}}">
+                                                    {{firstName}} {{lastName}}
+                                                    {{#if userOnline userId}}
+                                                        &nbsp;<i class="fa fa-circle"></i>
+                                                    {{/if}}
+                                                    {{#if unreadMessages ../_id}}
+                                                        <br>
+                                                        <small><i class="mark-message-read" data-other-user="{{userId}}">{{unreadMessages ../_id}} new messages</i></small>
+                                                    {{/if}}
+                                                </a>
+                                            {{/if}}
+                                            {{#if $eq userRole 'accountant'}}
+                                                <a href="{{pathFor 'accountant'}}" class="budgetFont">
+                                                    {{firstName}} {{lastName}}
+                                                    {{#if userOnline userId}}
+                                                        &nbsp;<i class="fa fa-circle"></i>
+                                                    {{/if}}
+                                                    {{#if unreadMessages ../_id}}
+                                                        <br>
+                                                        <small><i class="mark-message-read" data-other-user="{{userId}}">{{unreadMessages ../_id}} new messages</i></small>
+                                                    {{/if}}
+                                                </a>
+                                            {{/if}}
+                                        {{/with}}
+                                    {{/if}}
+                                </div>
+                            {{/each}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -17,7 +73,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-sm-4">
                 <div role="tabpanel">
                     <ul class="nav nav-tabs" role="tablist">
@@ -37,11 +93,6 @@
                             <div class="panel panel-default">
                                 <div class="panel-body assigned-jobs-list" id="style-1">
                                     <ul class="nav mailbox-nav">
-                                        <!-- {{#each buyerAssignedJobs}}
-                                            <li><a href="{{pathFor 'dashboard'}}/?jobId={{_id}}"><small><i>#{{readableID}}</i></small><p class="budgetFont">{{title}}</p></a></li>
-                                        {{else}}
-                                            <p>There are no assigned jobs right now.</p>
-                                        {{/each}} -->
                                         {{#each userChannels}}
                                             {{#with channelJob jobId}}
                                                 <li>
@@ -125,7 +176,7 @@
                     {{/if}}
                 {{/if}}
             </div>
-        </div>
+        </div> -->
         <!-- <div class="row">
             {{#with myProfile}}
                 <div class="col-md-4">
@@ -150,9 +201,63 @@
     {{#if isInRole 'provider'}}
         <div class="row">
             <div class="col-md-4">
+                <label>Recent Conversations</label>
                 <div class="panel panel-default">
-                    <div class="panel-body">
-                        
+                    <div class="panel-body message-notifications">
+                        {{#each messageNotifications}}
+                            <div class="notification-item">
+                                {{#if jobId}}
+                                    {{#with channelJob jobId}}
+                                        <a href="{{pathFor 'job'}}" class="budgetFont">
+                                            {{title}}
+                                            {{#if unreadJobMessages ../_id}}
+                                                <br>
+                                                <small><i>{{unreadJobMessages ../_id}} new messages</i></small>
+                                            {{/if}}
+                                        </a>
+                                    {{/with}}
+                                {{else}}
+                                    {{#with otherUser participants}}
+                                        {{#if $eq userRole 'buyer'}}
+                                            <a href="{{pathFor 'buyer'}}" class="budgetFont">
+                                                {{firstName}} {{lastName}}
+                                                {{#if userOnline userId}}
+                                                    &nbsp;<i class="fa fa-circle"></i>
+                                                {{/if}}
+                                                {{#if unreadMessages ../_id}}
+                                                    <br>
+                                                    <small><i class="mark-message-read" data-other-user="{{userId}}">{{unreadMessages ../_id}} new messages</i></small>
+                                                {{/if}}
+                                            </a>
+                                        {{/if}}
+                                        {{#if $eq userRole 'dispatcher'}}
+                                            <a href="{{pathFor 'dispatcher'}}" class="budgetFont">
+                                                {{firstName}} {{lastName}}
+                                                {{#if userOnline userId}}
+                                                    &nbsp;<i class="fa fa-circle"></i>
+                                                {{/if}}
+                                                {{#if unreadMessages ../_id}}
+                                                    <br>
+                                                    <small><i class="mark-message-read" data-other-user="{{userId}}">{{unreadMessages ../_id}} new messages</i></small>
+                                                {{/if}}
+                                            </a>
+                                        {{/if}}
+                                        {{#if $eq userRole 'accountant'}}
+                                            <a href="{{pathFor 'accountant'}}" class="budgetFont">
+                                                {{firstName}} {{lastName}}
+                                                {{#if userOnline userId}}
+                                                    &nbsp;<i class="fa fa-circle"></i>
+                                                {{/if}}
+                                                {{#if unreadMessages ../_id}}
+                                                    <br>
+                                                    <small><i class="mark-message-read" data-other-user="{{userId}}">{{unreadMessages ../_id}} new messages</i></small>
+                                                {{/if}}
+                                            </a>
+                                        {{/if}}
+                                    {{/with}}
+                                {{/if}}
+                            </div>
+                        {{/each}}
                     </div>
                 </div>
             </div>
@@ -165,7 +270,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-sm-4">
                 <div role="tabpanel">
                     <ul class="nav nav-tabs" role="tablist">
@@ -268,7 +373,7 @@
                     {{/if}}
                 {{/if}}
             </div>
-        </div>
+        </div> -->
         <!-- <div class="row">
             {{#with myProfile}}
                 <div class="col-md-4">
@@ -289,7 +394,6 @@
         <div class="row">
             <div class="col-md-4">
                 <div role="tabpanel">
-                    <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
                             <a href="#accountantAllUsers" aria-controls="accountantAllUsers" role="tab" data-toggle="tab">USERS</a>
