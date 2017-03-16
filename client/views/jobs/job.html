@@ -2462,94 +2462,12 @@
                         {{#with buyerData}}
                             <label>Posted By</label>
                             {{>buyerSmall}}
-                            <!-- <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
-                                <div class="box box-widget widget-user">
-                                    <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
-                                        <span class="pull-right buyerRatings"></span>
-                                        <small><i># {{this.readableID}}</i></small>
-                                        <p class="budgetFont"><a href="/buyers/{{this.id}}">{{this.name}}</a></p>
-                                        <h5 class="widget-user-desc">{{this.title}}</h5>
-                                    </div>
-                                    <div class="widget-user-image">
-                                        <a href="/buyers/{{this.id}}"><img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}"></a>
-                                    </div>
-                                    <div class="box-footer">
-                                        <div class="row">
-                                            <div class="col-xs-4 border-right">
-                                                <div class="description-block text-center">
-                                                    <a href="/buyer/{{this.id}}/jobs">
-                                                        <h5 class="description-header"><i class="fa fa-rocket"></i></h5>
-                                                        <span class="description-text">View Jobs - {{buyerOpenCount userId}}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-4 border-right">
-                                                <div class="description-block text-center">
-                                                    <a href="{{pathFor 'buyer'}}">
-                                                        <h5 class="description-header"><i class="fa fa-envelope"></i></h5>
-                                                        <span class="description-text">Send Msg</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-4">
-                                                <div class="description-block text-center">
-                                                    <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
-                                                        <h5 class="description-header"><i class="fa {{#if fav}}fa-heart fav-icon{{else}}fa-heart-o{{/if}}"></i></h5>
-                                                        <span class="description-text">{{#if fav}}Del Fav{{else}}Add Fav{{/if}}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         {{/with}}
                     {{/if}}
                     {{#if jobPostedByDispatcher}}
                         {{#with dispatcherData}}
                             <label>Posted By</label>
-                            {{>dispatcher}}
-                            <!-- <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
-                                <div class="box box-widget widget-user">
-                                    <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
-                                        <span class="pull-right buyerRatings"></span>
-                                        <small><i># {{this.readableID}}</i></small>
-                                        <p class="budgetFont"><a href="/dispatchers/{{this.id}}">{{this.name}}</a></p>
-                                        <h5 class="widget-user-desc">{{this.title}}</h5>
-                                    </div>
-                                    <div class="widget-user-image">
-                                        <img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}">
-                                    </div>
-                                    <div class="box-footer">
-                                        <div class="row">
-                                            <div class="col-xs-4 border-right">
-                                                <div class="description-block text-center">
-                                                    <a href class="sendBuyerMessage">
-                                                        <h5 class="description-header"><i class="fa fa-envelope"></i></h5>
-                                                        <span class="description-text">Send Msg</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-4 border-right">
-                                                <div class="description-block text-center">
-                                                    <a href="/dispatchers/{{this.id}}">
-                                                        <h5 class="description-header"><i class="fa fa-chain"></i></h5>
-                                                        <span class="description-text">View Profile</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-4">
-                                                <div class="description-block text-center">
-                                                    <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
-                                                        <h5 class="description-header"><i class="fa {{#if fav}}fa-heart fav-icon{{else}}fa-heart-o{{/if}}"></i></h5>
-                                                        <span class="description-text">{{#if fav}}Del Fav{{else}}Add Fav{{/if}}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
+                            {{>dispatcherSmall}}
                         {{/with}}
                     {{/if}}
                     {{#if isInRole 'provider'}}

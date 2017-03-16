@@ -1801,44 +1801,11 @@ Template.job.helpers({
   jobPostedByDispatcher: function() {
     return Roles.userIsInRole(this.userId, ['dispatcher'])? true: false
   },
-  'buyerData': function() {
-    // var buyerData = Buyers.findOne({userId: this.userId});
-    // var imgUrl;
-    // var imgURL = Meteor.users.findOne({_id: buyerData.userId}).imgURL;
-    // if(imgURL)
-    //   imgUrl = imgURL
-    // else
-    //   imgUrl = '/images/avatar.png';
-    // var buyer = {
-    //   id: buyerData._id,
-    //   name: buyerData.firstName + ' ' + buyerData.lastName,
-    //   title: buyerData.title,
-    //   imgUrl: imgUrl,
-    //   readableID: Meteor.users.findOne({_id: buyerData.userId}).readableID,
-    //   status: buyerData.status,
-    //   userId: buyerData.userId
-    // }
-    // return buyer;
+  buyerData: function() {
     return Buyers.findOne({userId: this.userId});
   },
   dispatcherData: function() {
-    var buyerData = Dispatchers.findOne({userId: this.userId});
-    var imgUrl;
-    var imgURL = Meteor.users.findOne({_id: buyerData.userId}).imgURL;
-    if(imgURL)
-      imgUrl = imgURL
-    else
-      imgUrl = '/images/avatar.png';
-    var buyer = {
-      id: buyerData._id,
-      name: buyerData.firstName + ' ' + buyerData.lastName,
-      title: buyerData.title,
-      imgUrl: imgUrl,
-      readableID: Meteor.users.findOne({_id: buyerData.userId}).readableID,
-      status: buyerData.status,
-      userId: buyerData.userId
-    }
-    return buyer;
+    return Dispatchers.findOne({userId: this.userId});
   },
   'hasLabel': function() {
     return this.jobType || this.featured;
