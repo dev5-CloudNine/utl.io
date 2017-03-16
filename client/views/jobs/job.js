@@ -1939,7 +1939,7 @@ Template.job.helpers({
     }
   },
   states: function(taskID) {
-      var staticStates = ['Open', 'On Hold', 'Working', 'Completed'];
+      var staticStates = ['Open', 'Completed'];
       var stateObjArr = [];
       var selectedState = Tasks.findOne({ _id: taskID }).state;
       for (var i = 0; i < staticStates.length; i++) {

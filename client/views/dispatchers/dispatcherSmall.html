@@ -1,7 +1,7 @@
 <template name="dispatcherSmall">
     <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
         <div class="box box-widget widget-user">
-            <div class="widget-user-header bg-assigned">
+            <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
                 <span class="pull-right rateit"></span>
                 <small><i># {{readableId}}</i></small>
                 <p class="budgetFont">
@@ -10,6 +10,8 @@
                     {{#unless $eq userId $.Meteor.userId}}
                         {{#if userOnline userId}}
                             <i class="fa fa-circle"></i>
+                        {{else}}
+                            <i class="fa fa-circle fa-offline"></i>
                         {{/if}}
                     {{/unless}}
                 </p>
@@ -61,9 +63,9 @@
                         </div>
                         <div class="col-xs-6">
                             <div class="description-block text-center">
-                                <a href="{{pathFor 'dispatcher'}}">
-                                    <h5 class="description-header"><i class="fa fa-comments"></i></h5>
-                                    <span class="description-text">View Profile</span>
+                                <a href="" class="{{#if fav}}favActive{{else}}favInactive{{/if}}">
+                                    <h5 class="description-header"><i class="fa {{#if fav}}fa-heart fav-icon{{else}}fa-heart-o{{/if}}"></i></h5>
+                                    <span class="description-text">{{#if fav}}Del Fav{{else}}Add Fav{{/if}}</span>
                                 </a>
                             </div>
                         </div>

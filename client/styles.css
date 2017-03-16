@@ -471,6 +471,13 @@ h3, h4 {
   color: #f00;
 }
 
+.task-completed:before {
+  font-family: 'FontAwesome';
+  content: '\f02b';
+  margin: 0 5px 0 0;
+  color: #9DD634;
+}
+
 .task-title {
   position: relative;
   padding: 8px;
@@ -2099,6 +2106,10 @@ svg {
 
 .fa {
   color: #9DD634;
+}
+
+.fa-offline {
+  color: #999 !important;
 }
 
 .btn-white {

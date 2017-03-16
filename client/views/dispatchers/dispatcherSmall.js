@@ -1,4 +1,30 @@
 Template.dispatcherSmall.events({
+	'click .favInactive': function(event, template) {
+		event.preventDefault();
+		Meteor.call('addToFav', this.userId, Meteor.user().roles[0], function(error) {
+			if(error) {
+				console.log('Failed to add to favorites');
+			}
+			else {
+				$(event.currentTarget).removeClass('favInactive');
+				$(event.currentTarget).addClass('favActive');
+			}
+		});
+		event.stopPropagation();
+	},
+	'click .favActive': function(event, template) {
+		event.preventDefault();
+		Meteor.call('removeFromFav', this.userId, Meteor.user().roles[0], function(error) {
+			if(error) {
+				console.log('Failed to add to favorites');
+			}
+			else {
+				$(event.currentTarget).removeClass('favActive');
+				$(event.currentTarget).addClass('favInactive');
+			}
+		});
+		event.stopPropagation();
+	},
 	'click a.sendDispatcherMessage': function(event, template) {
 		event.preventDefault();
 		var userId = this.userId;

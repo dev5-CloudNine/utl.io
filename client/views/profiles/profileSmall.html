@@ -10,6 +10,8 @@
                     {{#unless $eq userId $.Meteor.userId}}
                         {{#if userOnline userId}}
                             <i class="fa fa-circle"></i>
+                        {{else}}
+                            <i class="fa fa-circle fa-offline"></i>
                         {{/if}}
                     {{/unless}}
                 </p>

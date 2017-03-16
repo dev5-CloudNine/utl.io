@@ -242,7 +242,7 @@
                             {{#each taskList}}
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h4 class="panel-title task-title">
+                                        <h4 class="panel-title {{#if $eq state 'Completed'}}task-completed{{else}}task-title{{/if}}">
                                             <a data-toggle="collapse" style="text-decoration: none" data-parent="#accordion" href="#{{_id}}">{{taskName}}</a>
                                         </h4>
                                     </div>

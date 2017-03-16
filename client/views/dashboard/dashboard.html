@@ -25,6 +25,8 @@
                                                     {{firstName}} {{lastName}}
                                                     {{#if userOnline userId}}
                                                         &nbsp;<i class="fa fa-circle"></i>
+                                                    {{else}}
+                                                        &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                     {{/if}}
                                                     {{#if unreadMessages ../_id}}
                                                         <br>
@@ -37,6 +39,8 @@
                                                     {{firstName}} {{lastName}}
                                                     {{#if userOnline userId}}
                                                         &nbsp;<i class="fa fa-circle"></i>
+                                                    {{else}}
+                                                        &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                     {{/if}}
                                                     {{#if unreadMessages ../_id}}
                                                         <br>
@@ -49,6 +53,8 @@
                                                     {{firstName}} {{lastName}}
                                                     {{#if userOnline userId}}
                                                         &nbsp;<i class="fa fa-circle"></i>
+                                                    {{else}}
+                                                        &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                     {{/if}}
                                                     {{#if unreadMessages ../_id}}
                                                         <br>
@@ -139,7 +145,9 @@
                                                             {{firstName}} {{lastName}}
                                                             &nbsp;
                                                             {{#if userOnline userId}}
-                                                                <i class="fa fa-circle"></i>
+                                                                &nbsp;<i class="fa fa-circle"></i>
+                                                            {{else}}
+                                                                &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                             {{/if}}
                                                         </p>
                                                     </a>
@@ -223,6 +231,8 @@
                                                 {{firstName}} {{lastName}}
                                                 {{#if userOnline userId}}
                                                     &nbsp;<i class="fa fa-circle"></i>
+                                                {{else}}
+                                                    &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                 {{/if}}
                                                 {{#if unreadMessages ../_id}}
                                                     <br>
@@ -235,6 +245,8 @@
                                                 {{firstName}} {{lastName}}
                                                 {{#if userOnline userId}}
                                                     &nbsp;<i class="fa fa-circle"></i>
+                                                {{else}}
+                                                    &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                 {{/if}}
                                                 {{#if unreadMessages ../_id}}
                                                     <br>
@@ -247,6 +259,8 @@
                                                 {{firstName}} {{lastName}}
                                                 {{#if userOnline userId}}
                                                     &nbsp;<i class="fa fa-circle"></i>
+                                                {{else}}
+                                                    &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                 {{/if}}
                                                 {{#if unreadMessages ../_id}}
                                                     <br>
@@ -427,6 +441,11 @@
                                                         {{/if}}
                                                         <small><i>#{{readableID}}</i></small>
                                                         <p class="budgetFont">{{firstName}} {{lastName}}</p>
+                                                        {{#if userOnline userId}}
+                                                            &nbsp;<i class="fa fa-circle"></i>
+                                                        {{else}}
+                                                            &nbsp;<i class="fa fa-circle fa-offline"></i>
+                                                        {{/if}}
                                                     </a>
                                                 </li>
                                             {{/with}}

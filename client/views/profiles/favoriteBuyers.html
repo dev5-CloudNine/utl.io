@@ -3,7 +3,12 @@
 		{{#if isInRole 'provider'}}
 	        {{#each favBuyers}}
 	            <div class="col-md-4">
-	            	{{>buyerSmall}}
+	            	{{#if isBuyer userId}}
+	            		{{>buyerSmall}}
+	            	{{/if}}
+	            	{{#if isDispatcher userId}}
+	            		{{>dispatcherSmall}}
+	            	{{/if}}
 	            </div>
 	        {{else}}
 	        	<div class="col-sm-12">
