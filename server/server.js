@@ -124,7 +124,7 @@ Meteor.methods({
     },
 
     addToFav: function(id, role) {
-        if(role == 'buyer' || role == 'corporate-manager'){
+        if(role == 'buyer' || role == 'dispatcher'){
             var notificationObj = {
                 buyerId: Meteor.userId(),
                 providerId: id,
@@ -134,7 +134,7 @@ Meteor.methods({
                 read: false,
                 adminRead: false
             }
-        } else if(role == 'provider' || role == 'corporate-provider') {
+        } else if(role == 'provider') {
             var notificationObj = {
                 providerId: Meteor.userId(),
                 buyerId: id,
@@ -148,9 +148,13 @@ Meteor.methods({
         Meteor.users.update(Meteor.userId(), {$addToSet: {favoriteUsers: id}});
         Meteor.users.update({_id: id}, {$inc: {favCount: 1}});
         Notifications.insert(notificationObj);
-        if(role == 'buyer' || role =='corporate-manager') {
+        if(role == 'buyer' || role =='dispatcher') {
             var providerDetails = Profiles.findOne({userId: id});
-            var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
+            var buyerDetails;
+            if(role == 'buyer')
+                buyerDetails = Buyers.findOne({userId: Meteor.userId()});
+            if(role == 'dispatcher')
+                buyerDetails = Dispatchers.findOne({userId: Meteor.userId()});
             Email.send({
                 to: getUserEmail(Meteor.users.findOne({_id: id})),
                 cc: providerDetails.smsAddress,
@@ -158,7 +162,7 @@ Meteor.methods({
                 subject: 'A user has added you to his/her favorites.',
                 text: 'Hello, ' + providerDetails.firstName + ' ' + providerDetails.lastName + ', ' + buyerDetails.firstName + buyerDetails.lastName + ' has added you to his/her favorites. Click the following link to see his/her profile. ' + Meteor.absoluteUrl('buyers/' + buyerDetails._id + '/' + buyerDetails.slug())
             })
-        } else if(role == 'provider' || role == 'corporate-provider') {
+        } else if(role == 'provider') {
             var buyerDetails = Buyers.findOne({userId: id});
             var providerDetails = Profiles.findOne({userId: Meteor.userId()});
             Email.send({
@@ -181,7 +185,7 @@ Meteor.methods({
                 read: false,
                 adminRead: false
             }
-        }else if(role == 'provider' || role == 'corporate-provider') {
+        }else if(role == 'provider') {
             var notificationObj = {
                 providerId: Meteor.userId(),
                 buyerId: id,
@@ -195,9 +199,13 @@ Meteor.methods({
         Meteor.users.update(Meteor.userId(), {$pull: {favoriteUsers: id}});
         Meteor.users.update({_id: id}, {$inc: {favCount: -1}});
         Notifications.insert(notificationObj);
-        if(role == 'buyer' || role =='corporate-manager') {
+        if(role == 'buyer' || role =='dispatcher') {
             var providerDetails = Profiles.findOne({userId: id})
-            var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
+            var buyerDetails;
+            if(role == 'buyer')
+                buyerDetails = Buyers.findOne({userId: Meteor.userId()});
+            if(role == 'dispatcher')
+                buyerDetails = Dispatchers.findOne({userId: Meteor.userId()});
             Email.send({
                 to: getUserEmail(Meteor.users.findOne({_id: id})),
                 cc: providerDetails.smsAddress,
@@ -205,7 +213,7 @@ Meteor.methods({
                 subject: 'A user has removed you from his/her favorites.',
                 text: 'Hello, ' + providerDetails.firstName + ' ' + providerDetails.lastName + ', ' + buyerDetails.firstName + ' ' + buyerDetails.lastName + ' has removed you from his/her favorites. Click the following link to see his/her profile. ' + Meteor.absoluteUrl('buyers/' + buyerDetails._id + '/' + buyerDetails.slug())
             })
-        } else if(role == 'provider' || role == 'corporate-provider') {
+        } else if(role == 'provider') {
             var buyerDetails = Buyers.findOne({userId: id})
             var providerDetails = Profiles.findOne({userId: Meteor.userId()});
             Email.send({

@@ -11,7 +11,17 @@
                                     {{#if jobId}}
                                         {{#with channelJob jobId}}
                                             <a href="{{pathFor 'job'}}" class="budgetFont mark-job-msg-read" data-job-id="{{_id}}">
-                                                {{title}}
+                                                #{{readableID}} {{title}}
+                                                {{#with assignedProviderDetails _id}}
+                                                    <p>
+                                                        <small>#{{readableID}} {{firstName}} {{lastName}}
+                                                        {{#if userOnline userId}}
+                                                            &nbsp;<i class="fa fa-circle fa-online"></i>
+                                                        {{else}}
+                                                            &nbsp;<i class="fa fa-circle fa-offline"></i>
+                                                        {{/if}}</small>
+                                                    </p>
+                                                {{/with}}
                                                 {{#if unreadJobMessages ../_id}}
                                                     <br>
                                                     <small><i class="mark-job-msg-read" data-job-id="{{_id}}">{{unreadJobMessages ../_id}} new messages</i></small>
@@ -22,9 +32,9 @@
                                         {{#with otherUser participants}}
                                             {{#if $eq userRole 'provider'}}
                                                 <a href="{{pathFor 'profile'}}" class="budgetFont mark-message-read" data-other-user="{{userId}}">
-                                                    {{firstName}} {{lastName}}
+                                                    #{{readableID}} {{firstName}} {{lastName}}
                                                     {{#if userOnline userId}}
-                                                        &nbsp;<i class="fa fa-circle"></i>
+                                                        &nbsp;<i class="fa fa-circle fa-online"></i>
                                                     {{else}}
                                                         &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                     {{/if}}
@@ -36,9 +46,9 @@
                                             {{/if}}
                                             {{#if $eq userRole 'dispatcher'}}
                                                 <a href="{{pathFor 'dispatcher'}}" class="budgetFont mark-message-read" data-other-user="{{userId}}">
-                                                    {{firstName}} {{lastName}}
+                                                    #{{readableID}} {{firstName}} {{lastName}}
                                                     {{#if userOnline userId}}
-                                                        &nbsp;<i class="fa fa-circle"></i>
+                                                        &nbsp;<i class="fa fa-circle fa-online"></i>
                                                     {{else}}
                                                         &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                     {{/if}}
@@ -50,9 +60,9 @@
                                             {{/if}}
                                             {{#if $eq userRole 'accountant'}}
                                                 <a href="{{pathFor 'accountant'}}" class="budgetFont">
-                                                    {{firstName}} {{lastName}}
+                                                    #{{readableID}} {{firstName}} {{lastName}}
                                                     {{#if userOnline userId}}
-                                                        &nbsp;<i class="fa fa-circle"></i>
+                                                        &nbsp;<i class="fa fa-circle fa-online"></i>
                                                     {{else}}
                                                         &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                     {{/if}}
@@ -216,8 +226,18 @@
                             <div class="notification-item">
                                 {{#if jobId}}
                                     {{#with channelJob jobId}}
-                                        <a href="{{pathFor 'job'}}" class="budgetFont">
-                                            {{title}}
+                                        <a href="{{pathFor 'job'}}" class="budgetFont mark-job-msg-read" data-job-id="{{_id}}">
+                                            #{{readableID}} {{title}}
+                                            {{#with jobPostedBuyer userId}}
+                                                <p>
+                                                    <small>#{{readableID}} {{firstName}} {{lastName}}
+                                                    {{#if userOnline userId}}
+                                                        &nbsp;<i class="fa fa-circle fa-online"></i>
+                                                    {{else}}
+                                                        &nbsp;<i class="fa fa-circle fa-offline"></i>
+                                                    {{/if}}</small>
+                                                </p>
+                                            {{/with}}
                                             {{#if unreadJobMessages ../_id}}
                                                 <br>
                                                 <small><i>{{unreadJobMessages ../_id}} new messages</i></small>
@@ -227,10 +247,10 @@
                                 {{else}}
                                     {{#with otherUser participants}}
                                         {{#if $eq userRole 'buyer'}}
-                                            <a href="{{pathFor 'buyer'}}" class="budgetFont">
-                                                {{firstName}} {{lastName}}
+                                            <a href="{{pathFor 'buyer'}}" class="budgetFont mark-message-read" data-other-user="{{userId}}">
+                                                #{{readableID}} {{firstName}} {{lastName}}
                                                 {{#if userOnline userId}}
-                                                    &nbsp;<i class="fa fa-circle"></i>
+                                                    &nbsp;<i class="fa fa-circle fa-online"></i>
                                                 {{else}}
                                                     &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                 {{/if}}
@@ -241,24 +261,10 @@
                                             </a>
                                         {{/if}}
                                         {{#if $eq userRole 'dispatcher'}}
-                                            <a href="{{pathFor 'dispatcher'}}" class="budgetFont">
-                                                {{firstName}} {{lastName}}
+                                            <a href="{{pathFor 'dispatcher'}}" class="budgetFont mark-message-read" data-other-user="{{userId}}">
+                                                #{{readableID}} {{firstName}} {{lastName}}
                                                 {{#if userOnline userId}}
-                                                    &nbsp;<i class="fa fa-circle"></i>
-                                                {{else}}
-                                                    &nbsp;<i class="fa fa-circle fa-offline"></i>
-                                                {{/if}}
-                                                {{#if unreadMessages ../_id}}
-                                                    <br>
-                                                    <small><i class="mark-message-read" data-other-user="{{userId}}">{{unreadMessages ../_id}} new messages</i></small>
-                                                {{/if}}
-                                            </a>
-                                        {{/if}}
-                                        {{#if $eq userRole 'accountant'}}
-                                            <a href="{{pathFor 'accountant'}}" class="budgetFont">
-                                                {{firstName}} {{lastName}}
-                                                {{#if userOnline userId}}
-                                                    &nbsp;<i class="fa fa-circle"></i>
+                                                    &nbsp;<i class="fa fa-circle fa-online"></i>
                                                 {{else}}
                                                     &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                 {{/if}}
@@ -442,7 +448,7 @@
                                                         <small><i>#{{readableID}}</i></small>
                                                         <p class="budgetFont">{{firstName}} {{lastName}}</p>
                                                         {{#if userOnline userId}}
-                                                            &nbsp;<i class="fa fa-circle"></i>
+                                                            &nbsp;<i class="fa fa-circle fa-online"></i>
                                                         {{else}}
                                                             &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                         {{/if}}

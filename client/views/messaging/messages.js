@@ -275,7 +275,7 @@ Template.messages.events({
 							time: new Date()
 						}
 					}
-					Meteor.call('sendUserFile', fileDetails, chatExists._id, function(error, result) {
+					Meteor.call('sendUserFile', messageObject, chatExists._id, function(error, result) {
 						if(!error) {
 							$('#spinner').hide();
 							var msgDiv = $('.message-history-body');

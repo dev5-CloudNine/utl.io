@@ -77,6 +77,16 @@ Template.dashboard.helpers({
 	channelJob: function(jobId) {
 		return Jobs.findOne({_id: jobId});
 	},
+	assignedProviderDetails: function(jobId) {
+		var assignedProvider = Jobs.findOne({_id: jobId}).assignedProvider;
+		return Profiles.findOne({userId: assignedProvider});
+	},
+	jobPostedBuyer: function(buyerId) {
+		if(Roles.userIsInRole(buyerId, ['buyer']))
+			return Buyers.findOne({userId: buyerId});
+		if(Roles.userIsInRole(buyerId, ['dispatcher']))
+			return Dispatchers.findOne({userId: buyerId});
+	},
 	userRole: function() {
 		if(Roles.userIsInRole(this.userId, ['provider'])) {
 			return 'provider'

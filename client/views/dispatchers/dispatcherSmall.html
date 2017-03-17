@@ -9,7 +9,7 @@
                     &nbsp;
                     {{#unless $eq userId $.Meteor.userId}}
                         {{#if userOnline userId}}
-                            <i class="fa fa-circle"></i>
+                            <i class="fa fa-circle fa-online"></i>
                         {{else}}
                             <i class="fa fa-circle fa-offline"></i>
                         {{/if}}
@@ -55,8 +55,8 @@
                             <div class="description-block text-center">
                                 {{#with dispatcher}}
                                     <a href="{{pathFor 'dispatcherJobs'}}">
-                                        <h5 class="description-header"><i class="fa fa-paper-plane"></i></h5>
-                                        <span class="description-text">View Jobs</span>
+                                        <h5 class="description-header"><i class="fa fa-rocket"></i></h5>
+                                        <span class="description-text">View Jobs - {{buyerOpenCount userId}}</span>
                                     </a>
                                 {{/with}}
                             </div>

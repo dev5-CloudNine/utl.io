@@ -1,37 +1,3 @@
-// Template.buyerInvitedJobs.onCreated(function() {
-//     var instance = this;
-//     instance.loaded = new ReactiveVar(0);
-//     instance.limit = new ReactiveVar(100);
-//     instance.autorun(function() {
-//         var limit = instance.limit.get();
-//         var subscription = instance.subscribe('my_jobs', limit);
-//         if(subscription.ready()) {
-//             instance.loaded.set(limit);
-//         }
-//     });
-//     instance.jobs = function() {
-//         return Jobs.find({$and: [{userId: Meteor.userId()}, {invited: true}, {applicationStatus: 'open'}]}, {sort: {createdAt: -1}, limit: instance.loaded.get()});
-//     }
-// });
-
-// Template.buyerInvitedJobs.helpers({
-// 	buyerInvitedJobs: function() {
-// 		return Template.instance().jobs();
-// 	},
-//     hasMoreJobs: function() {
-//         return Template.instance().jobs().count() >= Template.instance().limit.get();
-//     }
-// })
-
-// Template.buyerInvitedJobs.events({
-//     'click .load-more': function(event, instance) {
-//         event.preventDefault();
-//         var limit = instance.limit.get();
-//         limit += 10;
-//         instance.limit.set(limit);
-//     }
-// })
-
 var invitedJobs = function() {
     return Jobs.find({$and: [{userId: Meteor.userId()}, {invited: true}, {applicationStatus: 'open'}]}).fetch();
 }
@@ -55,16 +21,16 @@ var invitedJobsOptions = {
                 var buyerName;
                 var rateBasisText;
                 if(jobDetails.ratebasis == 'Fixed Pay') {
-                    rateBasisText = 'Fixed Pay';
+                    rateBasisText = '<p class="label label-fixed-pay">FIXED PAY</p>';
                 }
                 if(jobDetails.ratebasis == 'Per Hour') {
-                    rateBasisText = 'Per Hour<br>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
+                    rateBasisText = '<p class="label label-hourly-pay">PER HOUR</p>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
                 }
                 if(jobDetails.ratebasis == 'Per Device') {
-                    rateBasisText = 'Per Device<br>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' hours.';
+                    rateBasisText = '<p class="label label-device-pay">PER DEVICE</p>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' devices.';
                 }
                 if(jobDetails.ratebasis == 'Blended') {
-                    rateBasisText = 'Blended<br>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
+                    rateBasisText = '<p class="label label-blended-pay">BLENDED PAY</p>' + jobDetails.payforfirsthours + ' USD for the first' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
                 }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});

@@ -2105,11 +2105,15 @@ svg {
 }
 
 .fa {
-  color: #9DD634;
+  color: #DB7093;
 }
 
 .fa-offline {
   color: #999 !important;
+}
+
+.fa-online {
+  color: #9DD634 !important;
 }
 
 .btn-white {
