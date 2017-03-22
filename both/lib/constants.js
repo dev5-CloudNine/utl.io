@@ -102,4 +102,4 @@ CATEGORIES = function() {
 
 S3_FILEUPLOADS = "utl";
 
-URL = "https://utl-95476.app.xervo.io";
+URL = "https://ustechland.com";

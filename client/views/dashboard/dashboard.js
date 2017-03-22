@@ -87,6 +87,13 @@ Template.dashboard.helpers({
 		if(Roles.userIsInRole(buyerId, ['dispatcher']))
 			return Dispatchers.findOne({userId: buyerId});
 	},
+	userImgUrl: function(userId) {
+		var user = Users.findOne({_id: userId});
+		if(user.imgURL)
+			return user.imgURL;
+		else
+			return '/images/avatar.png';
+	},
 	userRole: function() {
 		if(Roles.userIsInRole(this.userId, ['provider'])) {
 			return 'provider'

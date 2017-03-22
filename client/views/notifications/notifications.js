@@ -144,7 +144,7 @@ Template.notifications.helpers({
 			} else if(notification.notificationType == 'newJob') {
 				var buyerDetails;
 				if(Roles.userIsInRole(notification.buyerId, ['dispatcher'])) {
-					buyerDetails = Dispatchers.findOne({userId: notification.buyerId});1
+					buyerDetails = Dispatchers.findOne({userId: notification.buyerId});
 				} else {
 					buyerDetails = Buyers.findOne({userId: notification.buyerId});
 				}
@@ -215,15 +215,17 @@ Template.notifications.helpers({
 						imgUrl = '/images/avatar.png';
 				}
 				if(providerDetails && buyerDetails) {
-					notif = {
-						notificationType: notification.notificationType,
-						notificationTime: moment(notification.timeStamp).format('LLLL'),
-						notificationId: notification._id,
-						jobId: notification.jobId,
-						jobReadableId: jobDetails.readableID,
-						bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
-						pname: providerDetails.firstName + ' ' + providerDetails.lastName,
-						imgUrl: imgUrl
+					if(jobDetails) {
+						notif = {
+							notificationType: notification.notificationType,
+							notificationTime: moment(notification.timeStamp).format('LLLL'),
+							notificationId: notification._id,
+							jobId: notification.jobId,
+							jobReadableId: jobDetails.readableID,
+							bname: buyerDetails.firstName + ' ' + buyerDetails.lastName,
+							pname: providerDetails.firstName + ' ' + providerDetails.lastName,
+							imgUrl: imgUrl
+						}
 					}
 				}
 				notificationDetails.push(notif);

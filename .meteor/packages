@@ -53,12 +53,9 @@ random@1.0.10
 ejson@1.0.13
 spacebars
 check@1.2.4
-dfischer:prerenderio
 force-ssl@1.0.13
 http@1.2.10
 ostrio:iron-router-title
-astronomerio:core
-
 rajit:bootstrap3-datepicker
 aldeed:autoform-bs-datepicker
 baysao:autoform-bs-daterangepicker

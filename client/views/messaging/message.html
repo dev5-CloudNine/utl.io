@@ -70,15 +70,15 @@
                             <time>{{messageTime time}}</time>
                         </div>
                     </div>
-                    <div class="col-md-1 col-xs-1 avatar">
-                        <img src="{{#if $.Meteor.user.imgURL}}{{$.Meteor.user.imgURL}}{{else}}/images/avatar.png{{/if}}" class="img-responsive ">
+                    <div class="avatar">
+                        <img src="{{#if $.Meteor.user.imgURL}}{{$.Meteor.user.imgURL}}{{else}}/images/avatar.png{{/if}}" class="img img-responsive">
                     </div>
                 {{else}}
-                    <div class="col-md-1 col-xs-1 avatar">
+                    <div class="avatar">
                         {{#if senderImgUrl sender}}
-                            <img src="{{senderImgUrl sender}}" alt="" class="img-responsive">
+                            <img src="{{senderImgUrl sender}}" alt="" class="img img-responsive">
                         {{else}}
-                            <img src="/images/avatar.png" class="img-responsive">
+                            <img src="/images/avatar.png" class="img img-responsive">
                         {{/if}}
                     </div>
                     <div class="col-md-11 col-xs-11">

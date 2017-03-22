@@ -12,7 +12,9 @@
 						#{{readableID}} - {{firstName}} {{lastName}}
 						&nbsp;
 						{{#if userOnline userId}}
-	                        <i class="fa fa-circle"></i>
+	                        <i class="fa fa-circle fa-online"></i>
+	                    {{else}}
+	                    	<i class="fa fa-circle fa-offline"></i>
 	                    {{/if}}
 					</h4>
 				{{/with}}

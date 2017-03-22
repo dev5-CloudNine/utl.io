@@ -86,7 +86,7 @@ var pendingApprovalOptions = {
             title: 'Actions',
             width: '20%',
             data: function(jobDetails) {
-                return '<small>Job submitted for approval. Await response.</small>';
+                return '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>Job submitted for approval. Await response.</small>';
             }
         }
     ],

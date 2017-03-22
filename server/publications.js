@@ -22,22 +22,6 @@ Meteor.publish("userData", function() {
     this.ready();
 });
 
-// Meteor.publish('onlineJobs', function() {
-//     var self = this;
-//     try {
-//         var jobs = HTTP.get('https://utl-95476.app.xervo.io/api/jobs');
-//         _.each(jobs.data.data, function(job) {
-//             self.added('jobs', Random.id(), job)
-//         })
-//     } catch(error) {
-//         console.log(error)
-//     }
-// })
-
-// Meteor.publish('onlineUsers', function() {
-//     return Meteor.users.find({'status.online': true});
-// })
-
 Meteor.publish('documentComments', function(jobId) {
     return Comments.get(jobId);
 });

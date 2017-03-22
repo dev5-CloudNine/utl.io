@@ -69,7 +69,7 @@ var pendingApprovalOptions = {
             data: function(jobDetails) {
                 var returnText;
                 if(jobDetails.assignmentStatus == 'submitted') {
-                    var returnText = '<small>Job submittted. Approve or reject. Upon approval, the provider\'s account will be credited with ' + jobDetails.projectBudget + ' USD. Ensure that all the tasks and timesheets are upto your mark.</small>'
+                    var returnText = '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>Job submittted. Approve or reject. Upon approval, the provider\'s account will be credited with ' + jobDetails.projectBudget + ' USD. Ensure that all the tasks and timesheets are upto your mark.</small>'
                 }
                 return returnText + '<br><a href="/jobs/' + jobDetails._id + '" class="btn btn-primary btn-sm">View Details</a>';
             }

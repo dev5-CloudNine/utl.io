@@ -86,13 +86,13 @@ var assignedJobsOptions = {
             width: '20%',
             data: function(jobDetails) {
                 if(jobDetails.assignmentStatus == 'not_confirmed') {
-                    return '<small>Job assigned. Awaiting confirmation.</small>';
+                    return '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>Job assigned. Awaiting confirmation.</small>';
                 }
                 if(jobDetails.assignmentStatus == 'confirmed') {
-                    return '<small>Job assigned. Provider confirmed.</small>';
+                    return '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>Job assigned. Provider confirmed.</small>';
                 }
                 if(jobDetails.assignmentStatus == 'rejected') {
-                    return '<small>You have rejected the assignment. Please discuss with the provider and sort it out.</small>';
+                    return '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>You have rejected the assignment. Please discuss with the provider and sort it out.</small>';
                 }
             }
         }

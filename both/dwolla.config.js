@@ -7,7 +7,7 @@ if (Meteor.isServer) {
     });
     var request = Npm.require('request');
     var auth;
-    var redirect_uri = 'https://utl-95476.app.xervo.io/oauth_return';
+    var redirect_uri = 'https://ustechland.com/oauth_return';
     var Future = Npm.require('fibers/future');
     Meteor.methods({
         'authUrl': function(userId) {

@@ -16,7 +16,6 @@ aldeed:tabular@1.6.1
 aldeed:template-extension@3.4.3
 allow-deny@1.0.5
 arkham:comments-ui@1.0.3
-astronomerio:core@0.2.20
 autoupdate@1.2.11
 babel-compiler@6.13.0
 babel-runtime@1.0.1
@@ -68,7 +67,6 @@ ddp-rate-limiter@1.0.6
 ddp-server@1.2.10
 deps@1.0.12
 dfischer:phantomjs@1.0.4
-dfischer:prerenderio@1.0.9
 diff-sequence@1.0.7
 djedi:sanitize-html@1.11.3
 ecmascript@0.6.1

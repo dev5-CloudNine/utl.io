@@ -86,7 +86,7 @@ var paidJobsOptions = {
             title: 'Actions',
             width: '20%',
             data: function(jobDetails) {
-                var returnText = '<small>Job approved. Account credited.</small>';
+                var returnText = '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>Job approved. Account credited.</small>';
                 var reviewed = false;
                 if(Reviews.findOne({$and: [{reviewedJobId: jobDetails._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]}))
                     reviewed = true;

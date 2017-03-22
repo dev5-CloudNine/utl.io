@@ -87,12 +87,12 @@ var deactivatedJobsOptions = {
             width: '20%',
             data: function(jobDetails) {
                 if(jobDetails.paid30Usd) {
-                    return '<small>The job has been deactivated. The buyer has released 30 USD as a token of goodwill to you for deactivating an assigned job.</small>'
+                    return '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>The job has been deactivated. The buyer has released 30 USD as a token of goodwill to you for deactivating an assigned job.</small>'
                 }
                 if(jobDetails.denied30Usd) {
-                    return '<small>The job has been deactivated. The buyer has denied to pay 30 USD.</small>'
+                    return '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>The job has been deactivated. The buyer has denied to pay 30 USD.</small>'
                 }
-                return '<small>The job has been deactivated.</small>';
+                return '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>The job has been deactivated.</small>';
             }
         }
     ],

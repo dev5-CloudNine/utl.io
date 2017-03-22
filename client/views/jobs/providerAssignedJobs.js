@@ -112,17 +112,17 @@ var assignedJobsOptions = {
                 var returnText;
                 if(jobDetails.assignmentStatus == 'not_confirmed') {
                     if(jobDetails.routed) {
-                        returnText = '<small>Assigned job. Needs confirmation.</small>';
+                        returnText = '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>Assigned job. Needs confirmation.</small>';
                     } else {
-                        returnText = '<small>Application accepted. Job assigned. Needs confirmation.</small><br>';
+                        returnText = '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>Application accepted. Job assigned. Needs confirmation.</small><br>';
                     }
                     return returnText + '<button data-job-id="' + jobDetails._id + '" data-buyer-id="' + jobDetails.userId + '" class="margin-top-5 btn btn-primary btn-sm confirmAssignment">Confirm</button>'
                 }
                 if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected') {
                     Meteor.subscribe('timeSheet', jobDetails._id);
-                    var returnText = '<small>You confirmed. Job assigned. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</small>';
+                    var returnText = '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>You confirmed. Job assigned. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</small>';
                     if(jobDetails.assignmentStatus == 'rejected') {
-                        returnText = '<small>Rejected job done. Please discuss with the buyer for futher details and submit the job for buyer approval.</small>'
+                        returnText = '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>Rejected job done. Please discuss with the buyer for futher details and submit the job for buyer approval.</small>'
                     }
                     var tasksClosed = Tasks.find({$and:[{jobID:jobDetails._id},{state:{$ne:'Completed'}}]}).count();
                     if(tasksClosed != 0) {
