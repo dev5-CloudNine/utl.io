@@ -1238,6 +1238,15 @@ Router.map(function() {
         }
     });
 
+    this.route('userTransfers', {
+        path: '/users/transfers/:userId',
+        waitOn: function() {
+            if(Roles.userIsInRole(Meteor.userId, ['admin']))
+                Meteor.subscribe('userWallet', this.params.userId);
+            return Meteor.subscribe('allJobs');
+        }
+    });
+
     this.route('receipt',{
         where: 'server',
         onBeforeAction: function () {

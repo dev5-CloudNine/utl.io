@@ -2128,6 +2128,7 @@ svg {
 .megamenu{
   padding: 20px 0px;
   width:720px;
+  margin-right: 109px;
 }
 .megamenu> li > ul {
   padding: 0;

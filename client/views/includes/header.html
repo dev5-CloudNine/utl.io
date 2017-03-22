@@ -18,6 +18,9 @@
                         <li><a href="{{pathFor 'buyerBenefits'}}">FOR BUYERS</a></li>
                         <li><a href="{{pathFor 'providerBenefits'}}">FOR PROVIDERS</a></li>
                         {{#if currentUser}}
+                            {{#if isInRole 'admin'}}
+                                <li><a href="{{pathFor 'dashboard' tab='dashboard'}}">DASHBOARD</a></li>
+                            {{/if}}
                             {{#if profileCreated}}
                                 <li><a href="{{pathFor 'dashboard' tab='dashboard'}}">DASHBOARD</a></li>
                             {{/if}}

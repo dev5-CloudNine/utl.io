@@ -113,9 +113,13 @@ var allUsersObject = {
 		{
 			title: 'Acct. Balance (USD)',
 			data: function(user) {
+				var userWallet = Wallet.findOne({userId: user._id});
 				if(Roles.userIsInRole(user._id, ['dispatcher', 'accountant']))
 					return;
-				return +(Math.round(Wallet.findOne({userId: user._id}).accountBalance + 'e+2') + 'e-2');
+				if(userWallet.dwollaCustomer && userWallet.fundingSourceUrl) {
+					return '<p>' + (+(Math.round(userWallet.accountBalance + 'e+2') + 'e-2')) + '</p><small><i><a href="/users/transfers/' + user._id +'">Show Transfers</a></i></small>'
+				}
+				return +(Math.round(userWallet.accountBalance + 'e+2') + 'e-2');
 			}
 		},
 		{
