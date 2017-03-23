@@ -30,6 +30,10 @@ a {
 .panel {
     background: #f8f8f8 !important;
 }
+
+.label {
+  padding-top: 2px !important;
+}
 .switch-calculator {
     margin-top: 10px;
 }
@@ -812,19 +816,27 @@ span.bigstars span.rateit-selected
 }
 
 .label-fixed-pay {
-  background-color: #45ACEE;
+  font-size: 80%;
+  font-weight: bold;
+  color: #45ACEE;
 }
 
 .label-hourly-pay {
-  background-color:  #5EC17A;
+  font-size: 80%;
+  font-weight: bold;
+  color:  #5EC17A;
 }
 
 .label-device-pay {
-  background-color:  #BCCA2B;
+  font-size: 80%;
+  font-weight: bold;
+  color:  #BCCA2B;
 }
 
 .label-blended-pay {
-  background-color: #EDB91D;
+  font-size: 80%;
+  font-weight: bold;
+  color: #EDB91D;
 }
 
 .deactivatedJob {
@@ -2113,6 +2125,7 @@ svg {
 }
 
 .fa-online {
+  /*text-shadow: 1px 1px 2px white, 0 0 10px green, 0 0 5px darkgreen;*/
   color: #9DD634 !important;
 }
 
@@ -2400,4 +2413,10 @@ svg {
 }
 .message-notifications:hover {
   overflow-y: auto;
+}
+
+.onOffIcon {
+  left: 33px;
+  bottom: 18px;
+  position: relative;
 }

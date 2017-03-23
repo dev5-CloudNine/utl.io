@@ -69,6 +69,8 @@ Template.profile.onCreated(function() {
       var providerUserId = Profiles.findOne({_id: Router.current().params._id}).userId;
       return Meteor.subscribe('userChats', Meteor.userId(), providerUserId);
     }
+    Meteor.subscribe('userChannels', Meteor.userId());
+    return Meteor.subscribe('userChatList', Meteor.userId());
   })
 });
 

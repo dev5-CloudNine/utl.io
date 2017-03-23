@@ -86,7 +86,13 @@
 					<div role="tabpanel">
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">
-								<a href="#discuz" aria-controls="discuz" role="tab" data-toggle="tab">DISCUZ</a>
+								<a href="#discuz" aria-controls="discuz" role="tab" data-toggle="tab">
+									{{#if $eq userId $.Meteor.userId}}
+										RECENT CONV.
+									{{else}}
+										DISCUZ
+									{{/if}}
+								</a>
 							</li>
 						</ul>
 						<div class="tab-content">
@@ -94,6 +100,8 @@
 								<br>
 								{{#unless $eq userId $.Meteor.userId}}
 									{{>messages}}
+								{{else}}
+									{{>recentConversations}}
 								{{/unless}}
 							</div>
 						</div>

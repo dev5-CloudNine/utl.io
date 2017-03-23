@@ -64,6 +64,8 @@ Template.buyer.onCreated(function() {
       var buyerUserId = Buyers.findOne({_id: Router.current().params._id}).userId;
       Meteor.subscribe('userChats', Meteor.userId(), buyerUserId);
     }
+    Meteor.subscribe('userChannels', Meteor.userId());
+    return Meteor.subscribe('userChatList', Meteor.userId());
   })
 })
 

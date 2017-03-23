@@ -65,6 +65,8 @@ Template.dispatcher.onCreated(function() {
   this.autorun(function() {
     var dispatcherUserId = Dispatchers.findOne({_id: Router.current().params._id}).userId;
     Meteor.subscribe('userChats', Meteor.userId(), dispatcherUserId);
+    Meteor.subscribe('userChannels', Meteor.userId())
+    return Meteor.subscribe('userChatList', Meteor.userId())
   })
 })
 

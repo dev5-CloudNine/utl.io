@@ -13,6 +13,14 @@ Template.userTransfers.helpers({
 			var buyerDetails = Buyers.findOne({userId: userId});
 			return buyerDetails.firstName + ' ' + buyerDetails.lastName;
 		}
+		if(Roles.userIsInRole(userId, ['dispatcher'])) {
+			var buyerDetails = Dispatchers.findOne({userId: userId});
+			return buyerDetails.firstName + ' ' + buyerDetails.lastName;
+		}
+		if(Roles.userIsInRole(userId, ['provider'])) {
+			var providerDetails = Profiles.findOne({userId: userId});
+			return providerDetails.firstName + ' ' + providerDetails.lastName;
+		}
 	},
 	'userTransfers': function() {
 		var userWallet = Wallet.findOne({userId: Router.current().params.userId});
@@ -26,7 +34,6 @@ Template.userTransfers.helpers({
 					Session.set('userTransfers', result._embedded.transfers);
 				}
 			})
-			console.log(Session.get('userTransfers'))
 			return Session.get('userTransfers')
 		}
 	}
