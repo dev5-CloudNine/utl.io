@@ -816,25 +816,21 @@ span.bigstars span.rateit-selected
 }
 
 .label-fixed-pay {
-  font-size: 80%;
   font-weight: bold;
   color: #45ACEE;
 }
 
 .label-hourly-pay {
-  font-size: 80%;
   font-weight: bold;
   color:  #5EC17A;
 }
 
 .label-device-pay {
-  font-size: 80%;
   font-weight: bold;
   color:  #BCCA2B;
 }
 
 .label-blended-pay {
-  font-size: 80%;
   font-weight: bold;
   color: #EDB91D;
 }

@@ -1,5 +1,8 @@
 Template.addTeam.helpers({
 	buyerName: function () {
+		if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+			return 'Administrator';
+		}
 		var buyerDetails = Buyers.findOne({userId: Meteor.userId()});
 		return buyerDetails.firstName + ' ' + buyerDetails.lastName;
 	}

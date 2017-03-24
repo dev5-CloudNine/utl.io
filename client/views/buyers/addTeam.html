@@ -14,23 +14,39 @@
 						<input type="text" class="form-control email">
 					</div>
 				</div>
-				<div class="row">                                
-					<div class="col-md-2">
-					    <div class="radio">
-					      <label><input class="type" name="corpRole" type="radio" value="dispatcher">Dispatch</label>
-					    </div>
+				{{#if isInRole 'buyer'}}
+					<div class="row">
+						<div class="col-md-2">
+							<div class="radio">
+								<label><input class="type" name="corpRole" type="radio" value="dispatcher">Dispatch</label>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="radio">
+								<label><input class="type" name="corpRole" type="radio" value="accountant">Accountant</label>
+							</div>
+						</div>
 					</div>
-					<div class="col-md-2">
-					    <div class="radio">
-					      <label><input class="type" name="corpRole" type="radio" value="accountant">Accountant</label>
-					    </div>
+				{{/if}}
+				{{#if isInRole 'admin'}}
+					<div class="row">
+						<div class="col-md-2">
+							<div class="radio">
+								<label><input class="type" name="corpRole" type="radio" value="buyer">Buyer</label>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="radio">
+								<label><input class="type" name="corpRole" type="radio" value="provider">Provider</label>
+							</div>
+						</div>
 					</div>
-		        </div>
-		        <div class="row">
-		        	<div class="col-sm-4">
-		        		<button type="submit" class="invite btn btn-sm btn-primary" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Send Invitation</button>
-		        	</div>
-		        </div>
+				{{/if}}
+				<div class="row">
+					<div class="col-sm-4">
+						<button type="submit" class="invite btn btn-sm btn-primary" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Send Invitation</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

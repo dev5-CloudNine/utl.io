@@ -30,7 +30,7 @@ var allJobsOptions = {
                     rateBasisText = '<span class="label-device-pay">PER DEVICE&nbsp;&raquo;&nbsp;' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' devices.</span>';
                 }
                 if(jobDetails.ratebasis == 'Blended') {
-                    rateBasisText = '<span class="label-blended-pay">BLENDED PAY&nbsp;&raquo;&nbsp;' + jobDetails.payforfirsthours + ' USD for the first ' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.<spanp>'
+                    rateBasisText = '<span class="label-blended-pay">BLENDED PAY&nbsp;&raquo;&nbsp;' + jobDetails.payforfirsthours + ' USD for the first ' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.<span>'
                 }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});

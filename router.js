@@ -1052,7 +1052,8 @@ Router.map(function() {
         title: "UTL - Invite Your Team Members",
         waitOn: function() {
             Meteor.subscribe("userList");
-            Meteor.subscribe('my_jobs');
+            if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+                Meteor.subscribe('my_jobs');
             return Meteor.subscribe("tempInvitation");
         }
     });

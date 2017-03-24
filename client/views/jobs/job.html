@@ -102,27 +102,39 @@
                                         </small>
                                         <hr>
                                         <h4>Proposed Budget</h4>
-                                        Payment Type: {{ratebasis}} <br>
                                         {{#if $eq ratebasis 'Blended'}}
-                                            {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
+                                            <span class="label-blended-pay">
+                                                BLENDED PAY &raquo; {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. 
+                                            </span>
+                                            <br>
                                             Total Hours: {{blendedTotalHours firsthours nexthours}} <br>
                                             {{#if jobPostedBuyer}}
                                                 Your Cost: {{roundToTwo your_cost}} USD. <br>
                                             {{/if}}
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Device'}}
-                                            {{rateperdevice}} USD for {{maxdevices}} devices. <br>
+                                            <span class="label-device-pay">
+                                                PER DEVICE &raquo; {{rateperdevice}} USD for {{maxdevices}} devices.
+                                            </span>
+                                            <br>
                                             {{#if jobPostedBuyer}}
                                                 Your Cost: {{roundToTwo your_cost}} USD. <br>
                                             {{/if}}
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Hour'}}
-                                            {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
+                                            <span class="label-hourly-pay">
+                                                PER HOUR &raquo; {{hourlyrate}} USD per hour for {{maxhours}} hours. 
+                                            </span>
+                                            <br>
                                             {{#if jobPostedBuyer}}
                                                 Your Cost: {{roundToTwo your_cost}} USD. <br>
                                             {{/if}}
                                         {{/if}}
                                         {{#if $eq ratebasis 'Fixed Pay'}}
+                                            <span class="label-fixed-pay">
+                                                FIXED PAY
+                                            </span>
+                                            <br>
                                             {{#if jobPostedBuyer}}
                                                 Your Cost: {{roundToTwo your_cost}} USD. <br>
                                             {{/if}}
@@ -177,9 +189,8 @@
                                     <div class="col-sm-12">
                                         {{#if $eq servicelocation 'Field Job'}}
                                             {{#if assignedProvider}}
-                                                <h4>Service Location</h4>
-                                                {{fullLocation.street}}, <br>
-                                                {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
+                                                <h4>Job Location</h4>
+                                                {{fullLocation.street}}, {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
                                                 {{#if fullLocation.mapLink}}
                                                     <br>
                                                     <a href="https://maps.google.com/maps?saddr={{providerLocation}}&daddr={{fullLocation.formatted_address}}" target="_blank" class="btn btn-primary btn-sm">Get Directions</a>
@@ -187,9 +198,8 @@
                                                 <hr>
                                             {{/if}}
                                             {{#if jobPostedBuyer}}
-                                                <h4>Service Location</h4>
-                                                {{fullLocation.street}}, <br>
-                                                {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
+                                                <h4>Job Location</h4>
+                                                {{fullLocation.street}}, {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}, {{fullLocation.country}}
                                                 <hr>
                                             {{/if}}
                                         {{/if}}
@@ -692,7 +702,7 @@
                                 </div>
                             </div>
                             {{#if $eq applicationStatus 'paid'}}
-                                <div class="panel panel-default">
+                                <div class="panel panel-light">
                                     <div class="panel-heading">
                                         <h5>Rate &amp; Review</h5>
                                     </div>
@@ -1446,8 +1456,8 @@
                                                                                     <input type="number" id="freelancer_fixed_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
                                                                                 </div>
                                                                                 <div class="col-sm-12">
-                                                                                    <label for="fixed_counter_desc">Description</label>
-                                                                                    <textarea name="fixed_counter_desc" id="fixed_counter_desc" rows="3" class="form-control"></textarea>
+                                                                                    <br>
+                                                                                    <textarea name="fixed_counter_desc" id="fixed_counter_desc" rows="3" class="form-control" placeholder="Give a good reason why."></textarea>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1493,8 +1503,8 @@
                                                                                     <input type="number" id="freelancer_hourly_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
                                                                                 </div>
                                                                                 <div class="col-sm-12">
-                                                                                    <label for="hourly_counter_desc">Description</label>
-                                                                                    <textarea name="hourly_counter_desc" id="hourly_counter_desc" rows="3" class="form-control"></textarea>
+                                                                                    <br>
+                                                                                    <textarea name="hourly_counter_desc" id="hourly_counter_desc" rows="3" class="form-control" placeholder="Give a good reason why."></textarea>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1540,8 +1550,8 @@
                                                                                     <input type="number" id="freelancer_device_nets" name="freelancer_nets" class="form-control" step="any" min="1" readonly="true">
                                                                                 </div>
                                                                                 <div class="col-sm-12">
-                                                                                    <label for="device_counter_desc">Description</label>
-                                                                                    <textarea name="device_counter_desc" id="device_counter_desc" rows="3" class="form-control"></textarea>
+                                                                                    <br>
+                                                                                    <textarea name="device_counter_desc" id="device_counter_desc" rows="3" class="form-control" placeholder="Give a good reason why."></textarea>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1595,8 +1605,8 @@
                                                                                     <input type="number" id="freelancer_blended_nets" class="form-control" name="freelancer_nets" step="any" min="1" readonly="true">
                                                                                 </div>
                                                                                 <div class="col-sm-12">
-                                                                                    <label for="blended_counter_desc">Description</label>
-                                                                                    <textarea name="blended_counter_desc" id="blended_counter_desc" rows="3" class="form-control"></textarea>
+                                                                                    <br>
+                                                                                    <textarea name="blended_counter_desc" id="blended_counter_desc" rows="3" class="form-control" placeholder="Give a good reason why."></textarea>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1811,7 +1821,7 @@
                                 </div>
                             </div>
                             {{#if $eq applicationStatus 'paid'}}
-                            <div class="panel panel-default">
+                            <div class="panel panel-light">
                                 <div class="panel-heading">
                                     <h5>Rate &amp; Review</h5>
                                 </div>
@@ -2368,9 +2378,9 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-xs-12">
+                                                                        <br>
                                                                         <div class="form-group">
-                                                                            <label for="expenseDescription">Descripion</label>
-                                                                            <textarea name="expenseDescription" id="expenseDescription" cols="30" rows="2" class="form-control" required="required"></textarea>
+                                                                            <textarea name="expenseDescription" id="expenseDescription" cols="30" rows="2" class="form-control" required="required" placeholder="Give a good reason why."></textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-xs-12">
@@ -3080,7 +3090,7 @@
                             </div>
                             <div class="panel-body">
                                 <p>You can contact customer support during the course of this project. Click the button below to send message.</p>
-                                <button class="btn btn-primary contactSupport"><i class="fa fa-support"></i>&nbsp;&nbsp;Contact Customer Support</button>
+                                <a class="btn btn-primary" href="{{pathFor 'contactUs'}}"><i class="fa fa-support"></i>&nbsp;&nbsp;Contact Customer Support</a>
                             </div>
                         </div>
                     {{/if}}
