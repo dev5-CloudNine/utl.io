@@ -90,7 +90,7 @@ Template.message.helpers({
   },
   senderImgUrl: function(userId) {
     var user = Users.findOne({_id: userId});
-    if(user.imgURL)
+    if(user && user.imgURL)
       return user.imgURL;
     return false;
   }

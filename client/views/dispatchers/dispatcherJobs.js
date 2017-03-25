@@ -38,7 +38,7 @@ var buyerJobsOptions = {
                 }
                 var recommended = false;
                 var providerDetails = Profiles.findOne({userId: Meteor.userId()});
-                if(providerDetails.industryTypes) {
+                if(providerDetails && providerDetails.industryTypes) {
                     for(var i = 0; i < providerDetails.industryTypes.length; i++) {
                         if(jobDetails.jobSubCategory == providerDetails.industryTypes[i]) {
                             recommended = true;

@@ -93,7 +93,7 @@
                                     <div class="col-sm-12">
                                         <small>
                                             {{#if postedByDispatcher}}
-                                                Posted by {{#with dispatcherData}} <a href="/dispatchers/{{id}}">{{name}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
+                                                Posted by {{#with dispatcherData}} <a href="{{pathFor 'dispatcher'}}">{{firstName}} {{lastName}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
                                             {{/if}}
                                             {{#if postedByBuyer}}
                                                 Posted {{#with buyerData}}by <a href="{{pathFor 'buyer'}}">{{firstName}} {{lastName}}</a>{{/with}}&nbsp;-&nbsp;{{postedTime}}
@@ -2864,48 +2864,10 @@
                         {{#if assignedOrDone}}
                             <div class="tab-pane active fade in" id="jobAssignedProvider">
                                 <br>
+                                {{#with assignedProDetails}}
+                                    {{>profileSmall}}
+                                {{/with}}
                                 {{#with assignedProviderDetails}}
-                                    <div class="panel panel-default {{#if $eq this.status 'active'}} activeProfile {{else}} inactiveProfile {{/if}}">
-                                        <div class="box box-widget widget-user">
-                                            <div class="widget-user-header {{#if fav}}bg-fav{{else}}bg-assigned{{/if}}">
-                                                <span class="pull-right providerRatings" data-rateit-value="{{rateItValue}}"></span>
-                                                <small># {{readableID}}</small><br>
-                                                <a href="/profiles/{{this.id}}" class="budgetFont">{{this.name}}</a>
-                                                <h5 class="widget-user-desc">{{this.title}}</h5>
-                                            </div>
-                                            <div class="widget-user-image">
-                                                <a href="/profiles/{{this.id}}"><img class="img-circle" src="{{this.imgUrl}}" alt="{{this.name}}"></a>
-                                            </div>
-                                            <div class="box-footer">
-                                                <div class="row">
-                                                    <div class="col-xs-4 border-right">
-                                                        <div class="description-block text-center">
-                                                            <a href="{{pathFor 'profile'}}">
-                                                                <h5 class="description-header"><i class="fa fa-paper-plane"></i></h5>
-                                                                <span class="description-text">Send Message</span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-4 border-right">
-                                                        <div class="description-block text-center">
-                                                            <a href="/profiles/{{this.id}}">
-                                                                <h5 class="description-header"><i class="fa fa-chain"></i></h5>
-                                                                <span class="description-text">View Profile</span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-4">
-                                                        <div class="description-block text-center">
-                                                            <a href="" class="{{#if fav}}remFav{{else}}addFav{{/if}}">
-                                                                <h5 class="description-header"><i class="fa {{#if fav}}fa-heart fav-icon{{else}}fa-heart-o{{/if}}"></i></h5>
-                                                                <span class="description-text">{{#if fav}}Del Fav{{else}}Add Fav{{/if}}&nbsp;({{favCount}})</span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <hr>
                                     <div class="panel panel-default">
                                         <div class="panel-heading">

@@ -415,7 +415,10 @@ Template.messages.helpers({
 			jobId = Router.current().params._id;
 		else if(Router.current().route.getName() == 'dashboard')
 			jobId = Router.current().params.query.jobId
-		return Channels.findOne({jobId: jobId}).messages;
+		var channel = Channels.findOne({jobId: jobId});
+		if(channel && channel.messages)
+			return channel.messages;
+		return;
 	},
 	userMessages: function() {
 		Tracker.afterFlush(function() {
@@ -434,6 +437,9 @@ Template.messages.helpers({
 			selectedUserId = Accountants.findOne({_id: Router.current().params._id}).userId;
 		if(Router.current().route.getName() == 'dashboard')
 			selectedUserId = Router.current().params.query.userId;
-		return UserChats.findOne({$and: [{participants: {$in: [Meteor.userId()]}}, {participants: {$in: [selectedUserId]}}]}).messages;
+		var userChat = UserChats.findOne({$and: [{participants: {$in: [Meteor.userId()]}}, {participants: {$in: [selectedUserId]}}]});
+		if(userChat && userChat.messages)
+			return userChat.messages;
+		return;
 	}
 })

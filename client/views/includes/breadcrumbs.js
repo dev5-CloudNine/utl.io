@@ -51,16 +51,23 @@ Template.breadcrumbs.helpers({
 		return Profiles.findOne({userId: Meteor.userId()});
 	},
 	utlEarnings: function() {
-		if(Roles.userIsInRole(Meteor.userId(), ['admin']))
-			return Wallet.findOne({userId: Meteor.userId()}).amountEarned;
-		return;
+		if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+			var adminWallet = Wallet.findOne({userId: Meteor.userId()});
+			if(adminWallet)
+				return adminWallet.amountEarned;
+		}
+		return false;
 	},
 	userAccountBalance: function() {
 		var accountBalance;
 		if(Roles.userIsInRole(Meteor.userId(), ['accountant', 'dispatcher'])) {
-			accountBalance =  Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
+			var invitedBuyerWallet = Wallet.findOne({userId: Meteor.user().invitedBy});
+			if(invitedBuyerWallet)
+				accountBalance =  Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
 		} else {
-			accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
+			var userWallet = Wallet.findOne({userId: Meteor.userId()});
+			if(userWallet)
+				accountBalance = Wallet.findOne({userId: Meteor.userId()}).accountBalance;
 		}
 		return +(Math.round(accountBalance + 'e+2') + 'e-2');
 	},
