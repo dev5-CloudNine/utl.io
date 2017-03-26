@@ -24,7 +24,7 @@
                                             {{#if isInRole 'buyer, dispatcher'}}
                                                 #{{readableID}} {{title}}
                                                 {{#with assignedProviderDetails _id}}
-                                                    <span class="pull-right">
+                                                    <span>
                                                         {{#if userOnline userId}}
                                                             &nbsp;<i class="fa fa-circle fa-online"></i>
                                                         {{else}}
@@ -38,7 +38,7 @@
                                             {{#if isInRole 'provider'}}
                                                 #{{readableID}} {{title}}
                                                 {{#with jobPostedBuyer userId}}
-                                                    <span class="pull-right">
+                                                    <span>
                                                         {{#if userOnline userId}}
                                                             &nbsp;<i class="fa fa-circle fa-online"></i>
                                                         {{else}}

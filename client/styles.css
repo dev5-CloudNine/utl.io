@@ -500,6 +500,12 @@ h3, h4 {
   background-color: #f6f4ec !important;
   border-color: #ddd;
 }
+
+/*.panel-chat {
+  background-color: #999 !important;
+  background: url('images/chat_background.jpg') !important;
+}*/
+
 .panel-blue {
   background-color: #D9EDF7 !important;
   border-color: #ddd;
@@ -2275,7 +2281,8 @@ svg {
 }
 
 .message-history-body {
-  height: 420px;
+  background: url('images/chat_background.jpg');
+  height: 480px;
   overflow-y: hidden;
 }
 

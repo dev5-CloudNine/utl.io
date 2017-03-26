@@ -1,5 +1,5 @@
 <template name="messages">
-	<div class="panel panel-light">
+	<div class="panel panel-chat">
 		<!-- <div class="panel-heading">
 			{{#if jobSelected}}
 				{{#with jobDetails}}
@@ -21,16 +21,19 @@
 			{{/if}}
 		</div> -->
 		<div class="panel-body message-history-body" id="style-1">
-			{{#if jobSelected}}
-				{{#each messages}}
-					{{>message}}
-				{{/each}}
-			{{/if}}
-			{{#if userSelected}}
-				{{#each userMessages}}
-					{{>message}}
-				{{/each}}
-			{{/if}}
+			<div class="chat-background"></div>
+			<div class="chat-messages">
+				{{#if jobSelected}}
+					{{#each messages}}
+						{{>message}}
+					{{/each}}
+				{{/if}}
+				{{#if userSelected}}
+					{{#each userMessages}}
+						{{>message}}
+					{{/each}}
+				{{/if}}
+			</div>
 		</div>
 		{{#if jobSelected}}
 			<div class="panel-footer">
