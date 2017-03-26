@@ -104,41 +104,33 @@
                                         <h4>Proposed Budget</h4>
                                         {{#if $eq ratebasis 'Blended'}}
                                             <span class="label-blended-pay">
-                                                BLENDED PAY &raquo; {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. 
+                                                BLENDED PAY &raquo;
                                             </span>
+                                            {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours.
                                             <br>
                                             Total Hours: {{blendedTotalHours firsthours nexthours}} <br>
-                                            {{#if jobPostedBuyer}}
-                                                Your Cost: {{roundToTwo your_cost}} USD. <br>
-                                            {{/if}}
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Device'}}
                                             <span class="label-device-pay">
-                                                PER DEVICE &raquo; {{rateperdevice}} USD for {{maxdevices}} devices.
+                                                PER DEVICE &raquo;
                                             </span>
+                                            {{rateperdevice}} USD for {{maxdevices}} devices.
                                             <br>
-                                            {{#if jobPostedBuyer}}
-                                                Your Cost: {{roundToTwo your_cost}} USD. <br>
-                                            {{/if}}
                                         {{/if}}
                                         {{#if $eq ratebasis 'Per Hour'}}
                                             <span class="label-hourly-pay">
-                                                PER HOUR &raquo; {{hourlyrate}} USD per hour for {{maxhours}} hours. 
+                                                PER HOUR &raquo;
                                             </span>
+                                            {{hourlyrate}} USD per hour for {{maxhours}} hours.
                                             <br>
-                                            {{#if jobPostedBuyer}}
-                                                Your Cost: {{roundToTwo your_cost}} USD. <br>
-                                            {{/if}}
                                         {{/if}}
                                         {{#if $eq ratebasis 'Fixed Pay'}}
                                             <span class="label-fixed-pay">
                                                 FIXED PAY
                                             </span>
                                             <br>
-                                            {{#if jobPostedBuyer}}
-                                                Your Cost: {{roundToTwo your_cost}} USD. <br>
-                                            {{/if}}
                                         {{/if}}
+                                        Buyer Cost: {{roundToTwo your_cost}} USD. <br>
                                         Provider Earns: {{roundToTwo freelancer_nets}}&nbsp;USD
                                     </div>
                                     <div class="col-sm-12">
@@ -558,17 +550,17 @@
                                 <div class="panel-body">
                                     {{#if $eq applicationStatus 'open'}}
                                         {{#if $eq status 'deactivated'}}
-                                            <small><i>{{formatDate deactivatedTime}}</i></small>
+                                            <small><i>{{formatDate updatedAt}}</i></small>
                                             <p>You have deactivated the job. Your account has been credited with {{buyerCost}} USD.</p>
                                         {{else}}
-                                            <small><i>{{formatDate createdAt}}</i></small>
+                                            <small><i>{{formatDate updatedAt}}</i></small>
                                             <p>The job has been posted and your account has been debited with the proposed budget of {{roundToTwo your_cost}} USD. Email notifications have been sent out.</p>
                                         {{/if}}
                                     {{/if}}
                                     {{#if $eq applicationStatus 'assigned'}}
                                         {{#if $eq assignmentStatus 'not_confirmed'}}
                                             {{#if $eq status 'deactivated'}}
-                                                <small><i>{{formatDate deactivatedTime}}</i></small>
+                                                <small><i>{{formatDate updatedAt}}</i></small>
                                                 <p>You have deactivated the job. Your account has been credited with {{buyerCost}} USD.</p>
                                             {{else}}
                                                 <small><i>{{formatDate applicationAcceptedTime}}</i></small>
@@ -577,7 +569,7 @@
                                         {{/if}}
                                         {{#if $eq assignmentStatus 'confirmed'}}
                                             {{#if $eq status 'deactivated'}}
-                                                <small><i>{{formatDate deactivatedTime}}</i></small>
+                                                <small><i>{{formatDate updatedAt}}</i></small>
                                                 {{#if paid30Usd}}
                                                     <p>You have deactivated an assigned job. You have paid 30 USD to the assigned provider as a goodwill token.</p>
                                                 {{else}}
@@ -603,14 +595,14 @@
                                         {{/if}}
                                         {{#if $eq assignmentStatus 'rejected'}}
                                             {{#if $eq status 'deactivated'}}
-                                                <small><i>{{formatDate deactivatedTime}}</i></small>
+                                                <small><i>{{formatDate updatedAt}}</i></small>
                                                 {{#if paid30Usd}}
                                                     <p>You have paid 30 USD to the assigned Provider as a goodwill token.</p>
                                                 {{else}}
                                                     {{#if denied30Usd}}
                                                         <p>You have denied to pay 30 USD to the assigned Provider as a goodwill token.</p>
                                                     {{else}}
-                                                        <small><i>{{formatDate deactivatedTime}}</i></small>
+                                                        <small><i>{{formatDate updatedAt}}</i></small>
                                                         <p>You have deactivated an assigned job. Would you accept to pay 30 USD to the assigned provider as a token of goodwill?</p>
                                                         <button class="btn btn-primary btn-sm pay30Usd" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Accept</button>
                                                         <button class="btn btn-primary btn-sm deny30Usd" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Deny</button>
@@ -623,14 +615,14 @@
                                         {{/if}}
                                         {{#if $eq assignmentStatus 'submitted'}}
                                             {{#if $eq status 'deactivated'}}
-                                                <small><i>{{formatDate deactivatedTime}}</i></small>
+                                                <small><i>{{formatDate updatedAt}}</i></small>
                                                 {{#if paid30Usd}}
                                                     <p>You have paid 30 USD to the assigned Provider as a goodwill token.</p>
                                                 {{else}}
                                                     {{#if denied30Usd}}
                                                         <p>You have denied to pay 30 USD to the assigned Provider as a goodwill token.</p>
                                                     {{else}}
-                                                        <small><i>{{deactivatedTime}}</i></small>
+                                                        <small><i>{{updatedAt}}</i></small>
                                                         <p>You have deactivated an assigned job. Would you accept to pay 30 USD to the assigned provider as a token of goodwill?</p>
                                                         <button class="btn btn-primary btn-sm pay30Usd" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Accept</button>
                                                         <button class="btn btn-primary btn-sm deny30Usd" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Deny</button>
@@ -1163,6 +1155,7 @@
                             <br>
                             <small>
                                 <i class="fa fa-circle fa-appscount"></i> APP - {{appsCount}}
+                                &nbsp;&#124;&nbsp;
                                 <i class="fa fa-circle fa-cocount"></i> C. O - {{coCount}}
                             </small>
                             <hr>
@@ -1171,7 +1164,7 @@
                                     {{#each appliedProviders}}
                                         {{#if $eq this.app_type 'application'}}
                                             <div class="panel-group" id="accordion">
-                                                <div class="panel panel-blue">
+                                                <div class="panel panel-application">
                                                     <div class="panel-heading">
                                                         <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">
                                                             <div class="media">
@@ -1259,7 +1252,7 @@
                                         {{/if}}
                                         {{#if $eq this.app_type 'counteroffer'}}
                                             <div class="panel-group" id="accordion">
-                                                <div class="panel panel-light">
+                                                <div class="panel panel-counter">
                                                     <div class="panel-heading">
                                                         <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">
                                                             <div class="media">
@@ -1299,9 +1292,12 @@
                                                             {{/if}}
                                                             Your Cost: {{roundToTwo buyer_cost}} USD. <br>
                                                             Provider Earns: {{roundToTwo freelancer_nets}} USD. <br>
-                                                            Desc: {{counter_description}} <br>
+                                                            {{#if counter_description}}
+                                                                <hr>
+                                                                <i>{{counter_description}}</i>
+                                                                <hr>
+                                                            {{/if}}
                                                             {{#if $eq applicationStatus 'open'}}
-                                                                <br>
                                                                 {{#if providerDeclined}}
                                                                     This provider has declined to do the job.
                                                                 {{else}}
@@ -1362,7 +1358,7 @@
                                     {{#if openOrFrozen}}
                                         {{#if applied}}
                                             {{#if $eq status 'deactivated'}}
-                                                <h5>{{deactivatedTime}}</h5>
+                                                <h5>{{updatedAt}}</h5>
                                                 <h5>The buyer has deactivated the job.</h5>
                                             {{else}}
                                                 {{#if acceptedProvider}}
@@ -1632,7 +1628,7 @@
                                             {{#if $eq assignmentStatus 'not_confirmed'}}
                                                 {{#if $eq status 'deactivated'}}
                                                     <div class="col-sm-12">
-                                                        <small><i>{{deactivatedTime}}</i></small>
+                                                        <small><i>{{updatedAt}}</i></small>
                                                         <p>The job has been deactivated.</p>
                                                         {{#if paid30Usd}}
                                                             <p>The buyer has released 30 USD as a token of goodwill to you for deactivating an assigned job.</p>
@@ -1653,7 +1649,7 @@
                                             {{#if assignedProvider}}                                            
                                                 {{#if $eq status 'deactivated'}}
                                                     <div class="col-sm-12">
-                                                        <small><i>{{deactivatedTime}}</i></small>
+                                                        <small><i>{{updatedAt}}</i></small>
                                                         <p>The job has been deactivated.</p>
                                                         {{#if paid30Usd}}
                                                             <p>The buyer has released 30 USD as a token of goodwill to you for deactivating an assigned job.</p>
@@ -1727,7 +1723,7 @@
                                         {{#if $eq assignmentStatus 'rejected'}}
                                             {{#if $eq status 'deactivated'}}
                                                 <div class="col-sm-12">
-                                                    <small><i>{{deactivatedTime}}</i></small>
+                                                    <small><i>{{updatedAt}}</i></small>
                                                     <p>The job has been deactivated.</p>
                                                     {{#if paid30Usd}}
                                                         <p>The buyer has released 30 USD as a token of goodwill to you for deactivating an assigned job.</p>
@@ -1788,7 +1784,7 @@
                                         {{#if $eq assignmentStatus 'submitted'}}
                                             {{#if $eq status 'deactivated'}}
                                                 <div class="col-sm-12">
-                                                    <small><i>{{deactivatedTime}}</i></small>
+                                                    <small><i>{{updatedAt}}</i></small>
                                                     <p>The job has been deactivated.</p>
                                                     {{#if paid30Usd}}
                                                         <p>The buyer has released 30 USD as a token of goodwill to you for deactivating an assigned job.</p>
@@ -1937,277 +1933,295 @@
                     {{#if applied}}
                         {{#if assignedProvider}}
                             <hr>
-                            {{>messages}}
-                            <hr>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h5>Cost Estimate</h5>
-                                </div>
-                                <div class="panel-body">
-                                    {{#with applicationDetails}}
-                                        {{#if $eq this.app_type 'application'}}
-                                            <table class="table table-striped table-responsive">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Payment Type</th>
-                                                        <th>Your Earnings</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            {{../ratebasis}}
-                                                            {{#if $eq ../ratebasis 'Blended'}}
-                                                                <a href data-balloon="Pay {{../payforfirsthours}} USD for the first {{../firsthours}} hours and then {{../payfornexthours}} USD for upto {{../nexthours}} hours - Total hours: {{blendedTotalHours ../firsthours ../nexthours}}" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq ../ratebasis 'Per Device'}}
-                                                                <a href data-balloon="Pay {{../rateperdevice}} USD for {{../maxdevices}} devices" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq ../ratebasis 'Per Hour'}}
-                                                                <a href data-balloon="Pay {{../hourlyrate}} USD for {{../maxhours}} hours - Total hours: {{../maxhours}}" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq ../ratebasis 'Fixed Pay'}}
-                                                                <a href data-balloon="Pay fixed amount {{../fixedamount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                        </td>
-                                                        <td>{{roundToTwo ../freelancer_nets}} USD</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        {{/if}}
-                                        {{#if $eq this.app_type 'counteroffer'}}
-                                            <table class="table table-striped table-responsive">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Payment Type</th>
-                                                        <th>Your Earnings</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            {{#if $eq this.counterType 'blended'}}
-                                                                Blended <a href data-balloon="Pay {{this.first_hours}} USD for the first {{this.first_max_hours}} hours and then {{this.next_hours}} USD for upto {{this.next_max_hours}} hours - Total hours: {{blendedTotalHours this.first_max_hours this.next_max_hours}}" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq this.counterType 'per_device'}}
-                                                                Per Device <a href data-balloon="Pay {{this.device_rate}} USD for {{this.max_devices}} devices" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq this.counterType 'per_hour'}}
-                                                                Per Hour <a href data-balloon="Pay {{this.hourly_rate}} USD for {{this.max_hours}} hours - Total hours: {{this.max_hours}}" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq this.counterType 'fixed_pay'}}
-                                                                Fixed Pay <a href data-balloon="Pay {{this.fixed_amount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                        </td>
-                                                        <td>{{roundToTwo freelancer_nets}} USD</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        {{/if}}
-                                        {{#if $eq ../applicationStatus 'paid'}}
-                                            {{#if $eq this.app_type 'application'}}
-                                                {{#if workedLess 'application'}}
-                                                    <label>Approved</label>
-                                                    <table class="table table-striped table-responsive">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>
-                                                                    {{#if $eq ../ratebasis 'Per Hour'}}Hours{{/if}}
-                                                                    {{#if $eq ../ratebasis 'Per Device'}}Devices{{/if}}
-                                                                    {{#if $eq ../ratebasis 'Blended'}}Hours{{/if}}
-                                                                </th>
-                                                                <th>Your Earnings</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    {{#if $eq ../ratebasis 'Per Hour'}}
-                                                                        {{#with totalHours}}
-                                                                            {{this.hours}} Hr {{this.minutes}} Min
-                                                                        {{/with}}
-                                                                    {{/if}}
-                                                                    {{#if $eq ../ratebasis 'Per Device'}}
-                                                                        {{../devicescompleted}} Devices
-                                                                    {{/if}}
-                                                                    {{#if $eq ../ratebasis 'Blended'}}
-                                                                        {{#with totalHours}}
-                                                                            {{this.hours}} Hr {{this.minutes}} Min
-                                                                        {{/with}}
-                                                                    {{/if}}
-                                                                </td>
-                                                                {{#if $eq ../ratebasis 'Per Hour'}}
-                                                                    {{#with hourlyApprovedCost 'application'}}
-                                                                        <td>{{providerEarnings}} USD</td>
-                                                                    {{/with}}
-                                                                {{/if}}
-                                                                {{#if $eq ../ratebasis 'Per Device'}}
-                                                                    {{#with deviceApprovedCost 'application'}}
-                                                                        <td>{{providerEarnings}} USD</td>
-                                                                    {{/with}}
-                                                                {{/if}}
-                                                                {{#if $eq ../ratebasis 'Blended'}}
-                                                                    {{#with blendedApprovedCost 'application'}}
-                                                                        <td>{{providerEarnings}} USD</td>
-                                                                    {{/with}}
-                                                                {{/if}}
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                {{/if}}
-                                            {{/if}}
-                                            {{#if $eq this.app_type 'counteroffer'}}
-                                                {{#if workedLess 'counteroffer'}}
-                                                    <label>Approved</label>
-                                                    <table class="table table-striped table-responsive">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>
-                                                                    {{#if $eq counterType 'per_hour'}}Hours{{/if}}
-                                                                    {{#if $eq counterType 'per_device'}}Devices{{/if}}
-                                                                    {{#if $eq counterType 'blended'}}Hours{{/if}}
-                                                                </th>
-                                                                <th>Your Earnings</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    {{#if $eq counterType 'per_hour'}}
-                                                                        {{#with totalHours}}
-                                                                            {{this.hours}} Hr {{this.minutes}} Min
-                                                                        {{/with}}
-                                                                    {{/if}}
-                                                                    {{#if $eq counterType 'per_device'}}
-                                                                        {{../devicescompleted}} Devices
-                                                                    {{/if}}
-                                                                    {{#if $eq counterType 'blended'}}
-                                                                        {{#with totalHours}}
-                                                                            {{this.hours}} Hr {{this.minutes}} Min
-                                                                        {{/with}}
-                                                                    {{/if}}
-                                                                </td>
-                                                                {{#if $eq counterType 'per_hour'}}
-                                                                    {{#with hourlyApprovedCost 'counteroffer' hourly_rate max_hours}}
-                                                                        <td>{{providerEarnings}} USD</td>
-                                                                    {{/with}}
-                                                                {{/if}}
-                                                                {{#if $eq counterType 'per_device'}}
-                                                                    {{#with deviceApprovedCost 'counteroffer' device_rate max_devices}}
-                                                                        <td>{{providerEarnings}} USD</td>
-                                                                    {{/with}}
-                                                                {{/if}}
-                                                                {{#if $eq counterType 'blended'}}
-                                                                    {{#with blendedApprovedCost 'counteroffer' this.first_max_hours this.first_hours this.next_max_hours this.next_hours}}
-                                                                        <td>{{providerEarnings}} USD</td>
-                                                                    {{/with}}
-                                                                {{/if}}
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                {{/if}}
-                                            {{/if}}
-                                        {{/if}}
-                                    {{/with}}
-                                    {{#if expensesRequested}}
-                                        <hr>
-                                        Expenses:
-                                        <table class="table table-striped table-responsive">
-                                            <thead>
-                                                <tr>
-                                                    <th>Amount</th>
-                                                    <th>Description</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {{#each expenses}}
-                                                    <tr>
-                                                        <td>{{roundToTwo expense_amount}} USD</td>
-                                                        <td>{{expense_description}}</td>
-                                                        <td>
-                                                            {{#if $eq request_status 'accepted'}}
-                                                                <i class="fa fa-check"></i> Accepted
-                                                            {{/if}}
-                                                            {{#if $eq request_status 'pending'}}
-                                                                <a href data-balloon="A cup of coffee while the buyer takes an action." data-balloon-pos="up"><i class="fa fa-coffee"></i></a>&nbsp;&#124;&nbsp;<a href data-expense-id="{{expense_id}}" class="removeExpense" data-balloon="Remove Expense" data-balloon-pos="up"><i class="fa fa-trash"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq request_status 'rejected'}}
-                                                                <i class="fa fa-times"></i> Rejected
-                                                            {{/if}}
-                                                        </td>
-                                                    </tr>
-                                                {{/each}}
-                                            </tbody>
-                                        </table>
-                                    {{/if}}
-                                    {{#if bonusRequested}}
-                                        <hr>
-                                        Budget Increase:
-                                        <table class="table table-striped table-responsive">
-                                            <thead>
-                                                <tr>
-                                                    <th>Payment Type</th>
-                                                    <th>Amount</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {{#each budgetIncreases}}
-                                                    <tr>
-                                                        <td>
-                                                            {{request_type}}
-                                                            {{#if $eq request_type 'Fixed Pay'}}
-                                                                <a href data-balloon="Pay fixed amount of {{fixed_amount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq request_type 'Per Hour'}}
-                                                                <a href data-balloon="Pay {{hourly_rate}} USD for {{max_hours}} additional hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq request_type 'Per Device'}}
-                                                                <a href data-balloon="Pay {{device_rate}} USD for {{max_devices}} additional devices." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq request_type 'Blended'}}
-                                                                <a href data-balloon="Pay {{next_hours}} USD for  {{next_max_hours}} additional hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
-                                                            {{/if}}
-                                                        </td>
-                                                        <td>{{roundToTwo provider_nets}} USD</td>
-                                                        <td>
-                                                            {{#if $eq request_status 'accepted'}}
-                                                                <i class="fa fa-check"></i> Accepted
-                                                            {{/if}}
-                                                            {{#if $eq request_status 'pending'}}
-                                                                <a href data-balloon="A cup of coffee while the buyer takes an action." data-balloon-pos="up"><i class="fa fa-coffee"></i></a>&nbsp;&#124;&nbsp;<a href class="cancelBudgetIncrease" data-bi-id="{{request_id}}" data-balloon="Cancel Request" data-balloon-pos="up"><i class="fa fa-trash"></i></a>
-                                                            {{/if}}
-                                                            {{#if $eq request_status 'rejected'}}
-                                                                <i class="fa fa-times"></i> Rejected
-                                                            {{/if}}
-                                                        </td>
-                                                    </tr>
-                                                {{/each}}
-                                            </tbody>
-                                        </table>
-                                    {{/if}}
-                                    <hr>
-                                    Grand Total:
-                                    <h5>Your Earnings: {{roundToTwo projectBudget}} USD</h5>
-                                    <h5>Buyer Cost: {{roundToTwo buyerCost}} USD</h5>
-                                    <h5>UTL Fees: {{roundToTwo utlCommission}} USD (5%)</h5>
+                            <div role="tabpanel">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active">
+                                        <a href="#providerDisucz" aria-controls="providerDisucz" role="tab" data-toggle="tab">DISCUZ</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="providerDisucz">
+                                        <br>
+                                        {{>messages}}
+                                    </div>
                                 </div>
                             </div>
+                            <hr>
                             {{#if $eq applicationStatus 'assigned'}}
                                 {{#if confirmedOrRejected}}
                                     {{#if $eq status 'active'}}
                                         <div role="tabpanel">
                                             <ul class="nav nav-tabs" role="tablist">
-                                                <li role="presentation" class="active">
-                                                    <a href="#requestBudgetInc" aria-controls="requestBudgetInc" role="tab" data-toggle="tab">Budget Increase</a>
+                                                <li class="active" role="presentation">
+                                                    <a href="#providerCostEstimate" aria-controle="providerCostEstimate" role="tab" data-toggle="tab">Cost Est.</a>
                                                 </li>
                                                 <li role="presentation">
-                                                    <a href="#requestExpenses" aria-controls="requestExpenses" role="requestExpenses" data-toggle="tab">Add Expenses</a>
+                                                    <a href="#requestBudgetInc" aria-controls="requestBudgetInc" role="tab" data-toggle="tab">Budget Inc.</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a href="#requestExpenses" aria-controls="requestExpenses" role="requestExpenses" data-toggle="tab">Add Exp.</a>
                                                 </li>
                                             </ul>
                                             <div class="tab-content">
-                                                <div role="tabpanel" class="tab-pane fade in active" id="requestBudgetInc">
+                                                <div class="tab-pane fade in active" id="providerCostEstimate">
+                                                    <br>
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h5>Cost Estimate</h5>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            {{#with applicationDetails}}
+                                                                {{#if $eq this.app_type 'application'}}
+                                                                    <table class="table table-striped table-responsive">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Payment Type</th>
+                                                                                <th>Your Earnings</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {{../ratebasis}}
+                                                                                    {{#if $eq ../ratebasis 'Blended'}}
+                                                                                        <a href data-balloon="Pay {{../payforfirsthours}} USD for the first {{../firsthours}} hours and then {{../payfornexthours}} USD for upto {{../nexthours}} hours - Total hours: {{blendedTotalHours ../firsthours ../nexthours}}" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq ../ratebasis 'Per Device'}}
+                                                                                        <a href data-balloon="Pay {{../rateperdevice}} USD for {{../maxdevices}} devices" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq ../ratebasis 'Per Hour'}}
+                                                                                        <a href data-balloon="Pay {{../hourlyrate}} USD for {{../maxhours}} hours - Total hours: {{../maxhours}}" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq ../ratebasis 'Fixed Pay'}}
+                                                                                        <a href data-balloon="Pay fixed amount {{../fixedamount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                </td>
+                                                                                <td>{{roundToTwo ../freelancer_nets}} USD</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                {{/if}}
+                                                                {{#if $eq this.app_type 'counteroffer'}}
+                                                                    <table class="table table-striped table-responsive">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Payment Type</th>
+                                                                                <th>Your Earnings</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {{#if $eq this.counterType 'blended'}}
+                                                                                        Blended <a href data-balloon="Pay {{this.first_hours}} USD for the first {{this.first_max_hours}} hours and then {{this.next_hours}} USD for upto {{this.next_max_hours}} hours - Total hours: {{blendedTotalHours this.first_max_hours this.next_max_hours}}" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq this.counterType 'per_device'}}
+                                                                                        Per Device <a href data-balloon="Pay {{this.device_rate}} USD for {{this.max_devices}} devices" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq this.counterType 'per_hour'}}
+                                                                                        Per Hour <a href data-balloon="Pay {{this.hourly_rate}} USD for {{this.max_hours}} hours - Total hours: {{this.max_hours}}" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq this.counterType 'fixed_pay'}}
+                                                                                        Fixed Pay <a href data-balloon="Pay {{this.fixed_amount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                </td>
+                                                                                <td>{{roundToTwo freelancer_nets}} USD</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                {{/if}}
+                                                                {{#if $eq ../applicationStatus 'paid'}}
+                                                                    {{#if $eq this.app_type 'application'}}
+                                                                        {{#if workedLess 'application'}}
+                                                                            <label>Approved</label>
+                                                                            <table class="table table-striped table-responsive">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>
+                                                                                            {{#if $eq ../ratebasis 'Per Hour'}}Hours{{/if}}
+                                                                                            {{#if $eq ../ratebasis 'Per Device'}}Devices{{/if}}
+                                                                                            {{#if $eq ../ratebasis 'Blended'}}Hours{{/if}}
+                                                                                        </th>
+                                                                                        <th>Your Earnings</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            {{#if $eq ../ratebasis 'Per Hour'}}
+                                                                                                {{#with totalHours}}
+                                                                                                    {{this.hours}} Hr {{this.minutes}} Min
+                                                                                                {{/with}}
+                                                                                            {{/if}}
+                                                                                            {{#if $eq ../ratebasis 'Per Device'}}
+                                                                                                {{../devicescompleted}} Devices
+                                                                                            {{/if}}
+                                                                                            {{#if $eq ../ratebasis 'Blended'}}
+                                                                                                {{#with totalHours}}
+                                                                                                    {{this.hours}} Hr {{this.minutes}} Min
+                                                                                                {{/with}}
+                                                                                            {{/if}}
+                                                                                        </td>
+                                                                                        {{#if $eq ../ratebasis 'Per Hour'}}
+                                                                                            {{#with hourlyApprovedCost 'application'}}
+                                                                                                <td>{{providerEarnings}} USD</td>
+                                                                                            {{/with}}
+                                                                                        {{/if}}
+                                                                                        {{#if $eq ../ratebasis 'Per Device'}}
+                                                                                            {{#with deviceApprovedCost 'application'}}
+                                                                                                <td>{{providerEarnings}} USD</td>
+                                                                                            {{/with}}
+                                                                                        {{/if}}
+                                                                                        {{#if $eq ../ratebasis 'Blended'}}
+                                                                                            {{#with blendedApprovedCost 'application'}}
+                                                                                                <td>{{providerEarnings}} USD</td>
+                                                                                            {{/with}}
+                                                                                        {{/if}}
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        {{/if}}
+                                                                    {{/if}}
+                                                                    {{#if $eq this.app_type 'counteroffer'}}
+                                                                        {{#if workedLess 'counteroffer'}}
+                                                                            <label>Approved</label>
+                                                                            <table class="table table-striped table-responsive">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>
+                                                                                            {{#if $eq counterType 'per_hour'}}Hours{{/if}}
+                                                                                            {{#if $eq counterType 'per_device'}}Devices{{/if}}
+                                                                                            {{#if $eq counterType 'blended'}}Hours{{/if}}
+                                                                                        </th>
+                                                                                        <th>Your Earnings</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            {{#if $eq counterType 'per_hour'}}
+                                                                                                {{#with totalHours}}
+                                                                                                    {{this.hours}} Hr {{this.minutes}} Min
+                                                                                                {{/with}}
+                                                                                            {{/if}}
+                                                                                            {{#if $eq counterType 'per_device'}}
+                                                                                                {{../devicescompleted}} Devices
+                                                                                            {{/if}}
+                                                                                            {{#if $eq counterType 'blended'}}
+                                                                                                {{#with totalHours}}
+                                                                                                    {{this.hours}} Hr {{this.minutes}} Min
+                                                                                                {{/with}}
+                                                                                            {{/if}}
+                                                                                        </td>
+                                                                                        {{#if $eq counterType 'per_hour'}}
+                                                                                            {{#with hourlyApprovedCost 'counteroffer' hourly_rate max_hours}}
+                                                                                                <td>{{providerEarnings}} USD</td>
+                                                                                            {{/with}}
+                                                                                        {{/if}}
+                                                                                        {{#if $eq counterType 'per_device'}}
+                                                                                            {{#with deviceApprovedCost 'counteroffer' device_rate max_devices}}
+                                                                                                <td>{{providerEarnings}} USD</td>
+                                                                                            {{/with}}
+                                                                                        {{/if}}
+                                                                                        {{#if $eq counterType 'blended'}}
+                                                                                            {{#with blendedApprovedCost 'counteroffer' this.first_max_hours this.first_hours this.next_max_hours this.next_hours}}
+                                                                                                <td>{{providerEarnings}} USD</td>
+                                                                                            {{/with}}
+                                                                                        {{/if}}
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        {{/if}}
+                                                                    {{/if}}
+                                                                {{/if}}
+                                                            {{/with}}
+                                                            {{#if expensesRequested}}
+                                                                <hr>
+                                                                Expenses:
+                                                                <table class="table table-striped table-responsive">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Amount</th>
+                                                                            <th>Description</th>
+                                                                            <th>Status</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {{#each expenses}}
+                                                                            <tr>
+                                                                                <td>{{roundToTwo expense_amount}} USD</td>
+                                                                                <td>{{expense_description}}</td>
+                                                                                <td>
+                                                                                    {{#if $eq request_status 'accepted'}}
+                                                                                        <i class="fa fa-check"></i> Accepted
+                                                                                    {{/if}}
+                                                                                    {{#if $eq request_status 'pending'}}
+                                                                                        <a href data-balloon="A cup of coffee while the buyer takes an action." data-balloon-pos="up"><i class="fa fa-coffee"></i></a>&nbsp;&#124;&nbsp;<a href data-expense-id="{{expense_id}}" class="removeExpense" data-balloon="Remove Expense" data-balloon-pos="up"><i class="fa fa-trash"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq request_status 'rejected'}}
+                                                                                        <i class="fa fa-times"></i> Rejected
+                                                                                    {{/if}}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {{/each}}
+                                                                    </tbody>
+                                                                </table>
+                                                            {{/if}}
+                                                            {{#if bonusRequested}}
+                                                                <hr>
+                                                                Budget Increase:
+                                                                <table class="table table-striped table-responsive">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Payment Type</th>
+                                                                            <th>Amount</th>
+                                                                            <th>Status</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {{#each budgetIncreases}}
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {{request_type}}
+                                                                                    {{#if $eq request_type 'Fixed Pay'}}
+                                                                                        <a href data-balloon="Pay fixed amount of {{fixed_amount}} USD" data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq request_type 'Per Hour'}}
+                                                                                        <a href data-balloon="Pay {{hourly_rate}} USD for {{max_hours}} additional hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq request_type 'Per Device'}}
+                                                                                        <a href data-balloon="Pay {{device_rate}} USD for {{max_devices}} additional devices." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq request_type 'Blended'}}
+                                                                                        <a href data-balloon="Pay {{next_hours}} USD for  {{next_max_hours}} additional hours." data-balloon-pos="up"><i class="fa fa-info-circle"></i></a>
+                                                                                    {{/if}}
+                                                                                </td>
+                                                                                <td>{{roundToTwo provider_nets}} USD</td>
+                                                                                <td>
+                                                                                    {{#if $eq request_status 'accepted'}}
+                                                                                        <i class="fa fa-check"></i> Accepted
+                                                                                    {{/if}}
+                                                                                    {{#if $eq request_status 'pending'}}
+                                                                                        <a href data-balloon="A cup of coffee while the buyer takes an action." data-balloon-pos="up"><i class="fa fa-coffee"></i></a>&nbsp;&#124;&nbsp;<a href class="cancelBudgetIncrease" data-bi-id="{{request_id}}" data-balloon="Cancel Request" data-balloon-pos="up"><i class="fa fa-trash"></i></a>
+                                                                                    {{/if}}
+                                                                                    {{#if $eq request_status 'rejected'}}
+                                                                                        <i class="fa fa-times"></i> Rejected
+                                                                                    {{/if}}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {{/each}}
+                                                                    </tbody>
+                                                                </table>
+                                                            {{/if}}
+                                                            <hr>
+                                                            Grand Total:
+                                                            <h5>Your Earnings: {{roundToTwo projectBudget}} USD</h5>
+                                                            <h5>Buyer Cost: {{roundToTwo buyerCost}} USD</h5>
+                                                            <h5>UTL Fees: {{roundToTwo utlCommission}} USD (5%)</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane fade in" id="requestBudgetInc">
                                                     <br>
                                                     <small><i>The amount requested will be added to the accepted budget.</i></small>
                                                     <div class="panel panel-default">
@@ -2460,6 +2474,10 @@
                                                     Buyer Cost: {{roundToTwo buyer_cost}} USD.<br>
                                                 {{/if}}
                                                 Provider Earns: {{roundToTwo freelancer_nets}} USD.
+                                                {{#if counter_description}}
+                                                    <br>
+                                                    {{counter_description}}
+                                                {{/if}}
                                             {{/if}}
                                         {{/if}}
                                     {{/with}} <br>

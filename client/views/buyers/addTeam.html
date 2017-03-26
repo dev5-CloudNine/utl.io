@@ -1,50 +1,41 @@
 <template name="addTeam">
-	<div class="panel panel-light">
-		<div class="panel-body">
-			<div class="form-group">
-				<div class="row" hidden>
-					<div class="col-sm-4">
-						<label>Buyer Name</label>
-						<input type="text" id="buyerName" class="form-control" value="{{buyerName}}" disabled="disabled">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-4">
-						<label>Email</label>
-						<input type="text" class="form-control email">
-					</div>
-				</div>
-				{{#if isInRole 'buyer'}}
-					<div class="row">
-						<div class="col-md-2">
-							<div class="radio">
-								<label><input class="type" name="corpRole" type="radio" value="dispatcher">Dispatch</label>
-							</div>
+	<div id="hompePageIntro" class="container-fluid gradient-blue-orange-h"></div>
+	<div class="jumbotron jumbotron-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-md-4 col-md-offset-8">
+					<div class="panel panel-white">
+						<div class="panel-body">
+							<fieldset>
+								<legend>Invite</legend>
+								<div class="form-group" hidden>
+									<label>Buyer Name</label>
+									<input type="text" id="buyerName" class="form-control" value="{{buyerName}}" disabled="disabled">
+								</div>
+								<div class="form-group">
+									<label>Email</label>
+									<input type="text" class="form-control email">
+								</div>
+								{{#if isInRole 'buyer'}}
+									<div class="radio-inline">
+										<label><input class="type" name="corpRole" type="radio" value="dispatcher">As a Dispatch</label>
+									</div>
+									<div class="radio-inline">
+										<label><input class="type" name="corpRole" type="radio" value="accountant">As an Accountant</label>
+									</div>
+								{{/if}}
+								{{#if isInRole 'admin'}}
+									<div class="radio-inline">
+										<label><input class="type" name="corpRole" type="radio" value="buyer">As a Buyer</label>
+									</div>
+									<div class="radio-inline">
+										<label><input class="type" name="corpRole" type="radio" value="provider">As a Provider</label>
+									</div>
+								{{/if}}
+								<hr>
+								<button type="submit" class="invite btn btn-sm btn-primary" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Send Invitation</button>
+							</fieldset>
 						</div>
-						<div class="col-md-2">
-							<div class="radio">
-								<label><input class="type" name="corpRole" type="radio" value="accountant">Accountant</label>
-							</div>
-						</div>
-					</div>
-				{{/if}}
-				{{#if isInRole 'admin'}}
-					<div class="row">
-						<div class="col-md-2">
-							<div class="radio">
-								<label><input class="type" name="corpRole" type="radio" value="buyer">Buyer</label>
-							</div>
-						</div>
-						<div class="col-md-2">
-							<div class="radio">
-								<label><input class="type" name="corpRole" type="radio" value="provider">Provider</label>
-							</div>
-						</div>
-					</div>
-				{{/if}}
-				<div class="row">
-					<div class="col-sm-4">
-						<button type="submit" class="invite btn btn-sm btn-primary" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Send Invitation</button>
 					</div>
 				</div>
 			</div>

@@ -504,6 +504,16 @@ h3, h4 {
   background-color: #ffeded !important;
   border-color: #ddd;
 }
+
+.panel-application {
+  background-color: #DFF0D8 !important;
+  border-color: #ddd;
+}
+
+.panel-counter {
+  background-color: #D9EDF7 !important;
+  border-color: #ddd;
+}
 .form-group .input-group input[type=file] {
     display:none;
 }
@@ -2248,11 +2258,11 @@ svg {
 }
 
 .fa-appscount {
-  color: #ffeded; 
+  color: #DFF0D8; 
 }
 
 .fa-cocount {
-  color: #F6F4EC;
+  color: #D9EDF7;
 }
 
 .assigned-jobs-list {

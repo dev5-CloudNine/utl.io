@@ -30,13 +30,13 @@ var allJobsOptions = {
                     rateBasisText = '<span class="label-fixed-pay">FIXED PAY</span>';
                 }
                 if(jobDetails.ratebasis == 'Per Hour') {
-                    rateBasisText = '<span class="label-hourly-pay">PER HOUR&nbsp;&raquo;&nbsp;' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.</span>';
+                    rateBasisText = '<span class="label-hourly-pay">PER HOUR&nbsp;&raquo;&nbsp;</span>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
                 }
                 if(jobDetails.ratebasis == 'Per Device') {
-                    rateBasisText = '<span class="label-device-pay">PER DEVICE&nbsp;&raquo;&nbsp;' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' devices.</span>';
+                    rateBasisText = '<span class="label-device-pay">PER DEVICE&nbsp;&raquo;&nbsp;</span>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' devices.';
                 }
                 if(jobDetails.ratebasis == 'Blended') {
-                    rateBasisText = '<span class="label-blended-pay">BLENDED PAY&nbsp;&raquo;&nbsp;' + jobDetails.payforfirsthours + ' USD for the first ' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours</span>.'
+                    rateBasisText = '<span class="label-blended-pay">BLENDED PAY&nbsp;&raquo;&nbsp;</span>' + jobDetails.payforfirsthours + ' USD for the first ' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
                 }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
@@ -105,24 +105,34 @@ var allJobsOptions = {
                         }
                     }
                 }
-                if(jobDetails.applicationStatus == 'open')
-                    return '<span class="jobAppliedTick" data-balloon="U\'ve Applied" data-balloon-pos="up"><i class="fa fa-check-square fa-2x"></i></span>';
+                if(jobDetails.applicationStatus == 'open') {
+                    var applicationTime;
+                    if(jobDetails.applications) {
+                        for(var i = 0; i < jobDetails.applications.length; i++) {
+                            if(jobDetails.applications[i].userId == Meteor.userId()) {
+                                applicationTime = jobDetails.applications[i].applied_at;
+                                break;
+                            }
+                        }
+                    }
+                    return '<small><i>' + moment(applicationTime).format('LLLL') + '</i></small><br><span class="jobAppliedTick" data-balloon="U\'ve Applied" data-balloon-pos="up"><i class="fa fa-check-square"></i></span>';
+                }
                 if(jobDetails.applicationStatus == 'assigned') {
                     if(acceptedProvider) {
                         var returnText;
                         if(jobDetails.assignmentStatus == 'not_confirmed') {
                             if(jobDetails.routed) {
-                                returnText = '<small>Routed job. Needs confirmation.</small>';
+                                returnText = '<small><i>' + moment(jobDetails.createdAt).format('LLLL') + '</i><br>Routed job. Needs confirmation.</small>';
                             } else {
-                                returnText = '<small>Application accepted. Job assigned. Needs confirmation.</small><br>';
+                                returnText = '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Application accepted. Job assigned. Needs confirmation.</small><br>';
                             }
                             return returnText + '<button data-job-id="' + jobDetails._id + '" data-buyer-id="' + jobDetails.userId + '" class="margin-top-5 btn btn-primary btn-sm confirmAssignment">Confirm</button>'
                         }
                         if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected') {
                             Meteor.subscribe('timeSheet', jobDetails._id);
-                            var returnText = '<small>You confirmed. Job assigned. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</small>';
+                            var returnText = '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>You confirmed. Job assigned. Finish all the tasks and fill up your timesheets to submit the job for buyer approval.</small>';
                             if(jobDetails.assignmentStatus == 'rejected') {
-                                returnText = '<small>Rejected job done. Please discuss with the buyer for futher details and submit the job for buyer approval.</small>'
+                                returnText = '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Rejected job done. Please discuss with the buyer for futher details and submit the job for buyer approval.</small>'
                             }
                             var tasksClosed = Tasks.find({$and:[{jobID:jobDetails._id},{state:{$ne:'Completed'}}]}).count();
                             if(tasksClosed != 0) {
@@ -140,7 +150,7 @@ var allJobsOptions = {
                             return returnText + '<br><button data-job-id="' + jobDetails._id + '" data-buyer-id="' + jobDetails.userId + '" class="margin-top-5 btn btn-primary btn-sm submitAssignment">Submit for Approval.</button>';
                         }
                         if(jobDetails.assignmentStatus == 'submitted') {
-                            return '<small>Job submitted for approval. Await response.</small>'
+                            return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Job submitted for approval. Await response.</small>'
                         }
                     }
                 }
@@ -148,7 +158,7 @@ var allJobsOptions = {
                     if(jobDetails.assignedProvider != Meteor.userId()) {
                         return '<small>The job is now complete.</small>'
                     }
-                    var returnText = '<small>Job approved. Account credited.</small>';
+                    var returnText = '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Job approved. Account credited.</small>';
                     var reviewed = false;
                     if(Reviews.findOne({$and: [{reviewedJobId: jobDetails._id}, {providerId: Meteor.userId()}, {reviewedBy: 'provider'}]}))
                         reviewed = true;

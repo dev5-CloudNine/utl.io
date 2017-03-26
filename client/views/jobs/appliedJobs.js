@@ -31,13 +31,13 @@ var appliedJobsOptions = {
                     rateBasisText = '<span class="label-fixed-pay">FIXED PAY</span>';
                 }
                 if(jobDetails.ratebasis == 'Per Hour') {
-                    rateBasisText = '<span class="label-hourly-pay">PER HOUR&nbsp;&raquo;&nbsp;' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.</span>';
+                    rateBasisText = '<span class="label-hourly-pay">PER HOUR&nbsp;&raquo;&nbsp;</span>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
                 }
                 if(jobDetails.ratebasis == 'Per Device') {
-                    rateBasisText = '<span class="label-device-pay">PER DEVICE&nbsp;&raquo;&nbsp;' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' devices.</span>';
+                    rateBasisText = '<span class="label-device-pay">PER DEVICE&nbsp;&raquo;&nbsp;</span>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' devices.';
                 }
                 if(jobDetails.ratebasis == 'Blended') {
-                    rateBasisText = '<span class="label-blended-pay">BLENDED PAY&nbsp;&raquo;&nbsp;' + jobDetails.payforfirsthours + ' USD for the first ' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours</span>.'
+                    rateBasisText = '<span class="label-blended-pay">BLENDED PAY&nbsp;&raquo;&nbsp;</span>' + jobDetails.payforfirsthours + ' USD for the first ' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
                 }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
@@ -86,7 +86,16 @@ var appliedJobsOptions = {
             title: 'Actions',
             width: '20%',
             data: function(jobDetails) {
-                return '<span class="jobAppliedTick" data-balloon="U\'ve applied" data-balloon-pos="up"><i class="fa fa-check-square fa-2x"></i></span>';
+                var applicationTime;
+                if(jobDetails.applications) {
+                    for(var i = 0; i < jobDetails.applications.length; i++) {
+                        if(jobDetails.applications[i].userId == Meteor.userId()) {
+                            applicationTime = jobDetails.applications[i].applied_at;
+                            break;
+                        }
+                    }
+                }
+                return '<small><i>' + moment(applicationTime).format('LLLL') + '</i></small><br><span class="jobAppliedTick" data-balloon="U\'ve applied" data-balloon-pos="up">U\'ve Applied</span>';
             }
         }
     ],

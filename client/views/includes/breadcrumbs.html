@@ -34,13 +34,13 @@
 			                        	<div class="widget-data">
 			                                <div class="widget-title">
 			                                	My Team <span class="badge">{{teamCount}}</span>
+			                                	{{#if isInRole 'buyer'}}
+			                                		&#124; <a href="/addTeam">Invite</a>
+			                                	{{/if}}
 			                                </div>
 			                                <div class="widget-subtitle">
 			                                	<a href="/dispatchers">Dispatchers - {{teamDispatcherCount}}</a> &#124; 
 			                                	<a href="/accountants">Accountants - {{teamAccountantCount}}</a> 
-			                                	{{#if isInRole 'buyer'}}
-			                                		&#124; <a href="/addTeam">Invite</a>
-			                                	{{/if}}
 			                                </div>
 			                                <div class="widget-title seperator">
 			                                	<a href="/profiles">Providers <span class="badge">{{providerCount}}</span></a>
@@ -83,7 +83,7 @@
 			                            		<a href="/jobs">Open Jobs <span class="badge">{{openJobsCount}}</span></a>
 			                            	</div>
 			                                <div class="widget-subtitle">
-			                                    <a href="/recommendedJobs">Recommended - {{recommendedJobsCount currentUser._id}}</a> &#124; 
+			                                    <!-- <a href="/recommendedJobs">Recommended - {{recommendedJobsCount currentUser._id}}</a> &#124; --> 
 			                                    <a href="/invitedJobs">Invited - {{invitedJobsCount}}</a>
 			                                </div>
 			                                <div class="widget-title seperator">
@@ -198,15 +198,14 @@
 		                        <div class="widget widget-default widget-item-icon">
 		                            <div class="widget-data">
 	                                	<div class="widget-title">
-	                                		<a href="/allUsers">Users <span class="badge">{{getPublishedCount 'userCount'}}</span></a>
+	                                		<a href="/allUsers">Users <span class="badge">{{getPublishedCount 'userCount'}}</span></a>&nbsp;&#124;&nbsp;<a href="{{pathFor 'addTeam'}}">Invite</a>
 	                                	</div>
 	                                    <div class="widget-subtitle">
 	                                    	Buyers - {{buyerCount}} &#124; 
 	                                    	Providers - {{providerCount}} &#124; 
 	                                    	Dispatchers - {{dispatcherCount}} &#124; 
 	                                    	Accountants - {{accountantCount}} &#124; 
-	                                    	Admin - 1 &#124; 
-											<a href="{{pathFor 'addTeam'}}">Invite</a>
+	                                    	Admin - 1
 	                                    </div>		                                
 		                            </div>
 		                            <div class="widget-data">
@@ -229,8 +228,8 @@
 	                                		Dwolla
 	                                	</div>
 	                                	<div class="widget-subtitle">
-	                                		<a href="{{pathFor 'dwollaCustomers'}}">Customers</a> &#124;
-	                                		<a href="{{pathFor 'dwollaTransfers'}}">Transfers</a> &#124;
+	                                		<!-- <a href="{{pathFor 'dwollaCustomers'}}">Customers</a> &#124;
+	                                		<a href="{{pathFor 'dwollaTransfers'}}">Transfers</a> &#124; -->
 	                                		<a href="" class="authUrl">Login</a>
 	                                	</div>
 	                                </div>
@@ -239,7 +238,8 @@
 	                                		Payezee
 	                                	</div>
 	                                	<div class="widget-subtitle">
-	                                		<a href="{{pathFor 'allDeposits'}}">Deposits</a>
+	                                		<!-- <a href="{{pathFor 'allDeposits'}}">Deposits</a> -->
+	                                		<a href="https://demo.globalgatewaye4.firstdata.com/" target="_blank">Login</a>
 	                                	</div>
 	                                </div>
 		                        </div>     
@@ -263,7 +263,7 @@
 		                                    <a href="{{pathFor 'allDeposits'}}">Deposits</a>
 		                                </div>
 		                                <div class="col widget-title">
-		                                    <a href="{{pathFor 'allWithdrawls'}}">Withdrawls</a>
+		                                    <a href="{{pathFor 'dwollaTransfers'}}">Withdrawls</a>
 		                                </div>
 		                            </div>                            
 		                        </div>

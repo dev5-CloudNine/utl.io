@@ -35,13 +35,13 @@ var openJobsObject = {
                     rateBasisText = '<span class="label-fixed-pay">FIXED PAY</span>';
                 }
                 if(jobDetails.ratebasis == 'Per Hour') {
-                    rateBasisText = '<span class="label-hourly-pay">PER HOUR&nbsp;&raquo;&nbsp;' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.</span>';
+                    rateBasisText = '<span class="label-hourly-pay">PER HOUR&nbsp;&raquo;&nbsp;</span>' + jobDetails.hourlyrate + 'USD for ' + jobDetails.maxhours + ' hours.';
                 }
                 if(jobDetails.ratebasis == 'Per Device') {
-                    rateBasisText = '<span class="label-device-pay">PER DEVICE&nbsp;&raquo;&nbsp;' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' devices.</span>';
+                    rateBasisText = '<span class="label-device-pay">PER DEVICE&nbsp;&raquo;&nbsp;</span>' + jobDetails.rateperdevice + 'USD for ' + jobDetails.maxdevices + ' devices.';
                 }
                 if(jobDetails.ratebasis == 'Blended') {
-                    rateBasisText = '<span class="label-blended-pay">BLENDED PAY&nbsp;&raquo;&nbsp;' + jobDetails.payforfirsthours + ' USD for the first ' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours</span>.'
+                    rateBasisText = '<span class="label-blended-pay">BLENDED PAY&nbsp;&raquo;&nbsp;</span>' + jobDetails.payforfirsthours + ' USD for the first ' + jobDetails.firsthours + ' hours, and then ' + jobDetails.payfornexthours + ' USD for the next ' + jobDetails.nexthours + ' hours.'
                 }
                 if(Roles.userIsInRole(jobDetails.userId, ['dispatcher'])) {
                     buyerDetails = Dispatchers.findOne({userId: jobDetails.userId});
@@ -105,16 +105,27 @@ var openJobsObject = {
             responsivePriority: 3,
             data: function(jobDetails) {
                 var applied = false;
+                var acceptedUser;
+                var applicationTime;
                 if(jobDetails.applications) {
                     for(var i = 0; i < jobDetails.applications.length; i++) {
                         if(jobDetails.applications[i].userId == Meteor.userId()) {
                             applied = true;
+                            applicationTime = jobDetails.applications[i].applied_at;
+                        }
+                        if(jobDetails.applications[i].app_status == 'accepted') {
+                            acceptedUser = jobDetails.applications[i].userId;
                             break;
                         }
                     }
                 }
-                if(applied)
-                    return '<span class="jobAppliedTick" data-balloon="U\'ve Applied" data-balloon-pos="up"><i class="fa fa-check-square fa-2x"></i></span>';
+                if(applied) {
+                    if(acceptedUser == Meteor.userId()) {
+                        var returnText = '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>Application accepted. Job assigned. Needs confirmation.</small><br>';
+                        return returnText + '<button data-job-id="' + jobDetails._id + '" data-buyer-id="' + jobDetails.userId + '" class="margin-top-5 btn btn-primary btn-sm confirmAssignment">Confirm</button>'
+                    }
+                    return '<small><i>' + moment(applicationTime).format('LLLL') + '</i></small><br><span class="jobAppliedTick" data-balloon="U\'ve Applied" data-balloon-pos="up">U\'ve applied.</span>';
+                }
                 return '<a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">Apply</a>';
             }
         }
@@ -127,4 +138,42 @@ Template.jobs.helpers({
         return openJobs;
     },
     openJobsOptions: openJobsObject
+})
+
+Template.jobs.events({
+    'click .confirmAssignment': function(event, template) {
+        event.preventDefault();
+        var buyerId = $(event.currentTarget).data('buyer-id');
+        var jobId = $(event.currentTarget).data('job-id');
+        $(event.currentTarget).button({loadingText:'<i class="fa fa-circle-o-notch fa-spin"></i> OK Wait...'})
+        $(event.currentTarget).button('loading');
+        var jobDetails = Jobs.findOne({_id: jobId});
+        var providerEarnings;
+        if(jobDetails.applications) {
+            var acceptedApplication;
+            for(var i = 0; i < jobDetails.applications.length; i++) {
+                if(jobDetails.applications[i].app_status == 'accepted') {
+                    acceptedApplication = jobDetails.applications[i];
+                    break;
+                }
+            }
+            if(acceptedApplication.app_type == 'application') {
+                providerEarnings = jobDetails.freelancer_nets;
+                if(jobDetails.ratebasis == 'Per Device') {
+                    Meteor.call('setEstimatedDevices', jobDetails.maxdevices, jobId);
+                }
+            } 
+            if(acceptedApplication.app_type == 'counteroffer') {
+                providerEarnings = acceptedApplication.freelancer_nets;
+                if(acceptedApplication.counterType == 'per_device') {
+                    Meteor.call('setEstimatedDevices', acceptedApplication.max_devices, jobId);
+                }
+            }
+        }
+        Meteor.call('confirmAssignment', jobId, buyerId, providerEarnings, function(error) {
+            if(error) {
+                $(event.currentTarget).button('reset');
+            }
+        })
+    }
 })

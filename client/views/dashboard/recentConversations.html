@@ -31,9 +31,8 @@
                                                             &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                         {{/if}}
                                                     </span>
-                                                    <p>
-                                                        <small>Asgn'd to: #{{readableID}} {{firstName}} {{lastName}}</small>
-                                                    </p>
+                                                    <br>
+                                                    <small>Asgn'd to: #{{readableID}} {{firstName}} {{lastName}}</small>
                                                 {{/with}}
                                             {{/if}}
                                             {{#if isInRole 'provider'}}
@@ -46,9 +45,8 @@
                                                             &nbsp;<i class="fa fa-circle fa-offline"></i>
                                                         {{/if}}
                                                     </span>
-                                                    <p>
-                                                        <small>Asgn'd by: #{{readableID}} {{firstName}} {{lastName}}</small>
-                                                    </p>
+                                                    <br>
+                                                    <small>Asgn'd by: #{{readableID}} {{firstName}} {{lastName}}</small>
                                                 {{/with}}
                                             {{/if}}
                                             {{#if unreadJobMessages ../_id}}
