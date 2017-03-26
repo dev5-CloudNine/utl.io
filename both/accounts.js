@@ -1,24 +1,17 @@
 AccountsTemplates.configure({
-    // Behaviour
     confirmPassword: true,
     enablePasswordChange: true,
     overrideLoginErrors: true,
     sendVerificationEmail: true,
-
-    // Appearance
     showForgotPasswordLink: true,
     showLabels: false,
     showPlaceholders: true,
-
-    // Client-side Validation
     continuousValidation: true,
     negativeFeedback: false,
     negativeValidation: true,
     positiveValidation: false,
     positiveFeedback: false,
     forbidClientAccountCreation : true,
-
-    // Redirects
     homeRoutePath: '/',
     redirectTimeout: 2000,
 });
@@ -52,7 +45,7 @@ AccountsTemplates.configureRoute("signIn", {
     },
     redirect: function() {
         var user = Meteor.user();
-        if(user.isDeveloper || user.isBuyer || user.isDispatcher)
+        if(user && (user.isDeveloper || user.isBuyer || user.isDispatcher || user.isAccountant))
             Router.go('/dashboard');
         else {
             if(Roles.userIsInRole(Meteor.userId(), ['provider']))
@@ -61,6 +54,8 @@ AccountsTemplates.configureRoute("signIn", {
                 Router.go('/buyerNew')
             if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
                 Router.go('/dispatcherNew');
+            if(Roles.userIsInRole(Meteor.userId(), ['accountant']))
+                Router.go('/accountantNew');
         }
         if(Roles.userIsInRole(Meteor.userId(), ['admin']))
             Router.go('/dashboard');

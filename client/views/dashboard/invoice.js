@@ -132,6 +132,16 @@ Template.invoice.helpers({
 	invoiceDetails: function() {
 		return Invoices.findOne({invoiceId: parseInt(Router.current().params.invoiceId)});
 	},
+	jobPostedByBuyer: function(buyerId) {
+		if(Roles.userIsInRole(buyerId, ['buyer']))
+			return true;
+		return false;
+	},
+	jobPostedByDispatcher: function(buyerId) {
+		if(Roles.userIsInRole(buyerId, ['dispatcher']))
+			return true;
+		return false
+	},
 	timeLogs:function(id){
 		var logList = [];
 		var totalHours = 0;

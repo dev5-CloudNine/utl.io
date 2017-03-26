@@ -1767,14 +1767,18 @@ Template.job.helpers({
   },
   itypes: function() {
     var itypes = [];
-    var industryTypes = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
-    for(var i  = 0; i < industryTypes.length; i++) {
-      itypes.push({
-        encodedType: encodeURIComponent(industryTypes[i]),
-        decodedType: industryTypes[i]
-      });
+    var industryTypes;
+    if(Meteor.user() && Meteor.user().isDeveloper) {
+      industryTypes = Profiles.findOne({userId: Meteor.userId()}).industryTypes;
+      for(var i  = 0; i < industryTypes.length; i++) {
+        itypes.push({
+          encodedType: encodeURIComponent(industryTypes[i]),
+          decodedType: industryTypes[i]
+        });
+      }
+      return itypes;
     }
-    return itypes;
+    return false;
   },
   postedByDispatcher: function() {
     return (Roles.userIsInRole(this.userId, ['dispatcher'])) ? true: false;
