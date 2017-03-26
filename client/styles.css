@@ -501,7 +501,7 @@ h3, h4 {
   border-color: #ddd;
 }
 .panel-blue {
-  background-color: #ffeded !important;
+  background-color: #D9EDF7 !important;
   border-color: #ddd;
 }
 
@@ -2275,7 +2275,7 @@ svg {
 }
 
 .message-history-body {
-  height: 300px;
+  height: 420px;
   overflow-y: hidden;
 }
 

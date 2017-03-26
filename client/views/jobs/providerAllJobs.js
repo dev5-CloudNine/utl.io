@@ -115,7 +115,7 @@ var allJobsOptions = {
                             }
                         }
                     }
-                    return '<small><i>' + moment(applicationTime).format('LLLL') + '</i></small><br><span class="jobAppliedTick" data-balloon="U\'ve Applied" data-balloon-pos="up"><i class="fa fa-check-square"></i></span>';
+                    return '<small><i>' + moment(applicationTime).format('LLLL') + '</i></small><br><span class="jobAppliedTick" data-balloon="U\'ve Applied" data-balloon-pos="up">U\'ve applied.</span>';
                 }
                 if(jobDetails.applicationStatus == 'assigned') {
                     if(acceptedProvider) {

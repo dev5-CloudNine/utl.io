@@ -445,7 +445,7 @@ Jobs.attachSchema(new SimpleSchema({
       }
     },
     servicelocation: {
-    label: "Service Location *",
+    label: "Job Location *",
     type: String,
     autoform: {
       type: "select-radio-inline",
@@ -465,7 +465,7 @@ Jobs.attachSchema(new SimpleSchema({
     },
     serviceschedule: {
     optional: true,
-    label: "Service Schedule *",
+    label: "Job Schedule *",
     type: String,
     autoform: {
         type: "select-radio-inline",

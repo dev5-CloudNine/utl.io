@@ -16,7 +16,7 @@
                     {{/unless}}
                 </p>
                 <h5 class="widget-user-desc">{{title}}</h5>
-                <small>{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{fullLocation.locality}}, {{fullLocation.state}}, {{fullLocation.zip}}</small>
+                <small>{{#if fullLocation.sublocality}} {{fullLocation.sublocality}},{{/if}} {{#if fullLocation.locality}} {{fullLocation.locality}},{{/if}} {{fullLocation.state}}, {{fullLocation.zip}}</small>
             </div>
             <div class="widget-user-image">
                 <a href="{{pathFor 'buyer'}}">

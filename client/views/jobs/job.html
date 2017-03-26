@@ -694,52 +694,44 @@
                                 </div>
                             </div>
                             {{#if $eq applicationStatus 'paid'}}
-                                <div class="panel panel-light">
-                                    <div class="panel-heading">
-                                        <h5>Rate &amp; Review</h5>
-                                    </div>
+                                <div class="panel panel-blue">
                                     <div class="panel-body">
+                                        <label>Rate &amp; Review</label>
                                         {{#if reviewedProvider}}
                                             {{#with providerReviewDetails}}
                                                 <p>
-                                                    Review: {{reviewMessage}} <br>
-                                                    Overall satisfaction: {{pointsRated}}/5
+                                                    {{#if $eq pointsRated '5'}}
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    {{/if}}
+                                                    {{#if $eq pointsRated '4'}}
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    {{/if}}
+                                                    {{#if $eq pointsRated '3'}}
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    {{/if}}
+                                                    {{#if $eq pointsRated '2'}}
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    {{/if}}
+                                                    {{#if $eq pointsRated '1'}}
+                                                        <i class="fa fa-star"></i>
+                                                    {{/if}}
+                                                    <br>
+                                                    <i>{{reviewMessage}}</i>
                                                 </p>
                                             {{/with}}
                                         {{else}}
                                             <form id="reviewProvider">
                                                 <div class="form-group">
-                                                    <!-- <label>Was the provider on time?</label>
-                                                    <br>
-                                                    <label class="radio-inline" >
-                                                        <input type="radio" name="timeAttention" value="Yes" required> Yes
-                                                    </label>
-                                                    <label class="radio-inline">
-                                                        <input type="radio" name="timeAttention" value="No"> No
-                                                    </label>
-                                                    <br><br>
-                                                    <label>Did the provider follow the instructions?</label>
-                                                    <br>
-                                                    <label class="radio-inline" >
-                                                        <input type="radio" name="instructionAttention" value="Yes" required> Yes
-                                                    </label>
-                                                    <label class="radio-inline">
-                                                        <input type="radio" name="instructionAttention" value="No"> No
-                                                    </label>
-                                                    <br><br>
-                                                    <label>Were deliverables correct and on time?</label>
-                                                    <br>
-                                                    <label class="radio-inline" >
-                                                        <input type="radio" name="deliverableAttention" value="Yes" required> Yes
-                                                    </label>
-                                                    <label class="radio-inline">
-                                                        <input type="radio" name="deliverableAttention" value="No"> No
-                                                    </label>
-                                                    <label class="radio-inline">
-                                                        <input type="radio" name="deliverableAttention" value="Na"> N/A
-                                                    </label>
-                                                    <br><br> -->
-                                                    <label>Rate Provider</label><br>
                                                     <label class="radio-inline" >
                                                         <input type="radio" name="rateProvider" value="1" required> 1
                                                     </label>
@@ -1817,22 +1809,44 @@
                                 </div>
                             </div>
                             {{#if $eq applicationStatus 'paid'}}
-                            <div class="panel panel-light">
-                                <div class="panel-heading">
-                                    <h5>Rate &amp; Review</h5>
-                                </div>
+                            <div class="panel panel-blue">
                                 <div class="panel-body">
+                                    <label>Rate &amp; Review</label>
                                     {{#if reviewedBuyer}}
                                         {{#with buyerReviewDetails}}
                                             <p>
-                                                Review: {{reviewMessage}} <br>
-                                                Overall satisfaction: {{pointsRated}}/5
+                                                {{#if $eq pointsRated '5'}}
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                {{/if}}
+                                                {{#if $eq pointsRated '4'}}
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                {{/if}}
+                                                {{#if $eq pointsRated '3'}}
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                {{/if}}
+                                                {{#if $eq pointsRated '2'}}
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                {{/if}}
+                                                {{#if $eq pointsRated '1'}}
+                                                    <i class="fa fa-star"></i>
+                                                {{/if}}
+                                                <br>
+                                                <i>{{reviewMessage}}</i> <br>
                                             </p>
                                         {{/with}}
                                     {{else}}
                                         <form id="reviewBuyer">
                                             <div class="form-group">
-                                                <label>Rate buyer</label><br>
                                                 <label class="radio-inline">
                                                     <input type="radio" name="rateBuyer" value="1" required> 1
                                                 </label>
@@ -1966,9 +1980,6 @@
                                                 <div class="tab-pane fade in active" id="providerCostEstimate">
                                                     <br>
                                                     <div class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            <h5>Cost Estimate</h5>
-                                                        </div>
                                                         <div class="panel-body">
                                                             {{#with applicationDetails}}
                                                                 {{#if $eq this.app_type 'application'}}
