@@ -684,7 +684,7 @@
                                         {{/if}}
                                     {{/if}}
                                     {{#if $eq applicationStatus 'paid'}}
-                                        <small><i>{{approvedTime}}</i></small>
+                                        <small><i>{{formatDate updatedAt}}</i></small>
                                         <p>The provider's account is successfully credited for the job completed.</p>
                                         {{#if reviewedProvider}}
                                             <hr>
@@ -823,7 +823,20 @@
                     </div>
                     {{#if assignedOrDone}}
                         <hr>
-                        {{>messages}}
+                        <div role="tabpanel">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#buyerDiscuzTab" aria-controls="buyerDiscuzTab" role="tab" data-toggle="tab">DISCUZ</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="buyerDiscuzTab">
+                                    <br>
+                                    {{>messages}}
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="tab">...</div>
+                            </div>
+                        </div>
                         <hr>
                     {{/if}}
                     {{#with assignedProviderDetails}}
@@ -1794,7 +1807,7 @@
                                     {{/if}}
                                     {{#if $eq applicationStatus 'paid'}}
                                         {{#if assignedProvider}}
-                                            <small><i>{{approvedTime}}</i></small>
+                                            <small><i>{{formatDate updatedAt}}</i></small>
                                             <p>The buyer has approved the job you have done. Congratulations! Your account has been credited with {{roundToTwo projectBudget}} USD. The job is now successfully closed.</p>
                                             {{#if reviewedBuyer}}
                                                 <p>You have reviewed the buyer. The job is successfully closed. <a href="/wallet/invoices/{{invoiceId}}">View invoice</a></p>

@@ -1,15 +1,15 @@
 S3.config = {
-    key: 'AKIAJFKN5NR3ZC2YF6KQ',
-    secret: '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',
-    bucket: 'project-tasks',
+    key: 'AKIAIVSMWFVGFI7JSDJA',
+    secret: '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',
+    bucket: 'ustechland',
     region: 'us-east-1'
 };
 
 Slingshot.createDirective('userImages', Slingshot.S3Storage, {
-    bucket: 'project-tasks',
+    bucket: 'ustechland',
     region: 'us-east-1',
-    AWSAccessKeyId: 'AKIAJFKN5NR3ZC2YF6KQ',
-    AWSSecretAccessKey: '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',
+    AWSAccessKeyId: 'AKIAIVSMWFVGFI7JSDJA',
+    AWSSecretAccessKey: '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',
     acl: 'public-read',
     authorize: function() {
         return true

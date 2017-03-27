@@ -12,7 +12,6 @@ AutoForm.addHooks(['profileNew', 'profileEdit'], {
     },
     update: function(error, result) {
       if (error) {
-        console.log(error)
         toastr.error(error);
       } else {
         analytics.track("Profile Edited");
@@ -164,7 +163,6 @@ Template.profileFields.helpers({
 });
 
 Template.providerLocationMap.onRendered(function() {
-  console.log(this);
   this.autorun(() => {
     if(GoogleMaps.loaded()) {
       $('#loc').geocomplete({country: 'us', details: '#locationDetails'}).bind('geocode:result', function(event, result) {

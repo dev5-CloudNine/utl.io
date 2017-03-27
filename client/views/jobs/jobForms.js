@@ -347,20 +347,6 @@ Template.jobFields.helpers({
 		proLoaded = true;
 		return this.job.individualprovider;
 	},
-	location: function (query, sync, callback) {
-		if(!locLoaded) $('.typeahead').addClass('loadinggif');
-		Meteor.call('location', query, {}, function(err, res) {
-			if (err) {
-				console.log(err);
-				return;
-			}
-			callback(res.map(function(v) {
-				locLoaded = true;
-				$('.typeahead').removeClass('loadinggif');
-				return { value: v.city + ", " + v.state + ", " + v.zip}; 
-			}));
-		});
-	},
 	parentCategories: function() {
 		return Categories.find().fetch();
 	},
@@ -380,7 +366,6 @@ Template.jobFields.helpers({
 Template.submitButtons.events({
 	'change input[name="publishJob"]': function(event, template) {
 		var publishTo = $(event.currentTarget).val();
-		console.log(publishTo);
 		if(publishTo == 'selectedProviders')
 			$('#publishIndividual').show();
 		else

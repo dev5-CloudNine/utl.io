@@ -2092,7 +2092,10 @@ Template.job.helpers({
   timeLogs:function(id){
     var logList = [];
     var totalHours = 0;
-    var logs = TimeSheet.findOne({'jobID':id}, { sort: { 'logs.checkOut': -1 } }).logs;
+    var logs;
+    var timeSheets = TimeSheet.findOne({jobID: id}, {sort: {'logs.checkOut': -1}});
+    if(timeSheets)
+      logs = timeSheets.logs;
     if(!logs) return;
     logs.map(function(log){
       var obj = {};
@@ -2482,8 +2485,12 @@ Template.job.helpers({
     }
   },
   applicationAcceptedTime: function() {
-    var acceptedTime = Notifications.findOne({$and: [{jobId: this._id}, {providerId: Meteor.userId()}, {notificationType: 'applicationAccepted'}]}).timeStamp;
-    return moment(acceptedTime).format('LLLL');
+    var acceptedTime;
+    if(Meteor.user() && Meteor.user().isDeveloper) {
+      acceptedTime = Notifications.findOne({$and: [{jobId: this._id}, {providerId: Meteor.userId()}, {notificationType: 'applicationAccepted'}]}).timeStamp;
+      return moment(acceptedTime).format('LLLL');
+    }
+    return false;
   },
   assignmentTime: function() {
     var assignedTime;
@@ -2524,18 +2531,6 @@ Template.job.helpers({
       }
     }
     return moment(rejectedTime).format('LLLL');
-  },
-  approvedTime: function() {
-    var approvedTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'approveAssignment'}]}).timeStamp;
-    return moment(approvedTime).format('LLLL');
-  },
-  paymentRequestTime: function() {
-    var paymentRequestTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'requestPayment'}]}).timeStamp;
-    return moment(paymentRequestTime).format('LLLL');
-  },
-  approvePaymentTime: function() {
-    var approvePaymentTime = Notifications.findOne({$and: [{jobId: this._id}, {notificationType: 'approvePayment'}]}).timeStamp;
-    return moment(approvePaymentTime).format('LLLL');
   },
   fav : function() {
     var userId;

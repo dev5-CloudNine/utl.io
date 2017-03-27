@@ -101,24 +101,24 @@ var allJobsOptions = {
                     }
                     if(jobDetails.applicationStatus == 'assigned') {
                         if(jobDetails.assignmentStatus == 'not_confirmed') {
-                            return '<small>Job assigned. Awaiting confirmation.</small>';
+                            return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Job assigned. Awaiting confirmation.</small>';
                         }
                         if(jobDetails.assignmentStatus == 'confirmed') {
-                            return '<small>Job assigned. Provider confirmed.</small>';
+                            return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Job assigned. Provider confirmed.</small>';
                         }
                         if(jobDetails.assignmentStatus == 'submitted') {
-                            var returnText = '<small>Job submittted. Approve or reject. Upon approval, the provider\'s account will be credited with ' + jobDetails.projectBudget + ' USD. Ensure that all the tasks and timesheets are upto your mark.</small>'
+                            var returnText = '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Job submittted. Approve or reject. Upon approval, the provider\'s account will be credited with ' + jobDetails.projectBudget + ' USD. Ensure that all the tasks and timesheets are upto your mark.</small>'
                             return returnText + '<br><a href="/jobs/' + jobDetails._id + '" class="btn btn-sm btn-primary">View Details</a>';
                         }
                         if(jobDetails.assignmentStatus == 'rejected') {
-                            return '<small>You have rejected the assignment. Please discuss with the provider and sort it out.</small>';
+                            return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>You have rejected the assignment. Please discuss with the provider and sort it out.</small>';
                         }
                     }
                     if(jobDetails.applicationStatus == 'paid') {
-                        return '<small>Job approved. Provider\'s account credited.</small>'
+                        return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Job approved. Provider\'s account credited.</small>'
                     }
                 } else {
-                    return '<small>Job deactivated.</small>';
+                    return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Job deactivated.</small>';
                 }
             }
         }
