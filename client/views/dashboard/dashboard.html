@@ -6,7 +6,12 @@
                 {{>recentConversations}}
             </div>
             <div class="col-md-8">
-                <label>Important Notifications &amp; Todos</label>
+                <label>
+                    Important Notifications &amp; Todos &raquo;
+                    {{#with myProfile}}
+                        <a href="{{#if isInRole 'buyer'}}{{pathFor 'buyerNotifications'}}{{/if}}{{#if isInRole 'dispatcher'}}{{pathFor 'dispatcherNotifications'}}{{/if}}">View all</a>
+                    {{/with}}
+                </label>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         {{>notifications}}
@@ -148,7 +153,12 @@
                 {{>recentConversations}}
             </div>
             <div class="col-md-8">
-                <label>Important Notifications &amp; Todos</label>
+                <label>
+                    Important Notifications &amp; Todos &raquo;
+                    {{#with myProfile}}
+                        <a href="{{pathFor 'providerNotifications'}}">View all</a>
+                    {{/with}}
+                </label>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         {{>notifications}}

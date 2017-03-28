@@ -2484,14 +2484,17 @@ Template.job.helpers({
       }
     }
   },
-  applicationAcceptedTime: function() {
-    var acceptedTime;
-    if(Meteor.user() && Meteor.user().isDeveloper) {
-      acceptedTime = Notifications.findOne({$and: [{jobId: this._id}, {providerId: Meteor.userId()}, {notificationType: 'applicationAccepted'}]}).timeStamp;
-      return moment(acceptedTime).format('LLLL');
-    }
+  assignedProviderOrBuyer: function(userId) {
+    var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+    if(jobDetails.userId == userId || jobDetails.assignedProvider == userId)
+      return true;
     return false;
   },
+  // applicationAcceptedTime: function() {
+  //   var acceptedTime;
+  //   acceptedTime = Notifications.findOne({$and: [{jobId: this._id}, {providerId: Meteor.userId()}, {notificationType: 'applicationAccepted'}]}).timeStamp;
+  //   return moment(acceptedTime).format('LLLL');
+  // },
   assignmentTime: function() {
     var assignedTime;
     if(Roles.userIsInRole(Meteor.userId(), ['provider', 'corporate-provider'])) {

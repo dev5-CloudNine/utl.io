@@ -33,6 +33,7 @@ Template.dispatcherFields.events({
   },
   'change .file_bag': function(event, template) {
     event.preventDefault();
+    var dispatcherId = this.dispatcherProfile.userId;
     var files = $(event.currentTarget)[0].files;
     Resizer.resize(files[0], {width: 200, height: 200, cropSquare: true}, function(err, file) {
       var uploader = new Slingshot.Upload('userImages');
@@ -41,7 +42,7 @@ Template.dispatcherFields.events({
         if(err)
           console.log(err);
         else {
-          Meteor.call('updateImgURL', Meteor.userId(), imgUrl, function(error, result) {
+          Meteor.call('updateImgURL', dispatcherId, imgUrl, function(error, result) {
             if(error)
               toastr.error("Failed to update.");
             else {
@@ -75,7 +76,7 @@ var locLoaded=false;
 
 Template.dispatcherFields.helpers({
   "customImagePreviewUrl": function() {
-    return Meteor.users.findOne({_id: Meteor.userId()}).imgURL;
+    return Meteor.users.findOne({_id: this.dispatcherProfile.userId}).imgURL;
   },
   locationData : function(){
     locLoaded = true;
@@ -96,13 +97,13 @@ Template.dispatcherFields.helpers({
     });
   },
   companyInvited: function() {
-    var buyerInvited = Buyers.findOne({userId: Meteor.user().invitedBy});
+    var buyerInvited = Buyers.findOne({userId: this.dispatcherProfile.invitedBy});
     if(buyerInvited.companyName)
       return buyerInvited.companyName;
     return;
   },
   buyerCompanyUrl: function() {
-    var buyerInvited = Buyers.findOne({userId: Meteor.user().invitedBy});
+    var buyerInvited = Buyers.findOne({userId: this.dispatcherProfile.invitedBy});
     if(buyerInvited.companyUrl)
       return buyerInvited.companyUrl;
     return;

@@ -47,6 +47,7 @@ Template.buyerFields.events({
   'change .file_bag': function(event, template) {
     event.preventDefault();
     var files = $(event.currentTarget)[0].files;
+    var buyerId = this.buyerProfile.userId
     Resizer.resize(files[0], {width: 200, height: 200, cropSquare: true}, function(err, file) {
       var uploader = new Slingshot.Upload('userImages');
       uploader.send(file, function(err, imgUrl) {
@@ -54,7 +55,7 @@ Template.buyerFields.events({
         if(err)
           console.log(err);
         else {
-          Meteor.call('updateImgURL', Meteor.userId(), imgUrl, function(error, result) {
+          Meteor.call('updateImgURL', buyerId, imgUrl, function(error, result) {
             if(error)
               toastr.error("Failed to update.");
             else {
@@ -89,7 +90,7 @@ var locLoaded=false;
 
 Template.buyerFields.helpers({
   "customImagePreviewUrl": function() {
-    return Meteor.users.findOne({_id: Meteor.userId()}).imgURL;
+    return Meteor.users.findOne({_id: this.buyerProfile.userId}).imgURL;
   },
   locationData : function(){
     locLoaded = true;

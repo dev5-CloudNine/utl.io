@@ -930,11 +930,11 @@ span.bigstars span.rateit-selected
 }
 
 .bg-assigned {
-  background-color: #F0F8FF;
+  background-color: #f8f8f8;
 }
 
 .bg-fav {
-  background-color: #f0f8CC;
+  background-color: #F0FFFF;
 }
 
 .fav-icon {
@@ -2258,9 +2258,8 @@ svg {
 }
 
 #jobNotifications {
-  max-height: 480px;
-  overflow: scroll;
-  overflow-x: hidden;
+  height: 480px;
+  overflow-y: auto;
 }
 
 .fa-appscount {
@@ -2283,10 +2282,6 @@ svg {
 .message-history-body {
   background: url('images/chat_background.jpg');
   height: 480px;
-  overflow-y: hidden;
-}
-
-.message-history-body:hover {
   overflow-y: auto;
 }
 
@@ -2356,8 +2351,12 @@ svg {
     width: 100%;
 }*/
 .avatar {
-    position: relative;
+  height: 36px !important;
+  width: 36px !important;
+    position: relative !important;
 }
+
+
 .base_receive > .avatar:after {
     content: "";
     position: absolute;

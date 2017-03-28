@@ -3,7 +3,7 @@ Template.profileSmall.events({
 		event.preventDefault();
 		Meteor.call('addToFav', this.userId, Meteor.user().roles[0], function(error) {
 			if(error) {
-				console.log('Failed to add to favorites');
+				toastr.error('Failed to add to favorites');
 			}
 			else {
 				$(event.currentTarget).removeClass('favInactive');
@@ -16,12 +16,11 @@ Template.profileSmall.events({
 		event.preventDefault();
 		Meteor.call('removeFromFav', this.userId, Meteor.user().roles[0], function(error) {
 			if(error) {
-				console.log('Failed to add to favorites');
+				toastr.error('Failed to add to favorites');
 			}
 			else {
 				$(event.currentTarget).removeClass('favActive');
 				$(event.currentTarget).addClass('favInactive');
-				console.log('Added to favorites');
 			}
 		});
 		event.stopPropagation();

@@ -32,6 +32,7 @@ Template.profileFields.events({
   },
   "change .resume_bag": function(event, template) {
     event.preventDefault();
+    var providerId = this.profiile.userId;
     $('#resumespinner').show();
     var files = $(event.currentTarget)[0].files;
     if(!files) return;
@@ -46,7 +47,7 @@ Template.profileFields.events({
           file_url: res.secure_url,
           file_name: res.file.original_name
         }
-        Meteor.call('updateResumeURL', Meteor.userId(), fileDetails, function(error, result) {
+        Meteor.call('updateResumeURL', providerId, fileDetails, function(error, result) {
           if(error) {
             toastr.error('Failed to update');
             $('#resumespinner').hide();
@@ -59,6 +60,7 @@ Template.profileFields.events({
   },
   'change .file_bag': function(event, template) {
     event.preventDefault();
+    var providerId = this.profile.userId;
     var files = $(event.currentTarget)[0].files;
     Resizer.resize(files[0], {width: 200, height: 200, cropSquare: true}, function(err, file) {
       var uploader = new Slingshot.Upload('userImages');
@@ -67,7 +69,7 @@ Template.profileFields.events({
         if(err)
           console.log(err);
         else {
-          Meteor.call('updateImgURL', Meteor.userId(), imgUrl, function(error, result) {
+          Meteor.call('updateImgURL', providerId, imgUrl, function(error, result) {
             if(error)
               toastr.error("Failed to update.");
           })
@@ -78,6 +80,7 @@ Template.profileFields.events({
   "click .remove-resume" : function(event) {
     event.preventDefault();
     $('#resumespinner').show();
+    var providerId = this.profile.userId;
     var url = $(event.currentTarget).data('url');
     var index = url.indexOf(S3_FILEUPLOADS)-1;
     var path = url.substr(index);
@@ -86,7 +89,7 @@ Template.profileFields.events({
       if (err) {
           toastr.error("Operation failed");
       } else {
-        Meteor.call('removeResumeURL', Meteor.userId(), url, function (error, result) {
+        Meteor.call('removeResumeURL', providerId, url, function (error, result) {
           if(error){
             toastr.error('Failed to update');
           }
@@ -119,10 +122,10 @@ var locLoaded=false;
 
 Template.profileFields.helpers({
   "customImagePreviewUrl": function() {
-    return Meteor.users.findOne({_id: Meteor.userId()}).imgURL;
+    return Meteor.users.findOne({_id: this.profile.userId}).imgURL;
   },
   resumeUrl: function() {
-    return Meteor.users.findOne({_id: Meteor.userId()}).resumeURL;
+    return Meteor.users.findOne({_id: this.profile.userId}).resumeURL;
   },
   companyInvited: function() {
     var corpInfo = Meteor.user();

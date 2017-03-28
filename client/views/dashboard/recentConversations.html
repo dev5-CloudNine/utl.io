@@ -10,12 +10,12 @@
                                     <div class="media-left">
                                         {{#if isInRole 'buyer, dispatcher'}}
                                             <a href="{{pathFor 'job'}}" class="budgetFont mark-job-message-read" data-job-id="{{_id}}">
-                                                <img src="{{userImgUrl assignedProvider}}" class="media-object avatar-image img-circle" width='48px'>
+                                                <img src="{{userImgUrl assignedProvider}}" class="media-object avatar img-circle">
                                             </a>
                                         {{/if}}
                                         {{#if isInRole 'provider'}}
                                             <a href="{{pathFor 'job'}}" class="budgetFont mark-job-message-read" data-job-id="{{_id}}">
-                                                <img src="{{userImgUrl userId}}" class="media-object avatar-image img-circle" width='48px'>
+                                                <img src="{{userImgUrl userId}}" class="media-object avatar img-circle">
                                             </a>
                                         {{/if}}
                                     </div>
@@ -63,7 +63,7 @@
                                     <div class="media">
                                         <div class="media-left">
                                             <a href="{{pathFor 'profile'}}" class="budgetFont mark-message-read" data-other-user="{{userId}}">
-                                                <img src="{{userImgUrl userId}}" class="media-object avatar-image img-circle" width='48px'>
+                                                <img src="{{userImgUrl userId}}" class="media-object avatar img-circle">
                                             </a>
                                         </div>
                                         <div class="media-body">
@@ -88,7 +88,7 @@
                                 	<div class="media">
                                         <div class="media-left">
                                             <a href="{{pathFor 'buyer'}}" class="budgetFont mark-message-read" data-other-user="{{userId}}">
-                                                <img src="{{userImgUrl userId}}" class="media-object avatar-image img-circle" width='48px'>
+                                                <img src="{{userImgUrl userId}}" class="media-object avatar img-circle">
                                             </a>
                                         </div>
                                         <div class="media-body">
@@ -112,7 +112,7 @@
                                     <div class="media">
                                         <div class="media-left">
                                             <a href="{{pathFor 'dispatcher'}}" class="budgetFont mark-message-read" data-other-user="{{userId}}">
-                                                <img src="{{userImgUrl userId}}" class="media-object avatar-image img-circle" width='48px'>
+                                                <img src="{{userImgUrl userId}}" class="media-object avatar img-circle">
                                             </a>
                                         </div>
                                         <div class="media-body">
@@ -136,7 +136,7 @@
                                     <div class="media">
                                         <div class="media-left">
                                             <a href="{{pathFor 'profile'}}" class="budgetFont mark-message-read" data-other-user="{{userId}}">
-                                                <img src="{{userImgUrl userId}}" class="media-object avatar-image img-circle" width='48px'>
+                                                <img src="{{userImgUrl userId}}" class="media-object avatar img-circle">
                                             </a>
                                         </div>
                                         <div class="media-body">

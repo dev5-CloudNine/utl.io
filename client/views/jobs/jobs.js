@@ -115,7 +115,6 @@ var openJobsObject = {
                         }
                         if(jobDetails.applications[i].app_status == 'accepted') {
                             acceptedUser = jobDetails.applications[i].userId;
-                            break;
                         }
                     }
                 }

@@ -64,6 +64,20 @@ Template.dashboard.helpers({
 	allUsers: function() {
 		return allUsers;
 	},
+	myProfile: function() {
+		if (Roles.userIsInRole(Meteor.userId(), ['provider'])) {
+			return Profiles.findOne({userId: Meteor.userId()});
+		}
+		if (Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
+			return Buyers.findOne({userId: Meteor.userId()});
+		}
+		if (Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
+			return Dispatchers.findOne({userId: Meteor.userId()});
+		}
+		if (Roles.userIsInRole(Meteor.userId(), ['accountant'])) {
+			return Accountants.findOne({userId: Meteor.userId()});
+		}
+	},
 	allUserOptions: allUserOptions,
 	buyerAssignedJobs: function() {
 		return Jobs.find({$and: [{userId: Meteor.userId()}, {applicationStatus: 'assigned'}, {$or: [{assignmentStatus: 'confirmed'}, {assignmentStatus: 'submitted'}, {assignmentStatus: 'rejected'}]}, {status: 'active'}]}, {$sort: {createdAt: -1}});

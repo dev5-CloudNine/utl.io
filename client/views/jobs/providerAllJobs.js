@@ -105,7 +105,7 @@ var allJobsOptions = {
                         }
                     }
                 }
-                if(jobDetails.applicationStatus == 'open') {
+                if(jobDetails.applicationStatus == 'open' || (jobDetails.applicationStatus == 'assigned' && jobDetails.assignmentStatus == 'not_confirmed')) {
                     var applicationTime;
                     if(jobDetails.applications) {
                         for(var i = 0; i < jobDetails.applications.length; i++) {
