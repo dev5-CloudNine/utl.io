@@ -40,22 +40,19 @@
 <template name="profileFields">
     <div class="row">
         <div class="col-md-4">
-            <div class="form-group" id="profileAvatarPreview">
+            <div class="form-group">
                 <label class="control-label">{{#if customImagePreviewUrl}}Profile{{else}}Automatic{{/if}} Avatar</label>
                 {{#if customImagePreviewUrl}}
-                <div class="avatar avatar-large">
-                    <img class="img-responsive" src="{{customImagePreviewUrl}}" onerror="this.src='/images/avatar.png'"/>
-                </div>
-                {{else}} {{> avatar user=currentUser size="large"}} {{/if}}
+                    <img class="img-responsive avatar-large" src="{{customImagePreviewUrl}}"/>
+                {{else}}
+                    <img class="img-responsive avatar-large" src="/images/avatar.png" alt="">
+                {{/if}}
             </div>
-            <div class="form-group pull-left" style="margin-top: -30px;">
-                <label class="control-label"></label>
+            <div class="form-group pull-left">
                 <div class="input-group">
-                    &nbsp;
                     <label class="btn btn-success" data-toggle="tooltip" data-placement="top">
-                        <input type="file" accept="image/*" class="file_bag"> Change
+                        <input type="file" accept="image/*" class="file_bag"> Upload
                     </label>
-                    <!-- <button type="button" class="btn btn-danger remove-img">Remove</button> -->
                 </div>
             </div>
         </div>

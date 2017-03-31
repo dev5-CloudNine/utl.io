@@ -105,7 +105,7 @@ var allJobsOptions = {
                         }
                     }
                 }
-                if(jobDetails.applicationStatus == 'open' || (jobDetails.applicationStatus == 'assigned' && jobDetails.assignmentStatus == 'not_confirmed')) {
+                if(jobDetails.applicationStatus == 'open') {
                     var applicationTime;
                     if(jobDetails.applications) {
                         for(var i = 0; i < jobDetails.applications.length; i++) {
@@ -152,11 +152,13 @@ var allJobsOptions = {
                         if(jobDetails.assignmentStatus == 'submitted') {
                             return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Job submitted for approval. Await response.</small>'
                         }
+                    } else {
+                        return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>The job has been assigned to another provider.</small>';
                     }
                 }
                 if(jobDetails.applicationStatus == 'paid') {
                     if(jobDetails.assignedProvider != Meteor.userId()) {
-                        return '<small>The job is now complete.</small>'
+                        return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>The job has been assigned to another provider.</small>'
                     }
                     var returnText = '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Job approved. Account credited.</small>';
                     var reviewed = false;

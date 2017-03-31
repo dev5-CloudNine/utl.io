@@ -33,7 +33,11 @@ Template.dispatcherFields.events({
   },
   'change .file_bag': function(event, template) {
     event.preventDefault();
-    var dispatcherId = this.dispatcherProfile.userId;
+    var dispatcherId;
+    if(Router.current().route.getName() == 'dispatcherNew')
+      dispatcherId = Meteor.userId();
+    else if(Router.current().route.getName() == 'dispatcherEdit')
+      dispatcherId = this.dispatcherProfile.userId;
     var files = $(event.currentTarget)[0].files;
     Resizer.resize(files[0], {width: 200, height: 200, cropSquare: true}, function(err, file) {
       var uploader = new Slingshot.Upload('userImages');
@@ -76,11 +80,20 @@ var locLoaded=false;
 
 Template.dispatcherFields.helpers({
   "customImagePreviewUrl": function() {
-    return Meteor.users.findOne({_id: this.dispatcherProfile.userId}).imgURL;
+    if(Router.current().route.getName() == 'profileNew') {
+      var user = Meteor.user();
+      if(user.imgURL)
+        return user.imgURL;
+    } else {
+      return Meteor.users.findOne({_id: this.dispatcherProfile.userId}).imgURL;
+    }
   },
   locationData : function(){
     locLoaded = true;
-    return this.dispatcherProfile.location;
+    if(Router.current().route.getName() == 'profileNew')
+      return;
+    else
+      return this.dispatcherProfile.location;
   },
   location: function(query, sync, callback) {
     if(!locLoaded) $('.typeahead').addClass('loadinggif');
@@ -126,6 +139,8 @@ Template.dispatcherLocationMap.onRendered(function() {
 Template.dispatcherLocationMap.helpers({
   locationData : function(){
     locLoaded = true;
+    if(Router.current().route.getName() == 'dispatcherNew')
+      return;
     if(this.dispatcherProfile)
       return this.dispatcherProfile.location;
     return;

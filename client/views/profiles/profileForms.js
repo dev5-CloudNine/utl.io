@@ -32,7 +32,12 @@ Template.profileFields.events({
   },
   "change .resume_bag": function(event, template) {
     event.preventDefault();
-    var providerId = this.profiile.userId;
+    var providerId;
+    if(Router.current().route.getName() == 'profileNew') {
+      providerId = Meteor.userId();
+    } else if(Router.current().route.getName() == 'profileEdit') {
+      providerId = this.profile.userId;
+    }
     $('#resumespinner').show();
     var files = $(event.currentTarget)[0].files;
     if(!files) return;
@@ -60,7 +65,12 @@ Template.profileFields.events({
   },
   'change .file_bag': function(event, template) {
     event.preventDefault();
-    var providerId = this.profile.userId;
+    var providerId;
+    if(Router.current().route.getName() == 'profileNew') {
+      providerId = Meteor.userId();
+    } else if(Router.current().route.getName() == 'profileEdit') {
+      providerId = this.profile.userId;
+    }
     var files = $(event.currentTarget)[0].files;
     Resizer.resize(files[0], {width: 200, height: 200, cropSquare: true}, function(err, file) {
       var uploader = new Slingshot.Upload('userImages');
@@ -122,10 +132,22 @@ var locLoaded=false;
 
 Template.profileFields.helpers({
   "customImagePreviewUrl": function() {
-    return Meteor.users.findOne({_id: this.profile.userId}).imgURL;
+    if(Router.current().route.getName() == 'profileNew') {
+      var user = Meteor.user();
+      if(user.imgURL)
+        return user.imgURL;
+    } else {
+      return Meteor.users.findOne({_id: this.profile.userId}).imgURL;
+    }
   },
   resumeUrl: function() {
-    return Meteor.users.findOne({_id: this.profile.userId}).resumeURL;
+    if(Router.current().route.getName() == 'profileNew') {
+      var user = Meteor.user();
+      if(user.resumeURL)
+        return user.resumeURL;
+    } else {
+      return Meteor.users.findOne({_id: this.profile.userId}).resumeURL;
+    }
   },
   companyInvited: function() {
     var corpInfo = Meteor.user();
@@ -133,7 +155,10 @@ Template.profileFields.helpers({
   },
   locationData : function(){
     locLoaded = true;
-    return this.profile.location;
+    if(Router.current().route.getName() == 'profileNew')
+      return;
+    else
+      return this.profile.location;
   },
   location: function(query, sync, callback) {
       if(!locLoaded) $('.typeahead').addClass('loadinggif');
@@ -149,17 +174,17 @@ Template.profileFields.helpers({
         }));
       });
   },
-  parentCategories: function() {
-    return Categories.find().fetch();
-  },
-  childCategories: function(parentId) {
-    return SubCategories.find({parentId: parentId}).map(function(c) {
-      return {label: c.value, value: c._id}
-    });
-  },
-  parentId: function() {
-    return Categories.findOne({value: this.parentId})._id;
-  },
+  // parentCategories: function() {
+  //   return Categories.find().fetch();
+  // },
+  // childCategories: function(parentId) {
+  //   return SubCategories.find({parentId: parentId}).map(function(c) {
+  //     return {label: c.value, value: c._id}
+  //   });
+  // },
+  // parentId: function() {
+  //   return Categories.findOne({value: this.parentId})._id;
+  // },
   "uploadedFiles": function(){
     return S3.collection.find();
   }
@@ -178,6 +203,8 @@ Template.providerLocationMap.onRendered(function() {
 Template.providerLocationMap.helpers({
   locationData : function(){
     locLoaded = true;
+    if(Router.current().route.getName() == 'profileNew')
+      return;
     return this.profile.location;
   }
 })

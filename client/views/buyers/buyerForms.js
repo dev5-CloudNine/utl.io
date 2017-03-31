@@ -47,7 +47,12 @@ Template.buyerFields.events({
   'change .file_bag': function(event, template) {
     event.preventDefault();
     var files = $(event.currentTarget)[0].files;
-    var buyerId = this.buyerProfile.userId
+    var buyerId;
+    if(Router.current().route.getName() == 'profileNew') {
+      buyerId = Meteor.userId();
+    } else if(Router.current().route.getName() == 'profileEdit') {
+      buyerId = this.buyerProfile.userId;
+    }
     Resizer.resize(files[0], {width: 200, height: 200, cropSquare: true}, function(err, file) {
       var uploader = new Slingshot.Upload('userImages');
       uploader.send(file, function(err, imgUrl) {
@@ -90,11 +95,20 @@ var locLoaded=false;
 
 Template.buyerFields.helpers({
   "customImagePreviewUrl": function() {
-    return Meteor.users.findOne({_id: this.buyerProfile.userId}).imgURL;
+    if(Router.current().route.getName() == 'profileNew') {
+      var user = Meteor.user();
+      if(user.imgURL)
+        return user.imgURL;
+    } else {
+      return Meteor.users.findOne({_id: this.buyerProfile.userId}).imgURL;
+    }
   },
   locationData : function(){
     locLoaded = true;
-    return this.buyerProfile.location;
+    if(Router.current().route.getName() == 'profileNew')
+      return;
+    else
+      return this.buyerProfile.location;
   },
   location: function(query, sync, callback) {
     if(!locLoaded) $('.typeahead').addClass('loadinggif');
@@ -132,6 +146,9 @@ Template.buyerLocationMap.onRendered(function() {
 Template.buyerLocationMap.helpers({
   locationData : function(){
     locLoaded = true;
-    return this.buyerProfile.location;
+    if(Router.current().route.getName() == 'profileNew')
+      return;
+    else
+      return this.buyerProfile.location;
   }
 })

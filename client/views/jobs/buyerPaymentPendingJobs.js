@@ -52,7 +52,7 @@ var pendingApprovalOptions = {
                 var jobUrl = '<small>' + jobLocation + '</small><br>' + rateBasisText + '<br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
-            width: '60%',
+            width: '50%',
             responsivePriority: 1
         },
         {
@@ -60,8 +60,16 @@ var pendingApprovalOptions = {
             data: function(jobDetails) {
                 return '<span class="budgetFont">' + (+(Math.round(jobDetails.projectBudget + 'e+2') + 'e-2')) + '</span>'
             },
-            width: '20%',
+            width: '15%',
             responsivePriority: 2
+        },
+        {
+            title: 'Asgn\'d to',
+            data: function(jobDetails) {
+                var providerDetails = Profiles.findOne({userId: jobDetails.assignedProvider});
+                return '<small><i># ' + providerDetails.readableID + '</i></small><br><a class="budgetFont" href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a><small><p>' + providerDetails.title + '</p></small>'
+            },
+            width: '15%'
         },
         {
             title: 'Actions',

@@ -52,7 +52,7 @@ var allJobsOptions = {
                 var jobUrl = '<small>' + jobLocation + '</small><br>' + rateBasisText + '<br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
                 return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a><br>' + jobUrl;
             },
-            width: '60%',
+            width: '50%',
             responsivePriority: 1
         },
         {
@@ -84,8 +84,33 @@ var allJobsOptions = {
                 }
                 return '<span class="budgetFont">' + (+(Math.round(jobDetails.freelancer_nets + 'e+2') + 'e-2')) + '</span>';
             },
-            width: '20%',
+            width: '15%',
             responsivePriority: 2
+        },
+        {
+            title: 'Asgn\'d to',
+            data: function(jobDetails) {
+                if(jobDetails.applicationStatus == 'assigned' || jobDetails.applicationStatus == 'paid') {
+                    if(jobDetails.assignmentStatus == 'not_confirmed') {
+                        var acceptedApplication;
+                        if(jobDetails.applications && jobDetails.applications.length > 0) {
+                            for(var i = 0; i < jobDetails.applications.length; i++) {
+                                if(jobDetails.applications[i].app_status == 'accepted') {
+                                    acceptedApplication = jobDetails.applications[i].userId;
+                                    break;
+                                }
+                            }
+                        }
+                        var providerDetails = Profiles.findOne({userId: acceptedApplication});
+                        return '<small><i># ' + providerDetails.readableID + '</i></small><br><a class="budgetFont" href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a><small><p>' + providerDetails.title + '</p></small>'
+                    }
+                    if(jobDetails.assignmentStatus == 'confirmed' || jobDetails.assignmentStatus == 'rejected' || jobDetails.assignmentStatus == 'submitted' || jobDetails.assignmentStatus == 'approved' || jobDetails.assignmentStatus == 'pending_payment' || jobDetails.assignmentStatus == 'paid') {
+                        var providerDetails = Profiles.findOne({userId: jobDetails.assignedProvider});
+                        return '<small><i># ' + providerDetails.readableID + '</i></small><br><a class="budgetFont" href="/profiles/' + providerDetails._id + '">' + providerDetails.firstName + ' ' + providerDetails.lastName + '</a><small><p>' + providerDetails.title + '</p></small>'
+                    }
+                }
+            },
+            width: '15%'
         },
         {
             title: 'Actions',

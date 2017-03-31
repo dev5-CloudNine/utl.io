@@ -33,7 +33,11 @@ Template.accountantFields.events({
   },
   'change .file_bag': function(event, template) {
     event.preventDefault();
-    var accountantId = this.accountantProfile.userId;
+    var accountantId;
+    if(Router.current().route.getName() == 'accountantNew')
+      accountantId = Meteor.userId();
+    else if(Router.current().route.getName() == 'accountantEdit')
+      accountantId = this.accountantProfile.userId;
     var files = $(event.currentTarget)[0].files;
     Resizer.resize(files[0], {width: 200, height: 200, cropSquare: true}, function(err, file) {
       var uploader = new Slingshot.Upload('userImages');
@@ -76,11 +80,20 @@ var locLoaded=false;
 
 Template.accountantFields.helpers({
   "customImagePreviewUrl": function() {
-    return Meteor.users.findOne({_id: this.accountantProfile.userId}).imgURL;
+    if(Router.current().route.getName() == 'profileNew') {
+      var user = Meteor.user();
+      if(user.imgURL)
+        return user.imgURL;
+    } else {
+      return Meteor.users.findOne({_id: this.accountantProfile.userId}).imgURL;
+    }
   },
   locationData : function(){
     locLoaded = true;
-    return this.dispatcherProfile.location;
+    if(Router.current().route.getName() == 'profileNew')
+      return;
+    else
+      return this.accountantProfile.location;
   },
   location: function(query, sync, callback) {
     if(!locLoaded) $('.typeahead').addClass('loadinggif');
@@ -126,7 +139,9 @@ Template.accountantLocationMap.onRendered(function() {
 Template.accountantLocationMap.helpers({
   locationData : function(){
     locLoaded = true;
-    if(this.dispatcherProfile)
+    if(Router.current().route.getName() == 'accountantNew')
+      return;
+    if(this.accountantProfile)
       return this.accountantProfile.location;
     return;
   }
