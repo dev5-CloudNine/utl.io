@@ -61,8 +61,8 @@ Template.providerNotifications.helpers({
 		});
 		return notificationDetails;
 	},
-	jobName: function() {
-		return Jobs.findOne({_id: this.jobId}).title || "";
+	jobDetails: function(jobId) {
+		return Jobs.findOne({_id: jobId});
 	}
 })
 

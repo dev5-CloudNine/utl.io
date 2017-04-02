@@ -15,31 +15,62 @@
 						</div>
 					</form>
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					    <div class="alert alert-info enoughBalance" hidden>
-			                <strong>You don't have sufficient account balance to make this request.</strong>
-			            </div>
-			        </div>
-		        {{else}}
-		        	<div class="alert alert-info">
-                        <p>In this step, we'll be hooking up your bank account with the platform by processing instant account verification (IAV). All data transfer is via secure connection.</p>
-                    </div>
-                    {{#if noFundingSourceUrl}}
-                    	<button class="btn btn-primary btn-sm initiateIav" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Attach Bank Account</button>
-                    {{/if}}
-                    <div id="initiateIav"></div>
-		        {{/if}}
-		    {{else}}
-		    	<h4>Attach Bank Account</h4>
-		    	{{#if currentUser.isDeveloper}}
-		    		<div class="alert alert-info">
-		    			<p>This is the first step towards attaching your bank account to this platform. This will enable your to withdraw funds you earned in this platform directly into your bank account. All data transfer is via secure connection.</p>
-		    		</div>
-		    		<button class="btn btn-sm btn-primary" id="pro_register_dwolla"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Start</button>
-		    	{{else}}
-		    		You need to create your profile before attaching your bank account. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your provider profile.
-		    	{{/if}}
-	        {{/if}}
-	        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="alert alert-info enoughBalance" hidden>
+							<strong>You don't have sufficient account balance to make this request.</strong>
+						</div>
+					</div>
+				{{else}}
+					<div class="alert alert-info">
+						<p>In this step, we'll be hooking up your bank account with the platform by processing instant account verification (IAV). All data transfer is via secure connection.</p>
+					</div>
+					{{#if noFundingSourceUrl}}
+						<!-- <button class="btn btn-primary btn-sm initiateIav" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Attach Bank Account</button> -->
+						<form id="attach-funding-source">
+							<div class="row">
+								<div class="col-xs-12 col-md-4">
+									<legend>Attach Bank Account</legend>
+									<div class="text-center" id="funding-src-err">
+										
+									</div>
+									<div class="form-group">
+										<label for="routing-number">Routing Number *</label>
+										<input type="text" class="form-control" id="routing-number" placeholder="9 Digit Routing No." required>
+									</div>
+									<div class="form-group">
+										<label for="account-number">Account Number *</label>
+										<input type="text" class="form-control" id="account-number" placeholder="Bank Account No." required>
+									</div>
+									<div class="form-group">
+										<label for="bank-name">Bank Name *</label>
+										<input type="text" class="form-control" id="bank-name" placeholder="Bank Name" required>
+									</div>
+									<div class="form-group">
+										<label for="account-type">Account Type *</label>
+										<select name="account-type" id="account-type" class="form-control" required="required">
+											<option value="" selected="selected" disabled="disabled">Select Account Type</option>
+											<option value="checking">Checking</option>
+											<option value="savings">Savings</option>
+										</select>
+									</div>
+									<button type="submit" id="submitFundingSrc" class="btn btn-sm btn-primary">Submit</button>
+								</div>
+							</div>
+						</form>
+					{{/if}}
+					<div id="initiateIav"></div>
+				{{/if}}
+			{{else}}
+				<h4>Attach Bank Account</h4>
+				{{#if currentUser.isDeveloper}}
+					<div class="alert alert-info">
+						<p>This is the first step towards attaching your bank account to this platform. This will enable your to withdraw funds you earned in this platform directly into your bank account. All data transfer is via secure connection.</p>
+					</div>
+					<button class="btn btn-sm btn-primary" id="pro_register_dwolla"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Start</button>
+				{{else}}
+					You need to create your profile before attaching your bank account. <a href="{{pathFor 'profileNew'}}">Click here</a> to create your provider profile.
+				{{/if}}
+			{{/if}}
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<hr>
 				<table class="table table-striped table-hover">
 					<thead>
@@ -51,14 +82,18 @@
 						</tr>
 					</thead>
 					<tbody>
-						{{#each customerTransfers}}
-							<tr>
-								<td>{{this.id}}</td>
-								<td>{{this.created}}</td>
-								<td>{{this.amount.value}} USD</td>
-								<td>{{this.status}}</td>
-							</tr>
-						{{/each}}
+						{{#if dwollaCustomer}}
+							{{#if fundingSourceUrl}}
+								{{#each customerTransfers}}
+									<tr>
+										<td>{{this.id}}</td>
+										<td>{{this.created}}</td>
+										<td>{{this.amount.value}} USD</td>
+										<td>{{this.status}}</td>
+									</tr>
+								{{/each}}
+							{{/if}}
+						{{/if}}
 					</tbody>
 				</table>
 			</div>

@@ -120,7 +120,7 @@ var openJobsObject = {
                 }
                 if(applied) {
                     if(acceptedUser == Meteor.userId()) {
-                        var returnText = '<small><i>' + moment(jobDetails.updatedAt).format("dddd, MMMM Do YYYY, h:mm a") + '</i></small><br><small>Application accepted. Job assigned. Needs confirmation.</small><br>';
+                        var returnText = '<small><i>' + moment(jobDetails.updatedAt).format("LLLL") + '</i></small><br><small>Application accepted. Job assigned. Needs confirmation.</small><br>';
                         return returnText + '<button data-job-id="' + jobDetails._id + '" data-buyer-id="' + jobDetails.userId + '" class="margin-top-5 btn btn-primary btn-sm confirmAssignment">Confirm</button>'
                     }
                     return '<small><i>' + moment(applicationTime).format('LLLL') + '</i></small><br><span class="jobAppliedTick" data-balloon="U\'ve Applied" data-balloon-pos="up">U\'ve applied.</span>';

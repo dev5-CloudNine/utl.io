@@ -62,24 +62,24 @@ Meteor.publish('subcategories', function() {
     }
 })
 
-Meteor.publish('usersTasks', function() {
-    if(this.userId) {
-        var user = Meteor.users.findOne({_id: this.userId});
-        if(user) {
-            var jobs = [];
-            var userCollection = Meteor.users.findOne({_id:this.userId});
-            var contactsPair = userCollection.contacts;
-            var jobIDs = [];
-            for(var i=0;i<contactsPair.length;i++) {
-                jobIDs.push(contactsPair[i].split(':')[1]);
-            }
-            Jobs.find({_id:{$in:jobIDs||[]}}).map(function(ele){
-                jobs.push(ele._id);
-            });
-            return Tasks.find({jobID:{$in:jobs||[]}});
-        }
-    }
-})
+// Meteor.publish('usersTasks', function() {
+//     if(this.userId) {
+//         var user = Meteor.users.findOne({_id: this.userId});
+//         if(user) {
+//             var jobs = [];
+//             var userCollection = Meteor.users.findOne({_id:this.userId});
+//             var contactsPair = userCollection.contacts;
+//             var jobIDs = [];
+//             for(var i=0;i<contactsPair.length;i++) {
+//                 jobIDs.push(contactsPair[i].split(':')[1]);
+//             }
+//             Jobs.find({_id:{$in:jobIDs||[]}}).map(function(ele){
+//                 jobs.push(ele._id);
+//             });
+//             return Tasks.find({jobID:{$in:jobs||[]}});
+//         }
+//     }
+// })
 
 Meteor.publish("tasks", function (taskID) {
     return Tasks.find({_id:taskID});
@@ -143,10 +143,10 @@ Meteor.publish("userList", function () {
     return Meteor.users.find({}, {fields: {createdAt: 1, emails: 1, profile: 1, readableID: 1, roles: 1, imgURL: 1, companyName: 1, contacts: 1, favCount: 1, resumeURL: 1, status: 1, isDeveloper: 1, isBuyer: 1, isDispatcher: 1, isAccountant: 1}});
 });
 
-Meteor.publish("contacts", function (userID) {
-    var ids = Meteor.users.findOne({_id:userID}) && Meteor.users.findOne({_id:userID}).contacts;
-    return Meteor.users.find({_id:{$in:ids||[]}},{fields: {emails: 1, roles: 1, companyName:1, contacts:1}});
-});
+// Meteor.publish("contacts", function (userID) {
+//     var ids = Meteor.users.findOne({_id:userID}) && Meteor.users.findOne({_id:userID}).contacts;
+//     return Meteor.users.find({_id:{$in:ids||[]}},{fields: {emails: 1, roles: 1, companyName:1, contacts:1}});
+// });
 
 Meteor.publish('developerCount', function() {
     Counts.publish(this, 'developers', Profiles.find({

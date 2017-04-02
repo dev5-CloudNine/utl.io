@@ -1,9 +1,8 @@
 if (Meteor.isServer) {
     var dwolla = Npm.require('dwolla-v2');
     var client = new dwolla.Client({
-        id: 'ZmpgXecJaqy6SvIyNGXRKbK9nu2Z8nuygdXISYAecyfr86ugBb',
-        secret: 'tIMzVgt95AyXhFf2RHZnoIunQQHN8RWVBvvSHKKaY8kF5ZqzAd',
-        environment: 'sandbox'
+        id: 'BUUpkftiL3kAnrVtHLjUCICEyaxJWxqXX0HvaBwj8bQH1LYyBn',
+        secret: 'nQoSIlxdSEnmcUbykJ8G4tO2kJzWWtCcLn4YJtacAeVqsfJDkt'
     });
     var request = Npm.require('request');
     var auth;
@@ -76,11 +75,12 @@ if (Meteor.isServer) {
                 throw 'User\'s Dwolla account is not connected';
                 return;
             }
-            var accountToken = new client.Token({access_token: obj.access_token});
+            var accountToken = new client.Token({access_token: obj.access_token, scope: 'ManageCustomers'});
             var customerDetails = {
                 firstName: dwolla_req_object.firstName,
                 lastName: dwolla_req_object.lastName,
-                email: dwolla_req_object.email
+                email: dwolla_req_object.email,
+                type: 'receive-only'
             };
             var fut = new Future();
             accountToken.post('customers', customerDetails).then(function(res) {
@@ -158,7 +158,7 @@ if (Meteor.isServer) {
                 throw 'User\'s Dwolla account is not connected';
                 return;
             }
-            var accountToken = new client.Token({access_token: obj.access_token});
+            var accountToken = new client.Token({access_token: obj.access_token, scope: 'Send'});
             var adminFut = new Future();
             accountToken.get(obj._links.account.href).then(function(res) {
                 adminFut.return(res.body._links['funding-sources'].href)
@@ -169,9 +169,9 @@ if (Meteor.isServer) {
             var adminFS = adminFut.value;
             var adminFSUrl = new Future();
             accountToken.get(adminFS).then(function(res) {
-                adminFSUrl.return(res.body._embedded['funding-sources'][0]._links.self.href);
+                adminFSUrl.return(res.body._embedded['funding-sources'][1]._links.self.href);
             }, function(err) {
-                console.log(err);
+                console.log(err.body);
             })
             adminFSUrl.wait();
             var afsUrl = adminFSUrl.value;
@@ -212,7 +212,7 @@ if (Meteor.isServer) {
             accountToken.post('transfers', requestBody).then(function(res) {
                 payReqFut.return(res.headers);
             }, function(err) {
-                console.log(err);
+                console.log(err.body._embedded);
             });
             payReqFut.wait();
             return payReqFut.value;
@@ -224,12 +224,30 @@ if (Meteor.isServer) {
                 throw 'User\'s Dwolla account is not connected';
                 return;
             }
-            var accountToken = new client.Token({access_token: obj.access_token});
+            var accountToken = new client.Token({access_token: obj.access_token, scope: 'ManageCustomers'});
             var fut = new Future();
             accountToken.post(customerUrl + '/iav-token').then(function(res) {
+                console.log(res)
                 fut.return(res)
             }, function(err) {
                 console.log(err);
+            });
+            fut.wait();
+            return fut.value;
+        },
+        'fundingSourceToken': function(customerUrl) {
+            var adminId = Meteor.users.findOne({roles: {$in: ['admin']}})._id;
+            var obj = Wallet.findOne({userId: adminId});
+            if(!obj) {
+                throw 'User\'s Dwolla account is not connected.';
+                return;
+            }
+            var accountToken = new client.Token({access_token: obj.access_token});
+            var fut = new Future();
+            accountToken.post(customerUrl + '/funding-sources-token').then(function(res) {
+                fut.return(res);
+            }, function(err){
+                console.log(err)
             });
             fut.wait();
             return fut.value;
@@ -304,7 +322,7 @@ if (Meteor.isServer) {
             var customerArray = fut.value;
             customerArray.forEach(function(customer) {
                 var reqBody = {
-                    email: customer.email + 'pulchk@824' + '.com'
+                    email: customer.email + 'alkcma@824' + '.com'
                 }
                 accountToken.post('https://api-uat.dwolla.com/customers/' + customer.id, reqBody).then(function(result) {
                     console.log(result);

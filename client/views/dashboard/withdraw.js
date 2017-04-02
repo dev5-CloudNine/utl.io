@@ -26,16 +26,20 @@ Template.withdraw.helpers({
 		}
 	},
 	dwollaCustomer: function() {
-		var userWallet = Wallet.findOne({userId: Meteor.userId()});
-		if(userWallet.dwollaCustomer) {
-			return true;
+		if(Meteor.user()) {
+			var userWallet = Wallet.findOne({userId: Meteor.userId()});
+			if(userWallet.dwollaCustomer) {
+				return true;
+			}
 		}
 		return false;
 	},
 	fundingSourceUrl: function() {
-		var userWallet = Wallet.findOne({userId: Meteor.userId()});
-		if(userWallet.fundingSourceUrl)
-			return true;
+		if(Meteor.user()) {
+			var userWallet = Wallet.findOne({userId: Meteor.userId()});
+			if(userWallet.fundingSourceUrl)
+				return true;
+		}
 		return false;
 	},
 	noFundingSourceUrl: function() {
@@ -94,13 +98,13 @@ Template.withdraw.events({
 		event.preventDefault();
 		$(event.currentTarget).button('loading');
 		var userWallet = Wallet.findOne({userId: Meteor.userId()});
-		$.getScript('https://cdn.dwolla.com/1/dwolla.js')
+		$.getScript('https://cdn.dwolla.com/1/dwolla.min.js')
 		var customerUrl = userWallet.dwollaCustomer.location[0];
 		Meteor.call('genIavToken', customerUrl, function(error, result) {
 			if(!error) {
 				var iavToken = result.body.token;
-				dwolla.config.dwollaUrl = 'https://uat.dwolla.com';
-				dwolla.configure('uat');
+				dwolla.config.dwollaUrl = 'https://dwolla.com';
+				dwolla.configure('prod');
 	            dwolla.iav.start('initiateIav', iavToken, function(err, res) {
 	                if(err) {
 	                    console.log(err);
@@ -116,6 +120,34 @@ Template.withdraw.events({
 			} else {
 				console.log(error)
 			}
+		})
+	},
+	'submit #attach-funding-source': function(event, template) {
+		event.preventDefault();
+		$('#submitFundingSrc').attr('disabled', 'disabled');
+		$.getScript('https://cdn.dwolla.com/1/dwolla.min.js');
+		var bankInfo = {
+			routingNumber: $('#routing-number').val(),
+			accountNumber: $('#account-number').val(),
+			type: $('#account-type').val(),
+			name: $('#bank-name').val()
+		}
+		var userWallet = Wallet.findOne({userId: Meteor.userId()});
+		var customerUrl = userWallet.dwollaCustomer['location'][0];
+		Meteor.call('fundingSourceToken', customerUrl, function(error, result) {
+			var fundingSrcToken = result.body.token;
+			dwolla.config.dwollaUrl = 'https://dwolla.com';
+			dwolla.configure('prod');
+			dwolla.fundingSources.create(fundingSrcToken, bankInfo, function(err, res) {
+				if(!err) {
+					var fundingSourceUrl = res._links['funding-source'].href;
+					Meteor.call('setFundingSourceInWallet', fundingSourceUrl, Meteor.userId());
+				} else {
+					var errMsg = '<p>' + err._embedded['errors'][0].message + '</p>';
+					$('#funding-src-err').append(errMsg);
+					$('#submitFundingSrc').removeAttr('disabled');
+				}
+			})
 		})
 	},
 	'submit #requestDwollaPay': function(event, template) {

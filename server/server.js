@@ -1109,7 +1109,12 @@ Meteor.methods({
     updateTransaction: function(docID, userID, depositedBy) {
         Transactions.update({_id: docID}, {$set: {userID: userID, depositedBy: depositedBy}})
         var amountDeposited = parseInt(Transactions.findOne({_id: docID}).dollarAmount);
-        Wallet.update({userId: userID}, {$inc: {accountBalance: amountDeposited}});
+        var transcationDetails = Transactions.findOne({_id: docID});
+        if(parseInt(transcationDetails.bankResponseCode) == 100) {
+            Wallet.update({userId: userID}, {$inc: {accountBalance: amountDeposited}});
+        } else {
+            return;
+        }
     },
     deactivateProviderProfile: function(userId) {
         Profiles.update({userId: userId}, {$set: {status: 'deactivated'}});

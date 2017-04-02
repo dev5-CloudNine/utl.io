@@ -604,8 +604,8 @@ Router.map(function() {
                 var dispatcher = Dispatchers.findOne({userId: Meteor.userId()})._id
                 Meteor.subscribe('dispatcher', dispatcher)
             }
-            Meteor.subscribe('jobCount');
-            Meteor.subscribe("contacts",Meteor.userId());
+            // Meteor.subscribe('jobCount');
+            // Meteor.subscribe("contacts",Meteor.userId());
             if(Roles.userIsInRole(Meteor.userId(), ['admin']))
                 Meteor.subscribe('allJobs');
             Meteor.subscribe('reviews');
@@ -1260,6 +1260,7 @@ Router.map(function() {
             data.transactionTag = res.Transaction_Tag;
             data.authorizationNum = res.Authorization_Num;
             data.cardHoldersName = res.CardHoldersName;
+            data.bankResponseCode = res.Bank_Resp_Code;
             data.bankMessage = res.Bank_Message;
             data.retrievalRefNo = res.Retrieval_Ref_No;
             data.transactionCardType = res.TransactionCardType;

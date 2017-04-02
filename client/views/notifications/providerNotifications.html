@@ -13,8 +13,13 @@
 							<div class="media">
 								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has accepted your application. You may confirm/decline the job.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<p>
+										{{#with jobDetails this.jobId}}
+											<a href="{{pathFor 'job'}}"># {{readableID}} {{title}}</a>
+											<br>
+										{{/with}}
+										{{this.bname}} has accepted your application. You may confirm/decline the job.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -33,8 +38,13 @@
 							<div class="media">
 								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has invited you to apply for a job.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<p>
+										{{#with jobDetails this.jobId}}
+											<a href="{{pathFor 'job'}}"># {{readableID}} {{title}}</a>
+											<br>
+										{{/with}}
+										{{this.bname}} has invited you to apply for a job.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -53,8 +63,13 @@
 							<div class="media">
 								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has directly routed to you a job. You may confirm/decline the job.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<p>
+										{{#with jobDetails this.jobId}}
+											<a href="{{pathFor 'job'}}"># {{readableID}} {{title}}</a>
+											<br>
+										{{/with}}
+										{{this.bname}} has directly assigned to you a job. You may confirm/decline the job.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -73,8 +88,13 @@
 							<div class="media">
 								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has approved the job submitted by you. You can now request for the payment.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<p>
+										{{#with jobDetails this.jobId}}
+											<a href="{{pathFor 'job'}}"># {{readableID}} {{title}}</a>
+											<br>
+										{{/with}}
+										{{this.bname}} has approved the job submitted by you. You can now request for the payment.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -93,28 +113,13 @@
 							<div class="media">
 								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has rejected the job submitted by you. Please contact {{this.bname}} for further information. You may then resubmit the job.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</li>
-			{{/if}}
-			{{#if $eq this.notificationType 'approvePayment'}}
-				<li>
-					<div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
-					<div class="timeline-panel">
-						<div class="timeline-heading">
-							<h4 class="timeline-title">Buyer Released Payment</h4>
-							<p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> <i>{{this.notificationTime}}</i></small></p>
-						</div>
-						<div class="timeline-body">
-							<div class="media">
-								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
-								<div class="media-body">
-									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has approved your payment request. The payment will be released shortly. The job is now completed. You may rate and review the job experience with {{this.bname}}.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<p>
+										{{#with jobDetails this.jobId}}
+											<a href="{{pathFor 'job'}}"># {{readableID}} {{title}}</a>
+											<br>
+										{{/with}}
+										{{this.bname}} has rejected the job submitted by you. Please contact {{../bname}} for further information. You may then resubmit the job.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -133,7 +138,7 @@
 							<div class="media">
 								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has added you as a favorite. <br>
+									{{this.bname}} has added you to his/her favorites. <br>
 								</div>
 							</div>
 						</div>
@@ -152,7 +157,7 @@
 							<div class="media">
 								<div class="media-left"><a href="/buyers/{{this.buyerId}}"><img src="{{this.imgUrl}}" alt="{{this.bname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/buyers/{{this.buyerId}}" class="item-info">{{this.bname}}</a> has removed you from his/her favorites. 
+									{{this.bname}} has removed you from his/her favorites. 
 								</div>
 							</div>
 						</div>

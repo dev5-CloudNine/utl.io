@@ -658,11 +658,7 @@ Template.dashboard.events({
 
 Template.dashboard.onCreated(function() {
 	this.autorun(function() {
-		Meteor.subscribe('userChannels', Meteor.userId());
-		var jobId = Router.current().params.query.jobId;
-		if(!jobId)
-			return;
-		return Meteor.subscribe('documentComments', jobId);
+		return Meteor.subscribe('userChannels', Meteor.userId());
 	})
 })
 

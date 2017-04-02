@@ -90,7 +90,9 @@ Template.profileFields.events({
   "click .remove-resume" : function(event) {
     event.preventDefault();
     $('#resumespinner').show();
-    var providerId = this.profile.userId;
+    var providerId;
+    var providerDetails = Profiles.findOne({_id: Router.current().params._id});
+    providerId = providerDetails.userId;
     var url = $(event.currentTarget).data('url');
     var index = url.indexOf(S3_FILEUPLOADS)-1;
     var path = url.substr(index);

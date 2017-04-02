@@ -13,8 +13,13 @@
 							<div class="media">
 								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/profiles/{{this.providerId}}" class="item-info">{{this.pname}}</a> has applied for your job.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<p>
+										{{#with jobDetails this.jobId}}
+											<a href="{{pathFor 'job'}}"># {{readableID}} {{title}}</a>
+											<br>
+										{{/with}}
+										{{this.pname}} has applied for your job.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -33,8 +38,13 @@
 							<div class="media">
 								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has confirmed assignment. The job is now assigned.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<p>
+										{{#with jobDetails this.jobId}}
+											<a href="{{pathFor 'job'}}"># {{readableID}} {{title}}</a>
+											<br>
+										{{/with}}
+										{{this.pname}} has confirmed assignment. The job is now assigned.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -53,8 +63,13 @@
 							<div class="media">
 								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has declined assignment. Your job status is now open again. You can choose a different provider from posted applications.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<p>
+										{{#with jobDetails this.jobId}}
+											<a href="{{pathFor 'job'}}"># {{readableID}} {{title}}</a>
+											<br>
+										{{/with}}
+										{{this.pname}} has declined assignment. Your job status is now open again. You can choose a different provider from posted applications.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -73,28 +88,13 @@
 							<div class="media">
 								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has submitted assigned job for approval.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</li>
-			{{/if}}
-			{{#if $eq this.notificationType 'requestPayment'}}
-				<li class="timeline-inverted">
-					<div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
-					<div class="timeline-panel">
-						<div class="timeline-heading">
-							<h4 class="timeline-title">Provider Requested Payment</h4>
-							<p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> <i>{{this.notificationTime}}</i></small></p>
-						</div>
-						<div class="timeline-body">
-							<div class="media">
-								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
-								<div class="media-body">
-									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has requested for payment.
-									<p><a href="/jobs/{{this.jobId}}">{{jobName}}</a></p>
+									<p>
+										{{#with jobDetails this.jobId}}
+											<a href="{{pathFor 'job'}}"># {{readableID}} {{title}}</a>
+											<br>
+										{{/with}}
+										{{this.pname}} has submitted assigned job for approval.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -113,7 +113,7 @@
 							<div class="media">
 								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has added you to his/her favorites. <br>
+									{{this.pname}} has added you to his/her favorites. <br>
 								</div>
 							</div>
 						</div>
@@ -132,7 +132,7 @@
 							<div class="media">
 								<div class="media-left"><a href="/profiles/{{this.providerId}}"><img src="{{this.imgUrl}}" alt="{{this.pname}}" class="media-object avatar-image img-circle" width='48px'></a></div>
 								<div class="media-body">
-									<a href="/profiles/{{this.providerId}}">{{this.pname}}</a> has removed you from his/her favorites. <br>
+									{{this.pname}} has removed you from his/her favorites. <br>
 								</div>
 							</div>
 						</div>
