@@ -6,7 +6,11 @@ Template.paymentStatus.onRendered(function(){
 		Meteor.call('updateTransaction', docID, Meteor.user().invitedBy, Meteor.userId());
 		return;
 	}
-	Meteor.call('updateTransaction', docID, Meteor.userId(), Meteor.userId());
+	var transaction = Transactions.findOne({_id: docID});
+	if(transaction)
+		return;
+	else
+		Meteor.call('updateTransaction', docID, Meteor.userId(), Meteor.userId());
 });
 
 Template.paymentStatus.helpers({

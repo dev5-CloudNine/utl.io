@@ -542,9 +542,8 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#buyerActionsTab" data-toggle="tab" aria-expanded="true">ACTIONS</a></li>
                         {{#if assignedOrDone}}
-                            <li><a href="#jobAssignedProvider" data-toggle="tab" aria-expanded="true">ASGN'D TO</a></li>
+                            
                         {{/if}}
-                        <li><a href="#buyerJobApplications" data-toggle="tab">APPLICATIONS <span class="badge">{{applicationsCount}}</span></a></li>
                         <!-- <li><a href="#buyerNotificationsTab" data-toggle="tab">HISTORY</a></li> -->
                     </ul>
                     <div class="tab-content">
@@ -762,206 +761,6 @@
                                 </div>
                             {{/if}}
                         </div>
-                        {{#if assignedOrDone}}
-                            <div class="tab-pane fade in" id="jobAssignedProvider">
-                                <br>
-                                {{#with assignedProDetails}}
-                                    {{>profileSmall}}
-                                {{/with}}
-                            </div>
-                        {{/if}}
-                        <div class="tab-pane fade in" id="buyerJobApplications">
-                            <br>
-                            <small>
-                                <i class="fa fa-circle fa-appscount"></i> APP - {{appsCount}}
-                                &nbsp;&#124;&nbsp;
-                                <i class="fa fa-circle fa-cocount"></i> C. O - {{coCount}}
-                            </small>
-                            <hr>
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    {{#each appliedProviders}}
-                                        {{#if $eq this.app_type 'application'}}
-                                            <div class="panel-group" id="accordion">
-                                                <div class="panel panel-application">
-                                                    <div class="panel-heading">
-                                                        <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">
-                                                            <div class="media">
-                                                                <div class="media-left">
-                                                                    {{#if imgUrl}}
-                                                                        <img src="{{imgUrl}}" alt="{{this.name}}" width="48px" class="media-object">
-                                                                    {{else}}
-                                                                        <img src="/images/avatar.png" width="48px" alt="{{this.name}}" class="media-object">
-                                                                    {{/if}}
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <small><i># {{this.readableId}} - {{this.name}}</i></small>
-                                                                    <br>
-                                                                    <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="right" class="btn btn-xs btn-white"><i class="fa fa-link"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div id="user{{this.userId}}" class="panel-collapse collapse">
-                                                        <div class="panel-body">
-                                                            <small><i>Application</i></small>
-                                                            <br>
-                                                            {{#with paymentDetails}}
-                                                                Payment type: {{ratebasis}} <br>
-                                                                {{#if $eq ratebasis 'Blended'}}
-                                                                    {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
-                                                                    Your Cost: {{roundToTwo your_cost}} USD. <br>
-                                                                    Provider Earns: {{roundToTwo freelancer_nets}} USD.
-                                                                {{/if}}
-                                                                {{#if $eq ratebasis 'Per Device'}}
-                                                                    {{rateperdevice}} USD for {{maxdevices}} devices. <br>
-                                                                    Your Cost: {{roundToTwo your_cost}} USD.
-                                                                    <br>Provier Earns: {{roundToTwo freelancer_nets}} USD.
-                                                                {{/if}}
-                                                                {{#if $eq ratebasis 'Per Hour'}}
-                                                                    {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
-                                                                    Your Cost: {{roundToTwo your_cost}} USD. <br>
-                                                                    Provier Earns: {{roundToTwo freelancer_nets}} USD.
-                                                                {{/if}}
-                                                                {{#if $eq ratebasis 'Fixed Pay'}}
-                                                                    Your Cost: {{roundToTwo your_cost}} USD.
-                                                                    <br>Provier Earns: {{roundToTwo freelancer_nets}} USD.
-                                                                {{/if}}
-                                                            {{/with}}
-                                                            <hr>
-                                                            {{#if $eq ../status 'active'}}
-                                                                {{#if $eq applicationStatus 'open'}}
-                                                                    {{#if providerDeclined}}
-                                                                        This provider has declined to do the job.
-                                                                    {{else}}
-                                                                        <button class="btn btn-sm btn-primary acceptApplication" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Accept</button>
-                                                                    {{/if}}
-                                                                {{/if}}
-                                                                {{#if $eq applicationStatus 'assigned'}}
-                                                                    {{#if $eq ../assignmentStatus 'not_confirmed'}}
-                                                                        {{#if selectedProvider}}
-                                                                            <small>Job assigned. Awaiting confirmation.</small><br>
-                                                                            <button class="btn btn-sm btn-primary rejectApplication" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
-                                                                        {{else}}
-                                                                            <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
-                                                                        {{/if}}
-                                                                    {{/if}}
-                                                                    {{#if $eq ../assignmentStatus 'confirmed'}}
-                                                                        {{#if assignedApplicant}}
-                                                                            <small>Job assigned. Provider confirmed</small>
-                                                                        {{else}}
-                                                                            <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
-                                                                        {{/if}}
-                                                                    {{/if}}
-                                                                {{/if}}
-                                                                {{#if $eq applicationStatus 'paid'}}
-                                                                    {{#if assignedApplicant}}
-                                                                        <small>You have paid the provider.</small>
-                                                                    {{else}}
-                                                                        <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
-                                                                    {{/if}}
-                                                                {{/if}}
-                                                            {{else}}
-                                                                <small>You have deactivated the job.</small>
-                                                            {{/if}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {{/if}}
-                                        {{#if $eq this.app_type 'counteroffer'}}
-                                            <div class="panel-group" id="accordion">
-                                                <div class="panel panel-counter">
-                                                    <div class="panel-heading">
-                                                        <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">
-                                                            <div class="media">
-                                                                <div class="media-left">
-                                                                    {{#if imgUrl}}
-                                                                        <img src="{{imgUrl}}" alt="{{this.name}}" width="48px" class="media-object">
-                                                                    {{else}}
-                                                                        <img src="/images/avatar.png" width="48px" alt="{{this.name}}" class="media-object">
-                                                                    {{/if}}
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <small><i># {{this.readableId}} - {{this.name}}</i></small>
-                                                                    <br>
-                                                                    <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="right" class="btn btn-xs btn-white"><i class="fa fa-link"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div id="user{{this.userId}}" class="panel-collapse collapse">
-                                                        <div class="panel-body">
-                                                            <small><i>Counter Offer</i></small><br>
-                                                            {{#if $eq counter_type 'blended'}}
-                                                                Payment Type: Blended <br>
-                                                                Pay {{first_hours}} USD for the first {{first_max_hours}} and then {{next_hours}} USD for the next {{next_max_hours}}. <br>
-                                                            {{/if}}
-                                                            {{#if $eq counter_type 'per_device'}}
-                                                                Payment Type: Per Device <br>
-                                                                Pay {{device_rate}} USD for {{max_devices}} devices. <br>
-                                                            {{/if}}
-                                                            {{#if $eq counter_type 'per_hour'}}
-                                                                Payment Type: Per Hour <br>
-                                                                Pay {{hourly_rate}} USD for {{max_hours}} hours.  <br>
-                                                            {{/if}}
-                                                            {{#if $eq counter_type 'fixed_pay'}}
-                                                                Payment Type: Fixed Pay <br>
-                                                                Pay fixed amount {{fixed_amount}} USD. <br>
-                                                            {{/if}}
-                                                            Your Cost: {{roundToTwo buyer_cost}} USD. <br>
-                                                            Provider Earns: {{roundToTwo freelancer_nets}} USD. <br>
-                                                            {{#if counter_description}}
-                                                                <hr>
-                                                                <i>{{counter_description}}</i>
-                                                                <hr>
-                                                            {{/if}}
-                                                            {{#if $eq applicationStatus 'open'}}
-                                                                {{#if providerDeclined}}
-                                                                    This provider has declined to do the job.
-                                                                {{else}}
-                                                                    <button class="btn btn-primary btn-sm acceptCounterOffer" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Accept</button>
-                                                                {{/if}}
-                                                            {{/if}}
-                                                            {{#if $eq applicationStatus 'assigned'}}
-                                                                {{#if $eq ../assignmentStatus 'not_confirmed'}}
-                                                                    {{#if selectedProvider}}
-                                                                        <small>Job assigned. Awaiting confirmation.</small><br>
-                                                                        <button class="btn btn-sm btn-primary rejectCounterOffer" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
-                                                                    {{else}}
-                                                                        <button class="btn btn-sm btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
-                                                                    {{/if}}
-                                                                {{/if}}
-                                                                {{#if $eq ../assignmentStatus 'confirmed'}}
-                                                                    {{#if assignedApplicant}}
-                                                                        <small>Job assigned. Provider confirmed</small>
-                                                                    {{else}}
-                                                                        <button class="btn btn-sm btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
-                                                                    {{/if}}
-                                                                {{/if}}
-                                                            {{/if}}
-                                                            {{#if $eq applicationStatus 'paid'}}
-                                                                {{#if assignedApplicant}}
-                                                                    <small>You have paid the provider.</small>
-                                                                {{else}}
-                                                                    <br>
-                                                                    <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
-                                                                {{/if}}
-                                                            {{/if}}
-                                                            {{#if $eq status 'deactivated'}}
-                                                                <small>You have deactivated the job.</small>
-                                                            {{/if}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {{/if}}
-                                    {{else}}
-                                        <h6>No providers have applied for this job yet.</h6>
-                                    {{/each}}
-                                </div>
-                            </div>
-                        </div>
                         <!-- <div class="tab-pane fade in" id="buyerNotificationsTab">
                             <br>
                             <div class="panel panel-default">
@@ -1025,24 +824,226 @@
                             </div>
                         </div> -->
                     </div>
-                    {{#if assignedOrDone}}
-                        <hr>
-                        <div role="tabpanel">
-                            <ul class="nav nav-tabs" role="tablist">
+                    <hr>
+                    <div role="tabpanel">
+                        <ul class="nav nav-tabs" role="tablist">
+                            {{#if assignedOrDone}}
                                 <li role="presentation" class="active">
                                     <a href="#buyerDiscuzTab" aria-controls="buyerDiscuzTab" role="tab" data-toggle="tab">DISCUZ</a>
                                 </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="buyerDiscuzTab">
+                                <li><a href="#jobAssignedProvider" data-toggle="tab" aria-expanded="true">ASGN'D TO</a></li>
+                            {{/if}}
+                            <li class="{{#unless assignedOrDone}}active{{/unless}}"><a href="#buyerJobApplications" data-toggle="tab">APPLICATIONS <span class="badge">{{applicationsCount}}</span></a></li>
+                        </ul>
+                        <div class="tab-content">
+                            {{#if assignedOrDone}}
+                                <div role="tabpanel" class="tab-pane fade in active" id="buyerDiscuzTab">
                                     <br>
                                     {{>messages}}
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="tab">...</div>
+                            {{/if}}
+                            {{#if assignedOrDone}}
+                                <div class="tab-pane fade in" id="jobAssignedProvider">
+                                    <br>
+                                    {{#with assignedProDetails}}
+                                        {{>profileSmall}}
+                                    {{/with}}
+                                </div>
+                            {{/if}}
+                            <div class="tab-pane fade in {{#unless assignedOrDone}}active{{/unless}}" id="buyerJobApplications">
+                                <br>
+                                <small>
+                                    <i class="fa fa-circle fa-appscount"></i> APP - {{appsCount}}
+                                    &nbsp;&#124;&nbsp;
+                                    <i class="fa fa-circle fa-cocount"></i> C. O - {{coCount}}
+                                </small>
+                                <hr>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        {{#each appliedProviders}}
+                                            {{#if $eq this.app_type 'application'}}
+                                                <div class="panel-group" id="accordion">
+                                                    <div class="panel panel-application">
+                                                        <div class="panel-heading">
+                                                            <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">
+                                                                <div class="media">
+                                                                    <div class="media-left">
+                                                                        {{#if imgUrl}}
+                                                                            <img src="{{imgUrl}}" alt="{{this.name}}" width="48px" class="media-object">
+                                                                        {{else}}
+                                                                            <img src="/images/avatar.png" width="48px" alt="{{this.name}}" class="media-object">
+                                                                        {{/if}}
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <small><i># {{this.readableId}} - {{this.name}}</i></small>
+                                                                        <br>
+                                                                        <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="right" class="btn btn-xs btn-white"><i class="fa fa-link"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                        <div id="user{{this.userId}}" class="panel-collapse collapse">
+                                                            <div class="panel-body">
+                                                                <small><i>Application</i></small>
+                                                                <br>
+                                                                {{#with paymentDetails}}
+                                                                    Payment type: {{ratebasis}} <br>
+                                                                    {{#if $eq ratebasis 'Blended'}}
+                                                                        {{payforfirsthours}} USD for the first {{firsthours}} hours, and then {{payfornexthours}} USD for the next {{nexthours}} hours. <br>
+                                                                        Your Cost: {{roundToTwo your_cost}} USD. <br>
+                                                                        Provider Earns: {{roundToTwo freelancer_nets}} USD.
+                                                                    {{/if}}
+                                                                    {{#if $eq ratebasis 'Per Device'}}
+                                                                        {{rateperdevice}} USD for {{maxdevices}} devices. <br>
+                                                                        Your Cost: {{roundToTwo your_cost}} USD.
+                                                                        <br>Provier Earns: {{roundToTwo freelancer_nets}} USD.
+                                                                    {{/if}}
+                                                                    {{#if $eq ratebasis 'Per Hour'}}
+                                                                        {{hourlyrate}} USD per hour for {{maxhours}} hours. <br>
+                                                                        Your Cost: {{roundToTwo your_cost}} USD. <br>
+                                                                        Provier Earns: {{roundToTwo freelancer_nets}} USD.
+                                                                    {{/if}}
+                                                                    {{#if $eq ratebasis 'Fixed Pay'}}
+                                                                        Your Cost: {{roundToTwo your_cost}} USD.
+                                                                        <br>Provier Earns: {{roundToTwo freelancer_nets}} USD.
+                                                                    {{/if}}
+                                                                {{/with}}
+                                                                <hr>
+                                                                {{#if $eq ../status 'active'}}
+                                                                    {{#if $eq applicationStatus 'open'}}
+                                                                        {{#if providerDeclined}}
+                                                                            This provider has declined to do the job.
+                                                                        {{else}}
+                                                                            <button class="btn btn-sm btn-primary acceptApplication" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Accept</button>
+                                                                        {{/if}}
+                                                                    {{/if}}
+                                                                    {{#if $eq applicationStatus 'assigned'}}
+                                                                        {{#if $eq ../assignmentStatus 'not_confirmed'}}
+                                                                            {{#if selectedProvider}}
+                                                                                <small>Job assigned. Awaiting confirmation.</small><br>
+                                                                                <button class="btn btn-sm btn-primary rejectApplication" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
+                                                                            {{else}}
+                                                                                <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                            {{/if}}
+                                                                        {{/if}}
+                                                                        {{#if $eq ../assignmentStatus 'confirmed'}}
+                                                                            {{#if assignedApplicant}}
+                                                                                <small>Job assigned. Provider confirmed</small>
+                                                                            {{else}}
+                                                                                <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                            {{/if}}
+                                                                        {{/if}}
+                                                                    {{/if}}
+                                                                    {{#if $eq applicationStatus 'paid'}}
+                                                                        {{#if assignedApplicant}}
+                                                                            <small>You have paid the provider.</small>
+                                                                        {{else}}
+                                                                            <button class="btn btn-sm btn-primary acceptApplication" disabled="disabled">Accept</button>
+                                                                        {{/if}}
+                                                                    {{/if}}
+                                                                {{else}}
+                                                                    <small>You have deactivated the job.</small>
+                                                                {{/if}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {{/if}}
+                                            {{#if $eq this.app_type 'counteroffer'}}
+                                                <div class="panel-group" id="accordion">
+                                                    <div class="panel panel-counter">
+                                                        <div class="panel-heading">
+                                                            <a href="#user{{this.userId}}" class="accordion-toggle budgetFont" data-toggle="collapse" data-parent="#accordion">
+                                                                <div class="media">
+                                                                    <div class="media-left">
+                                                                        {{#if imgUrl}}
+                                                                            <img src="{{imgUrl}}" alt="{{this.name}}" width="48px" class="media-object">
+                                                                        {{else}}
+                                                                            <img src="/images/avatar.png" width="48px" alt="{{this.name}}" class="media-object">
+                                                                        {{/if}}
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <small><i># {{this.readableId}} - {{this.name}}</i></small>
+                                                                        <br>
+                                                                        <a href="/profiles/{{this.userId}}" data-balloon="View Profile" data-balloon-pos="right" class="btn btn-xs btn-white"><i class="fa fa-link"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                        <div id="user{{this.userId}}" class="panel-collapse collapse">
+                                                            <div class="panel-body">
+                                                                <small><i>Counter Offer</i></small><br>
+                                                                {{#if $eq counter_type 'blended'}}
+                                                                    Payment Type: Blended <br>
+                                                                    Pay {{first_hours}} USD for the first {{first_max_hours}} and then {{next_hours}} USD for the next {{next_max_hours}}. <br>
+                                                                {{/if}}
+                                                                {{#if $eq counter_type 'per_device'}}
+                                                                    Payment Type: Per Device <br>
+                                                                    Pay {{device_rate}} USD for {{max_devices}} devices. <br>
+                                                                {{/if}}
+                                                                {{#if $eq counter_type 'per_hour'}}
+                                                                    Payment Type: Per Hour <br>
+                                                                    Pay {{hourly_rate}} USD for {{max_hours}} hours.  <br>
+                                                                {{/if}}
+                                                                {{#if $eq counter_type 'fixed_pay'}}
+                                                                    Payment Type: Fixed Pay <br>
+                                                                    Pay fixed amount {{fixed_amount}} USD. <br>
+                                                                {{/if}}
+                                                                Your Cost: {{roundToTwo buyer_cost}} USD. <br>
+                                                                Provider Earns: {{roundToTwo freelancer_nets}} USD. <br>
+                                                                {{#if counter_description}}
+                                                                    <hr>
+                                                                    <i>{{counter_description}}</i>
+                                                                    <hr>
+                                                                {{/if}}
+                                                                {{#if $eq applicationStatus 'open'}}
+                                                                    {{#if providerDeclined}}
+                                                                        This provider has declined to do the job.
+                                                                    {{else}}
+                                                                        <button class="btn btn-primary btn-sm acceptCounterOffer" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Accept</button>
+                                                                    {{/if}}
+                                                                {{/if}}
+                                                                {{#if $eq applicationStatus 'assigned'}}
+                                                                    {{#if $eq ../assignmentStatus 'not_confirmed'}}
+                                                                        {{#if selectedProvider}}
+                                                                            <small>Job assigned. Awaiting confirmation.</small><br>
+                                                                            <button class="btn btn-sm btn-primary rejectCounterOffer" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> OK wait...">Reject</button>
+                                                                        {{else}}
+                                                                            <button class="btn btn-sm btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
+                                                                        {{/if}}
+                                                                    {{/if}}
+                                                                    {{#if $eq ../assignmentStatus 'confirmed'}}
+                                                                        {{#if assignedApplicant}}
+                                                                            <small>Job assigned. Provider confirmed</small>
+                                                                        {{else}}
+                                                                            <button class="btn btn-sm btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
+                                                                        {{/if}}
+                                                                    {{/if}}
+                                                                {{/if}}
+                                                                {{#if $eq applicationStatus 'paid'}}
+                                                                    {{#if assignedApplicant}}
+                                                                        <small>You have paid the provider.</small>
+                                                                    {{else}}
+                                                                        <br>
+                                                                        <button class="btn btn-primary acceptCounterOffer" disabled="disabled">Accept</button>
+                                                                    {{/if}}
+                                                                {{/if}}
+                                                                {{#if $eq status 'deactivated'}}
+                                                                    <small>You have deactivated the job.</small>
+                                                                {{/if}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {{/if}}
+                                        {{else}}
+                                            <h6>No providers have applied for this job yet.</h6>
+                                        {{/each}}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <hr>
-                    {{/if}}
+                    </div>
                     {{#with assignedProviderDetails}}
                         <div class="panel panel-default">
                             <div class="panel-heading">

@@ -1266,9 +1266,10 @@ Router.map(function() {
             data.transactionCardType = res.TransactionCardType;
             data.merchantName = res.MerchantName;
             data.exact_ctr = res.exact_ctr;
+            data.createdAt = new Date();
             var id = Meteor.call("saveReceipt",data);
             this.response.writeHead(302, {
-                'Location': URL + '/paymentStatus?id='+id
+                'Location': URL + '/paymentStatus?id=' + id
             });
             this.response.end();
         }

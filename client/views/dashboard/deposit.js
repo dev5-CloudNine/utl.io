@@ -5,6 +5,9 @@ var deposits = function() {
 }
 
 var previousDepositOptions = {
+	lengthMenu: [40, 80, 160, 320],
+    pageLength: 40,
+	order: [[4, 'desc']],
 	columns: [
 		{
 			title: 'Transaction ID',
@@ -42,8 +45,8 @@ var previousDepositOptions = {
 		{
 			title: 'Date/Time',
 			data: function(transaction) {
-				if(transaction.dateOrTime) {
-					return transaction.dateOrTime;
+				if(transaction.createdAt) {
+					return moment(transaction.createdAt).format('LLLL')
 				} else {
 					return '';
 				}
