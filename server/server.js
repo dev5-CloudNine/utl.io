@@ -163,7 +163,12 @@ Meteor.methods({
                 text: 'Hello, ' + providerDetails.firstName + ' ' + providerDetails.lastName + ', ' + buyerDetails.firstName + buyerDetails.lastName + ' has added you to his/her favorites. Click the following link to see his/her profile. ' + Meteor.absoluteUrl('buyers/' + buyerDetails._id + '/' + buyerDetails.slug())
             })
         } else if(role == 'provider') {
-            var buyerDetails = Buyers.findOne({userId: id});
+            var buyerDetails;
+            if(Roles.userIsInRole(id, ['buyer'])) {
+                buyerDetails = Buyers.findOne({userId: id});
+            } else if(Roles.userIsInRole(id, ['dispatcher'])) {
+                buyerDetails = Dispatchers.findOne({userId: id});
+            }
             var providerDetails = Profiles.findOne({userId: Meteor.userId()});
             Email.send({
                 to: getUserEmail(Meteor.users.findOne({_id: id})),
