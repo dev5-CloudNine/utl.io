@@ -62,25 +62,6 @@ Meteor.publish('subcategories', function() {
     }
 })
 
-// Meteor.publish('usersTasks', function() {
-//     if(this.userId) {
-//         var user = Meteor.users.findOne({_id: this.userId});
-//         if(user) {
-//             var jobs = [];
-//             var userCollection = Meteor.users.findOne({_id:this.userId});
-//             var contactsPair = userCollection.contacts;
-//             var jobIDs = [];
-//             for(var i=0;i<contactsPair.length;i++) {
-//                 jobIDs.push(contactsPair[i].split(':')[1]);
-//             }
-//             Jobs.find({_id:{$in:jobIDs||[]}}).map(function(ele){
-//                 jobs.push(ele._id);
-//             });
-//             return Tasks.find({jobID:{$in:jobs||[]}});
-//         }
-//     }
-// })
-
 Meteor.publish("tasks", function (taskID) {
     return Tasks.find({_id:taskID});
 });
@@ -169,7 +150,6 @@ Meteor.publishComposite('providers', {
             sort: {
                 createdAt: -1
             },
-            limit: 8,
             fields: {
                 userId: true,
                 title: true,
@@ -213,7 +193,6 @@ Meteor.publishComposite('buyers', {
             sort: {
                 createdAt: -1
             },
-            limit: 8,
             fields: {
                 userId: true,
                 title: true,
@@ -316,7 +295,9 @@ Meteor.publish("favorite_users", function() {
     check(arguments,[Match.Any]);
     return Profiles.find({}, {
         fields: {
-            name: true,
+            firstName: true,
+            lastName: true,
+            readableID: true,
             type: true,
             freelancerSkills: true,
             title: true,
@@ -348,7 +329,9 @@ Meteor.publish("favorite_buyers", function() {
     return Buyers.find({}, {
         fields: {
             customImageUrl: true,
-            name: true,
+            firstName: true,
+            lastName: true,
+            readableID: true,
             title: true,
             companyName: true,
             eintinNumber: true,
@@ -406,27 +389,6 @@ Meteor.publishComposite('profile', function(profileId) {
         }]
     }
 });
-
-Meteor.publishComposite('corporate', function(corporateId) {
-    return {
-        find: function() {
-            return Corporates.find({
-                _id: corporateId
-            })
-        },
-        children: [{
-            find: function(corporate) {
-                return Users.find({
-                    _id: corporate.corporateId
-                }, {
-                    fields: {
-                        "emailHash": true,
-                    }
-                });
-            }
-        }]
-    }
-})
 
 Meteor.publishComposite('buyer', function(buyerId) {
     return {
@@ -507,18 +469,6 @@ Meteor.publish('dispatcherUsers', function() {
             }
         })
     ]
-});
-
-Meteor.publish('profiles', function(limit) {
-    var selector = {};
-    check(limit, Number);
-
-    return Profiles.find(selector, {
-        limit: limit,
-        sort: {
-            createdAt: 1
-        }
-    });
 });
 
 Meteor.publish('dispatchers', function(buyerId) {

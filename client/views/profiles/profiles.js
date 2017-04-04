@@ -1,12 +1,6 @@
 Template.profiles.onCreated(function() {
 	var instance = this;
 	instance.query = new ReactiveVar();
-    this.infiniteScroll({
-        perPage: 40,
-        subManager: subs,
-        collection: Profiles,
-        publication: 'profiles'
-    });
 });
 
 Template.profiles.helpers({

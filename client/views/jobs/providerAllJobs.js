@@ -165,7 +165,19 @@ var allJobsOptions = {
                             return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>Job submitted for approval. Await response.</small>'
                         }
                     } else {
-                        return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>The job has been assigned to another provider.</small>';
+                        if(jobDetails.assignmentStatus == 'not_confirmed') {
+                            if(jobDetails.applications) {
+                                for(var i = 0; i < jobDetails.applications.length; i++) {
+                                    if(jobDetails.applications[i].userId == Meteor.userId()) {
+                                        applicationTime = jobDetails.applications[i].applied_at;
+                                        break;
+                                    }
+                                }
+                            }
+                            return '<small><i>' + moment(applicationTime).format('LLLL') + '</i></small><br><span class="jobAppliedTick" data-balloon="U\'ve Applied" data-balloon-pos="up">U\'ve applied.</span>';
+                        } else {
+                            return '<small><i>' + moment(jobDetails.updatedAt).format('LLLL') + '</i><br>The job has been assigned to another provider.</small>';
+                        }
                     }
                 }
                 if(jobDetails.applicationStatus == 'paid') {

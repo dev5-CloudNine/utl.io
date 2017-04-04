@@ -3,29 +3,36 @@
 		<div class="col-md-12">
 			<h4>{{userName}} - Transfers</h4>
 		</div>
-		<div class="col-md-12">
-			<div class="table-responsive">
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th>Transfer ID</th>
-							<th>Date</th>
-							<th>Amount</th>
-							<th>Status</th>
-						</tr>
-					</thead>
-					<tbody>
-						{{#each userTransfers}}
+		{{#if isProvider}}
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
 							<tr>
-								<td>{{this.id}}</td>
-								<td>{{formatDate this.created}}</td>
-								<td>{{this.amount.value}}</td>
-								<td>{{this.status}}</td>
+								<th>Transfer ID</th>
+								<th>Date</th>
+								<th>Amount</th>
+								<th>Status</th>
 							</tr>
-						{{/each}}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{{#each userTransfers}}
+								<tr>
+									<td>{{this.id}}</td>
+									<td>{{formatDate this.created}}</td>
+									<td>{{this.amount.value}}</td>
+									<td>{{this.status}}</td>
+								</tr>
+							{{/each}}
+						</tbody>
+					</table>
+				</div>
 			</div>
-		</div>
+		{{/if}}
+		{{#if isBuyer}}
+			<div class="col-md-12">
+				{{>ReactiveDatatable tableData=previousDeposits options=previousDepositOptions}}
+			</div>
+		{{/if}}
 	</div>
 </template>

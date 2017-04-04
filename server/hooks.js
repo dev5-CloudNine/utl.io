@@ -60,26 +60,6 @@ Accountants.after.insert(function(userId, doc) {
   })
 })
 
-Corporates.after.insert(function(userId, doc) {
-  Users.update({
-    _id: doc.userId
-  }, {
-    $set: {
-      isCorporate: true
-    }
-  });
-});
-
-Corporates.after.remove(function(userId, doc) {
-  Users.update({
-    _id: doc.userId
-  }, {
-    $set: {
-      isCorporate: false
-    }
-  });
-});
-
 Jobs.after.remove(function(userId, doc) {
   TimeSheet.remove({'jobID':doc._id});
   Tasks.remove({'jobID':doc._id});

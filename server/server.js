@@ -1260,7 +1260,7 @@ Meteor.methods({
         var options = {
             "paperSize": {
                 "format": "Letter",
-                "orientation": "portrait",
+                "orientation": "landscape",
                 "margin": "1cm"
             },
             siteType: 'html'

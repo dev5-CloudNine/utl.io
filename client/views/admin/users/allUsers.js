@@ -116,10 +116,14 @@ var allUsersObject = {
 				var userWallet = Wallet.findOne({userId: user._id});
 				if(Roles.userIsInRole(user._id, ['dispatcher', 'accountant']))
 					return;
-				if(userWallet.dwollaCustomer && userWallet.fundingSourceUrl) {
-					return '<p>' + (+(Math.round(userWallet.accountBalance + 'e+2') + 'e-2')) + '</p><small><i><a href="/users/transfers/' + user._id +'">Show Transfers</a></i></small>'
+				if(Roles.userIsInRole(user._id, ['provider'])) {
+					if(userWallet.dwollaCustomer && userWallet.fundingSourceUrl) {
+						return '<p>' + (+(Math.round(userWallet.accountBalance + 'e+2') + 'e-2')) + '</p><small><i><a href="/users/transfers/' + user._id +'">Show Withdrawls</a></i></small>'
+					}
 				}
-				return +(Math.round(userWallet.accountBalance + 'e+2') + 'e-2');
+				if(Roles.userIsInRole(user._id, ['buyer'])) {
+					return '<p>' + (+(Math.round(userWallet.accountBalance + 'e+2') + 'e-2')) + '</p><small><i><a href="/users/transfers/' + user._id +'">Show Deposits</a></i></small>'
+				}
 			}
 		},
 		{

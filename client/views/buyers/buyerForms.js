@@ -48,9 +48,9 @@ Template.buyerFields.events({
     event.preventDefault();
     var files = $(event.currentTarget)[0].files;
     var buyerId;
-    if(Router.current().route.getName() == 'profileNew') {
+    if(Router.current().route.getName() == 'buyerNew') {
       buyerId = Meteor.userId();
-    } else if(Router.current().route.getName() == 'profileEdit') {
+    } else if(Router.current().route.getName() == 'buyerEdit') {
       buyerId = this.buyerProfile.userId;
     }
     Resizer.resize(files[0], {width: 200, height: 200, cropSquare: true}, function(err, file) {

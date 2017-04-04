@@ -480,10 +480,9 @@ Router.map(function() {
         path: '/profiles',
         title: "UTL - All Service Providers",
         waitOn: function() {
-            if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher']))
+            if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
                 Meteor.subscribe('my_jobs');
-            if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
-                Meteor.subscribe('providers');
+                return Meteor.subscribe('providers');
             }
             Meteor.subscribe('reviews');
             return subs.subscribe('developerUsers');
@@ -495,6 +494,7 @@ Router.map(function() {
         title: "UTL - My Favorite Providers",
         waitOn: function() {
             Meteor.subscribe('myJobs', Meteor.userId());
+            Meteor.subscribe('providers');
             return Meteor.subscribe('favorite_users');
         }
     });
