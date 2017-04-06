@@ -35,7 +35,7 @@ UI.registerHelper("formatDate", function(timestamp) {
 
 UI.registerHelper('formatServiceSchedule', function(timestamp) {
 	if(timestamp)
-		return moment(timestamp).format('DD/MM/YYYY');
+		return moment(timestamp).format('dddd, MMMM D, YYYY');
 })
 
 UI.registerHelper('formatDOB', function(timestamp) {

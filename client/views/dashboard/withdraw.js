@@ -62,10 +62,10 @@ Template.withdraw.events({
 		var reqAmount = $('input#requestAmount').val()
 		if(reqAmount > accountBalance) {
 			$('.enoughBalance').show();
-			$('.submitWithdrawReq').prop('disabled', true);
+			$('.submitWithdrawReq').atrr('disabled', 'disabled');
 		} else {
 			$('.enoughBalance').hide();
-			$('.submitWithdrawReq').prop('disabled', false);
+			$('.submitWithdrawReq').removeAttr('disabled');
 		}
 	},
 	'click #pro_register_dwolla': function(event, template) {
@@ -153,22 +153,23 @@ Template.withdraw.events({
 	'submit #requestDwollaPay': function(event, template) {
 		event.preventDefault();
 		$('#spinner').show();
-		$('.submitWithdrawReq').prop('disabled', true);
+		$('.submitWithdrawReq').attr('disabled', 'disabled');
 		var walletDetails = Wallet.findOne({userId: Meteor.userId()});
 		var reqAmount = $('input#requestAmount').val()
 		if(reqAmount > walletDetails.accountBalance) {
 			$('.enoughBalance').show();
-			$('.submitWithdrawReq').prop('disabled', true);
+			$('.submitWithdrawReq').attr('disabled');
 			return;
 		} else {
 			$('.enoughBalance').hide();
 			var fundingSourceUrl = walletDetails.fundingSourceUrl;
 			Meteor.call('initiatePayment', fundingSourceUrl, Meteor.userId(), reqAmount, function(error, result) {
 				if(error) {
-					console.log(error);
+					toastr.error(error);
+					$('.submitWithdrawReq').removeAttr('disabled');
 				} else {
 					Meteor.call('updateWalletAfterTransfer', reqAmount, Meteor.userId());
-					$('.submitWithdrawReq').prop('disabled', false);
+					$('.submitWithdrawReq').removeAttr('disabled');
 					$('#spinner').hide();
 					$('input#requestAmount').val('');
 				}

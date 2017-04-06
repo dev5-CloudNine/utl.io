@@ -62,79 +62,8 @@
 								{{#if equals serviceschedule 'betweendates'}}
 									Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} to {{endtime}}
 								{{/if}}
-								<hr>
-								<h4>Budget Details</h4>
-								{{#with budgetDetails _id}}
-									{{#if equals this.appType 'application'}}
-                                        <table class="table table-striped table-responsive">
-                                            <thead>
-                                                <tr>
-                                                    <th>Payment Type</th>
-                                                    <th>Buyer Cost</th>
-                                                    <th>Provider Earns</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        {{this.paymentType}}
-                                                        {{#if equals this.paymentType 'Fixed Pay'}}
-                                                            ({{freelancer_nets}} USD)
-                                                        {{/if}}
-                                                        {{#if equals this.paymentType 'Per Hour'}}
-                                                            ({{hourlyrate}} USD/hr for {{maxhours}} hours)
-                                                        {{/if}}
-                                                        {{#if equals this.paymentType 'Per Device'}}
-                                                            ({{devicerate}} USD/device for {{maxdevices}} devices)
-                                                        {{/if}}
-                                                        {{#if equals this.paymentType 'Blended'}}
-                                                            ({{payforfirsthours}} USD for {{firsthours}} hours and then {{payfornexthours}} USD/hr for the next {{nexthours}} hours)
-                                                        {{/if}}
-                                                    </td>
-                                                    <td>{{../your_cost}} USD</td>
-                                                    <td>{{../freelancer_nets}} USD</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    {{/if}}
-                                    {{#if equals appType 'counteroffer'}}
-                                        <table class="table table-striped table-responsive">
-                                            <thead>
-                                                <tr>
-                                                    <th>Payment Type</th>
-                                                    <th>Buyer Cost</th>
-                                                    <th>Provider Earns</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        {{#if equals counter_type 'blended'}}
-                                                            Blended
-                                                            ({{first_hours}} USD for {{first_max_hours}} hours and then {{next_hours}} USD/hr for the next {{next_max_hours}} hours)
-                                                        {{/if}}
-                                                        {{#if equals counter_type 'per_device'}}
-                                                            Per Device
-                                                            ({{device_rate}} USD/device for {{max_devices}} devices)
-                                                        {{/if}}
-                                                        {{#if equals counter_type 'per_hour'}}
-                                                            Per Hour
-                                                            ({{hourly_rate}} USD/hr for {{max_hours}} hours)
-                                                        {{/if}}
-                                                        {{#if equals counter_type 'fixed_pay'}}
-                                                            Fixed Pay
-                                                            ({{fixed_amount}} USD)
-                                                        {{/if}}
-                                                    </td>
-                                                    <td>{{buyer_cost}} USD</td>
-                                                    <td>{{freelancer_nets}} USD</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    {{/if}}
-                                {{/with}}
 								{{#if confidentialDescription}}
-                                    <hr> Confidential Info:
+                                    Confidential Info:
                                     <br> {{contactperson}}
                                     <br> {{contactemail}}
                                     <br> {{contactphone}}

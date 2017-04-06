@@ -145,13 +145,14 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <h4>Job Schedule</h4>
+                                        <h4>Job Schedule (Local Time)</h4>
                                         {{#if $eq serviceschedule 'exactdate'}}
-                                            On: {{formatServiceSchedule exactdate}} 
+                                            On: {{formatServiceSchedule exactdate}} <br>
                                             Time: {{exacttime}}
                                         {{/if}}
                                         {{#if $eq serviceschedule 'betweendates'}}
-                                            Between {{formatServiceSchedule startdate}} and {{formatServiceSchedule enddate}} from {{starttime}} to {{endtime}}
+                                            From: {{formatServiceSchedule startdate}} To:  {{formatServiceSchedule enddate}}<br>
+                                            Time: {{starttime}} to {{endtime}}
                                         {{/if}}
                                         <hr>
                                     </div>
@@ -1151,20 +1152,20 @@
                                                                 </td>
                                                                 {{#if $eq ../ratebasis 'Per Hour'}}
                                                                     {{#with hourlyApprovedCost 'application'}}
-                                                                        <td>{{buyerCost}} USD</td>
-                                                                        <td>{{providerEarnings}} USD</td>
+                                                                        <td>{{roundToTwo buyerCost}} USD</td>
+                                                                        <td>{{roundToTwo providerEarnings}} USD</td>
                                                                     {{/with}}
                                                                 {{/if}}
                                                                 {{#if $eq ../ratebasis 'Per Device'}}
                                                                     {{#with deviceApprovedCost 'application'}}
-                                                                        <td>{{buyerCost}} USD</td>
-                                                                        <td>{{providerEarnings}} USD</td>
+                                                                        <td>{{roundToTwo buyerCost}} USD</td>
+                                                                        <td>{{roundToTwo providerEarnings}} USD</td>
                                                                     {{/with}}
                                                                 {{/if}}
                                                                 {{#if $eq ../ratebasis 'Blended'}}
                                                                     {{#with blendedApprovedCost 'application'}}
-                                                                        <td>{{buyerCost}} USD</td>
-                                                                        <td>{{providerEarnings}} USD</td>
+                                                                        <td>{{roundToTwo buyerCost}} USD</td>
+                                                                        <td>{{roundToTwo providerEarnings}} USD</td>
                                                                     {{/with}}
                                                                 {{/if}}
                                                             </tr>
@@ -1206,20 +1207,20 @@
                                                                 </td>
                                                                 {{#if $eq counter_type 'per_hour'}}
                                                                     {{#with hourlyApprovedCost 'counteroffer' hourly_rate max_hours}}
-                                                                        <td>{{buyerCost}} USD</td>
-                                                                        <td>{{providerEarnings}} USD</td>
+                                                                        <td>{{roundToTwo buyerCost}} USD</td>
+                                                                        <td>{{roundToTwo providerEarnings}} USD</td>
                                                                     {{/with}}
                                                                 {{/if}}
                                                                 {{#if $eq counter_type 'per_device'}}
                                                                     {{#with deviceApprovedCost 'counteroffer' device_rate max_devices}}
-                                                                        <td>{{buyerCost}} USD</td>
-                                                                        <td>{{providerEarnings}} USD</td>
+                                                                        <td>{{roundToTwo buyerCost}} USD</td>
+                                                                        <td>{{roundToTwo providerEarnings}} USD</td>
                                                                     {{/with}}
                                                                 {{/if}}
                                                                 {{#if $eq counter_type 'blended'}}
                                                                     {{#with blendedApprovedCost 'counteroffer' this.first_max_hours this.first_hours this.next_max_hours this.next_hours}}
-                                                                        <td>{{buyerCost}} USD</td>
-                                                                        <td>{{providerEarnings}} USD</td>
+                                                                        <td>{{roundToTwo buyerCost}} USD</td>
+                                                                        <td>{{roundToTwo providerEarnings}} USD</td>
                                                                     {{/with}}
                                                                 {{/if}}
                                                             </tr>

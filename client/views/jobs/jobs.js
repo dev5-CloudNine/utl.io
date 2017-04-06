@@ -28,6 +28,7 @@ var openJobsObject = {
             title: 'Title',
             data: function(jobDetails) {
                 var jobLocation;
+                var jobSchedule;
                 var buyerName;
                 var jobDistance;
                 var rateBasisText;
@@ -59,6 +60,11 @@ var openJobsObject = {
                         jobLocation = jobDetails.fullLocation.locality + ', ' + jobDetails.fullLocation.state + ', ' + jobDetails.fullLocation.zip;
                     }
                 }
+                if(jobDetails.serviceschedule == 'exactdate') {
+                    jobSchedule = 'Scheduled On: ' + moment(jobDetails.exactdate).format('dddd, MMMM D, YYYY') + '<br>Time: ' + jobDetails.exacttime;
+                } else if(jobDetails.serviceschedule == 'betweendates') {
+                    jobSchedule = 'Scheduled From: ' + moment(jobDetails.startdate).format('dddd, MMMM D, YYYY') + ' To: ' + moment(jobDetails.enddate).format('dddd, MMMM D, YYYY') + '<br> Time: ' + jobDetails.starttime + ' to ' + jobDetails.endtime;
+                }
                 var recommended = false;
                 var providerDetails = Profiles.findOne({userId: Meteor.userId()});
                 if(providerDetails.industryTypes) {
@@ -69,7 +75,7 @@ var openJobsObject = {
                         }
                     }
                 }
-                var jobUrl = '<small>' + jobLocation + '</small><br>' + rateBasisText + '<br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
+                var jobUrl = '<small>' + jobLocation + '</small><br>' + rateBasisText + '<br>' + jobSchedule + '<br><small>Posted By: ' + buyerName + ' - ' + moment(jobDetails.createdAt).fromNow() + '</small>';
                 if(recommended) {
                     return '<a class="budgetFont" href="/jobs/' + jobDetails._id + '">' + jobDetails.title + '</a>&nbsp;<span class="recommendedIcon" data-balloon="Recommended" data-balloon-pos="up"><i class="fa fa-thumbs-up"></i></span><br>' + jobUrl;
                 }

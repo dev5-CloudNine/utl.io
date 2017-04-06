@@ -116,12 +116,12 @@ var allUsersObject = {
 				var userWallet = Wallet.findOne({userId: user._id});
 				if(Roles.userIsInRole(user._id, ['dispatcher', 'accountant']))
 					return;
-				if(Roles.userIsInRole(user._id, ['provider'])) {
+				if(Roles.userIsInRole(user._id, ['provider']) && Meteor.users.findOne({_id: user._id}).isDeveloper) {
 					if(userWallet.dwollaCustomer && userWallet.fundingSourceUrl) {
 						return '<p>' + (+(Math.round(userWallet.accountBalance + 'e+2') + 'e-2')) + '</p><small><i><a href="/users/transfers/' + user._id +'">Show Withdrawls</a></i></small>'
 					}
 				}
-				if(Roles.userIsInRole(user._id, ['buyer'])) {
+				if(Roles.userIsInRole(user._id, ['buyer']) && Meteor.users.findOne({_id: user._id}).isBuyer) {
 					return '<p>' + (+(Math.round(userWallet.accountBalance + 'e+2') + 'e-2')) + '</p><small><i><a href="/users/transfers/' + user._id +'">Show Deposits</a></i></small>'
 				}
 			}

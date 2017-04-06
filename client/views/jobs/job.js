@@ -1024,7 +1024,7 @@ Template.job.events({
       if(err) {
         toastr.error('Failed to create PDF. Please try again.');
       } else {
-        window.open("data:applications/pdf;base64, " + res);
+        window.open("data:application/pdf;base64, " + res);
       }
     })
   },

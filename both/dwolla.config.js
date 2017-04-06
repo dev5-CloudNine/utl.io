@@ -158,6 +158,11 @@ if (Meteor.isServer) {
                 throw 'User\'s Dwolla account is not connected';
                 return;
             }
+            var userWallet = Wallet.findOne({userId: reqdUserId});
+            if(amount > userWallet.accountBalance) {
+                throw 'Insufficient Funds.';
+                return;
+            }
             var accountToken = new client.Token({access_token: obj.access_token, scope: 'Send'});
             var adminFut = new Future();
             accountToken.get(obj._links.account.href).then(function(res) {

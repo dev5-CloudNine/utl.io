@@ -465,7 +465,7 @@ Jobs.attachSchema(new SimpleSchema({
     },
     serviceschedule: {
     optional: true,
-    label: "Job Schedule *",
+    label: "Job Schedule (Local Time)*",
     type: String,
     autoform: {
         type: "select-radio-inline",
