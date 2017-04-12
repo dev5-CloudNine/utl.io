@@ -11,9 +11,18 @@ Template.buyers.onCreated(function() {
 
 Template.buyers.helpers({
     buyersList: function() {
+    	var buyersDispatchers = [];
     	if(Template.instance().query.get())
     		return Session.get('buyerResults');
-    	return Buyers.find({}, {sort: {createdAt: -1}}).fetch();
+    	buyersDispatchers = buyersDispatchers.concat(Buyers.find({}).fetch());
+    	buyersDispatchers = buyersDispatchers.concat(Dispatchers.find({}).fetch());
+    	return _.sortBy(buyersDispatchers, function(buyer) {return -buyer.createdAt});
+    },
+    isBuyer: function(userId) {
+        return (Roles.userIsInRole(userId, ['buyer']))? true : false;
+    },
+    isDispatcher: function(userId) {
+        return (Roles.userIsInRole(userId, ['dispatcher']))? true : false;
     }
 });
 

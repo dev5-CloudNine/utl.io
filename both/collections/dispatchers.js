@@ -223,6 +223,16 @@ Dispatchers.attachSchema(
   }
 }));
 
+if(Meteor.isServer) {
+  Dispatchers._ensureIndex({
+    'firstName': 'text',
+    'lastName': 'text',
+    'title': 'text',
+    'location': 'text',
+    'readableID': 'text'
+  })
+}
+
 Dispatchers.allow({
   insert: function(userId, doc) {
     return userId && doc && userId === doc.userId;

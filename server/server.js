@@ -1310,7 +1310,12 @@ Meteor.methods({
         return Profiles.find({$and: [{}, {$text: {$search: query}}]}).fetch();
     },
     'search_buyers': function(query) {
-        return Buyers.find({$and: [{}, {$text: {$search: query}}]}).fetch();
+        var buyersDispatchers = [];
+        if(query) {
+            buyersDispatchers = buyersDispatchers.concat(Buyers.find({$and: [{}, {$text: {$search: query}}]}).fetch());
+            buyersDispatchers = buyersDispatchers.concat(Dispatchers.find({$and: [{}, {$text: {$search: query}}]}).fetch());
+        }
+        return buyersDispatchers;
     },
     getDistance: function(prolatlng, joblatlng) {
         var requestUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=' + prolatlng + '&destinations=' + joblatlng + '&key=AIzaSyCYOFS20R2pwj_iypwsOloV5ctxzClT4GM';
