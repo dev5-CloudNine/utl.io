@@ -1166,6 +1166,9 @@ Meteor.methods({
             'tasks': function() {
                 return Tasks.find({jobID: this._id}).fetch();
             },
+            formatDate: function(scheduleDate) {
+                return moment(scheduleDate).format('dddd, MMMM D, YYYY');
+            },
             budgetDetails: function(jobId) {
                 var applicationDetails = {};
                 var jobDetails = Jobs.findOne({_id: jobId})

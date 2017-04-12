@@ -56,11 +56,12 @@
 								<hr>
 								<h4>Service Schedule</h4>
 								{{#if equals serviceschedule 'exactdate'}}
-									On: {{exactdate}} <br>
+									On: {{formatDate exactdate}} <br>
 									Time: {{exacttime}}
 								{{/if}}
 								{{#if equals serviceschedule 'betweendates'}}
-									Between {{formatDate startdate}} and {{formatDate enddate}} from {{starttime}} to {{endtime}}
+									From {{formatDate startdate}} To {{formatDate enddate}} <br> 
+									Time: {{starttime}} to {{endtime}}
 								{{/if}}
 								{{#if confidentialDescription}}
                                     Confidential Info:

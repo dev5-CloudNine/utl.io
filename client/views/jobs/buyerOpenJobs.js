@@ -18,6 +18,7 @@ var openJobsOptions = {
             title: 'Title',
             data: function(jobDetails) {
                 var jobLocation;
+                var jobSchedule;
                 var buyerName;
                 var rateBasisText;
                 if(jobDetails.ratebasis == 'Fixed Pay') {

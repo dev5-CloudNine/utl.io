@@ -38,7 +38,7 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 	}
 });
 
-Template.duplicateJob.onCreated(function() {
+Template.duplicateJob.rendered = function() {
 	var jobBudget = this.data.job.your_cost;
 	this.autorun(function() {
 		var accountBalance;
@@ -49,9 +49,13 @@ Template.duplicateJob.onCreated(function() {
 		}
 		if(jobBudget > accountBalance) {
 			$('.notEnoughBalance').show();
+			$('#submitJob').attr('disabled', 'disabled');
+		} else {
+			$('.notEnoughBalance').show();
+			$('#submitJob').removeAttr('disabled');
 		}
 	})
-});
+}
 
 Template.jobFields.rendered = function() {
   	$('#spinner').hide();
@@ -388,10 +392,21 @@ Template.submitButtons.events({
 		var publishTo = $('input[name="publishJob"]:checked').val();
 		$(event.currentTarget).button('loading');
 		var buyerDetails;
-		if(Roles.userIsInRole(Meteor.userId(), ['buyer']))
+		var userWallet;
+		if(Roles.userIsInRole(Meteor.userId(), ['buyer'])) {
 			buyerDetails = Buyers.findOne({userId: Meteor.userId()});
-		else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher']))
+			userWallet = Wallet.findOne({userId: Meteor.userId()});
+		}
+		else if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
 			buyerDetails = Dispatchers.findOne({userId: Meteor.userId()});
+			userWallet = Wallet.findOne({userId: Meteor.user().invitedBy});
+		}
+		var buyerCost = $('input[name="your_cost"]').val();
+		if(buyerCost > userWallet.accountBalance) {
+			toastr.error('Insufficient funds.');
+			$(event.currentTarget).button('reset');
+			return;
+		}
 		if(publishTo == 'allProviders') {
 			Session.set('publishToAll', true);
 			Session.set('publishToFav', false);
