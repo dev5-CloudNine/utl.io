@@ -51,7 +51,7 @@ Template.duplicateJob.rendered = function() {
 			$('.notEnoughBalance').show();
 			$('#submitJob').attr('disabled', 'disabled');
 		} else {
-			$('.notEnoughBalance').show();
+			$('.notEnoughBalance').hide();
 			$('#submitJob').removeAttr('disabled');
 		}
 	})
