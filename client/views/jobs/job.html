@@ -147,8 +147,9 @@
                                     <div class="col-sm-12">
                                         <h4>Job Schedule (Local Time)</h4>
                                         {{#if $eq serviceschedule 'exactdate'}}
-                                            On: {{formatServiceSchedule exactdate}} <br>
-                                            Time: {{exacttime}}
+                                            On: {{formatServiceSchedule exactdate}} 
+                                            <!-- <br>
+                                            Time: {{exacttime}} -->
                                         {{/if}}
                                         {{#if $eq serviceschedule 'betweendates'}}
                                             From: {{formatServiceSchedule startdate}} To:  {{formatServiceSchedule enddate}}<br>

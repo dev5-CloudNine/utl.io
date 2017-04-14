@@ -35,7 +35,7 @@ UI.registerHelper("formatDate", function(timestamp) {
 
 UI.registerHelper('formatServiceSchedule', function(timestamp) {
 	if(timestamp) {
-		return moment(timestamp).format('dddd, MMMM D, YYYY');
+		return moment(timestamp).tz('America/New_York').format('LLLL');
 	}
 })
 

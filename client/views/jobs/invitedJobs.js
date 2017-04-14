@@ -58,7 +58,7 @@ var invitedJobsOptions = {
                     }
                 }
                 if(jobDetails.serviceschedule == 'exactdate') {
-                    jobSchedule = 'Scheduled On: ' + moment(jobDetails.exactdate).format('dddd, MMMM D, YYYY') + '<br>Time: ' + jobDetails.exacttime;
+                    jobSchedule = 'Scheduled On: ' + moment(jobDetails.exactdate).tz('America/New_York').format('LLLL');
                 } else if(jobDetails.serviceschedule == 'betweendates') {
                     jobSchedule = 'Scheduled From: ' + moment(jobDetails.startdate).format('dddd, MMMM D, YYYY') + ' To: ' + moment(jobDetails.enddate).format('dddd, MMMM D, YYYY') + '<br> Time: ' + jobDetails.starttime + ' to ' + jobDetails.endtime;
                 }

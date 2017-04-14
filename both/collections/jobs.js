@@ -755,7 +755,10 @@ Jobs.attachSchema(new SimpleSchema({
       optional: true,
       label: "Exactly on date",
       autoform: {
-        type: "bootstrap-datepicker"
+        afFieldInput: {
+          type: 'bootstrap-datetimepicker',
+          timezoneId: 'America/New_York'
+        }
       },
       custom: function() {
         var shouldBeRequired = this.field('serviceschedule').value == 'exactdate';
@@ -775,14 +778,14 @@ Jobs.attachSchema(new SimpleSchema({
         }
       }
     },
-    exacttime: {
-      type: String,
-      optional: true,
-      label: "Time",
-      autoform: {
-        type: "bootstrap-timepicker"
-      }
-    },
+    // exacttime: {
+    //   type: String,
+    //   optional: true,
+    //   label: "Time",
+    //   autoform: {
+    //     type: "bootstrap-timepicker"
+    //   }
+    // },
     startdate: {
       type: Date,
       optional: true,
