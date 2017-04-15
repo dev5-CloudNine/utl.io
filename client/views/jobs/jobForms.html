@@ -98,45 +98,38 @@
                 <div class="panel-body">                    
                     {{>afQuickField name="servicelocation"}}
                 </div>
-                {{#if afFieldValueIs name="servicelocation" value="Field Job"}}
-                    <div class="panel-body">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="form-group">
-                                <label for="loc" class="control-label">Location Details</label>
-                                {{>jobLocationMap}}
-                            </div>
+                <div class="panel-body" id="fieldjob_location" hidden>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <label for="loc" class="control-label">Location Details</label>
+                            {{>jobLocationMap}}
                         </div>
                     </div>
-                {{/if}}
+                </div>
             </div>
         </div>
         <div class="col-sm-12">
             <div class="panel panel-white">
                 <div class="panel-body">
-                    {{> afQuickField name='serviceschedule' noselect=true}}
-                    <div class="row">
-                        {{#if afFieldValueIs name="serviceschedule" value="exactdate"}}
-                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                                {{> afQuickField name="exactdate"}}
-                            </div>
-                            <!-- <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                                {{> afQuickField name="exacttime"}}
-                            </div> -->
-                        {{/if}}
-                        {{#if afFieldValueIs name="serviceschedule" value="betweendates"}}
-                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                                {{> afQuickField name="startdate"}}
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                                {{> afQuickField name="enddate"}}
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                                {{> afQuickField name="starttime"}}
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                                {{> afQuickField name="endtime"}}
-                            </div>
-                        {{/if}}
+                    {{> afQuickField name='serviceschedule'}}
+                    <div class="row" id="exactdate_schedule" hidden>
+                        <div class="col-xs-12 col-sm-12 col-md-3">
+                            {{> afQuickField name="exactdate"}}
+                        </div>
+                    </div>
+                    <div class="row" id="betweendates_schedule" hidden>
+                        <div class="col-xs-12 col-sm-12 col-md-3">
+                            {{> afQuickField name="startdate"}}
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3">
+                            {{> afQuickField name="enddate"}}
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3">
+                            {{> afQuickField name="starttime"}}
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3">
+                            {{> afQuickField name="endtime"}}
+                        </div>
                     </div>
                 </div>
             </div>

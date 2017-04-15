@@ -38,10 +38,33 @@ AutoForm.addHooks(['jobNew', 'jobEdit', 'duplicateJob', 'assignJob'], {
 	}
 });
 
+Template.jobEdit.rendered = function() {
+	this.autorun(function() {
+		var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+		if(jobDetails.servicelocation == 'Field Job') {
+			$('#fieldjob_location').show();
+		}
+		if(jobDetails.serviceschedule == 'exactdate') {
+			$('#exactdate_schedule').show();
+		} else if(jobDetails.serviceschedule == 'betweendates') {
+			$('#betweendates_schedule').show();
+		}
+	})
+}
+
 Template.duplicateJob.rendered = function() {
 	var jobBudget = this.data.job.your_cost;
 	this.autorun(function() {
 		var accountBalance;
+		var jobDetails = Jobs.findOne({_id: Router.current().params._id});
+		if(jobDetails.servicelocation == 'Field Job') {
+			$('#fieldjob_location').show();
+		}
+		if(jobDetails.serviceschedule == 'exactdate') {
+			$('#exactdate_schedule').show();
+		} else if(jobDetails.serviceschedule == 'betweendates') {
+			$('#betweendates_schedule').show();
+		}
 		if(Roles.userIsInRole(Meteor.userId(), ['dispatcher'])) {
 			accountBalance = Wallet.findOne({userId: Meteor.user().invitedBy}).accountBalance;
 		} else {
@@ -73,6 +96,22 @@ Template.jobFields.events({
 	},
 	'click .hidelessbalalert': function(event, template) {
 		$(event.currentTarget).parent().hide();
+	},
+	'change input[name="servicelocation"]': function(event, template) {
+		if($(event.currentTarget).val() == 'Field Job') {
+			$('#fieldjob_location').show();
+		} else {
+			$('#fieldjob_location').hide();
+		}
+	},
+	'change input[name="serviceschedule"]': function(event, template) {
+		if($(event.currentTarget).val() == 'exactdate') {
+			$('#betweendates_schedule').hide();
+			$('#exactdate_schedule').show();
+		} else if($(event.currentTarget).val() == 'betweendates') {
+			$('#exactdate_schedule').hide();
+			$('#betweendates_schedule').show();
+		}
 	},
 	'change input[name="fixedamount"], keyup input[name="fixedamount"]': function(event, template) {
 		var fixedamount = parseFloat($('input[name="fixedamount"]').val());
