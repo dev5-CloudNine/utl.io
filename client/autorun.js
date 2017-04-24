@@ -28,6 +28,7 @@ Tracker.autorun(function() {
 });
 
 Meteor.startup(function() {
+	TimeSync.loggingEnabled = false;
 	GoogleMaps.load({key: 'AIzaSyCYOFS20R2pwj_iypwsOloV5ctxzClT4GM', libraries: 'places'});
 })
 

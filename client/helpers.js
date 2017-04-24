@@ -149,7 +149,7 @@ UI.registerHelper('providerInvitedCount', function() {
 
 UI.registerHelper('buyerInvitedCount', function() {
 	if(Roles.userIsInRole(Meteor.userId(), ['buyer', 'dispatcher'])) {
-		return Jobs.find({$and: [{userId: Meteor.userId()}, {invited: true}, {applicationStatus: 'open'}]}).count();
+		return Jobs.find({$and: [{userId: Meteor.userId()}, {invited: true}, {applicationStatus: 'open'}, {status: 'active'}]}).count();
 	}
 })
 

@@ -1,5 +1,5 @@
 var invitedJobs = function() {
-    return Jobs.find({$and: [{userId: Meteor.userId()}, {invited: true}, {applicationStatus: 'open'}]}).fetch();
+    return Jobs.find({$and: [{userId: Meteor.userId()}, {invited: true}, {applicationStatus: 'open'}, {status: 'active'}]}).fetch();
 }
 
 var invitedJobsOptions = {
