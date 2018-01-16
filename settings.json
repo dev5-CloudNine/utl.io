@@ -1,10 +1,10 @@
 {
   "public" : {
-    "ROOT_URL": "https://utl-95476.app.xervo.io"
+    "ROOT_URL": "https://ustechland.com"
   },
   "kadira": {
-     "appId": "CPd37iCbYHWL36vpY",
-     "appSecret": "939d2694-ebc3-486c-a2ea-adf104c30b46"
+     "appId": "",
+     "appSecret": ""
   },
   "PrerenderIO": {
     "token": ""
